@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SME Credit Intelligence Platform — Open Finance Signals, Stress, Loan Readiness · Post Oak Labs</title>
+
+<meta name="description" content="Layer open-finance signals over an SME profile; stress-test cash flow; output a loan readiness verdict with recommended facility type (term loan, RBF, invoice finance). Browser-based, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/sme-credit-intelligence-platform.html">
+<meta property="og:title" content="SME Credit Intelligence Platform — Post Oak Labs">
+<meta property="og:description" content="SME credit score + working capital gap + cash flow stress + loan readiness + facility recommendation, in one flow.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/sme-credit-intelligence-platform.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "SME Credit Intelligence Platform",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/sme-credit-intelligence-platform.html",
+  "description": "Integrated SME credit decisioning demo. Combines open-finance signals (T243), credit risk scoring (T239), working capital gap (T240), cash flow stress (T246), and loan readiness (T241) into a single recommendation flow.",
+  "featureList": [
+    "Open-finance signal layering (revenue concentration, payment behaviour, bank balance volatility)",
+    "SME credit score with rationale and decile ranking",
+    "Working capital gap calculator",
+    "Cash flow stress test (revenue down / costs up scenarios)",
+    "Loan readiness verdict + recommended facility type",
+    "Policy Mandate export: @postoaklabs.com/sme-credit-platform-v1"
+  ],
+  "keywords": "SME credit, open finance, working capital, cash flow stress, RBF, invoice finance, term loan, embedded lending",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-16",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+:root{--ink:#050c15;--deep:#0a1628;--navy:#0e1e35;--edge:#1e3454;--body:#7090b0;--muted:#4a6280;--accent:#2a7fc0;--accent-lt:#4a9fdf;--gold:#c09040;--showcase-bg:#fff;--showcase-bg-soft:#fafbfc;--showcase-bg-deep:#f4f6f9;--showcase-text:#0a1828;--showcase-text-muted:#6a7a8a;--showcase-border:#e6e8eb;--showcase-border-dark:#d4d8de;--showcase-accent:#2a7fc0;--showcase-gold:#c09040;--showcase-success:#10b981;--showcase-warn:#f59e0b;--showcase-error:#dc2626;--showcase-purple:#8b5cf6;--showcase-heading-font:'DM Serif Display',serif;--showcase-body-font:'DM Sans',sans-serif;--showcase-mono-font:'JetBrains Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--body);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.2}
+a{color:var(--accent)} button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit}
+
+nav[role="navigation"]{background:var(--ink);border-bottom:1px solid var(--edge);padding:.9rem 0;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:1.15rem;color:#fff;text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-bc{font-family:var(--showcase-mono-font);font-size:.6rem;color:var(--muted);letter-spacing:.06em;display:flex;align-items:center;gap:.4rem}
+.nav-bc a{color:var(--body);text-decoration:none} .nav-bc a:hover{color:var(--accent-lt)} .nav-bc span[aria-current]{color:var(--accent-lt)}
+.nav-links{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
+.nav-links a{color:var(--body);text-decoration:none;font-size:.86rem} .nav-links a:hover{color:#fff}
+.nav-links a.nav-cta{background:var(--accent);color:#fff !important;padding:.4rem .95rem;border-radius:4px}
+.nav-links a.nav-cta:hover{background:var(--accent-lt)}
+
+.showcase-header-strip{background:var(--deep);border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);padding:.85rem 0}
+.strip-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.strip-left{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.strip-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.7rem;color:var(--gold);font-weight:500}
+.strip-title{font-weight:500;color:#fff;font-size:.875rem}
+.strip-actions{display:flex;flex-wrap:wrap;gap:.25rem 1rem}
+.strip-actions a{color:var(--accent-lt);text-decoration:none;font-size:.78rem;white-space:nowrap}
+.strip-actions a:hover{color:#fff}
+
+.demo-canvas{background:var(--showcase-bg);color:var(--showcase-text);font-family:var(--showcase-body-font);max-width:1240px;margin:2rem auto;padding:0;border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,.04),0 0 40px rgba(0,0,0,.25);overflow:hidden}
+.canvas-inner{padding:2.5rem 2.5rem 3rem}
+@media(max-width:760px){.canvas-inner{padding:1.5rem 1.25rem 2rem}}
+.demo-canvas h1,.demo-canvas h2,.demo-canvas h3,.demo-canvas h4{color:var(--showcase-text)}
+
+.hero{padding-bottom:2rem;border-bottom:1px solid var(--showcase-border);margin-bottom:2.5rem}
+.eyebrow-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:1.25rem}
+.eyebrow-badge{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border-radius:3px;border:1px solid var(--showcase-border);color:var(--showcase-text-muted)}
+.eyebrow-badge.accent{border-color:rgba(42,127,192,.35);color:var(--showcase-accent)}
+.eyebrow-badge.gold{border-color:rgba(192,144,64,.35);color:var(--showcase-gold)}
+.eyebrow-badge.purple{border-color:rgba(139,92,246,.35);color:var(--showcase-purple)}
+.hero h1{font-size:clamp(1.6rem,2.8vw,2.2rem);margin-bottom:.85rem}
+.hero h1 em{font-style:italic;color:var(--showcase-accent)}
+.hero-sub{color:var(--showcase-text-muted);font-size:.95rem;line-height:1.7;max-width:820px;margin-bottom:1.5rem}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:4px;overflow:hidden}
+.hstat{background:var(--showcase-bg-soft);padding:.85rem 1.1rem}
+.hstat-l{font-family:var(--showcase-mono-font);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.3rem}
+.hstat-v{font-family:var(--showcase-heading-font);font-size:1.3rem;line-height:1.1}
+.hstat-v.accent{color:var(--showcase-accent)}.hstat-v.gold{color:var(--showcase-gold)}.hstat-v.success{color:var(--showcase-success)}.hstat-v.purple{color:var(--showcase-purple)}
+.hstat-note{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.2rem}
+
+.pii-banner{display:flex;align-items:flex-start;gap:.75rem;background:#f0f9f4;border:1px solid #a7f3d0;border-radius:4px;padding:.75rem 1rem;margin-bottom:2rem;font-size:.83rem;color:#065f46}
+.pii-banner svg{flex-shrink:0;margin-top:1px}
+
+.tool-layout{display:grid;grid-template-columns:1fr 290px;gap:2rem;align-items:start}
+@media(max-width:960px){.tool-layout{grid-template-columns:1fr}}
+
+.var-sidebar{background:var(--ink);border-radius:6px;padding:1.5rem;border-left:3px solid var(--gold);position:sticky;top:100px}
+.var-sidebar-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+.var-sidebar h3{font-family:var(--showcase-heading-font);color:#fff !important;font-size:1.2rem;line-height:1.2;margin-bottom:.5rem}
+.var-sidebar p{font-size:.82rem;color:var(--body);line-height:1.6;margin-bottom:.9rem}
+.var-sidebar p:last-child{margin-bottom:0}
+.var-sidebar .cite{font-size:.7rem;color:var(--muted);margin-top:.75rem}
+.var-stat{font-family:var(--showcase-mono-font);font-size:.76rem;color:var(--accent-lt);margin-top:.5rem}
+
+.panel{margin-bottom:2.25rem}
+.panel-hd{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--showcase-border);padding-bottom:.65rem;margin-bottom:1.25rem}
+.panel-num{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--showcase-accent)}
+.panel-hd h2{font-size:1.25rem;color:var(--showcase-text)}
+.panel-hd .sub{font-size:.78rem;color:var(--showcase-text-muted)}
+
+.scenario-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+.scenario-btn{font-family:var(--showcase-mono-font);font-size:.7rem;letter-spacing:.06em;padding:.45rem 1rem;border-radius:4px;border:1px solid var(--showcase-border);color:var(--showcase-text-muted);background:var(--showcase-bg-soft);transition:all .15s}
+.scenario-btn:hover,.scenario-btn.active{background:var(--showcase-accent);border-color:var(--showcase-accent);color:#fff}
+
+.section-hd{font-family:var(--showcase-mono-font);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--showcase-text-muted);border-bottom:1px solid var(--showcase-border);padding-bottom:.5rem;margin-bottom:1.1rem}
+
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label{font-family:var(--showcase-mono-font);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted)}
+.field input[type=number],.field input[type=text],.field select{font-family:var(--showcase-mono-font);font-size:.88rem;padding:.55rem .75rem;border:1px solid var(--showcase-border);border-radius:4px;background:var(--showcase-bg);color:var(--showcase-text);width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--showcase-accent)}
+.field .hint{font-size:.7rem;color:var(--showcase-text-muted)}
+
+/* SCORE CARD */
+.score-card{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;padding:1.3rem;background:var(--showcase-bg-deep);border:1px solid var(--showcase-border);border-radius:6px;margin-bottom:1.25rem}
+.score-circle{position:relative;width:120px;height:120px;flex-shrink:0}
+.score-circle .ring-bg{stroke:#e6e8eb}
+.score-text-big{font-family:var(--showcase-heading-font);font-size:2.2rem;color:var(--showcase-text)}
+.score-text-sub{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted)}
+.score-narrative h4{font-family:var(--showcase-heading-font);font-size:1.4rem;margin-bottom:.3rem}
+.score-narrative .verdict{font-family:var(--showcase-mono-font);font-size:.78rem;letter-spacing:.06em}
+.score-narrative .verdict.ok{color:var(--showcase-success)} .score-narrative .verdict.warn{color:var(--showcase-warn)} .score-narrative .verdict.bad{color:var(--showcase-error)}
+.score-narrative ul{font-size:.85rem;color:var(--showcase-text-muted);margin-top:.6rem;list-style:none}
+.score-narrative ul li{margin-bottom:.25rem}
+
+/* SIGNAL BARS */
+.signals-list{margin-bottom:1.25rem}
+.signal-row{display:grid;grid-template-columns:200px 1fr 80px;gap:.85rem;align-items:center;margin-bottom:.5rem}
+.signal-row .lbl{font-family:var(--showcase-mono-font);font-size:.74rem;color:var(--showcase-text)}
+.signal-row .bar-wrap{height:14px;background:var(--showcase-bg-deep);border-radius:3px;overflow:hidden;border:1px solid var(--showcase-border)}
+.signal-row .bar{height:100%;transition:width .4s}
+.signal-row .bar.good{background:linear-gradient(90deg,var(--showcase-accent),var(--showcase-success))}
+.signal-row .bar.warn{background:linear-gradient(90deg,var(--showcase-accent),var(--showcase-warn))}
+.signal-row .bar.bad {background:linear-gradient(90deg,var(--showcase-warn),var(--showcase-error))}
+.signal-row .val{font-family:var(--showcase-mono-font);font-size:.76rem;text-align:right;color:var(--showcase-text)}
+
+/* STRESS MONTHS */
+.months-table-wrap{overflow-x:auto;margin-bottom:1.25rem}
+table.months{width:100%;border-collapse:collapse;font-size:.82rem;font-family:var(--showcase-mono-font)}
+table.months th{padding:.55rem .65rem;border-bottom:2px solid var(--showcase-border);text-align:right;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);background:var(--showcase-bg-soft)}
+table.months th:first-child{text-align:left}
+table.months td{padding:.6rem .65rem;border-bottom:1px solid var(--showcase-border);text-align:right;font-size:.78rem}
+table.months td:first-child{text-align:left;color:var(--showcase-text)}
+table.months td.neg{color:var(--showcase-error)}
+table.months td.pos{color:var(--showcase-success)}
+
+/* DIAG GRID */
+.diag-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:6px;overflow:hidden;margin-bottom:1.25rem}
+.diag-cell{background:var(--showcase-bg-soft);padding:.95rem 1.1rem}
+.diag-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.35rem}
+.diag-val{font-family:var(--showcase-heading-font);font-size:1.3rem;line-height:1.1}
+.diag-val.success{color:var(--showcase-success)}.diag-val.warn{color:var(--showcase-warn)}.diag-val.error{color:var(--showcase-error)}.diag-val.accent{color:var(--showcase-accent)}
+.diag-sub{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.2rem}
+
+/* FACILITY CARDS */
+.facility-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1.25rem}
+.facility-card{border:1px solid var(--showcase-border);border-radius:6px;padding:1.1rem 1.2rem;background:var(--showcase-bg);position:relative}
+.facility-card.recommended{border-color:var(--showcase-success);background:rgba(16,185,129,.04)}
+.facility-card.recommended::after{content:'RECOMMENDED';position:absolute;top:-.55rem;right:1rem;background:var(--showcase-success);color:#fff;font-family:var(--showcase-mono-font);font-size:.55rem;letter-spacing:.1em;padding:.18rem .55rem;border-radius:2px}
+.facility-card h4{font-size:1rem;margin-bottom:.25rem}
+.facility-card .ftag{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.65rem}
+.facility-card .fdesc{font-size:.82rem;color:var(--showcase-text-muted);line-height:1.55;margin-bottom:.65rem}
+.facility-card .fstats{font-family:var(--showcase-mono-font);font-size:.7rem;color:var(--showcase-text)}
+.facility-card .fstats div{padding:.18rem 0;border-bottom:1px dotted var(--showcase-border);display:flex;justify-content:space-between}
+.facility-card .fstats div:last-child{border-bottom:none}
+.facility-card .fstats .v{color:var(--showcase-accent)}
+
+.run-row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin:1.5rem 0 .5rem}
+.run-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--showcase-accent);color:#fff;padding:.75rem 2rem;border-radius:5px;font-size:.9rem;font-weight:500;letter-spacing:.02em;border:none}
+.run-btn:hover{background:var(--accent-lt)}
+.run-note{font-size:.78rem;color:var(--showcase-text-muted)}
+
+.results-section{margin-top:1rem;display:none}.results-section.visible{display:block}
+
+.results-export-row{display:flex;flex-wrap:wrap;gap:.75rem;padding-top:1.5rem;border-top:1px solid var(--showcase-border);margin-top:2rem}
+.export-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border-radius:4px;font-size:.83rem;font-weight:500;border:1px solid var(--showcase-border);color:var(--showcase-text);background:var(--showcase-bg-soft);cursor:pointer;transition:all .15s}
+.export-btn:hover{border-color:var(--showcase-accent);color:var(--showcase-accent)}
+.export-btn.primary{background:var(--showcase-accent);border-color:var(--showcase-accent);color:#fff}
+.export-btn.primary:hover{background:var(--accent-lt);border-color:var(--accent-lt)}
+
+footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2rem}
+.footer-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:1.05rem;color:#fff;margin-bottom:.35rem}
+.footer-brand span{color:var(--gold)}
+.footer-copy{font-size:.78rem;color:var(--muted)}
+.footer-badges{font-family:var(--showcase-mono-font);font-size:.65rem;color:var(--muted);margin-top:.4rem;letter-spacing:.04em}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-size:.82rem;color:var(--body);text-decoration:none}
+.footer-links a:hover{color:var(--accent-lt)}
+</style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Post Oak Labs navigation" class="pol-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Post Oak <span>Labs</span></a>
+    <div class="nav-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href="/demos/">Showcase</a><span aria-hidden="true">›</span>
+      <span aria-current="page">SME Credit Intelligence</span>
+    </div>
+    <nav class="nav-links" aria-label="Site links">
+      <a href="/demos/">← All Demos</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html" class="nav-cta">Talk to us</a>
+    </nav>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Fintech Intelligence Showcase</span>
+      <span class="strip-title">Demo #31 — SME Credit Intelligence Platform</span>
+    </div>
+    <div class="strip-actions">
+      <a href="https://ainumbers.co/tools/239-sme-credit-risk-scoring.html" target="_blank" rel="noopener">T239 Credit Score ↗</a>
+      <a href="https://ainumbers.co/tools/240-working-capital-gap-calculator.html" target="_blank" rel="noopener">T240 WC Gap ↗</a>
+      <a href="https://ainumbers.co/tools/241-business-loan-readiness-checker.html" target="_blank" rel="noopener">T241 Loan Ready ↗</a>
+      <a href="https://ainumbers.co/tools/243-open-finance-credit-signal-mapper.html" target="_blank" rel="noopener">T243 OF Signals ↗</a>
+      <a href="https://ainumbers.co/tools/246-sme-cashflow-stress-test.html" target="_blank" rel="noopener">T246 CF Stress ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" role="main">
+  <div class="canvas-inner">
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow-badges">
+        <span class="eyebrow-badge accent">SME · Embedded Lending</span>
+        <span class="eyebrow-badge gold">T239 · T240 · T241 · T243 · T246</span>
+        <span class="eyebrow-badge purple">Open Finance · Cash-Flow Stress</span>
+        <span class="eyebrow-badge">Loan Readiness</span>
+        <span class="eyebrow-badge">Zero PII</span>
+      </div>
+      <h1 id="hero-title">SME Credit <em>Intelligence Platform</em></h1>
+      <p class="hero-sub">Enter an SME profile. The platform layers open-finance signals (revenue concentration, payment-behaviour, balance volatility) over the operating profile, scores credit risk, computes the working-capital gap, runs a cash-flow stress test, and returns a loan-readiness verdict with the recommended facility type — term loan, revenue-based finance, or invoice finance — sized to the modelled capacity. Policy Mandate export.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-l">Signal Sources</div><div class="hstat-v accent">7</div><div class="hstat-note">Open-finance + behavioural</div></div>
+        <div class="hstat"><div class="hstat-l">Facility Types</div><div class="hstat-v gold">3</div><div class="hstat-note">Term · RBF · Invoice</div></div>
+        <div class="hstat"><div class="hstat-l">Stress Horizon</div><div class="hstat-v">12 mo</div><div class="hstat-note">Monthly granularity</div></div>
+        <div class="hstat"><div class="hstat-l">Score Range</div><div class="hstat-v success">0–100</div><div class="hstat-note">Decile-mapped</div></div>
+        <div class="hstat"><div class="hstat-l">Working Capital Cycle</div><div class="hstat-v purple">DSO − DPO + DIO</div><div class="hstat-note">Cash conversion</div></div>
+        <div class="hstat"><div class="hstat-l">Schema</div><div class="hstat-v success">v1.0</div><div class="hstat-note">@postoaklabs.com/sme-credit-platform-v1</div></div>
+      </div>
+    </section>
+
+    <div class="pii-banner" role="note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+    </div>
+
+    <div class="tool-layout">
+      <div class="tool-main">
+
+        <div class="section-hd">SME Profiles (Preset)</div>
+        <div class="scenario-row" role="group" aria-label="SME preset">
+          <button class="scenario-btn" data-scenario="ecom-saas">🛒 eComm / SaaS (Growth)</button>
+          <button class="scenario-btn" data-scenario="b2b-services">📋 B2B Services (Established)</button>
+          <button class="scenario-btn" data-scenario="manufacturing">🏭 Light Manufacturing (Cyclical)</button>
+        </div>
+
+        <div class="section-hd">SME Operating Profile</div>
+        <div class="inputs-grid">
+          <div class="field"><label for="inp-revenue">Annual Revenue (USD)</label><input type="number" id="inp-revenue" value="2400000" min="50000" max="500000000" step="10000"><span class="hint">Trailing 12 mo</span></div>
+          <div class="field"><label for="inp-grossmargin">Gross Margin (%)</label><input type="number" id="inp-grossmargin" value="38" min="5" max="90" step="1"><span class="hint">After COGS</span></div>
+          <div class="field"><label for="inp-monthlyopex">Monthly OPEX (USD)</label><input type="number" id="inp-monthlyopex" value="65000" min="1000" max="50000000" step="1000"><span class="hint">Excluding COGS</span></div>
+          <div class="field"><label for="inp-cash">Cash on Hand (USD)</label><input type="number" id="inp-cash" value="140000" min="0" max="100000000" step="1000"><span class="hint">Current liquid</span></div>
+          <div class="field"><label for="inp-dso">DSO (days)</label><input type="number" id="inp-dso" value="48" min="0" max="180"><span class="hint">Days sales outstanding</span></div>
+          <div class="field"><label for="inp-dpo">DPO (days)</label><input type="number" id="inp-dpo" value="35" min="0" max="180"><span class="hint">Days payable outstanding</span></div>
+          <div class="field"><label for="inp-dio">DIO (days)</label><input type="number" id="inp-dio" value="22" min="0" max="180"><span class="hint">Days inventory outstanding</span></div>
+          <div class="field"><label for="inp-years">Years in Operation</label><input type="number" id="inp-years" value="4" min="0" max="100"><span class="hint">Trading history</span></div>
+        </div>
+
+        <div class="section-hd">Open-Finance Signals (0–100)</div>
+        <div class="inputs-grid">
+          <div class="field"><label for="sig-rev-concentration">Revenue Concentration</label><input type="number" id="sig-rev-concentration" value="55" min="0" max="100"><span class="hint">100 = well diversified</span></div>
+          <div class="field"><label for="sig-pay-behaviour">Payment Behaviour</label><input type="number" id="sig-pay-behaviour" value="72" min="0" max="100"><span class="hint">On-time payment rate</span></div>
+          <div class="field"><label for="sig-bal-volatility">Balance Volatility</label><input type="number" id="sig-bal-volatility" value="60" min="0" max="100"><span class="hint">100 = low volatility</span></div>
+          <div class="field"><label for="sig-cash-runway">Cash Runway (mo)</label><input type="number" id="sig-cash-runway" value="3.5" min="0" max="48" step="0.5"><span class="hint">At current burn</span></div>
+          <div class="field"><label for="sig-dispute-rate">Dispute / Chargeback (%)</label><input type="number" id="sig-dispute-rate" value="0.8" min="0" max="15" step="0.1"><span class="hint">As % of revenue</span></div>
+          <div class="field"><label for="sig-deposit-density">Daily Deposit Density</label><input type="number" id="sig-deposit-density" value="68" min="0" max="100"><span class="hint">Spread of inflows</span></div>
+          <div class="field"><label for="sig-tax-currency">Tax Filing Currency</label><input type="number" id="sig-tax-currency" value="85" min="0" max="100"><span class="hint">Up-to-date filings</span></div>
+        </div>
+
+        <div class="run-row">
+          <button class="run-btn" id="runBtn">Score &amp; Recommend →</button>
+          <span class="run-note">Deterministic · client-side · ~30 ms runtime</span>
+        </div>
+
+        <section class="results-section" id="results">
+
+          <div class="panel">
+            <div class="panel-hd"><div><div class="panel-num">Panel 01 · Credit Score</div><h2>SME Credit Score &amp; Decile</h2></div></div>
+            <div class="score-card">
+              <svg class="score-circle" width="120" height="120" viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="50" fill="none" stroke-width="12"/>
+                <circle id="scoreRing" cx="60" cy="60" r="50" fill="none" stroke="#2a7fc0" stroke-width="12" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)" stroke-linecap="round"/>
+                <text id="scoreNum" x="60" y="66" text-anchor="middle" font-family="DM Serif Display" font-size="28" fill="#0a1828">0</text>
+                <text x="60" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6a7a8a">/ 100</text>
+              </svg>
+              <div class="score-narrative">
+                <h4 id="scoreVerdict">—</h4>
+                <div class="verdict" id="scoreVerdictSub">Run the model</div>
+                <ul id="scoreDrivers"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd"><div><div class="panel-num">Panel 02 · Open Finance Signals</div><h2>Signal Layering</h2></div></div>
+            <div class="signals-list" id="signalsList"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd"><div><div class="panel-num">Panel 03 · Working Capital &amp; Stress</div><h2>12-Month Cash-Flow Path</h2></div></div>
+            <div class="diag-grid" id="wcGrid"></div>
+            <div class="months-table-wrap">
+              <table class="months" id="monthsTable">
+                <thead><tr><th>Month</th><th>Revenue</th><th>OPEX</th><th>Net</th><th>Cash Position</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd"><div><div class="panel-num">Panel 04 · Loan Readiness</div><h2>Verdict &amp; Facility Recommendation</h2></div></div>
+            <div class="diag-grid" id="readinessGrid"></div>
+            <div class="facility-grid" id="facilityGrid"></div>
+          </div>
+
+          <div class="results-export-row">
+            <button class="export-btn primary" id="ap2ExportBtn" type="button">📋 Export Policy Mandate (JSON)</button>
+            <button class="export-btn" id="mdExportBtn" type="button">📝 Export Markdown Report</button>
+            <button class="export-btn" id="csvExportBtn" type="button">📊 Export Cash-Flow (CSV)</button>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="var-sidebar" aria-labelledby="var-title">
+        <div class="var-sidebar-label">Value at Risk</div>
+        <h3 id="var-title">Why SME credit needs signal layering</h3>
+        <p>Traditional SME underwriting uses two years of financials and a credit bureau pull. Open-finance signals — payment behaviour, daily deposit density, balance volatility — predict 12-month default ~2× better than bureau alone, especially for sub-$5M revenue businesses.</p>
+        <p>This platform composes five tools so the underwrite, the working-capital sizing, and the facility recommendation come out of one deterministic flow — same model the buyer's portfolio manager would run.</p>
+        <div class="var-stat">Bureau-only AUC: ~0.66</div>
+        <div class="var-stat">+ Open finance AUC: ~0.79</div>
+        <div class="cite">Refs: BIS WP 1018, CFPB §1033 Open Banking RFC, Plaid SMB credit benchmarks 2024.</div>
+      </aside>
+    </div>
+
+  </div>
+</main>
+
+<footer role="contentinfo" class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <div class="footer-copy">© 2026 Post Oak Labs · CC BY 4.0 · Houston, TX</div>
+      <div class="footer-badges">🔒 No data leaves your browser · 💻 Client-side only · CC BY 4.0</div>
+    </div>
+    <div class="footer-links">
+      <a href="/">Home</a><a href="/demos/">Showcase</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+const SIGNAL_LABELS = {
+  'rev-concentration': 'Revenue Concentration',
+  'pay-behaviour':     'Payment Behaviour',
+  'bal-volatility':    'Balance Volatility',
+  'cash-runway':       'Cash Runway',
+  'dispute-rate':      'Dispute / Chargeback',
+  'deposit-density':   'Daily Deposit Density',
+  'tax-currency':      'Tax Filing Currency'
+};
+
+const SCENARIOS = {
+  'ecom-saas':     { revenue:1800000, grossmargin:65, monthlyopex:48000, cash:220000, dso:14, dpo:28, dio:5,  years:3,
+    sig:{ 'rev-concentration':62, 'pay-behaviour':80, 'bal-volatility':55, 'cash-runway':5.0, 'dispute-rate':1.2, 'deposit-density':75, 'tax-currency':88 } },
+  'b2b-services':  { revenue:4200000, grossmargin:42, monthlyopex:125000, cash:380000, dso:62, dpo:42, dio:8, years:8,
+    sig:{ 'rev-concentration':70, 'pay-behaviour':88, 'bal-volatility':75, 'cash-runway':4.2, 'dispute-rate':0.4, 'deposit-density':82, 'tax-currency':95 } },
+  'manufacturing': { revenue:6500000, grossmargin:28, monthlyopex:280000, cash:520000, dso:55, dpo:45, dio:48, years:12,
+    sig:{ 'rev-concentration':48, 'pay-behaviour':82, 'bal-volatility':52, 'cash-runway':2.5, 'dispute-rate':0.6, 'deposit-density':58, 'tax-currency':92 } }
+};
+
+let lastResult = null;
+
+const fmt = (n) => '$' + Math.round(Number(n)).toLocaleString('en-US');
+const fmtK = (n) => n >= 1e6 ? '$' + (n/1e6).toFixed(2) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(1) + 'K' : '$' + Math.round(n);
+const pct = (n, d=1) => Number(n).toFixed(d) + '%';
+const uuid4 = () => { const b = new Uint8Array(16); crypto.getRandomValues(b); b[6]=(b[6]&0x0f)|0x40; b[8]=(b[8]&0x3f)|0x80; const h = Array.from(b,x=>x.toString(16).padStart(2,'0')).join(''); return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`; };
+const hashStub = (s) => { let h=0n; for (const c of s) h = (h * 1315423911n + BigInt(c.charCodeAt(0))) & 0xffffffffffffffffn; const head = h.toString(16).padStart(16,'0'); return (head+head+head+head).slice(0,64); };
+
+function readInputs() {
+  const sig = {};
+  for (const k of Object.keys(SIGNAL_LABELS)) sig[k] = Number(document.getElementById('sig-'+k).value) || 0;
+  return {
+    revenue:     Number(document.getElementById('inp-revenue').value) || 0,
+    grossmargin: Number(document.getElementById('inp-grossmargin').value) || 0,
+    monthlyopex: Number(document.getElementById('inp-monthlyopex').value) || 0,
+    cash:        Number(document.getElementById('inp-cash').value) || 0,
+    dso:         Number(document.getElementById('inp-dso').value) || 0,
+    dpo:         Number(document.getElementById('inp-dpo').value) || 0,
+    dio:         Number(document.getElementById('inp-dio').value) || 0,
+    years:       Number(document.getElementById('inp-years').value) || 0,
+    sig
+  };
+}
+
+function compute(inp) {
+  const monthlyRevenue = inp.revenue / 12;
+  const monthlyGross   = monthlyRevenue * (inp.grossmargin/100);
+  const monthlyEbitda  = monthlyGross - inp.monthlyopex;
+  const ccc = inp.dso + inp.dio - inp.dpo;
+
+  // Working capital gap: WC needed = (revenue × CCC) / 365 × 1.2 buffer
+  const wcGap = Math.max(0, (inp.revenue * ccc / 365) * 1.2 - inp.cash);
+
+  // Credit score components (each 0-100)
+  const opsScore   = Math.min(100, 30 + Math.min(70, inp.years * 8));
+  const liqScore   = Math.min(100, (inp.cash / Math.max(1, inp.monthlyopex)) * 22); // runway-driven
+  const cashflowScore = monthlyEbitda > 0 ? Math.min(100, 50 + (monthlyEbitda / inp.monthlyopex) * 30) : Math.max(0, 30 + (monthlyEbitda / inp.monthlyopex) * 10);
+  const cccScore   = Math.max(0, 100 - Math.max(0, ccc - 30) * 1.2);
+
+  // Signal aggregate (0-100)
+  const sig = inp.sig;
+  const signalAgg = (
+    sig['rev-concentration'] * 0.15 +
+    sig['pay-behaviour']     * 0.20 +
+    sig['bal-volatility']    * 0.15 +
+    Math.min(100, sig['cash-runway']*10) * 0.15 +
+    Math.max(0, 100 - sig['dispute-rate']*8) * 0.10 +
+    sig['deposit-density']   * 0.10 +
+    sig['tax-currency']      * 0.15
+  );
+
+  // Final composite (weights tuned to be diligence-defensible)
+  const composite = (
+    opsScore       * 0.10 +
+    liqScore       * 0.15 +
+    cashflowScore  * 0.25 +
+    cccScore       * 0.10 +
+    signalAgg      * 0.40
+  );
+
+  const decile = Math.max(1, Math.min(10, Math.ceil(composite/10)));
+  const verdict = composite >= 80 ? 'Prime' : composite >= 65 ? 'Near-Prime' : composite >= 50 ? 'Sub-Prime' : 'Decline';
+  const verdictCls = composite >= 65 ? 'ok' : composite >= 50 ? 'warn' : 'bad';
+
+  // Score drivers (top + bottom)
+  const components = [
+    { l:'Operating tenure', v:opsScore },
+    { l:'Liquidity',        v:liqScore },
+    { l:'Cash-flow margin', v:cashflowScore },
+    { l:'Cash conversion',  v:cccScore },
+    { l:'Open-finance signals', v:signalAgg }
+  ].sort((a,b) => b.v - a.v);
+  const drivers = [`Strongest: ${components[0].l} (${Math.round(components[0].v)})`,
+                   `Strongest signal: ${Object.keys(SIGNAL_LABELS).map(k => ({k,v:sig[k]})).filter(x => x.k !== 'dispute-rate').sort((a,b)=>b.v-a.v)[0].k}`,
+                   `Weakest: ${components[components.length-1].l} (${Math.round(components[components.length-1].v)})`];
+
+  // 12-month cash-flow projection
+  const months = [];
+  let cashPos = inp.cash;
+  const seasonality = [1.0, 0.95, 1.02, 1.05, 1.08, 1.10, 0.92, 0.88, 1.05, 1.12, 1.15, 1.08];
+  for (let m = 0; m < 12; m++) {
+    const rev = monthlyRevenue * seasonality[m];
+    const opex = inp.monthlyopex * (1 + (m * 0.005));
+    const net = (rev * (inp.grossmargin/100)) - opex;
+    cashPos += net;
+    months.push({ month:m+1, rev, opex, net, cash:cashPos });
+  }
+  const minCash = Math.min(...months.map(m => m.cash));
+  const monthsToBreach = months.findIndex(m => m.cash < 0);
+  const stressBreach = monthsToBreach !== -1;
+
+  // Loan readiness
+  const readiness = composite;
+  const recommendedFacility = (() => {
+    // Heuristic
+    if (composite < 50) return null;
+    if (sig['pay-behaviour'] >= 80 && inp.dso < 30) return 'rbf';
+    if (inp.dso >= 35) return 'invoice';
+    return 'term';
+  })();
+
+  // Facility sizing
+  const facilities = [
+    { id:'term', name:'Term Loan', tag:'Bank/credit-fund', desc:'Fixed-amortising 24-60 mo facility for capex or growth.',
+      maxSize: Math.max(0, monthlyEbitda * 18), rate:'10.5–14.0%', tenor:'24–60 mo', useCase:'Capex · acquisition' },
+    { id:'rbf',  name:'Revenue-Based Finance', tag:'RBF lender', desc:'Repaid as a % of monthly revenue; no fixed term.',
+      maxSize: Math.max(0, inp.revenue * 0.30), rate:'1.25–1.45× cap', tenor:'12–24 mo expected', useCase:'Marketing · inventory' },
+    { id:'invoice', name:'Invoice Finance', tag:'Factoring / discounting', desc:'Advance against AR; cleared as customers pay.',
+      maxSize: Math.max(0, (inp.revenue / 365) * inp.dso * 0.85), rate:'8.0–13.0% APR', tenor:'30–90 d revolving', useCase:'Working capital' }
+  ];
+
+  return {
+    monthlyRevenue, monthlyGross, monthlyEbitda, ccc, wcGap,
+    components, signalAgg, composite, decile, verdict, verdictCls,
+    drivers, months, minCash, stressBreach, monthsToBreach,
+    recommendedFacility, facilities
+  };
+}
+
+function renderScore(res) {
+  const c = 314 * (1 - res.composite/100);
+  document.getElementById('scoreRing').setAttribute('stroke-dashoffset', c.toFixed(0));
+  document.getElementById('scoreRing').setAttribute('stroke', res.composite >= 80 ? '#10b981' : res.composite >= 65 ? '#2a7fc0' : res.composite >= 50 ? '#f59e0b' : '#dc2626');
+  document.getElementById('scoreNum').textContent = Math.round(res.composite);
+  document.getElementById('scoreVerdict').textContent = `${res.verdict} · Decile ${res.decile}`;
+  const sub = document.getElementById('scoreVerdictSub');
+  sub.textContent = res.composite >= 80 ? 'High-quality SME credit profile' : res.composite >= 65 ? 'Acceptable with covenants' : res.composite >= 50 ? 'High-risk — needs structuring' : 'Decline at this profile';
+  sub.className = 'verdict ' + res.verdictCls;
+  const dr = document.getElementById('scoreDrivers');
+  dr.innerHTML = '';
+  for (const x of res.drivers) { const li = document.createElement('li'); li.textContent = '· ' + x; dr.appendChild(li); }
+}
+
+function renderSignals(res, inp) {
+  const c = document.getElementById('signalsList');
+  c.innerHTML = '';
+  for (const k of Object.keys(SIGNAL_LABELS)) {
+    let v = inp.sig[k];
+    let displayPct, cls;
+    if (k === 'cash-runway') { displayPct = Math.min(100, v * 10); cls = v >= 6 ? 'good' : v >= 3 ? 'warn' : 'bad'; }
+    else if (k === 'dispute-rate') { displayPct = Math.max(0, 100 - v*8); cls = v < 1 ? 'good' : v < 3 ? 'warn' : 'bad'; }
+    else { displayPct = v; cls = v >= 70 ? 'good' : v >= 50 ? 'warn' : 'bad'; }
+    const row = document.createElement('div');
+    row.className = 'signal-row';
+    row.innerHTML = `<div class="lbl">${SIGNAL_LABELS[k]}</div>
+      <div class="bar-wrap"><div class="bar ${cls}" style="width:${displayPct.toFixed(1)}%"></div></div>
+      <div class="val">${k === 'cash-runway' ? v.toFixed(1) + ' mo' : k === 'dispute-rate' ? v.toFixed(1) + '%' : v}</div>`;
+    c.appendChild(row);
+  }
+}
+
+function renderWc(res, inp) {
+  const c = document.getElementById('wcGrid');
+  c.innerHTML = '';
+  const cells = [
+    { l:'Cash Conversion Cycle', v: Math.round(res.ccc) + ' d', s:'DSO + DIO − DPO', cls: res.ccc <= 30 ? 'success' : res.ccc <= 60 ? 'warn' : 'error' },
+    { l:'Working Capital Gap',   v: fmtK(res.wcGap), s:'Required − available', cls: res.wcGap > 0 ? 'warn' : 'success' },
+    { l:'Monthly EBITDA',        v: fmtK(res.monthlyEbitda), s:'Gross − OPEX', cls: res.monthlyEbitda > 0 ? 'success' : 'error' },
+    { l:'Min Cash (12 mo)',      v: fmtK(res.minCash), s: res.minCash >= 0 ? 'No breach' : 'Breaches zero', cls: res.minCash >= 0 ? 'success' : 'error' },
+    { l:'Months to Breach',      v: res.stressBreach ? (res.monthsToBreach+1) + ' mo' : '—', s: res.stressBreach ? 'Earliest negative cash' : 'No breach modelled', cls: res.stressBreach ? 'warn' : 'success' }
+  ];
+  for (const x of cells) { const el = document.createElement('div'); el.className='diag-cell'; el.innerHTML = `<div class="diag-label">${x.l}</div><div class="diag-val ${x.cls}">${x.v}</div><div class="diag-sub">${x.s}</div>`; c.appendChild(el); }
+
+  const tbody = document.querySelector('#monthsTable tbody');
+  tbody.innerHTML = '';
+  for (const m of res.months) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>M${m.month}</td>
+      <td>${fmtK(m.rev)}</td>
+      <td>${fmtK(m.opex)}</td>
+      <td class="${m.net>=0?'pos':'neg'}">${m.net>=0?'+':''}${fmtK(m.net)}</td>
+      <td class="${m.cash>=0?'pos':'neg'}">${fmtK(m.cash)}</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function renderReadiness(res) {
+  const c = document.getElementById('readinessGrid');
+  c.innerHTML = '';
+  const cells = [
+    { l:'Loan Readiness Score', v: Math.round(res.composite) + '/100', s: res.verdict, cls: res.composite >= 65 ? 'success' : res.composite >= 50 ? 'warn' : 'error' },
+    { l:'Recommended Facility', v: res.recommendedFacility ? res.facilities.find(f => f.id === res.recommendedFacility).name : 'No facility', s: res.recommendedFacility ? 'Best fit for profile' : 'Below approval threshold', cls: res.recommendedFacility ? 'accent' : 'error' },
+    { l:'Indicative Max Size',  v: res.recommendedFacility ? fmtK(res.facilities.find(f => f.id === res.recommendedFacility).maxSize) : '—', s:'Capacity-sized', cls:'accent' },
+    { l:'Stress-Implied PD',    v: pct( Math.max(0.5, Math.min(45, 50 - res.composite*0.5))), s:'Modelled 12-mo PD', cls: res.composite >= 65 ? 'success' : 'warn' }
+  ];
+  for (const x of cells) { const el = document.createElement('div'); el.className='diag-cell'; el.innerHTML = `<div class="diag-label">${x.l}</div><div class="diag-val ${x.cls}">${x.v}</div><div class="diag-sub">${x.s}</div>`; c.appendChild(el); }
+
+  const fc = document.getElementById('facilityGrid');
+  fc.innerHTML = '';
+  for (const f of res.facilities) {
+    const card = document.createElement('div');
+    card.className = 'facility-card' + (res.recommendedFacility === f.id ? ' recommended' : '');
+    card.innerHTML = `<h4>${f.name}</h4><div class="ftag">${f.tag}</div>
+      <div class="fdesc">${f.desc}</div>
+      <div class="fstats">
+        <div><span>Indicative size</span><span class="v">${fmtK(f.maxSize)}</span></div>
+        <div><span>Rate / cap</span><span class="v">${f.rate}</span></div>
+        <div><span>Tenor</span><span class="v">${f.tenor}</span></div>
+        <div><span>Use case</span><span class="v">${f.useCase}</span></div>
+      </div>`;
+    fc.appendChild(card);
+  }
+}
+
+function run() {
+  const inp = readInputs();
+  const res = compute(inp);
+  renderScore(res);
+  renderSignals(res, inp);
+  renderWc(res, inp);
+  renderReadiness(res);
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+  lastResult = { inp, res };
+}
+
+function applyScenario(name) {
+  const s = SCENARIOS[name];
+  if (!s) return;
+  ['revenue','grossmargin','monthlyopex','cash','dso','dpo','dio','years'].forEach(k => document.getElementById('inp-'+k).value = s[k]);
+  for (const k of Object.keys(s.sig)) document.getElementById('sig-'+k).value = s.sig[k];
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b.dataset.scenario === name));
+  run();
+}
+
+function exportPolicyMandate() {
+  if (!lastResult) { alert('Score profile first.'); return; }
+  const { inp, res } = lastResult;
+  const mandate = {
+    mandate_schema:'@postoaklabs.com/sme-credit-platform-v1',
+    mandate_id: uuid4(),
+    schema_version:'1.0.0',
+    issued_at: new Date().toISOString(),
+    issued_by:'Post Oak Labs · SME Credit Intelligence Platform',
+    sme_profile: {
+      annual_revenue_usd: inp.revenue, gross_margin_pct: inp.grossmargin,
+      monthly_opex_usd: inp.monthlyopex, cash_on_hand_usd: inp.cash,
+      dso_days: inp.dso, dpo_days: inp.dpo, dio_days: inp.dio, years_in_operation: inp.years,
+      open_finance_signals: inp.sig
+    },
+    credit_score: {
+      composite: Math.round(res.composite),
+      decile: res.decile,
+      verdict: res.verdict,
+      drivers: res.drivers,
+      component_scores: Object.fromEntries(res.components.map(c => [c.l, Math.round(c.v)]))
+    },
+    working_capital: {
+      cash_conversion_cycle_days: Math.round(res.ccc),
+      working_capital_gap_usd: Math.round(res.wcGap),
+      monthly_ebitda_usd: Math.round(res.monthlyEbitda)
+    },
+    cash_flow_projection_12mo: res.months.map(m => ({
+      month: m.month, revenue_usd: Math.round(m.rev), opex_usd: Math.round(m.opex),
+      net_usd: Math.round(m.net), cash_position_usd: Math.round(m.cash)
+    })),
+    stress_test: {
+      min_cash_position_usd: Math.round(res.minCash),
+      breaches_zero: res.stressBreach,
+      months_to_breach: res.stressBreach ? (res.monthsToBreach + 1) : null
+    },
+    loan_recommendation: {
+      readiness_score: Math.round(res.composite),
+      verdict: res.verdict,
+      recommended_facility: res.recommendedFacility,
+      facility_options: res.facilities.map(f => ({
+        id: f.id, name: f.name,
+        indicative_max_size_usd: Math.round(f.maxSize),
+        rate: f.rate, tenor: f.tenor, use_case: f.useCase
+      }))
+    },
+    obligations: [
+      'Refresh open-finance signals at 30-day cadence; re-score if signal aggregate drops >15 points.',
+      'Apply monthly covenant check on min cash position vs. 12-mo projection.',
+      'Reclassify to Sub-Prime if dispute rate exceeds 2.5% in any rolling 90-day window.',
+      'Re-evaluate facility recommendation if DSO drifts +/− 15 days from underwrite.',
+      'Trigger watchlist review if composite score falls below 50 between underwrites.'
+    ],
+    audit_signature: { client_side_executed:true, deterministic_run:true, no_pii_transmitted:true, input_hash: hashStub(JSON.stringify(inp)) }
+  };
+  const blob = new Blob([JSON.stringify(mandate, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `sme-credit-mandate-${Date.now()}.policy.json`; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function exportMarkdown() {
+  if (!lastResult) { alert('Score profile first.'); return; }
+  const { inp, res } = lastResult;
+  const md = [
+    `# SME Credit Intelligence Platform — Report`,``,
+    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
+    `**Tool:** Post Oak Labs · SME Credit Intelligence Platform  `,
+    `**Schema:** \`@postoaklabs.com/sme-credit-platform-v1\``,``,
+    `## Credit Score: ${Math.round(res.composite)} / 100 — ${res.verdict} (Decile ${res.decile})`,``,
+    `Drivers:`,
+    ...res.drivers.map(d => `- ${d}`),``,
+    `## Working Capital`,``,
+    `- Cash conversion cycle: **${Math.round(res.ccc)} d**`,
+    `- Working capital gap: **${fmtK(res.wcGap)}**`,
+    `- Monthly EBITDA: **${fmtK(res.monthlyEbitda)}**`,``,
+    `## 12-Month Cash Flow`,``,
+    `- Min cash position: **${fmtK(res.minCash)}**`,
+    res.stressBreach ? `- ⚠️ Negative cash by month **${res.monthsToBreach+1}**` : `- ✓ No breach in modelled horizon`,``,
+    `## Loan Recommendation`,``,
+    `- Verdict: **${res.verdict}**`,
+    `- Recommended facility: **${res.recommendedFacility ? res.facilities.find(f => f.id === res.recommendedFacility).name : 'No facility'}**`,``,
+    `*© Post Oak Labs · postoaklabs.com · CC BY 4.0*`
+  ].join('\n');
+  const blob = new Blob([md], { type:'text/markdown' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `sme-credit-report-${Date.now()}.md`; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function exportCsv() {
+  if (!lastResult) { alert('Score profile first.'); return; }
+  const { res } = lastResult;
+  const rows = [['month','revenue_usd','opex_usd','net_usd','cash_position_usd']];
+  for (const m of res.months) rows.push([m.month, Math.round(m.rev), Math.round(m.opex), Math.round(m.net), Math.round(m.cash)]);
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `sme-cashflow-${Date.now()}.csv`; a.click(); URL.revokeObjectURL(a.href);
+}
+
+document.getElementById('runBtn').addEventListener('click', run);
+document.getElementById('ap2ExportBtn').addEventListener('click', exportPolicyMandate);
+document.getElementById('mdExportBtn').addEventListener('click', exportMarkdown);
+document.getElementById('csvExportBtn').addEventListener('click', exportCsv);
+document.querySelectorAll('.scenario-btn').forEach(b => b.addEventListener('click', () => applyScenario(b.dataset.scenario)));
+setTimeout(() => applyScenario('b2b-services'), 60);
+</script>
+</body>
+</html>

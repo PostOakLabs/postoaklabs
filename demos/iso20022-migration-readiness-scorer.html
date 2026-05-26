@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISO 20022 Migration Readiness Scorer · CBPR+ Structured Address · 14 Nov 2026 · Post Oak Labs</title>
+
+<meta name="description" content="Bank / processor readiness scorer for CBPR+ compliance — MT→MX migration (coexistence ended 22 Nov 2025) and the 14 November 2026 SWIFT structured-address mandate. Per-message-family coverage (pacs.008/009/002, camt.053/054, pain.001), gateway capability, structured-address readiness, exception handling. AP2 mandate export. Client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html">
+<meta property="og:title" content="ISO 20022 Migration Readiness Scorer — Post Oak Labs">
+<meta property="og:description" content="Score your CBPR+ readiness — MT→MX migration (complete Nov 2025) and the 14 Nov 2026 structured-address mandate. Per-message coverage, gateway tier, structured-address state. AP2 mandate. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/iso20022-migration-readiness-scorer.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "ISO 20022 Migration Readiness Scorer",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html",
+  "description": "Score a bank or processor's CBPR+ compliance readiness — the MT→MX migration (coexistence period ended 22 November 2025) and the 14 November 2026 SWIFT structured-address mandate. Per-message-family coverage (pacs.008, pacs.009, pacs.002, camt.053, camt.054, pain.001), gateway capability tier, structured-address (CBPR+) readiness, exception handling. Composite readiness score /100 with banded recommendations and AP2 v1.0 mandate export against @ainumbers.co/iso20022-readiness-v1.",
+  "featureList": [
+    "Per-message-family coverage matrix (pacs / camt / pain)",
+    "Gateway capability tier selector",
+    "Structured-address (CBPR+) readiness gate",
+    "Exception-handling maturity",
+    "Hybrid-period coexistence plan",
+    "Live composite score /100 with days-to-deadline countdown",
+    "AP2 v1.0 mandate export against @ainumbers.co/iso20022-readiness-v1",
+    "Markdown migration plan and MCP tool definition export"
+  ],
+  "keywords": "ISO 20022, SWIFT CBPR+, 14 November 2026, pacs.008, pacs.009, camt.053, pain.001, structured address, MT to MX, payment market practice, migration readiness, AP2 mandate, MCP",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-25",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+:root {
+  --pol-ink: #050c15; --pol-deep: #0a1628; --pol-edge: #1e3454;
+  --pol-body: #7090b0; --pol-accent: #2a7fc0; --pol-accent-lt: #4a9fdf; --pol-gold: #c09040;
+  --bg: #ffffff; --bg-soft: #fafbfc; --bg-mid: #f4f5f7; --bg-deep: #ebedef;
+  --border: #e6e8eb; --border-2: #d0d4d8;
+  --text: #0a1828; --text-muted: #6a7a8a;
+  --accent: var(--pol-accent); --gold: var(--pol-gold);
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626; --purple: #8b5cf6;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--pol-ink); color: var(--pol-body); font-family: var(--body-font); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: var(--accent); }
+
+nav.pol-nav { background: var(--pol-ink); border-bottom: 1px solid var(--pol-edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip { background: var(--pol-deep); border-top: 1px solid var(--pol-edge); border-bottom: 1px solid var(--pol-edge); padding: 0.85rem 0; color: var(--pol-body); }
+.showcase-header-strip .strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--pol-gold); font-weight: 500; }
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a { color: var(--pol-accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+main.demo-canvas { background: var(--bg); color: var(--text); font-family: var(--body-font); max-width: 1240px; margin: 2rem auto; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+.pii-banner { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.15); padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 1.5rem; border-radius: 4px; }
+
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500; }
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+.hero h1 { font-family: var(--heading); font-size: clamp(1.7rem, 3.4vw, 2.45rem); color: var(--text); line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+.hero-desc { font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; max-width: 860px; }
+.hero-desc b { color: var(--text); font-weight: 500; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.32rem 0.7rem; border-radius: 3px; border: 1px solid var(--border-2); color: var(--text-muted); }
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+.swift-callout { background: rgba(220,38,38,0.04); border: 1px solid rgba(220,38,38,0.3); border-left: 4px solid var(--error); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 3px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+.swift-callout strong { color: var(--text); font-weight: 500; }
+.swift-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--error); margin-bottom: 0.5rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.swift-clock { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; background: var(--error); color: #fff; padding: 0.2rem 0.55rem; border-radius: 3px; font-weight: 600; }
+.swift-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+.value-at-risk { background: var(--bg-soft); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; margin: 0 0 1.5rem; border-radius: 2px; font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+.var-eyebrow { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.45rem; font-weight: 500; }
+.var-figure { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.45rem; line-height: 1.3; }
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+.lab-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; margin-top: 1.25rem; }
+@media (max-width: 1040px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
+.panel-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.55rem; }
+.panel-label-r { color: var(--accent); }
+.sec-h { font-family: var(--heading); font-size: 1.18rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+/* Message family table */
+.msg-table { width: 100%; border-collapse: collapse; margin-top: 0.55rem; font-size: 0.82rem; }
+.msg-table th { text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--border); }
+.msg-table td { padding: 0.55rem 0.5rem; border-bottom: 1px dashed var(--border); vertical-align: middle; }
+.msg-table tr:last-of-type td { border-bottom: none; }
+.mt-code { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; color: var(--text); letter-spacing: 0.04em; }
+.mt-name { color: var(--text); font-weight: 500; }
+.mt-name .mt-sub { display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--text-muted); margin-top: 0.1rem; letter-spacing: 0.04em; font-weight: 400; }
+.mt-tier select { font-family: var(--mono); font-size: 0.72rem; padding: 0.32rem 0.4rem; border: 1px solid var(--border-2); border-radius: 3px; background: var(--bg-soft); color: var(--text); width: 100%; }
+.mt-priority { font-family: var(--mono); font-size: 0.66rem; padding: 0.15rem 0.45rem; border-radius: 3px; text-align: center; font-weight: 600; letter-spacing: 0.04em; }
+.mt-priority.crit { background: rgba(220,38,38,0.1); color: var(--error); }
+.mt-priority.high { background: rgba(245,158,11,0.1); color: var(--warn); }
+.mt-priority.med { background: rgba(42,127,192,0.1); color: var(--accent); }
+
+/* Toggle group */
+.toggle-group { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.toggle-opt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.05em; background: var(--bg-soft); border: 1px solid var(--border-2); color: var(--text-muted); padding: 0.38rem 0.7rem; border-radius: 3px; cursor: pointer; }
+.toggle-opt:hover { color: var(--accent); border-color: var(--accent); }
+.toggle-opt.sel { background: var(--text); color: #fff; border-color: var(--text); }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.5rem 0 0.75rem; }
+.kpi { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.7rem; }
+.kpi-label { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+.kpi-val { font-family: var(--heading); font-size: 1.5rem; color: var(--text); line-height: 1.1; }
+.kpi-val.good { color: var(--success); }
+.kpi-val.warn { color: var(--warn); }
+.kpi-val.bad { color: var(--error); }
+.kpi-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.5; }
+
+/* Days-to-deadline countdown */
+.deadline-card { background: rgba(220,38,38,0.05); border: 1px solid rgba(220,38,38,0.3); border-radius: 4px; padding: 0.8rem 0.9rem; margin: 0.85rem 0 0; font-family: var(--mono); font-size: 0.78rem; color: var(--text); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+.deadline-card .dl-label { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+.deadline-card .dl-days { font-family: var(--heading); font-size: 1.6rem; color: var(--error); line-height: 1; font-weight: normal; }
+.deadline-card .dl-target { font-size: 0.72rem; color: var(--text-muted); }
+
+/* Risk matrix per message */
+.msg-list { margin-top: 0.5rem; }
+.msg-line { display: grid; grid-template-columns: 50px 1fr 90px 75px; gap: 0.55rem; padding: 0.45rem 0; border-bottom: 1px dashed var(--border); font-size: 0.78rem; align-items: center; }
+.msg-line:last-of-type { border-bottom: none; }
+.msg-line .ml-code { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--text); letter-spacing: 0.04em; }
+.msg-line .ml-name { color: var(--text); font-weight: 500; }
+.msg-line .ml-tier { font-family: var(--mono); font-size: 0.62rem; padding: 0.18rem 0.45rem; border-radius: 3px; text-align: center; }
+.msg-line .ml-tier.full { background: rgba(16,185,129,0.1); color: var(--success); }
+.msg-line .ml-tier.partial { background: rgba(245,158,11,0.1); color: var(--warn); }
+.msg-line .ml-tier.translation { background: rgba(245,158,11,0.06); color: var(--warn); }
+.msg-line .ml-tier.none { background: rgba(220,38,38,0.1); color: var(--error); }
+.msg-line .ml-state { font-family: var(--mono); font-size: 0.62rem; padding: 0.18rem 0.5rem; border-radius: 3px; text-align: center; font-weight: 600; letter-spacing: 0.04em; align-self: center; }
+.msg-line .ml-state.ok { background: rgba(16,185,129,0.1); color: var(--success); }
+.msg-line .ml-state.warn { background: rgba(245,158,11,0.1); color: var(--warn); }
+.msg-line .ml-state.bad { background: rgba(220,38,38,0.1); color: var(--error); }
+
+.warn-banner { margin-top: 0.85rem; padding: 0.7rem 0.9rem; border-radius: 4px; font-size: 0.78rem; line-height: 1.55; }
+.warn-banner.good { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); color: var(--success); }
+.warn-banner.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); color: var(--warn); }
+.warn-banner.bad { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.3); color: var(--error); }
+.warn-banner strong { font-weight: 600; }
+
+/* Preview */
+.preview-sticky { position: sticky; top: 84px; }
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.7rem; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 3px; }
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; max-height: 380px; overflow: auto; font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text); }
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+.results-export-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.btn-export { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; }
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+.validation { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 3px; display: flex; align-items: center; gap: 0.5rem; }
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+footer.pol-footer { background: var(--pol-ink); border-top: 1px solid var(--pol-edge); padding: 2.25rem 0 2.5rem; margin-top: 2rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy { font-family: var(--body-font); font-size: 0.78rem; color: var(--pol-body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--text); border-left: 3px solid var(--success); padding: 0.7rem 1.1rem; font-family: var(--mono); font-size: 0.7rem; color: #fff; border-radius: 4px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.crosslinks { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-soft); border: 1px dashed var(--border-2); border-radius: 4px; font-size: 0.82rem; color: var(--text-muted); }
+.crosslinks h4 { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #22 of 33</span>
+      <span class="strip-title">ISO 20022 Migration Readiness · CBPR+ structured-address · 14 Nov 2026</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/processors/">Processors Hub →</a>
+      <a href="/demos/iso20022-message-truncation-auditor.html">Pair with #2 Truncation →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/101-iso20022-migration-scorer.html" target="_blank" rel="noopener">Source T101 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #22 · SWIFT CBPR+ · MT-to-MX cutover · Processors Hub</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">6 message families scored</span>
+      <span class="eyebrow-badge eb-success">Structured-address gate · CBPR+</span>
+      <span class="eyebrow-badge eb-gold">@ainumbers.co/iso20022-readiness-v1</span>
+    </div>
+    <h1>MT→MX is done. The structured-address deadline is what's left.</h1>
+    <p class="hero-desc">
+      SWIFT's CBPR+ coexistence period ended <b>22 November 2025</b> — MT103 / MT202 / MT900 /
+      MT910 are retired for cross-border FIN traffic and ISO 20022 is now mandatory. The remaining
+      open deadline is the <b>14 November 2026 structured-address mandate</b>: after that date,
+      CBPR+ payment instructions carrying unstructured postal addresses face rejection. This lab
+      scores readiness across six message families, the gateway capability tier, and CBPR+
+      structured-address state — then exports an AP2 mandate the programme team can audit against.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side</span>
+      <span class="hero-badge warn">Pair with <a href="/demos/iso20022-message-truncation-auditor.html" style="color:inherit;text-decoration:underline;">#2 Truncation Auditor</a> for the field-level depth</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <div class="swift-callout" role="note">
+    <div class="swift-eyebrow">
+      SWIFT CBPR+ · structured-address mandate
+      <span class="swift-clock">DEADLINE 14 NOV 2026</span>
+    </div>
+    <p>
+      <strong>SWIFT's Cross-Border Payments and Reporting Plus (CBPR+)</strong> framework migrated
+      payments-and-reporting messages to ISO 20022 in March 2023. The <strong>coexistence
+      period ended 22 November 2025</strong> — MT103, MT202 / MT202COV, and the MT9xx
+      cash-reporting series are retired for cross-border FIN traffic; ISO 20022 is now mandatory.
+      The remaining open milestone is the <strong>structured-address mandate</strong>: from
+      <strong>14 November 2026</strong>, CBPR+ payment instructions carrying unstructured postal
+      addresses will be rejected. Hybrid address (town + country minimum) is the compliance floor;
+      fully structured is preferred. The 2024 Eurosystem T2 migration completed the EU TARGET2 → T2
+      transition on ISO 20022.
+    </p>
+    <div class="swift-cite">Sources: SWIFT CBPR+ Market Practice Guidelines · ISO 20022 Programme · Eurosystem T2 launch (Mar 2023) · Fed FedWire ISO 20022 migration (Mar 2025)</div>
+  </div>
+
+  <aside class="value-at-risk" aria-label="Value at risk — ISO 20022 cutover non-readiness">
+    <h4 class="var-eyebrow">Value at risk · cutover non-readiness</h4>
+    <p class="var-figure">Per-month rejection cost ~$35K + correspondent-relationship termination + reconciliation backlog measured in days</p>
+    <p class="var-body">Since the <strong>22 November 2025 MT retirement</strong>, inbound MT-format cross-border traffic on the FIN service is rejected. From <strong>14 November 2026</strong>, messages with unstructured addresses face rejection on the CBPR+ path too. Each rejected payment carries a per-message investigation cost (~$35–$60 industry estimate), a customer-experience hit, and a multi-day reconciliation tail. Repeated rejections trigger <strong>correspondent-bank investigations</strong> and, in the worst case, <strong>correspondent-relationship termination</strong> — a far higher cost than the operational rejection itself. The mandate codifies the chosen message-family coverage so the programme team can prove status at every steering committee.</p>
+    <p class="var-cite"><small>SWIFT CBPR+ market practice · Fed FedWire ISO 20022 (Mar 2025) · Eurosystem T2 (Mar 2023) · industry estimates from Celent / Aite-Novarica 2024 surveys</small></p>
+  </aside>
+
+  <div class="lab-grid">
+    <div>
+      <!-- §1 Message coverage -->
+      <section class="panel">
+        <div class="panel-label">§1 · Message-Family Coverage <span class="panel-label-r" id="coverage-readout">— / 6 full-native</span></div>
+        <h2 class="sec-h">Per-message support tier</h2>
+        <p class="sec-sub">For each message family, declare your gateway's current support tier. <strong>Full native</strong> = MX-native send and receive; <strong>Translation</strong> = MX received, internal MT translation; <strong>Partial</strong> = some flows still MT; <strong>None</strong> = no MX support.</p>
+
+        <table class="msg-table">
+          <thead>
+            <tr><th>Code</th><th>Family</th><th>Priority</th><th>Current tier</th></tr>
+          </thead>
+          <tbody id="msg-rows"></tbody>
+        </table>
+      </section>
+
+      <!-- §2 Gateway capability -->
+      <section class="panel">
+        <div class="panel-label">§2 · Gateway Capability <span class="panel-label-r">SWIFT Alliance / Volante / in-house</span></div>
+        <h2 class="sec-h">Gateway maturity tier</h2>
+        <p class="sec-sub">The gateway is the chokepoint. A gateway that round-trips MX losslessly is the floor.</p>
+
+        <div class="toggle-group" id="tg-gateway">
+          <button class="toggle-opt" data-v="legacy">Legacy MT-only (must replace)</button>
+          <button class="toggle-opt sel" data-v="translator">MT/MX translator (CBPR+ aware)</button>
+          <button class="toggle-opt" data-v="native">MX-native (validates against schema)</button>
+          <button class="toggle-opt" data-v="native-mp">MX-native + market-practice validation</button>
+        </div>
+      </section>
+
+      <!-- §3 Structured address (CBPR+) -->
+      <section class="panel">
+        <div class="panel-label">§3 · CBPR+ Structured Address <span class="panel-label-r">PstlAdr block</span></div>
+        <h2 class="sec-h">Structured-address readiness</h2>
+        <p class="sec-sub">The <strong>structured postal address</strong> (PstlAdr) is the highest-impact CBPR+ change. From 22 November 2025 unstructured address fields are deprecated for new market practice; from 14 November 2026 they're rejected.</p>
+
+        <div class="toggle-group" id="tg-pstl">
+          <button class="toggle-opt" data-v="unstructured">Unstructured only (non-compliant)</button>
+          <button class="toggle-opt" data-v="hybrid">Hybrid (both fields populated)</button>
+          <button class="toggle-opt sel" data-v="structured">Structured-only (CBPR+ ready)</button>
+        </div>
+      </section>
+
+      <!-- §4 Exception handling + hybrid plan -->
+      <section class="panel">
+        <div class="panel-label">§4 · Exception &amp; Hybrid Plan <span class="panel-label-r">Coexistence countdown</span></div>
+        <h2 class="sec-h">Exception handling &amp; coexistence</h2>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.4rem;">Exception-handling maturity</div>
+          <div class="toggle-group" id="tg-exception">
+            <button class="toggle-opt" data-v="manual">Manual investigations (~3 day SLA)</button>
+            <button class="toggle-opt sel" data-v="semi">Semi-automated repair queue</button>
+            <button class="toggle-opt" data-v="auto">Auto-repair with deterministic rules</button>
+            <button class="toggle-opt" data-v="auto-ml">Auto-repair with ML scoring + human escalation</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.6rem;">Hybrid-period inbound MT acceptance</div>
+          <div class="toggle-group" id="tg-hybrid">
+            <button class="toggle-opt" data-v="open">Accept MT inbound, translate (cutover risk)</button>
+            <button class="toggle-opt sel" data-v="reject-flagged">Reject MT inbound from CBPR+ adopters</button>
+            <button class="toggle-opt" data-v="reject-all">Reject all MT inbound now (post-coexistence posture)</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Output -->
+    <div>
+      <section class="panel preview-sticky">
+        <div class="panel-label">§5 · Readiness Scorecard <span class="panel-label-r" id="score-readout">— / 100</span></div>
+        <h2 class="sec-h">Composite + per-family</h2>
+
+        <div class="kpi-grid">
+          <div class="kpi">
+            <div class="kpi-label">Composite</div>
+            <div class="kpi-val" id="composite-val">—</div>
+            <div class="kpi-sub" id="composite-tier">—</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Cutover risk</div>
+            <div class="kpi-val" id="risk-val">—</div>
+            <div class="kpi-sub" id="risk-sub">@ 14 Nov 2026</div>
+          </div>
+        </div>
+
+        <div class="deadline-card">
+          <div>
+            <div class="dl-label">T-minus to cutover</div>
+            <div class="dl-days" id="dl-days">—</div>
+          </div>
+          <div class="dl-target">Target: 14 Nov 2026<br><small id="dl-extra">—</small></div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:.85rem 0 .35rem;">Per-message-family readiness</div>
+        <div class="msg-list" id="msg-list"></div>
+
+        <div class="warn-banner" id="readiness-flag">—</div>
+
+        <div style="margin-top:1rem;">
+          <div class="preview-tabs" id="preview-tabs">
+            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab" data-tab="md">Migration plan</button>
+            <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+          </div>
+
+          <div class="preview-body"><pre id="preview-out"></pre></div>
+
+          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/iso20022-readiness-v1</div>
+
+          <div class="results-export-row">
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+            <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+            <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/iso20022-message-truncation-auditor.html">#2 — ISO 20022 / CBPR+ Truncation Auditor</a>
+      for field-level depth on the structured-address risk. The mandate this demo emits feeds
+      <a href="/demos/agentic-mandate-sandbox.html">#27 — Agentic Mandate Sandbox</a> via custom-schema paste.
+      Position: <a href="/demos/composer.html">Tool Chain Composer</a>, T101 / T81 / T98 in the Payment
+      Standards cluster.
+    </p>
+  </div>
+</div>
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/101-iso20022-migration-scorer.html" target="_blank" rel="noopener">Deep Dive → AINumbers T101</a>
+      <a href="https://ainumbers.co/tools/81-iso20022-migration-navigator.html" target="_blank" rel="noopener">Adjacent → T81 Migration Navigator</a>
+      <a href="https://ainumbers.co/tools/98-iso20022-validator.html" target="_blank" rel="noopener">Adjacent → T98 Validator</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/processors/">Processors Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── MESSAGE FAMILIES ─────────────────────────────────────────────────
+  const messages = [
+    { id:'pacs008', code:'pacs.008', name:'Customer credit transfer (FIToFICstmrCdtTrf)', sub:'Equivalent to MT103. Single largest cutover surface.', priority:'crit', weight: 28, tier:'translation' },
+    { id:'pacs009', code:'pacs.009', name:'Financial-institution credit transfer (FIToFICdtTrf)', sub:'Equivalent to MT202 / MT202COV. Cover-payment depth required.', priority:'crit', weight: 22, tier:'translation' },
+    { id:'pacs002', code:'pacs.002', name:'Payment status report (FIToFIPmtStsRpt)', sub:'Acknowledgement / status. No MT exact equivalent.', priority:'high', weight: 14, tier:'partial' },
+    { id:'camt053', code:'camt.053', name:'Bank-to-customer statement (BkToCstmrStmt)', sub:'Replaces MT940 daily statement.', priority:'high', weight: 14, tier:'partial' },
+    { id:'camt054', code:'camt.054', name:'Bank-to-customer debit/credit notification (BkToCstmrDbtCdtNtfctn)', sub:'Replaces MT942 intra-day notification.', priority:'med', weight: 10, tier:'partial' },
+    { id:'pain001', code:'pain.001', name:'Customer credit transfer initiation (CstmrCdtTrfInitn)', sub:'Customer-to-bank instruction. Pacing depends on corporate adoption.', priority:'med', weight: 12, tier:'partial' }
+  ];
+
+  const tierWeights = { 'full': 100, 'native-mp': 100, 'native': 92, 'translation': 65, 'partial': 40, 'none': 5 };
+  const tierLabels = { 'none': 'none', 'partial': 'partial', 'translation': 'translation', 'full': 'full native' };
+
+  const state = {
+    gateway: 'translator',
+    pstladr: 'structured',
+    exception: 'semi',
+    hybrid: 'reject-flagged',
+    activeTab: 'ap2'
+  };
+
+  // ── RENDER MESSAGE TABLE ─────────────────────────────────────────────
+  function renderMessages(){
+    const tb = document.getElementById('msg-rows');
+    tb.innerHTML = '';
+    const tierOpts = [
+      { v:'full', t:'Full native (MX send + receive)' },
+      { v:'translation', t:'Translation (MX recv, MT internal)' },
+      { v:'partial', t:'Partial (some flows still MT)' },
+      { v:'none', t:'None (no MX support)' }
+    ];
+    messages.forEach(m => {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td class="mt-code">' + m.code + '</td>' +
+        '<td class="mt-name">' + m.name + '<span class="mt-sub">' + m.sub + '</span></td>' +
+        '<td><span class="mt-priority ' + m.priority + '">' + m.priority + '</span></td>' +
+        '<td class="mt-tier"><select data-mid="' + m.id + '">' +
+          tierOpts.map(o => '<option value="' + o.v + '"' + (m.tier === o.v ? ' selected' : '') + '>' + o.t + '</option>').join('') +
+        '</select></td>';
+      tb.appendChild(tr);
+    });
+    tb.querySelectorAll('select[data-mid]').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const m = messages.find(x => x.id === sel.dataset.mid);
+        m.tier = sel.value;
+        render();
+      });
+    });
+  }
+
+  // ── COMPUTE ──────────────────────────────────────────────────────────
+  function compute(){
+    // per-message score (0..100) from tier weight, then weighted average across families
+    const perMessage = messages.map(m => ({
+      ...m,
+      score: tierWeights[m.tier] || 0
+    }));
+    const wsum = messages.reduce((a,m) => a + m.weight, 0);
+    const family_score = perMessage.reduce((a,m) => a + m.score * m.weight, 0) / wsum;
+
+    const gateway_score = { 'legacy': 10, 'translator': 65, 'native': 88, 'native-mp': 100 }[state.gateway];
+    const pstladr_score = { 'unstructured': 5, 'hybrid': 60, 'structured': 100 }[state.pstladr];
+    const exception_score = { 'manual': 45, 'semi': 75, 'auto': 90, 'auto-ml': 100 }[state.exception];
+    const hybrid_score = { 'open': 50, 'reject-flagged': 85, 'reject-all': 100 }[state.hybrid];
+
+    // composite weights
+    const composite = Math.round(
+      0.40 * family_score +
+      0.20 * gateway_score +
+      0.20 * pstladr_score +
+      0.10 * exception_score +
+      0.10 * hybrid_score
+    );
+
+    // cutover risk: invert composite + penalty for low pacs.008 / structured-address
+    const pacs008 = perMessage.find(m => m.id === 'pacs008').score;
+    const pacs009 = perMessage.find(m => m.id === 'pacs009').score;
+    let risk_factor = (100 - composite);
+    if (pacs008 < 80) risk_factor += 10;
+    if (pstladr_score < 90) risk_factor += 8;
+    if (pacs009 < 80) risk_factor += 5;
+    risk_factor = Math.min(95, risk_factor);
+    const risk_label = risk_factor >= 60 ? 'High' : risk_factor >= 30 ? 'Moderate' : 'Low';
+
+    // days to cutover (2026-11-14)
+    const today = new Date();
+    const cutover = new Date(2026, 10, 14); // month index 10 = November
+    const ms_per_day = 86400000;
+    const days_to_cutover = Math.ceil((cutover - today) / ms_per_day);
+
+    return { perMessage, composite, gateway_score, pstladr_score, exception_score, hybrid_score, family_score, risk_factor, risk_label, days_to_cutover };
+  }
+
+  // ── RENDER ───────────────────────────────────────────────────────────
+  function render(){
+    const m = compute();
+    document.getElementById('coverage-readout').textContent =
+      m.perMessage.filter(x => x.tier === 'full' || x.tier === 'native-mp').length + ' / 6 full-native';
+    document.getElementById('score-readout').textContent = m.composite + ' / 100';
+
+    const cv = document.getElementById('composite-val');
+    cv.textContent = m.composite + ' / 100';
+    cv.className = 'kpi-val ' + (m.composite >= 80 ? 'good' : m.composite >= 55 ? 'warn' : 'bad');
+    document.getElementById('composite-tier').textContent =
+      m.composite >= 85 ? 'Cutover-ready · steering committee greenlight'
+      : m.composite >= 70 ? 'Near-ready · close remaining gaps in Q3'
+      : m.composite >= 50 ? 'Material gaps · re-baseline programme'
+      : 'Critical · escalate to executive sponsor';
+
+    const rv = document.getElementById('risk-val');
+    rv.textContent = m.risk_label;
+    rv.className = 'kpi-val ' + (m.risk_factor < 30 ? 'good' : m.risk_factor < 60 ? 'warn' : 'bad');
+    document.getElementById('risk-sub').textContent =
+      m.risk_label === 'High' ? 'Inbound MT will be rejected; correspondent impact likely'
+      : m.risk_label === 'Moderate' ? 'Manageable with focused programme effort'
+      : 'Within accepted residual risk';
+
+    // Days to cutover
+    const dl = document.getElementById('dl-days');
+    const dlExtra = document.getElementById('dl-extra');
+    if (m.days_to_cutover > 0) {
+      dl.textContent = m.days_to_cutover + ' days';
+      dlExtra.textContent = m.days_to_cutover > 180 ? '~' + Math.round(m.days_to_cutover / 30) + ' months left'
+                          : m.days_to_cutover > 30 ? '~' + Math.round(m.days_to_cutover / 7) + ' weeks left'
+                          : 'final phase';
+    } else {
+      dl.textContent = 'PASSED';
+      dlExtra.textContent = 'cutover has occurred — assess production residuals';
+    }
+
+    // Per-message list
+    const ml = document.getElementById('msg-list');
+    ml.innerHTML = '';
+    m.perMessage.forEach(pm => {
+      const state =
+        pm.score >= 85 ? { cls:'ok', txt:'ready' }
+      : pm.score >= 60 ? { cls:'warn', txt:'gap' }
+      : { cls:'bad', txt:'block' };
+      const row = document.createElement('div');
+      row.className = 'msg-line';
+      row.innerHTML =
+        '<div class="ml-code">' + pm.code + '</div>' +
+        '<div class="ml-name">' + (pm.code === 'pacs.008' ? 'Cust. credit transfer' : pm.code === 'pacs.009' ? 'FI credit transfer' : pm.code === 'pacs.002' ? 'Payment status report' : pm.code === 'camt.053' ? 'Statement' : pm.code === 'camt.054' ? 'Notification' : 'Credit-transfer initiation') + '</div>' +
+        '<div class="ml-tier ' + pm.tier + '">' + (tierLabels[pm.tier] || pm.tier) + '</div>' +
+        '<div class="ml-state ' + state.cls + '">' + state.txt + '</div>';
+      ml.appendChild(row);
+    });
+
+    // Readiness banner
+    const flag = document.getElementById('readiness-flag');
+    if (m.composite >= 80 && m.risk_factor < 30) {
+      flag.className = 'warn-banner good';
+      flag.innerHTML = '<strong>Cutover posture — viable.</strong> All critical families at ready state, structured address compliant, gateway native.';
+    } else if (m.composite >= 60) {
+      flag.className = 'warn-banner warn';
+      flag.innerHTML = '<strong>Cutover posture — material gaps.</strong> Prioritise pacs.008/pacs.009 lift to full native and confirm structured-address compliance before Q3 2026.';
+    } else {
+      flag.className = 'warn-banner bad';
+      flag.innerHTML = '<strong>Cutover posture — at risk.</strong> Inbound MT volume will be rejected post-14-Nov-2026. Escalate to executive sponsor; re-baseline the programme.';
+    }
+
+    renderPreview(m);
+  }
+
+  // ── AP2 mandate ──────────────────────────────────────────────────────
+  function buildMandate(model){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-22-' + Math.random().toString(36).slice(2,10);
+    return {
+      '$schema': '@ainumbers.co/iso20022-readiness-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'ISO 20022 migration assessor (demonstration)' },
+      subject: { regime: 'SWIFT CBPR+ MT-to-MX cutover', cutover_date: '2026-11-14', scope: 'cross_border_payments_and_reporting' },
+      message_family_coverage: model.perMessage.map(pm => ({
+        family: pm.code,
+        priority: pm.priority,
+        current_tier: pm.tier,
+        tier_score: pm.score
+      })),
+      gateway: { capability_tier: state.gateway, score: model.gateway_score },
+      structured_address: { posture: state.pstladr, score: model.pstladr_score },
+      exception_handling: { maturity: state.exception, score: model.exception_score },
+      hybrid_period_plan: { inbound_mt_posture: state.hybrid, score: model.hybrid_score },
+      composite_readiness_score: model.composite,
+      cutover_risk: { factor: model.risk_factor, label: model.risk_label },
+      days_to_cutover: model.days_to_cutover,
+      enforcement: {
+        binding: true,
+        re_evaluate_when: 'tier_change OR new_correspondent_added OR gateway_replacement',
+        runtime_cannot_relax: ['structured_address.posture','hybrid_period_plan.inbound_mt_posture'],
+        audit_trail_required: true
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html',
+        backing_tool: 'https://ainumbers.co/tools/101-iso20022-migration-scorer.html',
+        adjacent_tools: [
+          'https://ainumbers.co/tools/81-iso20022-migration-navigator.html',
+          'https://ainumbers.co/tools/98-iso20022-validator.html'
+        ],
+        license: 'CC BY 4.0'
+      }
+    };
+  }
+
+  function validate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/iso20022-readiness-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!Array.isArray(m.message_family_coverage) || m.message_family_coverage.length === 0) errs.push('message_family_coverage required');
+    if (!m.gateway || !m.gateway.capability_tier) errs.push('gateway.capability_tier required');
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    return errs;
+  }
+
+  function buildMd(m){
+    const out = [];
+    out.push('# ISO 20022 Migration — Readiness Plan');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
+    out.push('**Cutover target:** ' + m.subject.cutover_date + ' (T-' + m.days_to_cutover + ' days)');
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('## Composite readiness');
+    out.push('- Score: **' + m.composite_readiness_score + ' / 100**');
+    out.push('- Cutover risk: **' + m.cutover_risk.label + '** (factor ' + m.cutover_risk.factor + ')');
+    out.push('');
+    out.push('## Message-family coverage');
+    out.push('');
+    out.push('| Family | Priority | Tier | Score |');
+    out.push('|---|---|---|---:|');
+    m.message_family_coverage.forEach(f => out.push('| ' + f.family + ' | ' + f.priority + ' | ' + f.current_tier + ' | ' + f.tier_score + ' |'));
+    out.push('');
+    out.push('## Gateway, address, exception, hybrid');
+    out.push('- Gateway tier: **' + m.gateway.capability_tier + '** (' + m.gateway.score + ')');
+    out.push('- Structured address posture: **' + m.structured_address.posture + '** (' + m.structured_address.score + ')');
+    out.push('- Exception maturity: **' + m.exception_handling.maturity + '** (' + m.exception_handling.score + ')');
+    out.push('- Hybrid period plan: **' + m.hybrid_period_plan.inbound_mt_posture + '** (' + m.hybrid_period_plan.score + ')');
+    out.push('');
+    out.push('## Enforcement');
+    out.push('- Binding: ' + m.enforcement.binding);
+    out.push('- Re-evaluate when: ' + m.enforcement.re_evaluate_when);
+    out.push('- Runtime cannot relax: ' + m.enforcement.runtime_cannot_relax.join(', '));
+    out.push('');
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #22 (ISO 20022 Migration Readiness Scorer). Source engine: AINumbers T101 (T81 / T98 adjacent). CC BY 4.0. Zero PII._');
+    return out.join('\n');
+  }
+
+  function buildMcp(m){
+    return {
+      name: 'iso20022_readiness_evaluate',
+      description: 'Re-score the bound ISO 20022 readiness mandate after a tier change, gateway replacement, or new correspondent. Returns composite score, cutover risk, per-family deltas.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          message_family_changes: { type: 'array', items: { type: 'object', properties: { family: { type: 'string' }, new_tier: { type: 'string', enum: ['full','native-mp','native','translation','partial','none'] } } } },
+          gateway_change: { type: 'string', enum: ['legacy','translator','native','native-mp'] },
+          structured_address_change: { type: 'string', enum: ['unstructured','hybrid','structured'] }
+        },
+        required: []
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        cutover_date: m.subject.cutover_date
+      },
+      provenance: m.provenance
+    };
+  }
+
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function renderPreview(model){
+    const m = buildMandate(model);
+    const errs = validate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+    let body;
+    if (state.activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') body = buildMd(m);
+    else body = JSON.stringify(buildMcp(m), null, 2);
+    const isJson = state.activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+  }
+
+  // ── WIRE INPUTS ──────────────────────────────────────────────────────
+  function bindToggle(group, stateKey){
+    document.querySelectorAll('#' + group + ' .toggle-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#' + group + ' .toggle-opt').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        state[stateKey] = btn.dataset.v;
+        render();
+      });
+    });
+  }
+  bindToggle('tg-gateway', 'gateway');
+  bindToggle('tg-pstl', 'pstladr');
+  bindToggle('tg-exception', 'exception');
+  bindToggle('tg-hybrid', 'hybrid');
+
+  document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('#preview-tabs .preview-tab').forEach(b => b.classList.remove('sel'));
+      t.classList.add('sel');
+      state.activeTab = t.dataset.tab;
+      render();
+    });
+  });
+
+  function toast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 1800); }
+  function download(filename, content, mime){ const blob = new Blob([content], { type: mime }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate(compute());
+    if (validate(m).length === 0) { download('iso20022-readiness-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    else toast('Schema validation failed');
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('iso20022-readiness-plan.md', buildMd(buildMandate(compute())), 'text/markdown');
+    toast('Migration plan exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('iso20022_readiness_evaluate.mcp.json', JSON.stringify(buildMcp(buildMandate(compute())), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate(compute());
+    let txt;
+    if (state.activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') txt = buildMd(m);
+    else txt = JSON.stringify(buildMcp(m), null, 2);
+    try { await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); } catch(e) { toast('Copy failed'); }
+  });
+
+  // init
+  renderMessages();
+  render();
+})();
+</script>
+
+</body>
+</html>

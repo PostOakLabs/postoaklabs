@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DORA ICT Risk Gap Analyser · Article 28 Third-Party Concentration Depth · Post Oak Labs</title>
+
+<meta name="description" content="Five-pillar DORA maturity assessment with deep Article 28 third-party concentration analysis. Sub-outsourcing tree, CIF tier flags, EBA RTS alignment, composite score /100, prioritised remediation table, AP2 v1.0 mandate export. Client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html">
+<meta property="og:title" content="DORA ICT Risk Gap Analyser — Post Oak Labs">
+<meta property="og:description" content="Five-pillar DORA maturity + Article 28 third-party concentration deep-dive. AP2 mandate export. Browser-based. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/dora-ict-risk-gap-analyser.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "DORA ICT Risk Gap Analyser",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html",
+  "description": "Five-pillar DORA (EU 2022/2554) ICT risk maturity assessment with deep Article 28 third-party concentration analysis. Composite score /100, sub-outsourcing tree, CIF tier flags, prioritised remediation table, AP2 v1.0 mandate export against @ainumbers.co/dora-gap-v1.",
+  "featureList": [
+    "Five-pillar maturity sliders (Risk Mgmt, Incident, Testing, Third-Party, Info-Sharing)",
+    "Composite score /100 with per-pillar heatmap",
+    "Article 28 third-party concentration analyser: HHI, sub-outsourcing depth, CIF tier flags",
+    "EBA RTS on ICT third-party risk (2024/1773) alignment",
+    "Prioritised remediation table sorted by penalty exposure",
+    "AP2 v1.0 mandate export against @ainumbers.co/dora-gap-v1 schema",
+    "Markdown gap report and MCP tool definition export"
+  ],
+  "keywords": "DORA, EU 2022/2554, Article 28, ICT third-party risk, sub-outsourcing, EBA RTS, CTPP, concentration risk, operational resilience, AP2 mandate, MCP",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+:root {
+  --pol-ink: #050c15; --pol-deep: #0a1628; --pol-edge: #1e3454;
+  --pol-body: #7090b0; --pol-accent: #2a7fc0; --pol-accent-lt: #4a9fdf; --pol-gold: #c09040;
+  --bg: #ffffff; --bg-soft: #fafbfc; --bg-mid: #f4f5f7; --bg-deep: #ebedef;
+  --border: #e6e8eb; --border-2: #d0d4d8;
+  --text: #0a1828; --text-muted: #6a7a8a;
+  --accent: var(--pol-accent); --gold: var(--pol-gold);
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626; --purple: #8b5cf6;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--pol-ink); color: var(--pol-body); font-family: var(--body-font); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: var(--accent); }
+
+nav.pol-nav { background: var(--pol-ink); border-bottom: 1px solid var(--pol-edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip { background: var(--pol-deep); border-top: 1px solid var(--pol-edge); border-bottom: 1px solid var(--pol-edge); padding: 0.85rem 0; color: var(--pol-body); }
+.showcase-header-strip .strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--pol-gold); font-weight: 500; }
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a { color: var(--pol-accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+main.demo-canvas { background: var(--bg); color: var(--text); font-family: var(--body-font); max-width: 1240px; margin: 2rem auto; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+.pii-banner { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.15); padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 1.5rem; border-radius: 4px; }
+
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500; }
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+.hero h1 { font-family: var(--heading); font-size: clamp(1.7rem, 3.4vw, 2.45rem); color: var(--text); line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+.hero-desc { font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; max-width: 860px; }
+.hero-desc b { color: var(--text); font-weight: 500; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.32rem 0.7rem; border-radius: 3px; border: 1px solid var(--border-2); color: var(--text-muted); }
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+.dora-callout { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.3); border-left: 4px solid var(--success); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 3px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+.dora-callout strong { color: var(--text); font-weight: 500; }
+.dora-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--success); margin-bottom: 0.5rem; font-weight: 500; display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+.dora-live-badge { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; background: var(--success); color: #fff; padding: 0.15rem 0.5rem; border-radius: 3px; font-weight: 600; }
+.dora-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+.value-at-risk { background: var(--bg-soft); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; margin: 0 0 1.5rem; border-radius: 2px; font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+.var-eyebrow { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.45rem; font-weight: 500; }
+.var-figure { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.45rem; line-height: 1.3; }
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+.lab-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; margin-top: 1.25rem; }
+@media (max-width: 1040px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
+.panel-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.55rem; }
+.panel-label-r { color: var(--accent); }
+.sec-h { font-family: var(--heading); font-size: 1.18rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+/* Pillar rows */
+.pillar-row { padding: 0.85rem 0; border-bottom: 1px dashed var(--border); }
+.pillar-row:last-of-type { border-bottom: none; }
+.pillar-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.25rem; }
+.pillar-name { font-size: 0.92rem; color: var(--text); font-weight: 500; }
+.pillar-art { font-family: var(--mono); font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.04em; }
+.pillar-score { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; min-width: 38px; text-align: right; }
+.pillar-score.s0 { color: var(--error); }
+.pillar-score.s1 { color: var(--error); }
+.pillar-score.s2 { color: var(--warn); }
+.pillar-score.s3 { color: var(--success); }
+.pillar-score.s4 { color: var(--success); }
+.pillar-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.35rem; line-height: 1.55; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+/* Third-party panel */
+.tp-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.82rem; }
+.tp-table th { text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--border); }
+.tp-table td { padding: 0.5rem 0.55rem; border-bottom: 1px dashed var(--border); vertical-align: top; }
+.tp-table tr:last-of-type td { border-bottom: none; }
+.tp-name { font-weight: 500; color: var(--text); }
+.tp-fn { font-family: var(--mono); font-size: 0.66rem; color: var(--text-muted); display: block; margin-top: 0.1rem; }
+.tp-share { width: 90px; }
+.tp-share input { width: 60px; padding: 0.25rem 0.4rem; font-family: var(--mono); font-size: 0.78rem; border: 1px solid var(--border-2); border-radius: 3px; text-align: right; }
+.tp-depth select, .tp-cif select { font-family: var(--mono); font-size: 0.72rem; padding: 0.3rem 0.45rem; border: 1px solid var(--border-2); border-radius: 3px; background: var(--bg-soft); color: var(--text); }
+.tp-cif select.cif-yes { border-color: var(--error); color: var(--error); background: rgba(220,38,38,0.04); }
+
+.hhi-bar { margin-top: 0.85rem; padding: 0.7rem 0.85rem; background: var(--bg-soft); border-radius: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.78rem; }
+.hhi-bar .hhi-val { font-size: 1.1rem; font-weight: 700; }
+.hhi-bar .hhi-val.low { color: var(--success); }
+.hhi-bar .hhi-val.med { color: var(--warn); }
+.hhi-bar .hhi-val.high { color: var(--error); }
+.hhi-explain { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem; }
+
+/* Composite score panel */
+.score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem; }
+@media (max-width: 600px) { .score-grid { grid-template-columns: 1fr; } }
+.score-card { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem; }
+.score-card .kpi-label { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+.score-card .kpi-val { font-family: var(--heading); font-size: 1.8rem; line-height: 1.05; }
+.score-card .kpi-val.s-low { color: var(--error); }
+.score-card .kpi-val.s-mid { color: var(--warn); }
+.score-card .kpi-val.s-high { color: var(--success); }
+.score-card .kpi-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+/* Heatmap */
+.heatmap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; margin-top: 0.4rem; }
+.hm-cell { aspect-ratio: 1; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--mono); font-size: 0.72rem; font-weight: 700; cursor: default; transition: transform 0.15s; }
+.hm-cell:hover { transform: scale(1.05); }
+.hm-cell.l0 { background: #b91c1c; }
+.hm-cell.l1 { background: #dc2626; }
+.hm-cell.l2 { background: #f59e0b; }
+.hm-cell.l3 { background: #10b981; }
+.hm-cell.l4 { background: #059669; }
+.hm-labels { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; margin-top: 0.4rem; font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); text-align: center; }
+
+/* Remediation table */
+.rem-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.8rem; }
+.rem-table th { text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--border); font-weight: 500; }
+.rem-table td { padding: 0.55rem 0.5rem; border-bottom: 1px dashed var(--border); vertical-align: top; }
+.rem-prio { font-family: var(--mono); font-size: 0.66rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 3px; }
+.rem-prio.high { background: rgba(220,38,38,0.1); color: var(--error); }
+.rem-prio.med { background: rgba(245,158,11,0.1); color: var(--warn); }
+.rem-prio.low { background: rgba(16,185,129,0.1); color: var(--success); }
+
+/* Preview */
+.preview-sticky { position: sticky; top: 84px; }
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.7rem; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 3px; }
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; max-height: 380px; overflow: auto; font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text); }
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+.results-export-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.btn-export { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; }
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+.validation { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 3px; display: flex; align-items: center; gap: 0.5rem; }
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+footer.pol-footer { background: var(--pol-ink); border-top: 1px solid var(--pol-edge); padding: 2.25rem 0 2.5rem; margin-top: 2rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy { font-family: var(--body-font); font-size: 0.78rem; color: var(--pol-body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--text); border-left: 3px solid var(--success); padding: 0.7rem 1.1rem; font-family: var(--mono); font-size: 0.7rem; color: #fff; border-radius: 4px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.crosslinks { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-soft); border: 1px dashed var(--border-2); border-radius: 4px; font-size: 0.82rem; color: var(--text-muted); }
+.crosslinks h4 { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #26 of 33</span>
+      <span class="strip-title">DORA ICT Risk Gap Analyser · Article 28 Depth</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/regtech/">RegTech Hub →</a>
+      <a href="/demos/dora-compliance-deduplication-tool.html">Pair with #3 Dedup →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/300-dora-ict-risk-gap-analyser.html" target="_blank" rel="noopener">Source Engine T300 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #26 · DORA Art. 28 · Third-Party ICT Concentration · RegTech Hub</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">Five-pillar maturity</span>
+      <span class="eyebrow-badge eb-success">DORA Live · since 17 Jan 2025</span>
+      <span class="eyebrow-badge eb-gold">@ainumbers.co/dora-gap-v1</span>
+    </div>
+    <h1>The third-party concentration question DORA Article 28 actually asks.</h1>
+    <p class="hero-desc">
+      Score your institution's <b>five-pillar DORA maturity</b> (Risk Mgmt · Incident · Resilience Testing ·
+      Third-Party · Information Sharing), then drill into the part the EBA's joint RTS on ICT third-party
+      risk really cares about: <b>Article 28 concentration</b>, sub-outsourcing depth and which providers
+      support <b>Critical or Important Functions (CIFs)</b>. The mandate emits a remediation roadmap
+      sorted by penalty exposure — the artifact a CRO can sign.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side</span>
+      <span class="hero-badge warn">Deeper than #3 Deduplicator — same regime, third-party depth focus</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <div class="dora-callout" role="note">
+    <div class="dora-eyebrow">
+      DORA · in force since 17 January 2025
+      <span class="dora-live-badge">LIVE</span>
+    </div>
+    <p>
+      <strong>DORA (Regulation (EU) 2022/2554)</strong> entered application on 17 January 2025. Articles
+      28–44 set the ICT third-party risk regime; the <strong>EBA / EIOPA / ESMA Joint Final RTS
+      (2024/1773)</strong> defines what constitutes a critical-or-important function and the
+      sub-outsourcing oversight expected. The <strong>Critical Third-Party Provider (CTPP)</strong>
+      designation regime is live with the European Supervisory Authorities and direct oversight of the
+      first cohort is underway.
+    </p>
+    <div class="dora-cite">Sources: EU 2022/2554 Art. 5–49 · Joint Final RTS 2024/1773 · EBA Guidelines on outsourcing arrangements · ESAs CTPP designation register</div>
+  </div>
+
+  <aside class="value-at-risk" aria-label="Value at risk — DORA Article 50 essential-entity breach">
+    <h4 class="var-eyebrow">Value at risk · DORA Article 50 essential-entity breach</h4>
+    <p class="var-figure">Up to €10M or 2% of global turnover per essential-entity breach</p>
+    <p class="var-body">Deeper than the deduplicator: maps ICT third-party concentration risk against <strong>DORA Article 28</strong> and the <strong>EBA RTS for sub-outsourcing oversight</strong>. The exposure is on top of any operational losses from the actual incident — and CTPPs that fail their direct oversight obligations face their own daily-penalty regime under Article 35 of the supervisory framework.</p>
+    <p class="var-cite"><small>EU 2022/2554 Art. 50 (penalties) · Art. 28 (third-party) · Joint Final RTS 2024/1773 · ESA CTPP designation</small></p>
+  </aside>
+
+  <div class="lab-grid">
+    <div>
+      <!-- §1 Five-pillar maturity -->
+      <section class="panel">
+        <div class="panel-label">§1 · Five-Pillar Maturity <span class="panel-label-r" id="composite-readout">— / 100</span></div>
+        <h2 class="sec-h">Set each pillar 0 → 4</h2>
+        <p class="sec-sub">0 Initial · 1 Repeatable · 2 Defined · 3 Managed · 4 Optimised. The composite is the simple sum × 5; the AP2 mandate emits each pillar separately so an agentic remediation runtime can target the weakest pillar first.</p>
+
+        <div id="pillars"></div>
+      </section>
+
+      <!-- §2 Article 28 third-party concentration -->
+      <section class="panel" id="art28">
+        <div class="panel-label">§2 · Article 28 — Third-Party Concentration <span class="panel-label-r">EBA RTS 2024/1773</span></div>
+        <h2 class="sec-h">Critical ICT providers &amp; sub-outsourcing depth</h2>
+        <p class="sec-sub">Allocate the share of <b>critical-or-important function</b> coverage across your top ICT third parties. The composer computes a <b>Herfindahl-Hirschman-style concentration index</b> and flags providers whose sub-outsourcing chain goes beyond two layers — the threshold where EBA RTS oversight expectations escalate.</p>
+
+        <table class="tp-table">
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Share of CIF coverage</th>
+              <th>Sub-outsourcing depth</th>
+              <th>CIF tier</th>
+            </tr>
+          </thead>
+          <tbody id="tps"></tbody>
+        </table>
+
+        <div class="hhi-bar">
+          <div><strong style="color:var(--text);">HHI concentration index</strong></div>
+          <div><span class="hhi-val" id="hhi-val">—</span></div>
+        </div>
+        <p class="hhi-explain" id="hhi-explain"></p>
+
+        <div class="hhi-bar" style="margin-top:0.5rem;">
+          <div><strong style="color:var(--text);">Sub-outsourcing oversight gaps</strong></div>
+          <div><span class="hhi-val" id="subout-val">—</span></div>
+        </div>
+        <p class="hhi-explain" id="subout-explain"></p>
+      </section>
+
+      <!-- §3 Composite + heatmap + remediation -->
+      <section class="panel">
+        <div class="panel-label">§3 · Scorecard <span class="panel-label-r">Live · Heatmap + remediation</span></div>
+        <h2 class="sec-h">Composite, heatmap, remediation priority</h2>
+
+        <div class="score-grid">
+          <div class="score-card">
+            <div class="kpi-label">Composite maturity</div>
+            <div class="kpi-val" id="composite-val">—</div>
+            <div class="kpi-sub" id="composite-tier">—</div>
+          </div>
+          <div class="score-card">
+            <div class="kpi-label">Article 28 risk band</div>
+            <div class="kpi-val" id="art28-val">—</div>
+            <div class="kpi-sub" id="art28-sub">HHI + sub-outsourcing depth</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:.5rem 0 .35rem;">Pillar heatmap</div>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="hm-labels">
+          <div>I · Risk</div>
+          <div>II · Incident</div>
+          <div>III · Testing</div>
+          <div>IV · 3rd-Party</div>
+          <div>V · Info-Share</div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:1rem 0 .35rem;">Remediation priorities</div>
+        <table class="rem-table">
+          <thead><tr><th>Priority</th><th>Pillar</th><th>Action</th></tr></thead>
+          <tbody id="rem-table"></tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- Preview -->
+    <div>
+      <section class="panel preview-sticky">
+        <div class="panel-label">§4 · Mandate Preview <span class="panel-label-r">@ainumbers.co/dora-gap-v1</span></div>
+        <h2 class="sec-h">AP2 output</h2>
+        <p class="sec-sub">Schema includes the pillar matrix, Article 28 concentration metrics, and an ordered remediation roadmap an agentic compliance runtime can execute against.</p>
+
+        <div class="preview-tabs" id="preview-tabs">
+          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab" data-tab="md">Gap report</button>
+          <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+        </div>
+
+        <div class="preview-body"><pre id="preview-out"></pre></div>
+
+        <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/dora-gap-v1</div>
+
+        <div class="results-export-row">
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+          <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+          <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/dora-compliance-deduplication-tool.html">#3 — DORA / NIS2 Dual-Compliance Deduplicator</a>
+      to first surface the control overlap, then run #26 to go deep on Article 28 third-party concentration. The
+      AP2 mandate from #26 is consumable by any agentic compliance runtime via the
+      <a href="/demos/ap2-agentic-payment-policy-guardrail.html">#7 — AP2 Visual Policy Guardrail</a>.
+      Position in the 259-tool atlas: <a href="/demos/composer.html">Tool Chain Composer</a>, T300 node.
+    </p>
+  </div>
+</div>
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/300-dora-ict-risk-gap-analyser.html" target="_blank" rel="noopener">Deep Dive → AINumbers T300</a>
+      <a href="https://ainumbers.co/tools/100-dora-resilience-auditor.html" target="_blank" rel="noopener">Adjacent → T100 Resilience Auditor</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/regtech/">RegTech Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── DORA five pillars (verbatim references from EU 2022/2554) ───────
+  const pillars = [
+    { id:'p1', name:'ICT Risk Management',     art:'Art. 5–16 · Governance, risk framework, ICT strategy', score:2,
+      gap: { 0:'No documented ICT risk framework. Board has no ICT risk visibility.',
+             1:'Repeatable processes for some controls; no integrated framework.',
+             2:'Developing — Risk management documented but controls not consistently applied.',
+             3:'Managed — Framework in force, reviewed annually, board reporting in place.',
+             4:'Optimised — Continuous-improvement loop, integrated with enterprise risk.'},
+      remediation: 'Stand up the Article 5 ICT risk-management framework; assign accountability at board level (Art. 5(2)).'
+    },
+    { id:'p2', name:'Incident Management',     art:'Art. 17–23 · Classification, RTS 2024/1772, 4-hour reporting', score:1,
+      gap: { 0:'Ad-hoc incident handling. No major-incident classification capability.',
+             1:'Initial — Incident management ad hoc; 4-hour reporting capability not established.',
+             2:'Defined process with documented classification; 4-hour reporting tested.',
+             3:'Drilled quarterly; integrated with NCA submission portal.',
+             4:'Optimised — Automated classification + NCA submission pipeline.'},
+      remediation: 'Establish the major-incident classification taxonomy (RTS 2024/1772) and a tested 4-hour NCA reporting path.'
+    },
+    { id:'p3', name:'Resilience Testing',      art:'Art. 24–27 · Vulnerability scans, TLPT, TIBER-EU', score:2,
+      gap: { 0:'No structured testing; vulnerability scans irregular.',
+             1:'Basic vulnerability scans on a subset of systems.',
+             2:'Developing — Basic vulnerability assessments conducted; no TLPT schedule.',
+             3:'Annual TLPT scheduled for in-scope entities (Art. 26(8)).',
+             4:'TIBER-EU aligned, results feed remediation backlog automatically.'},
+      remediation: 'For in-scope entities, schedule the Art. 26 TLPT exercise; otherwise document the threat-led testing programme equivalent.'
+    },
+    { id:'p4', name:'Third-Party Risk',        art:'Art. 28–44 · RoI, CIF tiers, CTPP oversight', score:1,
+      gap: { 0:'No Register of Information (RoI). ICT providers not tiered.',
+             1:'Initial — ICT provider inventory incomplete; Art. 30 contract clauses not validated.',
+             2:'RoI populated, CIF tiering started, gaps in sub-outsourcing visibility.',
+             3:'RoI submitted to NCA, all CIF contracts Art. 30-aligned, sub-outsourcing mapped two levels.',
+             4:'Optimised — Continuous CTPP-oversight feed, sub-outsourcing chain monitored to terminal node.'},
+      remediation: 'Populate the Register of Information (Art. 28(3)); align all CIF contracts to Art. 30; map sub-outsourcing chain.'
+    },
+    { id:'p5', name:'Information Sharing',     art:'Art. 45–49 · Threat intelligence, info-sharing arrangements', score:3,
+      gap: { 0:'No threat-intel ingestion. No participation in info-sharing arrangements.',
+             1:'Threat-intel ingested ad hoc; no sharing outbound.',
+             2:'Threat-intel pipeline established; selective outbound sharing.',
+             3:'Managed — Active participation in at least one information sharing arrangement.',
+             4:'Optimised — Bi-directional sharing with FS-ISAC / sectoral CSIRT, automated tagging.'},
+      remediation: 'Maintain participation; formalise the Art. 45 information-sharing arrangement in writing.'
+    }
+  ];
+
+  // ── ICT third parties (synthetic illustrative) ───────────────────────
+  const thirdParties = [
+    { id:'tp-cloud-a', name:'Hyperscale Cloud A',   fn:'Core banking & customer data hosting', share: 45, depth: 2, cif: 'yes' },
+    { id:'tp-cloud-b', name:'Hyperscale Cloud B',   fn:'Disaster-recovery region',             share: 15, depth: 2, cif: 'yes' },
+    { id:'tp-saas-core',  name:'Core Banking SaaS', fn:'Ledger + transaction processing',      share: 25, depth: 3, cif: 'yes' },
+    { id:'tp-ident',  name:'Identity / KYC SaaS',   fn:'Customer onboarding identity service', share: 10, depth: 2, cif: 'no' },
+    { id:'tp-aml',    name:'AML Screening SaaS',    fn:'Sanctions + PEP / adverse-media',      share:  5, depth: 4, cif: 'yes' }
+  ];
+
+  let activeTab = 'ap2';
+
+  // ── render pillars ───────────────────────────────────────────────────
+  function renderPillars(){
+    const c = document.getElementById('pillars');
+    c.innerHTML = '';
+    pillars.forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'pillar-row';
+      row.innerHTML =
+        '<div class="pillar-head">' +
+          '<div><div class="pillar-name">' + p.name + '</div><div class="pillar-art">' + p.art + '</div></div>' +
+          '<div class="pillar-score s' + p.score + '" data-score="' + p.id + '">' + p.score + ' / 4</div>' +
+        '</div>' +
+        '<input type="range" min="0" max="4" step="1" value="' + p.score + '" data-pillar="' + p.id + '" />' +
+        '<div class="pillar-desc" data-desc="' + p.id + '">' + p.gap[p.score] + '</div>';
+      c.appendChild(row);
+    });
+    c.querySelectorAll('input[type=range]').forEach(rg => {
+      rg.addEventListener('input', () => {
+        const p = pillars.find(x => x.id === rg.dataset.pillar);
+        p.score = Number(rg.value);
+        const sc = c.querySelector('[data-score="' + p.id + '"]');
+        sc.textContent = p.score + ' / 4';
+        sc.className = 'pillar-score s' + p.score;
+        c.querySelector('[data-desc="' + p.id + '"]').textContent = p.gap[p.score];
+        render();
+      });
+    });
+  }
+
+  // ── render third parties ─────────────────────────────────────────────
+  function renderTPs(){
+    const tb = document.getElementById('tps');
+    tb.innerHTML = '';
+    thirdParties.forEach(t => {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><span class="tp-name">' + t.name + '</span><span class="tp-fn">' + t.fn + '</span></td>' +
+        '<td class="tp-share"><input type="number" min="0" max="100" value="' + t.share + '" data-share="' + t.id + '" />%</td>' +
+        '<td class="tp-depth"><select data-depth="' + t.id + '">' +
+          [1,2,3,4].map(n => '<option value="' + n + '"' + (t.depth === n ? ' selected' : '') + '>' + n + ' level' + (n === 1 ? '' : 's') + '</option>').join('') +
+        '</select></td>' +
+        '<td class="tp-cif"><select data-cif="' + t.id + '" class="' + (t.cif === 'yes' ? 'cif-yes' : '') + '">' +
+          '<option value="yes"' + (t.cif === 'yes' ? ' selected' : '') + '>CIF · yes</option>' +
+          '<option value="no"'  + (t.cif === 'no'  ? ' selected' : '') + '>CIF · no</option>' +
+        '</select></td>';
+      tb.appendChild(tr);
+    });
+    tb.querySelectorAll('input[data-share]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const t = thirdParties.find(x => x.id === inp.dataset.share);
+        t.share = Math.max(0, Math.min(100, Number(inp.value) || 0));
+        render();
+      });
+    });
+    tb.querySelectorAll('select[data-depth]').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const t = thirdParties.find(x => x.id === sel.dataset.depth);
+        t.depth = Number(sel.value);
+        render();
+      });
+    });
+    tb.querySelectorAll('select[data-cif]').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const t = thirdParties.find(x => x.id === sel.dataset.cif);
+        t.cif = sel.value;
+        sel.classList.toggle('cif-yes', t.cif === 'yes');
+        render();
+      });
+    });
+  }
+
+  // ── compute model ────────────────────────────────────────────────────
+  function compute(){
+    const composite = pillars.reduce((acc,p) => acc + p.score, 0) * 5; // /100
+    const tier =
+      composite >= 80 ? 'Optimised — audit-ready'
+      : composite >= 60 ? 'Managed — minor remediation'
+      : composite >= 40 ? 'Defined — material gaps'
+      : composite >= 20 ? 'Repeatable — significant remediation'
+      :                   'Initial — broad uplift required';
+
+    // HHI = sum of squared shares (each share in 0..100)
+    const totalShare = thirdParties.reduce((a,t) => a + t.share, 0);
+    const norm = totalShare === 0 ? 1 : (100 / totalShare);
+    const hhi = thirdParties.reduce((a,t) => {
+      const s = t.share * norm;
+      return a + s * s;
+    }, 0); // 0..10000
+    const hhiBand =
+      hhi >= 2500 ? { v:'High', cls:'high', txt:'HHI ≥ 2500 — high concentration. Article 28(7) likely to require diversification plan.' }
+      : hhi >= 1500 ? { v:'Moderate', cls:'med', txt:'HHI 1500–2499 — moderate concentration. Document mitigations in the RoI.' }
+      :               { v:'Low', cls:'low', txt:'HHI < 1500 — concentration within typical bounds.' };
+
+    // sub-outsourcing oversight: count CIF providers with depth ≥ 3
+    const subOutGaps = thirdParties.filter(t => t.cif === 'yes' && t.depth >= 3).length;
+    const subOutBand = subOutGaps === 0
+      ? { v:'OK', cls:'low', txt:'No CIF provider exceeds two layers of sub-outsourcing — within EBA RTS oversight expectations.' }
+      : subOutGaps === 1
+        ? { v:'1 gap', cls:'med', txt:'One CIF provider has 3+ sub-outsourcing layers. Document the oversight regime per RTS 2024/1773.' }
+        : { v:subOutGaps + ' gaps', cls:'high', txt:subOutGaps + ' CIF providers exceed two sub-outsourcing layers. Escalate to senior management review.' };
+
+    // Article 28 risk band — combine HHI + sub-out
+    let art28Score = 0;
+    if (hhi >= 2500) art28Score += 2; else if (hhi >= 1500) art28Score += 1;
+    art28Score += subOutGaps;
+    const art28Band = art28Score >= 3
+      ? { v:'High', cls:'s-low', txt:'Concentration + sub-outsourcing both elevated — material Art. 28 exposure.' }
+      : art28Score >= 1
+        ? { v:'Moderate', cls:'s-mid', txt:'Either concentration or sub-outsourcing flagged — manageable with documented plan.' }
+        : { v:'Low', cls:'s-high', txt:'Within typical bounds for both concentration and sub-outsourcing.' };
+
+    // remediation priorities
+    const remediation = pillars
+      .slice()
+      .sort((a,b) => a.score - b.score)
+      .map(p => ({
+        pillar: p.name,
+        article: p.art,
+        action: p.remediation,
+        priority: p.score <= 1 ? 'high' : p.score === 2 ? 'med' : 'low'
+      }));
+
+    return { composite, tier, hhi: Math.round(hhi), hhiBand, subOutGaps, subOutBand, art28Score, art28Band, remediation };
+  }
+
+  // ── render outputs ───────────────────────────────────────────────────
+  function render(){
+    const m = compute();
+    document.getElementById('composite-readout').textContent = m.composite + ' / 100';
+
+    const cv = document.getElementById('composite-val');
+    cv.textContent = m.composite + ' / 100';
+    cv.className = 'kpi-val ' + (m.composite >= 60 ? 's-high' : m.composite >= 40 ? 's-mid' : 's-low');
+    document.getElementById('composite-tier').textContent = m.tier;
+
+    const av = document.getElementById('art28-val');
+    av.textContent = m.art28Band.v;
+    av.className = 'kpi-val ' + m.art28Band.cls;
+    document.getElementById('art28-sub').textContent = m.art28Band.txt;
+
+    // HHI bar
+    const hv = document.getElementById('hhi-val');
+    hv.textContent = m.hhi;
+    hv.className = 'hhi-val ' + m.hhiBand.cls;
+    document.getElementById('hhi-explain').textContent = m.hhiBand.txt;
+
+    const sv = document.getElementById('subout-val');
+    sv.textContent = m.subOutBand.v;
+    sv.className = 'hhi-val ' + m.subOutBand.cls;
+    document.getElementById('subout-explain').textContent = m.subOutBand.txt;
+
+    // heatmap
+    const hm = document.getElementById('heatmap');
+    hm.innerHTML = '';
+    pillars.forEach(p => {
+      const cell = document.createElement('div');
+      cell.className = 'hm-cell l' + p.score;
+      cell.textContent = p.score;
+      cell.title = p.name + ' — ' + p.gap[p.score];
+      hm.appendChild(cell);
+    });
+
+    // remediation table
+    const rt = document.getElementById('rem-table');
+    rt.innerHTML = '';
+    m.remediation.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><span class="rem-prio ' + r.priority + '">' + r.priority + '</span></td>' +
+        '<td>' + r.pillar + '<br><span style="font-family:var(--mono);font-size:.62rem;color:var(--text-muted);">' + r.article + '</span></td>' +
+        '<td>' + r.action + '</td>';
+      rt.appendChild(tr);
+    });
+
+    renderPreview(m);
+  }
+
+  // ── AP2 mandate ──────────────────────────────────────────────────────
+  function buildMandate(model){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-26-' + Math.random().toString(36).slice(2,10);
+    return {
+      '$schema': '@ainumbers.co/dora-gap-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'DORA gap assessor (demonstration)' },
+      subject: { regulation: 'EU 2022/2554 (DORA)', joint_rts: '2024/1773', scope: 'ict_third_party_risk_and_maturity' },
+      maturity: {
+        composite_score: model.composite,
+        tier: model.tier,
+        pillars: pillars.map(p => ({
+          pillar_id: p.id,
+          pillar_name: p.name,
+          articles: p.art,
+          score: p.score,
+          gap_description: p.gap[p.score]
+        }))
+      },
+      article_28: {
+        risk_band: model.art28Band.v,
+        risk_band_rationale: model.art28Band.txt,
+        hhi_concentration_index: model.hhi,
+        hhi_band: model.hhiBand.v,
+        sub_outsourcing_gaps: model.subOutGaps,
+        third_parties: thirdParties.map(t => ({
+          provider_label: t.name,
+          function: t.fn,
+          share_of_cif_coverage_pct: t.share,
+          sub_outsourcing_layers: t.depth,
+          is_cif: t.cif === 'yes'
+        }))
+      },
+      remediation_roadmap: model.remediation.map((r, i) => ({
+        order: i + 1,
+        priority: r.priority,
+        pillar: r.pillar,
+        articles: r.article,
+        action: r.action
+      })),
+      enforcement: {
+        binding: true,
+        applies_to: 'in-scope financial entity per DORA Article 2',
+        on_violation: 'escalate_to_ncas_and_initiate_remediation',
+        audit_trail_required: true
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html',
+        backing_tool: 'https://ainumbers.co/tools/300-dora-ict-risk-gap-analyser.html',
+        adjacent_tool: 'https://ainumbers.co/tools/100-dora-resilience-auditor.html',
+        license: 'CC BY 4.0'
+      }
+    };
+  }
+
+  function validate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/dora-gap-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!m.maturity || !Array.isArray(m.maturity.pillars) || m.maturity.pillars.length !== 5) errs.push('exactly five pillars required');
+    if (!m.article_28 || !Array.isArray(m.article_28.third_parties)) errs.push('article_28.third_parties required');
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    return errs;
+  }
+
+  function buildMd(m){
+    const out = [];
+    out.push('# DORA ICT Risk Gap — Gap Report');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
+    out.push('**Regulation:** ' + m.subject.regulation + ' · Joint RTS ' + m.subject.joint_rts);
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('## Composite maturity');
+    out.push('');
+    out.push('- Composite score: **' + m.maturity.composite_score + ' / 100**');
+    out.push('- Tier: ' + m.maturity.tier);
+    out.push('');
+    out.push('### Pillar scores');
+    out.push('');
+    m.maturity.pillars.forEach(p => {
+      out.push('- **' + p.pillar_name + '** (' + p.articles + ') — ' + p.score + ' / 4');
+      out.push('  - ' + p.gap_description);
+    });
+    out.push('');
+    out.push('## Article 28 — Third-party concentration');
+    out.push('');
+    out.push('- Risk band: **' + m.article_28.risk_band + '**');
+    out.push('- HHI concentration index: ' + m.article_28.hhi_concentration_index + ' (' + m.article_28.hhi_band + ')');
+    out.push('- Sub-outsourcing oversight gaps (CIF providers, ≥3 layers): ' + m.article_28.sub_outsourcing_gaps);
+    out.push('');
+    out.push('### Provider matrix');
+    out.push('');
+    out.push('| Provider | Function | CIF share | Sub-out layers | CIF? |');
+    out.push('|---|---|---:|---:|---|');
+    m.article_28.third_parties.forEach(t => {
+      out.push('| ' + t.provider_label + ' | ' + t.function + ' | ' + t.share_of_cif_coverage_pct + '% | ' + t.sub_outsourcing_layers + ' | ' + (t.is_cif ? 'yes' : 'no') + ' |');
+    });
+    out.push('');
+    out.push('## Remediation roadmap');
+    out.push('');
+    m.remediation_roadmap.forEach(r => {
+      out.push('### #' + r.order + ' · [' + r.priority.toUpperCase() + '] ' + r.pillar);
+      out.push('- ' + r.articles);
+      out.push('- **Action:** ' + r.action);
+      out.push('');
+    });
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #26 (DORA ICT Risk Gap Analyser). Source engine: AINumbers T300 (T100 adjacent). CC BY 4.0. Zero PII._');
+    return out.join('\n');
+  }
+
+  function buildMcp(m){
+    return {
+      name: 'dora_gap_evaluate',
+      description: 'Evaluate an institution\'s DORA posture against the loaded five-pillar + Art. 28 mandate. Returns composite score, Art. 28 risk band, prioritised remediation list.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          institution_label: { type: 'string', description: 'synthetic identifier; must not be PII' },
+          pillar_scores: {
+            type: 'object',
+            properties: {
+              risk_mgmt: { type: 'integer', minimum: 0, maximum: 4 },
+              incident:  { type: 'integer', minimum: 0, maximum: 4 },
+              testing:   { type: 'integer', minimum: 0, maximum: 4 },
+              third_party: { type: 'integer', minimum: 0, maximum: 4 },
+              info_sharing: { type: 'integer', minimum: 0, maximum: 4 }
+            }
+          },
+          third_party_register: {
+            type: 'array',
+            items: { type: 'object',
+              properties: {
+                share_of_cif_coverage_pct: { type: 'number', minimum: 0, maximum: 100 },
+                sub_outsourcing_layers: { type: 'integer', minimum: 1, maximum: 6 },
+                is_cif: { type: 'boolean' }
+              }
+            }
+          }
+        },
+        required: ['pillar_scores','third_party_register']
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        regulation: m.subject.regulation
+      },
+      provenance: m.provenance
+    };
+  }
+
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function renderPreview(model){
+    const m = buildMandate(model);
+    const errs = validate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+    let body;
+    if (activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (activeTab === 'md') body = buildMd(m);
+    else body = JSON.stringify(buildMcp(m), null, 2);
+    const isJson = activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+  }
+
+  // tabs
+  document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('#preview-tabs .preview-tab').forEach(b => b.classList.remove('sel'));
+      t.classList.add('sel');
+      activeTab = t.dataset.tab;
+      render();
+    });
+  });
+
+  // exports
+  function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
+  function download(filename, content, mime){ const blob = new Blob([content], { type: mime }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate(compute());
+    if (validate(m).length === 0) { download('dora-gap-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    else toast('Schema validation failed');
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('dora-gap-report.md', buildMd(buildMandate(compute())), 'text/markdown');
+    toast('Markdown gap report exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('dora_gap_evaluate.mcp.json', JSON.stringify(buildMcp(buildMandate(compute())), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate(compute());
+    let txt;
+    if (activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (activeTab === 'md') txt = buildMd(m);
+    else txt = JSON.stringify(buildMcp(m), null, 2);
+    try { await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); } catch(e) { toast('Copy failed'); }
+  });
+
+  // init
+  renderPillars();
+  renderTPs();
+  render();
+})();
+</script>
+
+</body>
+</html>

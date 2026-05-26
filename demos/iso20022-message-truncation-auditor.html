@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message Truncation Auditor · pacs.008 → MT103 | AINumbers.co</title>
+<!-- Per-demo meta (spec Part 5.1) -->
+<meta name="description" content="Audit pacs.008 messages for CBPR+ MT103 truncation risk. Browser-based, AP2 remediation brief export, 14 November 2026 SWIFT deadline aware, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html">
+<meta property="og:title" content="ISO 20022 Message Truncation Auditor — Post Oak Labs">
+<meta property="og:description" content="Catch silent data loss before the SWIFT CBPR+ structured-address mandate on 14 November 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/iso20022-message-truncation-auditor.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- POL canonical font stack (spec Part 2.3) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD (spec Part 5.2) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "ISO 20022 Message Truncation Auditor",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html",
+  "description": "Audits ISO 20022 pacs.008 payments against MT103 field length limits to detect silent data loss before the SWIFT CBPR+ structured address mandate (14 November 2026).",
+  "featureList": [
+    "Field-by-field pacs.008 to MT103 truncation analysis",
+    "Severity grading (clean / warn / loss) with bytes-dropped accounting",
+    "AP2 v1.0 mandate export against @ainumbers.co/remediation-brief-v1 schema",
+    "Structured remediation playbook for :50F:/:59F:/structured addresses/ISO 11649"
+  ],
+  "keywords": "ISO 20022, pacs.008, MT103, SWIFT CBPR+, structured address, MX MT translation, truncation audit, AP2 remediation brief, message migration",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<meta name="description" content="Side-by-side auditor for ISO 20022 MX → legacy MT103 truncation. Detect silent data loss on the 35-character boundary before it leaves your gateway.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+</style>
+<style>
+:root {
+  --bg:        #080E1A;
+  --bg-2:      #0D1627;
+  --bg-3:      #111E35;
+  --bg-4:      #162340;
+  --deep:      #0D1627;
+  --navy:      #111E35;
+  --panel:     #162340;
+  --border:    #1E2F4A;
+  --border-2:  #263855;
+  --edge:      #1E2F4A;
+  --rim:       #263855;
+  --muted:     #3A5270;
+  --body:      #6888A8;
+  --text:      #A8C4DE;
+  --bright:    #D4E8F8;
+  --white:     #EEF6FD;
+  --teal:      #14B8A6;
+  --teal-lt:   #2DD4BF;
+  --teal-dim:  rgba(20,184,166,.12);
+  --gold:      #D4A847;
+  --gold-lt:   #E8C06A;
+  --gold-dim:  rgba(212,168,71,.12);
+  --green:     #22C55E;
+  --green-lt:  #22C55E;
+  --green-bg:  rgba(34,197,94,.08);
+  --red:       #EF4444;
+  --red-lt:    #F87171;
+  --red-bg:    rgba(239,68,68,.10);
+  --red-strong:rgba(239,68,68,.22);
+  --warn:      #F59E0B;
+  --warn-lt:   #FCD34D;
+  --warn-bg:   rgba(245,158,11,.08);
+  --purple:    #9B72F5;
+  --accent:    #14B8A6;
+  --accent-lt: #2DD4BF;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Sora', sans-serif; font-weight: 300;
+  line-height: 1.7; font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(20,184,166,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,184,166,.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+.container { max-width: 1480px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── NAV ── */
+nav {
+  padding: 0 2rem; height: 56px;
+  border-bottom: 1px solid var(--edge);
+  background: rgba(8,14,26,.92);
+  position: sticky; top: 0; z-index: 200;
+  backdrop-filter: blur(8px);
+}
+.nav-inner {
+  max-width: 1480px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-text { display:flex; flex-direction:column; gap:2px; }
+.logo-name { font-family:'JetBrains Mono',monospace; font-size:.95rem; font-weight:500; color:var(--bright); letter-spacing:-.02em; line-height:1; }
+.logo-ai { color:var(--teal); }
+.logo-co { color:var(--muted); font-size:.8rem; }
+.logo-tag { font-family:'JetBrains Mono',monospace; font-size:.5rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); line-height:1; }
+.nav-bc { display:flex; gap:.4rem; align-items:center; font-family:'JetBrains Mono',monospace; font-size:.52rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-left:.5rem; }
+.nav-bc a { color:var(--muted); text-decoration:none; transition:color .15s; }
+.nav-bc a:hover { color:var(--teal-lt); }
+.nav-bc-sep { color:var(--edge); }
+.nav-bc-current { color:var(--teal); }
+.nav-spacer { flex:1; }
+.nav-pill {
+  font-family:'JetBrains Mono',monospace; font-size:.55rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--edge);
+  padding:.4rem .8rem; border-radius:4px; cursor:pointer;
+  background:transparent; transition:all .15s; text-decoration:none;
+}
+.nav-pill:hover { color:var(--teal-lt); border-color:var(--teal); }
+
+/* ── HERO ── */
+.hero {
+  padding: 2.5rem 0 2.25rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.hero-grid {
+  display: grid; grid-template-columns: 1.4fr 1fr;
+  gap: 3rem; align-items: end;
+}
+.hero-eyebrow {
+  font-family:'JetBrains Mono',monospace; font-size:.57rem;
+  letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent-lt); margin-bottom:.9rem;
+  display:flex; align-items:center; gap:.75rem;
+}
+.hero-eyebrow::before { content:''; display:block; width:28px; height:1px; background:var(--accent); }
+.hero h1 { font-size: clamp(1.7rem, 2.6vw, 2.4rem); color: var(--white); margin-bottom: .7rem; letter-spacing:-.005em; }
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub { font-size:.85rem; color:var(--body); line-height:1.85; max-width:620px; }
+.hero-sub code { font-family:'JetBrains Mono',monospace; font-size:.82em; color:var(--accent-lt); }
+
+/* hero stat strip */
+.stat-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--edge); border:1px solid var(--edge); }
+.stat-cell { background:var(--deep); padding:.9rem 1rem; }
+.stat-label { font-family:'JetBrains Mono',monospace; font-size:.46rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+.stat-val { font-family:'DM Serif Display', serif; font-size:1.5rem; color:var(--bright); line-height:1; }
+.stat-val.flag-red { color: var(--red-lt); }
+.stat-val.flag-warn { color: var(--warn-lt); }
+.stat-val.flag-green { color: var(--green-lt); }
+.stat-sub { font-family:'JetBrains Mono',monospace; font-size:.5rem; color:var(--body); margin-top:.3rem; letter-spacing:.04em; }
+
+/* ── TOOL LAYOUT ──
+   2×2 modular grid. Single continuous vertical key line at 50%
+   so MX ↔ MT103 above stays aligned with Findings ↔ Remediation below.
+   Hairline dividers (gutterless) within each row — closely related diff content.
+   Thematic 18px row-gap between the two rows — different task, separate concern. */
+.tool-section { padding: 2rem 0 4rem; }
+.audit-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 18px;
+}
+.audit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+  gap: 1px;
+  background: var(--edge);
+  border: 1px solid var(--edge);
+}
+
+.pane {
+  background: var(--deep);
+  display: flex; flex-direction: column;
+  min-height: 620px;
+  max-height: 720px;
+  min-width: 0;
+}
+.pane-head {
+  padding: .9rem 1.25rem;
+  border-bottom: 1px solid var(--edge);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; background: var(--bg-2);
+}
+.pane-head-left { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+.pane-tag {
+  font-family:'JetBrains Mono',monospace; font-size:.48rem;
+  letter-spacing:.18em; text-transform:uppercase;
+  padding:.3rem .55rem; border:1px solid;
+  white-space:nowrap;
+}
+.tag-mx { color: var(--accent-lt); border-color: rgba(20,184,166,.35); background: var(--teal-dim); }
+.tag-mt { color: var(--gold-lt); border-color: rgba(212,168,71,.4); background: var(--gold-dim); }
+.pane-title { font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--bright); letter-spacing:.04em; }
+.pane-title small { color: var(--muted); font-weight: 300; }
+.pane-head-right { display: flex; gap: .4rem; flex-shrink: 0; }
+.pane-btn {
+  font-family:'JetBrains Mono',monospace; font-size:.48rem;
+  letter-spacing:.12em; text-transform:uppercase;
+  padding:.35rem .6rem; border:1px solid var(--edge);
+  color:var(--muted); background:transparent; cursor:pointer;
+  transition:all .15s;
+}
+.pane-btn:hover { color: var(--text); border-color: var(--rim); }
+.pane-btn.copied { color: var(--green-lt); border-color: var(--green-lt); }
+
+/* MX textarea */
+.mx-input {
+  flex: 1 1 0; width: 100%;
+  min-height: 0;
+  background: var(--bg); border: none; outline: none;
+  color: var(--text); font-family:'JetBrains Mono',monospace;
+  font-size: .72rem; line-height: 1.7;
+  padding: 1.25rem 1.5rem;
+  resize: none;
+  tab-size: 2;
+  overflow-y: auto;
+}
+.mx-input::placeholder { color: var(--muted); }
+.mx-input:focus { background: var(--bg); }
+
+/* MT103 representation */
+.mt-body {
+  flex: 1 1 0;
+  min-height: 0;
+  background: var(--bg);
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  font-family:'JetBrains Mono',monospace;
+  font-size: .72rem;
+  line-height: 1.75;
+}
+.mt-header {
+  font-family:'JetBrains Mono',monospace;
+  font-size: .55rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted);
+  padding: .5rem 0 .9rem;
+  border-bottom: 1px dashed var(--edge);
+  margin-bottom: .9rem;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.mt-header-block { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.mt-header-block span b { color: var(--text); font-weight: 500; letter-spacing: .04em; }
+.mt-block { margin-bottom: 1.2rem; }
+.mt-block:last-child { margin-bottom: 0; }
+.mt-tag {
+  font-family:'JetBrains Mono',monospace; font-size: .6rem;
+  letter-spacing: .08em;
+  color: var(--gold-lt);
+  display: inline-block;
+  margin-bottom: .25rem;
+}
+.mt-tag-name {
+  font-family:'JetBrains Mono',monospace; font-size: .52rem;
+  color: var(--muted); margin-left: .5rem; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.mt-lines { display: flex; flex-direction: column; }
+.mt-line {
+  display: flex; align-items: center;
+  font-family:'JetBrains Mono',monospace; font-size: .72rem;
+  color: var(--text); line-height: 1.65;
+  position: relative;
+  white-space: pre;
+}
+.mt-line-content { flex: 1; min-width: 0; overflow: hidden; }
+.mt-line-ruler {
+  font-family:'JetBrains Mono',monospace; font-size: .52rem;
+  color: var(--muted); margin-left: .9rem;
+  white-space: nowrap; letter-spacing: .04em;
+  min-width: 80px; text-align: right;
+}
+.mt-line-ruler.over { color: var(--red-lt); }
+.mt-line-ruler.warn { color: var(--warn-lt); }
+.mt-line.truncated .kept { color: var(--bright); }
+.mt-line.truncated .dropped {
+  color: var(--red-lt);
+  background: var(--red-bg);
+  border-bottom: 1px dashed var(--red-lt);
+  padding: 0 1px;
+  position: relative;
+}
+.mt-line.truncated .dropped::after {
+  content: '✕';
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--red-lt);
+  font-size: .85em;
+  opacity: .8;
+}
+.mt-line.ok .kept { color: var(--text); }
+.mt-line.warn .kept { color: var(--warn-lt); }
+.mt-empty { color: var(--muted); font-style: italic; font-size: .68rem; }
+
+/* status pill at top of MT pane */
+.mt-status {
+  display: flex; align-items: center; gap: .5rem;
+  font-family:'JetBrains Mono',monospace; font-size: .54rem;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.mt-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.mt-status.clean { color: var(--green-lt); }
+.mt-status.clean .mt-status-dot { background: var(--green-lt); box-shadow: 0 0 12px var(--green-lt); }
+.mt-status.warn { color: var(--warn-lt); }
+.mt-status.warn .mt-status-dot { background: var(--warn-lt); box-shadow: 0 0 12px var(--warn-lt); }
+.mt-status.loss { color: var(--red-lt); }
+.mt-status.loss .mt-status-dot { background: var(--red-lt); box-shadow: 0 0 12px var(--red-lt); animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+
+/* mx parser hint */
+.mx-statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .55rem 1.25rem;
+  background: var(--bg-2);
+  border-top: 1px solid var(--edge);
+  font-family:'JetBrains Mono',monospace; font-size: .5rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.mx-statusbar .ok { color: var(--green-lt); }
+.mx-statusbar .err { color: var(--red-lt); }
+
+/* ── REPORT + REMEDIATION ── */
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+}
+.report-pane { background: var(--deep); }
+.report-head {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--edge);
+  display: flex; align-items: center; gap: .75rem; justify-content: space-between;
+  background: var(--bg-2);
+}
+.report-title {
+  font-family:'JetBrains Mono',monospace; font-size: .58rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); display: flex; align-items: center; gap: .6rem;
+}
+.report-title .icon { color: var(--accent-lt); font-family:'DM Serif Display', serif; font-size:.9rem; }
+.report-count {
+  font-family:'JetBrains Mono',monospace; font-size: .5rem;
+  color: var(--muted); letter-spacing: .08em;
+}
+.report-count .num { color: var(--red-lt); font-weight: 600; font-size: .65rem; }
+.report-count .num.ok { color: var(--green-lt); }
+
+/* finding rows */
+.findings-list {
+  max-height: 560px; overflow-y: auto;
+}
+.finding {
+  padding: .9rem 1.25rem;
+  border-bottom: 1px solid var(--edge);
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 1rem;
+  align-items: start;
+  transition: background .15s;
+}
+.finding:last-child { border-bottom: none; }
+.finding:hover { background: var(--bg-2); }
+.finding-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size: .58rem; letter-spacing: .04em;
+  color: var(--gold-lt);
+  display: flex; flex-direction: column; gap: .2rem;
+}
+.finding-tag .mt-tag-id { color: var(--gold-lt); font-weight: 500; }
+.finding-tag .field { color: var(--muted); font-size: .5rem; letter-spacing: .1em; text-transform: uppercase; }
+.finding-body { min-width: 0; }
+.finding-xpath {
+  font-family:'JetBrains Mono',monospace; font-size: .55rem;
+  color: var(--body); margin-bottom: .35rem;
+  word-break: break-all; letter-spacing: .02em;
+}
+.finding-xpath b { color: var(--accent-lt); font-weight: 500; }
+.finding-value {
+  font-family:'JetBrains Mono',monospace; font-size: .68rem;
+  line-height: 1.6; color: var(--text); word-break: break-all;
+}
+.finding-value .kept { color: var(--bright); }
+.finding-value .dropped {
+  color: var(--red-lt);
+  background: var(--red-bg);
+  border-bottom: 1px dashed var(--red-lt);
+}
+.finding-meter {
+  display: flex; flex-direction: column; align-items: flex-end; gap: .35rem;
+  font-family:'JetBrains Mono',monospace; font-size: .55rem;
+  letter-spacing: .04em;
+}
+.finding-meter .len {
+  color: var(--red-lt); font-weight: 500; font-size: .8rem;
+}
+.finding-meter .len.warn { color: var(--warn-lt); }
+.finding-meter .len.ok { color: var(--green-lt); }
+.finding-meter .label { color: var(--muted); font-size: .46rem; letter-spacing: .12em; text-transform: uppercase; }
+.bar {
+  width: 80px; height: 4px;
+  background: var(--bg); border: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.bar-fill { height: 100%; background: var(--red-lt); transition: width .25s; }
+.bar-fill.warn { background: var(--warn-lt); }
+.bar-fill.ok { background: var(--green-lt); }
+.bar-mark {
+  position: absolute; top: -2px; bottom: -2px; width: 1px;
+  background: var(--gold);
+  /* 35 char marker — position set dynamically per bar width, here fixed */
+}
+
+.findings-empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--muted); font-size: .8rem; line-height: 1.7;
+}
+.findings-empty .big {
+  font-family:'DM Serif Display', serif;
+  color: var(--green-lt); font-size: 1.6rem; margin-bottom: .5rem; display: block;
+}
+
+/* ── REMEDIATION PANEL ── */
+.remed-list { padding: 0; }
+.remed-card {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative;
+}
+.remed-card:last-child { border-bottom: none; }
+.remed-card::before {
+  content: ''; position: absolute; left: 0; top: 1.1rem; bottom: 1.1rem; width: 2px;
+  background: var(--accent);
+}
+.remed-card.high::before { background: var(--red-lt); }
+.remed-card.med::before { background: var(--warn-lt); }
+.remed-card.low::before { background: var(--accent-lt); }
+.remed-card.info::before { background: var(--purple); }
+.remed-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  margin-bottom: .55rem;
+}
+.remed-name {
+  font-family:'JetBrains Mono',monospace; font-size: .72rem;
+  color: var(--bright); letter-spacing: .02em; font-weight: 500;
+}
+.remed-sev {
+  font-family:'JetBrains Mono',monospace; font-size: .44rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: .2rem .5rem; border: 1px solid; white-space: nowrap;
+}
+.remed-sev.high { color: var(--red-lt); border-color: rgba(239,68,68,.4); background: var(--red-bg); }
+.remed-sev.med { color: var(--warn-lt); border-color: rgba(245,158,11,.4); background: var(--warn-bg); }
+.remed-sev.low { color: var(--accent-lt); border-color: rgba(20,184,166,.4); background: var(--teal-dim); }
+.remed-sev.info { color: var(--purple); border-color: rgba(155,114,245,.35); background: rgba(155,114,245,.08); }
+.remed-issue { font-size: .76rem; color: var(--text); line-height: 1.65; margin-bottom: .65rem; }
+.remed-issue b { color: var(--bright); font-weight: 500; }
+.remed-step {
+  display: grid; grid-template-columns: 16px 1fr; gap: .55rem;
+  align-items: flex-start;
+  padding: .25rem 0;
+  font-family:'Sora', sans-serif; font-size: .75rem;
+  color: var(--text); line-height: 1.65;
+}
+.remed-step .num {
+  font-family:'JetBrains Mono',monospace; font-size: .5rem;
+  color: var(--accent-lt); padding-top: .25rem; letter-spacing: .04em;
+}
+.remed-step code {
+  font-family:'JetBrains Mono',monospace; font-size: .68rem;
+  background: var(--bg); border: 1px solid var(--edge);
+  padding: .08rem .35rem; color: var(--accent-lt);
+}
+.remed-mapping {
+  margin-top: .65rem; padding: .65rem .8rem;
+  background: var(--bg); border: 1px solid var(--edge);
+  font-family:'JetBrains Mono',monospace; font-size: .65rem;
+  line-height: 1.85; color: var(--text);
+}
+.remed-mapping .from { color: var(--red-lt); }
+.remed-mapping .to { color: var(--green-lt); }
+.remed-mapping .arrow { color: var(--muted); margin: 0 .4rem; }
+.remed-mapping .lbl { font-size: .44rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .25rem; }
+
+.remed-empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--muted); font-size: .8rem; line-height: 1.7;
+}
+
+/* ── CONTEXT BLOCK (silent data loss explainer) ── */
+.silent-loss {
+  background: var(--deep);
+  border: 1px solid var(--edge);
+  margin-top: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+.silent-loss-eyebrow {
+  font-family:'JetBrains Mono',monospace; font-size: .5rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red-lt); margin-bottom: .5rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.silent-loss-eyebrow::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background: var(--red-lt); }
+.silent-loss h3 { font-family:'DM Serif Display', serif; font-size: 1.4rem; color: var(--bright); margin-bottom: .35rem; line-height: 1.2; }
+.silent-loss h3 em { color: var(--red-lt); font-style: italic; }
+.silent-loss-meta { font-family:'JetBrains Mono',monospace; font-size: .55rem; letter-spacing: .1em; color: var(--muted); }
+.silent-loss-body { font-size: .82rem; line-height: 1.85; color: var(--body); }
+.silent-loss-body p + p { margin-top: .8rem; }
+.silent-loss-body b { color: var(--bright); font-weight: 400; }
+.silent-loss-body code { font-family:'JetBrains Mono',monospace; font-size: .82em; color: var(--accent-lt); }
+
+/* sample switcher */
+.sample-row {
+  display: flex; align-items: center; gap: .35rem; flex-wrap: wrap;
+}
+.sample-row .lbl {
+  font-family:'JetBrains Mono',monospace; font-size: .46rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  margin-right: .4rem;
+}
+
+/* visually-hidden — programmatic structure for assistive tech & bots */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--edge); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--rim); }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 1.75rem 1.5rem; margin-top: 0; }
+.footer-inner-ai { max-width:1480px; margin:0 auto; display:flex; align-items:center; gap:2rem; flex-wrap:wrap; justify-content:space-between; }
+.footer-links-ai { display:flex; gap:1.25rem; font-family:'JetBrains Mono',monospace; font-size:.52rem; color:var(--muted); }
+.footer-links-ai a { color:var(--muted); text-decoration:none; transition:color .2s; }
+.footer-links-ai a:hover { color:var(--teal-lt); }
+.footer-badge-ai { font-family:'JetBrains Mono',monospace; font-size:.5rem; color:var(--muted); }
+.footer-brand-link { display:flex; align-items:center; gap:.5rem; text-decoration:none; color:var(--text); }
+.footer-wordmark { font-family:'JetBrains Mono',monospace; font-size:.9rem; font-weight:500; color: var(--bright); }
+.logo-icon-sm { background:var(--teal); color:#000; font-weight:700; font-size:.7rem; padding:.15rem .3rem; border-radius:3px; font-family:'JetBrains Mono',monospace; }
+
+/* responsive */
+@media (max-width: 1180px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .audit-grid { grid-template-columns: 1fr; }
+  .report-grid { grid-template-columns: 1fr; }
+  .silent-loss { grid-template-columns: 1fr; gap: 1rem; }
+  .pane { min-height: 480px; }
+}
+@media (max-width: 700px) {
+  .nav-bc { display: none; }
+  .finding { grid-template-columns: 90px 1fr; }
+  .finding-meter { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; }
+  .hero h1 { font-size: 1.5rem; }
+  .stat-strip { grid-template-columns: 1fr; }
+  .container { padding: 0 1rem; }
+}
+</style>
+
+
+<style id="v6-wrapper-css">
+/* ═══ POL WRAPPER VARS + LIGHT CANVAS BRIDGE TOKENS ═══ */
+:root {
+  --pol-ink: #050c15;
+  --pol-deep: #0a1628;
+  --pol-edge: #1e3454;
+  --pol-body: #7090b0;
+  --pol-accent: #2a7fc0;
+  --pol-accent-lt: #4a9fdf;
+  --pol-gold: #c09040;
+
+  --showcase-bg: #ffffff;
+  --showcase-bg-soft: #fafbfc;
+  --showcase-text: #0a1828;
+  --showcase-text-muted: #6a7a8a;
+  --showcase-surface: #ffffff;
+  --showcase-border: #e6e8eb;
+  --showcase-accent: var(--pol-accent);
+  --showcase-gold: var(--pol-gold);
+  --showcase-success: #10b981;
+  --showcase-warn: #f59e0b;
+  --showcase-error: #dc2626;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font: 'DM Sans', sans-serif;
+  --showcase-mono-font: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--pol-ink) !important;
+  background-image: none !important;
+  color: var(--pol-body) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+body > nav { display: none !important; }
+footer:not(.pol-footer) { display: none !important; }
+
+/* POL nav */
+nav.pol-nav {
+  background: var(--pol-ink);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+/* Header strip */
+.showcase-header-strip {
+  background: var(--pol-deep);
+  border-top: 1px solid var(--pol-edge);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.85rem 0;
+  color: var(--pol-body);
+}
+.showcase-header-strip .strip-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem;
+}
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow {
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.7rem; color: var(--pol-gold); font-weight: 500;
+}
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a {
+  color: var(--pol-accent-lt); text-decoration: none;
+  margin-left: 1.25rem; font-size: 0.85rem;
+}
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+/* ═══ LIGHT DEMO CANVAS — REMAP DARK TOKENS ═══ */
+main.demo-canvas {
+  background: var(--showcase-bg);
+  color: var(--showcase-text);
+  font-family: var(--showcase-body-font);
+  max-width: 1440px;
+  margin: 2rem auto;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+
+  /* Override the demo's dark tokens inside the canvas */
+  --bg: var(--showcase-bg);
+  --bg-2: var(--showcase-bg-soft);
+  --bg-3: #f4f5f7;
+  --bg-4: #ebedef;
+  --deep: var(--showcase-bg-soft);
+  --navy: #f4f5f7;
+  --panel: #ebedef;
+  --border: var(--showcase-border);
+  --border-2: #d0d4d8;
+  --edge: var(--showcase-border);
+  --rim: #d0d4d8;
+  --muted: var(--showcase-text-muted);
+  --body: var(--showcase-text-muted);
+  --text: var(--showcase-text);
+  --bright: #0a1828;
+  --white: #0a1828;
+  /* Teal/accent → POL blue */
+  --teal: var(--showcase-accent);
+  --teal-lt: var(--showcase-accent);
+  --teal-dim: rgba(42,127,192,0.10);
+  --accent: var(--showcase-accent);
+  --accent-lt: var(--showcase-accent);
+  /* gold/red/green stay */
+  --gold-dim: rgba(192,144,64,0.10);
+  --green-bg: rgba(16,185,129,0.10);
+  --red-bg: rgba(220,38,38,0.10);
+  --red-strong: rgba(220,38,38,0.20);
+  --warn-bg: rgba(245,158,11,0.10);
+}
+main.demo-canvas .canvas-inner { padding: 0; }
+
+/* PII banner */
+.pii-banner {
+  background: rgba(42,127,192,0.04);
+  border: 1px solid rgba(42,127,192,0.15);
+  padding: 0.7rem 1rem;
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--showcase-text-muted);
+  margin: 1.25rem 28px 0;
+  border-radius: 4px;
+  max-width: calc(1440px - 56px);
+  margin-left: auto; margin-right: auto;
+}
+
+/* CBPR+ callout (spec Part 9.2) */
+.cbpr-callout {
+  background: rgba(192,144,64,0.05);
+  border: 1px solid rgba(192,144,64,0.25);
+  border-left: 4px solid var(--showcase-gold);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto 0;
+  border-radius: 3px;
+  color: var(--showcase-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  max-width: calc(1440px - 56px);
+  box-sizing: border-box;
+}
+.cbpr-callout .cbpr-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--showcase-gold);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.cbpr-callout .cbpr-countdown {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--showcase-error);
+  background: rgba(220,38,38,0.07);
+  border: 1px solid rgba(220,38,38,0.3);
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+}
+.cbpr-callout .cbpr-cite {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  color: var(--showcase-text-muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+/* VaR sidebar — non-floated variant in flow */
+.value-at-risk {
+  background: var(--showcase-bg-soft);
+  border-left: 4px solid var(--showcase-gold);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto 1.5rem;
+  max-width: calc(1440px - 56px);
+  border-radius: 2px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--showcase-text-muted);
+  box-sizing: border-box;
+}
+.value-at-risk .var-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--showcase-gold);
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+}
+.value-at-risk .var-figure {
+  font-family: var(--showcase-heading-font);
+  font-size: 1.1rem;
+  color: var(--showcase-text);
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
+}
+.value-at-risk .var-body { margin-bottom: 0.45rem; }
+.value-at-risk .var-cite { font-size: 0.7rem; color: var(--showcase-text-muted); }
+.value-at-risk .var-cite small { font-family: var(--showcase-mono-font); letter-spacing: 0.04em; }
+
+/* AP2 export row */
+.results-export-row {
+  display: flex; flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: var(--showcase-bg-soft);
+  border: 1px solid var(--showcase-border);
+  border-radius: 4px;
+  max-width: calc(1440px - 56px);
+  margin: 1.5rem auto 2rem;
+  box-sizing: border-box;
+}
+.results-export-row .export-label {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--showcase-text-muted);
+  flex: 1 1 280px;
+  font-weight: 500;
+}
+.btn-export {
+  background: var(--showcase-accent);
+  color: #fff;
+  padding: 0.7rem 1.15rem;
+  border-radius: 4px;
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer; border: none;
+  transition: background 0.15s, color 0.15s;
+  font-weight: 500;
+}
+.btn-export:hover { background: #1f6ca8; }
+.btn-export.outline {
+  background: transparent;
+  color: var(--showcase-accent);
+  border: 1px solid var(--showcase-accent);
+}
+.btn-export.outline:hover { background: rgba(42,127,192,0.06); }
+
+/* POL footer */
+footer.pol-footer {
+  background: var(--pol-ink);
+  border-top: 1px solid var(--pol-edge);
+  padding: 2.25rem 0 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--pol-body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+</head>
+<body>
+<!-- ═══ POL DARK NAV (spec Part 2.4) ═══ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
+      Post Oak <span>Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ SHOWCASE HEADER STRIP (spec Part 3.1) ═══ -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase</span>
+      <span class="strip-title">ISO 20022 Message Truncation Auditor</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/composer.html">View in Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/paycode-decoder.html" target="_blank" rel="noopener">Open Source Engine →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LIGHT DEMO CANVAS ═══ -->
+<main class="demo-canvas">
+<div class="canvas-inner">
+
+<!-- PII BANNER -->
+<div class="pii-banner">
+  🔒 All inputs are processed locally in your browser. No data is transmitted, stored, or logged. Use synthetic or anonymised pacs.008 messages only.
+</div>
+
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <svg width="32" height="32" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="9" fill="var(--bg-2)"></rect>
+        <rect x="1" y="1" width="46" height="46" rx="8" fill="none" stroke="var(--border)" stroke-width="1"></rect>
+        <rect x="9" y="9" width="8" height="8" rx="1.5" fill="var(--teal)" opacity="1"></rect>
+        <rect x="20" y="9" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".45"></rect>
+        <rect x="31" y="9" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".15"></rect>
+        <rect x="9" y="20" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".6"></rect>
+        <rect x="20" y="20" width="8" height="8" rx="1.5" fill="var(--gold)" opacity=".9"></rect>
+        <rect x="31" y="20" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".3"></rect>
+        <rect x="9" y="31" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".2"></rect>
+        <rect x="20" y="31" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".35"></rect>
+        <rect x="31" y="31" width="8" height="8" rx="1.5" fill="var(--teal)" opacity=".7"></rect>
+      </svg>
+      <div class="logo-text">
+        <div class="logo-name"><span class="logo-ai">AI</span>Numbers<span class="logo-co">.co</span></div>
+        <div class="logo-tag">Truncation Auditor</div>
+      </div>
+    </a>
+    <div class="nav-bc">
+      <a href="#">All Tools</a>
+      <span class="nav-bc-sep">›</span>
+      <a href="#">Cat-01 · Infrastructure</a>
+      <span class="nav-bc-sep">›</span>
+      <span class="nav-bc-current">Tool 77</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <a href="#" class="nav-pill">↗ Doc · ISO 20022 · MT103 mapping</a>
+    <a href="#" class="nav-pill">All Tools</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">Tool 77 · pacs.008 · MT103 · CBPR+ · SWIFT SR2026</div>
+        <div class="eyebrow-badges" style="display:flex;flex-wrap:wrap;gap:0.55rem;margin:0.85rem 0 0.5rem;">
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(42,127,192,.32);background:rgba(42,127,192,.04);color:var(--showcase-accent);border-radius:3px;font-weight:500;">ISO 20022 Migration</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid var(--showcase-border);color:var(--showcase-text-muted);border-radius:3px;font-weight:500;">SWIFT CBPR+ · 14 Nov 2026</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(192,144,64,.32);background:rgba(192,144,64,.05);color:var(--showcase-gold);border-radius:3px;font-weight:500;">AP2 Remediation Brief</span>
+        </div>
+
+        <h1>Message Truncation <em>Auditor</em></h1>
+        <p class="hero-sub">
+          Detect <b style="color:var(--red-lt);font-weight:500;">silent data loss</b> on the 35-character legacy boundary before your <code>pacs.008</code> hits a correspondent still translating to <code>MT103</code>. Paste any ISO 20022 MX payload on the left — see exactly which bytes will be discarded by the SWIFT FIN gateway on the right.
+        </p>
+      </div>
+      <div class="stat-strip" id="statStrip">
+        <div class="stat-cell">
+          <div class="stat-label">Fields audited</div>
+          <div class="stat-val" id="statAudited">—</div>
+          <div class="stat-sub">MX elements → MT lines</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Over 35 chars</div>
+          <div class="stat-val flag-red" id="statOver">—</div>
+          <div class="stat-sub" id="statOverSub">silent truncation risk</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Bytes dropped</div>
+          <div class="stat-val flag-warn" id="statDropped">—</div>
+          <div class="stat-sub">if relayed to MT103 today</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CBPR+ CALLOUT (spec Part 9.2 — 14 November 2026 SWIFT deadline) -->
+<div class="cbpr-callout" role="note" aria-label="SWIFT CBPR+ compliance context">
+  <div class="cbpr-eyebrow">
+    SWIFT CBPR+ · SR2026 cutover
+    <span class="cbpr-countdown" id="cbprCountdown">— days to 14 Nov 2026</span>
+  </div>
+  <p>Approximately 65% of payment messages still contain unstructured addresses as of March 2026 (SWIFT.com). After <strong>14 November 2026</strong>, payment instructions with unstructured addresses face rejection on the CBPR+ path. Hybrid address (town + country minimum) is the compliance floor; fully structured is preferred. Scope exceptions: admi.024, camt.025, camt.052, camt.053, camt.054, camt.060.</p>
+  <div class="cbpr-cite">Source: SWIFT Standards Release SR2026 — swift.com/news-events/news/iso-20022-milestone-november-2026</div>
+</div>
+
+<!-- VALUE-AT-RISK SIDEBAR (spec Part 17) -->
+<aside class="value-at-risk" aria-label="Value at risk — CBPR+ rejection">
+  <h4 class="var-eyebrow">Value at risk · CBPR+ rejection &amp; SLA breach</h4>
+  <p class="var-figure">Up to $35K per breach month + payment rejection</p>
+  <p class="var-body">SWIFT CBPR+ rejections begin 14 November 2026 for unstructured addresses. The auditor identifies pacs.008 fields that will truncate on the MT103 fallback path before they reach the network.</p>
+  <p class="var-cite"><small>SWIFT SR2026 release · pacs.008 → MT103 envelope · CBPR+ structured-address mandate</small></p>
+</aside>
+
+
+<!-- AUDITOR -->
+<section class="tool-section">
+  <div class="container">
+
+    <!-- sample switcher -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem;">
+      <div class="sample-row">
+        <span class="lbl">Load sample:</span>
+        <button class="pane-btn" data-sample="lossy">Lossy pacs.008 (default)</button>
+        <button class="pane-btn" data-sample="clean">CBPR+ clean</button>
+        <button class="pane-btn" data-sample="ultra">Ultra-long stress test</button>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;">
+        Browser-only · Zero data leaves this page
+      </div>
+    </div>
+
+    <div class="audit-wrap" role="region" aria-label="Truncation auditor">
+    <section class="audit-grid" aria-labelledby="auditRowHeading">
+      <h2 id="auditRowHeading" class="sr-only">Source MX payload and translated MT103 envelope</h2>
+      <!-- LEFT: MX INPUT -->
+      <div class="pane" role="region" aria-labelledby="mxHeading">
+        <div class="pane-head">
+          <div class="pane-head-left">
+            <span class="pane-tag tag-mx">MX · ISO 20022</span>
+            <div class="pane-title" id="mxHeading">pacs.008.001.12 <small>· source of truth</small></div>
+          </div>
+          <div class="pane-head-right">
+            <button class="pane-btn" id="formatBtn">↳ format</button>
+            <button class="pane-btn" id="clearBtn">clear</button>
+          </div>
+        </div>
+        <textarea class="mx-input" id="mxInput" spellcheck="false" autocomplete="off"></textarea>
+        <div class="mx-statusbar">
+          <span><span id="mxParseStatus" class="ok">● parsed</span> &nbsp; <span id="mxFieldCount">0 elements</span></span>
+          <span><span id="mxCharCount">0 chars</span></span>
+        </div>
+      </div>
+
+      <!-- RIGHT: MT103 OUTPUT -->
+      <div class="pane" role="region" aria-labelledby="mtHeading">
+        <div class="pane-head">
+          <div class="pane-head-left">
+            <span class="pane-tag tag-mt">MT · Legacy FIN</span>
+            <div class="pane-title" id="mtHeading">MT103 <small>· post-translation envelope · 4×35 limit</small></div>
+          </div>
+          <div class="pane-head-right">
+            <div class="mt-status" id="mtStatus"><span class="mt-status-dot"></span><span id="mtStatusText">checking…</span></div>
+            <button class="pane-btn" id="copyMtBtn">⧉ copy</button>
+          </div>
+        </div>
+        <div class="mt-body" id="mtBody">
+          <!-- rendered MT103 inserted here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORT + REMEDIATION -->
+    <section class="report-grid" aria-labelledby="reportRowHeading">
+      <h2 id="reportRowHeading" class="sr-only">Truncation findings and remediation guidance</h2>
+      <div class="report-pane" role="region" aria-labelledby="findingsHeading">
+        <div class="report-head">
+          <div class="report-title" id="findingsHeading"><span class="icon">⚠</span> Truncation Findings</div>
+          <div class="report-count" id="reportCount">— findings</div>
+        </div>
+        <div class="findings-list" id="findingsList"></div>
+      </div>
+      <div class="report-pane" role="region" aria-labelledby="remedHeading">
+        <div class="report-head">
+          <div class="report-title" id="remedHeading"><span class="icon">⌬</span> Remediation</div>
+          <div class="report-count">map · don't truncate</div>
+        </div>
+        <div class="remed-list" id="remedList"></div>
+      </div>
+    </section>
+    </div><!-- /orig-main -->
+
+    <!-- silent data loss explainer -->
+    <div class="silent-loss">
+      <div>
+        <div class="silent-loss-eyebrow">Why this matters</div>
+        <h3>The <em>silent</em> data loss problem</h3>
+        <div class="silent-loss-meta">SWIFT MT-MX coexistence · ends Nov&nbsp;2026</div>
+      </div>
+      <div class="silent-loss-body">
+        <p>ISO 20022 (<code>pacs.008</code>) carries up to <b>140-character structured</b> remittance lines and full structured postal addresses across 7+ subfields. When a correspondent on the MT103 side of a corridor receives the message, the SWIFT translation rulebook applies the legacy <b>4×35-character</b> ceiling. <b>Anything past column 35 is dropped, with no NACK, no warning, and no audit trail.</b></p>
+        <p>The original instruction looks delivered. The beneficiary sees a payment land. Reconciliation breaks downstream because the invoice reference is half-gone, the AML team can't pin the originator address, and your sanctions screening signal is silently shorter than what you sent. Auditing the boundary <i>before</i> the message leaves your gateway — and re-mapping the surplus into a structured field MT103 actually understands (<code>:50F:</code>, <code>:59F:</code>, <code>:77B:</code>) — is the only way to keep CBPR+ semantics intact across the legacy hop.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner-ai">
+    <a href="#" class="footer-brand-link">
+      <div class="logo-icon-sm">AI</div>
+      <span class="footer-wordmark">AINumbers.co</span>
+    </a>
+    <div class="footer-links-ai">
+      <a href="#">All Tools</a>
+      <a href="#">Sitemap</a>
+      <a href="#">Contact</a>
+      <a href="#">GitHub</a>
+    </div>
+    <div class="footer-badge-ai">MIT License · No data transmitted · v1.0</div>
+  </div>
+</footer>
+
+
+<!-- ═══ AP2 EXPORT ROW (spec Part 5.4 Demo 2) ═══ -->
+<div class="results-export-row">
+  <span class="export-label">Remediation Brief · validated against AP2 v1.0 schema</span>
+  <button class="btn-export" id="exportAp2" type="button">Download AP2 Mandate (JSON)</button>
+  <button class="btn-export outline" id="exportMd" type="button">Markdown Summary</button>
+</div>
+
+</div>
+</main>
+
+<!-- ═══ POL DARK FOOTER (spec Part 2.5) ═══ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--pol-gold)">Labs</span></div>
+      <p class="footer-copy">
+        &copy; 2026 Post Oak Labs &nbsp;·&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-copy">
+        Built by Post Oak Labs &nbsp;·&nbsp;
+        <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/paycode-decoder.html" target="_blank" rel="noopener">Deep Dive → AINumbers.co</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SAMPLES — realistic pacs.008 fragments that demonstrate
+   the 35-char legacy boundary problem.
+═══════════════════════════════════════════════════════════ */
+const SAMPLES = {
+  lossy: `<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.12">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>POL-2026-CBPR-INST-00427-EUR-USD-CORRIDOR-FRANKFURT</MsgId>
+      <CreDtTm>2026-05-12T09:14:22.418Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf><SttlmMtd>INDA</SttlmMtd></SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <InstrId>INSTR-FRA-DUB-2026-05-12-0917-Q2-RECONCILIATION</InstrId>
+        <EndToEndId>INV-2026-Q2-08-15-INTL-RECON-A47B9</EndToEndId>
+        <UETR>a1c4e7d2-9b8f-4f6a-91e5-3d2c1b8a7e64</UETR>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">147829.50</IntrBkSttlmAmt>
+      <IntrBkSttlmDt>2026-05-12</IntrBkSttlmDt>
+      <Dbtr>
+        <Nm>International Trade Solutions Holdings Limited Partnership</Nm>
+        <PstlAdr>
+          <StrtNm>Königsallee am Hauptbahnhof Boulevard West</StrtNm>
+          <BldgNb>1247-B</BldgNb>
+          <PstCd>40212</PstCd>
+          <TwnNm>Düsseldorf-Oberkassel</TwnNm>
+          <Ctry>DE</Ctry>
+        </PstlAdr>
+        <Id><OrgId><LEI>529900HNOAA1KXQJUQ27</LEI></OrgId></Id>
+      </Dbtr>
+      <DbtrAcct><Id><IBAN>DE89370400440532013000</IBAN></Id></DbtrAcct>
+      <DbtrAgt><FinInstnId><BICFI>DEUTDEFFXXX</BICFI></FinInstnId></DbtrAgt>
+      <CdtrAgt><FinInstnId><BICFI>BOFIIE2DXXX</BICFI></FinInstnId></CdtrAgt>
+      <Cdtr>
+        <Nm>O'Sullivan &amp; McGrath Pharmaceutical Distributors Ireland DAC</Nm>
+        <PstlAdr>
+          <StrtNm>Sandyford Industrial Estate, Blackthorn Avenue Building 4</StrtNm>
+          <BldgNb>Unit 27</BldgNb>
+          <PstCd>D18 K7H2</PstCd>
+          <TwnNm>Dublin 18</TwnNm>
+          <Ctry>IE</Ctry>
+        </PstlAdr>
+      </Cdtr>
+      <CdtrAcct><Id><IBAN>IE29AIBK93115212345678</IBAN></Id></CdtrAcct>
+      <RmtInf>
+        <Ustrd>Settlement of invoices INV-2026-Q2-08-15 and INV-2026-Q2-08-16 per master services agreement MSA-2024-A47 dated 2024-11-03</Ustrd>
+      </RmtInf>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>`,
+  clean: `<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.12">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>POL-2026-05-12-CT-0042</MsgId>
+      <CreDtTm>2026-05-12T09:14:22Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf><SttlmMtd>INDA</SttlmMtd></SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <InstrId>INSTR-2026-0512-0042</InstrId>
+        <EndToEndId>E2E-2026-INV-0042</EndToEndId>
+        <UETR>a1c4e7d2-9b8f-4f6a-91e5-3d2c1b8a7e64</UETR>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">25000.00</IntrBkSttlmAmt>
+      <IntrBkSttlmDt>2026-05-12</IntrBkSttlmDt>
+      <Dbtr>
+        <Nm>Acme Trading GmbH</Nm>
+        <PstlAdr>
+          <StrtNm>Hauptstrasse</StrtNm>
+          <BldgNb>12</BldgNb>
+          <PstCd>10115</PstCd>
+          <TwnNm>Berlin</TwnNm>
+          <Ctry>DE</Ctry>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct><Id><IBAN>DE89370400440532013000</IBAN></Id></DbtrAcct>
+      <DbtrAgt><FinInstnId><BICFI>DEUTDEFFXXX</BICFI></FinInstnId></DbtrAgt>
+      <CdtrAgt><FinInstnId><BICFI>BOFIIE2DXXX</BICFI></FinInstnId></CdtrAgt>
+      <Cdtr>
+        <Nm>Sullivan Pharma Ltd</Nm>
+        <PstlAdr>
+          <StrtNm>Sandyford Park</StrtNm>
+          <BldgNb>27</BldgNb>
+          <PstCd>D18 K7H2</PstCd>
+          <TwnNm>Dublin</TwnNm>
+          <Ctry>IE</Ctry>
+        </PstlAdr>
+      </Cdtr>
+      <CdtrAcct><Id><IBAN>IE29AIBK93115212345678</IBAN></Id></CdtrAcct>
+      <RmtInf>
+        <Strd>
+          <CdtrRefInf>
+            <Ref>RF18539007547034</Ref>
+          </CdtrRefInf>
+        </Strd>
+      </RmtInf>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>`,
+  ultra: `<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.12">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>STRESS-TEST-2026-MAY-12-ULTRA-LONG-MESSAGE-IDENTIFIER-001</MsgId>
+      <CreDtTm>2026-05-12T09:14:22.418Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf><SttlmMtd>INDA</SttlmMtd></SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <InstrId>INSTRUCTION-IDENTIFIER-WAY-BEYOND-THE-LEGACY-LIMIT-OF-35</InstrId>
+        <EndToEndId>END-TO-END-ID-THIS-WILL-DEFINITELY-LOSE-DATA-AT-MT103</EndToEndId>
+        <UETR>a1c4e7d2-9b8f-4f6a-91e5-3d2c1b8a7e64</UETR>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="USD">9999999.99</IntrBkSttlmAmt>
+      <IntrBkSttlmDt>2026-05-12</IntrBkSttlmDt>
+      <Dbtr>
+        <Nm>Global Multinational Conglomerate Industries International Holdings Société Anonyme</Nm>
+        <PstlAdr>
+          <StrtNm>Avenue des Champs-Élysées, Tour Eiffel Annex Building C, Sublevel 4, Office Suite 4250-North-East-Wing</StrtNm>
+          <BldgNb>1247-B-EAST</BldgNb>
+          <PstCd>75008-CEDEX-08</PstCd>
+          <TwnNm>Paris, Île-de-France Région</TwnNm>
+          <Ctry>FR</Ctry>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct><Id><IBAN>FR1420041010050500013M02606</IBAN></Id></DbtrAcct>
+      <DbtrAgt><FinInstnId><BICFI>BNPAFRPPXXX</BICFI></FinInstnId></DbtrAgt>
+      <CdtrAgt><FinInstnId><BICFI>CHASUS33XXX</BICFI></FinInstnId></CdtrAgt>
+      <Cdtr>
+        <Nm>Wakefield-Pemberton-Hartwell Pharmaceutical Distribution Services North America LLC</Nm>
+        <PstlAdr>
+          <StrtNm>One Manhattan West Plaza, 395 Ninth Avenue, Floor 47, Suite 4715-Trading-Operations</StrtNm>
+          <BldgNb>Tower-A-Suite-4715</BldgNb>
+          <PstCd>10001-2107</PstCd>
+          <TwnNm>New York City, New York State</TwnNm>
+          <Ctry>US</Ctry>
+        </PstlAdr>
+      </Cdtr>
+      <CdtrAcct><Id><IBAN>US64SVBKUS6S3300958879</IBAN></Id></CdtrAcct>
+      <RmtInf>
+        <Ustrd>Pharmaceutical product purchase order PO-2026-Q2-COMPOUND-A47B9-SHIPMENT-SEVENTEEN per master supply agreement MSA-2024-007 amended 2025-11-14 covering invoices INV-2026-Q2-08-15, INV-2026-Q2-08-16, INV-2026-Q2-08-17</Ustrd>
+      </RmtInf>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>`
+};
+
+/* ═══════════════════════════════════════════════════════════
+   MT103 FIELD MAPPING — the 35-char ceiling that matters
+═══════════════════════════════════════════════════════════ */
+const MT_LIMIT = 35;
+// fields that allow N lines of 35 chars (block structure)
+const MT_LINES = { '20':1, '23B':1, '32A':1, '50K':4, '50F':4, '52A':1, '57A':1, '59':4, '59F':4, '70':4, '71A':1, '72':6, '77B':3 };
+
+/* ═══════════════════════════════════════════════════════════
+   PARSE the MX XML (in browser) — pull out the elements we
+   care about for MT103 translation.
+═══════════════════════════════════════════════════════════ */
+function parseMx(xmlString){
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xmlString, 'text/xml');
+  const perr = doc.querySelector('parsererror');
+  if (perr) return { ok:false, err: 'XML parse error', fields:{}, elementCount:0 };
+
+  // strip namespaces for simpler querying
+  const find = (tag) => {
+    const els = doc.getElementsByTagName('*');
+    for (const el of els) {
+      const ln = el.localName || el.nodeName.split(':').pop();
+      if (ln === tag) return el;
+    }
+    return null;
+  };
+  const findAll = (tag) => {
+    const out = [];
+    const els = doc.getElementsByTagName('*');
+    for (const el of els) {
+      const ln = el.localName || el.nodeName.split(':').pop();
+      if (ln === tag) out.push(el);
+    }
+    return out;
+  };
+  const textOf = (el) => el ? (el.textContent || '').trim() : '';
+  const childTextOf = (parent, tag) => {
+    if (!parent) return '';
+    for (const c of parent.children) {
+      const ln = c.localName || c.nodeName.split(':').pop();
+      if (ln === tag) return (c.textContent || '').trim();
+    }
+    return '';
+  };
+  // namespaced lookup against a given parent (not full doc)
+  const findUnder = (parent, tag) => {
+    if (!parent) return null;
+    const els = parent.getElementsByTagName('*');
+    for (const el of els) {
+      const ln = el.localName || el.nodeName.split(':').pop();
+      if (ln === tag) return el;
+    }
+    return null;
+  };
+
+  const grpHdr = find('GrpHdr');
+  const tx = find('CdtTrfTxInf');
+  if (!tx) return { ok:false, err:'CdtTrfTxInf not found', fields:{}, elementCount: doc.getElementsByTagName('*').length };
+
+  const pmtId = findUnder(tx, 'PmtId');
+  const dbtr = findUnder(tx, 'Dbtr');
+  const dbtrAcct = findUnder(tx, 'DbtrAcct');
+  const dbtrAgt = findUnder(tx, 'DbtrAgt');
+  const cdtr = findUnder(tx, 'Cdtr');
+  const cdtrAcct = findUnder(tx, 'CdtrAcct');
+  const cdtrAgt = findUnder(tx, 'CdtrAgt');
+  const rmtInf = findUnder(tx, 'RmtInf');
+
+  const dbtrAdr = dbtr ? findUnder(dbtr, 'PstlAdr') : null;
+  const cdtrAdr = cdtr ? findUnder(cdtr, 'PstlAdr') : null;
+
+  const stitchAddr = (adr) => {
+    if (!adr) return [];
+    const parts = [];
+    const street = childTextOf(adr,'StrtNm');
+    const bldg = childTextOf(adr,'BldgNb');
+    const postcode = childTextOf(adr,'PstCd');
+    const town = childTextOf(adr,'TwnNm');
+    const ctry = childTextOf(adr,'Ctry');
+    if (street || bldg) parts.push([bldg, street].filter(Boolean).join(' '));
+    if (postcode || town) parts.push([postcode, town].filter(Boolean).join(' '));
+    if (ctry) parts.push(ctry);
+    return parts.filter(Boolean);
+  };
+
+  const amtEl = findUnder(tx, 'IntrBkSttlmAmt');
+  const amt = amtEl ? amtEl.textContent.trim() : '';
+  const ccy = amtEl ? amtEl.getAttribute('Ccy') : '';
+
+  // unstructured remittance — MT103 :70: 4×35
+  const ustrd = rmtInf ? childTextOf(rmtInf,'Ustrd') : '';
+  // structured creditor reference
+  const strd = rmtInf ? findUnder(rmtInf,'Strd') : null;
+  const strdRef = strd ? (childTextOf(findUnder(strd,'CdtrRefInf')||strd,'Ref') || '') : '';
+
+  return {
+    ok: true,
+    elementCount: doc.getElementsByTagName('*').length,
+    fields: {
+      MsgId: { xpath: 'GrpHdr/MsgId', val: childTextOf(grpHdr,'MsgId'), mtTag: '20', mtName: 'Sender Reference', mtLines: 1 },
+      InstrId: { xpath: 'PmtId/InstrId', val: pmtId ? childTextOf(pmtId,'InstrId') : '', mtTag: '20', mtName: 'Sender Reference (alt)', mtLines: 1, alt: true },
+      EndToEndId: { xpath: 'PmtId/EndToEndId', val: pmtId ? childTextOf(pmtId,'EndToEndId') : '', mtTag: '21', mtName: 'Related Reference', mtLines: 1 },
+      UETR: { xpath: 'PmtId/UETR', val: pmtId ? childTextOf(pmtId,'UETR') : '', mtTag: '121', mtName: 'UETR (block 3)', mtLines: 1, allow: 36 },
+      SettleDate: { xpath: 'IntrBkSttlmDt', val: childTextOf(tx,'IntrBkSttlmDt'), mtTag: '32A', mtName: 'Value Date / Currency / Amount', mtLines: 1, allow: 35 },
+      Amount: { xpath: 'IntrBkSttlmAmt', val: amt, mtTag: '32A', mtName: 'Amount', mtLines: 1, allow: 15, ccy },
+      DbtrNm: { xpath: 'Dbtr/Nm', val: dbtr ? childTextOf(dbtr,'Nm') : '', mtTag: '50K', mtName: 'Ordering Customer · Name', mtLines: 1, allow: 35, lineRole: 'name' },
+      DbtrAddr: { xpath: 'Dbtr/PstlAdr', val: stitchAddr(dbtrAdr), mtTag: '50K', mtName: 'Ordering Customer · Address', mtLines: 3, allow: 35, lineRole: 'addr', isArray: true },
+      DbtrIBAN: { xpath: 'DbtrAcct/Id/IBAN', val: dbtrAcct ? childTextOf(findUnder(dbtrAcct,'Id')||dbtrAcct,'IBAN') : '', mtTag: '50K', mtName: 'Account', mtLines: 1, allow: 34 },
+      DbtrBIC: { xpath: 'DbtrAgt/FinInstnId/BICFI', val: dbtrAgt ? childTextOf(findUnder(dbtrAgt,'FinInstnId')||dbtrAgt,'BICFI') : '', mtTag: '52A', mtName: 'Ordering Institution', mtLines: 1, allow: 11 },
+      CdtrBIC: { xpath: 'CdtrAgt/FinInstnId/BICFI', val: cdtrAgt ? childTextOf(findUnder(cdtrAgt,'FinInstnId')||cdtrAgt,'BICFI') : '', mtTag: '57A', mtName: 'Account With Institution', mtLines: 1, allow: 11 },
+      CdtrNm: { xpath: 'Cdtr/Nm', val: cdtr ? childTextOf(cdtr,'Nm') : '', mtTag: '59', mtName: 'Beneficiary · Name', mtLines: 1, allow: 35, lineRole: 'name' },
+      CdtrAddr: { xpath: 'Cdtr/PstlAdr', val: stitchAddr(cdtrAdr), mtTag: '59', mtName: 'Beneficiary · Address', mtLines: 3, allow: 35, lineRole: 'addr', isArray: true },
+      CdtrIBAN: { xpath: 'CdtrAcct/Id/IBAN', val: cdtrAcct ? childTextOf(findUnder(cdtrAcct,'Id')||cdtrAcct,'IBAN') : '', mtTag: '59', mtName: 'Account', mtLines: 1, allow: 34 },
+      RmtUstrd: { xpath: 'RmtInf/Ustrd', val: ustrd, mtTag: '70', mtName: 'Remittance Information', mtLines: 4, allow: 35, isUstrd: true },
+      RmtStrd: { xpath: 'RmtInf/Strd/CdtrRefInf/Ref', val: strdRef, mtTag: '70', mtName: 'Structured Remittance Ref', mtLines: 1, allow: 35 }
+    }
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SPLIT a value into N×35 lines, mark dropped surplus
+═══════════════════════════════════════════════════════════ */
+function splitToLines(value, maxLines, limit){
+  const capacity = maxLines * limit;
+  const kept = value.slice(0, capacity);
+  const dropped = value.slice(capacity);
+  const lines = [];
+  for (let i = 0; i < maxLines; i++){
+    const segStart = i * limit;
+    const segEnd = segStart + limit;
+    if (segStart >= kept.length) break;
+    const seg = kept.slice(segStart, segEnd);
+    const segDroppedOnThisLine = (i === maxLines - 1) ? dropped : '';
+    lines.push({ kept: seg, dropped: segDroppedOnThisLine, length: seg.length });
+  }
+  return { lines, totalKept: kept.length, totalDropped: dropped.length, totalLen: value.length };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER MT103 view + collect findings
+═══════════════════════════════════════════════════════════ */
+function renderMT(parsed){
+  const mtBody = document.getElementById('mtBody');
+  if (!parsed.ok){
+    mtBody.innerHTML = `<div class="mt-empty">Cannot translate — ${escapeHtml(parsed.err)}</div>`;
+    return { findings: [], totalDropped: 0, fieldsAudited: 0, severity: 'loss' };
+  }
+  const f = parsed.fields;
+  const findings = [];
+  let totalDropped = 0;
+  let totalAudited = 0;
+  let anyOverflow = false;
+
+  // helper to emit a block, capturing findings as side-effect
+  function blockHtml({ tagId, tagName, fields }) {
+    // fields = array of { id, val:str|str[], maxLines, allow, prefix? }
+    let lines = [];
+    fields.forEach(spec => {
+      const allow = spec.allow || MT_LIMIT;
+      if (spec.isArray) {
+        // array of strings — each gets its own line, each subject to 35
+        (spec.val || []).forEach((s, i) => {
+          const r = splitToLines(s, 1, allow);
+          const ln = r.lines[0] || { kept:'', dropped:'', length:0 };
+          if (s.length > allow) {
+            anyOverflow = true; totalDropped += (s.length - allow);
+            findings.push({
+              key: spec.id + '_' + i,
+              xpath: f[spec.id] ? f[spec.id].xpath + `[${i+1}]` : spec.id,
+              mtTag: tagId, mtName: tagName, fieldLabel: spec.label || (f[spec.id] ? f[spec.id].mtName : spec.id),
+              full: s, kept: s.slice(0, allow), dropped: s.slice(allow),
+              length: s.length, allow, severity: severityFor(s.length, allow)
+            });
+          }
+          totalAudited++;
+          lines.push({ kept: ln.kept, dropped: ln.dropped, length: s.length, allow, ruler: `${s.length}/${allow}` });
+        });
+      } else {
+        const valStr = spec.val || '';
+        if (!valStr) return; // skip empty
+        const cap = spec.maxLines * allow;
+        const r = splitToLines(valStr, spec.maxLines, allow);
+        if (valStr.length > cap) {
+          anyOverflow = true; totalDropped += (valStr.length - cap);
+          findings.push({
+            key: spec.id,
+            xpath: f[spec.id] ? f[spec.id].xpath : spec.id,
+            mtTag: tagId, mtName: tagName, fieldLabel: spec.label || (f[spec.id] ? f[spec.id].mtName : spec.id),
+            full: valStr, kept: valStr.slice(0, cap), dropped: valStr.slice(cap),
+            length: valStr.length, allow: cap, severity: severityFor(valStr.length, cap)
+          });
+        } else if (valStr.length > allow && spec.maxLines === 1) {
+          // single-line field over allow — already counted above
+        }
+        totalAudited++;
+        // emit each split line
+        r.lines.forEach((ln, i) => {
+          const lineRuler = (spec.maxLines > 1) ? `${ln.length}/${allow}` : `${valStr.length}/${spec.maxLines * allow}`;
+          lines.push({
+            kept: (spec.prefix && i === 0 ? spec.prefix : '') + ln.kept,
+            dropped: ln.dropped,
+            length: ln.kept.length + (spec.prefix && i === 0 ? spec.prefix.length : 0),
+            allow,
+            ruler: lineRuler
+          });
+        });
+      }
+    });
+
+    if (!lines.length) return '';
+    const linesHtml = lines.map(L => {
+      const isOver = L.dropped && L.dropped.length > 0;
+      const rulerCls = isOver ? 'over' : '';
+      const cls = isOver ? 'truncated' : 'ok';
+      const droppedHtml = isOver ? `<span class="dropped">${escapeHtml(L.dropped)}</span>` : '';
+      return `<div class="mt-line ${cls}">
+        <div class="mt-line-content"><span class="kept">${escapeHtml(L.kept)}</span>${droppedHtml}</div>
+        <div class="mt-line-ruler ${rulerCls}">${L.ruler}</div>
+      </div>`;
+    }).join('');
+
+    return `<div class="mt-block">
+      <div class="mt-tag">:${tagId}:<span class="mt-tag-name">${tagName}</span></div>
+      <div class="mt-lines">${linesHtml}</div>
+    </div>`;
+  }
+
+  // Build the MT103 sequence
+  let html = '';
+  // header strip
+  html += `<div class="mt-header">
+    <div class="mt-header-block">
+      <span><b>{1:F01</b>BANKBICAXXX0000000000<b>}</b></span>
+      <span><b>{2:</b>I103 ${escapeHtml(f.CdtrBIC.val || 'XXXXXXXX')}N<b>}</b></span>
+      <span><b>{3:</b>{121:${escapeHtml(f.UETR.val || '—')}}<b>}</b></span>
+    </div>
+    <span>SR2026 · CBPR+</span>
+  </div>`;
+
+  // :20: Sender Reference
+  const senderRef = f.MsgId.val || f.InstrId.val || '';
+  html += blockHtml({
+    tagId: '20', tagName: 'Sender\'s Reference',
+    fields: [{ id: senderRef === f.MsgId.val ? 'MsgId' : 'InstrId', val: senderRef, maxLines: 1, allow: 16, label: 'Sender\'s Reference' }]
+  });
+  // :23B: bank operation code
+  html += `<div class="mt-block">
+    <div class="mt-tag">:23B:<span class="mt-tag-name">Bank Operation Code</span></div>
+    <div class="mt-lines"><div class="mt-line ok"><div class="mt-line-content"><span class="kept">CRED</span></div><div class="mt-line-ruler">4/4</div></div></div>
+  </div>`;
+  // :32A: value date + ccy + amt
+  const settle = (f.SettleDate.val || '').replace(/-/g,'').slice(2,8);
+  const amt32a = f.Amount.val.replace('.', ',');
+  const v32a = `${settle}${f.Amount.ccy||''}${amt32a}`;
+  html += `<div class="mt-block">
+    <div class="mt-tag">:32A:<span class="mt-tag-name">Value Date / Currency / Amount</span></div>
+    <div class="mt-lines"><div class="mt-line ok"><div class="mt-line-content"><span class="kept">${escapeHtml(v32a)}</span></div><div class="mt-line-ruler">${v32a.length}/35</div></div></div>
+  </div>`;
+  // :50K: ordering customer
+  html += blockHtml({
+    tagId: '50K', tagName: 'Ordering Customer',
+    fields: [
+      { id:'DbtrIBAN', val: f.DbtrIBAN.val, maxLines: 1, allow: 34, prefix: '/', label: 'Account' },
+      { id:'DbtrNm', val: f.DbtrNm.val, maxLines: 1, allow: 35, label: 'Name' },
+      { id:'DbtrAddr', val: f.DbtrAddr.val, isArray: true, allow: 35, label: 'Address line' }
+    ]
+  });
+  // :52A: ordering institution
+  html += blockHtml({ tagId: '52A', tagName: 'Ordering Institution',
+    fields: [{ id:'DbtrBIC', val: f.DbtrBIC.val, maxLines: 1, allow: 11, label: 'BIC' }] });
+  // :57A: account with
+  html += blockHtml({ tagId: '57A', tagName: 'Account With Institution',
+    fields: [{ id:'CdtrBIC', val: f.CdtrBIC.val, maxLines: 1, allow: 11, label: 'BIC' }] });
+  // :59: beneficiary
+  html += blockHtml({
+    tagId: '59', tagName: 'Beneficiary Customer',
+    fields: [
+      { id:'CdtrIBAN', val: f.CdtrIBAN.val, maxLines: 1, allow: 34, prefix: '/', label: 'Account' },
+      { id:'CdtrNm', val: f.CdtrNm.val, maxLines: 1, allow: 35, label: 'Name' },
+      { id:'CdtrAddr', val: f.CdtrAddr.val, isArray: true, allow: 35, label: 'Address line' }
+    ]
+  });
+  // :70: remittance
+  const rmt = f.RmtUstrd.val || f.RmtStrd.val || '';
+  if (rmt) {
+    html += blockHtml({
+      tagId: '70', tagName: 'Remittance Information',
+      fields: [{ id: f.RmtUstrd.val ? 'RmtUstrd' : 'RmtStrd', val: rmt, maxLines: 4, allow: 35, label: 'Remittance' }]
+    });
+  }
+  // :71A:
+  html += `<div class="mt-block">
+    <div class="mt-tag">:71A:<span class="mt-tag-name">Details of Charges</span></div>
+    <div class="mt-lines"><div class="mt-line ok"><div class="mt-line-content"><span class="kept">SHA</span></div><div class="mt-line-ruler">3/3</div></div></div>
+  </div>`;
+
+  mtBody.innerHTML = html;
+
+  return {
+    findings,
+    totalDropped,
+    fieldsAudited: totalAudited,
+    severity: anyOverflow ? (totalDropped > 60 ? 'loss' : 'warn') : 'clean'
+  };
+}
+
+function severityFor(len, allow){
+  const over = len - allow;
+  if (over <= 0) return 'low';
+  if (over <= 8) return 'med';
+  return 'high';
+}
+
+function escapeHtml(s){
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER findings list (left of remediation)
+═══════════════════════════════════════════════════════════ */
+function renderFindings(findings){
+  const list = document.getElementById('findingsList');
+  const count = document.getElementById('reportCount');
+  if (!findings.length){
+    list.innerHTML = `<div class="findings-empty">
+      <span class="big">✓</span>
+      No truncation detected. All MX elements fit within their MT103 envelope.
+    </div>`;
+    count.innerHTML = `<span class="num ok">0</span> findings`;
+    return;
+  }
+  count.innerHTML = `<span class="num">${findings.length}</span> overflow${findings.length>1?'s':''}`;
+  const html = findings.map(F => {
+    const pct = Math.min(100, Math.round(F.length / F.allow * 100));
+    const barCls = F.severity === 'high' ? '' : (F.severity === 'med' ? 'warn' : 'ok');
+    const lenCls = F.severity === 'high' ? '' : (F.severity === 'med' ? 'warn' : 'ok');
+    return `<div class="finding">
+      <div class="finding-tag">
+        <span class="mt-tag-id">:${F.mtTag}:</span>
+        <span class="field">${escapeHtml(F.fieldLabel)}</span>
+      </div>
+      <div class="finding-body">
+        <div class="finding-xpath"><b>MX</b> · ${escapeHtml(F.xpath)}</div>
+        <div class="finding-value"><span class="kept">${escapeHtml(F.kept)}</span><span class="dropped">${escapeHtml(F.dropped)}</span></div>
+      </div>
+      <div class="finding-meter">
+        <span class="len ${lenCls}">${F.length}<span style="color:var(--muted);font-size:.55rem;"> / ${F.allow}</span></span>
+        <div class="bar"><div class="bar-fill ${barCls}" style="width:${pct}%"></div></div>
+        <span class="label">${F.length - F.allow > 0 ? `−${F.length - F.allow} bytes` : 'within'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  list.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REMEDIATION RULES — built from the findings
+═══════════════════════════════════════════════════════════ */
+function buildRemediation(findings, parsed){
+  const remed = [];
+  const seen = new Set();
+  const has = (k) => findings.some(F => F.key.startsWith(k));
+
+  // 1) Name overflow (:50K: / :59:) → switch to :50F: / :59F: structured party
+  if (findings.some(F => F.key === 'DbtrNm' || F.key === 'CdtrNm')) {
+    remed.push({
+      sev: 'high',
+      name: 'Party name exceeds 35 chars → switch to structured tag',
+      issue: `Legacy <b>:50K:</b> / <b>:59:</b> name lines are capped at 35. ISO 20022 <code>&lt;Nm&gt;</code> allows up to 140. Translating without re-mapping <b>silently drops the suffix</b> — the receiving bank's AML and reconciliation systems see a name that doesn't match the underlying customer record.`,
+      steps: [
+        { code: 'Switch outbound MT103 to <code>:50F:</code> for ordering customer and <code>:59F:</code> for beneficiary — both support a structured party identifier plus 4×35 name & address lines.' },
+        { code: 'Populate <code>:50F:</code> line 1 as <code>/{account}</code>, then up to 3 lines of <code>1/NAME-CONT</code> with name continuation codes. This preserves the full 140-char name across the legacy hop.' },
+        { code: 'Update your gateway translation rulebook (CBPR+ MX→MT mapping rule 16R/16S) so <code>&lt;Nm&gt;</code> > 35 chars automatically routes to <code>:50F:</code>/<code>:59F:</code> instead of <code>:50K:</code>/<code>:59:</code>.' }
+      ],
+      mapping: {
+        from: 'pacs.008 · CdtTrfTxInf/Dbtr/Nm  (140 char)',
+        to: 'MT103 · :50F:/1/NAME / :50F:/2/NAME-CONT  (4×35 structured)'
+      }
+    });
+  }
+
+  // 2) Postal address overflow
+  if (findings.some(F => F.key.startsWith('DbtrAddr') || F.key.startsWith('CdtrAddr'))) {
+    remed.push({
+      sev: 'high',
+      name: 'Structured postal address truncated',
+      issue: `pacs.008 carries <b>StrtNm + BldgNb + PstCd + TwnNm + Ctry</b> as discrete subfields. Concatenated and forced through <b>:50K:</b>/<b>:59:</b>, lines longer than 35 chars are silently clipped at column 35 — a <b>CBPR+ structured address mandate violation</b> from 14 Nov 2026.`,
+      steps: [
+        { code: 'Use <code>:50F:</code>/<code>:59F:</code> with party identifier sub-codes: <code>2/STREET-AND-NUMBER</code>, <code>3/POSTCODE-CITY</code>, <code>4/COUNTRY-CODE</code>. Each line gets its own 35-char envelope so structured semantics survive.' },
+        { code: 'If the correspondent still rejects <code>:50F:</code>, write the surplus into <code>:77B:</code> Regulatory Reporting (3×35) flagged with <code>/ORDERRES/</code> for ordering residence.' },
+        { code: 'Never collapse the address into a single <code>&lt;Nm&gt;+&lt;Adr&gt;</code> blob upstream — keep it structured in the MX and let the translator place each subfield.' }
+      ],
+      mapping: {
+        from: 'pacs.008 · Dbtr/PstlAdr/{StrtNm, BldgNb, PstCd, TwnNm, Ctry}',
+        to: 'MT103 · :50F:/2/STREET  /3/POSTCODE-CITY  /4/COUNTRY-CODE'
+      }
+    });
+  }
+
+  // 3) MsgId / InstrId / EndToEnd over their MT counterparts
+  const idOver = findings.filter(F => F.key === 'MsgId' || F.key === 'InstrId' || F.key === 'EndToEndId');
+  if (idOver.length) {
+    remed.push({
+      sev: 'med',
+      name: 'Reference identifier exceeds MT103 limit',
+      issue: `MT103 <b>:20:</b> Sender's Reference is capped at <b>16 chars</b>; <b>:21:</b> Related Reference at 16 chars. Your <code>MsgId</code>/<code>InstrId</code>/<code>EndToEndId</code> is longer — the gateway will hash, prefix-strip, or worse, silently truncate. End-to-end reconciliation breaks.`,
+      steps: [
+        { code: 'Generate a short surrogate ref (≤16 char) for <code>:20:</code> and store the mapping <code>shortRef → fullMsgId</code> in your gateway audit log.' },
+        { code: 'Carry the full original ID in <code>:72:</code> Sender to Receiver Information as <code>/REC/{fullId}</code> — 6×35 chars, structured, preserves the original.' },
+        { code: 'For <b>UETR</b>, never truncate. The 36-char UUID lives in block 3 tag <code>{121:}</code> which is not subject to the 35-char rule. Verify your gateway emits it intact.' }
+      ],
+      mapping: {
+        from: 'pacs.008 · GrpHdr/MsgId  (35 char)',
+        to: 'MT103 · :20:SHORT-REF + :72:/REC/{full-MsgId}'
+      }
+    });
+  }
+
+  // 4) Remittance overflow
+  if (findings.some(F => F.key === 'RmtUstrd')) {
+    remed.push({
+      sev: 'high',
+      name: 'Unstructured remittance > 140 chars',
+      issue: `<code>&lt;Ustrd&gt;</code> tolerates 140 chars, but MT103 <b>:70:</b> is also 4×35=140 — anything past <b>140</b> chars vanishes. If your invoice reconciliation logic depends on the suffix, the beneficiary's ERP will <b>fail to auto-match</b>.`,
+      steps: [
+        { code: 'Replace free-text reconciliation strings with an <b>ISO 11649 structured creditor reference</b> in <code>&lt;Strd&gt;&lt;CdtrRefInf&gt;&lt;Ref&gt;</code>. One short reference, deterministic check digit, machine-readable on either rail.' },
+        { code: 'For overflow data that cannot be structured (e.g. narrative settlement notes), spill into <code>:72:</code> with <code>/INV/</code> codeword — 6×35 lines, preserved across the hop.' },
+        { code: 'Reject rejection code <b>RR08 "Remittance Information Truncated"</b> upstream by enforcing length at message-creation time, not at gateway egress.' }
+      ],
+      mapping: {
+        from: 'pacs.008 · RmtInf/Ustrd  (140 char free text)',
+        to: 'MT103 · :70:/RFB/{ref}  +  :72:/INV/{narrative}'
+      }
+    });
+  }
+
+  // 5) Always-present advisory if anything overflowed
+  if (findings.length && !remed.some(r => r.sev === 'info')) {
+    remed.push({
+      sev: 'info',
+      name: 'Audit & log every translation downgrade',
+      issue: `Every MX → MT downgrade is a <b>provenance break</b>. Once the surplus is gone, you cannot reconstruct it from the MT103 alone — the original pacs.008 must be retained in your gateway store, joined to the outgoing MT by <code>UETR</code>, for the regulator's lookback window.`,
+      steps: [
+        { code: 'Persist the full MX payload keyed by UETR for the longer of: 7 years, or your jurisdiction\'s AML retention. Index by truncated MT103 sender ref for forensic lookup.' },
+        { code: 'Emit a <code>pacs.002</code> status with reason code <b>NARR</b> + free-text "data downgraded at MT103 boundary" so downstream pacs.004 returns can be reconciled.' },
+        { code: 'Add the truncation report to your SR2026 / CBPR+ compliance evidence pack. Auditors look for explicit gateway controls, not just schema validity.' }
+      ]
+    });
+  }
+
+  // 6) Clean state
+  if (!findings.length) {
+    remed.push({
+      sev: 'low',
+      name: 'No remediation needed',
+      issue: `Every audited element fits within its MT103 envelope. Your <code>pacs.008</code> will survive translation across the legacy hop without silent data loss. Re-run this audit on every message variant and corner case before go-live.`,
+      steps: [
+        { code: 'Run a regression suite of historical messages through this auditor before each SR window. Field-length distributions drift as customer onboarding adds new entities.' },
+        { code: 'Even though this message is clean, prefer <code>:50F:</code>/<code>:59F:</code> structured tags universally — the SWIFT CBPR+ structured-address mandate is non-optional from <b>14 Nov 2026</b>.' }
+      ]
+    });
+  }
+
+  return remed;
+}
+
+function renderRemediation(remed){
+  const list = document.getElementById('remedList');
+  if (!remed.length){
+    list.innerHTML = `<div class="remed-empty">Waiting for an audit…</div>`;
+    return;
+  }
+  const html = remed.map(R => {
+    const sevLabel = { high: 'Silent Loss', med: 'Downgrade', low: 'Clean', info: 'Provenance' }[R.sev] || R.sev;
+    const stepsHtml = (R.steps || []).map((s,i) => `
+      <div class="remed-step">
+        <span class="num">${String(i+1).padStart(2,'0')}</span>
+        <span>${s.code}</span>
+      </div>
+    `).join('');
+    const mapping = R.mapping ? `
+      <div class="remed-mapping">
+        <span class="lbl">Suggested mapping</span>
+        <span class="from">${escapeHtml(R.mapping.from)}</span><span class="arrow">→</span><span class="to">${escapeHtml(R.mapping.to)}</span>
+      </div>` : '';
+    return `<div class="remed-card ${R.sev}">
+      <div class="remed-head">
+        <div class="remed-name">${R.name}</div>
+        <span class="remed-sev ${R.sev}">${sevLabel}</span>
+      </div>
+      <div class="remed-issue">${R.issue}</div>
+      ${stepsHtml}
+      ${mapping}
+    </div>`;
+  }).join('');
+  list.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UPDATE — top-level orchestration
+═══════════════════════════════════════════════════════════ */
+function update(){
+  const xml = document.getElementById('mxInput').value;
+  document.getElementById('mxCharCount').textContent = `${xml.length} chars`;
+  const parsed = parseMx(xml);
+  document.getElementById('mxFieldCount').textContent = `${parsed.elementCount || 0} elements`;
+  const status = document.getElementById('mxParseStatus');
+  if (parsed.ok){
+    status.className = 'ok'; status.textContent = '● parsed';
+  } else {
+    status.className = 'err'; status.textContent = `● ${parsed.err || 'parse error'}`;
+  }
+
+  const result = renderMT(parsed);
+  renderFindings(result.findings);
+  const remed = buildRemediation(result.findings, parsed);
+  renderRemediation(remed);
+
+  // hero stat strip
+  document.getElementById('statAudited').textContent = result.fieldsAudited || '0';
+  const overEl = document.getElementById('statOver');
+  overEl.textContent = result.findings.length || '0';
+  overEl.className = 'stat-val ' + (result.findings.length ? 'flag-red' : 'flag-green');
+  const dropEl = document.getElementById('statDropped');
+  dropEl.textContent = result.totalDropped || '0';
+  dropEl.className = 'stat-val ' + (result.totalDropped > 50 ? 'flag-red' : (result.totalDropped > 0 ? 'flag-warn' : 'flag-green'));
+  document.getElementById('statOverSub').textContent = result.findings.length ? 'silent truncation risk' : 'all within envelope';
+
+  // mt status pill
+  const mtS = document.getElementById('mtStatus');
+  const mtT = document.getElementById('mtStatusText');
+  mtS.className = 'mt-status ' + result.severity;
+  if (result.severity === 'clean') mtT.textContent = 'No data loss';
+  else if (result.severity === 'warn') mtT.textContent = `${result.totalDropped} bytes at risk`;
+  else mtT.textContent = `Silent data loss · ${result.totalDropped} bytes dropped`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WIRE UP
+═══════════════════════════════════════════════════════════ */
+const mxInput = document.getElementById('mxInput');
+mxInput.addEventListener('input', update);
+
+document.querySelectorAll('[data-sample]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    mxInput.value = SAMPLES[btn.dataset.sample];
+    update();
+  });
+});
+document.getElementById('clearBtn').addEventListener('click', () => {
+  mxInput.value = ''; update();
+});
+document.getElementById('formatBtn').addEventListener('click', () => {
+  // simple pretty-print: re-indent via DOMParser+serialization
+  try {
+    const xml = mxInput.value;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'text/xml');
+    if (doc.querySelector('parsererror')) return;
+    const serializer = new XMLSerializer();
+    let pretty = serializer.serializeToString(doc);
+    // primitive indent
+    pretty = pretty.replace(/>\s*</g, '>\n<');
+    let depth = 0;
+    const lines = pretty.split('\n').map(line => {
+      if (line.match(/^<\/[^>]+>/)) depth--;
+      const indented = '  '.repeat(Math.max(0, depth)) + line.trim();
+      if (line.match(/^<[^!?\/][^>]*[^\/]>$/) && !line.match(/<\/[^>]+>$/)) depth++;
+      return indented;
+    });
+    mxInput.value = lines.join('\n');
+    update();
+  } catch(e) {}
+});
+document.getElementById('copyMtBtn').addEventListener('click', (e) => {
+  const txt = document.getElementById('mtBody').innerText;
+  navigator.clipboard.writeText(txt).then(() => {
+    e.target.classList.add('copied');
+    const orig = e.target.textContent;
+    e.target.textContent = '✓ copied';
+    setTimeout(() => { e.target.classList.remove('copied'); e.target.textContent = orig; }, 1400);
+  });
+});
+
+// preload lossy sample
+mxInput.value = SAMPLES.lossy;
+update();
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   AP2 export — schema @ainumbers.co/remediation-brief-v1 (spec Part 5.4 Demo 2)
+   ════════════════════════════════════════════════════════════════════════ */
+(function(){
+  // Hook the existing update() loop so we always have the most recent findings/remed
+  let _lastResult = null, _lastRemed = null;
+  const _origUpdate = window.update || update;
+  if (typeof _origUpdate === 'function') {
+    window.update = function patchedUpdate(){
+      const out = _origUpdate.apply(this, arguments);
+      try {
+        const xml = document.getElementById('mxInput').value;
+        const parsed = parseMx(xml);
+        const result = renderMT(parsed);
+        const remed = buildRemediation(result.findings, parsed);
+        _lastResult = result;
+        _lastRemed = remed;
+      } catch(e) { /* parse error — keep previous result */ }
+      return out;
+    };
+  }
+
+  function buildAP2Mandate(){
+    const findings = (_lastResult && _lastResult.findings) || [];
+    const remed = _lastRemed || [];
+    const fieldsAudited = (_lastResult && _lastResult.fieldsAudited) || 0;
+    const totalDropped = (_lastResult && _lastResult.totalDropped) || 0;
+    const severity = (_lastResult && _lastResult.severity) || 'clean';
+    return {
+      "@type": "@ainumbers.co/remediation-brief-v1",
+      "@version": "1.0",
+      "@generated": new Date().toISOString(),
+      mandate_id: "AIN-TRUNC-" + Date.now().toString(36).toUpperCase(),
+      tool_id: "message-truncation-auditor",
+      issuer: "post-oak-labs",
+      standard: "ISO 20022 pacs.008 → SWIFT MT103",
+      regulatory_context: {
+        deadline: "2026-11-14",
+        framework: "SWIFT CBPR+ structured address mandate",
+        citation: "SWIFT Standards Release SR2026 — swift.com/news-events/news/iso-20022-milestone-november-2026"
+      },
+      audit_summary: {
+        fields_audited: fieldsAudited,
+        truncation_findings: findings.length,
+        total_bytes_dropped: totalDropped,
+        severity: severity
+      },
+      findings: findings.map(function(f){
+        return {
+          mt_tag: f.mtTag,
+          xpath: f.xpath,
+          field_label: f.fieldLabel,
+          full_length: f.length,
+          mt_limit: f.allow,
+          bytes_dropped: f.length - f.allow,
+          severity: f.severity
+        };
+      }),
+      remediation_steps: remed.map(function(r){
+        return {
+          severity: r.sev,
+          name: r.name,
+          steps: (r.steps || []).map(function(s){ return s.code; })
+        };
+      }),
+      audit_signature: {
+        client_side_executed: true,
+        deterministic_run: true
+      }
+    };
+  }
+
+  function validateAP2(m){
+    const req = ['@type','@version','@generated','mandate_id','tool_id','issuer',
+                 'audit_summary','findings','remediation_steps','audit_signature'];
+    for (let i=0; i<req.length; i++) if (!(req[i] in m)) return { ok:false, reason:'missing '+req[i] };
+    if (!String(m['@type']).startsWith('@ainumbers.co/')) return { ok:false, reason:'@type prefix' };
+    if (m['@version'] !== '1.0') return { ok:false, reason:'version' };
+    return { ok:true };
+  }
+
+  function downloadFile(filename, content, mime){
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }
+
+  // Force one update pass so _lastResult is populated before user clicks Export
+  try { if (typeof window.update === 'function') window.update(); } catch(_){}
+
+  document.addEventListener('click', function(e){
+    if (e.target && e.target.id === 'exportAp2') {
+      const m = buildAP2Mandate();
+      const v = validateAP2(m);
+      if (!v.ok) { alert('AP2 validation failed: ' + v.reason); return; }
+      downloadFile('iso20022-remediation-brief-' + m.mandate_id + '.json',
+                   JSON.stringify(m, null, 2), 'application/json');
+    } else if (e.target && e.target.id === 'exportMd') {
+      const m = buildAP2Mandate();
+      const lines = [
+        '# ISO 20022 → MT103 Remediation Brief',
+        '',
+        '**Mandate ID:** ' + m.mandate_id + '  ',
+        '**Generated:** ' + m['@generated'] + '  ',
+        '**Schema:** ' + m['@type'] + '@' + m['@version'],
+        '',
+        '## Audit Summary',
+        '',
+        '- Fields audited: ' + m.audit_summary.fields_audited,
+        '- Truncation findings: ' + m.audit_summary.truncation_findings,
+        '- Total bytes dropped: ' + m.audit_summary.total_bytes_dropped,
+        '- Severity: ' + m.audit_summary.severity,
+        '',
+        '## Regulatory Context',
+        '',
+        m.regulatory_context.framework + ' (deadline ' + m.regulatory_context.deadline + ').',
+        '',
+        m.regulatory_context.citation,
+        '',
+        '## Findings',
+        '',
+        '| MT Tag | xpath | Field | Length | Limit | Dropped | Severity |',
+        '|---|---|---|---|---|---|---|'
+      ];
+      m.findings.forEach(function(f){
+        lines.push('| ' + (f.mt_tag||'') + ' | ' + (f.xpath||'') + ' | ' + (f.field_label||'') +
+          ' | ' + f.full_length + ' | ' + f.mt_limit + ' | ' + f.bytes_dropped + ' | ' + f.severity + ' |');
+      });
+      lines.push('', '## Remediation Steps', '');
+      m.remediation_steps.forEach(function(r){
+        lines.push('### ' + r.name + ' (' + r.severity + ')');
+        r.steps.forEach(function(s){ lines.push('- ' + String(s).replace(/<[^>]+>/g,'')); });
+        lines.push('');
+      });
+      lines.push('---', 'Post Oak Labs · ISO 20022 Message Truncation Auditor · postoaklabs.com/demos/iso20022-message-truncation-auditor.html · CC BY 4.0 · Client-side, zero PII.');
+      downloadFile('iso20022-remediation-brief-' + m.mandate_id + '.md', lines.join('\n'), 'text/markdown');
+    }
+  });
+
+  // ── Live countdown to 14 Nov 2026 ──
+  (function tickCountdown(){
+    const el = document.getElementById('cbprCountdown');
+    if (!el) return;
+    const deadline = new Date('2026-11-14T00:00:00Z');
+    function fmt(){
+      const now = new Date();
+      const ms = deadline - now;
+      if (ms <= 0) { el.textContent = '14 Nov 2026 · LIVE'; return; }
+      const days = Math.ceil(ms / 86400000);
+      el.textContent = days + ' day' + (days === 1 ? '' : 's') + ' to 14 Nov 2026';
+    }
+    fmt();
+    setInterval(fmt, 60 * 60 * 1000); /* refresh hourly */
+  })();
+})();
+</script>
+
+
+
+</body></html>

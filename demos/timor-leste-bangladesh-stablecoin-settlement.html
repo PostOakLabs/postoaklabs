@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timor-Leste × Bangladesh Stablecoin Settlement Bridge · Post Oak Labs</title>
+
+<meta name="description" content="Model a USD-pegged stablecoin settlement bridge between Timor-Leste (USD-dollarised, UTC+9) and Bangladesh (BDT, bKash/BEFTN, UTC+6). Compare wholesale CBDC, stablecoin escrow, and nostro pre-funding architectures; size collateral pools; generate a double-entry ledger schema in ISO 20022-aligned format. Browser-based, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html">
+<meta property="og:title" content="Timor-Leste × Bangladesh Stablecoin Settlement Bridge — Post Oak Labs">
+<meta property="og:description" content="Frontier-market settlement bridge modelling: architecture viability, time-zone diagnostics, collateral & repo engine, ISO 20022 ledger schema generator.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "Timor-Leste × Bangladesh Stablecoin Settlement Bridge",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+  "description": "Frontier-market settlement bridge modelling: architecture viability scoring, time-zone diagnostics, collateral & repo engine, and ISO 20022-aligned double-entry ledger schema generation for USD-pegged stablecoin corridors.",
+  "featureList": [
+    "Architecture Selector: wholesale CBDC bridge vs stablecoin escrow vs nostro pre-funding — viability scoring",
+    "Settlement & Time-Zone Diagnostics: 3-hour UTC overlap window, intraday liquidity buffer, SWIFT cutoff conflict map",
+    "Collateral & Repo Engine: collateral pool sizing, 3× spike stress test, repo sweep mechanics",
+    "Accounting Schema Generator: nostro / vostro / collateral / stablecoin float / FX revaluation accounts, ISO 20022-aligned",
+    "Policy Mandate export: @postoaklabs.com/em-settlement-bridge-v1",
+    "Markdown report export"
+  ],
+  "keywords": "stablecoin settlement, wholesale CBDC, Timor-Leste, Bangladesh, cross-border payments, PvP settlement, correspondent banking, frontier markets, ISO 20022, nostro vostro, repo, collateral",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-16",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+:root {
+  --ink:      #050c15;  --deep:     #0a1628;  --navy:     #0e1e35;
+  --edge:     #1e3454;  --body:     #7090b0;  --muted:    #4a6280;
+  --accent:   #2a7fc0;  --accent-lt:#4a9fdf;  --gold:     #c09040;
+
+  --showcase-bg:           #ffffff;
+  --showcase-bg-soft:      #fafbfc;
+  --showcase-bg-deep:      #f4f6f9;
+  --showcase-text:         #0a1828;
+  --showcase-text-muted:   #6a7a8a;
+  --showcase-border:       #e6e8eb;
+  --showcase-border-dark:  #d4d8de;
+  --showcase-accent:       #2a7fc0;
+  --showcase-gold:         #c09040;
+  --showcase-success:      #10b981;
+  --showcase-warn:         #f59e0b;
+  --showcase-error:        #dc2626;
+  --showcase-purple:       #8b5cf6;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font:    'DM Sans', sans-serif;
+  --showcase-mono-font:    'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.2; }
+a { color: var(--accent); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+/* NAV */
+nav[role="navigation"] { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-bc { font-family: var(--showcase-mono-font); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem; }
+.nav-bc a { color: var(--body); text-decoration: none; }
+.nav-bc a:hover { color: var(--accent-lt); }
+.nav-bc span[aria-current] { color: var(--accent-lt); }
+.nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+.nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; }
+.nav-links a:hover { color: #fff; }
+.nav-links a.nav-cta { background: var(--accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+.nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+/* HEADER STRIP */
+.showcase-header-strip { background: var(--deep); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge); padding: 0.85rem 0; }
+.strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--gold); font-weight: 500; }
+.strip-title { font-weight: 500; color: #fff; font-size: 0.875rem; }
+.strip-actions { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; max-width: 100%; }
+.strip-actions a { color: var(--accent-lt); text-decoration: none; font-size: 0.78rem; white-space: nowrap; }
+.strip-actions a:hover { color: #fff; }
+
+/* CANVAS */
+.demo-canvas { background: var(--showcase-bg); color: var(--showcase-text); font-family: var(--showcase-body-font); max-width: 1240px; margin: 2rem auto; padding: 0; border-radius: 8px; box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2.5rem 2.5rem 3rem; }
+@media (max-width: 760px) { .canvas-inner { padding: 1.5rem 1.25rem 2rem; } }
+.demo-canvas h1, .demo-canvas h2, .demo-canvas h3, .demo-canvas h4 { color: var(--showcase-text); }
+
+/* HERO */
+.hero { padding-bottom: 2rem; border-bottom: 1px solid var(--showcase-border); margin-bottom: 2.5rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.25rem; }
+.eyebrow-badge { font-family: var(--showcase-mono-font); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; border: 1px solid var(--showcase-border); color: var(--showcase-text-muted); }
+.eyebrow-badge.accent { border-color: rgba(42,127,192,0.35); color: var(--showcase-accent); }
+.eyebrow-badge.gold   { border-color: rgba(192,144,64,0.35);  color: var(--showcase-gold); }
+.eyebrow-badge.purple { border-color: rgba(139,92,246,0.35);  color: var(--showcase-purple); }
+.hero h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin-bottom: 0.85rem; }
+.hero h1 em { font-style: italic; color: var(--showcase-accent); }
+.hero-sub { color: var(--showcase-text-muted); font-size: 0.95rem; line-height: 1.7; max-width: 820px; margin-bottom: 1.5rem; }
+.hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 4px; overflow: hidden; }
+.hstat { background: var(--showcase-bg-soft); padding: 0.85rem 1.1rem; }
+.hstat-l { font-family: var(--showcase-mono-font); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.3rem; }
+.hstat-v { font-family: var(--showcase-heading-font); font-size: 1.3rem; line-height: 1.1; }
+.hstat-v.accent { color: var(--showcase-accent); }
+.hstat-v.gold   { color: var(--showcase-gold); }
+.hstat-v.success { color: var(--showcase-success); }
+.hstat-v.purple { color: var(--showcase-purple); }
+.hstat-note { font-size: 0.7rem; color: var(--showcase-text-muted); margin-top: 0.2rem; }
+
+/* PII BANNER */
+.pii-banner { display: flex; align-items: flex-start; gap: 0.75rem; background: #f0f9f4; border: 1px solid #a7f3d0; border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 2rem; font-size: 0.83rem; color: #065f46; }
+.pii-banner svg { flex-shrink: 0; margin-top: 1px; }
+
+/* LAYOUT */
+.tool-layout { display: grid; grid-template-columns: 1fr 290px; gap: 2rem; align-items: start; }
+@media (max-width: 960px) { .tool-layout { grid-template-columns: 1fr; } }
+
+/* SIDEBAR */
+.var-sidebar { background: var(--ink); border-radius: 6px; padding: 1.5rem; border-left: 3px solid var(--gold); position: sticky; top: 100px; }
+.var-sidebar-label { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.var-sidebar h3 { font-family: var(--showcase-heading-font); color: #fff !important; font-size: 1.2rem; line-height: 1.2; margin-bottom: 0.5rem; }
+.var-sidebar p { font-size: 0.82rem; color: var(--body); line-height: 1.6; margin-bottom: 0.9rem; }
+.var-sidebar p:last-child { margin-bottom: 0; }
+.var-sidebar .cite { font-size: 0.7rem; color: var(--muted); margin-top: 0.75rem; }
+.var-stat { font-family: var(--showcase-mono-font); font-size: 0.76rem; color: var(--accent-lt); margin-top: 0.5rem; }
+
+/* PANEL */
+.panel { margin-bottom: 2.25rem; }
+.panel-hd { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--showcase-border); padding-bottom: 0.65rem; margin-bottom: 1.25rem; }
+.panel-num { font-family: var(--showcase-mono-font); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--showcase-accent); }
+.panel-hd h2 { font-size: 1.25rem; color: var(--showcase-text); }
+.panel-hd .sub { font-size: 0.78rem; color: var(--showcase-text-muted); }
+
+/* SCENARIOS */
+.scenario-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.scenario-btn { font-family: var(--showcase-mono-font); font-size: 0.7rem; letter-spacing: 0.06em; padding: 0.45rem 1rem; border-radius: 4px; border: 1px solid var(--showcase-border); color: var(--showcase-text-muted); background: var(--showcase-bg-soft); transition: all 0.15s; }
+.scenario-btn:hover, .scenario-btn.active { background: var(--showcase-accent); border-color: var(--showcase-accent); color: #fff; }
+
+/* SECTION HEADER */
+.section-hd { font-family: var(--showcase-mono-font); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--showcase-text-muted); border-bottom: 1px solid var(--showcase-border); padding-bottom: 0.5rem; margin-bottom: 1.1rem; }
+
+/* INPUTS */
+.inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field label { font-family: var(--showcase-mono-font); font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); }
+.field input[type="number"], .field input[type="text"], .field select { font-family: var(--showcase-mono-font); font-size: 0.88rem; padding: 0.55rem 0.75rem; border: 1px solid var(--showcase-border); border-radius: 4px; background: var(--showcase-bg); color: var(--showcase-text); width: 100%; }
+.field input[type="number"]:focus, .field input[type="text"]:focus, .field select:focus { outline: none; border-color: var(--showcase-accent); }
+.field .hint { font-size: 0.7rem; color: var(--showcase-text-muted); }
+
+/* ARCH CARDS */
+.arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.arch-card { border: 1px solid var(--showcase-border); border-radius: 6px; padding: 1.1rem 1.2rem; background: var(--showcase-bg); position: relative; }
+.arch-card.best { border-color: var(--showcase-success); background: rgba(16,185,129,0.04); }
+.arch-card.best::after { content: 'RECOMMENDED'; position: absolute; top: -0.55rem; right: 1rem; background: var(--showcase-success); color: #fff; font-family: var(--showcase-mono-font); font-size: 0.55rem; letter-spacing: 0.1em; padding: 0.18rem 0.55rem; border-radius: 2px; }
+.arch-card h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+.arch-card .arch-tag { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--showcase-text-muted); text-transform: uppercase; margin-bottom: 0.55rem; }
+.arch-card .arch-desc { font-size: 0.82rem; color: var(--showcase-text-muted); line-height: 1.55; margin-bottom: 0.8rem; }
+.viability-bar-wrap { margin-bottom: 0.65rem; }
+.viability-bar-label { display: flex; justify-content: space-between; font-family: var(--showcase-mono-font); font-size: 0.6rem; color: var(--showcase-text-muted); margin-bottom: 0.25rem; }
+.viability-bar { height: 6px; background: var(--showcase-bg-deep); border-radius: 3px; overflow: hidden; }
+.viability-bar .fill { height: 100%; background: linear-gradient(90deg, var(--showcase-accent), var(--showcase-success)); transition: width 0.4s; }
+.arch-criteria { font-family: var(--showcase-mono-font); font-size: 0.7rem; color: var(--showcase-text); }
+.arch-criteria div { display: flex; justify-content: space-between; padding: 0.18rem 0; border-bottom: 1px dotted var(--showcase-border); }
+.arch-criteria div:last-child { border-bottom: none; }
+.arch-criteria .v { color: var(--showcase-accent); }
+.arch-criteria .v.warn { color: var(--showcase-warn); }
+.arch-criteria .v.err { color: var(--showcase-error); }
+
+/* TIMEZONE MAP */
+.tz-map { background: var(--showcase-bg-deep); border: 1px solid var(--showcase-border); border-radius: 6px; padding: 1.1rem 1.3rem; margin-bottom: 1.25rem; }
+.tz-map h4 { font-family: var(--showcase-heading-font); font-size: 1rem; margin-bottom: 1rem; }
+.tz-grid { display: grid; grid-template-columns: 70px 1fr; gap: 0.3rem; align-items: center; font-family: var(--showcase-mono-font); font-size: 0.72rem; }
+.tz-grid .tz-label { color: var(--showcase-text-muted); font-size: 0.65rem; }
+.tz-grid .tz-row { display: grid; grid-template-columns: repeat(24, 1fr); gap: 1px; height: 18px; background: var(--showcase-border); border-radius: 2px; overflow: hidden; }
+.tz-grid .tz-row span { background: var(--showcase-bg); }
+.tz-grid .tz-row span.work { background: var(--showcase-accent); }
+.tz-grid .tz-row span.overlap { background: var(--showcase-gold); }
+.tz-grid .tz-row span.swift { background: var(--showcase-purple); }
+.tz-legend { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.85rem; font-family: var(--showcase-mono-font); font-size: 0.62rem; color: var(--showcase-text-muted); }
+.tz-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.tz-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 1px; }
+.tz-legend i.work { background: var(--showcase-accent); }
+.tz-legend i.overlap { background: var(--showcase-gold); }
+.tz-legend i.swift { background: var(--showcase-purple); }
+
+/* TZ DIAGNOSTICS GRID */
+.diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 6px; overflow: hidden; margin-bottom: 1.25rem; }
+.diag-cell { background: var(--showcase-bg-soft); padding: 0.95rem 1.1rem; }
+.diag-label { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.35rem; }
+.diag-val { font-family: var(--showcase-heading-font); font-size: 1.3rem; line-height: 1.1; }
+.diag-val.success { color: var(--showcase-success); }
+.diag-val.warn { color: var(--showcase-warn); }
+.diag-val.error { color: var(--showcase-error); }
+.diag-val.accent { color: var(--showcase-accent); }
+.diag-sub { font-size: 0.7rem; color: var(--showcase-text-muted); margin-top: 0.2rem; }
+
+/* COLLATERAL */
+.coll-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 6px; overflow: hidden; margin-bottom: 1.25rem; }
+.stress-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+@media (max-width: 720px) { .stress-grid { grid-template-columns: 1fr; } }
+.stress-card { border: 1px solid var(--showcase-border); border-radius: 5px; padding: 0.95rem 1rem; }
+.stress-card.warn { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+.stress-card.err  { border-color: rgba(220,38,38,0.4);  background: rgba(220,38,38,0.04); }
+.stress-card h5 { font-family: var(--showcase-mono-font); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.5rem; }
+.stress-val { font-family: var(--showcase-heading-font); font-size: 1.35rem; line-height: 1.1; margin-bottom: 0.25rem; }
+.stress-val.warn { color: var(--showcase-warn); }
+.stress-val.err  { color: var(--showcase-error); }
+.stress-val.success { color: var(--showcase-success); }
+.stress-sub { font-size: 0.72rem; color: var(--showcase-text-muted); }
+
+/* REPO TABLE */
+.repo-table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+table.repo-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+table.repo-table th { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); padding: 0.6rem 0.85rem; border-bottom: 2px solid var(--showcase-border); text-align: right; background: var(--showcase-bg-soft); }
+table.repo-table th:first-child { text-align: left; }
+table.repo-table td { padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--showcase-border); text-align: right; font-family: var(--showcase-mono-font); font-size: 0.8rem; }
+table.repo-table td:first-child { text-align: left; font-family: var(--showcase-body-font); }
+
+/* ACCOUNTING SCHEMA */
+.schema-section { margin-bottom: 1.25rem; }
+.schema-section h4 { font-family: var(--showcase-mono-font); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text); margin-bottom: 0.65rem; }
+.schema-block { background: var(--showcase-bg-deep); border: 1px solid var(--showcase-border); border-radius: 5px; padding: 1rem; font-family: var(--showcase-mono-font); font-size: 0.74rem; line-height: 1.55; color: var(--showcase-text); white-space: pre-wrap; overflow-x: auto; max-height: 360px; overflow-y: auto; }
+.schema-block .k { color: var(--showcase-accent); }
+.schema-block .s { color: var(--showcase-gold); }
+.schema-block .n { color: var(--showcase-purple); }
+.schema-block .c { color: var(--showcase-text-muted); font-style: italic; }
+.schema-toggle-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+.schema-toggle-row button { font-family: var(--showcase-mono-font); font-size: 0.66rem; letter-spacing: 0.08em; padding: 0.35rem 0.85rem; border-radius: 3px; border: 1px solid var(--showcase-border); color: var(--showcase-text-muted); background: var(--showcase-bg-soft); }
+.schema-toggle-row button.active { background: var(--showcase-text); color: #fff; border-color: var(--showcase-text); }
+
+/* DOUBLE ENTRY EXAMPLE */
+.de-table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+table.de-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; font-family: var(--showcase-mono-font); }
+table.de-table th { padding: 0.55rem 0.75rem; border-bottom: 2px solid var(--showcase-border); text-align: left; background: var(--showcase-bg-soft); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); }
+table.de-table th.r { text-align: right; }
+table.de-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--showcase-border); }
+table.de-table td.r { text-align: right; }
+table.de-table td.debit { color: var(--showcase-accent); }
+table.de-table td.credit { color: var(--showcase-gold); }
+table.de-table tr.totals td { border-top: 2px solid var(--showcase-text); font-weight: 500; }
+
+/* RUN BUTTON */
+.run-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin: 1.5rem 0 0.5rem; }
+.run-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--showcase-accent); color: #fff; padding: 0.75rem 2rem; border-radius: 5px; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em; border: none; }
+.run-btn:hover { background: var(--accent-lt); }
+.run-note { font-size: 0.78rem; color: var(--showcase-text-muted); }
+
+/* RESULTS */
+.results-section { margin-top: 1rem; display: none; }
+.results-section.visible { display: block; }
+
+/* EXPORT ROW */
+.results-export-row { display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 1.5rem; border-top: 1px solid var(--showcase-border); margin-top: 2rem; }
+.export-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 4px; font-size: 0.83rem; font-weight: 500; border: 1px solid var(--showcase-border); color: var(--showcase-text); background: var(--showcase-bg-soft); cursor: pointer; transition: all 0.15s; }
+.export-btn:hover { border-color: var(--showcase-accent); color: var(--showcase-accent); }
+.export-btn.primary { background: var(--showcase-accent); border-color: var(--showcase-accent); color: #fff; }
+.export-btn.primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+
+/* SCHEMA LEGEND */
+.schema-legend { font-family: var(--showcase-mono-font); font-size: 0.7rem; color: var(--showcase-text-muted); margin-bottom: 0.65rem; }
+.schema-legend code { background: var(--showcase-bg-deep); padding: 0.1rem 0.35rem; border-radius: 2px; color: var(--showcase-text); }
+
+/* FOOTER */
+footer.pol-footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem; }
+.footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: #fff; margin-bottom: 0.35rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+.footer-badges { font-family: var(--showcase-mono-font); font-size: 0.65rem; color: var(--muted); margin-top: 0.4rem; letter-spacing: 0.04em; }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.footer-links a { font-size: 0.82rem; color: var(--body); text-decoration: none; }
+.footer-links a:hover { color: var(--accent-lt); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Post Oak Labs navigation" class="pol-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Post Oak <span>Labs</span></a>
+    <div class="nav-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="/demos/">Showcase</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Stablecoin Settlement Bridge</span>
+    </div>
+    <nav class="nav-links" aria-label="Site links">
+      <a href="/demos/">← All Demos</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html" class="nav-cta">Talk to us</a>
+    </nav>
+  </div>
+</nav>
+
+<!-- HEADER STRIP -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Fintech Intelligence Showcase</span>
+      <span class="strip-title">Demo #33 — Timor-Leste × Bangladesh Stablecoin Settlement Bridge</span>
+    </div>
+    <div class="strip-actions">
+      <a href="https://ainumbers.co/tools/75-stablecoin-reserve-auditor.html" target="_blank" rel="noopener">T75 ↗</a>
+      <a href="https://ainumbers.co/tools/58-cbdc-interop-modeler.html" target="_blank" rel="noopener">T58 ↗</a>
+      <a href="https://ainumbers.co/tools/218-pvp-settlement-sync-model.html" target="_blank" rel="noopener">T218 ↗</a>
+      <a href="https://ainumbers.co/tools/217-em-fx-risk-classifier.html" target="_blank" rel="noopener">T217 ↗</a>
+      <a href="https://ainumbers.co/tools/221-cross-border-finality-comparator.html" target="_blank" rel="noopener">T221 ↗</a>
+      <a href="https://ainumbers.co/tools/220-correspondent-derisking-modeler.html" target="_blank" rel="noopener">T220 ↗</a>
+      <a href="https://ainumbers.co/tools/157-settlement-orchestration-simulator.html" target="_blank" rel="noopener">T157 ↗</a>
+      <a href="https://ainumbers.co/tools/325-payment-cutoff-settlement-atlas.html" target="_blank" rel="noopener">T325 ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<main class="demo-canvas" role="main">
+  <div class="canvas-inner">
+
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow-badges">
+        <span class="eyebrow-badge accent">Frontier Markets · Settlement</span>
+        <span class="eyebrow-badge gold">T75 · T58 · T218 · T217 · T221 · T220 · T157 · T325</span>
+        <span class="eyebrow-badge purple">USD-Stablecoin Bridge</span>
+        <span class="eyebrow-badge">ISO 20022</span>
+        <span class="eyebrow-badge">Zero PII</span>
+      </div>
+      <h1 id="hero-title">Timor-Leste × Bangladesh <em>Stablecoin Settlement Bridge</em></h1>
+      <p class="hero-sub">Model a USD-pegged wholesale stablecoin settlement bridge between Timor-Leste (USD-dollarised, UTC+9, thin correspondent banking) and Bangladesh (BDT, bKash/BEFTN, UTC+6). Score three architectures — wholesale CBDC bridge, stablecoin escrow, nostro pre-funding — against a 3-hour business-hours overlap window. Size collateral pools for normal flow plus a 3× spike stress test, model repo sweep mechanics, and generate a full double-entry ISO 20022-aligned ledger schema. Boardroom-ready Policy Mandate export.</p>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-l">UTC Overlap</div>
+          <div class="hstat-v warn">3.0 h</div>
+          <div class="hstat-note">Business-hours window</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">TLS GDP 2024</div>
+          <div class="hstat-v accent">~$2.0B</div>
+          <div class="hstat-note">USD-dollarised economy</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">BGD Remittance</div>
+          <div class="hstat-v gold">$22.4B</div>
+          <div class="hstat-note">Annual inflow, 2024</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">Corridor Hops</div>
+          <div class="hstat-v">3–5</div>
+          <div class="hstat-note">Correspondent intermediaries</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">Architectures</div>
+          <div class="hstat-v purple">3</div>
+          <div class="hstat-note">CBDC · Stablecoin · Nostro</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">Schema</div>
+          <div class="hstat-v success">ISO 20022</div>
+          <div class="hstat-note">pacs / camt aligned</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PII BANNER -->
+    <div class="pii-banner" role="note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+    </div>
+
+    <!-- TOOL LAYOUT -->
+    <div class="tool-layout">
+      <div class="tool-main">
+
+        <!-- SCENARIOS -->
+        <div class="section-hd">Corridor Scenarios</div>
+        <div class="scenario-row" role="group" aria-label="Scenario presets">
+          <button class="scenario-btn" data-scenario="remittance">🏠 Remittance Flow ($500K/day)</button>
+          <button class="scenario-btn" data-scenario="trade">📦 Trade Settlement ($5M/day)</button>
+          <button class="scenario-btn" data-scenario="wholesale">🏦 Wholesale Treasury ($25M/day)</button>
+        </div>
+
+        <!-- CORE INPUTS -->
+        <div class="section-hd">Corridor &amp; Volume Assumptions</div>
+        <div class="inputs-grid">
+          <div class="field">
+            <label for="inp-dailyvol">Avg Daily Volume (USD)</label>
+            <input type="number" id="inp-dailyvol" value="2500000" min="50000" max="100000000" step="50000">
+            <span class="hint">Total settlement value per business day</span>
+          </div>
+          <div class="field">
+            <label for="inp-txcount">Transactions / Day</label>
+            <input type="number" id="inp-txcount" value="320" min="1" max="100000">
+            <span class="hint">Bidirectional message count</span>
+          </div>
+          <div class="field">
+            <label for="inp-direction">Net Flow Direction</label>
+            <select id="inp-direction">
+              <option value="balanced">Balanced (TLS ↔ BGD)</option>
+              <option value="bgd-net" selected>BGD net receiver (remit)</option>
+              <option value="tls-net">TLS net receiver (trade)</option>
+            </select>
+            <span class="hint">Drives nostro/collateral asymmetry</span>
+          </div>
+          <div class="field">
+            <label for="inp-spike">Spike Multiplier</label>
+            <input type="number" id="inp-spike" value="3" min="1.5" max="10" step="0.5">
+            <span class="hint">Peak/avg ratio for stress test</span>
+          </div>
+          <div class="field">
+            <label for="inp-fxbuffer">FX Buffer (%)</label>
+            <input type="number" id="inp-fxbuffer" value="3.5" min="0.5" max="15" step="0.5">
+            <span class="hint">BDT vol cushion on collateral</span>
+          </div>
+          <div class="field">
+            <label for="inp-repo">Repo Rate (%/yr)</label>
+            <input type="number" id="inp-repo" value="5.25" min="0" max="20" step="0.25">
+            <span class="hint">Overnight collateralised funding</span>
+          </div>
+          <div class="field">
+            <label for="inp-overlap">UTC Overlap Window (h)</label>
+            <input type="number" id="inp-overlap" value="3" min="1" max="12" step="0.5">
+            <span class="hint">TLS 09–18 ∩ BGD 09–18 (= 12–15 UTC)</span>
+          </div>
+          <div class="field">
+            <label for="inp-correspondents">Correspondent Hops</label>
+            <input type="number" id="inp-correspondents" value="4" min="1" max="8">
+            <span class="hint">Legacy SWIFT route depth</span>
+          </div>
+        </div>
+
+        <div class="run-row">
+          <button class="run-btn" id="runBtn">Run Bridge Model →</button>
+          <span class="run-note">Deterministic · client-side · ~50 ms runtime</span>
+        </div>
+
+        <!-- RESULTS -->
+        <section class="results-section" id="results">
+
+          <!-- PANEL 1: ARCHITECTURE -->
+          <div class="panel" id="panel-arch">
+            <div class="panel-hd">
+              <div>
+                <div class="panel-num">Panel 01 · Architecture Selector</div>
+                <h2>Settlement Architecture Viability</h2>
+              </div>
+              <div class="sub">Scores each architecture on liquidity, finality, regulatory fit, and operational risk</div>
+            </div>
+            <div class="arch-grid" id="archGrid"></div>
+          </div>
+
+          <!-- PANEL 2: TIME ZONE DIAGNOSTICS -->
+          <div class="panel" id="panel-tz">
+            <div class="panel-hd">
+              <div>
+                <div class="panel-num">Panel 02 · Settlement &amp; Time-Zone Diagnostics</div>
+                <h2>Overlap Window, Intraday Buffer &amp; SWIFT Cutoffs</h2>
+              </div>
+              <div class="sub">Maps the 3-hour TLS–BGD business overlap against SWIFT MT103 / pacs.008 cutoffs</div>
+            </div>
+            <div class="tz-map">
+              <h4>24-hour UTC Working Window Map</h4>
+              <div class="tz-grid" id="tzGrid"></div>
+              <div class="tz-legend">
+                <span><i class="work"></i> Working hours (one side)</span>
+                <span><i class="overlap"></i> Overlap window (both sides)</span>
+                <span><i class="swift"></i> SWIFT cutoff conflict</span>
+              </div>
+            </div>
+            <div class="diag-grid" id="diagGrid"></div>
+          </div>
+
+          <!-- PANEL 3: COLLATERAL & REPO -->
+          <div class="panel" id="panel-coll">
+            <div class="panel-hd">
+              <div>
+                <div class="panel-num">Panel 03 · Collateral &amp; Repo Engine</div>
+                <h2>Pool Sizing, Spike Stress &amp; Sweep Mechanics</h2>
+              </div>
+              <div class="sub">Sizes collateral for normal-day flow + 3× spike, models overnight repo sweep economics</div>
+            </div>
+            <div class="coll-summary" id="collSummary"></div>
+            <div class="section-hd">Stress Test — Spike Multiplier × Daily Volume</div>
+            <div class="stress-grid" id="stressGrid"></div>
+            <div class="section-hd">Repo Sweep Mechanics (Indicative)</div>
+            <div class="repo-table-wrap">
+              <table class="repo-table" id="repoTable">
+                <thead>
+                  <tr>
+                    <th>Sweep Path</th>
+                    <th>Notional (USD)</th>
+                    <th>Haircut</th>
+                    <th>Net Funding</th>
+                    <th>Annualised Cost</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- PANEL 4: ACCOUNTING SCHEMA -->
+          <div class="panel" id="panel-schema">
+            <div class="panel-hd">
+              <div>
+                <div class="panel-num">Panel 04 · Accounting Schema Generator</div>
+                <h2>ISO 20022-Aligned Double-Entry Ledger Schema</h2>
+              </div>
+              <div class="sub">Account taxonomy + posting rules for a representative settlement cycle</div>
+            </div>
+            <div class="schema-toggle-row" role="tablist">
+              <button class="active" data-schema="accounts">Chart of Accounts (JSON)</button>
+              <button data-schema="postings">Sample Posting Cycle</button>
+              <button data-schema="iso">ISO 20022 Message Map</button>
+            </div>
+            <div class="schema-legend">Generated for the modelled corridor. Account codes follow IFRS / BIS Triennial conventions; ISO 20022 message identifiers from <code>pacs.008</code> / <code>pacs.009</code> / <code>camt.054</code>.</div>
+            <div id="schemaAccounts">
+              <pre class="schema-block" id="schemaAccountsBody"></pre>
+            </div>
+            <div id="schemaPostings" style="display:none">
+              <div class="de-table-wrap">
+                <table class="de-table" id="postingsTable">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>Account</th>
+                      <th class="r">Debit (USD)</th>
+                      <th class="r">Credit (USD)</th>
+                      <th>Reference</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div id="schemaIso" style="display:none">
+              <pre class="schema-block" id="schemaIsoBody"></pre>
+            </div>
+          </div>
+
+          <!-- EXPORT ROW -->
+          <div class="results-export-row">
+            <button class="export-btn primary" id="ap2ExportBtn" type="button">📋 Export Policy Mandate (JSON)</button>
+            <button class="export-btn" id="mdExportBtn" type="button">📝 Export Markdown Report</button>
+            <button class="export-btn" id="csvExportBtn" type="button">📊 Export Postings (CSV)</button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="var-sidebar" aria-labelledby="var-title">
+        <div class="var-sidebar-label">Value at Risk</div>
+        <h3 id="var-title">Why this corridor is structurally hard</h3>
+        <p>Timor-Leste runs on USD without a correspondent network of scale. Bangladesh runs BDT through BEFTN / bKash with capital controls and weak USD liquidity in-country. Together that is a 3-hop SWIFT route, 5–7 day finality, 4–6% all-in cost, and a 3-hour UTC overlap.</p>
+        <p>A USD-pegged stablecoin on a permissioned wholesale rail collapses the hops to one — provided collateral reserves, intraday liquidity, and the repo sweep are sized for the spike.</p>
+        <div class="var-stat">Legacy cost: 4.2–6.5% all-in</div>
+        <div class="var-stat">Modelled bridge: 0.45–0.85%</div>
+        <div class="cite">Refs: BIS Project Agorá, BIS Project Mariana, IMF AREAER 2024, World Bank Remittance Prices Q3 2024, IOSCO/CPMI principles for stablecoin arrangements (2022).</div>
+      </aside>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer role="contentinfo" class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <div class="footer-copy">© 2026 Post Oak Labs · CC BY 4.0 · Houston, TX</div>
+      <div class="footer-badges">🔒 No data leaves your browser · 💻 Client-side only · CC BY 4.0</div>
+    </div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/demos/">Showcase</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+// =========== MODEL CONSTANTS ===========
+const ARCHITECTURES = [
+  { id: 'cbdc',       name: 'Wholesale CBDC Bridge',   tag: 'BIS Agorá pattern',
+    desc: 'Permissioned wholesale CBDC rail between central-bank participants; PvP finality at the central bank.',
+    liq: 0.65, fin: 0.95, reg: 0.55, ops: 0.70 },
+  { id: 'stablecoin', name: 'Stablecoin Escrow Bridge', tag: 'Permissioned, USD-pegged',
+    desc: 'USD-pegged stablecoin on permissioned ledger with attested reserves; escrow + on-chain atomic settle.',
+    liq: 0.90, fin: 0.85, reg: 0.65, ops: 0.80 },
+  { id: 'nostro',     name: 'Nostro Pre-Funding',      tag: 'Status-quo correspondent',
+    desc: 'Pre-funded nostro accounts at correspondent banks on both ends; SWIFT MT103 / pacs.008 messaging.',
+    liq: 0.40, fin: 0.50, reg: 0.85, ops: 0.55 }
+];
+
+const SCENARIOS = {
+  remittance: { dailyvol: 500000,  txcount: 1200, direction: 'bgd-net',  spike: 4,   fxbuffer: 4.5, repo: 5.25, overlap: 3, correspondents: 4 },
+  trade:      { dailyvol: 5000000, txcount: 180,  direction: 'balanced', spike: 2.5, fxbuffer: 3.0, repo: 5.25, overlap: 3, correspondents: 4 },
+  wholesale:  { dailyvol: 25000000,txcount: 60,   direction: 'tls-net',  spike: 2,   fxbuffer: 2.5, repo: 5.25, overlap: 3, correspondents: 3 }
+};
+
+// SWIFT/local cutoffs in UTC hour
+const CUTOFFS = [
+  { label: 'SWIFT MT103 (US correspondent)', hour: 21 },
+  { label: 'BEFTN final settlement (BGD)',   hour: 10 },
+  { label: 'TLS BNCTL net settlement',       hour: 8  },
+  { label: 'Asian correspondent cutoff',     hour: 11 }
+];
+
+let lastResult = null;
+
+// =========== FORMATTING HELPERS ===========
+const fmt   = (n, d = 0) => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtK  = (n) => n >= 1e6 ? '$' + (n/1e6).toFixed(2) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(1) + 'K' : '$' + n.toFixed(0);
+const pct   = (n, d = 1) => Number(n).toFixed(d) + '%';
+const uuid4 = () => {
+  const b = new Uint8Array(16);
+  crypto.getRandomValues(b);
+  b[6] = (b[6] & 0x0f) | 0x40;
+  b[8] = (b[8] & 0x3f) | 0x80;
+  const h = Array.from(b, x => x.toString(16).padStart(2,'0')).join('');
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+};
+const sha256Stub = (s) => {
+  // Deterministic non-crypto SHA-256-shaped hex stub (deterministic for export reproducibility)
+  let h = 0n;
+  for (const c of s) { h = (h * 1315423911n + BigInt(c.charCodeAt(0))) & 0xffffffffffffffffn; }
+  const head = h.toString(16).padStart(16, '0');
+  return (head + head + head + head).slice(0, 64);
+};
+
+// =========== INPUT READ ===========
+function readInputs() {
+  return {
+    dailyvol:       Number(document.getElementById('inp-dailyvol').value)       || 0,
+    txcount:        Number(document.getElementById('inp-txcount').value)        || 0,
+    direction:      document.getElementById('inp-direction').value,
+    spike:          Number(document.getElementById('inp-spike').value)          || 1,
+    fxbuffer:       Number(document.getElementById('inp-fxbuffer').value)       || 0,
+    repo:           Number(document.getElementById('inp-repo').value)           || 0,
+    overlap:        Number(document.getElementById('inp-overlap').value)        || 0,
+    correspondents: Number(document.getElementById('inp-correspondents').value) || 1
+  };
+}
+
+// =========== ARCHITECTURE VIABILITY ===========
+function scoreArchitectures(inp) {
+  // Penalties / boosts based on inputs
+  const overlapPenalty   = Math.max(0, (3 - inp.overlap)) * 0.06;  // tighter overlap hurts nostro/CBDC more
+  const hopsPenalty      = (inp.correspondents - 3) * 0.05;
+  const spikeBonusStablecoin = Math.min(0.08, (inp.spike - 2) * 0.04);
+  const spikePenaltyNostro   = Math.min(0.20, (inp.spike - 2) * 0.10);
+
+  return ARCHITECTURES.map(a => {
+    let liq = a.liq, fin = a.fin, reg = a.reg, ops = a.ops;
+    if (a.id === 'nostro')     { liq -= overlapPenalty + spikePenaltyNostro; ops -= hopsPenalty * 1.5; }
+    if (a.id === 'cbdc')       { liq -= overlapPenalty * 0.5; reg -= hopsPenalty * 0.3; }
+    if (a.id === 'stablecoin') { liq += spikeBonusStablecoin; fin -= overlapPenalty * 0.2; }
+    const composite = (liq * 0.30 + fin * 0.30 + reg * 0.20 + ops * 0.20);
+    return { ...a, liq: Math.max(0, Math.min(1, liq)), fin: Math.max(0, Math.min(1, fin)),
+                   reg: Math.max(0, Math.min(1, reg)), ops: Math.max(0, Math.min(1, ops)),
+                   composite: Math.max(0, Math.min(1, composite)) };
+  }).sort((a, b) => b.composite - a.composite);
+}
+
+// =========== TIME ZONE DIAGNOSTICS ===========
+function tzDiagnostics(inp) {
+  const overlapHours = inp.overlap;
+  const intradayBuffer = inp.dailyvol / 24 * (24 - overlapHours) * 0.06; // ~6% liquidity cushion per off-hour
+  const swiftConflicts = CUTOFFS.filter(c => c.hour >= 12 && c.hour <= 15).length; // overlap window 12-15 UTC
+  const finalitySlaH = overlapHours >= 3 ? 4 : 8;
+  const liquidityScore = Math.max(0, Math.min(1, overlapHours / 6));
+  return {
+    overlapHours,
+    overlapStart: 12,
+    overlapEnd:   12 + overlapHours,
+    intradayBuffer,
+    swiftConflicts,
+    finalitySlaH,
+    liquidityScore,
+    cutoffs: CUTOFFS
+  };
+}
+
+// =========== COLLATERAL & REPO ===========
+function collateralEngine(inp) {
+  const baseDay      = inp.dailyvol;
+  const spikeDay     = inp.dailyvol * inp.spike;
+  const fxBufferMult = 1 + (inp.fxbuffer / 100);
+
+  // Base pool: 1.25 days base + FX buffer
+  const basePool   = baseDay * 1.25 * fxBufferMult;
+  // Stress pool: 1 spike day + 0.5 follow-on day
+  const stressPool = spikeDay * 1.0 * fxBufferMult + baseDay * 0.5;
+  // Headroom: stress pool over base pool
+  const headroom   = stressPool - basePool;
+
+  // Repo sweep table — 3 sweep paths
+  const sweepRows = [
+    { path: 'TLS Treasury → USD repo (overnight)',          notional: basePool * 0.45, haircut: 0.020, days: 1   },
+    { path: 'BGD BB → Cross-border USD repo (7d)',          notional: basePool * 0.30, haircut: 0.035, days: 7   },
+    { path: 'Stablecoin float → On-chain repo (collat USD)',notional: basePool * 0.25, haircut: 0.015, days: 1   }
+  ].map(r => ({
+    ...r,
+    netFunding: r.notional * (1 - r.haircut),
+    annualCost: r.notional * (1 - r.haircut) * (inp.repo / 100)
+  }));
+
+  const totalAnnualCost = sweepRows.reduce((a, r) => a + r.annualCost, 0);
+
+  return { baseDay, spikeDay, basePool, stressPool, headroom, sweepRows, totalAnnualCost };
+}
+
+// =========== ACCOUNTING SCHEMA ===========
+function generateSchema(inp, coll, arch) {
+  const accounts = {
+    "schema": "iso20022-aligned-double-entry-v1",
+    "generated": new Date().toISOString().split('T')[0],
+    "corridor": "TLS_USD <-> BGD_BDT",
+    "base_currency": "USD",
+    "accounts": [
+      { "code": "1010", "name": "Nostro · TLS BNCTL · USD",           "type": "asset",   "iso_20022_ref": "pacs.009" },
+      { "code": "1020", "name": "Nostro · BGD BB · USD",              "type": "asset",   "iso_20022_ref": "pacs.009" },
+      { "code": "1030", "name": "Vostro · BGD bKash · BDT",           "type": "asset",   "iso_20022_ref": "pacs.008" },
+      { "code": "1110", "name": "Stablecoin Float (USD-peg)",         "type": "asset",   "iso_20022_ref": "pacs.008" },
+      { "code": "1210", "name": "Collateral Pool · USD T-Bills",      "type": "asset",   "iso_20022_ref": "pacs.009" },
+      { "code": "1220", "name": "Collateral Pool · USD Repo Receivable","type": "asset", "iso_20022_ref": "pacs.009" },
+      { "code": "1310", "name": "FX Revaluation Receivable",          "type": "asset",   "iso_20022_ref": "camt.054" },
+      { "code": "2010", "name": "Customer Payable · TLS Originator",  "type": "liability","iso_20022_ref": "pacs.008" },
+      { "code": "2020", "name": "Customer Payable · BGD Beneficiary", "type": "liability","iso_20022_ref": "pacs.008" },
+      { "code": "2110", "name": "Stablecoin Issuance Liability",      "type": "liability","iso_20022_ref": "pacs.008" },
+      { "code": "2210", "name": "Repo Funding Payable",               "type": "liability","iso_20022_ref": "pacs.009" },
+      { "code": "3010", "name": "FX P&L · USD/BDT Translation",       "type": "equity",  "iso_20022_ref": "camt.054" },
+      { "code": "4010", "name": "Settlement Fee Revenue",             "type": "revenue", "iso_20022_ref": "camt.054" },
+      { "code": "5010", "name": "Repo Funding Expense",               "type": "expense", "iso_20022_ref": "camt.054" },
+      { "code": "5020", "name": "Stablecoin Network Fee Expense",     "type": "expense", "iso_20022_ref": "pacs.002" }
+    ],
+    "recommended_architecture": arch.name,
+    "recommended_collateral_pool_usd": Math.round(coll.basePool),
+    "stress_collateral_pool_usd":     Math.round(coll.stressPool),
+    "fx_buffer_pct": inp.fxbuffer
+  };
+
+  // Sample posting cycle: $250K remittance, TLS originator → BGD beneficiary
+  const sample = Math.min(250000, Math.round(inp.dailyvol * 0.1));
+  const fxRate = 110.4; // illustrative USD/BDT
+  const bdtAmt = sample * fxRate;
+  const settleFee = sample * 0.0035;
+  const postings = [
+    { step: 1, account: '2010 · Customer Payable · TLS Originator', debit: 0, credit: sample,
+      ref: `pacs.008 / EndToEndId=TLS-${uuid4().slice(0,8).toUpperCase()}` },
+    { step: 2, account: '1010 · Nostro · TLS BNCTL · USD',          debit: sample, credit: 0,
+      ref: 'pacs.009 / SttlmMtd=CLRG' },
+    { step: 3, account: '2110 · Stablecoin Issuance Liability',     debit: 0, credit: sample,
+      ref: 'mint USDC-perm · on-chain ref' },
+    { step: 4, account: '1110 · Stablecoin Float (USD-peg)',        debit: sample, credit: 0,
+      ref: 'token transfer · atomic settle' },
+    { step: 5, account: '1110 · Stablecoin Float (USD-peg)',        debit: 0, credit: sample,
+      ref: 'burn on BGD-side redeem' },
+    { step: 6, account: '1030 · Vostro · BGD bKash · BDT',          debit: bdtAmt, credit: 0,
+      ref: `pacs.008 / FX=${fxRate.toFixed(2)} BDT` },
+    { step: 7, account: '2020 · Customer Payable · BGD Beneficiary',debit: bdtAmt - (settleFee * fxRate), credit: 0,
+      ref: 'BEFTN credit' },
+    { step: 8, account: '4010 · Settlement Fee Revenue',            debit: 0, credit: settleFee,
+      ref: 'camt.054 fee notification' },
+    { step: 9, account: '5010 · Repo Funding Expense',              debit: sample * (inp.repo/100) / 365, credit: 0,
+      ref: 'overnight repo prorated' }
+  ];
+
+  const isoMap = {
+    "schema": "iso20022-message-map-v1",
+    "corridor": "TLS_USD -> BGD_BDT",
+    "messages": [
+      { "step": "originate",  "iso": "pacs.008.001.10",  "purpose": "Customer credit transfer (TLS → BGD)",
+        "fields": ["EndToEndId","InstrId","IntrBkSttlmAmt","ChrgBr","UltmtDbtr","UltmtCdtr","RmtInf"] },
+      { "step": "mint",       "iso": "internal/mint-v1", "purpose": "Stablecoin mint against escrowed USD",
+        "fields": ["txnId","reserveProof","amount","chain","walletAddr"] },
+      { "step": "transfer",   "iso": "internal/xfr-v1",  "purpose": "On-chain atomic transfer TLS-side ↔ BGD-side",
+        "fields": ["from","to","amount","blockHash","finalityMs"] },
+      { "step": "burn",       "iso": "internal/burn-v1", "purpose": "Redeem stablecoin on BGD side for USD",
+        "fields": ["txnId","amount","reserveProof"] },
+      { "step": "fx-convert", "iso": "pacs.009.001.09",  "purpose": "USD → BDT inter-bank conversion at agreed rate",
+        "fields": ["IntrBkSttlmAmt","SttlmMtd","SttlmAcct","ExchgRate"] },
+      { "step": "credit-bgd", "iso": "pacs.008.001.10",  "purpose": "Final credit to BGD beneficiary via BEFTN",
+        "fields": ["IntrBkSttlmAmt","UltmtCdtr","ChrgBr"] },
+      { "step": "notify",     "iso": "camt.054.001.08",  "purpose": "Debit/credit notification + fee disclosure",
+        "fields": ["NtryDtls","Amt","ChrgsInf"] },
+      { "step": "ack-or-rjt", "iso": "pacs.002.001.10",  "purpose": "Payment status report (ACSC / RJCT)",
+        "fields": ["TxSts","StsRsnInf","OrgnlTxId"] }
+    ]
+  };
+
+  return { accounts, postings, isoMap };
+}
+
+// =========== RENDER ===========
+function renderArch(arch) {
+  const grid = document.getElementById('archGrid');
+  grid.innerHTML = '';
+  arch.forEach((a, idx) => {
+    const card = document.createElement('div');
+    card.className = 'arch-card' + (idx === 0 ? ' best' : '');
+    card.innerHTML = `
+      <h4>${a.name}</h4>
+      <div class="arch-tag">${a.tag}</div>
+      <div class="arch-desc">${a.desc}</div>
+      <div class="viability-bar-wrap">
+        <div class="viability-bar-label"><span>Composite Viability</span><span>${(a.composite*100).toFixed(0)}/100</span></div>
+        <div class="viability-bar"><div class="fill" style="width:${(a.composite*100).toFixed(1)}%"></div></div>
+      </div>
+      <div class="arch-criteria">
+        <div><span>Liquidity</span><span class="v">${(a.liq*100).toFixed(0)}</span></div>
+        <div><span>Finality</span><span class="v">${(a.fin*100).toFixed(0)}</span></div>
+        <div><span>Regulatory fit</span><span class="v ${a.reg<0.6?'warn':''}">${(a.reg*100).toFixed(0)}</span></div>
+        <div><span>Ops resilience</span><span class="v ${a.ops<0.6?'warn':''}">${(a.ops*100).toFixed(0)}</span></div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderTzGrid(tz) {
+  const grid = document.getElementById('tzGrid');
+  grid.innerHTML = '';
+  // TLS working hours 09–18 local = UTC 0–9 (UTC+9) … actually TLS local 09 = UTC 00. Working = UTC 0..9.
+  // BGD working hours 09–18 local = UTC 3–12 (UTC+6)
+  // Overlap UTC 3..9 (6h), but the modelled "business overlap" is the 3h window the user inputs (around 12-15 UTC for treasury desks).
+  // For the visualization we'll show TLS shift (UTC 0-9), BGD shift (UTC 3-12), and the treasury overlap (UTC 12-15).
+  const rows = [
+    { label: 'TLS', work: [...range(0,9)] },
+    { label: 'BGD', work: [...range(3,12)] },
+    { label: 'O/L', work: [...range(tz.overlapStart, tz.overlapEnd)], isOverlap: true },
+    { label: 'SWIFT', cutoffs: tz.cutoffs.map(c => c.hour) }
+  ];
+  for (const r of rows) {
+    const lbl = document.createElement('div');
+    lbl.className = 'tz-label';
+    lbl.textContent = r.label;
+    grid.appendChild(lbl);
+    const row = document.createElement('div');
+    row.className = 'tz-row';
+    for (let h = 0; h < 24; h++) {
+      const cell = document.createElement('span');
+      if (r.cutoffs && r.cutoffs.includes(h)) cell.classList.add('swift');
+      else if (r.isOverlap && r.work.includes(h)) cell.classList.add('overlap');
+      else if (r.work && r.work.includes(h)) cell.classList.add('work');
+      cell.title = `UTC ${String(h).padStart(2,'0')}:00`;
+      row.appendChild(cell);
+    }
+    grid.appendChild(row);
+  }
+}
+function range(a, b) { const r = []; for (let i = a; i < b; i++) r.push(i); return r; }
+
+function renderDiagGrid(tz) {
+  const grid = document.getElementById('diagGrid');
+  grid.innerHTML = '';
+  const cells = [
+    { label: 'UTC Overlap Window', val: tz.overlapHours.toFixed(1) + ' h', cls: tz.overlapHours >= 3 ? 'success' : 'warn',
+      sub: 'TLS/BGD desk co-availability' },
+    { label: 'Intraday Buffer (USD)', val: fmtK(tz.intradayBuffer), cls: 'accent',
+      sub: '6% per off-hour liquidity reserve' },
+    { label: 'SWIFT Conflict Count', val: String(tz.swiftConflicts), cls: tz.swiftConflicts > 1 ? 'warn' : 'success',
+      sub: 'cutoffs in 12–15 UTC window' },
+    { label: 'Finality SLA (target)', val: tz.finalitySlaH + ' h', cls: 'accent',
+      sub: 'Wholesale rail expectation' },
+    { label: 'Liquidity Score', val: (tz.liquidityScore*100).toFixed(0) + '/100', cls: tz.liquidityScore >= 0.5 ? 'success' : 'warn',
+      sub: 'Overlap-weighted index' }
+  ];
+  for (const c of cells) {
+    const el = document.createElement('div');
+    el.className = 'diag-cell';
+    el.innerHTML = `<div class="diag-label">${c.label}</div><div class="diag-val ${c.cls}">${c.val}</div><div class="diag-sub">${c.sub}</div>`;
+    grid.appendChild(el);
+  }
+}
+
+function renderColl(coll, inp) {
+  const sum = document.getElementById('collSummary');
+  sum.innerHTML = '';
+  const cells = [
+    { label: 'Daily Avg Flow',      val: fmtK(coll.baseDay),   sub: 'Modelled corridor volume' },
+    { label: 'Daily Spike Flow',    val: fmtK(coll.spikeDay),  sub: `× ${inp.spike} stress multiplier`, cls: 'warn' },
+    { label: 'Base Collateral Pool',val: fmtK(coll.basePool),  sub: '1.25 d × FX buffer' },
+    { label: 'Stress Collateral Pool', val: fmtK(coll.stressPool), sub: 'Spike + 0.5d follow-on', cls: 'warn' },
+    { label: 'Required Headroom',   val: fmtK(coll.headroom),  sub: 'Stress – Base', cls: 'accent' }
+  ];
+  for (const c of cells) {
+    const el = document.createElement('div');
+    el.className = 'diag-cell';
+    el.innerHTML = `<div class="diag-label">${c.label}</div><div class="diag-val ${c.cls||''}">${c.val}</div><div class="diag-sub">${c.sub}</div>`;
+    sum.appendChild(el);
+  }
+
+  // stress grid
+  const sg = document.getElementById('stressGrid');
+  sg.innerHTML = '';
+  const stressCards = [
+    { hdr: 'Normal Day Coverage Ratio',   val: (coll.basePool / coll.baseDay).toFixed(2) + '×', cls: 'success',
+      sub: 'Base pool ÷ avg daily flow' },
+    { hdr: 'Spike Day Coverage Ratio',    val: (coll.stressPool / coll.spikeDay).toFixed(2) + '×',
+      cls: (coll.stressPool / coll.spikeDay) >= 1.0 ? 'success' : (coll.stressPool / coll.spikeDay) >= 0.7 ? 'warn' : 'err',
+      sub: 'Stress pool ÷ spike day flow' },
+    { hdr: 'Spike-to-Base Headroom',      val: ((coll.headroom / coll.basePool) * 100).toFixed(0) + '%',
+      cls: (coll.headroom / coll.basePool) >= 1.0 ? 'success' : (coll.headroom / coll.basePool) >= 0.5 ? 'warn' : 'err',
+      sub: 'Marginal capital required' }
+  ];
+  for (const c of stressCards) {
+    const el = document.createElement('div');
+    el.className = 'stress-card' + (c.cls === 'warn' ? ' warn' : c.cls === 'err' ? ' err' : '');
+    el.innerHTML = `<h5>${c.hdr}</h5><div class="stress-val ${c.cls||''}">${c.val}</div><div class="stress-sub">${c.sub}</div>`;
+    sg.appendChild(el);
+  }
+
+  // repo table
+  const tbody = document.querySelector('#repoTable tbody');
+  tbody.innerHTML = '';
+  for (const r of coll.sweepRows) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.path}</td><td>${fmtK(r.notional)}</td><td>${pct(r.haircut*100,2)}</td><td>${fmtK(r.netFunding)}</td><td>${fmtK(r.annualCost)}</td>`;
+    tbody.appendChild(tr);
+  }
+  const tot = document.createElement('tr');
+  tot.innerHTML = `<td><strong>Total annualised funding cost</strong></td><td></td><td></td><td></td><td><strong>${fmtK(coll.totalAnnualCost)}</strong></td>`;
+  tbody.appendChild(tot);
+}
+
+function renderSchema(schema) {
+  // Accounts JSON pretty
+  const accountsHtml = jsonHtml(schema.accounts);
+  document.getElementById('schemaAccountsBody').innerHTML = accountsHtml;
+
+  // ISO map JSON
+  const isoHtml = jsonHtml(schema.isoMap);
+  document.getElementById('schemaIsoBody').innerHTML = isoHtml;
+
+  // Postings table
+  const tbody = document.querySelector('#postingsTable tbody');
+  tbody.innerHTML = '';
+  let dTot = 0, cTot = 0;
+  for (const p of schema.postings) {
+    dTot += p.debit; cTot += p.credit;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${p.step}</td><td>${p.account}</td>
+                    <td class="r debit">${p.debit ? fmt(p.debit, 2) : ''}</td>
+                    <td class="r credit">${p.credit ? fmt(p.credit, 2) : ''}</td>
+                    <td>${p.ref}</td>`;
+    tbody.appendChild(tr);
+  }
+  const tot = document.createElement('tr');
+  tot.className = 'totals';
+  tot.innerHTML = `<td></td><td><strong>Totals (illustrative; mixed-currency before FX consolidation)</strong></td>
+                   <td class="r"><strong>${fmt(dTot, 2)}</strong></td>
+                   <td class="r"><strong>${fmt(cTot, 2)}</strong></td><td></td>`;
+  tbody.appendChild(tot);
+}
+
+function jsonHtml(obj) {
+  const json = JSON.stringify(obj, null, 2);
+  return json
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"([^"]+)":/g, '<span class="k">"$1":</span>')
+    .replace(/: "([^"]*)"/g, ': <span class="s">"$1"</span>')
+    .replace(/: (-?\d+\.?\d*)/g, ': <span class="n">$1</span>');
+}
+
+// =========== RUN ===========
+function run() {
+  const inp  = readInputs();
+  const arch = scoreArchitectures(inp);
+  const tz   = tzDiagnostics(inp);
+  const coll = collateralEngine(inp);
+  const schema = generateSchema(inp, coll, arch[0]);
+
+  renderArch(arch);
+  renderTzGrid(tz);
+  renderDiagGrid(tz);
+  renderColl(coll, inp);
+  renderSchema(schema);
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  lastResult = { inp, arch, tz, coll, schema };
+}
+
+// =========== SCENARIOS ===========
+function applyScenario(name) {
+  const s = SCENARIOS[name];
+  if (!s) return;
+  document.getElementById('inp-dailyvol').value       = s.dailyvol;
+  document.getElementById('inp-txcount').value        = s.txcount;
+  document.getElementById('inp-direction').value      = s.direction;
+  document.getElementById('inp-spike').value          = s.spike;
+  document.getElementById('inp-fxbuffer').value       = s.fxbuffer;
+  document.getElementById('inp-repo').value           = s.repo;
+  document.getElementById('inp-overlap').value        = s.overlap;
+  document.getElementById('inp-correspondents').value = s.correspondents;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b.dataset.scenario === name));
+  run();
+}
+
+// =========== EXPORTS ===========
+function exportPolicyMandate() {
+  if (!lastResult) { alert('Run the bridge model first.'); return; }
+  const { inp, arch, tz, coll, schema } = lastResult;
+  const best = arch[0];
+
+  const mandate = {
+    "mandate_schema": "@postoaklabs.com/em-settlement-bridge-v1",
+    "mandate_id":     uuid4(),
+    "schema_version": "1.0.0",
+    "issued_at":      new Date().toISOString(),
+    "issued_by":      "Post Oak Labs · Frontier Settlement Bridge Demo",
+    "corridor": {
+      "origin_country":      "TL",
+      "destination_country": "BD",
+      "origin_currency":     "USD",
+      "destination_currency":"BDT",
+      "modelled_daily_volume_usd": inp.dailyvol,
+      "modelled_transactions":     inp.txcount,
+      "net_flow_direction":  inp.direction
+    },
+    "recommended_architecture": {
+      "id":        best.id,
+      "name":      best.name,
+      "composite_viability_score": Math.round(best.composite * 100),
+      "scores": {
+        "liquidity":  Math.round(best.liq * 100),
+        "finality":   Math.round(best.fin * 100),
+        "regulatory": Math.round(best.reg * 100),
+        "ops":        Math.round(best.ops * 100)
+      }
+    },
+    "alternatives_considered": arch.slice(1).map(a => ({
+      "id": a.id, "name": a.name, "composite_viability_score": Math.round(a.composite * 100)
+    })),
+    "time_zone_diagnostics": {
+      "utc_overlap_hours":   tz.overlapHours,
+      "overlap_window_utc":  `${String(tz.overlapStart).padStart(2,'0')}:00–${String(tz.overlapEnd).padStart(2,'0')}:00`,
+      "intraday_buffer_usd": Math.round(tz.intradayBuffer),
+      "swift_cutoff_conflicts": tz.swiftConflicts,
+      "finality_sla_hours":  tz.finalitySlaH
+    },
+    "collateral_engine": {
+      "base_pool_usd":            Math.round(coll.basePool),
+      "stress_pool_usd":          Math.round(coll.stressPool),
+      "required_headroom_usd":    Math.round(coll.headroom),
+      "spike_multiplier":         inp.spike,
+      "fx_buffer_pct":            inp.fxbuffer,
+      "annualised_funding_cost_usd": Math.round(coll.totalAnnualCost),
+      "repo_sweep": coll.sweepRows.map(r => ({
+        path: r.path, notional_usd: Math.round(r.notional), haircut_pct: r.haircut*100,
+        net_funding_usd: Math.round(r.netFunding), annual_cost_usd: Math.round(r.annualCost)
+      }))
+    },
+    "accounting_schema": {
+      "schema_id":   "iso20022-aligned-double-entry-v1",
+      "account_count": schema.accounts.accounts.length,
+      "iso_20022_messages": schema.isoMap.messages.map(m => m.iso),
+      "fx_revaluation_account": "1310"
+    },
+    "obligations": [
+      "Maintain stablecoin reserve attestations on a monthly cadence (CPMI/IOSCO 2022 principles).",
+      "Hold collateral pool ≥ stress pool sizing through any 30-day rolling window.",
+      "Reconcile nostro/vostro to ledger schema accounts (1010/1020/1030) at T+1 cutoff.",
+      "Report intraday liquidity buffer breaches to the bridge oversight committee within 24 hours.",
+      "Apply ISO 20022 message identifiers (pacs.008, pacs.009, camt.054) on all corridor flows.",
+      "Run quarterly 3× spike stress test; recalibrate buffer if coverage ratio < 1.0×."
+    ],
+    "next_actions": [
+      `Adopt ${best.name} as the corridor architecture target state.`,
+      `Pre-position collateral pool of ${fmtK(coll.basePool)} (base) and ensure committed lines for ${fmtK(coll.headroom)} headroom.`,
+      "Engage TLS BNCTL and BGD BB on PvP / atomic-settlement legal framework.",
+      "Validate the 8-message ISO 20022 corridor map against scheme rulebooks (BEFTN / bKash).",
+      "This mandate is deterministic and client-side generated. No PII was transmitted."
+    ],
+    "audit_signature": {
+      "client_side_executed": true,
+      "deterministic_run":    true,
+      "no_pii_transmitted":   true,
+      "input_hash":           sha256Stub(JSON.stringify(inp))
+    }
+  };
+
+  const blob = new Blob([JSON.stringify(mandate, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `em-settlement-bridge-mandate-${Date.now()}.policy.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportMarkdown() {
+  if (!lastResult) { alert('Run the bridge model first.'); return; }
+  const { inp, arch, tz, coll, schema } = lastResult;
+  const best = arch[0];
+  const md = [
+    `# Timor-Leste × Bangladesh Stablecoin Settlement Bridge — Report`,
+    ``,
+    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
+    `**Tool:** Post Oak Labs · Frontier Settlement Bridge Demo  `,
+    `**Schema:** \`@postoaklabs.com/em-settlement-bridge-v1\``,
+    ``,
+    `## Corridor Inputs`,
+    ``,
+    `| Parameter | Value |`,
+    `|-----------|-------|`,
+    `| Daily Volume (USD) | ${fmt(inp.dailyvol)} |`,
+    `| Daily Transactions | ${inp.txcount.toLocaleString()} |`,
+    `| Net Flow Direction | ${inp.direction} |`,
+    `| Spike Multiplier | ${inp.spike}× |`,
+    `| FX Buffer | ${inp.fxbuffer}% |`,
+    `| Repo Rate | ${inp.repo}% |`,
+    `| UTC Overlap | ${inp.overlap} h |`,
+    `| Correspondent Hops | ${inp.correspondents} |`,
+    ``,
+    `## Architecture Recommendation`,
+    ``,
+    `**Selected:** ${best.name} — composite viability **${Math.round(best.composite*100)}/100**.`,
+    ``,
+    `| Architecture | Composite | Liquidity | Finality | Regulatory | Ops |`,
+    `|--------------|-----------|-----------|----------|------------|-----|`,
+    ...arch.map(a => `| ${a.name} | ${Math.round(a.composite*100)} | ${Math.round(a.liq*100)} | ${Math.round(a.fin*100)} | ${Math.round(a.reg*100)} | ${Math.round(a.ops*100)} |`),
+    ``,
+    `## Time-Zone Diagnostics`,
+    ``,
+    `- UTC overlap window: **${tz.overlapHours} h** (UTC ${String(tz.overlapStart).padStart(2,'0')}:00–${String(tz.overlapEnd).padStart(2,'0')}:00)`,
+    `- Intraday liquidity buffer: **${fmtK(tz.intradayBuffer)}**`,
+    `- SWIFT cutoff conflicts in window: **${tz.swiftConflicts}**`,
+    `- Target finality SLA: **${tz.finalitySlaH} h**`,
+    ``,
+    `## Collateral & Repo Engine`,
+    ``,
+    `- Base collateral pool: **${fmtK(coll.basePool)}**`,
+    `- Stress pool (× ${inp.spike} spike): **${fmtK(coll.stressPool)}**`,
+    `- Required headroom: **${fmtK(coll.headroom)}**`,
+    `- Annualised funding cost: **${fmtK(coll.totalAnnualCost)}**`,
+    ``,
+    `### Repo Sweep`,
+    ``,
+    `| Path | Notional | Haircut | Net Funding | Annual Cost |`,
+    `|------|----------|---------|-------------|-------------|`,
+    ...coll.sweepRows.map(r => `| ${r.path} | ${fmtK(r.notional)} | ${(r.haircut*100).toFixed(2)}% | ${fmtK(r.netFunding)} | ${fmtK(r.annualCost)} |`),
+    ``,
+    `## Accounting Schema`,
+    ``,
+    `- ${schema.accounts.accounts.length} accounts across asset/liability/equity/revenue/expense (ISO 20022-aligned).`,
+    `- ${schema.isoMap.messages.length}-message corridor map: ${schema.isoMap.messages.map(m=>m.iso).join(', ')}.`,
+    ``,
+    `---`,
+    ``,
+    `*Illustrative model. Negotiate actual corridor terms with central banks, correspondents, and stablecoin issuers directly.*`,
+    `*© Post Oak Labs · postoaklabs.com · CC BY 4.0*`,
+    ``
+  ].join('\n');
+
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `em-settlement-bridge-report-${Date.now()}.md`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportCsv() {
+  if (!lastResult) { alert('Run the bridge model first.'); return; }
+  const { schema } = lastResult;
+  const rows = [['step','account','debit_usd','credit_usd','reference']];
+  for (const p of schema.postings) rows.push([p.step, p.account, p.debit, p.credit, p.ref]);
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `em-settlement-postings-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// =========== WIRING ===========
+document.getElementById('runBtn').addEventListener('click', run);
+document.getElementById('ap2ExportBtn').addEventListener('click', exportPolicyMandate);
+document.getElementById('mdExportBtn').addEventListener('click', exportMarkdown);
+document.getElementById('csvExportBtn').addEventListener('click', exportCsv);
+document.querySelectorAll('.scenario-btn').forEach(b => b.addEventListener('click', () => applyScenario(b.dataset.scenario)));
+document.querySelectorAll('.schema-toggle-row button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.schema-toggle-row button').forEach(x => x.classList.toggle('active', x === b));
+    const which = b.dataset.schema;
+    document.getElementById('schemaAccounts').style.display = which === 'accounts' ? '' : 'none';
+    document.getElementById('schemaPostings').style.display = which === 'postings' ? '' : 'none';
+    document.getElementById('schemaIso').style.display      = which === 'iso'      ? '' : 'none';
+  });
+});
+
+// Auto-load Trade scenario for an immediate populated view
+setTimeout(() => applyScenario('trade'), 60);
+</script>
+</body>
+</html>

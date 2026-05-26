@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP2 AML Mandate Builder · Agentic AML Policy as a Machine-Readable Mandate · Post Oak Labs</title>
+
+<meta name="description" content="Compose AP2 v1.0 AML mandates — customer risk tiers, transaction-monitoring rules, sanctions screening cadence, SAR filing triggers, escalation workflows. Outputs validated AP2 JSON for agentic payment systems. Client-side, zero PII, AP2-stable.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/ap2-aml-mandate-builder.html">
+<meta property="og:title" content="AP2 AML Mandate Builder — Post Oak Labs">
+<meta property="og:description" content="Compose machine-readable AP2 AML mandates for agentic payment systems. BSA / FATF / OFAC alignment. Browser-based. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/ap2-aml-mandate-builder.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/ap2-aml-mandate-builder.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "AP2 AML Mandate Builder",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/ap2-aml-mandate-builder.html",
+  "description": "Compose AP2 v1.0 AML mandates for agentic payment systems. Configure customer risk tier thresholds, TM rule parameters, SAR filing triggers, sanctions screening frequency and escalation workflows; export a validated AP2 JSON mandate, human-readable policy brief, and MCP tool definition.",
+  "featureList": [
+    "Customer risk tier composer (Low / Medium / High / Prohibited)",
+    "Transaction-monitoring rule parameters (velocity, structuring, geographic, behavioural)",
+    "SAR filing trigger configuration (30-day FinCEN clock awareness)",
+    "Sanctions screening cadence (transaction-time / batch / hybrid)",
+    "Escalation workflow design (auto-deny / human review / Tier-2 referral)",
+    "AP2 v1.0 mandate export against @ainumbers.co/aml-mandate-v1 schema",
+    "Markdown policy brief export, MCP tool definition export"
+  ],
+  "keywords": "AP2, AP2 mandate, AML, BSA, FinCEN, FATF Recommendation 16, OFAC, sanctions screening, transaction monitoring, customer risk rating, SAR, agentic payments, MCP, machine-readable AML policy",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+/* ═══ TOKENS ═══ */
+:root {
+  --pol-ink: #050c15;
+  --pol-deep: #0a1628;
+  --pol-edge: #1e3454;
+  --pol-body: #7090b0;
+  --pol-accent: #2a7fc0;
+  --pol-accent-lt: #4a9fdf;
+  --pol-gold: #c09040;
+
+  --bg: #ffffff;
+  --bg-soft: #fafbfc;
+  --bg-mid: #f4f5f7;
+  --bg-deep: #ebedef;
+  --border: #e6e8eb;
+  --border-2: #d0d4d8;
+  --text: #0a1828;
+  --text-muted: #6a7a8a;
+
+  --accent: var(--pol-accent);
+  --gold: var(--pol-gold);
+  --success: #10b981;
+  --warn: #f59e0b;
+  --error: #dc2626;
+  --purple: #8b5cf6;
+
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--pol-ink);
+  color: var(--pol-body);
+  font-family: var(--body-font);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a { color: var(--accent); }
+
+/* ═══ POL NAV (Part 2.4) ═══ */
+nav.pol-nav {
+  background: var(--pol-ink);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+/* ═══ HEADER STRIP (Part 3.1) ═══ */
+.showcase-header-strip {
+  background: var(--pol-deep);
+  border-top: 1px solid var(--pol-edge);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.85rem 0;
+  color: var(--pol-body);
+}
+.showcase-header-strip .strip-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem;
+}
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow {
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.7rem; color: var(--pol-gold); font-weight: 500;
+}
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a {
+  color: var(--pol-accent-lt); text-decoration: none;
+  margin-left: 1.25rem; font-size: 0.85rem;
+}
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+/* ═══ LIGHT DEMO CANVAS ═══ */
+main.demo-canvas {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body-font);
+  max-width: 1240px;
+  margin: 2rem auto;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+/* PII banner */
+.pii-banner {
+  background: rgba(42,127,192,0.04);
+  border: 1px solid rgba(42,127,192,0.15);
+  padding: 0.7rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+/* Hero */
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow {
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.7rem;
+}
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge {
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500;
+}
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+
+.hero h1 {
+  font-family: var(--heading);
+  font-size: clamp(1.7rem, 3.4vw, 2.45rem);
+  color: var(--text);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.7rem;
+}
+.hero-desc {
+  font-size: 1.02rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  max-width: 860px;
+}
+.hero-desc b { color: var(--text); font-weight: 500; }
+
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge {
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.08em; padding: 0.32rem 0.7rem;
+  border-radius: 3px; border: 1px solid var(--border-2);
+  color: var(--text-muted);
+}
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+/* AML LIVE callout */
+.aml-callout {
+  background: rgba(192,144,64,0.05);
+  border: 1px solid rgba(192,144,64,0.3);
+  border-left: 4px solid var(--gold);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  border-radius: 3px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+.aml-callout strong { color: var(--text); font-weight: 500; }
+.aml-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.aml-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+/* Value-at-risk sidebar (Part 17) */
+.value-at-risk {
+  background: var(--bg-soft);
+  border-left: 4px solid var(--gold);
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  border-radius: 2px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+.var-eyebrow {
+  font-family: var(--mono); font-size: 0.55rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.45rem; font-weight: 500;
+}
+.var-figure {
+  font-family: var(--heading);
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
+}
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+/* Lab grid */
+.lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+@media (max-width: 1040px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.panel-label {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+  font-family: var(--mono); font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 0.55rem;
+}
+.panel-label-r { color: var(--accent); }
+.sec-h {
+  font-family: var(--heading); font-size: 1.18rem;
+  color: var(--text); margin-bottom: 0.4rem; line-height: 1.3;
+}
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+/* Use case selector */
+.uc-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.85rem; }
+.uc-btn {
+  font-family: var(--mono); font-size: 0.7rem;
+  background: var(--bg-soft); border: 1px solid var(--border-2);
+  color: var(--text); padding: 0.55rem 0.9rem;
+  border-radius: 4px; cursor: pointer; transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.uc-btn:hover { border-color: var(--accent); color: var(--accent); }
+.uc-btn.sel { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+
+/* Slider rows */
+.slider-row {
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+.slider-row:last-of-type { border-bottom: none; }
+.slider-label { font-size: 0.82rem; color: var(--text); }
+.slider-label .sl-sub { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; }
+.slider-val {
+  font-family: var(--mono); font-size: 0.82rem; font-weight: 500;
+  text-align: right; color: var(--accent);
+}
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+/* Toggle group */
+.toggle-group { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.toggle-opt {
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.04em;
+  background: var(--bg-soft); border: 1px solid var(--border-2);
+  color: var(--text-muted); padding: 0.38rem 0.7rem;
+  border-radius: 3px; cursor: pointer;
+}
+.toggle-opt:hover { color: var(--accent); border-color: var(--accent); }
+.toggle-opt.sel { background: var(--text); color: #fff; border-color: var(--text); }
+
+/* Preview panel */
+.preview-sticky { position: sticky; top: 84px; }
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.4rem 0.7rem;
+  background: var(--bg-soft); border: 1px solid var(--border);
+  color: var(--text-muted); cursor: pointer; border-radius: 3px;
+}
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.9rem;
+  max-height: 460px;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+/* Export row (spec contract: .results-export-row holds AP2 button) */
+.results-export-row {
+  display: flex; gap: 0.55rem; flex-wrap: wrap;
+  margin-top: 0.9rem; padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+.btn-export {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+  padding: 0.65rem 1rem; border-radius: 4px;
+  border: 1px solid; cursor: pointer; letter-spacing: 0.08em;
+  text-transform: uppercase; transition: all 0.18s;
+}
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+/* Validation badge */
+.validation {
+  font-family: var(--mono); font-size: 0.65rem;
+  letter-spacing: 0.06em; margin-top: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 3px;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+/* Footer */
+footer.pol-footer {
+  background: var(--pol-ink);
+  border-top: 1px solid var(--pol-edge);
+  padding: 2.25rem 0 2.5rem;
+  margin-top: 2rem;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy {
+  font-family: var(--body-font);
+  font-size: 0.78rem;
+  color: var(--pol-body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 1.2rem; right: 1.2rem;
+  background: var(--text); border-left: 3px solid var(--success);
+  padding: 0.7rem 1.1rem; font-family: var(--mono);
+  font-size: 0.7rem; color: #fff; border-radius: 4px;
+  z-index: 9999; opacity: 0; transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* Cross-link footnote */
+.crosslinks {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-soft);
+  border: 1px dashed var(--border-2);
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.crosslinks h4 {
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text); margin-bottom: 0.5rem; font-weight: 500;
+}
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ POL NAV (Part 2.4) ═══ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ SHOWCASE HEADER STRIP ═══ -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #23 of 33</span>
+      <span class="strip-title">AP2 AML Mandate Builder</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/agentic-runtime/">Agentic Runtime Hub →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html" target="_blank" rel="noopener">Source Engine T131 ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LIGHT DEMO CANVAS ═══ -->
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <!-- PII banner -->
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #23 · Cat-12 · AP2 × AML · Agentic Runtime Hub</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">AP2 v1.0 stable</span>
+      <span class="eyebrow-badge eb-success">FATF R.16 · 6AMLD aligned</span>
+      <span class="eyebrow-badge eb-gold">Mandate + Policy Brief + MCP def</span>
+    </div>
+    <h1>Compose an AML policy. Export a machine-readable AP2 mandate.</h1>
+    <p class="hero-desc">
+      Translate <b>BSA program controls</b>, <b>transaction-monitoring rules</b>, and <b>customer-risk policy</b>
+      into a structured <b>AP2 v1.0</b> JSON mandate an agentic payment system can read, follow, and audit
+      against. Configure customer risk tiers, TM rule parameters, SAR-filing triggers, sanctions screening
+      cadence and escalation workflows; the mandate emits as
+      <code style="font-family:var(--mono);font-size:.78rem;background:var(--bg-soft);padding:.1rem .35rem;border-radius:3px;">@ainumbers.co/aml-mandate-v1</code>.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side</span>
+      <span class="hero-badge warn">Agentic AML: humans set policy, agents enforce; this demo emits the policy</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <!-- AML LIVE callout -->
+  <div class="aml-callout" role="note">
+    <div class="aml-eyebrow">BSA · FATF · 6AMLD — enforcement clocks running</div>
+    <p>
+      U.S. <strong>Bank Secrecy Act (31 USC §5311 ff.)</strong> remains the foundational AML regime; FinCEN's
+      <strong>AML/CFT National Priorities</strong> set the 2026 examination focus. <strong>FATF Recommendation 16</strong>
+      (the Travel Rule) and the <strong>6th AML Directive (EU 2018/1673)</strong> add personal liability for senior
+      management. <strong>AMLA (EU)</strong> begins direct supervision of selected obliged entities from 2028 with a
+      single rulebook (Regulation (EU) 2024/1624).
+    </p>
+    <div class="aml-cite">Sources: 31 USC §5311–§5336 · FinCEN AML Priorities (2021, updated 2026) · FATF R.16 · EU Reg. 2024/1624 (AMLR) · EU Dir. 2018/1673 (6AMLD)</div>
+  </div>
+
+  <!-- Value-at-risk (Part 17) -->
+  <aside class="value-at-risk" aria-label="Value at risk — AML programme failure">
+    <h4 class="var-eyebrow">Value at risk · BSA + OFAC + 6AMLD</h4>
+    <p class="var-figure">Up to ~$356,579 per OFAC violation · $1M+/day criminal BSA · 6AMLD personal liability for directors</p>
+    <p class="var-body">OFAC's IEEPA civil cap (inflation-adjusted, 2024) sits at <strong>$356,579 per violation</strong> or twice the transaction value, whichever is greater. Willful BSA programme failures expose institutions and named officers to <strong>criminal penalties up to $1M/day</strong> under 31 USC §5322(b). Under the 6th AML Directive, named senior managers can be <strong>personally liable</strong>, including custodial sentences. The mandate codifies policy in a form an agentic payment system can both follow and prove it followed — turning policy documents into machine-checkable controls.</p>
+    <p class="var-cite"><small>50 USC §1705 (IEEPA) · 31 USC §5321 / §5322 · OFAC 2024 inflation adjustment · EU 2018/1673 Art. 7</small></p>
+  </aside>
+
+  <!-- LAB -->
+  <div class="lab-grid">
+    <div>
+      <!-- §1 Use case -->
+      <section class="panel">
+        <div class="panel-label">§1 · AML Use Case <span class="panel-label-r" id="uc-readout">Customer risk + TM</span></div>
+        <h2 class="sec-h">Pick the policy domain</h2>
+        <p class="sec-sub">Each use case maps to a slice of an AML programme. Combine multiple to compose a multi-domain mandate.</p>
+        <div class="uc-row" id="uc-row">
+          <button class="uc-btn sel" data-uc="crr">Customer Risk Rating</button>
+          <button class="uc-btn sel" data-uc="tm">Transaction Monitoring</button>
+          <button class="uc-btn" data-uc="sanctions">Sanctions Screening</button>
+          <button class="uc-btn" data-uc="sar">SAR Filing Triggers</button>
+          <button class="uc-btn" data-uc="travel">FATF R.16 Travel Rule</button>
+        </div>
+      </section>
+
+      <!-- §2 Customer risk tiers -->
+      <section class="panel">
+        <div class="panel-label">§2 · Customer Risk Tiers <span class="panel-label-r">FATF Risk-Based Approach</span></div>
+        <h2 class="sec-h">Tier thresholds</h2>
+        <p class="sec-sub">Composite risk score (0–100) blends geographic, product, customer-type and behavioural factors. Tier boundaries determine onboarding friction, monitoring frequency and EDD obligations.</p>
+        <div class="slider-row">
+          <div class="slider-label">Low → Medium cutoff
+            <span class="sl-sub">Standard onboarding becomes Enhanced Due Diligence above this score.</span>
+          </div>
+          <span class="slider-val" id="v-lm">35</span>
+        </div>
+        <input type="range" id="r-lm" min="20" max="60" value="35" step="1">
+
+        <div class="slider-row">
+          <div class="slider-label">Medium → High cutoff
+            <span class="sl-sub">High-risk customers trigger EDD, periodic review (≤12mo), senior approval.</span>
+          </div>
+          <span class="slider-val" id="v-mh">65</span>
+        </div>
+        <input type="range" id="r-mh" min="50" max="85" value="65" step="1">
+
+        <div class="slider-row">
+          <div class="slider-label">High → Prohibited cutoff
+            <span class="sl-sub">Above this score, the agent must refuse onboarding and refer to compliance.</span>
+          </div>
+          <span class="slider-val" id="v-hp">90</span>
+        </div>
+        <input type="range" id="r-hp" min="75" max="99" value="90" step="1">
+      </section>
+
+      <!-- §3 TM rules -->
+      <section class="panel">
+        <div class="panel-label">§3 · TM Rule Parameters <span class="panel-label-r">Velocity · Structuring · Geo</span></div>
+        <h2 class="sec-h">Transaction-monitoring thresholds</h2>
+        <p class="sec-sub">Calibrate three families of TM rules. Lower thresholds raise sensitivity (and false positives); higher raises miss-rate (and SAR exposure). The mandate emits explicit threshold floors for the runtime to enforce.</p>
+
+        <div class="slider-row">
+          <div class="slider-label">Cash velocity threshold (per day, $)
+            <span class="sl-sub">Aggregate cash-equivalent activity flagged for review.</span>
+          </div>
+          <span class="slider-val" id="v-vel">10,000</span>
+        </div>
+        <input type="range" id="r-vel" min="3000" max="30000" value="10000" step="500">
+
+        <div class="slider-row">
+          <div class="slider-label">Structuring detection window (days)
+            <span class="sl-sub">Rolling window for aggregating sub-CTR transactions across accounts.</span>
+          </div>
+          <span class="slider-val" id="v-win">7</span>
+        </div>
+        <input type="range" id="r-win" min="1" max="30" value="7" step="1">
+
+        <div class="slider-row">
+          <div class="slider-label">Geographic anomaly delta (km)
+            <span class="sl-sub">Two transactions ≥X km apart inside 1h triggers behavioural alert.</span>
+          </div>
+          <span class="slider-val" id="v-geo">500</span>
+        </div>
+        <input type="range" id="r-geo" min="100" max="2000" value="500" step="50">
+      </section>
+
+      <!-- §4 Sanctions / SAR / Escalation -->
+      <section class="panel">
+        <div class="panel-label">§4 · Screening · SAR · Escalation <span class="panel-label-r">FinCEN 30-day clock</span></div>
+        <h2 class="sec-h">Cadence &amp; workflow</h2>
+        <p class="sec-sub">Lower-cadence sanctions screening reduces friction but extends exposure window. SAR filing deadline is FinCEN's hard 30 calendar days from initial detection.</p>
+
+        <div style="margin-top:.5rem;">
+          <div style="font-size:.82rem; color:var(--text); margin-bottom:.3rem;">Sanctions screening cadence</div>
+          <div class="toggle-group" id="tg-sanctions">
+            <button class="toggle-opt sel" data-v="transaction-time">Transaction-time</button>
+            <button class="toggle-opt" data-v="hybrid">Hybrid (tx + nightly)</button>
+            <button class="toggle-opt" data-v="batch">Batch (nightly)</button>
+          </div>
+        </div>
+
+        <div style="margin-top:.85rem;">
+          <div style="font-size:.82rem; color:var(--text); margin-bottom:.3rem;">SAR trigger sensitivity</div>
+          <div class="toggle-group" id="tg-sar">
+            <button class="toggle-opt" data-v="strict">Strict (low miss-rate)</button>
+            <button class="toggle-opt sel" data-v="standard">Standard (balanced)</button>
+            <button class="toggle-opt" data-v="relaxed">Relaxed (low FP)</button>
+          </div>
+        </div>
+
+        <div style="margin-top:.85rem;">
+          <div style="font-size:.82rem; color:var(--text); margin-bottom:.3rem;">Escalation workflow</div>
+          <div class="toggle-group" id="tg-escalation">
+            <button class="toggle-opt sel" data-v="human-review">Human review on amber/red</button>
+            <button class="toggle-opt" data-v="auto-deny">Auto-deny on red, refer amber</button>
+            <button class="toggle-opt" data-v="tier-2">Tier-2 analyst referral</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Preview panel -->
+    <div>
+      <section class="panel preview-sticky">
+        <div class="panel-label">§5 · Mandate Preview <span class="panel-label-r" id="schema-readout">@ainumbers.co/aml-mandate-v1</span></div>
+        <h2 class="sec-h">AP2 output</h2>
+        <p class="sec-sub">Live preview. Switch tabs to see what an agent will load, what your CCO will sign, and what an MCP client will discover.</p>
+
+        <div class="preview-tabs" id="preview-tabs">
+          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab" data-tab="md">Policy brief</button>
+          <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+        </div>
+
+        <div class="preview-body"><pre id="preview-out"></pre></div>
+
+        <div class="validation ok" id="validation">AP2 v1.0 schema · valid · @ainumbers.co/aml-mandate-v1</div>
+
+        <div class="results-export-row">
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+          <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+          <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Cross-links -->
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/aml-transaction-monitoring-rule-builder.html">#11 — AML Transaction Monitoring Rule Builder</a>
+      to expand the TM rule layer, or <a href="/demos/ap2-agentic-payment-policy-guardrail.html">#7 — AP2 Visual Policy Guardrail</a>
+      to visualise the same mandate as agent-traversal guardrails. The full 259-tool atlas is at the
+      <a href="/demos/composer.html">Tool Chain Composer</a> — #23 sits inside the Agentic Runtime cluster.
+    </p>
+  </div>
+</div>
+</main>
+
+<!-- ═══ POL FOOTER ═══ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html" target="_blank" rel="noopener">Deep Dive → AINumbers T131</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime Hub</a>
+      <a href="/demos/regtech/">RegTech Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── STATE ─────────────────────────────────────────────────────────────
+  const state = {
+    useCases: new Set(['crr','tm']),
+    lm: 35, mh: 65, hp: 90,
+    vel: 10000, win: 7, geo: 500,
+    sanctionsCadence: 'transaction-time',
+    sarSensitivity: 'standard',
+    escalation: 'human-review',
+    activeTab: 'ap2'
+  };
+
+  // ── BUILD MANDATE ─────────────────────────────────────────────────────
+  function buildMandate(){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-23-' + Math.random().toString(36).slice(2,10);
+    const ucList = Array.from(state.useCases).sort();
+
+    const policies = [];
+
+    if (state.useCases.has('crr')) {
+      policies.push({
+        policy_id: 'crr-tier-thresholds',
+        domain: 'customer_risk_rating',
+        framework_ref: 'FATF risk-based approach',
+        controls: {
+          risk_tier_cutoffs: {
+            low_to_medium: state.lm,
+            medium_to_high: state.mh,
+            high_to_prohibited: state.hp
+          },
+          action_on_prohibited: 'agent_must_refuse_onboarding_and_refer'
+        }
+      });
+    }
+
+    if (state.useCases.has('tm')) {
+      policies.push({
+        policy_id: 'tm-thresholds',
+        domain: 'transaction_monitoring',
+        framework_ref: 'BSA 31 CFR 1020.210; FinCEN 2026 AML Priorities',
+        controls: {
+          cash_velocity_per_day_usd: state.vel,
+          structuring_detection_window_days: state.win,
+          geographic_anomaly_delta_km: state.geo,
+          rule_family: ['velocity','structuring','geographic_anomaly','behavioural']
+        }
+      });
+    }
+
+    if (state.useCases.has('sanctions')) {
+      policies.push({
+        policy_id: 'sanctions-screening',
+        domain: 'sanctions_screening',
+        framework_ref: 'OFAC SDN; EU consolidated list; UN 1267',
+        controls: {
+          screening_cadence: state.sanctionsCadence,
+          minimum_match_threshold: 0.85,
+          on_hit_action: 'hold_block_and_refer'
+        }
+      });
+    }
+
+    if (state.useCases.has('sar')) {
+      policies.push({
+        policy_id: 'sar-filing-triggers',
+        domain: 'suspicious_activity_reporting',
+        framework_ref: '31 CFR 1020.320; FinCEN 30-day filing clock',
+        controls: {
+          trigger_sensitivity: state.sarSensitivity,
+          filing_deadline_calendar_days: 30,
+          continuing_activity_review_days: 90,
+          escalation: state.escalation
+        }
+      });
+    }
+
+    if (state.useCases.has('travel')) {
+      policies.push({
+        policy_id: 'fatf-r16-travel-rule',
+        domain: 'travel_rule',
+        framework_ref: 'FATF Recommendation 16; EU 2024/1624 (TFR)',
+        controls: {
+          originator_data_required: ['name','address_or_id','account_or_unique_ref'],
+          beneficiary_data_required: ['name','account_or_unique_ref'],
+          de_minimis_usd: 1000,
+          on_missing_data: 'reject_or_quarantine_for_review'
+        }
+      });
+    }
+
+    return {
+      '$schema': '@ainumbers.co/aml-mandate-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: {
+        organization: 'Post Oak Labs Showcase Demo · synthetic',
+        role: 'AML policy author (demonstration)'
+      },
+      subject: {
+        runtime: 'agentic-payment-system',
+        scope: ucList.length === 1 ? ucList[0] : 'multi-domain'
+      },
+      use_cases: ucList,
+      policies: policies,
+      enforcement: {
+        binding: true,
+        on_violation: 'halt_and_human_review',
+        audit_trail_required: true
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/ap2-aml-mandate-builder.html',
+        backing_tool: 'https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html',
+        license: 'CC BY 4.0'
+      }
+    };
+  }
+
+  // ── VALIDATE (light schema check) ─────────────────────────────────────
+  function validateMandate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/aml-mandate-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!m.mandate_id) errs.push('mandate_id missing');
+    if (!Array.isArray(m.policies) || m.policies.length === 0) errs.push('at least one policy required');
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    return errs;
+  }
+
+  // ── BUILD MARKDOWN BRIEF ──────────────────────────────────────────────
+  function buildMarkdown(m){
+    const out = [];
+    out.push('# AP2 AML Mandate — Policy Brief');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '`');
+    out.push('**Issued:** ' + m.issued_at);
+    out.push('**Scope:** ' + m.subject.scope);
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('## Policy domains in scope');
+    out.push('');
+    m.policies.forEach((p, i) => {
+      out.push('### ' + (i+1) + '. ' + p.domain.replace(/_/g,' '));
+      out.push('- **Framework reference:** ' + p.framework_ref);
+      out.push('- **Controls:**');
+      Object.entries(p.controls).forEach(([k,v]) => {
+        const vv = (typeof v === 'object') ? JSON.stringify(v) : v;
+        out.push('  - `' + k + '`: ' + vv);
+      });
+      out.push('');
+    });
+    out.push('## Enforcement');
+    out.push('- Binding: ' + m.enforcement.binding);
+    out.push('- On violation: ' + m.enforcement.on_violation);
+    out.push('- Audit trail required: ' + m.enforcement.audit_trail_required);
+    out.push('');
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #23 (AP2 AML Mandate Builder). ');
+    out.push('Source engine: AINumbers T131. CC BY 4.0. Zero PII._');
+    return out.join('\n');
+  }
+
+  // ── BUILD MCP TOOL DEFINITION ─────────────────────────────────────────
+  function buildMcpDef(m){
+    return {
+      name: 'aml_mandate_apply',
+      description: 'Apply the loaded AP2 AML mandate to a candidate payment / onboarding action. Returns allow/refer/deny with reasoning.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action_type: { type: 'string', enum: ['onboard','payment','periodic_review','sanctions_check'] },
+          customer_risk_score: { type: 'number', minimum: 0, maximum: 100 },
+          amount_usd: { type: 'number', minimum: 0 },
+          counterparty_jurisdiction: { type: 'string' },
+          counterparty_data_complete: { type: 'boolean' }
+        },
+        required: ['action_type']
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        use_cases: m.use_cases
+      },
+      provenance: m.provenance
+    };
+  }
+
+  // ── RENDER PREVIEW ────────────────────────────────────────────────────
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function render(){
+    const m = buildMandate();
+    const errs = validateMandate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 schema · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+
+    let body = '';
+    if (state.activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') body = buildMarkdown(m);
+    else body = JSON.stringify(buildMcpDef(m), null, 2);
+
+    const isJson = state.activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+
+    document.getElementById('uc-readout').textContent =
+      Array.from(state.useCases).map(s => ({crr:'CRR',tm:'TM',sanctions:'Sanctions',sar:'SAR',travel:'Travel'}[s])).join(' + ') || '—';
+  }
+
+  // ── WIRE UP CONTROLS ─────────────────────────────────────────────────
+  function setSliders(){
+    const pairs = [['r-lm','v-lm','lm', x=>x],
+                   ['r-mh','v-mh','mh', x=>x],
+                   ['r-hp','v-hp','hp', x=>x],
+                   ['r-vel','v-vel','vel', x=>x.toLocaleString()],
+                   ['r-win','v-win','win', x=>x],
+                   ['r-geo','v-geo','geo', x=>x.toLocaleString()]];
+    pairs.forEach(([rid, vid, key, fmt]) => {
+      const r = document.getElementById(rid);
+      const v = document.getElementById(vid);
+      r.addEventListener('input', () => {
+        let val = Number(r.value);
+        // keep tier cutoffs monotonic
+        if (key === 'lm' && val >= state.mh) val = state.mh - 1;
+        if (key === 'mh') {
+          if (val <= state.lm) val = state.lm + 1;
+          if (val >= state.hp) val = state.hp - 1;
+        }
+        if (key === 'hp' && val <= state.mh) val = state.mh + 1;
+        r.value = val;
+        state[key] = val;
+        v.textContent = fmt(val);
+        render();
+      });
+      v.textContent = fmt(state[key]);
+    });
+  }
+
+  function setToggleGroup(containerId, stateKey){
+    document.querySelectorAll('#' + containerId + ' .toggle-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#' + containerId + ' .toggle-opt').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        state[stateKey] = btn.dataset.v;
+        render();
+      });
+    });
+  }
+
+  function setUseCases(){
+    document.querySelectorAll('#uc-row .uc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const uc = btn.dataset.uc;
+        if (state.useCases.has(uc) && state.useCases.size > 1) {
+          state.useCases.delete(uc);
+          btn.classList.remove('sel');
+        } else {
+          state.useCases.add(uc);
+          btn.classList.add('sel');
+        }
+        render();
+      });
+    });
+  }
+
+  function setTabs(){
+    document.querySelectorAll('#preview-tabs .preview-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => t.classList.remove('sel'));
+        tab.classList.add('sel');
+        state.activeTab = tab.dataset.tab;
+        render();
+      });
+    });
+  }
+
+  // ── EXPORTS ───────────────────────────────────────────────────────────
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  function download(filename, content, mime){
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate();
+    if (validateMandate(m).length === 0) {
+      download('ap2-aml-mandate.json', JSON.stringify(m, null, 2), 'application/json');
+      toast('AP2 mandate exported');
+    } else {
+      toast('Schema validation failed — fix highlighted errors');
+    }
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('ap2-aml-mandate-brief.md', buildMarkdown(buildMandate()), 'text/markdown');
+    toast('Markdown brief exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('aml_mandate_apply.mcp.json', JSON.stringify(buildMcpDef(buildMandate()), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate();
+    let txt;
+    if (state.activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') txt = buildMarkdown(m);
+    else txt = JSON.stringify(buildMcpDef(m), null, 2);
+    try {
+      await navigator.clipboard.writeText(txt);
+      toast('Copied to clipboard');
+    } catch (e) {
+      toast('Copy failed — select text in panel');
+    }
+  });
+
+  // ── INIT ─────────────────────────────────────────────────────────────
+  setSliders();
+  setToggleGroup('tg-sanctions', 'sanctionsCadence');
+  setToggleGroup('tg-sar', 'sarSensitivity');
+  setToggleGroup('tg-escalation', 'escalation');
+  setUseCases();
+  setTabs();
+  render();
+})();
+</script>
+
+</body>
+</html>

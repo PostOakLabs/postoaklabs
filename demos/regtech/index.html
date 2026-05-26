@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RegTech Hub — Post Oak Labs Fintech Intelligence Showcase</title>
+
+<!-- Per-page meta (spec Part 14) -->
+<meta name="description" content="Five enforcement clocks, one suite, one schema. DORA · NIS2 · MiCA · EU AI Act · CFPB §1033 — verified deadlines, dual- and triple-compliance evidence as AP2 mandates. 9 browser demos for RegTech buyers.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/regtech/">
+<meta property="og:title" content="RegTech Hub — Post Oak Labs">
+<meta property="og:description" content="Five enforcement clocks. One suite. One schema. DORA · NIS2 · MiCA · EU AI Act · CFPB §1033 — exported as AP2 mandates, replayable by audit.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/regtech/">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/regtech.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- JSON-LD (CollectionPage scoped to the regtech archetype) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "RegTech Hub — Post Oak Labs",
+  "url": "https://postoaklabs.com/demos/regtech/",
+  "description": "Nine browser demos for RegTech operators — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating. AP2-exportable, client-side, zero PII.",
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" },
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateModified": "2026-05-13",
+  "audience": { "@type": "Audience", "audienceType": "RegTech operators — ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay" },
+  "hasPart": [
+    { "@type": "SoftwareApplication", "name": "DORA / NIS2 Dual-Compliance Deduplicator", "url": "https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html" }
+  ]
+}
+</script>
+
+<!-- POL canonical font stack -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══ POL palette (matches live site) ═══ */
+:root {
+  --ink: #050c15; --deep: #0a1628; --navy: #0e1e35; --panel: #142540; --edge: #1e3454;
+  --rim: #2a4a70; --body: #7090b0; --text: #d8e4f0; --muted: #5a7a95;
+  --bright: #ffffff; --white: #ffffff;
+  --accent: #2a7fc0; --accent-lt: #4a9fdf;
+  --gold: #c09040; --gold-lt: #d0a050;
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626;
+}
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.18; color: var(--bright); }
+a { color: var(--accent-lt); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+nav.pol-nav { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; font-weight: 400; transition: color 0.15s; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+.hub-breadcrumb { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.7rem 0; }
+.hub-breadcrumb-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); }
+.hub-breadcrumb-inner a { color: var(--body); text-decoration: none; margin-right: 0.45rem; }
+.hub-breadcrumb-inner a:hover { color: var(--accent-lt); }
+.hub-breadcrumb-inner .crumb-sep { margin-right: 0.45rem; color: var(--edge); }
+.hub-breadcrumb-inner .crumb-current { color: var(--text); }
+
+.hub-hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--edge); background: radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.08) 0%, transparent 70%), radial-gradient(45% 65% at 88% 30%, rgba(192,144,64,0.06) 0%, transparent 65%), var(--ink); }
+.hub-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.6rem; }
+.hub-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); }
+.hub-hero h1 { font-size: clamp(2rem, 4vw, 3.05rem); color: #fff; margin-bottom: 1.1rem; max-width: 900px; letter-spacing: -0.01em; }
+.hub-hero h1 em { font-style: italic; color: var(--gold); }
+.hub-sub { font-size: 1.04rem; color: var(--body); max-width: 780px; line-height: 1.75; margin-bottom: 2.25rem; }
+.hub-sub strong { color: var(--text); font-weight: 500; }
+.hub-buyers { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px dashed var(--edge); max-width: 780px; }
+.hub-buyers strong { color: var(--accent-lt); font-weight: 500; letter-spacing: 0.1em; }
+.hub-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--edge); border-radius: 6px; background: rgba(14, 30, 53, 0.35); max-width: 780px; }
+.hub-stats > div { padding: 1.25rem 1.4rem; border-right: 1px solid var(--edge); }
+.hub-stats > div:last-child { border-right: none; }
+.hub-stats strong { display: block; font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--bright); font-weight: 400; line-height: 1.1; margin-bottom: 0.25rem; }
+.hub-stats .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+.hub-demos { padding: 3rem 0 2rem; border-bottom: 1px solid var(--edge); }
+.hub-demos-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 0.5rem; }
+.hub-section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 2.2vw, 1.9rem); color: var(--bright); margin-bottom: 0.6rem; max-width: 760px; line-height: 1.3; }
+.hub-section-intro { font-size: 0.95rem; color: var(--body); max-width: 700px; margin-bottom: 2.1rem; line-height: 1.7; }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+.demo-card { background: var(--deep); border: 1px solid var(--edge); border-radius: 6px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; position: relative; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; text-decoration: none; color: var(--body); }
+.demo-card[href]:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
+.demo-card.placeholder { opacity: 0.78; cursor: default; border-style: dashed; border-color: var(--rim); }
+.demo-card.placeholder:hover { transform: none; box-shadow: none; }
+.demo-card.cross-link { background: linear-gradient(180deg, rgba(192,144,64,0.04) 0%, var(--deep) 100%); }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; }
+.card-num { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; color: var(--muted); }
+.card-num strong { color: var(--gold); font-weight: 500; }
+.card-step { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; color: var(--accent-lt); font-weight: 500; text-transform: uppercase; }
+.card-status { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.18rem 0.45rem; border-radius: 2px; font-weight: 500; }
+.card-status.live { color: var(--success); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); }
+.card-status.coming { color: var(--gold); background: rgba(192,144,64,0.06); border: 1px solid rgba(192,144,64,0.3); }
+.card-status.cross { color: var(--accent-lt); background: rgba(42,127,192,0.06); border: 1px solid rgba(42,127,192,0.3); }
+.card-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; line-height: 1.3; }
+.card-desc { font-size: 0.82rem; color: var(--body); line-height: 1.6; flex: 1; }
+.card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; padding-top: 0.85rem; border-top: 1px solid var(--edge); }
+.card-meta .chip { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0.2rem 0.45rem; border: 1px solid var(--edge); border-radius: 2px; }
+
+.hub-callout { padding: 3rem 0; background: radial-gradient(60% 90% at 50% 0%, rgba(42,127,192,0.05) 0%, transparent 70%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-callout-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-callout-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
+.hub-callout h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--bright); margin-bottom: 1rem; line-height: 1.3; }
+.hub-callout p { color: var(--body); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; max-width: 720px; }
+.hub-callout p strong { color: var(--text); font-weight: 500; }
+.hub-callout-aside { border-left: 2px solid var(--accent); padding-left: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--text); line-height: 1.7; }
+.hub-callout-aside strong { color: var(--gold); display: block; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.5rem; }
+@media (max-width: 760px) { .hub-callout-grid { grid-template-columns: 1fr; gap: 1.5rem; } .hub-callout-aside { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 1rem; } }
+
+.hub-deep-dive { padding: 3rem 0 3.5rem; border-bottom: 1px solid var(--edge); }
+.hub-deep-dive-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.deep-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+.deep-list li { background: var(--deep); border: 1px solid var(--edge); border-radius: 4px; padding: 1.1rem 1.25rem; transition: border-color 0.15s, background 0.15s; }
+.deep-list li:hover { border-color: var(--accent); background: rgba(20, 37, 64, 0.6); }
+.deep-list a { text-decoration: none; color: var(--text); display: block; }
+.deep-id { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; color: var(--gold); font-weight: 500; margin-bottom: 0.35rem; }
+.deep-name { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--bright); font-weight: 500; margin-bottom: 0.3rem; }
+.deep-blurb { font-size: 0.78rem; color: var(--body); line-height: 1.55; }
+
+.hub-cta-row { padding: 3rem 0; background: radial-gradient(50% 80% at 50% 0%, rgba(192,144,64,0.04) 0%, transparent 65%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-cta-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+.hub-cta-text { max-width: 600px; }
+.hub-cta-text h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--bright); margin-bottom: 0.5rem; line-height: 1.3; }
+.hub-cta-text p { color: var(--body); font-size: 0.9rem; line-height: 1.65; }
+.hub-cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hub-cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.85rem 1.4rem; border-radius: 4px; text-decoration: none; font-weight: 500; transition: all 0.15s; }
+.hub-cta-btn.primary { color: #fff; background: var(--accent); }
+.hub-cta-btn.primary:hover { background: var(--accent-lt); }
+.hub-cta-btn.ghost { color: var(--text); border: 1px solid var(--rim); background: transparent; }
+.hub-cta-btn.ghost:hover { border-color: var(--accent-lt); color: var(--accent-lt); }
+
+footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.25rem 0 2.5rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+@media (max-width: 760px) {
+  .hub-stats { grid-template-columns: 1fr; }
+  .hub-stats > div { border-right: none; border-bottom: 1px solid var(--edge); }
+  .hub-stats > div:last-child { border-bottom: none; }
+  .hub-hero { padding: 2.5rem 0 2rem; }
+  .hub-demos { padding: 2.25rem 0 1.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ POL DARK NAV ═══════════════ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="hub-breadcrumb" aria-label="Breadcrumb">
+  <div class="hub-breadcrumb-inner">
+    <a href="/">Post Oak Labs</a><span class="crumb-sep">/</span>
+    <a href="/demos/">Showcase</a><span class="crumb-sep">/</span>
+    <span class="crumb-current">RegTech hub</span>
+  </div>
+</div>
+
+<!-- HUB HERO -->
+<header class="hub-hero">
+  <div class="hub-inner">
+    <span class="hub-eyebrow">For RegTech operators</span>
+    <h1>Five enforcement clocks. <em>One</em> suite. One schema.</h1>
+    <p class="hub-sub">
+      <strong>DORA · NIS2 · MiCA · EU AI Act · CFPB §1033</strong> — the deadlines aren't
+      moving, the controls overlap by 60–70%, and every mandate exports as JSON the audit
+      team can replay. Nine demos and the AML / sanctions / KYB / CRR tools underneath
+      them are the dual- and triple-compliance evidence track.
+    </p>
+    <p class="hub-buyers">
+      Built for <strong>ComplyAdvantage · Sumsub · Hummingbird · Unit21 · ThetaRay</strong>
+      &nbsp;·&nbsp; readable by Tier-1 risk &amp; compliance teams
+    </p>
+    <div class="hub-stats" aria-label="Hub at a glance">
+      <div><strong>9</strong><span class="stat-label">demos in this stack</span></div>
+      <div><strong>5</strong><span class="stat-label">enforcement clocks</span></div>
+      <div><strong>AP2</strong><span class="stat-label">mandate export · all</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- HUB DEMOS -->
+<section class="hub-demos" aria-label="Demos in workflow order">
+  <div class="hub-demos-inner">
+    <div class="hub-section-label">Workflow · operational → AI/regulatory → financial-crime → US extension</div>
+    <h2 class="hub-section-title">Nine demos sequenced to walk a RegTech team through the five clocks.</h2>
+    <p class="hub-section-intro">
+      Start at operational resilience (DORA / NIS2) where the overlap is highest. Move into
+      the AI-risk and crypto-rail surface (EU AI Act, FATF Travel Rule). Cover the financial
+      crime stack (AML TM, KYB, sanctions, CRR). Pin the US extension last (CFPB §1033),
+      which is the only one whose schedule is genuinely uncertain.
+    </p>
+
+    <div class="demo-grid">
+
+      <!-- 1: DORA Dedup (live) -->
+      <a class="demo-card" href="/demos/dora-compliance-deduplication-tool.html">
+        <div class="card-head"><span class="card-step">Step 1 · Operational</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #03</strong> · DORA / NIS2 overlap</span>
+        <h3 class="card-title">DORA / NIS2 Dual-Compliance Deduplicator</h3>
+        <p class="card-desc">Control-overlap Venn for DORA (EU 2022/2554) + NIS2 (EU 2022/2555). 4-hour NCA notification window classification, AP2 mandate export. The reference point for "controls overlap by 60–70%."</p>
+        <div class="card-meta"><span class="chip">DORA Live</span><span class="chip">NIS2</span><span class="chip">AP2 Mandate</span></div>
+      </a>
+
+      <!-- 2: DORA ICT Gap (live) -->
+      <a class="demo-card live" href="/demos/dora-ict-risk-gap-analyser.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 2 · Operational (depth)</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #26</strong> · DORA Art. 28</span>
+        <h3 class="card-title">DORA ICT Risk Gap Analyser</h3>
+        <p class="card-desc">Five-pillar DORA maturity + an Article 28 third-party concentration deep-dive — HHI index, sub-outsourcing depth, CIF tier flags, EBA RTS 2024/1773 alignment. AP2 mandate output an agentic compliance runtime can execute against.</p>
+        <div class="card-meta"><span class="chip">DORA Art. 28</span><span class="chip">3rd-party ICT</span><span class="chip">EBA RTS</span></div>
+      </a>
+
+      <!-- 3: EU AI Act Mapper (coming, cross-link to Agentic) -->
+      <div class="demo-card placeholder cross-link">
+        <div class="card-head"><span class="card-step">Step 3 · AI risk</span><span class="card-status cross">Cross</span></div>
+        <span class="card-num"><strong>Demo #10</strong> · EU AI Act Art. 6</span>
+        <h3 class="card-title">EU AI Act Article 6 Risk-Class Mapper for FS</h3>
+        <p class="card-desc">Map FS AI use cases (every RegTech screening model is one) to Annex III risk classes. €35M / 7% turnover exposure, Article 6 evidence requirements — for the model risk team to file once, audit to read forever.</p>
+        <div class="card-meta"><span class="chip">EU AI Act</span><span class="chip">Art. 6 · Annex III</span><span class="chip">€35M / 7%</span></div>
+      </div>
+
+      <!-- 4: VASP Travel Rule (live) -->
+      <a class="demo-card live" href="/demos/vasp-travel-rule-compliance-checker.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 4 · Crypto rails</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #15</strong> · FATF R.16</span>
+        <h3 class="card-title">VASP Travel Rule (FATF R.16) Compliance Checker</h3>
+        <p class="card-desc">Originator + beneficiary data-sufficiency scored across FATF, EU TFR (Reg. 2024/1624), FinCEN, UK MLR, MAS. Per-jurisdiction breakdown, sunrise-issue awareness, AP2 mandate — the harmonisation surface the crypto-rails RegTech buyer ships against.</p>
+        <div class="card-meta"><span class="chip">FATF R.16</span><span class="chip">EU TFR live</span><span class="chip">5 regimes</span></div>
+      </a>
+
+      <!-- 5: AML TM Rule Builder (live) -->
+      <a class="demo-card live" href="/demos/aml-transaction-monitoring-rule-builder.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 5 · Financial crime</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #11</strong> · AML</span>
+        <h3 class="card-title">AML Transaction Monitoring Rule Builder</h3>
+        <p class="card-desc">Six rule families, per-rule thresholds, false-positive / true-positive modeled against a synthetic 100K-tx population. Live precision &amp; recall, analyst FTE estimate, AP2 ruleset export.</p>
+        <div class="card-meta"><span class="chip">AML</span><span class="chip">Tx Monitoring</span><span class="chip">FP/TP modeled</span></div>
+      </a>
+
+      <!-- 6: KYB BO Mapper (coming) -->
+      <a class="demo-card live" href="/demos/kyb-beneficial-ownership-network-mapper.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 6 · KYB</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #16</strong> · KYB / UBO</span>
+        <h3 class="card-title">KYB Beneficial Ownership Network Mapper</h3>
+        <p class="card-desc">Interactive SVG ownership-chain graph across four disclosure regimes (FinCEN CTA / EU 6AMLD / UK PSC / MAS). Three switchable scenarios — including a sanctioned-proximity case and a circular-ownership cycle. Per-UBO effective-share computation, AP2 evidence-grade mandate.</p>
+        <div class="card-meta"><span class="chip">KYB</span><span class="chip">UBO graph</span><span class="chip">AMLD6</span></div>
+      </a>
+
+      <!-- 7: FATF Sanctions (coming) -->
+      <div class="demo-card placeholder">
+        <div class="card-head"><span class="card-step">Step 7 · Sanctions</span><span class="card-status coming">Coming</span></div>
+        <span class="card-num"><strong>Demo #19</strong> · FATF · OFAC</span>
+        <h3 class="card-title">FATF Readiness Scorer + Sanctions Programme</h3>
+        <p class="card-desc">FATF mutual-evaluation readiness scoring + OFAC / EU sanctions programme effectiveness review. The pair RegTech buyers wire into customer-onboarding pipelines.</p>
+        <div class="card-meta"><span class="chip">FATF</span><span class="chip">OFAC</span><span class="chip">Sanctions</span></div>
+      </div>
+
+      <!-- 8: Customer Risk Rating (coming) -->
+      <div class="demo-card placeholder">
+        <div class="card-head"><span class="card-step">Step 8 · Customer risk</span><span class="card-status coming">Coming</span></div>
+        <span class="card-num"><strong>Demo #20</strong> · CRR · KYC</span>
+        <h3 class="card-title">Customer Risk Rating Engine</h3>
+        <p class="card-desc">Composable CRR engine — geographic, product, behavioural factors with FATF risk-based-approach alignment. Output is the AP2 mandate downstream tools enforce.</p>
+        <div class="card-meta"><span class="chip">CRR</span><span class="chip">FATF RBA</span><span class="chip">AML</span></div>
+      </div>
+
+      <!-- 9: CFPB §1033 (coming) -->
+      <div class="demo-card placeholder">
+        <div class="card-head"><span class="card-step">Step 9 · US extension</span><span class="card-status coming">Coming</span></div>
+        <span class="card-num"><strong>Demo #09</strong> · CFPB §1033</span>
+        <h3 class="card-title">CFPB §1033 Financial Data Rights Mapper</h3>
+        <p class="card-desc">Personal financial data rights mapping for US covered FIs — phased compliance April 2026 → April 2030, current CFPB reconsideration acknowledged in the schedule view.</p>
+        <div class="card-meta"><span class="chip">CFPB §1033</span><span class="chip">Apr 2026 phase 1</span><span class="chip">Open banking US</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HUB CALLOUT -->
+<section class="hub-callout" aria-label="Why this hub exists">
+  <div class="hub-callout-inner">
+    <div class="hub-callout-grid">
+      <div><div class="hub-section-label">Why this exists</div></div>
+      <div>
+        <h3>The RegTech buyer's real job is dual- and triple-compliance evidence — not "picking a winner."</h3>
+        <p>
+          The DORA NCA-notification clock is 4 hours. EU AI Act enforcement is on the calendar.
+          MiCA Phase 2 is live. CFPB §1033's first cohort lands April 2026 (subject to
+          reconsideration; build for the worst-case schedule).
+        </p>
+        <p>
+          <strong>No covered firm gets to pick one regime to comply with.</strong>
+          They ship overlap evidence, jurisdiction by jurisdiction, framework by framework.
+          The catalog's RegTech cluster encodes the overlap up front: the DORA Dedup collapses
+          DORA + NIS2 into a single Venn. The EU AI Act Mapper assigns Annex III classes against
+          the live regulation, not the consultation draft. The CFPB §1033 Mapper accepts the
+          post-reconsideration ambiguity rather than pretending it doesn't exist.
+        </p>
+        <p>
+          Every demo exports as an <strong>AP2 mandate</strong> the audit team — or an
+          agent runtime — can replay. The catalog underneath is what the buyer's screening
+          and TM pipelines already reach for; surfaced here as the demo path that proves
+          the surface composes.
+        </p>
+        <div class="hub-callout-aside" role="note">
+          <strong>For the acquirer reader</strong>
+          A RegTech surface that pre-encodes regime overlap is the IP that lets a buyer
+          ship dual-compliance evidence the day after acquisition — without re-mapping
+          DORA controls to NIS2 controls by hand. That work is already done here.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HUB DEEP DIVE -->
+<section class="hub-deep-dive" aria-label="Deep links into AINumbers">
+  <div class="hub-deep-dive-inner">
+    <div class="hub-section-label">Deep links · AINumbers catalog</div>
+    <h2 class="hub-section-title">Eight tools underneath the regtech demos.</h2>
+    <p class="hub-section-intro">
+      The demos are the packaged surface; the tools are where the model-risk team digs in.
+      Every tool exports AP2 schema and ships an MCP tool definition.
+    </p>
+    <ul class="deep-list">
+
+      <li><a href="https://ainumbers.co/tools/100-dora-resilience-auditor.html" target="_blank" rel="noopener">
+        <div class="deep-id">T100 ↗</div>
+        <div class="deep-name">DORA Operational Resilience Auditor</div>
+        <div class="deep-blurb">DORA Article-by-Article auditor — operational resilience framework, ICT third-party register, incident classification table.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/109-cdd-edd-checklist.html" target="_blank" rel="noopener">
+        <div class="deep-id">T109 ↗</div>
+        <div class="deep-name">CDD / EDD Checklist</div>
+        <div class="deep-blurb">Customer due diligence and enhanced due diligence checklists keyed to FATF risk-based approach. The first surface in the onboarding pipeline.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/116-tm-rule-builder.html" target="_blank" rel="noopener">
+        <div class="deep-id">T116 ↗</div>
+        <div class="deep-name">TM Rule Builder</div>
+        <div class="deep-blurb">Transaction monitoring rule composer — threshold logic, peer-group behavioural baselines, FP/TP curves. The tool underneath Demo #11.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/123-aml-program-gap-auditor.html" target="_blank" rel="noopener">
+        <div class="deep-id">T123 ↗</div>
+        <div class="deep-name">AML Program Gap Auditor</div>
+        <div class="deep-blurb">Gap-analysis tool across the AML program lifecycle — governance, screening, monitoring, escalation, reporting. Output is mandate-replayable.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/124-fatf-readiness-scorer.html" target="_blank" rel="noopener">
+        <div class="deep-id">T124 ↗</div>
+        <div class="deep-name">FATF Readiness Scorer</div>
+        <div class="deep-blurb">FATF mutual-evaluation readiness scoring against the 40 Recommendations and 11 Immediate Outcomes. The tool underneath Demo #19.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/rbe-10-velocity-rule-simulator.html" target="_blank" rel="noopener">
+        <div class="deep-id">RBE-10 ↗</div>
+        <div class="deep-name">Velocity Rule Simulator</div>
+        <div class="deep-blurb">Velocity-based TM rule simulator — same rule library as Demo #11, but for the velocity / acceleration variants that catch structuring patterns.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/rbe-11-dora-incident-classifier.html" target="_blank" rel="noopener">
+        <div class="deep-id">RBE-11 ↗</div>
+        <div class="deep-name">DORA Incident Classifier</div>
+        <div class="deep-blurb">Classifies ICT incidents against DORA's "major incident" criteria — the 4-hour clock starts when this returns "yes." Mandate-exportable for NCA filing.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/rbe-12-scheme-compliance-simulator.html" target="_blank" rel="noopener">
+        <div class="deep-id">RBE-12 ↗</div>
+        <div class="deep-name">Scheme Compliance Simulator</div>
+        <div class="deep-blurb">Card and A2A scheme compliance simulator — surfaces scheme-rule violations before a programme manager sees them on the chargeback report.</div>
+      </a></li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- HUB CTA -->
+<section class="hub-cta-row" aria-label="Continue">
+  <div class="hub-cta-inner">
+    <div class="hub-cta-text">
+      <h3>See where these nine demos sit in the full 259-tool chain.</h3>
+      <p>The Tool Chain Composer renders the AINumbers catalog as a DAG with the 33 showcase demos highlighted. The regtech cluster — DORA, AML, KYB, sanctions, CRR — is the densest sub-graph in the catalog.</p>
+    </div>
+    <div class="hub-cta-buttons">
+      <a href="/demos/composer.html" class="hub-cta-btn primary">View the composer →</a>
+      <a href="/demos/" class="hub-cta-btn ghost">← All 27 demos</a>
+    </div>
+  </div>
+</section>
+
+<!-- POL DARK FOOTER -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — Full tool catalog ↗</a>
+      <a href="/demos/">Fintech Intelligence Showcase</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime hub</a>
+      <a href="/demos/regtech/" class="this-hub">RegTech hub</a>
+      <a href="/demos/baas/">BaaS hub</a>
+      <a href="/demos/processors/">Processors hub</a>
+      <a href="/demos/stablecoin-issuer/">Stablecoin Issuer hub</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

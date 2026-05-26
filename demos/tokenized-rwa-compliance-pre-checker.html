@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokenized RWA Compliance Pre-Checker · MiCA × Howey × FCA × MAS · Post Oak Labs</title>
+
+<meta name="description" content="Pre-issuance compliance pathway determination for tokenized real-world assets. Asset-class × jurisdiction × investor scope × token mechanics × custody → MiCA classification, Howey-test outcome, regulatory pathway. AP2 mandate export. Client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html">
+<meta property="og:title" content="Tokenized RWA Compliance Pre-Checker — Post Oak Labs">
+<meta property="og:description" content="Pre-issuance pathway determination for tokenized RWA. MiCA + Howey + FCA + MAS scoring with AP2 mandate. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/tokenized-rwa-compliance-pre-checker.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "Tokenized RWA Compliance Pre-Checker",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html",
+  "description": "Pre-issuance compliance pathway determination for tokenized real-world assets. Inputs: asset class (treasuries / sovereign bonds / corporate bonds / equities / real estate / commodities / private credit / carbon credits), jurisdiction (US SEC / EU MiCA / UK FCA / MAS / FINMA / Cayman / BVI), investor scope, token mechanics (permissioned / transfer restrictions), disclosure regime, custody tier. Outputs: MiCA classification, Howey-test outcome, regulatory pathway (registered / exempt / unauthorised), composite readiness score, AP2 v1.0 mandate against @ainumbers.co/rwa-readiness-v1.",
+  "featureList": [
+    "Eight asset-class profiles",
+    "Seven jurisdiction profiles (US SEC / EU MiCA / UK FCA / MAS / FINMA / Cayman / BVI)",
+    "Investor-scope selector (institutional / accredited / retail)",
+    "Token mechanics: permissioned / permissionless, transfer-restrictions, blacklist controls",
+    "Disclosure regime selector (prospectus / private placement / exempt offering)",
+    "Custody tier (bankruptcy-remote / segregated / commingled)",
+    "MiCA classification + Howey-test outcome + regulatory pathway determination",
+    "AP2 v1.0 mandate export against @ainumbers.co/rwa-readiness-v1",
+    "Markdown pre-issuance memo and MCP tool definition export"
+  ],
+  "keywords": "tokenized real-world assets, RWA, MiCA Title II, Howey test, SEC registration, EU 2023/1114, securities tokens, asset-referenced tokens, FCA prospectus, MAS PSA, AP2 mandate, MCP",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+:root {
+  --pol-ink: #050c15; --pol-deep: #0a1628; --pol-edge: #1e3454;
+  --pol-body: #7090b0; --pol-accent: #2a7fc0; --pol-accent-lt: #4a9fdf; --pol-gold: #c09040;
+  --bg: #ffffff; --bg-soft: #fafbfc; --bg-mid: #f4f5f7; --bg-deep: #ebedef;
+  --border: #e6e8eb; --border-2: #d0d4d8;
+  --text: #0a1828; --text-muted: #6a7a8a;
+  --accent: var(--pol-accent); --gold: var(--pol-gold);
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626; --purple: #8b5cf6;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--pol-ink); color: var(--pol-body); font-family: var(--body-font); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: var(--accent); }
+
+nav.pol-nav { background: var(--pol-ink); border-bottom: 1px solid var(--pol-edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip { background: var(--pol-deep); border-top: 1px solid var(--pol-edge); border-bottom: 1px solid var(--pol-edge); padding: 0.85rem 0; color: var(--pol-body); }
+.showcase-header-strip .strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--pol-gold); font-weight: 500; }
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a { color: var(--pol-accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+main.demo-canvas { background: var(--bg); color: var(--text); font-family: var(--body-font); max-width: 1240px; margin: 2rem auto; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+.pii-banner { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.15); padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 1.5rem; border-radius: 4px; }
+
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500; }
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+.hero h1 { font-family: var(--heading); font-size: clamp(1.7rem, 3.4vw, 2.45rem); color: var(--text); line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+.hero-desc { font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; max-width: 860px; }
+.hero-desc b { color: var(--text); font-weight: 500; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.32rem 0.7rem; border-radius: 3px; border: 1px solid var(--border-2); color: var(--text-muted); }
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+.rwa-callout { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.3); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 3px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+.rwa-callout strong { color: var(--text); font-weight: 500; }
+.rwa-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
+.rwa-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+.value-at-risk { background: var(--bg-soft); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; margin: 0 0 1.5rem; border-radius: 2px; font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+.var-eyebrow { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.45rem; font-weight: 500; }
+.var-figure { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.45rem; line-height: 1.3; }
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+.lab-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; margin-top: 1.25rem; }
+@media (max-width: 1040px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
+.panel-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.55rem; }
+.panel-label-r { color: var(--accent); }
+.sec-h { font-family: var(--heading); font-size: 1.18rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+/* Asset & jurisdiction grids */
+.option-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.45rem; margin-top: 0.5rem; }
+.opt-btn { font-family: var(--body-font); font-size: 0.8rem; background: var(--bg-soft); border: 1px solid var(--border-2); color: var(--text); padding: 0.5rem 0.65rem; border-radius: 4px; cursor: pointer; transition: all 0.15s; text-align: left; }
+.opt-btn:hover { border-color: var(--accent); }
+.opt-btn.sel { background: var(--text); color: #fff; border-color: var(--text); font-weight: 600; }
+.opt-btn .ob-meta { display: block; font-family: var(--mono); font-size: 0.58rem; opacity: 0.65; margin-top: 0.18rem; letter-spacing: 0.04em; font-weight: 400; }
+
+/* Toggle group */
+.toggle-group { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.4rem; }
+.toggle-opt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.05em; background: var(--bg-soft); border: 1px solid var(--border-2); color: var(--text-muted); padding: 0.38rem 0.7rem; border-radius: 3px; cursor: pointer; }
+.toggle-opt:hover { color: var(--accent); border-color: var(--accent); }
+.toggle-opt.sel { background: var(--text); color: #fff; border-color: var(--text); }
+
+/* Pathway result card */
+.pathway-card { padding: 1.05rem 1.15rem; border-radius: 6px; margin-top: 0.5rem; line-height: 1.55; }
+.pathway-card.ok { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); }
+.pathway-card.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); }
+.pathway-card.bad { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.3); }
+.pathway-card .pc-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.35rem; font-weight: 500; }
+.pathway-card.ok .pc-label { color: var(--success); }
+.pathway-card.warn .pc-label { color: var(--warn); }
+.pathway-card.bad .pc-label { color: var(--error); }
+.pathway-card .pc-headline { font-family: var(--heading); font-size: 1.25rem; color: var(--text); line-height: 1.2; margin-bottom: 0.4rem; }
+.pathway-card .pc-body { font-size: 0.84rem; color: var(--text-muted); }
+.pathway-card .pc-body strong { color: var(--text); }
+
+.classification-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.8rem; }
+.class-chip { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.35rem 0.65rem; border-radius: 14px; background: var(--bg-mid); color: var(--text); border: 1px solid var(--border); }
+.class-chip.regime-key { background: var(--text); color: #fff; border-color: var(--text); }
+.class-chip.cls-security { background: rgba(220,38,38,0.12); color: var(--error); border-color: rgba(220,38,38,0.4); }
+.class-chip.cls-art { background: rgba(192,144,64,0.12); color: var(--gold); border-color: rgba(192,144,64,0.4); }
+.class-chip.cls-emt { background: rgba(42,127,192,0.12); color: var(--accent); border-color: rgba(42,127,192,0.4); }
+.class-chip.cls-utility { background: rgba(16,185,129,0.12); color: var(--success); border-color: rgba(16,185,129,0.4); }
+.class-chip.cls-commodity { background: rgba(139,92,246,0.12); color: var(--purple); border-color: rgba(139,92,246,0.4); }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin: 0.5rem 0 0.75rem; }
+.kpi { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.7rem; }
+.kpi-label { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+.kpi-val { font-family: var(--heading); font-size: 1.4rem; color: var(--text); line-height: 1.1; }
+.kpi-val.good { color: var(--success); }
+.kpi-val.warn { color: var(--warn); }
+.kpi-val.bad { color: var(--error); }
+.kpi-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.5; }
+
+/* Findings list */
+.findings-list { margin-top: 0.5rem; }
+.finding-row { display: grid; grid-template-columns: 22px 1fr; gap: 0.6rem; align-items: start; padding: 0.5rem 0; border-bottom: 1px dashed var(--border); font-size: 0.82rem; }
+.finding-row:last-of-type { border-bottom: none; }
+.finding-tick { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; text-align: center; padding-top: 0.1rem; }
+.finding-tick.ok { color: var(--success); }
+.finding-tick.warn { color: var(--warn); }
+.finding-tick.bad { color: var(--error); }
+.finding-tick.info { color: var(--text-muted); }
+.finding-body .fb-msg { color: var(--text); }
+.finding-body .fb-detail { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; line-height: 1.5; }
+
+/* Preview */
+.preview-sticky { position: sticky; top: 84px; }
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.7rem; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 3px; }
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; max-height: 320px; overflow: auto; font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text); }
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+.results-export-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.btn-export { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; }
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+.validation { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 3px; display: flex; align-items: center; gap: 0.5rem; }
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+footer.pol-footer { background: var(--pol-ink); border-top: 1px solid var(--pol-edge); padding: 2.25rem 0 2.5rem; margin-top: 2rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy { font-family: var(--body-font); font-size: 0.78rem; color: var(--pol-body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--text); border-left: 3px solid var(--success); padding: 0.7rem 1.1rem; font-family: var(--mono); font-size: 0.7rem; color: #fff; border-radius: 4px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.crosslinks { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-soft); border: 1px dashed var(--border-2); border-radius: 4px; font-size: 0.82rem; color: var(--text-muted); }
+.crosslinks h4 { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #21 of 33</span>
+      <span class="strip-title">Tokenized RWA Compliance Pre-Checker</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/stablecoin-issuer/">Stablecoin Hub →</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/63-tokenized-asset-compliance.html" target="_blank" rel="noopener">Source T63 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #21 · Tokenized RWA · Pre-Issuance · Stablecoin + Agentic Hubs</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">8 asset classes</span>
+      <span class="eyebrow-badge eb-success">7 jurisdictions</span>
+      <span class="eyebrow-badge eb-gold">@ainumbers.co/rwa-readiness-v1</span>
+    </div>
+    <h1>Before you issue. Before you tokenise. Before the regulator asks.</h1>
+    <p class="hero-desc">
+      Run the pre-issuance compliance pathway on a tokenised real-world asset. Pick the
+      <b>asset class</b>, <b>jurisdiction</b>, <b>investor scope</b>, <b>token mechanics</b>,
+      <b>disclosure regime</b>, and <b>custody tier</b>. The lab returns a definitive
+      <b>classification</b> (security / asset-referenced token / EMT / utility / commodity),
+      a <b>regulatory pathway</b> (registered / exempt / unauthorised), and a per-line
+      <b>findings list</b> the issuer's counsel can use as the pre-mortem before going on-chain.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side</span>
+      <span class="hero-badge warn">Heuristic model · not legal advice. Counsel review required.</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <div class="rwa-callout" role="note">
+    <div class="rwa-eyebrow">MiCA · Howey · MAS · FINMA — multiple framings converge</div>
+    <p>
+      Tokenised RWA sits across four distinct legal framings. <strong>EU MiCA</strong> (Regulation
+      (EU) 2023/1114) splits crypto-assets into <strong>asset-referenced tokens (ART)</strong>,
+      <strong>e-money tokens (EMT)</strong>, and a residual category — but Title II carves out
+      financial instruments under MiFID II, which absorbs most tokenised securities. The
+      <strong>US SEC</strong> applies the <em>Howey</em> test (<em>SEC v. W.J. Howey Co.</em>,
+      1946) and Reves/family-resemblance for notes; recent enforcement against Coinbase (2023),
+      Binance (2023), Kraken (2024), and BlockFi (2023) underline that crypto-wrappers do not
+      change the underlying economic substance. <strong>Singapore MAS</strong> distinguishes
+      Capital Markets Products (under SFA) from Digital Payment Tokens (PSA); <strong>Swiss
+      FINMA</strong> classifies into payment / utility / asset tokens (2018 ICO guidelines).
+    </p>
+    <div class="rwa-cite">Sources: EU 2023/1114 (MiCA) · MiFID II Annex I · <em>SEC v. Howey</em> 328 U.S. 293 (1946) · MAS SFA + PSA · FINMA Guidelines on ICO (Feb 2018) · UK FCA Crypto-Asset Guidance (PS19/22)</div>
+  </div>
+
+  <aside class="value-at-risk" aria-label="Value at risk — pre-issuance compliance failure">
+    <h4 class="var-eyebrow">Value at risk · pre-issuance compliance failure</h4>
+    <p class="var-figure">SEC enforcement: Coinbase 2023 ($100M+ NYDFS+SEC), Kraken 2024 ($30M staking), BlockFi 2023 ($100M) — issuance shutdowns + customer refunds</p>
+    <p class="var-body">Tokenised-RWA enforcement plays out across two distinct exposures. <strong>Civil penalties</strong>: under <strong>Securities Act §5 / §17(a)</strong>, an unregistered offering exposes issuers to disgorgement of proceeds + civil penalties (Section 20(d)); under <strong>MiCA Article 92</strong> the ceiling is <strong>€5M or 12.5% of total turnover</strong>, whichever is higher. <strong>Operational shutdowns</strong>: SEC cease-and-desist orders typically force the issuer to wind down the offering, refund investors, and re-register or qualify for an exemption — multi-quarter delays that often kill the product economics. The mandate binds the pre-issuance pathway determination so the issuance runtime cannot proceed beyond a flagged-bad pathway without explicit override.</p>
+    <p class="var-cite"><small>Securities Act §5, §17(a), §20(d) · MiCA Art. 92 · SEC v. Coinbase (Jun 2023) · SEC v. Kraken / staking (Feb 2024) · BlockFi SEC settlement (Feb 2022) · NYDFS / Coinbase consent (Jan 2023)</small></p>
+  </aside>
+
+  <div class="lab-grid">
+    <div>
+      <!-- §1 Asset class -->
+      <section class="panel">
+        <div class="panel-label">§1 · Asset Class <span class="panel-label-r" id="asset-readout">—</span></div>
+        <h2 class="sec-h">What is being tokenised</h2>
+        <p class="sec-sub">The underlying-asset class drives the baseline classification and which exemption pathways are even available.</p>
+
+        <div class="option-grid" id="asset-grid"></div>
+      </section>
+
+      <!-- §2 Jurisdiction -->
+      <section class="panel">
+        <div class="panel-label">§2 · Issuing Jurisdiction <span class="panel-label-r" id="juris-readout">—</span></div>
+        <h2 class="sec-h">Where the issuer is regulated</h2>
+        <p class="sec-sub">Multiple jurisdictions can apply (issuer / listing / investor); this selects the primary regulator whose framework anchors the pathway.</p>
+
+        <div class="option-grid" id="juris-grid"></div>
+      </section>
+
+      <!-- §3 Investor + mechanics -->
+      <section class="panel">
+        <div class="panel-label">§3 · Investor Scope &amp; Token Mechanics</div>
+        <h2 class="sec-h">Who buys, how the token moves</h2>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.4rem;">Investor scope</div>
+          <div class="toggle-group" id="tg-investor">
+            <button class="toggle-opt sel" data-v="qib">Qualified institutional only</button>
+            <button class="toggle-opt" data-v="accredited">Accredited / professional</button>
+            <button class="toggle-opt" data-v="retail">Retail (open)</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.6rem;">Token mechanics</div>
+          <div class="toggle-group" id="tg-mechanics">
+            <button class="toggle-opt sel" data-v="permissioned-restricted">Permissioned + transfer restricted</button>
+            <button class="toggle-opt" data-v="permissioned-open">Permissioned + open transfer</button>
+            <button class="toggle-opt" data-v="permissionless">Permissionless</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.6rem;">Blacklist / freeze controls</div>
+          <div class="toggle-group" id="tg-blacklist">
+            <button class="toggle-opt sel" data-v="freeze-issuer">Issuer freeze authority</button>
+            <button class="toggle-opt" data-v="freeze-multisig">Multi-sig governance freeze</button>
+            <button class="toggle-opt" data-v="none">No freeze authority</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- §4 Disclosure + custody -->
+      <section class="panel">
+        <div class="panel-label">§4 · Disclosure &amp; Custody</div>
+        <h2 class="sec-h">Offering form and backing-asset safekeeping</h2>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.4rem;">Disclosure regime</div>
+          <div class="toggle-group" id="tg-disclosure">
+            <button class="toggle-opt" data-v="prospectus">Full prospectus / registration</button>
+            <button class="toggle-opt sel" data-v="private-placement">Private placement / Reg D / EU exemption</button>
+            <button class="toggle-opt" data-v="exempt">Exempt offering (utility / commodity claim)</button>
+            <button class="toggle-opt" data-v="none">No formal offering doc</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:.82rem; color:var(--text); margin-top:.6rem;">Backing-asset custody</div>
+          <div class="toggle-group" id="tg-custody">
+            <button class="toggle-opt sel" data-v="bankruptcy-remote">Bankruptcy-remote trust / SPV</button>
+            <button class="toggle-opt" data-v="segregated">Segregated qualified-custodian account</button>
+            <button class="toggle-opt" data-v="commingled">Commingled w/ issuer balance sheet</button>
+            <button class="toggle-opt" data-v="self-custody">Self-custody (no qualified custodian)</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Output -->
+    <div>
+      <section class="panel preview-sticky">
+        <div class="panel-label">§5 · Pathway Determination <span class="panel-label-r" id="score-readout">— / 100</span></div>
+        <h2 class="sec-h">Classification &amp; route</h2>
+
+        <div id="pathway-card" class="pathway-card warn">
+          <div class="pc-label">Pathway · pending</div>
+          <div class="pc-headline">—</div>
+          <div class="pc-body">—</div>
+        </div>
+
+        <div class="classification-row" id="class-row"></div>
+
+        <div class="kpi-grid" style="margin-top:0.85rem;">
+          <div class="kpi"><div class="kpi-label">Readiness</div><div class="kpi-val" id="kpi-readiness">—</div><div class="kpi-sub" id="kpi-readiness-sub">composite</div></div>
+          <div class="kpi"><div class="kpi-label">Penalty exposure</div><div class="kpi-val" id="kpi-penalty">—</div><div class="kpi-sub" id="kpi-penalty-sub">if pathway breached</div></div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:.85rem 0 .3rem;">Findings</div>
+        <div class="findings-list" id="findings-list"></div>
+
+        <div style="margin-top:1rem;">
+          <div class="preview-tabs" id="preview-tabs">
+            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab" data-tab="md">Pre-issuance memo</button>
+            <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+          </div>
+
+          <div class="preview-body"><pre id="preview-out"></pre></div>
+
+          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/rwa-readiness-v1</div>
+
+          <div class="results-export-row">
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+            <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+            <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/stablecoin-issuer-readiness-mica-genius.html">#8 — Stablecoin Issuer Readiness</a>
+      (every tokenised RWA touches the issuer's stablecoin redemption surface) or
+      <a href="/demos/vasp-travel-rule-compliance-checker.html">#15 — VASP Travel Rule</a> (RWA transfers
+      between VASPs still trigger R.16). The mandate emitted here is consumable by
+      <a href="/demos/agentic-mandate-sandbox.html">#27 — Agentic Mandate Sandbox</a> via custom-schema paste.
+      Position: <a href="/demos/composer.html">Tool Chain Composer</a>, T63 / T66 in the DLT &amp; Tokenization cluster.
+    </p>
+  </div>
+</div>
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/63-tokenized-asset-compliance.html" target="_blank" rel="noopener">Deep Dive → AINumbers T63</a>
+      <a href="https://ainumbers.co/tools/66-rwa-tokenization-cost-model.html" target="_blank" rel="noopener">Adjacent → T66 RWA Cost Model</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/stablecoin-issuer/">Stablecoin Hub</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── ASSET CLASSES ────────────────────────────────────────────────────
+  // baseClass: probable MiCA / SEC framing in absence of structuring effort
+  const assetClasses = [
+    { id:'treasuries', name:'US Treasuries / Bills', meta:'≤90d short-dated', baseClass:'security' },
+    { id:'sovereign', name:'Sovereign bonds (other)', meta:'foreign sovereign debt', baseClass:'security' },
+    { id:'corp-bonds', name:'Corporate bonds', meta:'IG / HY', baseClass:'security' },
+    { id:'equities', name:'Equities', meta:'public / private', baseClass:'security' },
+    { id:'private-credit', name:'Private credit', meta:'direct loans, notes', baseClass:'security' },
+    { id:'real-estate', name:'Real estate', meta:'REIT-like or property direct', baseClass:'security' },
+    { id:'commodities', name:'Commodities', meta:'gold, oil, agricultural', baseClass:'commodity' },
+    { id:'carbon', name:'Carbon credits', meta:'voluntary / compliance', baseClass:'commodity' }
+  ];
+
+  const jurisdictions = [
+    { id:'us-sec', name:'US (SEC)',       meta:'Howey / Reves · Sec. Act §5', maxPenalty: '3× ill-gotten gains + Sec. 20(d) civil',  pathways: { 'security': 'registration_or_reg-d', 'commodity': 'cftc_oversight', 'art': 'sec_review_likely' } },
+    { id:'eu-mica', name:'EU (MiCA)',     meta:'Reg. 2023/1114 + MiFID II', maxPenalty: '€5M or 12.5% turnover (Art. 92)', pathways: { 'security': 'mifid_ii_passport', 'art': 'mica_title_iii_authorisation', 'emt': 'mica_title_iv_authorisation', 'utility': 'mica_title_ii_whitepaper', 'commodity': 'mifid_ii_passport_if_derivative' } },
+    { id:'uk-fca', name:'UK (FCA)',       meta:'FSMA 2000 · PS19/22 guidance', maxPenalty: 'Unlimited fine + criminal exposure (FSMA s.397)', pathways: { 'security': 'prospectus_or_pp', 'utility': 'unregulated', 'commodity': 'fca_perimeter_check' } },
+    { id:'sg-mas', name:'Singapore (MAS)', meta:'SFA + PSA', maxPenalty: 'S$1M + 7 yrs (SFA s.330)', pathways: { 'security': 'cms_licence_or_pp', 'art': 'psa_dpt_or_sma', 'commodity': 'sfa_or_unregulated' } },
+    { id:'ch-finma', name:'Switzerland (FINMA)', meta:'ICO Guidelines 2018', maxPenalty: 'CHF 500K (FINMASA) + criminal exposure', pathways: { 'security': 'finsa_prospectus', 'utility': 'unregulated', 'commodity': 'unregulated' } },
+    { id:'ky', name:'Cayman Islands',    meta:'VASP Act 2020 (amended)', maxPenalty: 'KYD 100K + criminal',  pathways: { 'security': 'cima_authorisation', 'art': 'vasp_registration', 'utility': 'vasp_registration_unless_excluded' } },
+    { id:'bvi', name:'BVI',               meta:'VASP Act 2022', maxPenalty: 'USD 100K + criminal', pathways: { 'security': 'fsc_authorisation', 'art': 'vasp_registration' } }
+  ];
+
+  const state = {
+    asset: 'treasuries',
+    juris: 'us-sec',
+    investor: 'qib',
+    mechanics: 'permissioned-restricted',
+    blacklist: 'freeze-issuer',
+    disclosure: 'private-placement',
+    custody: 'bankruptcy-remote',
+    activeTab: 'ap2'
+  };
+
+  // ── RENDER OPTION GRIDS ─────────────────────────────────────────────
+  function renderAssetGrid(){
+    const g = document.getElementById('asset-grid');
+    g.innerHTML = '';
+    assetClasses.forEach(a => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn' + (a.id === state.asset ? ' sel' : '');
+      btn.dataset.id = a.id;
+      btn.innerHTML = a.name + '<span class="ob-meta">' + a.meta + '</span>';
+      btn.addEventListener('click', () => {
+        state.asset = a.id;
+        document.querySelectorAll('#asset-grid .opt-btn').forEach(b => b.classList.toggle('sel', b.dataset.id === a.id));
+        render();
+      });
+      g.appendChild(btn);
+    });
+  }
+  function renderJurisGrid(){
+    const g = document.getElementById('juris-grid');
+    g.innerHTML = '';
+    jurisdictions.forEach(j => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn' + (j.id === state.juris ? ' sel' : '');
+      btn.dataset.id = j.id;
+      btn.innerHTML = j.name + '<span class="ob-meta">' + j.meta + '</span>';
+      btn.addEventListener('click', () => {
+        state.juris = j.id;
+        document.querySelectorAll('#juris-grid .opt-btn').forEach(b => b.classList.toggle('sel', b.dataset.id === j.id));
+        render();
+      });
+      g.appendChild(btn);
+    });
+  }
+
+  // ── CLASSIFICATION + PATHWAY LOGIC ──────────────────────────────────
+  function classify(){
+    const a = assetClasses.find(x => x.id === state.asset);
+    const j = jurisdictions.find(x => x.id === state.juris);
+
+    // Baseline class from underlying asset
+    let primaryClass = a.baseClass; // 'security' | 'commodity'
+
+    // MiCA-specific refinement: if jurisdiction is EU and the asset references a single fiat or basket, could be EMT/ART
+    let micaClass = null;
+    if (j.id === 'eu-mica') {
+      if (primaryClass === 'security') micaClass = 'security'; // absorbed by MiFID II
+      else if (primaryClass === 'commodity') micaClass = 'art'; // tokenised commodities often ART under MiCA
+    }
+
+    // Howey-style adjustment for US: even commodities can be securities if marketed as profit-from-others-efforts
+    let howeyOutcome = null;
+    if (j.id === 'us-sec') {
+      // baseline: security stays security; commodity stays commodity unless investor scope is retail + profit promise
+      if (a.baseClass === 'commodity' && state.investor === 'retail' && state.disclosure !== 'exempt') {
+        howeyOutcome = 'likely-investment-contract';
+        primaryClass = 'security';
+      } else {
+        howeyOutcome = 'likely-non-security';
+      }
+    }
+
+    // Resolve pathway from jurisdiction pathway map
+    const pathwayKey = micaClass || primaryClass;
+    const pathway = j.pathways[pathwayKey] || 'unauthorised';
+
+    return { a, j, primaryClass, micaClass, howeyOutcome, pathwayKey, pathway };
+  }
+
+  function compute(){
+    const cls = classify();
+    const findings = [];
+
+    // Asset / jurisdiction alignment
+    findings.push({
+      state: 'info',
+      msg: 'Baseline classification',
+      detail: cls.a.name + ' in ' + cls.j.name + ' → ' + cls.pathwayKey.toUpperCase() + ' framing.'
+    });
+
+    // Investor scope check
+    if (state.investor === 'retail' && cls.primaryClass === 'security') {
+      findings.push({ state:'bad', msg:'Retail offer + security classification', detail:'Retail offering of an instrument the regulator treats as a security triggers full prospectus + ongoing-disclosure obligations in all selected jurisdictions.' });
+    } else if (state.investor === 'qib' || state.investor === 'accredited') {
+      findings.push({ state:'ok', msg:'Investor scope aligns with exemption pathway', detail:'Limiting to qualified institutional / accredited keeps exempt-offering routes available (Reg D 506(c) in US, equivalent in EU/UK).' });
+    } else {
+      findings.push({ state:'warn', msg:'Retail scope but commodity / utility framing', detail:'Verify the asset cannot be reclassified as an investment contract under Howey or as a security under MiFID II / FSMA.' });
+    }
+
+    // Token mechanics
+    if (state.mechanics === 'permissionless' && cls.primaryClass === 'security') {
+      findings.push({ state:'bad', msg:'Permissionless transfer + security framing', detail:'Permissionless transfer routes onto venues that are themselves national securities exchanges in the eyes of the SEC (Coinbase 2023 framing). Restrict transfer to permissioned wallets or registered ATS / MTF.' });
+    } else if (state.mechanics === 'permissioned-restricted') {
+      findings.push({ state:'ok', msg:'Permissioned + transfer-restricted', detail:'Aligns with Reg D 506(c) lock-up logic and MiFID II eligible-counterparty restrictions.' });
+    } else {
+      findings.push({ state:'warn', msg:'Permissioned + open transfer', detail:'Acceptable for ART/EMT under MiCA but raises secondary-market venue questions in the US.' });
+    }
+
+    // Blacklist
+    if (state.blacklist === 'none') {
+      findings.push({ state:'bad', msg:'No freeze authority', detail:'OFAC / EU sanctions compliance requires the issuer to be able to freeze tokens held by sanctioned addresses. No-freeze design is incompatible with regulated issuance in every selected jurisdiction.' });
+    } else if (state.blacklist === 'freeze-multisig') {
+      findings.push({ state:'ok', msg:'Multi-sig governance freeze', detail:'Strong control posture; document the governance such that responses to OFAC actions can occur within the regulator-expected SLA (~24–72h).' });
+    } else {
+      findings.push({ state:'ok', msg:'Issuer freeze authority', detail:'Standard for regulated issuance. Document the procedure invoking the freeze and the audit trail.' });
+    }
+
+    // Disclosure
+    if (state.disclosure === 'none' && cls.primaryClass === 'security') {
+      findings.push({ state:'bad', msg:'No offering document + security framing', detail:'Offering a security without a registration or qualifying private-placement memorandum is the most common SEC §5 enforcement trigger. Cannot proceed.' });
+    } else if (state.disclosure === 'exempt' && state.investor === 'retail') {
+      findings.push({ state:'bad', msg:'Claimed exempt but retail scope', detail:'Exempt offerings are not generally available to retail investors. Re-route via prospectus or restrict investor scope.' });
+    } else if (state.disclosure === 'prospectus') {
+      findings.push({ state:'ok', msg:'Full prospectus / registration', detail:'Highest-friction but most defensible posture. Annual disclosure obligations apply.' });
+    } else {
+      findings.push({ state:'ok', msg:'Disclosure regime fits issuer scope', detail:'Private placement / Reg D / EU exemption route is the most common path for tokenised-RWA issuance to date.' });
+    }
+
+    // Custody
+    if (state.custody === 'commingled') {
+      findings.push({ state:'bad', msg:'Commingled backing assets', detail:'Commingling underlying assets with the issuer balance sheet creates investor-protection exposure that no selected jurisdiction will permit for a regulated tokenised asset. Move to bankruptcy-remote trust or qualified custodian.' });
+    } else if (state.custody === 'self-custody') {
+      findings.push({ state:'bad', msg:'Self-custody (no qualified custodian)', detail:'US SEC custody rule (advisers + ATS) requires qualified-custodian arrangements; equivalent in EU under MiFID II asset segregation.' });
+    } else if (state.custody === 'segregated') {
+      findings.push({ state:'ok', msg:'Segregated qualified-custodian account', detail:'Standard custody posture; investor recovery in issuer bankruptcy depends on the qualified custodian\'s asset-segregation procedure.' });
+    } else {
+      findings.push({ state:'ok', msg:'Bankruptcy-remote trust / SPV', detail:'Highest custody assurance; investors hold beneficial interest insulated from issuer insolvency. The expected MiCA Article 39 / SEC custody-rule analog.' });
+    }
+
+    // Composite score
+    let score = 100;
+    findings.forEach(f => {
+      if (f.state === 'bad') score -= 18;
+      else if (f.state === 'warn') score -= 7;
+    });
+    score = Math.max(0, score);
+
+    // Pathway summary
+    let pathwayCard;
+    if (score >= 80) {
+      pathwayCard = { cls:'ok', label:'Pathway · viable', headline: 'Regulated issuance pathway available', body: 'The combination of classification (' + cls.pathwayKey.toUpperCase() + '), jurisdiction (' + cls.j.name + '), and structural choices supports a defensible issuance pathway: <strong>' + cls.pathway.replace(/_/g, ' ') + '</strong>.' };
+    } else if (score >= 55) {
+      pathwayCard = { cls:'warn', label:'Pathway · achievable with remediation', headline: 'Material gaps before pathway can be relied on', body: 'A regulated pathway (<strong>' + cls.pathway.replace(/_/g, ' ') + '</strong>) is in reach but several structural choices require remediation before counsel can sign off.' };
+    } else {
+      pathwayCard = { cls:'bad', label:'Pathway · not yet viable', headline: 'Re-structure before progressing to issuance', body: 'Multiple structural choices conflict with the only available regulatory pathway in this jurisdiction. The mandate refuses to authorise issuance until remediated.' };
+    }
+
+    // Penalty exposure tag — text from jurisdiction
+    const penaltyText = cls.j.maxPenalty;
+
+    return { cls, findings, score, pathwayCard, penaltyText };
+  }
+
+  // ── RENDER ───────────────────────────────────────────────────────────
+  function render(){
+    document.getElementById('asset-readout').textContent = assetClasses.find(a => a.id === state.asset).name;
+    document.getElementById('juris-readout').textContent = jurisdictions.find(j => j.id === state.juris).name;
+
+    const m = compute();
+    document.getElementById('score-readout').textContent = m.score + ' / 100';
+
+    // Pathway card
+    const pc = document.getElementById('pathway-card');
+    pc.className = 'pathway-card ' + m.pathwayCard.cls;
+    pc.innerHTML =
+      '<div class="pc-label">' + m.pathwayCard.label + '</div>' +
+      '<div class="pc-headline">' + m.pathwayCard.headline + '</div>' +
+      '<div class="pc-body">' + m.pathwayCard.body + '</div>';
+
+    // Classification chips
+    const cr = document.getElementById('class-row');
+    cr.innerHTML = '';
+    const chips = [
+      { lbl: m.cls.j.name, cls: 'regime-key' },
+      { lbl: 'Primary: ' + m.cls.primaryClass, cls: 'cls-' + m.cls.primaryClass }
+    ];
+    if (m.cls.micaClass) chips.push({ lbl: 'MiCA: ' + m.cls.micaClass.toUpperCase(), cls: 'cls-' + m.cls.micaClass });
+    if (m.cls.howeyOutcome) chips.push({ lbl: 'Howey: ' + m.cls.howeyOutcome.replace(/-/g, ' '), cls: 'cls-' + (m.cls.howeyOutcome.includes('non-security') ? 'commodity' : 'security') });
+    chips.push({ lbl: 'Pathway: ' + m.cls.pathway.replace(/_/g, ' '), cls: '' });
+    chips.forEach(c => {
+      const span = document.createElement('span');
+      span.className = 'class-chip ' + c.cls;
+      span.textContent = c.lbl;
+      cr.appendChild(span);
+    });
+
+    // KPI
+    const re = document.getElementById('kpi-readiness');
+    re.textContent = m.score + ' / 100';
+    re.className = 'kpi-val ' + (m.score >= 80 ? 'good' : m.score >= 55 ? 'warn' : 'bad');
+    document.getElementById('kpi-readiness-sub').textContent = m.findings.filter(f => f.state === 'bad').length + ' blocking findings';
+
+    document.getElementById('kpi-penalty').textContent = '⚠ Material';
+    document.getElementById('kpi-penalty').className = 'kpi-val warn';
+    document.getElementById('kpi-penalty-sub').textContent = m.penaltyText;
+
+    // Findings list
+    const fl = document.getElementById('findings-list');
+    fl.innerHTML = '';
+    m.findings.forEach(f => {
+      const mark = f.state === 'ok' ? '✓' : f.state === 'warn' ? '!' : f.state === 'bad' ? '✕' : '·';
+      const row = document.createElement('div');
+      row.className = 'finding-row';
+      row.innerHTML =
+        '<div class="finding-tick ' + f.state + '">' + mark + '</div>' +
+        '<div class="finding-body"><div class="fb-msg">' + f.msg + '</div><div class="fb-detail">' + f.detail + '</div></div>';
+      fl.appendChild(row);
+    });
+
+    renderPreview(m);
+  }
+
+  // ── AP2 mandate ──────────────────────────────────────────────────────
+  function buildMandate(model){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-21-' + Math.random().toString(36).slice(2,10);
+    const m = model || compute();
+    return {
+      '$schema': '@ainumbers.co/rwa-readiness-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'tokenised RWA pre-issuance assessor (demonstration)' },
+      subject: { runtime: 'rwa-issuance-engine', scope: 'pre_issuance_pathway_determination' },
+      asset: {
+        class: m.cls.a.id,
+        class_label: m.cls.a.name,
+        underlying_base_class: m.cls.a.baseClass
+      },
+      jurisdiction: {
+        id: m.cls.j.id,
+        name: m.cls.j.name,
+        statutory_anchor: m.cls.j.meta,
+        max_penalty: m.cls.j.maxPenalty
+      },
+      offering_structure: {
+        investor_scope: state.investor,
+        token_mechanics: state.mechanics,
+        blacklist_authority: state.blacklist,
+        disclosure_regime: state.disclosure,
+        custody_tier: state.custody
+      },
+      classification: {
+        primary: m.cls.primaryClass,
+        mica: m.cls.micaClass,
+        howey_outcome: m.cls.howeyOutcome
+      },
+      pathway: {
+        recommended: m.cls.pathway,
+        viability_score: m.score,
+        verdict: m.pathwayCard.cls === 'ok' ? 'viable' : m.pathwayCard.cls === 'warn' ? 'achievable_with_remediation' : 'not_viable_as_structured'
+      },
+      findings: m.findings.map(f => ({ state: f.state, observation: f.msg, detail: f.detail })),
+      enforcement: {
+        binding: true,
+        runtime_cannot_relax: ['classification','pathway.verdict','offering_structure.disclosure_regime','offering_structure.custody_tier'],
+        on_violation: 'halt_issuance_and_refer_to_counsel',
+        audit_trail_required: true
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html',
+        backing_tool: 'https://ainumbers.co/tools/63-tokenized-asset-compliance.html',
+        adjacent_tool: 'https://ainumbers.co/tools/66-rwa-tokenization-cost-model.html',
+        license: 'CC BY 4.0',
+        note: 'Heuristic; not legal advice'
+      }
+    };
+  }
+
+  function validate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/rwa-readiness-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!m.asset || !m.asset.class) errs.push('asset.class required');
+    if (!m.jurisdiction || !m.jurisdiction.id) errs.push('jurisdiction.id required');
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    return errs;
+  }
+
+  function buildMd(m){
+    const out = [];
+    out.push('# Tokenised RWA Pre-Issuance Memo');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('> ' + m.provenance.note);
+    out.push('');
+    out.push('## Asset &amp; jurisdiction');
+    out.push('- Asset: **' + m.asset.class_label + '** (' + m.asset.id + ')');
+    out.push('- Underlying base class: ' + m.asset.underlying_base_class);
+    out.push('- Jurisdiction: **' + m.jurisdiction.name + '** (' + m.jurisdiction.statutory_anchor + ')');
+    out.push('- Maximum penalty exposure: ' + m.jurisdiction.max_penalty);
+    out.push('');
+    out.push('## Offering structure');
+    out.push('- Investor scope: ' + m.offering_structure.investor_scope);
+    out.push('- Token mechanics: ' + m.offering_structure.token_mechanics);
+    out.push('- Blacklist authority: ' + m.offering_structure.blacklist_authority);
+    out.push('- Disclosure regime: ' + m.offering_structure.disclosure_regime);
+    out.push('- Custody tier: ' + m.offering_structure.custody_tier);
+    out.push('');
+    out.push('## Classification');
+    out.push('- Primary classification: **' + m.classification.primary + '**');
+    if (m.classification.mica) out.push('- MiCA framing: **' + m.classification.mica.toUpperCase() + '**');
+    if (m.classification.howey_outcome) out.push('- Howey outcome (US): ' + m.classification.howey_outcome);
+    out.push('');
+    out.push('## Pathway');
+    out.push('- Recommended: **' + m.pathway.recommended.replace(/_/g, ' ') + '**');
+    out.push('- Verdict: **' + m.pathway.verdict + '**');
+    out.push('- Viability score: **' + m.pathway.viability_score + ' / 100**');
+    out.push('');
+    out.push('## Findings');
+    out.push('');
+    m.findings.forEach(f => {
+      const mark = f.state === 'ok' ? '✓' : f.state === 'warn' ? '!' : f.state === 'bad' ? '✕' : '·';
+      out.push('- ' + mark + ' **' + f.observation + '** — ' + f.detail);
+    });
+    out.push('');
+    out.push('## Enforcement');
+    out.push('- Binding: ' + m.enforcement.binding);
+    out.push('- Runtime cannot relax: ' + m.enforcement.runtime_cannot_relax.join(', '));
+    out.push('- On violation: ' + m.enforcement.on_violation);
+    out.push('');
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #21 (Tokenised RWA Pre-Checker). Source engine: AINumbers T63 (T66 adjacent). CC BY 4.0. Zero PII. Not legal advice._');
+    return out.join('\n');
+  }
+
+  function buildMcp(m){
+    return {
+      name: 'rwa_pre_issuance_evaluate',
+      description: 'Re-evaluate the bound tokenised-RWA pre-issuance mandate against a proposed change to asset class / jurisdiction / offering structure. Returns classification, pathway verdict, and findings deltas.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          asset_class: { type: 'string' },
+          jurisdiction: { type: 'string' },
+          investor_scope: { type: 'string', enum: ['qib','accredited','retail'] },
+          token_mechanics: { type: 'string', enum: ['permissioned-restricted','permissioned-open','permissionless'] },
+          disclosure_regime: { type: 'string' },
+          custody_tier: { type: 'string' }
+        },
+        required: ['asset_class','jurisdiction']
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        recommended_pathway: m.pathway.recommended
+      },
+      provenance: m.provenance
+    };
+  }
+
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function renderPreview(model){
+    const m = buildMandate(model);
+    const errs = validate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+    let body;
+    if (state.activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') body = buildMd(m);
+    else body = JSON.stringify(buildMcp(m), null, 2);
+    const isJson = state.activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+  }
+
+  // ── WIRE TOGGLE GROUPS ─────────────────────────────────────────────
+  function bindToggle(group, key){
+    document.querySelectorAll('#' + group + ' .toggle-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#' + group + ' .toggle-opt').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        state[key] = btn.dataset.v;
+        render();
+      });
+    });
+  }
+  bindToggle('tg-investor', 'investor');
+  bindToggle('tg-mechanics', 'mechanics');
+  bindToggle('tg-blacklist', 'blacklist');
+  bindToggle('tg-disclosure', 'disclosure');
+  bindToggle('tg-custody', 'custody');
+
+  document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('#preview-tabs .preview-tab').forEach(b => b.classList.remove('sel'));
+      t.classList.add('sel');
+      state.activeTab = t.dataset.tab;
+      render();
+    });
+  });
+
+  function toast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 1800); }
+  function download(filename, content, mime){ const blob = new Blob([content], { type: mime }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate();
+    if (validate(m).length === 0) { download('rwa-readiness-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    else toast('Schema validation failed');
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('rwa-pre-issuance-memo.md', buildMd(buildMandate()), 'text/markdown');
+    toast('Pre-issuance memo exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('rwa_pre_issuance_evaluate.mcp.json', JSON.stringify(buildMcp(buildMandate()), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate();
+    let txt;
+    if (state.activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') txt = buildMd(m);
+    else txt = JSON.stringify(buildMcp(m), null, 2);
+    try { await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); } catch(e) { toast('Copy failed'); }
+  });
+
+  // init
+  renderAssetGrid();
+  renderJurisGrid();
+  render();
+})();
+</script>
+
+</body>
+</html>

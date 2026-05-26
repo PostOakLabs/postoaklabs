@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Post Oak Labs</title>
+<meta name="description" content="Get in touch with Post Oak Labs. We work with commercial banks, central banks, and large corporates on tokenized payment infrastructure, stablecoin integration, and CBDC strategy.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/contact.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact | Post Oak Labs">
+<meta property="og:description" content="Get in touch with Post Oak Labs. We work with commercial banks, central banks, and large corporates on tokenized payment infrastructure, stablecoin integration, and CBDC strategy.">
+<meta property="og:url" content="https://postoaklabs.com/contact.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:      #050c15;
+  --deep:     #0a1628;
+  --navy:     #0e1e35;
+  --panel:    #142540;
+  --edge:     #1e3454;
+  --rim:      #2a4a70;
+  --muted:    #4a6a8a;
+  --body:     #7090b0;
+  --text:     #a8c0d8;
+  --bright:   #d0e4f4;
+  --white:    #ecf4fc;
+  --gold:     #c09040;
+  --gold-lt:  #d8b060;
+  --accent:   #2a7fc0;
+  --accent-lt:#4a9fd8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.7; }
+h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+/* Lang bar */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; gap: 0.75rem; }
+.lang-btn { background: none; border: none; font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); cursor: pointer; padding: 0.1rem 0.2rem; transition: color 0.2s; }
+.lang-btn.active, .lang-btn:hover { color: var(--accent-lt); }
+
+/* Nav */
+nav { border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); height: 52px; }
+.nav-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+
+/* Hero */
+.hero { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.hero-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.57rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 1.25rem; }
+.hero h1 { font-size: clamp(2rem, 4.5vw, 3rem); color: var(--white); max-width: 620px; margin-bottom: 1.1rem; }
+.hero-sub { font-size: 0.93rem; color: var(--body); max-width: 560px; line-height: 1.85; }
+
+/* Main content */
+.contact-wrap { padding: 4rem 0 5rem; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+
+/* Form */
+.form-block { }
+.field { margin-bottom: 1.5rem; }
+.field label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+.field input,
+.field select,
+.field textarea { width: 100%; background: var(--deep); border: 1px solid var(--edge); color: var(--bright); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 0.9rem; padding: 0.7rem 0.9rem; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
+.field input:focus,
+.field select:focus,
+.field textarea:focus { outline: none; border-color: var(--accent); }
+.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a6a8a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
+.field select option { background: var(--deep); color: var(--bright); }
+.field textarea { resize: vertical; min-height: 130px; }
+.field input::placeholder,
+.field textarea::placeholder { color: var(--muted); }
+
+.submit-btn { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.75rem 2rem; cursor: pointer; transition: all 0.2s; width: 100%; text-align: center; }
+.submit-btn:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+
+.form-note { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; color: var(--muted); margin-top: 1rem; line-height: 1.7; }
+.form-note a { color: var(--accent-lt); }
+
+/* Success state */
+.form-success { display: none; background: var(--deep); border: 1px solid var(--edge); padding: 2rem; text-align: center; }
+.form-success h3 { font-family: 'DM Serif Display', serif; color: var(--white); margin-bottom: 0.75rem; font-size: 1.4rem; }
+.form-success p { font-size: 0.88rem; color: var(--body); }
+
+/* Sidebar info */
+.contact-info { }
+.info-block { margin-bottom: 2.5rem; }
+.info-label { font-family: 'JetBrains Mono', monospace; font-size: 0.53rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 0.75rem; }
+.info-text { font-size: 0.88rem; color: var(--body); line-height: 1.8; }
+.info-text strong { color: var(--text); font-weight: 400; }
+.info-email { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold-lt); letter-spacing: 0.04em; display: block; margin-top: 0.5rem; }
+.info-email:hover { color: var(--white); }
+
+.info-divider { border: none; border-top: 1px solid var(--edge); margin: 2rem 0; }
+
+.scope-list { list-style: none; }
+.scope-list li { font-size: 0.85rem; color: var(--body); padding: 0.45rem 0; border-bottom: 1px solid var(--edge); display: flex; align-items: baseline; gap: 0.65rem; }
+.scope-list li:last-child { border-bottom: none; }
+.scope-list li::before { content: '—'; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; flex-shrink: 0; }
+
+/* Footer */
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .nav-links { display: none; }
+}
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Post Oak Labs",
+  "url": "https://postoaklabs.com/contact.html",
+  "description": "Get in touch with Post Oak Labs for advisory engagements on tokenized payment infrastructure, stablecoin strategy, and CBDC integration.",
+  "mainEntity": {"@id":"https://postoaklabs.com/#organization"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Contact",
+      "item": "https://postoaklabs.com/contact.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <p class="hero-tag">Get in Touch · Institutional Inquiries</p>
+    <h1 data-i18n="hero-h1">Let's talk</h1>
+    <p class="hero-sub" data-i18n="hero-sub">We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, use the form below to start a direct conversation.</p>
+  </div>
+</section>
+
+<div class="contact-wrap">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Form -->
+      <div class="form-block">
+        <form id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+
+          <div class="field">
+            <label for="institution"><span data-i18n="label-institution_name">Institution name</span></label>
+            <input type="text" id="institution" name="institution" placeholder="Your institution or organisation" required>
+          </div>
+
+          <div class="field">
+            <label for="inst-type"><span data-i18n="label-institution_type">Institution type</span></label>
+            <select id="inst-type" name="inst-type" required>
+              <option value="" disabled selected>Select type</option>
+              <option value="commercial-bank">Commercial bank</option>
+              <option value="central-bank">Central bank</option>
+              <option value="corporate">Large corporate</option>
+              <option value="fintech">Fintech / payment provider</option>
+              <option value="regulator">Regulator or government body</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="jurisdiction"><span data-i18n="label-jurisdiction___region">Jurisdiction / region</span></label>
+            <input type="text" id="jurisdiction" name="jurisdiction" placeholder="e.g. Colombia, Caribbean, West Africa">
+          </div>
+
+          <div class="field">
+            <label for="subject"><span data-i18n="label-subject">Subject</span></label>
+            <select id="subject" name="subject" required>
+              <option value="" disabled selected>Select subject</option>
+              <option value="a2a">Tokenized A2A cross-border payments</option>
+              <option value="stablecoin">Stablecoin strategy or integration</option>
+              <option value="cbdc">CBDC design or architecture</option>
+              <option value="tmmf">Tokenized money market fund</option>
+              <option value="iso20022">ISO 20022 migration</option>
+              <option value="enterprise">Enterprise blockchain advisory</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="email"><span data-i18n="label-your_email">Your email</span></label>
+            <input type="email" id="email" name="email" placeholder="you@yourinstitution.com" required>
+          </div>
+
+          <div class="field">
+            <label for="message"><span data-i18n="label-message__(optional)">Message  (optional)</span></label>
+            <textarea id="message" name="message" placeholder="Brief context on your mandate or what you are evaluating — optional but helpful"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn"><span data-i18n="submit-btn">Send inquiry →</span></button>
+
+          <p class="form-note">
+            We respond to all institutional inquiries directly, typically within one business day.<br>
+            Or email us directly: <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+          </p>
+        </form>
+
+        <div class="form-success" id="form-success">
+          <h3>Message received</h3>
+          <p>Thank you. We will follow up directly at the email address you provided, typically within one business day.</p>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="contact-info">
+
+        <div class="info-block">
+          <p class="info-label">Direct email</p>
+          <p class="info-text">For time-sensitive or sensitive mandates, reach us directly.</p>
+          <a href="mailto:contact@postoaklabs.com" class="info-email">contact@postoaklabs.com</a>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-block">
+          <p class="info-label">Who we work with</p>
+          <ul class="scope-list">
+            <li>Commercial banks with digital transformation or cross-border payment mandates</li>
+            <li>Central banks evaluating CBDC design or digital infrastructure</li>
+            <li>Large corporates with significant B2B cross-border payment volumes</li>
+            <li>Banks with existing or planned fund management arms</li>
+            <li>Institutions at regulatory inflection points — ISO 20022, SEPA accession, open banking</li>
+          </ul>
+        </div>
+
+        <hr class="info-divider">
+
+        <div class="info-block">
+          <p class="info-label">Focus markets</p>
+          <ul class="scope-list">
+            <li>Latin America — Colombia, Peru, Argentina, Ecuador, Central America</li>
+            <li>Caribbean — active production deployments</li>
+            <li>South Asia — active production deployments</li>
+            <li>Africa — Nigeria, Kenya, South Africa, Egypt</li>
+            <li>Southeast Europe — Serbia, Romania, Bulgaria, Western Balkans</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+// ── FORM ENDPOINT ────────────────────────────────────────────────────────────
+// TODO: Create a free account at https://formspree.io, add a form pointed at
+// contact@postoaklabs.com, and replace 'YOUR_FORM_ID' below with the form ID
+// (e.g. 'xbjnarwk'). Until that ID is set, submissions fall back to mailto:.
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const success = document.getElementById('form-success');
+  const btn = form.querySelector('.submit-btn');
+
+  // Validate required fields
+  const email       = document.getElementById('email').value.trim();
+  const institution = document.getElementById('institution').value.trim();
+  const subject     = document.getElementById('subject').value;
+  const instType    = document.getElementById('inst-type').value;
+
+  const missing = [['email', email], ['institution', institution],
+                   ['subject', subject], ['inst-type', instType]];
+  let hasError = false;
+  missing.forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    el.style.borderColor = val ? '' : '#c04030';
+    if (!val) hasError = true;
+  });
+  if (hasError) return;
+
+  const jurisdiction = document.getElementById('jurisdiction').value.trim();
+  const message      = document.getElementById('message').value.trim();
+
+  // ── Path 1: Formspree (configured) ──────────────────────────────────────
+  if (!FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')) {
+    const origText = btn.textContent;
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          institution,
+          institution_type: instType,
+          jurisdiction: jurisdiction || '—',
+          subject,
+          email,
+          message: message || ''
+        })
+      });
+
+      if (res.ok) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      } else {
+        const data = await res.json().catch(() => ({}));
+        btn.textContent = data.error || 'Send failed — please email us directly';
+        btn.style.background = '#8b3020';
+        btn.style.borderColor = '#8b3020';
+        btn.disabled = false;
+      }
+    } catch (_) {
+      btn.textContent = 'Network error — please email us directly';
+      btn.style.background = '#8b3020';
+      btn.style.borderColor = '#8b3020';
+      btn.disabled = false;
+    }
+    return;
+  }
+
+  // ── Path 2: mailto fallback (Formspree not yet configured) ──────────────
+  const body = [
+    'Institution: ' + institution,
+    'Type: ' + instType,
+    'Jurisdiction: ' + (jurisdiction || '—'),
+    'Subject: ' + subject,
+    '',
+    message
+  ].join('\n');
+
+  window.open(
+    'mailto:contact@postoaklabs.com'
+    + '?subject=' + encodeURIComponent('[Post Oak Labs Inquiry] ' + subject)
+    + '&body='    + encodeURIComponent(body)
+  );
+
+  // Honest state — don't claim success until we know delivery happened
+  form.style.display = 'none';
+  success.innerHTML =
+    '<h3>Opening your email client…</h3>' +
+    '<p>If it did not open, email us directly at ' +
+    '<a href="mailto:contact@postoaklabs.com" style="color:var(--accent-lt)">' +
+    'contact@postoaklabs.com</a> — we respond to all institutional inquiries ' +
+    'within one business day.</p>';
+  success.style.display = 'block';
+}
+
+const i18n = {
+  en: {"hero-h1": "Let's talk", "hero-sub": "We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, use the form below to start a direct conversation.", "label-institution_name": "Institution name", "label-institution_type": "Institution type", "label-jurisdiction___region": "Jurisdiction / region", "label-subject": "Subject", "label-your_email": "Your email", "label-message__(optional)": "Message  (optional)", "submit-btn": "Send inquiry →"},
+  es: {"hero-h1": "Hablemos", "hero-sub": "Trabajamos con un número limitado de instituciones a la vez. Si está evaluando infraestructura de pagos tokenizados, integración de stablecoins o estrategia de CBDC, use el formulario a continuación para iniciar una conversación directa.", "label-institution_name": "Nombre de la institución", "label-institution_type": "Tipo de institución", "label-jurisdiction___region": "Jurisdicción / región", "label-subject": "Asunto", "label-your_email": "Su correo electrónico", "label-message__(optional)": "Mensaje (opcional)", "submit-btn": "Enviar consulta →"},
+  fr: {"hero-h1": "Parlons-en", "hero-sub": "Nous travaillons avec un nombre limité d'institutions à la fois. Si vous évaluez une infrastructure de paiement tokenisée, une intégration stablecoin ou une stratégie CBDC, utilisez le formulaire ci-dessous pour démarrer une conversation directe.", "label-institution_name": "Nom de l'institution", "label-institution_type": "Type d'institution", "label-jurisdiction___region": "Juridiction / région", "label-subject": "Sujet", "label-your_email": "Votre e-mail", "label-message__(optional)": "Message (facultatif)", "submit-btn": "Envoyer la demande →"},
+  ar: {"hero-h1": "لنتحدث", "hero-sub": "نعمل مع عدد محدود من المؤسسات في كل مرة. إذا كنت تقيّم بن

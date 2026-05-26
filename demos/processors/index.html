@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processors Hub — Post Oak Labs Fintech Intelligence Showcase</title>
+
+<meta name="description" content="Card economics, A2A migration, ISO 20022 cutover, FX netting, fraud at instant-payment speed. 8 browser demos for Stripe Compliance, Adyen, Worldpay, Checkout.com — verified deadlines, AP2 routing-policy exports.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/processors/">
+<meta property="og:title" content="Processors Hub — Post Oak Labs">
+<meta property="og:description" content="Card economics. A2A migration. 14 Nov 2026 ISO 20022 cutover. FX netting. Fraud at instant-payment speed. 8 demos, all AP2-exportable.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/processors/">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/processors.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Processors Hub — Post Oak Labs",
+  "url": "https://postoaklabs.com/demos/processors/",
+  "description": "Eight browser demos for payment processors — merchant rails blending, ISO 20022 migration, LATAM corridor liquidity, nostro capital unlock, FedNow fraud, FX netting, VRP. AP2-exportable, client-side, zero PII.",
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" },
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateModified": "2026-05-13",
+  "audience": { "@type": "Audience", "audienceType": "Payment processors — Stripe Compliance, Adyen, Worldpay, Checkout.com" },
+  "hasPart": [
+    { "@type": "SoftwareApplication", "name": "Merchant Payment Rails Blender", "url": "https://postoaklabs.com/demos/merchant-payment-rails-blender.html" },
+    { "@type": "SoftwareApplication", "name": "ISO 20022 Message Truncation Auditor", "url": "https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html" },
+    { "@type": "SoftwareApplication", "name": "LATAM Corridor Liquidity Migration", "url": "https://postoaklabs.com/demos/latam-liquidity-migration-tool.html" },
+    { "@type": "SoftwareApplication", "name": "Nostro Capital Unlock Simulator", "url": "https://postoaklabs.com/demos/nostro-capital-optimization.html" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root { --ink: #050c15; --deep: #0a1628; --navy: #0e1e35; --panel: #142540; --edge: #1e3454; --rim: #2a4a70; --body: #7090b0; --text: #d8e4f0; --muted: #5a7a95; --bright: #ffffff; --white: #ffffff; --accent: #2a7fc0; --accent-lt: #4a9fdf; --gold: #c09040; --gold-lt: #d0a050; --success: #10b981; --warn: #f59e0b; --error: #dc2626; }
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.18; color: var(--bright); }
+a { color: var(--accent-lt); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+nav.pol-nav { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; font-weight: 400; transition: color 0.15s; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+.hub-breadcrumb { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.7rem 0; }
+.hub-breadcrumb-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); }
+.hub-breadcrumb-inner a { color: var(--body); text-decoration: none; margin-right: 0.45rem; }
+.hub-breadcrumb-inner a:hover { color: var(--accent-lt); }
+.hub-breadcrumb-inner .crumb-sep { margin-right: 0.45rem; color: var(--edge); }
+.hub-breadcrumb-inner .crumb-current { color: var(--text); }
+
+.hub-hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--edge); background: radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.08) 0%, transparent 70%), radial-gradient(45% 65% at 88% 30%, rgba(192,144,64,0.06) 0%, transparent 65%), var(--ink); }
+.hub-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.6rem; }
+.hub-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); }
+.hub-hero h1 { font-size: clamp(2rem, 4vw, 3.05rem); color: #fff; margin-bottom: 1.1rem; max-width: 900px; letter-spacing: -0.01em; }
+.hub-hero h1 em { font-style: italic; color: var(--gold); }
+.hub-sub { font-size: 1.04rem; color: var(--body); max-width: 780px; line-height: 1.75; margin-bottom: 2.25rem; }
+.hub-sub strong { color: var(--text); font-weight: 500; }
+.hub-buyers { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px dashed var(--edge); max-width: 780px; }
+.hub-buyers strong { color: var(--accent-lt); font-weight: 500; letter-spacing: 0.1em; }
+.hub-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--edge); border-radius: 6px; background: rgba(14, 30, 53, 0.35); max-width: 780px; }
+.hub-stats > div { padding: 1.25rem 1.4rem; border-right: 1px solid var(--edge); }
+.hub-stats > div:last-child { border-right: none; }
+.hub-stats strong { display: block; font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--bright); font-weight: 400; line-height: 1.1; margin-bottom: 0.25rem; }
+.hub-stats .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+.hub-demos { padding: 3rem 0 2rem; border-bottom: 1px solid var(--edge); }
+.hub-demos-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 0.5rem; }
+.hub-section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 2.2vw, 1.9rem); color: var(--bright); margin-bottom: 0.6rem; max-width: 760px; line-height: 1.3; }
+.hub-section-intro { font-size: 0.95rem; color: var(--body); max-width: 700px; margin-bottom: 2.1rem; line-height: 1.7; }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+.demo-card { background: var(--deep); border: 1px solid var(--edge); border-radius: 6px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; position: relative; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; text-decoration: none; color: var(--body); }
+.demo-card[href]:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
+.demo-card.placeholder { opacity: 0.78; cursor: default; border-style: dashed; border-color: var(--rim); }
+.demo-card.placeholder:hover { transform: none; box-shadow: none; }
+.demo-card.cross-link { background: linear-gradient(180deg, rgba(192,144,64,0.04) 0%, var(--deep) 100%); }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; }
+.card-num { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; color: var(--muted); }
+.card-num strong { color: var(--gold); font-weight: 500; }
+.card-step { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; color: var(--accent-lt); font-weight: 500; text-transform: uppercase; }
+.card-status { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.18rem 0.45rem; border-radius: 2px; font-weight: 500; }
+.card-status.live { color: var(--success); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); }
+.card-status.coming { color: var(--gold); background: rgba(192,144,64,0.06); border: 1px solid rgba(192,144,64,0.3); }
+.card-status.cross { color: var(--accent-lt); background: rgba(42,127,192,0.06); border: 1px solid rgba(42,127,192,0.3); }
+.card-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; line-height: 1.3; }
+.card-desc { font-size: 0.82rem; color: var(--body); line-height: 1.6; flex: 1; }
+.card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; padding-top: 0.85rem; border-top: 1px solid var(--edge); }
+.card-meta .chip { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0.2rem 0.45rem; border: 1px solid var(--edge); border-radius: 2px; }
+
+.hub-callout { padding: 3rem 0; background: radial-gradient(60% 90% at 50% 0%, rgba(42,127,192,0.05) 0%, transparent 70%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-callout-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-callout-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
+.hub-callout h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--bright); margin-bottom: 1rem; line-height: 1.3; }
+.hub-callout p { color: var(--body); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; max-width: 720px; }
+.hub-callout p strong { color: var(--text); font-weight: 500; }
+.hub-callout-aside { border-left: 2px solid var(--accent); padding-left: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--text); line-height: 1.7; }
+.hub-callout-aside strong { color: var(--gold); display: block; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.5rem; }
+@media (max-width: 760px) { .hub-callout-grid { grid-template-columns: 1fr; gap: 1.5rem; } .hub-callout-aside { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 1rem; } }
+
+.hub-deep-dive { padding: 3rem 0 3.5rem; border-bottom: 1px solid var(--edge); }
+.hub-deep-dive-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.deep-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+.deep-list li { background: var(--deep); border: 1px solid var(--edge); border-radius: 4px; padding: 1.1rem 1.25rem; transition: border-color 0.15s, background 0.15s; }
+.deep-list li:hover { border-color: var(--accent); background: rgba(20, 37, 64, 0.6); }
+.deep-list a { text-decoration: none; color: var(--text); display: block; }
+.deep-id { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; color: var(--gold); font-weight: 500; margin-bottom: 0.35rem; }
+.deep-name { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--bright); font-weight: 500; margin-bottom: 0.3rem; }
+.deep-blurb { font-size: 0.78rem; color: var(--body); line-height: 1.55; }
+
+.hub-cta-row { padding: 3rem 0; background: radial-gradient(50% 80% at 50% 0%, rgba(192,144,64,0.04) 0%, transparent 65%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-cta-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+.hub-cta-text { max-width: 600px; }
+.hub-cta-text h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--bright); margin-bottom: 0.5rem; line-height: 1.3; }
+.hub-cta-text p { color: var(--body); font-size: 0.9rem; line-height: 1.65; }
+.hub-cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hub-cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.85rem 1.4rem; border-radius: 4px; text-decoration: none; font-weight: 500; transition: all 0.15s; }
+.hub-cta-btn.primary { color: #fff; background: var(--accent); }
+.hub-cta-btn.primary:hover { background: var(--accent-lt); }
+.hub-cta-btn.ghost { color: var(--text); border: 1px solid var(--rim); background: transparent; }
+.hub-cta-btn.ghost:hover { border-color: var(--accent-lt); color: var(--accent-lt); }
+
+footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.25rem 0 2.5rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+@media (max-width: 760px) {
+  .hub-stats { grid-template-columns: 1fr; }
+  .hub-stats > div { border-right: none; border-bottom: 1px solid var(--edge); }
+  .hub-stats > div:last-child { border-bottom: none; }
+  .hub-hero { padding: 2.5rem 0 2rem; }
+  .hub-demos { padding: 2.25rem 0 1.75rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hub-breadcrumb" aria-label="Breadcrumb">
+  <div class="hub-breadcrumb-inner">
+    <a href="/">Post Oak Labs</a><span class="crumb-sep">/</span>
+    <a href="/demos/">Showcase</a><span class="crumb-sep">/</span>
+    <span class="crumb-current">Processors hub</span>
+  </div>
+</div>
+
+<header class="hub-hero">
+  <div class="hub-inner">
+    <span class="hub-eyebrow">For payment processors</span>
+    <h1>Card economics, A2A migration, ISO 20022 cutover — <em>working</em> on the same dates the regulators set.</h1>
+    <p class="hub-sub">
+      <strong>14 November 2026</strong> is the SWIFT CBPR+ migration deadline.
+      <strong>15 July 2026</strong> is FCA DPC PS26/1. <strong>Real-time fraud at FedNow speed</strong>
+      is already daily reality. Card economics are tighter every quarter, A2A take-rate
+      math keeps shifting, and FX netting savings keep showing up in board decks. Eight demos
+      that wire the deadlines, the math, and the AP2 export into one surface.
+    </p>
+    <p class="hub-buyers">
+      Built for <strong>Stripe Compliance · Adyen · Worldpay · Checkout.com</strong>
+      &nbsp;·&nbsp; useful to every processor's go-to-market engineering team
+    </p>
+    <div class="hub-stats" aria-label="Hub at a glance">
+      <div><strong>8</strong><span class="stat-label">demos in this stack</span></div>
+      <div><strong>14 Nov&nbsp;2026</strong><span class="stat-label">ISO 20022 CBPR+ cutover</span></div>
+      <div><strong>AP2</strong><span class="stat-label">routing-policy export</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="hub-demos" aria-label="Demos in workflow order">
+  <div class="hub-demos-inner">
+    <div class="hub-section-label">Workflow · economics → migration → corridor → fraud → mandate</div>
+    <h2 class="hub-section-title">Eight demos sequenced the way a processor team walks an executive review.</h2>
+    <p class="hub-section-intro">
+      Open with merchant rails economics. Layer in the ISO 20022 cutover surface (Truncation
+      Auditor + Readiness Scorer). Pull through to the corridor migration use case
+      (LATAM + Nostro). Add the treasury-side multilateral netting. Pin fraud at
+      instant-payment speed. Close on the A2A mandate surface.
+    </p>
+
+    <div class="demo-grid">
+
+      <a class="demo-card" href="/demos/merchant-payment-rails-blender.html">
+        <div class="card-head"><span class="card-step">Step 1 · Economics</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #01</strong> · Tool T-217 · Cat-06</span>
+        <h3 class="card-title">Merchant Payment Rails Blender</h3>
+        <p class="card-desc">Blended card + A2A take-rate and net-contribution modeler. FCA DPC (PS26/1, 15 Jul 2026) compliance modeling and AP2 routing-policy export. The economics piece in every processor's exec deck.</p>
+        <div class="card-meta"><span class="chip">FCA DPC</span><span class="chip">A2A</span><span class="chip">AP2 Routing</span></div>
+      </a>
+
+      <a class="demo-card" href="/demos/iso20022-message-truncation-auditor.html">
+        <div class="card-head"><span class="card-step">Step 2 · Migration (field)</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #02</strong> · Tool T77 · CBPR+</span>
+        <h3 class="card-title">ISO 20022 Message Truncation Auditor</h3>
+        <p class="card-desc">Field-by-field pacs.008 → MT103 truncation analysis with countdown to the 14 November 2026 SWIFT cutover. AP2 remediation-brief export the operations team can act on.</p>
+        <div class="card-meta"><span class="chip">SWIFT CBPR+</span><span class="chip">14 Nov 2026</span><span class="chip">AP2 Remediation</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/iso20022-migration-readiness-scorer.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 3 · Migration (program)</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #22</strong> · ISO 20022 (depth)</span>
+        <h3 class="card-title">ISO 20022 Migration Readiness Scorer</h3>
+        <p class="card-desc">Six-message-family tier matrix (pacs.008/009/002, camt.053/054, pain.001) × gateway capability × CBPR+ structured-address state × hybrid plan. Composite score, cutover-risk band, T-minus countdown to 14 Nov 2026. Programme-level visibility pair with #2 Truncation Auditor.</p>
+        <div class="card-meta"><span class="chip">ISO 20022</span><span class="chip">14 Nov 2026</span><span class="chip">T-minus live</span></div>
+      </a>
+
+      <a class="demo-card" href="/demos/latam-liquidity-migration-tool.html">
+        <div class="card-head"><span class="card-step">Step 4 · Corridor</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #04</strong> · Treasury · BIS 239</span>
+        <h3 class="card-title">LATAM Corridor Liquidity Migration</h3>
+        <p class="card-desc">Six-corridor (BRL/MXN/COP/CLP/ARS/PEN) FRTB-aligned liquidity migration. 99%/90d haircut, BIS 239 framing, AP2 liquidity-mandate export, shareable URL.</p>
+        <div class="card-meta"><span class="chip">BIS 239 · FRTB</span><span class="chip">PIX · SPEI · Bre-B</span><span class="chip">AP2 Liquidity</span></div>
+      </a>
+
+      <a class="demo-card" href="/demos/nostro-capital-optimization.html">
+        <div class="card-head"><span class="card-step">Step 5 · Capital</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #05</strong> · Treasury · Basel III LCR</span>
+        <h3 class="card-title">Nostro Capital Unlock Simulator</h3>
+        <p class="card-desc">Migrate SWIFT correspondent rails to tokenized A2A on a chosen corridor — trapped capital release waterfall, FX spread compression, AP2 capital-brief export.</p>
+        <div class="card-meta"><span class="chip">Basel III LCR</span><span class="chip">Tokenized A2A</span><span class="chip">AP2 Capital Brief</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/cross-border-fx-netting-simulator.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 6 · FX netting</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #25</strong> · Treasury · FX Netting</span>
+        <h3 class="card-title">Cross-Border FX Netting Simulator</h3>
+        <p class="card-desc">Editable 4-subsidiary × 3-currency payable matrix with three settlement modes (gross / bilateral / multilateral). Live compression %, FX-spread savings at chosen bps, nostro capital freed, Herstatt at-risk reduction. AP2 treasury-policy mandate.</p>
+        <div class="card-meta"><span class="chip">FX Netting</span><span class="chip">$7.5T daily</span><span class="chip">Multilateral</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/instant-payment-fraud-risk-lab.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 7 · Fraud at speed</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #13</strong> · Fraud · Instant Pay</span>
+        <h3 class="card-title">FedNow / Instant-Payment Fraud Risk Lab</h3>
+        <p class="card-desc">Six-signal score model with adjustable weights, decision threshold and hard-refuse ceiling. Live confusion matrix, modeled precision / recall / step-up rate, expected daily $-loss, sub-200ms latency budget. AP2 fraud-policy mandate the FedNow / faster-payments team can audit.</p>
+        <div class="card-meta"><span class="chip">FedNow</span><span class="chip">RTP irrevocable</span><span class="chip">200ms budget</span></div>
+      </a>
+
+      <a class="demo-card live cross-link" href="/demos/vrp-mandate-sweep-logic-designer.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 8 · A2A mandate</span><span class="card-status live">Live · Cross</span></div>
+        <span class="card-num"><strong>Demo #18</strong> · VRP · UK CMA9</span>
+        <h3 class="card-title">VRP Mandate &amp; Sweep Logic Designer</h3>
+        <p class="card-desc">Sweep window × caps × idempotency × beneficiary scope across four regimes. 24h timeline viz. Cross-link to the BaaS hub; same surface, processor consumer.</p>
+        <div class="card-meta"><span class="chip">VRP</span><span class="chip">4 regimes</span><span class="chip">Timeline viz</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="hub-callout" aria-label="Why this hub exists">
+  <div class="hub-callout-inner">
+    <div class="hub-callout-grid">
+      <div><div class="hub-section-label">Why this exists</div></div>
+      <div>
+        <h3>Processor go-to-market engineering teams have a deadline calendar and a math problem on the same page.</h3>
+        <p>
+          The deadline calendar: <strong>15 July 2026</strong> FCA DPC PS26/1 for UK card.
+          <strong>14 November 2026</strong> SWIFT CBPR+ cutover. PSD3 enforcement begins.
+          Tokenized correspondent rails are no longer a 5-year story — Basel III LCR
+          haircuts make the build case today.
+        </p>
+        <p>
+          The math problem: card take-rate compression, FCA DPC's effect on routing, FX
+          netting savings the treasury team has been asking for, real-time fraud at FedNow
+          speed, what the LATAM corridor actually costs when PIX / SPEI / Bre-B are on the
+          table. <strong>Every processor exec deck does this math from scratch every quarter.</strong>
+        </p>
+        <p>
+          The eight demos here are the curated path — economics first, then the migration
+          surface, then the corridor, then fraud, then the mandate the agent runtime
+          downstream will read. Live now: the four that mattered most to ship first.
+          The next four close the loop.
+        </p>
+        <div class="hub-callout-aside" role="note">
+          <strong>For the acquirer reader</strong>
+          The processor stack is where the showcase has its longest list of already-live
+          demos (4 of 8). The remaining four extend the same surface — same tokens,
+          same export format, same audit trail. The buyer inherits a migration-period
+          deliverable already half-shipped.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hub-deep-dive" aria-label="Deep links into AINumbers">
+  <div class="hub-deep-dive-inner">
+    <div class="hub-section-label">Deep links · AINumbers catalog</div>
+    <h2 class="hub-section-title">Seven tools underneath the processor demos.</h2>
+    <p class="hub-section-intro">
+      The processor side of the catalog — routing, BIN intelligence, chargebacks, FX hedging,
+      ISO truncation, fraud investigation, A2A command-centre operations. Each tool emits
+      AP2 mandate JSON and an MCP tool definition.
+    </p>
+    <ul class="deep-list">
+
+      <li><a href="https://ainumbers.co/tools/01-a2a-fee-route-optimizer.html" target="_blank" rel="noopener">
+        <div class="deep-id">T01 ↗</div>
+        <div class="deep-name">A2A Fee &amp; Route Optimizer</div>
+        <div class="deep-blurb">Route optimisation across A2A rails — fee, latency, exception risk. The tool underneath Demo #01's routing-policy export.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/37-bin-iin-intelligence-workbench.html" target="_blank" rel="noopener">
+        <div class="deep-id">T37 ↗</div>
+        <div class="deep-name">BIN / IIN Intelligence Workbench</div>
+        <div class="deep-blurb">BIN-tier lookups, IIN routing intelligence, programme-level interchange capture. Processor-facing data model the merchant blender depends on.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/41-chargeback-representment-builder.html" target="_blank" rel="noopener">
+        <div class="deep-id">T41 ↗</div>
+        <div class="deep-name">Chargeback Representment Builder</div>
+        <div class="deep-blurb">Composer for chargeback representment packages — Visa / Mastercard reason-code workflows, evidence checklist, dispute economics.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/76-fx-hedge-optimizer.html" target="_blank" rel="noopener">
+        <div class="deep-id">T76 ↗</div>
+        <div class="deep-name">FX Hedge Optimizer</div>
+        <div class="deep-blurb">FX hedging optimiser — exposure netting, hedge ratio under volatility, settlement-currency choice. Feeds the LATAM corridor demo (#04) and the FX netting demo (#25).</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/77-iso-truncation-auditor.html" target="_blank" rel="noopener">
+        <div class="deep-id">T77 ↗</div>
+        <div class="deep-name">ISO Truncation Auditor</div>
+        <div class="deep-blurb">The tool underneath Demo #02 — pacs.008 ↔ MT103 truncation analysis, CBPR+ deadline aware, remediation-brief export.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/80-fraud-investigation-lab.html" target="_blank" rel="noopener">
+        <div class="deep-id">T80 ↗</div>
+        <div class="deep-name">Payment Fraud Investigation Decision Lab</div>
+        <div class="deep-blurb">Decision lab for fraud investigations — signal blending, intervention thresholds, false-positive trade-off. The tool underneath Demo #13.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/82-a2a-rail-command-center.html" target="_blank" rel="noopener">
+        <div class="deep-id">T82 ↗</div>
+        <div class="deep-name">A2A Rail Command Center</div>
+        <div class="deep-blurb">A2A rail-level operations console — live error budgets, scheme-compliance dashboards, mandate-replay surface. Where a processor's A2A team lives day-to-day.</div>
+      </a></li>
+
+    </ul>
+  </div>
+</section>
+
+<section class="hub-cta-row" aria-label="Continue">
+  <div class="hub-cta-inner">
+    <div class="hub-cta-text">
+      <h3>See where these eight demos sit in the full 259-tool chain.</h3>
+      <p>The Tool Chain Composer renders the AINumbers catalog as a DAG with the 33 demos highlighted. The processor cluster sits at the centre of the chain — it's the densest tributary into AP2 routing-policy mandates.</p>
+    </div>
+    <div class="hub-cta-buttons">
+      <a href="/demos/composer.html" class="hub-cta-btn primary">View the composer →</a>
+      <a href="/demos/" class="hub-cta-btn ghost">← All 27 demos</a>
+    </div>
+  </div>
+</section>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — Full tool catalog ↗</a>
+      <a href="/demos/">Fintech Intelligence Showcase</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime hub</a>
+      <a href="/demos/regtech/">RegTech hub</a>
+      <a href="/demos/baas/">BaaS hub</a>
+      <a href="/demos/processors/" class="this-hub">Processors hub</a>
+      <a href="/demos/stablecoin-issuer/">Stablecoin Issuer hub</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

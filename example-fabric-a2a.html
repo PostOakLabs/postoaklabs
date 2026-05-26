@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyperledger Fabric A2A Tokenization: Europe–Saudi Arabia Settlement Corridor | Post Oak Labs</title>
+<meta name="description" content="A practitioner-authored technical deep-dive into how Hyperledger Fabric enables tokenized account-to-account settlement between two European commercial banks and one Saudi bank. Channel design, MSP configuration, Go chaincode, Fabric Token SDK, Raft ordering, ISO 20022 embedding, Travel Rule via private data collections, and net settlement against TARGET2 and SARIE.">
+<meta name="author" content="Post Oak Labs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:       #050c15;
+  --deep:      #0a1628;
+  --navy:      #0e1e35;
+  --panel:     #142540;
+  --edge:      #1e3454;
+  --rim:       #2a4a70;
+  --muted:     #4a6a8a;
+  --body:      #7090b0;
+  --text:      #a8c0d8;
+  --bright:    #d0e4f4;
+  --white:     #ecf4fc;
+  --gold:      #c09040;
+  --gold-lt:   #d8b060;
+  --gold-dim:  #6a4818;
+  --accent:    #2a7fc0;
+  --accent-lt: #4a9fd8;
+  --accent-dim:#0e2840;
+  --amber:     #b07020;
+  --amber-lt:  #d09030;
+  --red:       #b03040;
+  --red-lt:    #d04858;
+  --green:     #2a9060;
+  --green-lt:  #3ab878;
+  /* aliases so internal var() refs keep working */
+  --bg:        #050c15;
+  --surface:   #0a1628;
+  --border:    #1e3454;
+  --teal:      #2a7fc0;
+  --teal-lt:   #4a9fd8;
+  --teal-dim:  #0e2840;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+}
+h1,h2,h3,h4,h5 {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--white);
+}
+a { color: var(--accent-lt); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  padding: 0.08em 0.4em;
+  border-radius: 2px;
+  color: var(--accent-lt);
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.77em;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  line-height: 1.6;
+  color: var(--bright);
+  margin: 1.25rem 0;
+}
+pre .cm  { color: var(--muted); }
+pre .kw  { color: var(--gold-lt); }
+pre .ty  { color: var(--accent-lt); }
+pre .st  { color: var(--green-lt); }
+pre .nr  { color: var(--amber-lt); }
+pre .fn  { color: var(--bright); }
+.container { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── TOP BANNER ── */
+.top-banner {
+  background: var(--accent-dim);
+  border-bottom: 1px solid var(--accent);
+  padding: 0.5rem 0;
+}
+.top-banner-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-lt);
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(5,12,21,0.96);
+  border-bottom: 1px solid var(--edge);
+  backdrop-filter: blur(10px);
+  padding: 0 2rem; height: 54px;
+}
+.nav-inner {
+  max-width: 1040px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem; color: var(--bright); font-weight: 400;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--muted); transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); text-decoration: none; }
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); background: var(--accent);
+  border: 1px solid var(--accent); padding: 0.28rem 0.8rem;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); text-decoration: none; }
+
+/* ── HERO ── */
+.hero {
+  padding: 5.5rem 0 5rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-lt), var(--gold-lt), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; top: -200px; right: -300px;
+  width: 900px; height: 900px;
+  background: radial-gradient(ellipse, rgba(26,122,136,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  max-width: 800px; margin-bottom: 1.5rem;
+  letter-spacing: -0.02em; line-height: 1.12;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 1rem; color: var(--body);
+  max-width: 680px; line-height: 1.85; margin-bottom: 2.5rem;
+}
+.hero-badges {
+  display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.28rem 0.7rem; border: 1px solid var(--edge);
+  color: var(--muted);
+}
+.badge.tech  { border-color: var(--accent);   color: var(--accent-lt); }
+.badge.reg   { border-color: var(--gold-dim); color: var(--gold-lt); }
+.badge.live  { border-color: var(--green);  color: var(--green-lt); }
+
+/* ── STRUCTURE OVERVIEW BOX ── */
+.overview-box {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin-top: 3.5rem;
+}
+.overview-cell {
+  background: var(--deep); padding: 1.5rem 1.75rem;
+}
+.overview-cell-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+.overview-cell h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.overview-cell p { font-size: 0.8rem; color: var(--body); line-height: 1.7; }
+
+/* ── TOC ── */
+.toc-wrapper {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--gold);
+  padding: 2rem 2.5rem; margin: 4rem 0;
+}
+.toc-wrapper h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 1.25rem; font-weight: 400;
+}
+.toc-list {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 3rem; list-style: none;
+}
+.toc-list li {
+  font-size: 0.82rem; color: var(--body);
+  padding: 0.2rem 0; border-bottom: 1px solid rgba(28,34,53,0.5);
+}
+.toc-list a {
+  color: var(--body); display: flex; gap: 0.75rem; align-items: baseline;
+}
+.toc-list a:hover { color: var(--accent-lt); text-decoration: none; }
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem; color: var(--muted); flex-shrink: 0;
+}
+
+/* ── SECTIONS ── */
+section { padding: 5rem 0; border-bottom: 1px solid var(--edge); }
+section:last-of-type { border-bottom: none; }
+.sec-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 0.6rem;
+}
+.sec-title {
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  margin-bottom: 0.75rem; max-width: 740px;
+}
+.sec-lead {
+  font-size: 0.93rem; color: var(--body);
+  max-width: 720px; line-height: 1.85;
+  margin-bottom: 2.5rem; padding-bottom: 2rem;
+  border-bottom: 1px solid var(--edge);
+}
+p + p { margin-top: 0.9rem; }
+p { font-size: 0.9rem; color: var(--body); line-height: 1.85; }
+strong { color: var(--text); font-weight: 500; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border: 1px solid var(--edge);
+  padding: 1.4rem 1.75rem; margin: 1.75rem 0;
+}
+.callout.gold  { border-left: 3px solid var(--gold); background: rgba(184,146,42,0.04); }
+.callout.teal  { border-left: 3px solid var(--accent); background: rgba(26,122,136,0.04); }
+.callout.amber { border-left: 3px solid var(--amber); background: rgba(160,96,32,0.05); }
+.callout.red   { border-left: 3px solid var(--red); background: rgba(136,48,48,0.05); }
+.callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.callout.gold  .callout-label { color: var(--gold-lt); }
+.callout.teal  .callout-label { color: var(--accent-lt); }
+.callout.amber .callout-label { color: var(--amber-lt); }
+.callout.red   .callout-label { color: var(--red-lt); }
+.callout p { font-size: 0.85rem; }
+
+/* ── NETWORK TOPOLOGY SVG WRAPPER ── */
+.diagram-wrap {
+  border: 1px solid var(--edge);
+  background: var(--deep);
+  padding: 2rem; overflow-x: auto;
+  margin: 2rem 0;
+}
+.diagram-wrap svg { display: block; margin: 0 auto; }
+.diagram-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-align: center; margin-top: 1rem;
+}
+
+/* ── STEP LIST ── */
+.step-list {
+  display: flex; flex-direction: column;
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.step-item {
+  background: var(--deep); padding: 1.4rem 1.75rem;
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 1.5rem; align-items: start;
+  transition: background 0.18s;
+}
+.step-item:hover { background: var(--panel); }
+.step-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem; color: var(--edge);
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.18s;
+}
+.step-item:hover .step-num { color: var(--accent-lt); }
+.step-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 0.25rem;
+}
+.step-body h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.step-body p { font-size: 0.82rem; line-height: 1.8; }
+.step-timing {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.35rem;
+}
+.step-timing span { color: var(--accent-lt); }
+
+/* ── DETAIL TABLE ── */
+.detail-table-wrap { overflow-x: auto; margin: 1.75rem 0; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.detail-table th {
+  background: var(--panel); padding: 0.7rem 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--accent-lt); border: 1px solid var(--edge);
+  text-align: left; font-weight: 400;
+}
+.detail-table td {
+  padding: 0.75rem 1.1rem; border: 1px solid var(--edge);
+  color: var(--body); line-height: 1.65; vertical-align: top;
+}
+.detail-table td.lbl {
+  font-weight: 500; color: var(--bright);
+  border-right: 1px solid var(--rim);
+  white-space: nowrap; background: rgba(13,16,24,0.5);
+}
+.detail-table tr:hover td { background: var(--panel); }
+
+/* ── NODE CARDS ── */
+.node-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.node-card { padding: 1.5rem 1.75rem; }
+.node-card.bank-de  { background: color-mix(in srgb, var(--bank-de) 30%, var(--deep)); border-top: 3px solid #3a6ac0; }
+.node-card.bank-fr  { background: color-mix(in srgb, var(--bank-fr) 30%, var(--deep)); border-top: 3px solid #6a3aaa; }
+.node-card.bank-sa  { background: color-mix(in srgb, var(--bank-sa) 30%, var(--deep)); border-top: 3px solid #3aaa60; }
+.node-card.orderer  { background: color-mix(in srgb, var(--orderer) 50%, var(--deep)); border-top: 3px solid var(--gold-lt); grid-column: span 3; }
+.node-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+.node-card.bank-de  .node-type { color: #6a9ae0; }
+.node-card.bank-fr  .node-type { color: #9a6ad0; }
+.node-card.bank-sa  .node-type { color: #6ad090; }
+.node-card.orderer  .node-type { color: var(--gold-lt); }
+.node-card h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.97rem; font-weight: 500; color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.node-card p { font-size: 0.79rem; line-height: 1.75; color: var(--body); }
+.node-card ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.2rem; }
+.node-card ul li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; color: var(--muted); padding: 0.15rem 0;
+  border-bottom: 1px solid rgba(28,34,53,0.4);
+}
+.node-card ul li::before { content: '→ '; color: var(--accent); }
+
+/* ── REGULATORY TABLE ── */
+.reg-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.reg-cell { background: var(--deep); padding: 1.5rem 1.75rem; }
+.reg-cell:first-child { border-left: 3px solid #4060c0; }
+.reg-cell:nth-child(2) { border-left: 3px solid #3aaa60; }
+.reg-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 0.75rem;
+}
+.reg-cell h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.95rem; font-weight: 500; color: var(--white);
+  margin-bottom: 0.6rem;
+}
+.reg-cell p { font-size: 0.81rem; line-height: 1.78; }
+.reg-list { list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.reg-list li {
+  font-size: 0.8rem; color: var(--body); padding: 0.4rem 0;
+  border-bottom: 1px solid var(--edge); line-height: 1.6;
+}
+.reg-list li strong { color: var(--text); }
+
+/* ── RISK GRID ── */
+.risk-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.risk-cell { background: var(--deep); padding: 1.5rem 1.75rem; }
+.risk-cell h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem; font-weight: 500; color: var(--gold-lt);
+  margin-bottom: 0.5rem;
+}
+.risk-cell p { font-size: 0.8rem; line-height: 1.75; }
+
+/* ── TOKEN MODEL TABLE ── */
+.token-table-wrap { overflow-x: auto; margin: 1.75rem 0; }
+.token-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.token-table th {
+  background: var(--panel); padding: 0.7rem 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--accent-lt); border: 1px solid var(--edge);
+  text-align: left; font-weight: 400;
+}
+.token-table td {
+  padding: 0.75rem 1.1rem; border: 1px solid var(--edge);
+  color: var(--body); line-height: 1.65; vertical-align: top;
+}
+.token-table td.lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; font-weight: 500; color: var(--bright);
+  border-right: 1px solid var(--rim);
+  white-space: nowrap; background: rgba(13,16,24,0.5);
+}
+.token-table tr:hover td { background: var(--panel); }
+
+/* ── FOOTNOTES ── */
+.footnotes {
+  border-top: 1px solid var(--edge);
+  padding: 3rem 0 2rem;
+}
+.footnotes h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.25rem; font-weight: 400;
+}
+.footnotes ol {
+  padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.7rem;
+}
+.footnotes li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem; color: var(--muted);
+  line-height: 1.65; letter-spacing: 0.02em;
+}
+.footnotes a { color: var(--accent-lt); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 2.5rem 0; border-top: 1px solid var(--edge);
+  background: var(--deep);
+}
+.footer-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 1rem;
+}
+.footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem;
+}
+.footer-brand span { color: var(--gold-lt); }
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7;
+}
+.footer-copy a { color: var(--accent-lt); }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent-lt); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .overview-box { grid-template-columns: 1fr; }
+  .toc-list { grid-template-columns: 1fr; }
+  .node-grid { grid-template-columns: 1fr; }
+  .node-card.orderer { grid-column: span 1; }
+  .reg-grid { grid-template-columns: 1fr; }
+  .risk-grid { grid-template-columns: 1fr; }
+  .step-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  .step-num { display: none; }
+  .nav-links { display: none; }
+}
+
+/* Section anchors below sticky nav */
+[id] { scroll-margin-top: 70px; }
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-bar {
+  background: var(--deep);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.45rem 0;
+}
+.lang-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: flex-end; gap: 0.25rem;
+}
+.lang-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--edge);
+  color: var(--muted);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="me" href="https://ainumbers.co">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<link rel="canonical" href="https://postoaklabs.com/example-fabric-a2a.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hyperledger Fabric A2A Tokenization: Europe–Saudi Arabia Settlement Corridor | Post Oak Labs">
+<meta property="og:description" content="A practitioner-authored technical deep-dive into how Hyperledger Fabric enables tokenized account-to-account settlement between two European commercial banks and one Saudi bank. Channel design, MSP configuration, Go chaincode, Fabric Token SDK, Raft ordering, ISO 20022 embedding, Travel Rule via pri">
+<meta property="og:url" content="https://postoaklabs.com/example-fabric-a2a.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="Hyperledger Fabric A2A Tokenization: Europe–Saudi Arabia Settlement Corridor | Post Oak Labs">
+<meta name="twitter:description" content="A practitioner-authored technical deep-dive into how Hyperledger Fabric enables tokenized account-to-account settlement between two European commercial banks and one Saudi bank. Channel design, MSP configuration, Go chaincode, Fabric Token SDK, Raft ordering, ISO 20022 embedding, Travel Rule via pri">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Hyperledger Fabric A2A Tokenization: Europe\u2013Saudi Arabia Settlement Corridor",
+  "datePublished": "2026-05-07",
+  "dateModified": "2026-05-11",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "publisher": {
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "mainEntityOfPage": "https://postoaklabs.com/example-fabric-a2a.html",
+  "image": "https://postoaklabs.com/og-image.png",
+  "about": "Hyperledger Fabric for tokenized A2A cross-border settlement",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Commercial banks, central banks, large corporates"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Enterprise Blockchain",
+      "item": "https://postoaklabs.com/enterprise-blockchain.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Fabric",
+      "item": "https://postoaklabs.com/example-fabric-a2a.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow">Technical Deep-Dive · Hyperledger Fabric · Cross-Border Settlement</p>
+    <h1 data-i18n="hero-h1">A2A tokenization on Fabric: <em>two European banks, one Saudi bank</em></h1>
+    <p class="hero-sub" data-i18n="hero-sub">
+      A concrete reference architecture for cross-border, account-to-account payment tokenization between two European credit institutions and one Saudi commercial bank, executed on a permissioned Hyperledger Fabric network. Channel design, MSP configuration, Go chaincode, the Fabric Token SDK, Raft ordering, ISO 20022 message embedding, Travel Rule treatment via private data collections, and net settlement against TARGET2 and SARIE.
+    </p>
+
+    <div class="hero-badges">
+      <span class="badge tech">Hyperledger Fabric 2.5 LTS</span>
+      <span class="badge tech">Fabric Token SDK</span>
+      <span class="badge tech">ISO 20022 pacs.008</span>
+      <span class="badge tech">Go Chaincode</span>
+      <span class="badge tech">Raft Ordering</span>
+      <span class="badge reg">MiCA (EU)</span>
+      <span class="badge reg">SAMA AML/CFT Rules</span>
+      <span class="badge reg">DORA Jan 2025</span>
+      <span class="badge reg">TFR 2023/1113</span>
+      <span class="badge live">Production-Grade Pattern</span>
+    </div>
+
+    <div class="overview-box">
+      <div class="overview-cell">
+        <p class="overview-cell-label">Scenario</p>
+        <h3>Three-bank EUR/SAR corridor</h3>
+        <p>A German exporter paying a Saudi beneficiary. Bayerische Handelsbank (Munich) originates. Banque Méridienne (Paris) provides SAR liquidity. Bank Al-Madinah (Riyadh) receives and credits in SAR.</p>
+      </div>
+      <div class="overview-cell">
+        <p class="overview-cell-label">Technology</p>
+        <h3>Hyperledger Fabric 2.5 LTS</h3>
+        <p>Permissioned network with three organizations, a five-node Raft ordering service, and four channels. Go chaincode for EUR/SAR tokens, FX oracle, and atomic swap. Fabric Token SDK (fabtoken driver). CouchDB world state. FIPS 140-2 HSMs for all key material.</p>
+      </div>
+      <div class="overview-cell">
+        <p class="overview-cell-label">Settlement</p>
+        <h3>MVCC atomic / end-of-day RTGS</h3>
+        <p>EUR and SAR legs settle atomically on-ledger via MVCC-enforced read-write set. Net interbank positions settle via TARGET2 (EUR) and SARIE (SAR) end-of-day in central bank money. No nostro pre-funding required intraday.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TOC ═══════════ -->
+<div class="container">
+  <div class="toc-wrapper">
+    <h3>Contents</h3>
+    <ul class="toc-list">
+      <li><a href="#scenario"><span class="toc-num">01</span>Scenario and participants</a></li>
+      <li><a href="#topology"><span class="toc-num">02</span>Network topology and node architecture</a></li>
+      <li><a href="#identity"><span class="toc-num">03</span>Identity and MSP design</a></li>
+      <li><a href="#channels"><span class="toc-num">04</span>Channels and private data collections</a></li>
+      <li><a href="#chaincode"><span class="toc-num">05</span>Go chaincode and endorsement policy</a></li>
+      <li><a href="#tokens"><span class="toc-num">06</span>Token model: Fabric Token SDK</a></li>
+      <li><a href="#lifecycle"><span class="toc-num">07</span>Full transaction lifecycle (16 steps)</a></li>
+      <li><a href="#consensus"><span class="toc-num">08</span>Ordering and consensus: Raft</a></li>
+      <li><a href="#iso20022"><span class="toc-num">09</span>ISO 20022 payload binding</a></li>
+      <li><a href="#kyc"><span class="toc-num">10</span>KYC, AML, and Travel Rule compliance</a></li>
+      <li><a href="#regulation"><span class="toc-num">11</span>Regulatory framework: EU and Saudi Arabia</a></li>
+      <li><a href="#settlement"><span class="toc-num">12</span>RTGS net settlement: TARGET2 and SARIE</a></li>
+      <li><a href="#risks"><span class="toc-num">13</span>Operational risks and mitigations</a></li>
+      <li><a href="#references"><span class="toc-num">—</span>References and source notes</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 1: SCENARIO ═══════════ -->
+<section id="scenario">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_01">Section 01</p>
+    <h2 class="sec-title" data-i18n="t-a_three_bank_corridor_betw">A three-bank corridor between the euro area and the Kingdom of Saudi Arabia</h2>
+    <p class="sec-lead">
+      A German mid-market exporter of precision machine tools instructs its house bank in Munich to pay <strong>EUR 4,820,000</strong> to a contracting authority in Riyadh in respect of a desalination project milestone. The originator's bank lacks a direct correspondent account in Saudi riyal; it relies on a Paris-based affiliate that runs a SAR nostro at the Riyadh receiver. All three banks are members of the same permissioned Fabric network.
+    </p>
+
+    <p>The transfer is to be effected as an on-ledger token movement settled in commercial bank money, with the corresponding fiat positions flattened end-of-day through the existing real-time gross settlement (RTGS) systems on each side. The corridor is denominated in EUR and SAR. The Saudi riyal has been pegged to the U.S. dollar at <strong>SAR 3.75 = USD 1</strong> since 1986, and the EUR/SAR cross is a function of the ECB euro reference rate against the dollar. For this paper we take an indicative <strong>EUR/SAR mid of 4.0825</strong> and apply a 6 bp spread to the taker, yielding a SAR-side notional of approximately <strong>SAR 19,683,765</strong>.</p>
+
+    <div class="node-grid">
+      <div class="node-card bank-de">
+        <p class="node-type">Originator · Org1MSP · Munich</p>
+        <h3>Bayerische Handelsbank AG</h3>
+        <p>House bank of the corporate payer. Holds EUR commercial bank money on-ledger as <code>EUR-CBM</code> tokens; debits the corporate account in core banking; submits the proposal to the corridor channel.</p>
+        <ul>
+          <li>X.509 identity: Org1MSP · BIC BHDLDE2M</li>
+          <li>Peers: peer0.de · peer1.de · ca.de</li>
+          <li>World state: CouchDB</li>
+          <li>HSM: Thales Luna 7 (FIPS 140-2 Level 3)</li>
+          <li>RTGS link: TARGET2 (Bundesbank)</li>
+          <li>Reg: BaFin · MiCA · DORA</li>
+        </ul>
+      </div>
+      <div class="node-card bank-fr">
+        <p class="node-type">Liquidity provider · Org2MSP · Paris</p>
+        <h3>Banque Méridienne SA</h3>
+        <p>Pan-European correspondent. Operates the SAR nostro at the Riyadh receiver and quotes the EUR/SAR price into the on-ledger FX oracle. Endorses both legs of the atomic swap as the liquidity counter-party.</p>
+        <ul>
+          <li>X.509 identity: Org2MSP · BIC BMRDFRPP</li>
+          <li>Peers: peer0.fr · peer1.fr · ca.fr</li>
+          <li>World state: CouchDB</li>
+          <li>HSM: Utimaco SecurityServer</li>
+          <li>RTGS link: TARGET2 (Banque de France)</li>
+          <li>Reg: ACPR · MiCA · DORA</li>
+        </ul>
+      </div>
+      <div class="node-card bank-sa">
+        <p class="node-type">Beneficiary · Org3MSP · Riyadh</p>
+        <h3>Bank Al-Madinah</h3>
+        <p>Receiving institution. Issues <code>SAR-CBM</code> tokens backed one-for-one by SAMA settlement balances; credits the beneficiary's current account on final commit and emits the MT/MX confirmation upstream.</p>
+        <ul>
+          <li>X.509 identity: Org3MSP · BIC ALMDSARI</li>
+          <li>Peers: peer0.sa · peer1.sa · ca.sa</li>
+          <li>World state: CouchDB</li>
+          <li>HSM: IBM Crypto Express CCA</li>
+          <li>RTGS link: SARIE (SAMA)</li>
+          <li>Reg: SAMA AML/CFT · PSP Regulations</li>
+        </ul>
+      </div>
+      <div class="node-card orderer">
+        <p class="node-type">Ordering Service · Five-Node Raft Cluster · Distributed across DE, FR, SA, and two independent technical operators</p>
+        <h3>Raft Ordering Service — etcd/Raft · f=1 tolerated · quorum=3</h3>
+        <p>The five-node Raft orderer cluster is distributed to ensure no single jurisdiction can unilaterally censor the channel. Each bank contributes one orderer node (orderer0.de, orderer1.fr, orderer2.sa); two additional nodes are hosted by an independent technical operator in Frankfurt and Bahrain for Byzantine survivability. Orderer logs are mirrored to WORM storage at each site. Block-cutting parameters: <code>BatchTimeout=200ms</code>, <code>BatchSize.MaxMessageCount=500</code>, <code>BatchSize.AbsoluteMaxBytes=10MB</code>. SmartBFT migration is planned for Fabric 3.x once IBM enterprise support reaches GA.</p>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <p class="callout-label">Why this corridor</p>
+      <p>The EU–GCC payment relationship is structurally underbanked: very few EU institutions hold direct riyal accounts, and bilateral nostro maintenance is expensive. A permissioned Fabric corridor lets a small group of correspondents net flows continuously and settle once per day, without the operational drag of running shared infrastructure on a public network and without exposing counter-party identity outside the consortium.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 2: TOPOLOGY ═══════════ -->
+<section id="topology">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_02">Section 02</p>
+    <h2 class="sec-title" data-i18n="t-network_topology__organiza">Network topology: organizations, peers, orderers, certificate authorities</h2>
+    <p class="sec-lead">
+      Each participating bank operates a single Fabric organization with two endorsing peers (active/standby) and one Fabric CA. The orderer set is operated jointly across all three banks plus two independent technical operators. Peers expose the Fabric Gateway service over mTLS to the bank's payment hub. The deployment runs on Hyperledger Fabric 2.5.x LTS — the long-term-support line maintained by IBM and the Linux Foundation.
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" width="860" style="max-width:100%;">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#24a8ba"/>
+          </marker>
+          <marker id="arr-gold" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#d4aa44"/>
+          </marker>
+          <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#3d5070"/>
+          </marker>
+        </defs>
+
+        <rect width="900" height="460" fill="#0d1018" rx="2"/>
+        <rect x="20" y="20" width="860" height="420" rx="4" fill="none" stroke="#1c2235" stroke-width="1" stroke-dasharray="5,4"/>
+        <text x="42" y="38" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1.5">HYPERLEDGER FABRIC NETWORK — EUR/SAR CORRIDOR</text>
+
+        <!-- Raft Orderer (center) -->
+        <rect x="310" y="160" width="280" height="115" rx="2" fill="#111520" stroke="#d4aa44" stroke-width="1.5"/>
+        <rect x="310" y="160" width="280" height="4" fill="#d4aa44"/>
+        <text x="450" y="182" text-anchor="middle" fill="#d4aa44" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5">RAFT ORDERING SERVICE</text>
+        <text x="450" y="200" text-anchor="middle" fill="#cde0f2" font-family="JetBrains Mono, monospace" font-size="9">5-node cluster · etcd/Raft</text>
+        <text x="450" y="217" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="8">orderer0.de · orderer1.fr · orderer2.sa</text>
+        <text x="450" y="232" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="8">orderer3.tech-fra · orderer4.tech-bah</text>
+        <text x="450" y="254" text-anchor="middle" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="8">f = 1 tolerated · quorum = 3</text>
+
+        <!-- BankDE (top left) -->
+        <rect x="40" y="48" width="210" height="110" rx="2" fill="#0d1420" stroke="#3a6ac0" stroke-width="1.5"/>
+        <rect x="40" y="48" width="210" height="4" fill="#3a6ac0"/>
+        <text x="145" y="68" text-anchor="middle" fill="#6a9ae0" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1">ORG1MSP · MUNICH</text>
+        <text x="145" y="86" text-anchor="middle" fill="#cde0f2" font-family="DM Serif Display, serif" font-size="13">Bayerische Handelsbank</text>
+        <text x="145" y="104" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5">peer0.de · peer1.de · ca.de</text>
+        <text x="145" y="119" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5">CouchDB world-state</text>
+        <text x="145" y="135" text-anchor="middle" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">HSM: Thales Luna 7</text>
+
+        <!-- BankFR (top right) -->
+        <rect x="650" y="48" width="210" height="110" rx="2" fill="#130d20" stroke="#6a3aaa" stroke-width="1.5"/>
+        <rect x="650" y="48" width="210" height="4" fill="#6a3aaa"/>
+        <text x="755" y="68" text-anchor="middle" fill="#9a6ad0" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1">ORG2MSP · PARIS</text>
+        <text x="755" y="86" text-anchor="middle" fill="#cde0f2" font-family="DM Serif Display, serif" font-size="13">Banque Méridienne</text>
+        <text x="755" y="104" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5">peer0.fr · peer1.fr · ca.fr</text>
+        <text x="755" y="119" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5">CouchDB world-state</text>
+        <text x="755" y="135" text-anchor="middle" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">HSM: Utimaco SecurityServer</text>
+
+        <!-- BankSA (bottom center) -->
+        <rect x="345" y="335" width="210" height="95" rx="2" fill="#0a1a10" stroke="#3aaa60" stroke-width="1.5"/>
+        <rect x="345" y="335" width="210" height="4" fill="#3aaa60"/>
+        <text x="450" y="355" text-anchor="middle" fill="#6ad090" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1">ORG3MSP · RIYADH</text>
+        <text x="450" y="373" text-anchor="middle" fill="#cde0f2" font-family="DM Serif Display, serif" font-size="13">Bank Al-Madinah</text>
+        <text x="450" y="391" text-anchor="middle" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5">peer0.sa · peer1.sa · ca.sa</text>
+        <text x="450" y="408" text-anchor="middle" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">HSM: IBM Crypto Express CCA</text>
+
+        <!-- Arrows peer↔orderer -->
+        <line x1="250" y1="103" x2="340" y2="185" stroke="#24a8ba" stroke-width="1.5" marker-end="url(#arr)" marker-start="url(#arr)"/>
+        <line x1="650" y1="103" x2="590" y2="185" stroke="#24a8ba" stroke-width="1.5" marker-end="url(#arr)" marker-start="url(#arr)"/>
+        <line x1="450" y1="335" x2="450" y2="275" stroke="#24a8ba" stroke-width="1.5" marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+        <!-- channel labels -->
+        <text x="268" y="148" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="8">eursar-corridor</text>
+        <text x="590" y="148" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="8">eursar-corridor</text>
+        <text x="465" y="315" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="8">eursar-corridor</text>
+
+        <!-- bilateral channels (dashed) -->
+        <path d="M 145 158 Q 450 38 755 158" fill="none" stroke="#3d5070" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="450" y="34" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">de-fr-bilateral (private)</text>
+        <path d="M 755 158 Q 810 270 555 352" fill="none" stroke="#3d5070" stroke-width="1" stroke-dasharray="4 4"/>
+        <path d="M 145 158 Q 90 270 345 352" fill="none" stroke="#3d5070" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <!-- Legend -->
+        <text x="42" y="446" fill="#24a8ba" font-family="JetBrains Mono, monospace" font-size="7.5">━━ Peer ↔ orderer (gossip + deliver)</text>
+        <text x="310" y="446" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7.5">- - - Bilateral channel (private)</text>
+      </svg>
+      <p class="diagram-caption">Fabric network topology: three organizations · five-node Raft ordering service · one corridor channel · three bilateral channels</p>
+    </div>
+
+    <p>World state is kept in CouchDB on each peer to permit rich JSON queries against payment metadata. Container images are pinned by sha256 digest and signed with cosign; chaincode is packaged as the lifecycle v2 external builder artefact and approved per the channel's lifecycle endorsement policy.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 3: IDENTITY ═══════════ -->
+<section id="identity">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_03">Section 03</p>
+    <h2 class="sec-title" data-i18n="t-identity__msp__and_the_cha">Identity, MSP, and the chain of trust</h2>
+    <p class="sec-lead">
+      Every actor on a Fabric network — peer, orderer, client, or chaincode caller — authenticates with an X.509 certificate issued by an organization's Membership Service Provider. Each bank operates an isolated Fabric CA whose root certificate is configured in the channel's MSP stanza. There is no cross-signed root: the consortium trusts each bank's CA explicitly, and revocation is propagated through periodic CRL updates committed by the channel administrators via the <code>UpdateConfig</code> transaction path.
+    </p>
+
+    <p>Within each bank, identities are partitioned by Organizational Unit: the <code>peer</code> OU for nodes, the <code>client</code> OU for the payment hub gateway, the <code>admin</code> OU for lifecycle operations, and a custom <code>treasury</code> OU that gates the <code>Mint</code> and <code>Redeem</code> functions of the token contract. Operators carry an additional <code>role=approver</code> attribute used by the dual-control logic in the chaincode.</p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th style="width:200px;">Identity class</th>
+            <th>OU / Attributes</th>
+            <th>Permitted actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">peer</td><td>OU=peer</td><td>Endorse, gossip, commit blocks</td></tr>
+          <tr><td class="lbl">orderer</td><td>OU=orderer</td><td>Sequence and cut blocks (Raft)</td></tr>
+          <tr><td class="lbl">treasury operator</td><td>OU=client, treasury=true, role=approver</td><td>Mint, Redeem; second signature on settlement window</td></tr>
+          <tr><td class="lbl">payment gateway</td><td>OU=client, gateway=true</td><td>Submit Transfer, query world state</td></tr>
+          <tr><td class="lbl">compliance officer</td><td>OU=client, compliance=true</td><td>Read private data collection (Travel Rule)</td></tr>
+          <tr><td class="lbl">auditor (regulator)</td><td>OU=client, audit=true, jurisdiction=DE/FR/SA</td><td>Read-only on the bank's namespace</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Private keys are generated and held in <strong>FIPS 140-2 Level 3 HSMs</strong> and presented to Fabric via the PKCS#11 BCCSP. Treasury operators authenticate via smart-card-backed certificates with a 12-hour validity, regenerated by an online enrolment service that consults the bank's identity-and-access-management directory before signing.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 4: CHANNELS ═══════════ -->
+<section id="channels">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_04">Section 04</p>
+    <h2 class="sec-title" data-i18n="t-channels__private_data_col">Channels, private data collections, and confidentiality boundaries</h2>
+    <p class="sec-lead">
+      Channels in Fabric are independent ledgers — each is a separate sequence of blocks ordered by the same orderer set but isolated at the gossip layer. We provision four channels: one shared corridor channel for all three organizations and three bilateral channels for nostro reconciliation between each pair of banks.
+    </p>
+
+    <p>The shared <code>eursar-corridor</code> channel carries the EUR/SAR token contract, the FX oracle contract, and the netting contract. The three bilateral channels — <code>de-fr-bilateral</code>, <code>fr-sa-bilateral</code>, and <code>de-sa-bilateral</code> — carry position reconciliation and bilateral repo traffic that should not be visible to the third party.</p>
+
+    <p>Even on the shared corridor channel, Travel Rule data and the underlying ISO 20022 message body never reach the third bank's ledger. We use a <strong>private data collection</strong> named <code>PDC_TR</code> whose policy restricts visibility to the originating and beneficiary organizations only. The hash of the private data is committed to the public channel ledger so the liquidity bank can verify integrity without seeing personal data.</p>
+
+<pre><span class="cm"># collections_config.json — registered at chaincode install</span>
+[
+  {
+    <span class="st">"name"</span>: <span class="st">"PDC_TR_DE_SA"</span>,
+    <span class="st">"policy"</span>: <span class="st">"OR('Org1MSP.member','Org3MSP.member')"</span>,
+    <span class="st">"requiredPeerCount"</span>: 1,
+    <span class="st">"maxPeerCount"</span>: 2,
+    <span class="st">"blockToLive"</span>: 1095,           <span class="cm"># ~3 years; AML retention minimum</span>
+    <span class="st">"memberOnlyRead"</span>: true,
+    <span class="st">"memberOnlyWrite"</span>: true,
+    <span class="st">"endorsementPolicy"</span>: {
+      <span class="st">"signaturePolicy"</span>: <span class="st">"AND('Org1MSP.peer','Org3MSP.peer')"</span>
+    }
+  }
+]</pre>
+
+    <p>The corridor channel's endorsement policy for the token contract is <code>AND(OutOf(2,'Org1MSP.peer','Org2MSP.peer','Org3MSP.peer'))</code>: any two of three banks must endorse a transfer. This is enforced by the <strong>Validation System Chaincode</strong> at commit time, after the orderer has cut the block but before the peers update world state.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 5: CHAINCODE ═══════════ -->
+<section id="chaincode">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_05">Section 05</p>
+    <h2 class="sec-title" data-i18n="t-go_chaincode__state_model">Go chaincode: state model, endorsement, and dual control</h2>
+    <p class="sec-lead">
+      Three chaincodes are deployed on the corridor channel: <code>cbm-token</code> implements per-currency commercial bank money tokens; <code>fx-oracle</code> publishes EUR/SAR mid prices signed by the liquidity provider; and <code>a2a-router</code> orchestrates the atomic delivery-versus-payment construct that ties a debit on one currency to a credit on the other. All three are written in Go against the <code>contract-api-go</code> v1 framework.
+    </p>
+
+<pre><span class="cm">// cbm-token/contract.go — relevant excerpts</span>
+
+<span class="kw">type</span> <span class="ty">TokenContract</span> <span class="kw">struct</span> { contractapi.Contract }
+
+<span class="kw">type</span> <span class="ty">Account</span> <span class="kw">struct</span> {
+    Owner    <span class="ty">string</span>  <span class="st">`json:"owner"`</span>     <span class="cm">// MSP-id::CN</span>
+    Currency <span class="ty">string</span>  <span class="st">`json:"ccy"`</span>       <span class="cm">// "EUR" | "SAR"</span>
+    Balance  <span class="ty">uint64</span>  <span class="st">`json:"bal"`</span>       <span class="cm">// minor units</span>
+    Frozen   <span class="ty">bool</span>    <span class="st">`json:"frozen"`</span>
+}
+
+<span class="kw">func</span> (t *<span class="ty">TokenContract</span>) <span class="ty">Transfer</span>(
+    ctx contractapi.TransactionContextInterface,
+    from, to, ccy <span class="ty">string</span>, amount <span class="ty">uint64</span>, ref <span class="ty">string</span>,
+) <span class="ty">error</span> {
+
+    <span class="cm">// 1. caller must own the debit account</span>
+    caller, _ := cid.GetID(ctx.GetClientIdentity())
+    <span class="kw">if</span> caller != from && !hasAttr(ctx, <span class="st">"treasury"</span>) {
+        <span class="kw">return</span> errors.New(<span class="st">"unauthorized debit"</span>)
+    }
+
+    <span class="cm">// 2. travel-rule witness must be present in transient map</span>
+    tMap, _ := ctx.GetStub().GetTransient()
+    trHash, ok := tMap[<span class="st">"travel_rule_hash"</span>]
+    <span class="kw">if</span> !ok { <span class="kw">return</span> errors.New(<span class="st">"missing travel-rule witness"</span>) }
+
+    <span class="cm">// 3. atomic debit/credit against world state</span>
+    src, _ := getAccount(ctx, from, ccy)
+    dst, _ := getAccount(ctx, to,   ccy)
+    <span class="kw">if</span> src.Frozen || dst.Frozen { <span class="kw">return</span> errors.New(<span class="st">"frozen"</span>) }
+    <span class="kw">if</span> src.Balance &lt; amount   { <span class="kw">return</span> errors.New(<span class="st">"insufficient"</span>) }
+    src.Balance -= amount; dst.Balance += amount
+    putAccount(ctx, src); putAccount(ctx, dst)
+
+    <span class="cm">// 4. emit event for off-chain payment hub</span>
+    ev := TransferEvent{From: from, To: to, Ccy: ccy, Amt: amount,
+        Ref: ref, TRHash: hex.EncodeToString(trHash)}
+    payload, _ := json.Marshal(ev)
+    <span class="kw">return</span> ctx.GetStub().SetEvent(<span class="st">"Transfer"</span>, payload)
+}</pre>
+
+    <p>The <code>a2a-router</code> chaincode composes a <strong>Transfer</strong> on the EUR token and a <strong>Transfer</strong> on the SAR token in a single proposal, both conditional on a fresh <code>fx-oracle</code> reading whose timestamp is within 90 seconds. Because Fabric processes each transaction atomically against the read-write set produced by endorsing peers, both legs either commit together or neither does — the multi-version concurrency control (MVCC) layer rejects the entire proposal if any read key has been written between simulation and commit.</p>
+
+    <div class="callout teal">
+      <p class="callout-label">Atomicity in Fabric is MVCC, not 2PC</p>
+      <p>Fabric does not run two-phase commit. Atomicity across both legs is achieved by collecting both writes into a single transaction's read-write set. If the orderer sequences a conflicting write before this transaction's block is committed, the validator marks the transaction as <code>MVCC_READ_CONFLICT</code> and discards both legs. The payment hub must resubmit. In practice, sub-second resubmission succeeds in &gt;99.7% of cases at the target throughput of 40 TPS per channel.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 6: TOKENS ═══════════ -->
+<section id="tokens">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_06">Section 06</p>
+    <h2 class="sec-title" data-i18n="t-token_model__account_based">Token model: account-based vs. UTXO via the Fabric Token SDK</h2>
+    <p class="sec-lead">
+      Fabric supports two practical token implementation patterns. The minimal account-based model keeps a single composite-key entry per <code>(owner,ccy)</code> pair in world state. It is simple and readable, but serializes all transfers from a given account, which becomes a contention bottleneck under load. For the corridor we use the <strong>Fabric Token SDK</strong> maintained by IBM Research, which implements a UTXO-style fungible token on top of Fabric.
+    </p>
+
+    <p>Each <code>EUR-CBM</code> note is an unspent output bound to its owner's identity by a Pedersen commitment; transfers consume one or more notes and produce new ones. The SDK supports two drivers: <code>fabtoken</code> (plaintext, suitable for consortium settings where amounts may be visible inside the channel) and <code>zkat</code> (zero-knowledge based on Idemix and bulletproofs, hiding amounts and owner identities from non-participants). We deploy the <code>fabtoken</code> driver on the corridor channel because the consortium has agreed that bilateral amounts are visible to all three members in exchange for simpler audit. The <code>zkat</code> driver is reserved for future expansion where additional banks join and amount confidentiality becomes commercially necessary.</p>
+
+    <div class="token-table-wrap">
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Account model</th>
+            <th>Token SDK (fabtoken)</th>
+            <th>Token SDK (zkat)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">state shape</td><td>balance per (owner, ccy)</td><td>set of UTXO notes</td><td>set of Pedersen-committed notes</td></tr>
+          <tr><td class="lbl">parallelism</td><td>serialized per account</td><td>parallel across notes</td><td>parallel across notes</td></tr>
+          <tr><td class="lbl">amount privacy</td><td>visible in world state</td><td>visible to all channel members</td><td>hidden; ZK-proven balance</td></tr>
+          <tr><td class="lbl">auditability</td><td>direct read</td><td>auditor view via Token SDK role</td><td>auditor view via selective disclosure</td></tr>
+          <tr><td class="lbl">deployed here?</td><td>No</td><td>Yes (corridor channel)</td><td>No (future expansion)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 7: LIFECYCLE ═══════════ -->
+<section id="lifecycle">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_07">Section 07</p>
+    <h2 class="sec-title" data-i18n="t-full_transaction_lifecycle">Full transaction lifecycle — 16 steps end-to-end</h2>
+    <p class="sec-lead">
+      A complete EUR→SAR cross-border payment from a Munich corporate client to a Riyadh beneficiary moves through 16 distinct steps across three Fabric organizations, the Raft ordering service, two RTGS systems, and two core banking integrations. The on-ledger portion completes in under one second under normal network conditions. Steps 15–16 involve off-ledger RTGS net settlement at end-of-day.
+    </p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <p class="step-phase">Initiation · 10:14:02.118 CET · Munich</p>
+          <h4>Customer instruction received by Bayerische Handelsbank</h4>
+          <p>The corporate payer submits a SEPA-instant-style instruction through Bayerische Handelsbank's online banking portal. The portal validates IBAN mod-97, BIC ALMDSARI, sanctions screen, and submits to the bank's payment hub as internal reference <code>PAY-IN-2026-04-21-887412</code>.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · Automated validation · ISO 20022 pacs.008 standard</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <p class="step-phase">Compliance · 10:14:02.244 CET</p>
+          <h4>Hub composes pacs.008 and Travel Rule witness</h4>
+          <p>The payment hub builds the ISO 20022 <code>pacs.008.001.10</code> message including the originator's name, address, and BIC, and the beneficiary's name, address, IBAN/account, and BIC. It hashes the message body with SHA-256 to produce the <em>travel-rule witness</em> that will be placed in the transient map — never landing on the public ledger.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · Travel Rule witness computed</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <p class="step-phase">FX Quote · 10:14:02.281 CET</p>
+          <h4>FX quote requested from oracle chaincode on Org2</h4>
+          <p>The hub sends an <code>EvaluateTransaction</code> to the <code>fx-oracle</code> chaincode requesting EUR/SAR. The oracle returns mid 4.0825 and ask 4.0833 (6 bp spread), signed by Org2's treasury identity and timestamped by the orderer's last block. The quote is valid for 90 seconds.</p>
+          <p class="step-timing">Timing: <span>0.5–2 seconds</span> · Oracle rate validity window: 90 seconds</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <p class="step-phase">Proposal Construction · 10:14:02.310 CET</p>
+          <h4>Atomic swap proposal assembled by the payment hub</h4>
+          <p>The hub uses Fabric Gateway to build a single proposal invoking <code>a2a-router:AtomicSwap</code> with both leg parameters and the FX quote. The Travel Rule hash is placed in the transient map so it is gossiped directly between Org1 and Org3 peers without entering the public block.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · AMQP point-to-point · travel-rule in transient map</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <p class="step-phase">Endorsement · 10:14:02.387 CET</p>
+          <h4>Proposal endorsed by Org1 and Org3 (2-of-3 policy)</h4>
+          <p>Gateway forwards to <code>peer0.de</code>, then to <code>peer0.sa</code>. Each peer simulates the chaincode against its local world state, produces a signed read-write set, and returns it. Org2's endorsement is fetched in parallel for resilience, though only two endorsements are required to satisfy the corridor policy.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · Parallel endorsement · 2-of-3 required</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">06</div>
+        <div class="step-body">
+          <p class="step-phase">Private Data · 10:14:02.388 CET (concurrent with 05)</p>
+          <h4>Travel Rule data written to private data collection</h4>
+          <p>During simulation, the chaincode writes the full pacs.008 body into <code>PDC_TR_DE_SA</code>. The private data is gossiped directly between Org1 and Org3 peers; only its SHA-256 hash enters the public block. Org2 sees only the hash, sufficient for nostro reconciliation without exposure to underlying party personal data.</p>
+          <p class="step-timing">Timing: <span>Concurrent with endorsement</span> · Bilateral gossip only</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">07</div>
+        <div class="step-body">
+          <p class="step-phase">Submission · 10:14:02.401 CET</p>
+          <h4>Transaction submitted to Raft ordering service</h4>
+          <p>Gateway packages the proposal plus collected endorsements and submits to the Raft orderer cluster via gRPC. The leader (currently <code>orderer1.fr</code>) appends to its log and replicates to the four followers; on quorum acknowledgment it schedules the entry for the next block.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · Quorum of 3 required for block entry</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">08</div>
+        <div class="step-body">
+          <p class="step-phase">Block Cut · 10:14:02.508 CET · Block 884,213</p>
+          <h4>Block cut and disseminated to all organization peers</h4>
+          <p><code>BatchTimeout=200ms</code> or <code>BatchSize=500</code> transactions — whichever is reached first. The block is signed by the Raft leader and gossiped to one peer per organization, which fan out to organizational peers via the Fabric gossip protocol.</p>
+          <p class="step-timing">Timing: <span>≤200ms batch window</span> · Gossip dissemination</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">09</div>
+        <div class="step-body">
+          <p class="step-phase">VSCC Validation · 10:14:02.531 CET</p>
+          <h4>Validation System Chaincode checks endorsements and MVCC</h4>
+          <p>Each peer runs VSCC against the block: signature check, endorsement-policy check (≥2-of-3 valid), and MVCC check on read key versions. The transaction passes; both legs of the atomic swap are marked <code>VALID</code>.</p>
+          <p class="step-timing">Timing: <span>&lt;50ms per block</span> · MVCC conflict check · 2-of-3 endorsement verified</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <p class="step-phase">World State Commit · 10:14:02.547 CET</p>
+          <h4>CouchDB world state updated atomically; both legs committed</h4>
+          <p>CouchDB world state is updated atomically: Org1 EUR balance −4,820,000.00, Org2 EUR balance +4,820,000.00, Org2 SAR balance −19,683,765.00, Org3 SAR balance +19,683,765.00. The block hash is written to the channel's levelDB ledger store. This is the moment of on-ledger finality — irrevocable.</p>
+          <p class="step-timing">Timing: <span>&lt;20ms after VSCC</span> · Atomic world-state update · IRREVOCABLE</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">11</div>
+        <div class="step-body">
+          <p class="step-phase">Events · 10:14:02.549 CET</p>
+          <h4>Chaincode Transfer events emitted to payment hubs</h4>
+          <p>Each peer fires the <code>Transfer</code> events to its local payment hub via the block-listener API. Hubs match the event to the pending instruction by reference and update internal state from <em>SUBMITTED</em> to <em>SETTLED-ON-LEDGER</em>.</p>
+          <p class="step-timing">Timing: <span>Automated</span> · Block-listener API · Reference matching</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">12</div>
+        <div class="step-body">
+          <p class="step-phase">Core Banking Debit · 10:14:02.612 CET · Munich</p>
+          <h4>Bayerische Handelsbank debits the corporate's EUR current account</h4>
+          <p>Core banking debits the corporate's EUR current account by 4,820,000.00 against an internal suspense account that mirrors the on-ledger token holdings. Booking carries reference <code>PAY-IN-2026-04-21-887412 / FBR-884213</code>.</p>
+          <p class="step-timing">Timing: <span>Automated via event</span> · Straight-through processing</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">13</div>
+        <div class="step-body">
+          <p class="step-phase">Core Banking Credit · 10:14:02.681 CET · Riyadh</p>
+          <h4>Bank Al-Madinah credits the beneficiary's SAR account</h4>
+          <p>Bank Al-Madinah's core banking credits the beneficiary's SAR account by 19,683,765.00. The intra-day position against Banque Méridienne is reduced by the same amount in the nostro reconciliation tab. A SARIE-formatted credit advice is pushed to the beneficiary's online banking and SMS channels.</p>
+          <p class="step-timing">Timing: <span>Automated via event</span> · Beneficiary notified in real time</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">14</div>
+        <div class="step-body">
+          <p class="step-phase">Audit Trail · Both Orgs</p>
+          <h4>Immutable ledger record created; regulatory reporting feeds generated</h4>
+          <p>Both Org1 and Org3 now have an immutable, timestamped, cryptographically signed record in their ledger stores. The Travel Rule pacs.008 is preserved in PDC_TR_DE_SA with a 3-year retention policy. Compliance modules generate BaFin/ACPR and SAMA reporting records automatically.</p>
+          <p class="step-timing">Timing: <span>Automated</span> · Immutable from block 884,213 forward</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">15</div>
+        <div class="step-body">
+          <p class="step-phase">End-of-Window Netting · 17:00:00 CET</p>
+          <h4>Netting chaincode aggregates all corridor flows for the day</h4>
+          <p>The <code>netting</code> chaincode aggregates all corridor flows since the last cycle and produces a triangular net position per pair. For 21 April 2026: Org1 owes Org2 EUR 12,440,118 net; Org2 owes Org3 SAR 8,206,040 net. Net amounts are submitted to TARGET2 and SARIE respectively.</p>
+          <p class="step-timing">Timing: <span>17:00 CET daily</span> · Multilateral netting</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">16</div>
+        <div class="step-body">
+          <p class="step-phase">RTGS Settlement · 17:14 CET / 18:14 AST</p>
+          <h4>Net positions settled in central bank money; on-ledger tokens burned</h4>
+          <p>Net positions are paid through TARGET2 (EUR leg) and SARIE (SAR leg) in central bank money. Once SAMA and Bundesbank confirmations are received, each hub submits a coordinated <code>Burn</code> transaction on-chain, removing the EUR-CBM and SAR-CBM tokens from world state and restoring the per-bank token issuance to its net opening position.</p>
+          <p class="step-timing">Timing: <span>Post-RTGS confirmation</span> · Tokens burned · Cycle complete</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 8: CONSENSUS ═══════════ -->
+<section id="consensus">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_08">Section 08</p>
+    <h2 class="sec-title" data-i18n="t-ordering_and_consensus__ra">Ordering and consensus: Raft today, SmartBFT tomorrow</h2>
+    <p class="sec-lead">
+      The corridor uses the standard etcd/Raft ordering service that ships with Fabric 2.5. Raft is a crash-fault-tolerant protocol: with five orderer nodes, the cluster tolerates two simultaneous node failures and continues to make progress as long as three nodes remain reachable. It does not tolerate Byzantine behaviour — a malicious orderer could in principle withhold or reorder transactions within the batch timeout window, though it cannot forge endorsements or alter committed state.
+    </p>
+
+    <p>To mitigate this, orderers are physically distributed across three bank-operated sites (Munich, Paris, Riyadh) and two technically independent operators (a Frankfurt colocation facility and a Bahrain regional data centre). No single jurisdiction or operator can unilaterally censor the channel. Orderer logs are mirrored to immutable WORM storage at each site for after-the-fact audit.</p>
+
+    <p>Fabric 3.x introduces a <strong>SmartBFT</strong> consensus plug-in (SBFT-CHS), which provides full Byzantine fault tolerance at the orderer layer. The consortium has agreed an upgrade path: once Fabric 3.x reaches IBM enterprise support GA and a six-month parallel-run window has been completed on a staging channel, the corridor will migrate to SmartBFT. In the interim, Raft is acceptable because the threat model assumes Byzantine endorsing peers, not Byzantine orderers — endorsement by the 2-of-3 bank policy is the cryptographic anchor.</p>
+
+    <div class="callout amber">
+      <p class="callout-label">Caveat: Raft assumes honest orderers</p>
+      <p>A coordinated take-over of Raft leadership could in principle censor transactions or reorder them within the BatchTimeout window. The bank consortium mitigates this through (a) jurisdictional diversity of orderer operators, (b) cryptographic chain-of-custody on orderer logs, and (c) a hot-swap procedure documented in the operations runbook that allows a degraded cluster to be reconstituted from any majority subset within 30 minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 9: ISO 20022 ═══════════ -->
+<section id="iso20022">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_09">Section 09</p>
+    <h2 class="sec-title" data-i18n="t-embedding_iso_20022_pacs_0">Embedding ISO 20022 pacs.008 in chaincode state</h2>
+    <p class="sec-lead">
+      The corridor speaks ISO 20022 internally — both sides are migrating their cross-border traffic to the MX standard ahead of SWIFT's MT discontinuation milestones. The full <code>pacs.008.001.10</code> message is written into the private data collection so that compliance and auditors at the originating and beneficiary banks can reconstruct the regulated payment context, while the public corridor ledger stores only the SHA-256 hash for integrity-witnessing.
+    </p>
+
+<pre><span class="cm">&lt;!-- pacs.008.001.10 — abbreviated --&gt;</span>
+&lt;FIToFICstmrCdtTrf&gt;
+  &lt;GrpHdr&gt;
+    &lt;MsgId&gt;BHDLDE2M-20260421-887412&lt;/MsgId&gt;
+    &lt;CreDtTm&gt;2026-04-21T10:14:02.244+02:00&lt;/CreDtTm&gt;
+    &lt;NbOfTxs&gt;1&lt;/NbOfTxs&gt;
+    &lt;SttlmInf&gt;&lt;SttlmMtd&gt;CLRG&lt;/SttlmMtd&gt;
+      &lt;ClrSys&gt;&lt;Prtry&gt;FABRIC-EURSAR-CORRIDOR&lt;/Prtry&gt;&lt;/ClrSys&gt;
+    &lt;/SttlmInf&gt;
+  &lt;/GrpHdr&gt;
+  &lt;CdtTrfTxInf&gt;
+    &lt;PmtId&gt;&lt;EndToEndId&gt;PAY-IN-2026-04-21-887412&lt;/EndToEndId&gt;
+            &lt;UETR&gt;5e9c4e8a-2f1b-4b3a-9d0e-1c8f4a7b6d52&lt;/UETR&gt;&lt;/PmtId&gt;
+    &lt;IntrBkSttlmAmt Ccy=<span class="st">"EUR"</span>&gt;4820000.00&lt;/IntrBkSttlmAmt&gt;
+    &lt;ChrgBr&gt;SHAR&lt;/ChrgBr&gt;
+    &lt;Dbtr&gt;&lt;Nm&gt;Präzision Werkzeug GmbH&lt;/Nm&gt;
+          &lt;PstlAdr&gt;&lt;Ctry&gt;DE&lt;/Ctry&gt;&lt;/PstlAdr&gt;&lt;/Dbtr&gt;
+    &lt;DbtrAcct&gt;&lt;Id&gt;&lt;IBAN&gt;DE89370400440532013000&lt;/IBAN&gt;&lt;/Id&gt;&lt;/DbtrAcct&gt;
+    &lt;DbtrAgt&gt;&lt;FinInstnId&gt;&lt;BICFI&gt;BHDLDE2M&lt;/BICFI&gt;&lt;/FinInstnId&gt;&lt;/DbtrAgt&gt;
+    &lt;CdtrAgt&gt;&lt;FinInstnId&gt;&lt;BICFI&gt;ALMDSARI&lt;/BICFI&gt;&lt;/FinInstnId&gt;&lt;/CdtrAgt&gt;
+    &lt;Cdtr&gt;&lt;Nm&gt;Saudi Water Authority&lt;/Nm&gt;
+          &lt;PstlAdr&gt;&lt;Ctry&gt;SA&lt;/Ctry&gt;&lt;/PstlAdr&gt;&lt;/Cdtr&gt;
+    &lt;CdtrAcct&gt;&lt;Id&gt;&lt;Othr&gt;&lt;Id&gt;SA0380000000608010167519&lt;/Id&gt;&lt;/Othr&gt;&lt;/Id&gt;&lt;/CdtrAcct&gt;
+    &lt;RmtInf&gt;&lt;Ustrd&gt;Desalination plant — milestone 3 of 7&lt;/Ustrd&gt;&lt;/RmtInf&gt;
+  &lt;/CdtTrfTxInf&gt;
+&lt;/FIToFICstmrCdtTrf&gt;</pre>
+
+    <p>The hub canonicalises the XML per <em>W3C Canonical XML 1.1</em>, hashes it with SHA-256, and that 32-byte hash is what the chaincode persists on the public ledger as the <code>trHash</code> field of the transfer event. Any subsequent dispute can be resolved by replaying the private data from either bank's PDC and re-canonicalising — a hash mismatch flags tampering.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 10: KYC/AML ═══════════ -->
+<section id="kyc">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_10">Section 10</p>
+    <h2 class="sec-title" data-i18n="t-kyc__aml__sanctions__and_t">KYC, AML, sanctions, and the FATF Travel Rule</h2>
+    <p class="sec-lead">
+      Each bank performs KYC and CDD on its own customer at onboarding under its home regime: BaFin GwG for Germany, ACPR/AMF for France, and SAMA AML/CFT Rules for Saudi Arabia. The corridor ledger does not store customer identity directly — identity remains in each bank's internal KYC vault. What the ledger guarantees is that an authenticated bank gateway, holding a valid MSP identity, has attested at the moment of submission that the underlying customer has been screened.
+    </p>
+
+    <p>The FATF Travel Rule (Recommendation 16, transposed into the EU's <strong>Transfer of Funds Regulation</strong> 2023/1113 and the SAMA AML/CFT Rules Article 17) requires the originator's name, account, address, and identifier, plus the beneficiary's name and account, to travel with the payment. We satisfy this by storing the full pacs.008 in the bilateral private data collection between originator and beneficiary banks. The liquidity provider (Org2) sees only the public block and the hash — sufficient for nostro reconciliation without unnecessary exposure to the underlying parties' personal data.</p>
+
+    <p>Sanctions screening is performed by each bank's gateway against its own list (EU Consolidated List, OFAC SDN where applicable, UN Security Council list, SAMA's domestic list). The screening result is asserted in the transient map as a signed JSON Web Token whose subject is the customer's hashed identifier. The chaincode does not validate the JWT contents — that would require sharing keys across the consortium — but it rejects any transfer whose transient map lacks the witness, and the witness is preserved in the PDC for audit.</p>
+
+    <div class="callout teal">
+      <p class="callout-label">AML false-positive reduction with ISO 20022</p>
+      <p>The structured LEI + structured name in pacs.008 allows sanctions screening against legal entity registries rather than free-text name fields. Industry studies document 30–50% false-positive reduction in structured-data environments versus legacy MT formats — a direct operational cost saving for each bank's compliance function, and a significant reduction in payment delays caused by manual review queues.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 11: REGULATION ═══════════ -->
+<section id="regulation">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_11">Section 11</p>
+    <h2 class="sec-title" data-i18n="t-regulatory_framing__europe">Regulatory framing: European Union and the Kingdom of Saudi Arabia</h2>
+    <p class="sec-lead">
+      The corridor operates across two distinct regulatory jurisdictions. The EU side is governed by the consolidated CRR/CRD framework plus the MiCA, DORA, and TFR regulations. The Saudi side is governed by SAMA's licensing and AML/CFT framework. Neither side currently mandates daily on-ledger reporting, but each bank's auditor identity has read-only access to the corridor channel and to the bank's bilateral PDC.
+    </p>
+
+    <div class="reg-grid">
+      <div class="reg-cell">
+        <p class="reg-header">European Union</p>
+        <h4>BaFin, ACPR, and the EU Regulatory Stack</h4>
+        <ul class="reg-list">
+          <li><strong>MiCA (Reg. 2023/1114)</strong> — does not apply to the commercial-bank-money tokens used here, which are explicitly out-of-scope as deposits per Art. 2(4)(a). It would apply if the bank were to issue a retail e-money token (EMT).</li>
+          <li><strong>DORA (Reg. 2022/2554)</strong> — applies in full to the Fabric stack as ICT infrastructure. Each bank enters its Fabric node in its register of ICT third-party providers; IBM as platform vendor signs the DORA-compliant contractual addendum.</li>
+          <li><strong>TFR (Reg. 2023/1113)</strong> — Travel Rule, satisfied via the PDC_TR private data collection mechanism described in §10.</li>
+          <li><strong>BaFin (Germany)</strong> — supervises Bayerische Handelsbank under the KWG; tokenisation activity is notified under §32 KWG and the BaFin guidance note on DLT-based payment infrastructure.</li>
+          <li><strong>ACPR (France)</strong> — supervises Banque Méridienne. Approval obtained for the corridor as a service ancillary to credit institution activity under Art. L.311-2 of the CMF.</li>
+          <li><strong>EBA tokenised deposits report</strong> — EBA/REP/2024/24 confirms that bank-issued deposit tokens (non-bearer form) are regulated under existing banking law (CRD/CRR) rather than MiCA Title III, which is the key classification that makes EUR-CBM token issuance viable without MiCA authorization.</li>
+        </ul>
+      </div>
+
+      <div class="reg-cell">
+        <p class="reg-header">Kingdom of Saudi Arabia</p>
+        <h4>SAMA Framework and the GCC Digital Finance Context</h4>
+        <ul class="reg-list">
+          <li><strong>SAMA Rules for Bank Account Opening (2023)</strong> — Bank Al-Madinah's customer onboarding follows the prescribed CDD and beneficial ownership standards.</li>
+          <li><strong>SAMA Payment Services Provider Regulations</strong> — the corridor's role of moving commercial bank money on a permissioned ledger is treated as ancillary to licensed banking activity rather than a stand-alone PSP service.</li>
+          <li><strong>SAMA AML/CFT Rules</strong> — three-year retention of the PDC contents matches the statutory minimum; Travel Rule obligations satisfied via bilateral PDC architecture.</li>
+          <li><strong>SAMA Open Banking Framework</strong> — not invoked directly for this corridor, but the gateway's external API surface is built on the same OAuth 2.0 / FAPI 2.0 patterns to ease future integration.</li>
+          <li><strong>Project Aber precedent (SAMA + CBUAE, 2020)</strong> — the joint SAMA-CBUAE wholesale CBDC pilot demonstrated DLT-settled cross-border payments within the GCC and informs the SAMA supervisory stance on permissioned ledgers as a recognised and viable settlement infrastructure model.</li>
+          <li><strong>SARIE integration</strong> — Bank Al-Madinah's connection to the Saudi Arabian Riyal Interbank Express (SARIE, operated by SAMA) provides the central-bank-money settlement leg for end-of-day SAR netting.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 12: SETTLEMENT ═══════════ -->
+<section id="settlement">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_12">Section 12</p>
+    <h2 class="sec-title" data-i18n="t-net_settlement_against_tar">Net settlement against TARGET2 and SARIE</h2>
+    <p class="sec-lead">
+      On-ledger transfers move <em>commercial bank money tokens</em>: a liability of the issuing bank denominated in fiat. They are not <em>final</em> in the legal sense until the corresponding central-bank-money settlement has occurred between the banks. The corridor flattens this through end-of-day net settlement against TARGET2 for the EUR leg and SARIE for the SAR leg.
+    </p>
+
+    <p>At 17:00 CET the netting chaincode produces a multilateral net position per currency per bank. For 21 April 2026, after netting all corridor flows:</p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>Pair</th>
+            <th>Currency</th>
+            <th>Net direction</th>
+            <th>Net amount</th>
+            <th>Settlement venue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lbl">Org1 → Org2</td><td>EUR</td><td>Org1 pays Org2</td><td>12,440,118.42</td><td>TARGET2</td></tr>
+          <tr><td class="lbl">Org2 → Org3</td><td>SAR</td><td>Org2 pays Org3</td><td>8,206,040.05</td><td>SARIE</td></tr>
+          <tr><td class="lbl">Org3 → Org1</td><td>EUR</td><td>Org3 pays Org1</td><td>1,217,330.18</td><td>TARGET2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>EUR leg:</strong> Bayerische Handelsbank submits an MT 202 / pacs.009 to the TARGET2-Bundesbank component for credit to Banque Méridienne's TARGET2 PM account. Settlement is final on the books of the Eurosystem at 17:14 CET — a direct claim on the ECB itself, the highest-quality settlement asset available.</p>
+
+    <p><strong>SAR leg:</strong> Banque Méridienne instructs its Riyadh nostro provider to settle through SARIE — the Saudi Arabian Riyal Interbank Express, operated by SAMA — for credit to Bank Al-Madinah's SAMA settlement account. Final at 18:14 AST (15:14 UTC).</p>
+
+    <p>Once SAMA and Bundesbank confirmations are received, each hub submits a <code>Burn</code> proposal to the corridor: the EUR-CBM and SAR-CBM tokens corresponding to the net amounts settled are removed from world state, restoring the per-bank token issuance to its net opening position. The cycle then begins again at 17:00:01 CET.</p>
+
+    <div class="callout gold">
+      <p class="callout-label">Why net settlement and not gross</p>
+      <p>Gross on-RTGS settlement of every individual transfer would defeat the purpose of the corridor: SARIE and TARGET2 fees, plus the timing mismatch between European and Saudi RTGS operating hours, would make small payments uneconomic. Net settlement preserves the throughput and finality benefits of the on-ledger token movement while reducing the number of central-bank transactions to one per bank per currency per day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 13: RISKS ═══════════ -->
+<section id="risks">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_13">Section 13</p>
+    <h2 class="sec-title" data-i18n="t-operational_risks_and_what">Operational risks and what we have done about them</h2>
+    <p class="sec-lead">
+      Any production deployment of a permissioned Fabric corridor in a regulated cross-border context faces a set of well-understood technical and governance risks. The following are the six most material risks for this architecture, together with their mitigations.
+    </p>
+
+    <div class="risk-grid">
+      <div class="risk-cell">
+        <h4>Orderer compromise</h4>
+        <p>A compromised majority of orderer nodes could censor transactions within the BatchTimeout window. Mitigation: jurisdictional diversity across five orderer nodes, WORM-mirrored orderer logs, and scheduled migration to SmartBFT in Fabric 3.x when IBM enterprise support reaches GA.</p>
+      </div>
+      <div class="risk-cell">
+        <h4>HSM key compromise</h4>
+        <p>An attacker holding a treasury HSM credential could mint or burn unbacked tokens. Mitigation: dual-control endorsement policy (two approvers required), 12-hour treasury cert validity, real-time issuance cap monitored by an off-chain reconciliation service against core banking systems.</p>
+      </div>
+      <div class="risk-cell">
+        <h4>FX oracle staleness</h4>
+        <p>If the oracle stops publishing, atomic swaps fail; if it publishes wrong prices, the liquidity provider loses or wins value. Mitigation: chaincode rejects quotes &gt;90 seconds old; a circuit-breaker disables atomic-swap if oracle drift exceeds 25 bp from the ECB reference rate.</p>
+      </div>
+      <div class="risk-cell">
+        <h4>MVCC contention</h4>
+        <p>High throughput against the same world-state keys causes MVCC_READ_CONFLICT rejections. Mitigation: the UTXO-style Fabric Token SDK distributes load across multiple token notes, eliminating the single-account contention bottleneck present in the simpler account-based model.</p>
+      </div>
+      <div class="risk-cell">
+        <h4>Settlement failure</h4>
+        <p>If a bank's RTGS leg fails to settle by cycle close, the Burn transaction is not submitted; the unburned tokens remain on-ledger as a visible obligation. Threshold limits per bank prevent unbounded build-up; the netting cycle for the following day absorbs the carry.</p>
+      </div>
+      <div class="risk-cell">
+        <h4>Chaincode upgrade hazard</h4>
+        <p>Lifecycle v2 requires per-organization approval before commit. We run a 30-day soak on a sandbox channel before any chaincode upgrade proposal is approved, and the upgrade is gated on a notarised release attestation signed by the consortium technical committee.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ REFERENCES ═══════════ -->
+<section id="references">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-references">References</p>
+    <h2 class="sec-title" data-i18n="t-references__standards__and">References, standards, and further reading</h2>
+  </div>
+</section>
+
+<div class="footnotes">
+  <div class="container">
+    <h3>References and Source Notes</h3>
+    <ol>
+      <li id="fn1"><strong>Hyperledger Fabric Documentation, v2.5 LTS:</strong> Architecture, Channels, MSP, Private Data, Token SDK — <a href="https://hyperledger-fabric.readthedocs.io/en/release-2.5/" target="_blank" rel="noopener">hyperledger-fabric.readthedocs.io</a>.</li>
+      <li id="fn2"><strong>Androulaki, E. et al. (2018).</strong> <em>Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains.</em> EuroSys '18. Foundational architecture paper describing channels, MSP, and the ordering service design.</li>
+      <li id="fn3"><strong>IBM Research — Fabric Token SDK:</strong> <em>A Framework for Tokenization on Hyperledger Fabric.</em> Describes the fabtoken and zkat drivers, UTXO model, and Idemix-based privacy guarantees. GitHub: <a href="https://github.com/hyperledger-labs/fabric-token-sdk" target="_blank" rel="noopener">github.com/hyperledger-labs/fabric-token-sdk</a>.</li>
+      <li id="fn4"><strong>Ongaro &amp; Ousterhout (2014).</strong> <em>In Search of an Understandable Consensus Algorithm (Raft).</em> USENIX ATC. The foundational paper for the etcd/Raft consensus used in Fabric 2.x ordering.</li>
+      <li id="fn5"><strong>ISO 20022:</strong> <em>Financial services – Universal financial industry message scheme</em>; pacs.008.001.10 schema. <a href="https://www.iso20022.org/" target="_blank" rel="noopener">iso20022.org</a>.</li>
+      <li id="fn6"><strong>Regulation (EU) 2023/1113 — Transfer of Funds Regulation (recast).</strong> Transposes FATF Recommendation 16 (Travel Rule) into EU law; in force December 2024.</li>
+      <li id="fn7"><strong>Regulation (EU) 2022/2554 — Digital Operational Resilience Act (DORA).</strong> Applies to the Fabric stack as critical ICT infrastructure; in force January 2025.</li>
+      <li id="fn8"><strong>Regulation (EU) 2023/1114 — Markets in Crypto-Assets (MiCA).</strong> Art. 2(4)(a) explicitly excludes deposits; the EUR-CBM tokens described here fall outside MiCA scope.</li>
+      <li id="fn9"><strong>EBA Report on Tokenised Deposits, EBA/REP/2024/24 (December 2024).</strong> Confirms non-bearer tokenised deposits remain regulated under CRD/CRR rather than MiCA Title III.</li>
+      <li id="fn10"><strong>SAMA AML/CFT Rules (latest revision)</strong> and <strong>SAMA Payment Services Provider Regulations.</strong> Govern Bank Al-Madinah's obligations on the Saudi side of the corridor. <a href="https://www.sama.gov.sa/en-US/Pages/sama-rules.aspx" target="_blank" rel="noopener">sama.gov.sa</a>.</li>
+      <li id="fn11"><strong>SAMA &amp; CBUAE (2020). Project Aber:</strong> <em>A Joint Digital Currency and Infrastructure Initiative.</em> Confirmed technical viability of Corda/DLT for cross-border dual-currency settlement; the supervisory precedent directly informs SAMA's stance on permissioned ledger deployments by licensed banks.</li>
+      <li id="fn12"><strong>FATF Recommendation 16 — Wire Transfers.</strong> The Travel Rule requiring originator and beneficiary information to accompany wire transfers; transposed variously into EU TFR and SAMA AML/CFT Rules.</li>
+      <li id="fn13"><strong>SWIFT — ISO 20022 Migration for Cross-Border Payments and Reporting (CBPR+).</strong> Documents the structured-data AML false-positive reduction ranges; see also Accenture (2023) <em>Transforming Financial Crime Compliance with AI and ISO 20022.</em></li>
+      <li id="fn14"><strong>BIS CPMI, "PvP arrangements and the case for greater adoption" (2022).</strong> Documents that roughly one-third of global FX transactions still settle without PvP, representing approximately $2.2 trillion in daily settlement value exposed to principal risk. <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener">bis.org/cpmi/publ/d208.htm</a>.</li>
+      <li id="fn15"><strong>BaFin Merkblatt zu Hinweisen zum Tatbestand des Kryptowertpapiergeschäfts (2024).</strong> BaFin guidance on DLT-based financial infrastructure; Bayerische Handelsbank's tokenisation activity is notified under §32 KWG pursuant to this guidance.</li>
+    </ol>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {"hero-h1": "A2A tokenization on Fabric: two European banks, one Saudi bank", "hero-sub": "A concrete reference architecture for cross-border, account-to-account payment tokenization between two European credit institutions and one Saudi commercial bank, executed on a permissioned Hyperledg", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "kicker-section_13": "Section 13", "kicker-references": "References", "t-a_three_bank_corridor_betw": "A three-bank corridor between the euro area and the Kingdom of Saudi Arabia", "t-network_topology__organiza": "Network topology: organizations, peers, orderers, certificate authorities", "t-identity__msp__and_the_cha": "Identity, MSP, and the chain of trust", "t-channels__private_data_col": "Channels, private data collections, and confidentiality boundaries", "t-go_chaincode__state_model": "Go chaincode: state model, endorsement, and dual control", "t-token_model__account_based": "Token model: account-based vs. UTXO via the Fabric Token SDK", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-ordering_and_consensus__ra": "Ordering and consensus: Raft today, SmartBFT tomorrow", "t-embedding_iso_20022_pacs_0": "Embedding ISO 20022 pacs.008 in chaincode state", "t-kyc__aml__sanctions__and_t": "KYC, AML, sanctions, and the FATF Travel Rule", "t-regulatory_framing__europe": "Regulatory framing: European Union and the Kingdom of Saudi Arabia", "t-net_settlement_against_tar": "Net settlement against TARGET2 and SARIE", "t-operational_risks_and_what": "Operational risks and what we have done about them", "t-references__standards__and": "References, standards, and further reading"},
+  es: {"hero-h1": "Tokenización A2A en Fabric: dos bancos europeos, un banco saudí", "hero-sub": "Arquitectura de referencia para tokenización de pagos transfronterizos entre dos instituciones europeas y un banco comercial saudí en Hyperledger Fabric.", "kicker-section_01": "Sección 01", "kicker-section_02": "Sección 02", "kicker-section_03": "Sección 03", "kicker-section_04": "Sección 04", "kicker-section_05": "Sección 05", "kicker-section_06": "Sección 06", "kicker-section_07": "Sección 07", "kicker-section_08": "Sección 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "kicker-section_13": "Section 13", "kicker-references": "References", "t-a_three_bank_corridor_betw": "A three-bank corridor between the euro area and the Kingdom of Saudi Arabia", "t-network_topology__organiza": "Network topology: organizations, peers, orderers, certificate authorities", "t-identity__msp__and_the_cha": "Identity, MSP, and the chain of trust", "t-channels__private_data_col": "Channels, private data collections, and confidentiality boundaries", "t-go_chaincode__state_model": "Go chaincode: state model, endorsement, and dual control", "t-token_model__account_based": "Token model: account-based vs. UTXO via the Fabric Token SDK", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-ordering_and_consensus__ra": "Ordering and consensus: Raft today, SmartBFT tomorrow", "t-embedding_iso_20022_pacs_0": "Embedding ISO 20022 pacs.008 in chaincode state", "t-kyc__aml__sanctions__and_t": "KYC, AML, sanctions, and the FATF Travel Rule", "t-regulatory_framing__europe": "Regulatory framing: European Union and the Kingdom of Saudi Arabia", "t-net_settlement_against_tar": "Net settlement against TARGET2 and SARIE", "t-operational_risks_and_what": "Operational risks and what we have done about them", "t-references__standards__and": "References, standards, and further reading"},
+  fr: {"hero-h1": "Tokenisation A2A sur Fabric : deux banques européennes, une banque saoudienne", "hero-sub": "Architecture de référence pour la tokenisation des paiements transfrontaliers entre deux institutions européennes et une banque commerciale saoudienne sur Hyperledger Fabric.", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "kicker-section_13": "Section 13", "kicker-references": "References", "t-a_three_bank_corridor_betw": "A three-bank corridor between the euro area and the Kingdom of Saudi Arabia", "t-network_topology__organiza": "Network topology: organizations, peers, orderers, certificate authorities", "t-identity__msp__and_the_cha": "Identity, MSP, and the chain of trust", "t-channels__private_data_col": "Channels, private data collections, and confidentiality boundaries", "t-go_chaincode__state_model": "Go chaincode: state model, endorsement, and dual control", "t-token_model__account_based": "Token model: account-based vs. UTXO via the Fabric Token SDK", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-ordering_and_consensus__ra": "Ordering and consensus: Raft today, SmartBFT tomorrow", "t-embedding_iso_20022_pacs_0": "Embedding ISO 20022 pacs.008 in chaincode state", "t-kyc__aml__sanctions__and_t": "KYC, AML, sanctions, and the FATF Travel Rule", "t-regulatory_framing__europe": "Regulatory framing: European Union and the Kingdom of Saudi Arabia", "t-net_settlement_against_tar": "Net settlement against TARGET2 and SARIE", "t-operational_risks_and_what": "Operational risks and what we have done about them", "t-references__standards__and": "References, standards, and further reading"},
+  ar: {"hero-h1": "التوكينزيشن A2A على Fabric: بنكان أوروبيان وبنك سعودي", "hero-sub": "هندسة مرجعية لتوكينزيشن المدفوعات العابرة للحدود بين مؤسستين أوروبيتين وبنك تجاري سعودي على Hyperledger Fabric.", "kicker-section_01": "القسم 01", "kicker-section_02": "القسم 02", "kicker-section_03": "القسم 03", "kicker-section_04": "القسم 04", "kicker-section_05": "القسم 05", "kicker-section_06": "القسم 06", "kicker-section_07": "القسم 07", "kicker-section_08": "القسم 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "kicker-section_13": "Section 13", "kicker-references": "References", "t-a_three_bank_corridor_betw": "A three-bank corridor between the euro area and the Kingdom of Saudi Arabia", "t-network_topology__organiza": "Network topology: organizations, peers, orderers, certificate authorities", "t-identity__msp__and_the_cha": "Identity, MSP, and the chain of trust", "t-channels__private_data_col": "Channels, private data collections, and confidentiality boundaries", "t-go_chaincode__state_model": "Go chaincode: state model, endorsement, and dual control", "t-token_model__account_based": "Token model: account-based vs. UTXO via the Fabric Token SDK", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-ordering_and_consensus__ra": "Ordering and consensus: Raft today, SmartBFT tomorrow", "t-embedding_iso_20022_pacs_0": "Embedding ISO 20022 pacs.008 in chaincode state", "t-kyc__aml__sanctions__and_t": "KYC, AML, sanctions, and the FATF Travel Rule", "t-regulatory_framing__europe": "Regulatory framing: European Union and the Kingdom of Saudi Arabia", "t-net_settlement_against_tar": "Net settlement against TARGET2 and SARIE", "t-operational_risks_and_what": "Operational risks and what we have done about them", "t-references__standards__and": "References, standards, and further reading"},
+  pt: {"hero-h1": "Tokenização A2A no Fabric: dois bancos europeus, um banco saudita", "hero-sub": "Arquitetura de referência para tokenização de pagamentos transfronteiriços entre duas instituições europeias e um banco comercial saudita no Hyperledger Fabric.", "kicker-section_01": "Seção 01", "kicker-section_02": "Seção 02", "kicker-section_03": "Seção 03", "kicker-section_04": "Seção 04", "kicker-section_05": "Seção 05", "kicker-section_06": "Seção 06", "kicker-section_07": "Seção 07", "kicker-section_08": "Seção 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "kicker-section_13": "Section 13", "kicker-references": "References", "t-a_three_bank_corridor_betw": "A three-bank corridor between the euro area and the Kingdom of Saudi Arabia", "t-network_topology__organiza": "Network topology: organizations, peers, orderers, certificate authorities", "t-identity__msp__and_the_cha": "Identity, MSP, and the chain of trust", "t-channels__private_data_col": "Channels, private data collections, and confidentiality boundaries", "t-go_chaincode__state_model": "Go chaincode: state model, endorsement, and dual control", "t-token_model__account_based": "Token model: account-based vs. UTXO via the Fabric Token SDK", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-ordering_and_consensus__ra": "Ordering and consensus: Raft today, SmartBFT tomorrow", "t-embedding_iso_20022_pacs_0": "Embedding ISO 20022 pacs.008 in chaincode state", "t-kyc__aml__sanctions__and_t": "KYC, AML, sanctions, and the FATF Travel Rule", "t-regulatory_framing__europe": "Regulatory framing: European Union and the Kingdom of Saudi Arabia", "t-net_settlement_against_tar": "Net settlement against TARGET2 and SARIE", "t-operational_risks_and_what": "Operational risks and what we have done about them", "t-references__standards__and": "References, standards, and further reading"},
+  zh: {"hero-h1": "基于Fabric的A2A代币化：两家欧洲银行，一家沙特银行", "hero-sub": "两家欧洲信用机构与一家沙特商业银行间跨境账户间支付代币化的参考架构，基于许可型Hyperledger Fabric实现。", "kicker-section_01": "第01节", "kicker-section_02": "第02节", "kicker-section_03": "第03节", "kicker-section_04": "第04节", "kicker-section_05": "第05节", "kicker-section_06": "第06节", "kicker-section_07": "第07节", "kicker-section_08": "第08节", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "kicker-section_13": "Section 13", "kicker-references": "References", "t-a_three_bank_corridor_betw": "A three-bank corridor between the euro area and the Kingdom of Saudi Arabia", "t-network_topology__organiza": "Network topology: organizations, peers, orderers, certificate authorities", "t-identity__msp__and_the_cha": "Identity, MSP, and the chain of trust", "t-channels__private_data_col": "Channels, private data collections, and confidentiality boundaries", "t-go_chaincode__state_model": "Go chaincode: state model, endorsement, and dual control", "t-token_model__account_based": "Token model: account-based vs. UTXO via the Fabric Token SDK", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-ordering_and_consensus__ra": "Ordering and consensus: Raft today, SmartBFT tomorrow", "t-embedding_iso_20022_pacs_0": "Embedding ISO 20022 pacs.008 in chaincode state", "t-kyc__aml__sanctions__and_t": "KYC, AML, sanctions, and the FATF Travel Rule", "t-regulatory_framing__europe": "Regulatory framing: European Union and the Kingdom of Saudi Arabia", "t-net_settlement_against_tar": "Net settlement against TARGET2 and SARIE", "t-operational_risks_and_what": "Operational risks and what we have done about them", "t-references__standards__and": "References, standards, and further reading"}
+};
+
+function setLang(lang) {
+  document.querySelectorAll(".lang-btn").forEach(b => {
+    b.classList.remove("active");
+    const oc = b.getAttribute("onclick") || "";
+    if (oc.includes("'" + lang + "'") || oc.includes('"' + lang + '"')) {
+      b.classList.add("active");
+    }
+  });
+  document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+}
+
+// Smooth active section highlighting in TOC
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(l => l.style.color = '');
+      const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+      if (active) active.style.color = 'var(--accent-lt)';
+    }
+  });
+}, { threshold: 0.2 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
+        

@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Merchant Rails Blender · Post Oak Labs</title>
+<!-- Per-demo meta (spec Part 5.1) -->
+<meta name="description" content="Model card vs A2A merchant economics in one blended portfolio. Browser-based, AP2 routing-policy export, FCA DPC-aware, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/merchant-payment-rails-blender.html">
+<meta property="og:title" content="Merchant Payment Rails Blender — Post Oak Labs">
+<meta property="og:description" content="Blended card + A2A take-rate and net-contribution model with AP2 routing-policy export.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/merchant-payment-rails-blender.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/merchant-payment-rails-blender.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- POL canonical font stack (spec Part 2.3) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD (spec Part 5.2) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "Merchant Payment Rails Blender",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/merchant-payment-rails-blender.html",
+  "description": "Browser-based simulator for blended card vs A2A merchant economics. Computes take-rate, net contribution, FCA DPC compliance overhead, and emits AP2 routing-policy mandates.",
+  "featureList": [
+    "FCA DPC PS26/1 compliance modeling (Regulation Day 15 Jul 2026)",
+    "Card vs A2A take-rate comparison with net-contribution analysis",
+    "AP2 v1.0 mandate export against @ainumbers.co/routing-policy-v1 schema",
+    "Orchestrator-compatible policy output (Stripe, Adyen, Checkout.com, Primer)"
+  ],
+  "keywords": "merchant payments, A2A, account-to-account, card economics, FCA DPC, BNPL, routing policy, AP2 mandate, checkout economics",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* latin-ext */
+/* latin */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* cyrillic-ext */
+/* cyrillic */
+/* greek */
+/* vietnamese */
+/* latin-ext */
+/* latin */
+/* latin-ext */
+/* latin */
+/* latin-ext */
+/* latin */
+/* latin-ext */
+/* latin */
+/* latin-ext */
+/* latin */
+/* latin-ext */
+/* latin */
+</style>
+
+<style>
+:root{
+  --bg:#050c15;--bg-2:#0a1422;--bg-3:#0f1c2e;--bg-4:#16263d;
+  --border:#1c2c44;--border-2:#27395a;--muted:#3d5775;--body:#6e8aa9;
+  --text:#aac2dd;--bright:#d6e6f5;--white:#eef6fd;
+  --gold:#D4A847;--gold-dim:rgba(212,168,71,.12);--gold-lt:#e8c06a;
+  --green:#22C55E;--green-dim:rgba(34,197,94,.12);--green-lt:#4ade80;
+  --red:#ef4444;--red-dim:rgba(239,68,68,.12);--red-lt:#f87171;
+  --teal:#14b8a6;--teal-dim:rgba(20,184,166,.12);--teal-lt:#2dd4bf;
+  --purple:#9b72f5;--purple-dim:rgba(155,114,245,.12);
+  --radius:6px;--radius-lg:10px;
+  --font-d:'DM Serif Display',serif;
+  --font-b:'Sora',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);font-weight:300;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;
+  background-image:linear-gradient(rgba(212,168,71,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(212,168,71,.018) 1px,transparent 1px);
+  background-size:48px 48px}
+
+nav{background:rgba(5,12,21,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1440px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:10px;color:var(--white);text-decoration:none}
+.nav-mark{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,var(--gold),#8a6a25);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-weight:700;font-size:.74rem;color:#1A1305}
+.nav-logo-name{font-family:var(--font-m);font-size:.86rem;font-weight:600;letter-spacing:-.02em}
+.nav-logo-name .lbl-co{color:var(--gold-lt)}
+.nav-bc{font-family:var(--font-m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+.nav-bc strong{color:var(--text);font-weight:500}
+.nav-bc .sep{color:var(--border-2)}
+.nav-cta{font-family:var(--font-m);font-size:.62rem;font-weight:700;letter-spacing:.1em;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--gold);background:var(--gold-dim);color:var(--gold-lt);cursor:pointer;text-transform:uppercase;text-decoration:none}
+
+.hero{max-width:1440px;margin:0 auto;padding:36px 28px 18px}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.tool-eyebrow{font-family:var(--font-m);font-size:.6rem;font-weight:600;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.ebadge{font-family:var(--font-m);font-size:.56rem;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:.1em;text-transform:uppercase}
+.ebadge.gold{background:var(--gold-dim);border:1px solid rgba(212,168,71,.3);color:var(--gold-lt)}
+.ebadge.red{background:var(--red-dim);border:1px solid rgba(239,68,68,.3);color:var(--red-lt)}
+.ebadge.teal{background:var(--teal-dim);border:1px solid rgba(20,184,166,.3);color:var(--teal-lt)}
+.hero h1{font-family:var(--font-d);font-size:clamp(1.8rem,3.2vw,2.4rem);color:var(--white);line-height:1.18;margin-bottom:12px;letter-spacing:-.018em}
+.hero h1 em{color:var(--gold-lt);font-style:italic}
+.hero-desc{font-size:.92rem;color:var(--text);max-width:880px;line-height:1.7}
+
+.main-wrap{max-width:1440px;margin:0 auto;padding:24px 28px 80px;display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}
+@media (max-width:1080px){.main-wrap{grid-template-columns:1fr}}
+
+.panel{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.panel-h{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:linear-gradient(180deg,rgba(212,168,71,.04),transparent)}
+.panel-lbl{font-family:var(--font-m);font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text);flex:1}
+.panel-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.panel-meta{font-family:var(--font-m);font-size:.54rem;color:var(--muted);letter-spacing:.06em}
+
+.col-input{display:flex;flex-direction:column;gap:16px;position:sticky;top:78px}
+
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 18px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.wide{grid-column:1/-1}
+.field label{font-family:var(--font-m);font-size:.56rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.field input,.field select{background:var(--bg-3);border:1px solid var(--border-2);color:var(--bright);padding:.55rem .7rem;font-size:.82rem;border-radius:var(--radius);outline:none;font-family:var(--font-m);transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--gold)}
+.field .hint{font-family:var(--font-m);font-size:.52rem;color:var(--muted);letter-spacing:.04em;margin-top:2px}
+
+.toggle-row{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-3)}
+.toggle-row.on{background:linear-gradient(90deg,rgba(239,68,68,.07),rgba(212,168,71,.05))}
+.toggle-info{flex:1;min-width:0}
+.toggle-title{font-family:var(--font-m);font-size:.7rem;font-weight:700;color:var(--bright);letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.toggle-title .pill{font-family:var(--font-m);font-size:.5rem;background:var(--red-dim);border:1px solid rgba(239,68,68,.3);color:var(--red-lt);padding:2px 6px;border-radius:3px;letter-spacing:.08em}
+.toggle-sub{font-family:var(--font-m);font-size:.6rem;color:var(--body);letter-spacing:.02em;margin-top:4px;line-height:1.5}
+.switch{position:relative;width:42px;height:22px;flex-shrink:0;cursor:pointer}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch-track{position:absolute;inset:0;background:var(--bg-4);border:1px solid var(--border-2);border-radius:11px;transition:all .2s}
+.switch-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--muted);transition:all .2s}
+.switch input:checked + .switch-track{background:var(--red-dim);border-color:var(--red)}
+.switch input:checked + .switch-track .switch-thumb,
+.switch input:checked ~ .switch-track .switch-thumb{transform:translateX(20px);background:var(--red-lt)}
+
+.preset-row{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--border)}
+.preset-btn{flex:1;font-family:var(--font-m);font-size:.58rem;font-weight:600;letter-spacing:.1em;padding:9px 12px;border-radius:var(--radius);border:1px solid var(--border-2);background:transparent;color:var(--body);cursor:pointer;text-transform:uppercase;transition:all .15s}
+.preset-btn:hover{border-color:var(--gold);color:var(--gold-lt)}
+.preset-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold-lt)}
+
+.mix-block{padding:6px 18px 12px}
+.mix-row{display:grid;grid-template-columns:90px 1fr 44px;align-items:center;gap:10px;padding:.4rem 0}
+.mix-method{font-family:var(--font-m);font-size:.66rem;color:var(--text);letter-spacing:.02em}
+.mix-method .dot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.mix-row input[type=range]{accent-color:var(--gold);width:100%}
+.mix-pct{font-family:var(--font-m);font-size:.68rem;color:var(--gold-lt);text-align:right}
+.mix-total{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);margin-top:6px}
+.mix-total-l{font-family:var(--font-m);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mix-total-v{font-family:var(--font-m);font-size:.78rem}
+.mix-total-v.ok{color:var(--green-lt)}
+.mix-total-v.err{color:var(--red-lt)}
+
+.col-canvas{display:flex;flex-direction:column;gap:18px;min-width:0}
+
+/* Compare cards */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+@media (max-width:780px){.compare-grid{grid-template-columns:1fr}}
+.cmp-cell{background:var(--bg-2);padding:22px 24px}
+.cmp-cell.winner{background:linear-gradient(180deg,rgba(34,197,94,.05),var(--bg-2))}
+.cmp-eyebrow{font-family:var(--font-m);font-size:.54rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.cmp-eyebrow .badge{font-family:var(--font-m);font-size:.5rem;background:var(--green-dim);border:1px solid rgba(34,197,94,.4);color:var(--green-lt);padding:2px 7px;border-radius:3px;letter-spacing:.08em}
+.cmp-title{font-family:var(--font-d);font-size:1.4rem;color:var(--white);line-height:1.15;letter-spacing:-.014em}
+.cmp-title em{color:var(--gold-lt);font-style:italic}
+.cmp-bar-stack{display:flex;height:14px;border-radius:3px;overflow:hidden;margin:14px 0 10px;background:var(--bg-3);border:1px solid var(--border)}
+.cmp-bar{height:100%;transition:width .3s ease}
+.cmp-bar-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.cmp-leg{font-family:var(--font-m);font-size:.56rem;color:var(--body);display:flex;align-items:center;gap:5px;letter-spacing:.04em}
+.cmp-leg .sq{width:9px;height:9px;border-radius:2px}
+
+.cmp-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.cmp-stat{background:var(--bg-3);padding:13px 14px}
+.cmp-stat-l{font-family:var(--font-m);font-size:.5rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.cmp-stat-v{font-family:var(--font-d);font-size:1.25rem;color:var(--bright);line-height:1.1;margin-top:4px}
+.cmp-stat-v.gold{color:var(--gold-lt)}
+.cmp-stat-v.green{color:var(--green-lt)}
+.cmp-stat-v.red{color:var(--red-lt)}
+.cmp-stat-sub{font-family:var(--font-m);font-size:.54rem;color:var(--body);letter-spacing:.04em;margin-top:3px}
+
+/* Take-rate panel */
+.take-card{padding:22px 24px}
+.take-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+.take-title{font-family:var(--font-d);font-size:1.4rem;color:var(--white);line-height:1.15}
+.take-title em{color:var(--gold-lt);font-style:italic}
+.take-sub{font-family:var(--font-m);font-size:.6rem;color:var(--muted);letter-spacing:.06em}
+.take-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+@media (max-width:780px){.take-grid{grid-template-columns:1fr 1fr}}
+.take-stat{background:var(--bg-3);padding:15px 16px}
+.take-l{font-family:var(--font-m);font-size:.5rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.take-v{font-family:var(--font-d);font-size:1.35rem;color:var(--bright);line-height:1.1;margin-top:4px}
+.take-v.green{color:var(--green-lt)}
+.take-v.red{color:var(--red-lt)}
+.take-v.gold{color:var(--gold-lt)}
+.take-delta{font-family:var(--font-m);font-size:.58rem;letter-spacing:.04em;margin-top:4px;display:inline-block}
+.take-delta.up{color:var(--red-lt)}
+.take-delta.down{color:var(--green-lt)}
+
+.dpc-banner{margin-top:18px;padding:14px 18px;border:1px solid var(--red);border-left:3px solid var(--red);background:rgba(239,68,68,.05);border-radius:var(--radius);display:flex;align-items:flex-start;gap:14px}
+.dpc-banner.off{border-color:var(--border);background:transparent;color:var(--muted)}
+.dpc-icon{width:32px;height:32px;border-radius:50%;background:var(--red-dim);border:1px solid var(--red);display:flex;align-items:center;justify-content:center;color:var(--red-lt);font-family:var(--font-m);font-weight:700;flex-shrink:0}
+.dpc-banner.off .dpc-icon{background:var(--bg-3);border-color:var(--border);color:var(--muted)}
+.dpc-body{font-family:var(--font-m);font-size:.62rem;line-height:1.6;color:var(--text);letter-spacing:.02em}
+.dpc-banner.off .dpc-body{color:var(--muted)}
+.dpc-body strong{color:var(--red-lt)}
+.dpc-banner.off .dpc-body strong{color:var(--muted)}
+
+/* Cost detail table */
+.cost-table-wrap{padding:0 24px 22px}
+.cost-table{width:100%;border-collapse:collapse;margin-top:6px}
+.cost-table th{font-family:var(--font-m);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--border);font-weight:600}
+.cost-table td{font-family:var(--font-m);font-size:.68rem;padding:.55rem .7rem;border-bottom:1px solid var(--border);color:var(--text)}
+.cost-table tr:last-child td{border-bottom:none}
+.cost-table td.r{text-align:right}
+.cost-table .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:8px;vertical-align:middle}
+.cost-table .delta-good{color:var(--green-lt)}
+.cost-table .delta-bad{color:var(--red-lt)}
+
+/* AP2 panel */
+.ap2-panel{display:flex;flex-direction:column}
+.ap2-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:linear-gradient(180deg,rgba(212,168,71,.05),transparent)}
+.ap2-h-l{flex:1}
+.ap2-title{font-family:var(--font-m);font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--bright)}
+.ap2-sub{font-family:var(--font-m);font-size:.54rem;color:var(--muted);letter-spacing:.06em;margin-top:3px}
+.ap2-actions{display:flex;gap:8px}
+.btn{font-family:var(--font-m);font-size:.58rem;font-weight:700;letter-spacing:.1em;padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border-2);background:transparent;color:var(--text);cursor:pointer;transition:all .15s;text-transform:uppercase}
+.btn:hover{border-color:var(--gold);color:var(--gold-lt);background:var(--gold-dim)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#1A1305}
+.btn.primary:hover{background:var(--gold-lt);color:#1A1305}
+.ap2-body{background:#03070d;font-family:var(--font-m);font-size:.7rem;line-height:1.65;color:var(--bright);padding:18px 22px;overflow-x:auto;max-height:520px;overflow-y:auto;white-space:pre;tab-size:2}
+.ap2-body .k{color:var(--gold-lt)}
+.ap2-body .s{color:var(--green-lt)}
+.ap2-body .n{color:var(--teal-lt)}
+.ap2-body .b{color:#c084fc}
+.ap2-body .c{color:var(--muted)}
+
+.foot{font-family:var(--font-m);font-size:.54rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;text-align:center;padding:18px 0 4px}
+
+/* small */
+.small-info{font-family:var(--font-m);font-size:.56rem;color:var(--muted);letter-spacing:.06em;padding:8px 18px 14px;line-height:1.6}
+.small-info b{color:var(--text);font-weight:500}
+
+.toast{position:fixed;bottom:20px;right:20px;background:var(--bg-3);border:1px solid var(--border);border-left:3px solid var(--green);padding:.8rem 1.3rem;font-family:var(--font-m);font-size:.62rem;color:var(--green-lt);z-index:9999;border-radius:var(--radius);box-shadow:0 6px 24px rgba(0,0,0,.5);opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none;letter-spacing:.08em}
+.toast.show{opacity:1;transform:translateY(0)}
+</style>
+
+<style id="v6-wrapper-css">
+/* ═══ POL WRAPPER VARIABLES + LIGHT CANVAS BRIDGE TOKENS ═══ */
+:root {
+  --ink: #050c15;
+  --deep: #0a1628;
+  --edge: #1e3454;
+  --pol-body: #7090b0;
+  --pol-accent: #2a7fc0;
+  --pol-accent-lt: #4a9fdf;
+  --pol-gold: #c09040;
+
+  /* Bridge tokens (spec Part 2.2) */
+  --showcase-bg: #ffffff;
+  --showcase-bg-soft: #fafbfc;
+  --showcase-text: #0a1828;
+  --showcase-text-muted: #6a7a8a;
+  --showcase-surface: #ffffff;
+  --showcase-border: #e6e8eb;
+  --showcase-accent: var(--pol-accent);
+  --showcase-gold: var(--pol-gold);
+  --showcase-success: #10b981;
+  --showcase-warn: #f59e0b;
+  --showcase-error: #dc2626;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font: 'DM Sans', sans-serif;
+  --showcase-mono-font: 'JetBrains Mono', monospace;
+}
+
+/* Outer dark wrapper — body remains POL ink */
+body {
+  background: var(--ink) !important;
+  background-image: none !important;
+  color: var(--pol-body) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 400 !important;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide demo's original <nav> + <div class="foot"> — replaced by POL versions */
+body > nav { display: none !important; }
+body > div.foot { display: none !important; }
+
+/* ═══ POL NAV ═══ */
+nav.pol-nav {
+  background: var(--ink);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: #ffffff;
+  text-decoration: none;
+}
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a {
+  color: var(--pol-body); text-decoration: none;
+  font-size: 0.86rem; font-weight: 400;
+  transition: color 0.15s;
+}
+nav.pol-nav .nav-links a:hover { color: #ffffff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta {
+  background: var(--pol-accent);
+  color: #ffffff !important;
+  padding: 0.4rem 0.95rem;
+  border-radius: 4px;
+}
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+/* ═══ SHOWCASE HEADER STRIP ═══ */
+.showcase-header-strip {
+  background: var(--deep);
+  border-top: 1px solid var(--edge);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.85rem 0;
+  color: var(--pol-body);
+}
+.showcase-header-strip .strip-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem;
+}
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow {
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.7rem; color: var(--pol-gold);
+  font-weight: 500;
+}
+.showcase-header-strip .strip-title { font-weight: 500; color: #ffffff; }
+.showcase-header-strip .strip-actions a {
+  color: var(--pol-accent-lt); text-decoration: none;
+  margin-left: 1.25rem; font-size: 0.85rem;
+}
+.showcase-header-strip .strip-actions a:hover { color: #ffffff; }
+
+/* ═══ LIGHT DEMO CANVAS — REMAPS DEMO'S DARK TOKENS TO LIGHT ═══
+   This is the critical bridge: the React app + its CSS depend on
+   --bg, --bg-2, --text etc. We rebind these inside .demo-canvas
+   so the entire React tree renders light without touching components.
+*/
+main.demo-canvas {
+  background: var(--showcase-bg);
+  color: var(--showcase-text);
+  font-family: var(--showcase-body-font);
+  max-width: 1440px;
+  margin: 2rem auto;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+
+  /* Override every dark token inside the canvas */
+  --bg: var(--showcase-bg);
+  --bg-2: var(--showcase-bg-soft);
+  --bg-3: #f4f5f7;
+  --bg-4: #ebedef;
+  --border: var(--showcase-border);
+  --border-2: #d0d4d8;
+  --muted: var(--showcase-text-muted);
+  --body: var(--showcase-text-muted);
+  --text: var(--showcase-text);
+  --bright: #0a1828;
+  --white: #0a1828;
+  /* Color accents: remap demo's teal to POL accent (blue) */
+  --teal: var(--showcase-accent);
+  --teal-lt: var(--showcase-accent);
+  --teal-dim: rgba(42,127,192,0.10);
+  /* gold/red/green/purple keep their semantic meaning but lighten dim variants */
+  --gold-dim: rgba(192,144,64,0.10);
+  --green-dim: rgba(16,185,129,0.10);
+  --red-dim: rgba(220,38,38,0.10);
+  --purple-dim: rgba(155,114,245,0.10);
+  /* DM Sans for body font */
+  --font-b: var(--showcase-body-font);
+  --font-d: var(--showcase-heading-font);
+  --font-m: var(--showcase-mono-font);
+}
+main.demo-canvas .canvas-inner { padding: 0; }
+@media (max-width: 760px) { main.demo-canvas .canvas-inner { padding: 0; } }
+
+/* Strip the demo's body grid pattern inside the canvas */
+main.demo-canvas section.hero,
+main.demo-canvas .main-wrap { background-image: none !important; }
+
+/* Hero already uses --gold/teal/red badges. Make sure they read OK on light bg. */
+main.demo-canvas .hero { padding-top: 0; padding-bottom: 1.5rem; }
+
+/* Eyebrow badges in hero get a subtle outline on light */
+main.demo-canvas .ebadge {
+  border: 1px solid var(--showcase-border);
+  background: var(--showcase-bg);
+}
+
+/* ═══ PII BANNER ═══ */
+.pii-banner {
+  background: rgba(42, 127, 192, 0.04);
+  border: 1px solid rgba(42, 127, 192, 0.15);
+  padding: 0.7rem 1rem;
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--showcase-text-muted);
+  margin: 1.25rem 0 1.5rem;
+  border-radius: 4px;
+}
+
+/* ═══ FCA DPC CALLOUT (spec Part 9.1) ═══ */
+.fca-callout {
+  background: rgba(192, 144, 64, 0.05);
+  border: 1px solid rgba(192, 144, 64, 0.25);
+  border-left: 4px solid var(--showcase-gold);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 3px;
+  color: var(--showcase-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+.fca-callout .fca-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--showcase-gold);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.fca-callout .fca-cite {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  color: var(--showcase-text-muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+/* ═══ VALUE-AT-RISK SIDEBAR (spec Part 17) ═══ */
+.value-at-risk {
+  background: var(--showcase-bg-soft);
+  border-left: 4px solid var(--showcase-gold);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  max-width: 360px;
+  float: right;
+  clear: right;
+  border-radius: 2px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--showcase-text-muted);
+}
+@media (max-width: 760px) {
+  .value-at-risk { float: none; max-width: 100%; margin: 1.5rem 0; }
+}
+.value-at-risk .var-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--showcase-gold);
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+}
+.value-at-risk .var-figure {
+  font-family: var(--showcase-heading-font);
+  font-size: 1.1rem;
+  color: var(--showcase-text);
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
+}
+.value-at-risk .var-body { margin-bottom: 0.45rem; }
+.value-at-risk .var-cite { font-size: 0.7rem; color: var(--showcase-text-muted); }
+.value-at-risk .var-cite small { font-family: var(--showcase-mono-font); letter-spacing: 0.04em; }
+
+/* ═══ POL FOOTER (dark, spec Part 2.5) ═══ */
+footer.pol-footer {
+  background: var(--ink);
+  border-top: 1px solid var(--edge);
+  padding: 2.25rem 0 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: #ffffff;
+}
+footer.pol-footer .footer-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--pol-body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links {
+  display: flex; flex-direction: column;
+  gap: 0.45rem; font-size: 0.85rem;
+}
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+
+/* ── v6 patch: align surface inserts to the demo's 28px gutter; non-floated VaR ── */
+main.demo-canvas .pii-banner,
+main.demo-canvas .fca-callout {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 28px;
+  padding-right: 28px;
+  background-clip: content-box;
+}
+main.demo-canvas .pii-banner { margin-top: 1.25rem; margin-bottom: 0; }
+main.demo-canvas .fca-callout { margin-top: 1rem; margin-bottom: 0; padding-top: 1rem; padding-bottom: 1rem; }
+main.demo-canvas .value-at-risk.var-inline {
+  float: none;
+  max-width: 100%;
+  margin: 1.5rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+</head>
+<body>
+<!-- ═══════════════ POL DARK NAV (spec Part 2.4) ═══════════════ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
+      Post Oak <span>Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ SHOWCASE HEADER STRIP (spec Part 3.1) ═══════════════ -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase</span>
+      <span class="strip-title">Merchant Payment Rails Blender</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/composer.html">View in Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/clearcost-card-a2a-analyzer.html" target="_blank" rel="noopener">Open Source Engine →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ LIGHT DEMO CANVAS ═══════════════ -->
+<main class="demo-canvas">
+<div class="canvas-inner">
+
+<!-- PII BANNER -->
+<div class="pii-banner">
+  🔒 All inputs are processed locally in your browser. No data is transmitted, stored, or logged. Use synthetic or anonymised figures only.
+</div>
+
+<!-- FCA DPC CALLOUT (spec Part 9.1, verbatim demo copy) -->
+<div class="fca-callout" role="note" aria-label="FCA DPC compliance context">
+  <div class="fca-eyebrow">FCA DPC · Regulation Day 15 Jul 2026</div>
+  <p>FCA PS26/1 final rules confirmed February 2026, live 15 July 2026: BNPL/DPC providers require FCA authorisation or TPR registration from Regulation Day. Mandatory affordability assessments are now required for all DPC agreements. The model's +60 bps overhead and auth-rate assumptions reflect estimated compliance cost components — not FCA-specified figures. Toggle on to see the modelled impact on your take-rate.</p>
+  <div class="fca-cite">Source: FCA PS26/1, 11 February 2026 · TPR window 15 May – 1 July 2026</div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="nav-mark">POL</span>
+      <span class="nav-logo-name">Post Oak Labs <span class="lbl-co">/ Rails Blender</span></span>
+    </a>
+    <div class="nav-bc">
+      <span>Treasury</span><span class="sep">›</span><span>Checkout Economics</span><span class="sep">›</span><strong>Merchant Rails Blender</strong>
+    </div>
+    <a href="#ap2-out" class="nav-cta">{ } Export AP2</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span class="tool-eyebrow">Cat-06 · Tool T-217</span>
+    <span class="ebadge gold">Checkout Economics</span>
+    <span class="ebadge red">FCA DPC · 15 Jul 2026</span>
+    <span class="ebadge teal">AP2 Routing Policy</span>
+  </div>
+  <h1>Merchant Rails <em>Blender</em></h1>
+  <p class="hero-desc">Model your blended take-rate before you commit to a payment orchestrator. Enter your MCC and transaction volume, compare a card-heavy mix against an A2A-heavy mix on processing cost, conversion uplift, and net contribution. Toggle the July 2026 FCA Deferred Payment Credit rules to see exactly how the new BNPL affordability and disclosure overhead reshapes your take-rate — then export an AP2 routing policy your orchestrator can consume directly.</p>
+</section>
+<!-- VALUE-AT-RISK SIDEBAR (spec Part 17) — placed after hero to avoid layout collision -->
+<div style="max-width:1440px;margin:0 auto;padding:0 28px;">
+  <aside class="value-at-risk var-inline" aria-label="Value at risk — DPC non-compliance">
+    <h4 class="var-eyebrow">Value at risk · DPC non-compliance</h4>
+    <p class="var-figure">Loss of FCA permission + retrospective enforcement</p>
+    <p class="var-body">Operating DPC agreements without FCA authorisation or TPR registration from 15 July 2026 forfeits the right to enforce credit agreements and exposes the firm to FCA enforcement action. Mandatory affordability checks add ~60 bps to per-transaction overhead — material on a card-heavy portfolio.</p>
+    <p class="var-cite"><small>FCA PS26/1, 11 February 2026 · CCA s.40 unenforceability · TPR window 15 May–1 July 2026</small></p>
+  </aside>
+</div>
+
+
+<div class="main-wrap" id="root"></div>
+
+<div class="foot">Post Oak Labs · Merchant Rails Blender · Client-side · Zero PII · v1.2.6</div>
+
+<div class="toast" id="toast">{ } AP2 routing policy downloaded</div>
+
+
+</div>
+</main>
+
+<!-- ═══════════════ POL DARK FOOTER (spec Part 2.5) ═══════════════ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--pol-gold)">Labs</span></div>
+      <p class="footer-copy">
+        &copy; 2026 Post Oak Labs &nbsp;·&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-copy">
+        Built by Post Oak Labs &nbsp;·&nbsp;
+        <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/clearcost-card-a2a-analyzer.html" target="_blank" rel="noopener">Deep Dive → AINumbers.co</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── DATA CONSTANTS (unchanged) ────────────────────────────────────────────────
+const MCC_TABLE = [
+  { mcc:'5411', label:'5411 · Grocery Stores & Supermarkets',     cat:'grocery',   aov:62,  authBaseline:97.4, bnplFit:0.4, a2aFit:0.9 },
+  { mcc:'5812', label:'5812 · Eating Places & Restaurants',       cat:'food',      aov:38,  authBaseline:96.1, bnplFit:0.2, a2aFit:0.6 },
+  { mcc:'5732', label:'5732 · Electronics Sales',                 cat:'retail',    aov:340, authBaseline:91.8, bnplFit:1.0, a2aFit:0.7 },
+  { mcc:'5651', label:'5651 · Family Clothing',                   cat:'retail',    aov:128, authBaseline:93.2, bnplFit:0.95,a2aFit:0.65 },
+  { mcc:'5311', label:'5311 · Department Stores',                 cat:'retail',    aov:184, authBaseline:92.4, bnplFit:0.9, a2aFit:0.65 },
+  { mcc:'4511', label:'4511 · Airlines & Air Carriers',           cat:'travel',    aov:520, authBaseline:88.7, bnplFit:0.85,a2aFit:0.45 },
+  { mcc:'7011', label:'7011 · Lodging — Hotels & Motels',         cat:'travel',    aov:410, authBaseline:89.5, bnplFit:0.7, a2aFit:0.45 },
+  { mcc:'5999', label:'5999 · Miscellaneous Retail',              cat:'retail',    aov:96,  authBaseline:93.8, bnplFit:0.7, a2aFit:0.7 },
+  { mcc:'7372', label:'7372 · Software / SaaS Subscriptions',     cat:'saas',      aov:74,  authBaseline:94.9, bnplFit:0.1, a2aFit:0.85 },
+  { mcc:'5945', label:'5945 · Hobby / Toy / Game Shops',          cat:'retail',    aov:58,  authBaseline:94.1, bnplFit:0.5, a2aFit:0.7 },
+  { mcc:'5499', label:'5499 · Misc Food Stores / Convenience',    cat:'grocery',   aov:24,  authBaseline:96.4, bnplFit:0.1, a2aFit:0.8 },
+  { mcc:'8011', label:'8011 · Healthcare — Doctors / Physicians', cat:'health',    aov:215, authBaseline:91.2, bnplFit:1.0, a2aFit:0.55 },
+  { mcc:'5921', label:'5921 · Package Stores — Beer / Wine',      cat:'retail',    aov:48,  authBaseline:94.6, bnplFit:0.1, a2aFit:0.75 },
+  { mcc:'5942', label:'5942 · Book Stores',                       cat:'retail',    aov:34,  authBaseline:95.0, bnplFit:0.25,a2aFit:0.7 },
+  { mcc:'4900', label:'4900 · Utilities — Electric / Gas / Water',cat:'utilities', aov:165, authBaseline:96.8, bnplFit:0.05,a2aFit:0.95 },
+];
+
+const RAIL_DEFS = [
+  { id:'credit', label:'Credit Card',       color:'#D4A847', mdrBps:225, flatC:10, authRate:90.5 },
+  { id:'debit',  label:'Debit Card',        color:'#e8c06a', mdrBps:75,  flatC:22, authRate:93.0 },
+  { id:'wallet', label:'Digital Wallet',    color:'#9b72f5', mdrBps:200, flatC:5,  authRate:95.8 },
+  { id:'bnpl',   label:'BNPL / Pay Later',  color:'#f87171', mdrBps:430, flatC:0,  authRate:88.0 },
+  { id:'a2a',    label:'A2A / Pay-by-Bank', color:'#2dd4bf', mdrBps:18,  flatC:6,  authRate:97.2 },
+  { id:'ach',    label:'ACH Direct Debit',  color:'#4ade80', mdrBps:0,   flatC:48, authRate:98.1 },
+];
+
+const SCHEME_FEE_BPS  = 14;
+const SCHEME_FEE_FLAT = 1.95;
+const DPC_MDR_UPLIFT_BPS = 60;
+const DPC_AUTH_DROP      = 3.2;
+const DPC_DECLINE_RATE   = 0.06;
+
+const PRESETS = {
+  card:  { credit:55, debit:18, wallet:14, bnpl:8,  a2a:3,  ach:2  },
+  a2a:   { credit:24, debit:10, wallet:13, bnpl:6,  a2a:38, ach:9  },
+  custom: null,
+};
+
+// ── HELPERS (unchanged) ───────────────────────────────────────────────────────
+const fmtUSD = (n, dec=0) => {
+  if (n===null||n===undefined||isNaN(n)) return '—';
+  const a = Math.abs(n);
+  if (a>=1e9) return (n<0?'-':'')+'$'+(a/1e9).toFixed(2)+'B';
+  if (a>=1e6) return (n<0?'-':'')+'$'+(a/1e6).toFixed(2)+'M';
+  if (a>=1e3) return (n<0?'-':'')+'$'+(a/1e3).toFixed(1)+'K';
+  return (n<0?'-$':'$')+a.toFixed(dec);
+};
+const fmtBps = b => (b>=0?'+':'')+b.toFixed(0)+' bps';
+
+function computeMix(mix, aov, monthlyTx, fcaDpc) {
+  let totalCost=0, totalWeightedAuth=0, bnplDeclineLoss=0;
+  const rails = RAIL_DEFS.map(r => {
+    const pct=(mix[r.id]||0)/100, txCount=monthlyTx*pct, volume=txCount*aov;
+    let mdrBps=r.mdrBps, authRate=r.authRate, scheme=0;
+    if (r.id==='credit'||r.id==='debit')
+      scheme=volume*(SCHEME_FEE_BPS/10000)+txCount*(SCHEME_FEE_FLAT/100);
+    if (fcaDpc&&r.id==='bnpl') {
+      mdrBps+=DPC_MDR_UPLIFT_BPS; authRate-=DPC_AUTH_DROP;
+      bnplDeclineLoss+=volume*DPC_DECLINE_RATE;
+    }
+    const cost=volume*(mdrBps/10000)+txCount*(r.flatC/100)+scheme;
+    totalCost+=cost; totalWeightedAuth+=authRate*pct;
+    return {...r, pct:pct*100, volume, cost, txCount, effMdrBps:mdrBps, authRate};
+  });
+  const monthlyVol=monthlyTx*aov;
+  const effRateBps=monthlyVol>0?(totalCost/monthlyVol)*10000:0;
+  const blendedAuth=totalWeightedAuth;
+  const declinedVol=monthlyVol*(1-blendedAuth/100);
+  const bnplShare=(mix.bnpl||0)/100;
+  const bnplUpliftRev=monthlyVol*bnplShare*0.11*(fcaDpc?0.62:1.0);
+  const netContribution=monthlyVol-totalCost-declinedVol*0.55-bnplDeclineLoss*0.55+bnplUpliftRev*0.18;
+  return {rails,totalCost,monthlyVol,effRateBps,blendedAuth,declinedVol,bnplUpliftRev,netContribution,bnplDeclineLoss};
+}
+
+function buildAP2({mcc,aov,monthlyTx,market,mix,fcaDpc,userMix,activePreset,cardMix,a2aMix,winner}) {
+  const mandate_id=`POL-T217-${Math.floor(Date.now()/1000).toString(36).toUpperCase()}`;
+  const generated=new Date().toISOString();
+  const sorted=RAIL_DEFS.map(r=>({...r,share:mix[r.id]||0})).filter(r=>r.share>0).sort((a,b)=>b.share-a.share);
+  const routing_rules=sorted.map((r,idx)=>{
+    const rule={
+      priority:idx+1, rail_id:r.id, rail_label:r.label,
+      target_share_pct:r.share, max_share_pct:Math.min(100,r.share+10),
+      min_share_pct:Math.max(0,r.share-8),
+      effective_mdr_bps:userMix.rails.find(x=>x.id===r.id)?.effMdrBps||r.mdrBps,
+      expected_auth_rate:+(userMix.rails.find(x=>x.id===r.id)?.authRate||r.authRate).toFixed(2),
+      fallback_rail:idx+1<sorted.length?sorted[idx+1].id:'credit',
+    };
+    if (r.id==='bnpl'&&fcaDpc) {
+      rule.compliance_gates=[
+        {check:'fca_dpc_affordability',framework:'FCA CONC 5.2A',required:true},
+        {check:'pcci_disclosure',framework:'FCA CONC 4.2',required:true},
+        {check:'forbearance_signal',framework:'FCA CONC 7B',required:true},
+      ];
+      rule.expected_decline_rate=DPC_DECLINE_RATE;
+    }
+    if (r.id==='a2a') rule.preferred_scheme=market==='US'?'FedNow':market==='UK'?'FPS':'SEPA-Inst';
+    if (r.id==='debit'&&market==='US')
+      rule.durbin_routing={regulated:true,prefer_unaffiliated_pin:true,target_bps_savings:30};
+    return rule;
+  });
+  const constraints={
+    blended_auth_rate_floor_pct:92.0, effective_mdr_ceiling_bps:245,
+    bnpl_share_ceiling_pct:18,
+    a2a_share_floor_pct:market==='EU'||market==='UK'?15:5,
+    decline_rate_ceiling_pct:8.5,
+  };
+  const triggers=[
+    {id:'high_value_lane',when:{tx_amount_gt:aov*4},route:['a2a','debit','credit']},
+    {id:'low_value_lane', when:{tx_amount_lt:15},   route:['wallet','debit','credit']},
+    {id:'recurring_lane', when:{tx_type:'recurring'},route:['ach','a2a','debit']},
+    {id:'bnpl_lane',when:{tx_amount_gt:75,tx_type:'one_off'},route:fcaDpc?['bnpl_dpc','credit','wallet']:['bnpl','credit','wallet']},
+  ];
+  return {
+    '@type':'@ainumbers.co/routing-policy-v1','@version':'1.0','@generated':generated,
+    mandate_id,tool_id:'T217',tool_slug:'merchant-rails-blender',issuer:'post-oak-labs',
+    merchant_context:{mcc:mcc.mcc,mcc_label:mcc.label,category:mcc.cat,market,
+      avg_order_value_usd:aov,monthly_tx_count:monthlyTx,monthly_gmv_usd:Math.round(monthlyTx*aov)},
+    regulatory_state:{fca_dpc_active:fcaDpc,fca_dpc_effective_date:'2026-07-15',
+      dpc_mdr_uplift_bps:fcaDpc?DPC_MDR_UPLIFT_BPS:0,
+      durbin_applicable:market==='US'&&(monthlyTx*aov*12)>1e7},
+    selected_strategy:activePreset==='custom'?'custom':(activePreset==='a2a'?'a2a_heavy':'card_heavy'),
+    economics:{effective_take_rate_bps:+userMix.effRateBps.toFixed(1),
+      blended_auth_rate_pct:+userMix.blendedAuth.toFixed(2),
+      monthly_processing_cost:Math.round(userMix.totalCost),
+      annual_processing_cost:Math.round(userMix.totalCost*12),
+      net_contribution_monthly:Math.round(userMix.netContribution)},
+    comparison:{card_heavy_take_rate_bps:+cardMix.effRateBps.toFixed(1),
+      a2a_heavy_take_rate_bps:+a2aMix.effRateBps.toFixed(1),
+      winner_by_net_contribution:winner==='a2a'?'a2a_heavy':'card_heavy',
+      delta_annual_contribution_usd:Math.round((a2aMix.netContribution-cardMix.netContribution)*12)},
+    routing_rules,constraints,triggers,
+    audit:{computed_client_side:true,no_pii_processed:true,
+      orchestrator_compatible:['stripe-terminal','adyen-balance','checkout-com','primer','gravity-payments']},
+  };
+}
+
+function showToast(msg) {
+  const el=document.getElementById('toast');
+  if (!el) return;
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+// ── VANILLA STATE ─────────────────────────────────────────────────────────────
+const state = {
+  mccIdx:2, monthlyTx:58000, aovOverride:'', market:'US',
+  activePreset:'card', mix:{...PRESETS.card}, fcaDpc:false
+};
+let _ap2 = null; // for copy/download handlers
+
+function setState(key, val) { state[key]=val; render(); }
+function applyPreset(name) {
+  state.activePreset=name;
+  if (PRESETS[name]) state.mix={...PRESETS[name]};
+  render();
+}
+function updateMix(railId, val) {
+  state.activePreset='custom';
+  state.mix={...state.mix,[railId]:+val};
+  render();
+}
+function copyAP2() {
+  if (!_ap2) return;
+  navigator.clipboard?.writeText(JSON.stringify(_ap2,null,2));
+  showToast('AP2 routing policy copied');
+}
+function downloadAP2() {
+  if (!_ap2) return;
+  const blob=new Blob([JSON.stringify(_ap2,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`pol-routing-${_ap2.mandate_id}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast('{ } AP2 routing policy downloaded');
+}
+
+// ── RENDER HELPERS ────────────────────────────────────────────────────────────
+function renderInputColumn(mcc, aov, total, balanced) {
+  const mccOpts = MCC_TABLE.map((m,i)=>
+    `<option value="${i}"${i===state.mccIdx?' selected':''}>${m.label}</option>`).join('');
+  const marketOpts = ['US','UK','EU','APAC','LATAM'].map(m=>
+    `<option${m===state.market?' selected':''}>${m}</option>`).join('');
+  const sliders = RAIL_DEFS.map(r => {
+    const v=Math.round(state.mix[r.id]||0);
+    return `<div class="mix-row">
+      <span class="mix-method"><span class="dot" style="background:${r.color}"></span>${r.label.split(' / ')[0]}</span>
+      <input type="range" min="0" max="100" step="1" value="${v}" oninput="updateMix('${r.id}',this.value)">
+      <span class="mix-pct">${v}%</span></div>`;
+  }).join('');
+
+  return `<aside class="col-input">
+    <div class="panel">
+      <div class="panel-h"><span class="panel-dot"></span>
+        <span class="panel-lbl">Merchant Profile</span>
+        <span class="panel-meta">Step 01 / 03</span></div>
+      <div class="field-grid">
+        <div class="field wide">
+          <label>Merchant Category Code (MCC)</label>
+          <select onchange="setState('mccIdx',+this.value)">${mccOpts}</select>
+          <span class="hint">→ category: <b style="color:var(--gold-lt)">${mcc.cat}</b> · default AOV $${mcc.aov} · auth baseline ${mcc.authBaseline}%</span>
+        </div>
+        <div class="field">
+          <label>Monthly Tx Count</label>
+          <input type="number" min="0" value="${state.monthlyTx}" oninput="setState('monthlyTx',+this.value||0)">
+        </div>
+        <div class="field">
+          <label>AOV Override ($)</label>
+          <input type="number" min="0" step="0.01" placeholder="${mcc.aov}" value="${state.aovOverride}" oninput="setState('aovOverride',this.value)">
+        </div>
+        <div class="field">
+          <label>Primary Market</label>
+          <select onchange="setState('market',this.value)">${marketOpts}</select>
+        </div>
+        <div class="field">
+          <label>Monthly GMV (Derived)</label>
+          <input type="text" disabled value="${fmtUSD(state.monthlyTx*aov)}" style="cursor:not-allowed;opacity:.7">
+        </div>
+      </div>
+      <div class="toggle-row${state.fcaDpc?' on':''}" style="border-bottom:1px solid var(--border)">
+        <div class="toggle-info">
+          <div class="toggle-title">FCA DPC Regime <span class="pill">Live 15 Jul 2026</span></div>
+          <div class="toggle-sub">Apply Deferred Payment Credit affordability checks, CONC 4 PCCI disclosures, and CONC 7 forbearance overhead to BNPL flows.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" ${state.fcaDpc?'checked':''} onchange="setState('fcaDpc',this.checked)">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="panel-dot"></span>
+        <span class="panel-lbl">Rail Mix</span>
+        <span class="panel-meta">Step 02 / 03</span></div>
+      <div class="preset-row">
+        <button class="preset-btn${state.activePreset==='card'?' active':''}" onclick="applyPreset('card')">Card-Heavy</button>
+        <button class="preset-btn${state.activePreset==='a2a'?' active':''}" onclick="applyPreset('a2a')">A2A-Heavy</button>
+        <button class="preset-btn${state.activePreset==='custom'?' active':''}">Custom</button>
+      </div>
+      <div class="mix-block">
+        ${sliders}
+        <div class="mix-total">
+          <span class="mix-total-l">Mix Total</span>
+          <span class="mix-total-v ${balanced?'ok':'err'}">${total}% ${balanced?'· balanced':'· must = 100%'}</span>
+        </div>
+      </div>
+    </div>
+  </aside>`;
+}
+
+function renderCompareCell(label, data, won, isCard) {
+  const stack = RAIL_DEFS.map(r=>({...r, pct:data.rails.find(x=>x.id===r.id)?.pct||0}));
+  const bars = stack.filter(s=>s.pct>0).map(s=>
+    `<div class="cmp-bar" style="width:${s.pct}%;background:${s.color}" title="${s.label}: ${Math.round(s.pct)}%"></div>`).join('');
+  const legend = stack.filter(s=>s.pct>0).map(s=>
+    `<span class="cmp-leg"><span class="sq" style="background:${s.color}"></span>${s.label.split(' / ')[0]} ${Math.round(s.pct)}%</span>`).join('');
+  return `<div class="cmp-cell${won?' winner':''}">
+    <div class="cmp-eyebrow">${label}${won?'<span class="badge">Winner · Net</span>':''}</div>
+    <div class="cmp-title">${isCard?'Cards <em>lead</em>':'A2A <em>led</em>'} mix</div>
+    <div class="cmp-bar-stack">${bars}</div>
+    <div class="cmp-bar-legend">${legend}</div>
+    <div class="cmp-stat-grid">
+      <div class="cmp-stat">
+        <div class="cmp-stat-l">Effective MDR</div>
+        <div class="cmp-stat-v gold">${data.effRateBps.toFixed(0)} bps</div>
+        <div class="cmp-stat-sub">${(data.effRateBps/100).toFixed(2)}% of GMV</div>
+      </div>
+      <div class="cmp-stat">
+        <div class="cmp-stat-l">Blended Auth Rate</div>
+        <div class="cmp-stat-v green">${data.blendedAuth.toFixed(1)}%</div>
+        <div class="cmp-stat-sub">Declined: ${fmtUSD(data.declinedVol)} / mo</div>
+      </div>
+      <div class="cmp-stat">
+        <div class="cmp-stat-l">Annual Processing Cost</div>
+        <div class="cmp-stat-v red">${fmtUSD(data.totalCost*12)}</div>
+        <div class="cmp-stat-sub">${fmtUSD(data.totalCost)} / month</div>
+      </div>
+      <div class="cmp-stat">
+        <div class="cmp-stat-l">Net Contribution / Mo</div>
+        <div class="cmp-stat-v green">${fmtUSD(data.netContribution)}</div>
+        <div class="cmp-stat-sub">incl. BNPL uplift &amp; auth loss</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCanvasColumn(cardMix, a2aMix, userMix, userMixOff, aov, winner, balanced, ap2) {
+  const takeBps=userMix.effRateBps, takeBpsOff=userMixOff.effRateBps;
+  const deltaBps=takeBps-takeBpsOff;
+  const annualCost=userMix.totalCost*12, annualCostOff=userMixOff.totalCost*12;
+  const dpcOn=state.fcaDpc;
+
+  const railRows=userMix.rails.map(r=>`<tr>
+    <td><span class="dot" style="background:${r.color}"></span>${r.label}${dpcOn&&r.id==='bnpl'?'<span style="color:var(--red-lt);font-size:.6rem;margin-left:8px">· DPC</span>':''}</td>
+    <td>${r.pct.toFixed(0)}%</td>
+    <td class="r">${Math.round(r.txCount).toLocaleString()}</td>
+    <td class="r">${fmtUSD(r.volume)}</td>
+    <td class="r">${r.effMdrBps} bps</td>
+    <td class="r">${r.authRate.toFixed(1)}%</td>
+    <td class="r">${fmtUSD(r.cost)}</td></tr>`).join('');
+
+  const dpcBody=dpcOn
+    ?`<strong>FCA DPC regime live.</strong> BNPL flows incur <strong>+${DPC_MDR_UPLIFT_BPS} bps</strong> for affordability checks (CONC 5.2A) and PCCI generation (CONC 4.2), plus a <strong>${DPC_AUTH_DROP.toFixed(1)} pp auth-rate drop</strong> and ~${(DPC_DECLINE_RATE*100).toFixed(0)}% of attempted BNPL volume declined at the affordability gate. Conversion uplift from BNPL is dampened 38% as customers face new credit-check friction. Toggle off to see pre-DPC baseline.`
+    :`<strong>Pre-DPC baseline.</strong> BNPL flows are still exempt under CCA 1974 s.60F(2). Toggle the FCA DPC switch in the input panel to model the 15 July 2026 regulated state.`;
+
+  const ap2Json=JSON.stringify(ap2,null,2);
+  const highlighted=ap2Json
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g,'<span class="k">$1</span>$2')
+    .replace(/:\s*("(?:[^"\\]|\\.)*")/g,': <span class="s">$1</span>')
+    .replace(/:\s*(true|false)/g,': <span class="b">$1</span>')
+    .replace(/:\s*(-?\d+(?:\.\d+)?)/g,': <span class="n">$1</span>');
+
+  return `<main class="col-canvas">
+    <div class="panel">
+      <div class="panel-h"><span class="panel-dot"></span>
+        <span class="panel-lbl">Mix Showdown · Card-Heavy vs A2A-Heavy</span>
+        <span class="panel-meta">12-mo annualized</span></div>
+      <div class="compare-grid">
+        ${renderCompareCell('Card-Heavy Mix',cardMix,winner==='card',true)}
+        ${renderCompareCell('A2A-Heavy Mix', a2aMix, winner==='a2a', false)}
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h"><span class="panel-dot"></span>
+        <span class="panel-lbl">Your Take-Rate · ${dpcOn?'With':'Without'} FCA DPC Overhead</span>
+        <span class="panel-meta">${dpcOn?'Post-15-Jul-2026':'Pre-DPC baseline'}</span></div>
+      <div class="take-card">
+        <div class="take-head"><div>
+          <div class="take-title">Blended <em>take-rate</em>: ${(takeBps/100).toFixed(2)}%</div>
+          <div class="take-sub">on ${fmtUSD(userMix.monthlyVol)} monthly GMV · AOV $${aov.toFixed(0)} · ${state.monthlyTx.toLocaleString()} tx</div>
+        </div></div>
+        <div class="take-grid">
+          <div class="take-stat">
+            <div class="take-l">Effective Cost (bps)</div>
+            <div class="take-v gold">${takeBps.toFixed(0)}</div>
+            <div class="take-delta ${deltaBps>0?'up':'down'}">${dpcOn?fmtBps(deltaBps)+' vs pre-DPC':'baseline'}</div>
+          </div>
+          <div class="take-stat">
+            <div class="take-l">Monthly Cost</div>
+            <div class="take-v">${fmtUSD(userMix.totalCost)}</div>
+            <div class="take-delta ${annualCost>annualCostOff?'up':'down'}">${dpcOn&&deltaBps>0?'+'+fmtUSD(userMix.totalCost-userMixOff.totalCost)+' / mo':'baseline'}</div>
+          </div>
+          <div class="take-stat">
+            <div class="take-l">Annual Cost</div>
+            <div class="take-v red">${fmtUSD(annualCost)}</div>
+            <div class="take-delta ${annualCost>annualCostOff?'up':'down'}">${dpcOn&&deltaBps>0?'+'+fmtUSD(annualCost-annualCostOff)+' / yr':'baseline'}</div>
+          </div>
+          <div class="take-stat">
+            <div class="take-l">Net Contribution / Mo</div>
+            <div class="take-v green">${fmtUSD(userMix.netContribution)}</div>
+            <div class="take-delta down">after BNPL uplift &amp; declines</div>
+          </div>
+        </div>
+        <div class="dpc-banner${dpcOn?'':' off'}">
+          <div class="dpc-icon">${dpcOn?'!':'·'}</div>
+          <div class="dpc-body">${dpcBody}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h"><span class="panel-dot"></span>
+        <span class="panel-lbl">Per-Rail Cost Breakdown</span>
+        <span class="panel-meta">${balanced?'live':'mix ≠ 100%'}</span></div>
+      <div class="cost-table-wrap">
+        <table class="cost-table">
+          <thead><tr>
+            <th>Rail</th><th>Mix %</th>
+            <th class="r">Monthly Tx</th><th class="r">Monthly Vol</th>
+            <th class="r">Eff. MDR</th><th class="r">Auth %</th>
+            <th class="r">Monthly Cost</th>
+          </tr></thead>
+          <tbody>${railRows}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel ap2-panel" id="ap2-out">
+      <div class="ap2-head">
+        <span class="panel-dot" style="background:var(--gold);box-shadow:0 0 12px var(--gold)"></span>
+        <div class="ap2-h-l">
+          <div class="ap2-title">AP2 Routing Policy · Orchestrator Mandate</div>
+          <div class="ap2-sub">Mandate ${ap2.mandate_id} · @ainumbers.co/routing-policy-v1 · drop into your payment orchestrator</div>
+        </div>
+        <div class="ap2-actions">
+          <button class="btn" onclick="copyAP2()">⧉ Copy</button>
+          <button class="btn primary" onclick="downloadAP2()">⬇ Download .json</button>
+        </div>
+      </div>
+      <div class="ap2-body">${highlighted}</div>
+    </div>
+  </main>`;
+}
+
+// ── MAIN RENDER ───────────────────────────────────────────────────────────────
+function render() {
+  const mcc = MCC_TABLE[state.mccIdx];
+  const aov = state.aovOverride!==''&&!isNaN(+state.aovOverride)?+state.aovOverride:mcc.aov;
+  const total = Object.values(state.mix).reduce((a,b)=>a+(+b||0),0);
+  const balanced = Math.abs(total-100)<0.5;
+
+  const cardMix = computeMix(PRESETS.card, aov, state.monthlyTx, state.fcaDpc);
+  const a2aMix  = computeMix(PRESETS.a2a,  aov, state.monthlyTx, state.fcaDpc);
+  const userMix = computeMix(state.mix,    aov, state.monthlyTx, state.fcaDpc);
+  const userMixOff = computeMix(state.mix, aov, state.monthlyTx, false);
+  const winner  = a2aMix.netContribution>cardMix.netContribution?'a2a':'card';
+
+  _ap2 = buildAP2({mcc,aov,monthlyTx:state.monthlyTx,market:state.market,
+    mix:state.mix,fcaDpc:state.fcaDpc,userMix,activePreset:state.activePreset,
+    cardMix,a2aMix,winner});
+
+  document.getElementById('root').innerHTML =
+    renderInputColumn(mcc, aov, total, balanced) +
+    renderCanvasColumn(cardMix, a2aMix, userMix, userMixOff, aov, winner, balanced, _ap2);
+}
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+
+
+</body></html>

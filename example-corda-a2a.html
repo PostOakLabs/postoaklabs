@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corda A2A Tokenization: Europe–Middle East Cross-Border Settlement Architecture | Post Oak Labs</title>
+<meta name="description" content="A practitioner-authored technical deep-dive into how R3 Corda enables tokenized account-to-account settlement between two European commercial banks and one UAE bank. Node topology, CorDapp flows, FX handling, notary design, compliance layers, and regulatory framework (MiCA + CBUAE).">
+<meta name="author" content="Post Oak Labs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:       #050c15;
+  --deep:      #0a1628;
+  --navy:      #0e1e35;
+  --panel:     #142540;
+  --edge:      #1e3454;
+  --rim:       #2a4a70;
+  --muted:     #4a6a8a;
+  --body:      #7090b0;
+  --text:      #a8c0d8;
+  --bright:    #d0e4f4;
+  --white:     #ecf4fc;
+  --gold:      #c09040;
+  --gold-lt:   #d8b060;
+  --gold-dim:  #6a4818;
+  --accent:    #2a7fc0;
+  --accent-lt: #4a9fd8;
+  --accent-dim:#0e2840;
+  --amber:     #b07020;
+  --amber-lt:  #d09030;
+  --red:       #b03040;
+  --red-lt:    #d04858;
+  --green:     #2a9060;
+  --green-lt:  #3ab878;
+  /* aliases so internal var() refs keep working */
+  --bg:        #050c15;
+  --surface:   #0a1628;
+  --border:    #1e3454;
+  --teal:      #2a7fc0;
+  --teal-lt:   #4a9fd8;
+  --teal-dim:  #0e2840;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+}
+h1,h2,h3,h4,h5 {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--white);
+}
+a { color: var(--accent-lt); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  padding: 0.08em 0.4em;
+  border-radius: 2px;
+  color: var(--accent-lt);
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.77em;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  line-height: 1.6;
+  color: var(--bright);
+  margin: 1.25rem 0;
+}
+pre .cm  { color: var(--muted); }
+pre .kw  { color: var(--gold-lt); }
+pre .ty  { color: var(--accent-lt); }
+pre .st  { color: var(--green-lt); }
+pre .nr  { color: var(--amber-lt); }
+pre .fn  { color: var(--bright); }
+.container { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── TOP BANNER ── */
+.top-banner {
+  background: var(--accent-dim);
+  border-bottom: 1px solid var(--accent);
+  padding: 0.5rem 0;
+}
+.top-banner-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-lt);
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(5,12,21,0.96);
+  border-bottom: 1px solid var(--edge);
+  backdrop-filter: blur(10px);
+  padding: 0 2rem; height: 54px;
+}
+.nav-inner {
+  max-width: 1040px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem; color: var(--bright); font-weight: 400;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--muted); transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); text-decoration: none; }
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); background: var(--accent);
+  border: 1px solid var(--accent); padding: 0.28rem 0.8rem;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); text-decoration: none; }
+
+/* ── HERO ── */
+.hero {
+  padding: 5.5rem 0 5rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-lt), var(--gold-lt), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; top: -200px; right: -300px;
+  width: 900px; height: 900px;
+  background: radial-gradient(ellipse, rgba(26,122,136,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  max-width: 800px; margin-bottom: 1.5rem;
+  letter-spacing: -0.02em; line-height: 1.12;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 1rem; color: var(--body);
+  max-width: 680px; line-height: 1.85; margin-bottom: 2.5rem;
+}
+.hero-badges {
+  display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.28rem 0.7rem; border: 1px solid var(--edge);
+  color: var(--muted);
+}
+.badge.tech  { border-color: var(--accent);   color: var(--accent-lt); }
+.badge.reg   { border-color: var(--gold-dim); color: var(--gold-lt); }
+.badge.live  { border-color: var(--green);  color: var(--green-lt); }
+
+/* ── STRUCTURE OVERVIEW BOX ── */
+.overview-box {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin-top: 3.5rem;
+}
+.overview-cell {
+  background: var(--deep); padding: 1.5rem 1.75rem;
+}
+.overview-cell-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+.overview-cell h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.overview-cell p { font-size: 0.8rem; color: var(--body); line-height: 1.7; }
+
+/* ── TOC ── */
+.toc-wrapper {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--gold);
+  padding: 2rem 2.5rem; margin: 4rem 0;
+}
+.toc-wrapper h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 1.25rem; font-weight: 400;
+}
+.toc-list {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 3rem; list-style: none;
+}
+.toc-list li {
+  font-size: 0.82rem; color: var(--body);
+  padding: 0.2rem 0; border-bottom: 1px solid rgba(28,34,53,0.5);
+}
+.toc-list a {
+  color: var(--body); display: flex; gap: 0.75rem; align-items: baseline;
+}
+.toc-list a:hover { color: var(--accent-lt); text-decoration: none; }
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem; color: var(--muted); flex-shrink: 0;
+}
+
+/* ── SECTIONS ── */
+section { padding: 5rem 0; border-bottom: 1px solid var(--edge); }
+section:last-of-type { border-bottom: none; }
+.sec-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 0.6rem;
+}
+.sec-title {
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  margin-bottom: 0.75rem; max-width: 740px;
+}
+.sec-lead {
+  font-size: 0.93rem; color: var(--body);
+  max-width: 720px; line-height: 1.85;
+  margin-bottom: 2.5rem; padding-bottom: 2rem;
+  border-bottom: 1px solid var(--edge);
+}
+p + p { margin-top: 0.9rem; }
+p { font-size: 0.9rem; color: var(--body); line-height: 1.85; }
+strong { color: var(--text); font-weight: 500; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border: 1px solid var(--edge);
+  padding: 1.4rem 1.75rem; margin: 1.75rem 0;
+}
+.callout.gold  { border-left: 3px solid var(--gold); background: rgba(184,146,42,0.04); }
+.callout.teal  { border-left: 3px solid var(--accent); background: rgba(26,122,136,0.04); }
+.callout.amber { border-left: 3px solid var(--amber); background: rgba(160,96,32,0.05); }
+.callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.callout.gold  .callout-label { color: var(--gold-lt); }
+.callout.teal  .callout-label { color: var(--accent-lt); }
+.callout.amber .callout-label { color: var(--amber-lt); }
+.callout p { font-size: 0.85rem; }
+
+/* ── NETWORK TOPOLOGY SVG WRAPPER ── */
+.diagram-wrap {
+  border: 1px solid var(--edge);
+  background: var(--deep);
+  padding: 2rem; overflow-x: auto;
+  margin: 2rem 0;
+}
+.diagram-wrap svg { display: block; margin: 0 auto; }
+.diagram-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-align: center; margin-top: 1rem;
+}
+
+/* ── STEP LIST ── */
+.step-list {
+  display: flex; flex-direction: column;
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.step-item {
+  background: var(--deep); padding: 1.4rem 1.75rem;
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 1.5rem; align-items: start;
+  transition: background 0.18s;
+}
+.step-item:hover { background: var(--panel); }
+.step-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem; color: var(--edge);
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.18s;
+}
+.step-item:hover .step-num { color: var(--accent-lt); }
+.step-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 0.25rem;
+}
+.step-body h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.step-body p { font-size: 0.82rem; line-height: 1.8; }
+.step-timing {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.35rem;
+}
+.step-timing span { color: var(--accent-lt); }
+
+/* ── DETAIL TABLE ── */
+.detail-table-wrap { overflow-x: auto; margin: 1.75rem 0; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.detail-table th {
+  background: var(--panel); padding: 0.7rem 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--accent-lt); border: 1px solid var(--edge);
+  text-align: left; font-weight: 400;
+}
+.detail-table td {
+  padding: 0.75rem 1.1rem; border: 1px solid var(--edge);
+  color: var(--body); line-height: 1.65; vertical-align: top;
+}
+.detail-table td.lbl {
+  font-weight: 500; color: var(--bright);
+  border-right: 1px solid var(--rim);
+  white-space: nowrap; background: rgba(13,16,24,0.5);
+}
+.detail-table tr:hover td { background: var(--panel); }
+
+/* ── NODE CARDS ── */
+.node-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.node-card { padding: 1.5rem 1.75rem; }
+.node-card.euro-a { background: color-mix(in srgb, var(--euro-a) 30%, var(--deep)); border-top: 3px solid #3a6ac0; }
+.node-card.euro-b { background: color-mix(in srgb, var(--euro-b) 30%, var(--deep)); border-top: 3px solid #6a3aaa; }
+.node-card.uae    { background: color-mix(in srgb, var(--uae) 30%, var(--deep));    border-top: 3px solid #3aaa60; }
+.node-card.notary { background: color-mix(in srgb, var(--notary) 50%, var(--deep)); border-top: 3px solid var(--gold-lt); grid-column: span 3; }
+.node-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+.node-card.euro-a .node-type { color: #6a9ae0; }
+.node-card.euro-b .node-type { color: #9a6ad0; }
+.node-card.uae    .node-type { color: #6ad090; }
+.node-card.notary .node-type { color: var(--gold-lt); }
+.node-card h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.97rem; font-weight: 500; color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.node-card p { font-size: 0.79rem; line-height: 1.75; color: var(--body); }
+.node-card ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.2rem; }
+.node-card ul li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; color: var(--muted); padding: 0.15rem 0;
+  border-bottom: 1px solid rgba(28,34,53,0.4);
+}
+.node-card ul li::before { content: '→ '; color: var(--accent); }
+
+/* ── REGULATORY TABLE ── */
+.reg-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.reg-cell { background: var(--deep); padding: 1.5rem 1.75rem; }
+.reg-cell:first-child { border-left: 3px solid #4060c0; }
+.reg-cell:nth-child(2) { border-left: 3px solid #3aaa60; }
+.reg-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 0.75rem;
+}
+.reg-cell h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.95rem; font-weight: 500; color: var(--white);
+  margin-bottom: 0.6rem;
+}
+.reg-cell p { font-size: 0.81rem; line-height: 1.78; }
+.reg-list { list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.reg-list li {
+  font-size: 0.8rem; color: var(--body); padding: 0.4rem 0;
+  border-bottom: 1px solid var(--edge); line-height: 1.6;
+}
+.reg-list li strong { color: var(--text); }
+
+/* ── FOOTNOTES ── */
+.footnotes {
+  border-top: 1px solid var(--edge);
+  padding: 3rem 0 2rem;
+}
+.footnotes h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.25rem; font-weight: 400;
+}
+.footnotes ol {
+  padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.7rem;
+}
+.footnotes li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem; color: var(--muted);
+  line-height: 1.65; letter-spacing: 0.02em;
+}
+.footnotes a { color: var(--accent-lt); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 2.5rem 0; border-top: 1px solid var(--edge);
+  background: var(--deep);
+}
+.footer-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 1rem;
+}
+.footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem;
+}
+.footer-brand span { color: var(--gold-lt); }
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7;
+}
+.footer-copy a { color: var(--accent-lt); }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent-lt); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .overview-box { grid-template-columns: 1fr; }
+  .toc-list { grid-template-columns: 1fr; }
+  .node-grid { grid-template-columns: 1fr; }
+  .node-card.notary { grid-column: span 1; }
+  .reg-grid { grid-template-columns: 1fr; }
+  .step-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  .step-num { display: none; }
+  .nav-links { display: none; }
+}
+
+/* Section anchors below sticky nav */
+[id] { scroll-margin-top: 70px; }
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-bar {
+  background: var(--deep);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.45rem 0;
+}
+.lang-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: flex-end; gap: 0.25rem;
+}
+.lang-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--edge);
+  color: var(--muted);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="me" href="https://ainumbers.co">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<link rel="canonical" href="https://postoaklabs.com/example-corda-a2a.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Corda A2A Tokenization: Europe–Middle East Cross-Border Settlement Architecture | Post Oak Labs">
+<meta property="og:description" content="A practitioner-authored technical deep-dive into how R3 Corda enables tokenized account-to-account settlement between two European commercial banks and one UAE bank. Node topology, CorDapp flows, FX handling, notary design, compliance layers, and regulatory framework (MiCA + CBUAE).">
+<meta property="og:url" content="https://postoaklabs.com/example-corda-a2a.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="Corda A2A Tokenization: Europe–Middle East Cross-Border Settlement Architecture | Post Oak Labs">
+<meta name="twitter:description" content="A practitioner-authored technical deep-dive into how R3 Corda enables tokenized account-to-account settlement between two European commercial banks and one UAE bank. Node topology, CorDapp flows, FX handling, notary design, compliance layers, and regulatory framework (MiCA + CBUAE).">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Corda A2A Tokenization: Europe\u2013Middle East Cross-Border Settlement Architecture",
+  "datePublished": "2026-05-07",
+  "dateModified": "2026-05-11",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "publisher": {
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "mainEntityOfPage": "https://postoaklabs.com/example-corda-a2a.html",
+  "image": "https://postoaklabs.com/og-image.png",
+  "about": "R3 Corda for tokenized A2A cross-border settlement",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Commercial banks, central banks, large corporates"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Enterprise Blockchain",
+      "item": "https://postoaklabs.com/enterprise-blockchain.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Corda",
+      "item": "https://postoaklabs.com/example-corda-a2a.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow">Technical Deep-Dive · R3 Corda · Cross-Border Settlement</p>
+    <h1 data-i18n="hero-h1">A2A tokenization on Corda: <em>two European banks, one UAE bank</em></h1>
+    <p class="hero-sub" data-i18n="hero-sub">
+      A minute-detail walkthrough of how R3 Corda's permissioned distributed ledger enables tokenized account-to-account settlement across a three-bank network: a German commercial bank (Frankfurt), a Dutch commercial bank (Amsterdam), and a UAE commercial bank (Dubai/ADGM). Every layer covered: node architecture, CorDapp structure, token lifecycle, FX handling, notary design, ISO 20022 integration, and the applicable regulatory frameworks on both sides of the corridor.
+    </p>
+
+    <div class="hero-badges">
+      <span class="badge tech">R3 Corda Enterprise</span>
+      <span class="badge tech">Corda Token SDK</span>
+      <span class="badge tech">ISO 20022 pacs.008</span>
+      <span class="badge tech">CorDapp / Kotlin</span>
+      <span class="badge reg">MiCA (EU)</span>
+      <span class="badge reg">CBUAE PTSR 2024</span>
+      <span class="badge reg">ADGM FSRA</span>
+      <span class="badge reg">DORA Jan 2025</span>
+      <span class="badge live">Production-Grade Pattern</span>
+    </div>
+
+    <div class="overview-box">
+      <div class="overview-cell">
+        <p class="overview-cell-label">Scenario</p>
+        <h3>Three-bank EUR/AED corridor</h3>
+        <p>A German corporate client paying a Dubai supplier. BankFR (Frankfurt) originates. BankNL (Amsterdam) acts as the EUR liquidity node. BankAE (Dubai ADGM) receives and redeems in AED.</p>
+      </div>
+      <div class="overview-cell">
+        <p class="overview-cell-label">Technology</p>
+        <h3>R3 Corda 4.x / 5.x Enterprise</h3>
+        <p>Permissioned network with three participant nodes plus a BFT notary cluster. FungibleToken states from the Corda Token SDK. CorDapps written in Kotlin. AMQP point-to-point messaging. ISO 20022 pacs.008 payload inside token metadata.</p>
+      </div>
+      <div class="overview-cell">
+        <p class="overview-cell-label">Settlement</p>
+        <h3>PvP atomic / intraday RTGS</h3>
+        <p>EUR leg and AED leg settle atomically on-ledger via Payment versus Payment (PvP). Net interbank positions settle via TARGET2 (EUR) and UAE RTGS at end-of-cycle. No nostro pre-funding required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TOC ═══════════ -->
+<div class="container">
+  <div class="toc-wrapper">
+    <h3>Contents</h3>
+    <ul class="toc-list">
+      <li><a href="#background"><span class="toc-num">01</span>Why this corridor, why Corda</a></li>
+      <li><a href="#architecture"><span class="toc-num">02</span>Network topology and node architecture</a></li>
+      <li><a href="#cordapp"><span class="toc-num">03</span>CorDapp structure: states, contracts, flows</a></li>
+      <li><a href="#lifecycle"><span class="toc-num">04</span>Full transaction lifecycle (16 steps)</a></li>
+      <li><a href="#fx"><span class="toc-num">05</span>FX handling: EUR/AED on-ledger</a></li>
+      <li><a href="#notary"><span class="toc-num">06</span>Notary design for cross-jurisdiction finality</a></li>
+      <li><a href="#iso20022"><span class="toc-num">07</span>ISO 20022 payload inside the token</a></li>
+      <li><a href="#kyc-aml"><span class="toc-num">08</span>KYC/AML and Travel Rule compliance</a></li>
+      <li><a href="#regulatory"><span class="toc-num">09</span>Regulatory framework: EU (MiCA/DORA) and UAE</a></li>
+      <li><a href="#settlement"><span class="toc-num">10</span>RTGS net settlement and liquidity management</a></li>
+      <li><a href="#risks"><span class="toc-num">11</span>Operational risks and governance design</a></li>
+      <li><a href="#references"><span class="toc-num">—</span>References and source notes</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 1: BACKGROUND ═══════════ -->
+<section id="background">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_01">Section 01</p>
+    <h2 class="sec-title" data-i18n="t-why_this_corridor__and_why">Why this corridor, and why Corda is the right infrastructure choice</h2>
+    <p class="sec-lead">
+      The EUR–AED trade corridor is one of the most commercially significant cross-border payment routes not yet served by a production tokenized A2A network. Europe–UAE bilateral trade exceeded $50 billion annually as of 2024, with payment volumes concentrated in energy, real estate, logistics, and professional services sectors. The corridor runs on correspondent banking rails that are expensive, slow, and increasingly impaired by de-risking pressure on both ends.
+    </p>
+
+    <p>The case for tokenized infrastructure on this corridor is structural. European banks operating under MiCA and DORA face mounting compliance costs on legacy payment chains. UAE banks operating under the CBUAE's Payment Token Services Regulation (PTSR, June 2024, in force August 2025) and the ADGM FSRA's digital asset frameworks have explicit licensing pathways for deposit-token infrastructure. Both regulatory environments are compatible with, and in the UAE's case actively designed around, programmable settlement on permissioned ledgers.</p>
+
+    <p>R3 Corda is the technically appropriate choice for this three-bank network for four reasons. First, its point-to-point AMQP messaging architecture means transaction data is visible only to the parties directly involved — BankFR, BankNL, and BankAE each see only the states they are party to, not the full ledger. This bilateral privacy is a regulatory requirement, not a preference, in both the EU (GDPR, MiCA confidentiality obligations) and the UAE (ADGM data protection rules). Second, Corda's Kotlin/JVM-based CorDapp architecture maps naturally to the financial contract semantics of a deposit-token A2A payment: explicit authorization by all signing parties, deterministic finality once the notary signs, and a clear legal entity identity model using X.509 certificates. Third, Corda has the most extensive documented production deployment record in regulated financial networks of any permissioned platform — SIX Digital Exchange (Switzerland), HQLAx (European collateral mobility), the UK Regulated Liability Network, and multiple wholesale CBDC pilots including the CBUAE's own Aber project, which evaluated Corda for dual-currency cross-border settlement between the UAE and Saudi Arabia.<sup><a href="#fn1">[1]</a></sup> Fourth, R3 has production deployments at European institutions (SDX under Swiss DLT Act, Euroclear D-FMI, the UK RLN pilot with Barclays, HSBC, Lloyds, and others) and active engagement with UAE regulatory sandboxes under the CBUAE, ADGM FSRA, and DFSA frameworks, providing a regulatory acceptance footprint that shortens the approval timeline for new corridor deployments.</p>
+
+    <div class="callout gold">
+      <p class="callout-label">On the Aber project precedent</p>
+      <p>Project Aber — co-run by the Saudi Central Bank and the Central Bank of the UAE — evaluated Corda specifically for cross-border, dual-issued digital currency settlement between six participating commercial banks across two countries. The project confirmed that cross-border single-currency settlement on Corda is technically viable and that DLT gives central banks the ability to operate both domestic and cross-border payment systems from the same infrastructure.<sup><a href="#fn1">[1]</a></sup> This is the most directly relevant precedent for the EUR–AED architecture described here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 2: ARCHITECTURE ═══════════ -->
+<section id="architecture">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_02">Section 02</p>
+    <h2 class="sec-title" data-i18n="t-network_topology_and_node">Network topology and node architecture</h2>
+    <p class="sec-lead">
+      The three-bank network consists of four Corda nodes (three participant nodes and a notary cluster), a shared network map service, and optional bridge connectors to SWIFT and to TARGET2/UAE RTGS for end-of-cycle net settlement. Each bank operates its own Corda node inside its own data center or regulated private cloud. No bank's infrastructure is hosted by R3 or any other single third party.
+    </p>
+
+    <!-- TOPOLOGY DIAGRAM -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" width="860" style="max-width:100%;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#24a8ba"/>
+          </marker>
+          <marker id="arr-gold" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#d4aa44"/>
+          </marker>
+          <marker id="arr-muted" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#3d5070"/>
+          </marker>
+        </defs>
+
+        <rect width="900" height="520" fill="#0d1018" rx="2"/>
+
+        <!-- Network boundary -->
+        <rect x="20" y="20" width="860" height="480" rx="4" fill="none" stroke="#1c2235" stroke-width="1" stroke-dasharray="5,4"/>
+        <text x="42" y="38" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1.5">CORDA BUSINESS NETWORK — EUR/AED CORRIDOR</text>
+
+        <!-- Network Map Service (top center) -->
+        <rect x="340" y="48" width="220" height="48" rx="2" fill="#111520" stroke="#2a3550" stroke-width="1"/>
+        <rect x="340" y="48" width="220" height="3" rx="1" fill="#3d5070"/>
+        <text x="450" y="68" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="1">NETWORK MAP SERVICE</text>
+        <text x="450" y="82" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">X.509 Identity Registry · CorDapp Versions</text>
+
+        <!-- BankFR Node (left) -->
+        <rect x="40" y="150" width="200" height="160" rx="2" fill="#0d1420" stroke="#3a6ac0" stroke-width="1.5"/>
+        <rect x="40" y="150" width="200" height="4" rx="1" fill="#3a6ac0"/>
+        <text x="140" y="172" fill="#6a9ae0" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="1">NODE A — BANKFR</text>
+        <text x="140" y="188" fill="#cde0f2" font-family="JetBrains Mono, monospace" font-size="10" text-anchor="middle" font-weight="500">Frankfurt</text>
+        <text x="140" y="205" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">German Commercial Bank</text>
+        <line x1="60" y1="218" x2="220" y2="218" stroke="#1c2235" stroke-width="0.5"/>
+        <text x="60" y="232" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Vault: EUR FungibleTokens</text>
+        <text x="60" y="246" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">CorDapp: PaymentInitiatorFlow</text>
+        <text x="60" y="260" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">CorDapp: AMLComplianceCorDapp</text>
+        <text x="60" y="274" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Reg: BaFin · MiCA · DORA</text>
+        <text x="60" y="288" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">RTGS Link: TARGET2 (ECB)</text>
+
+        <!-- BankNL Node (bottom center-left) -->
+        <rect x="175" y="360" width="200" height="135" rx="2" fill="#130d20" stroke="#6a3aaa" stroke-width="1.5"/>
+        <rect x="175" y="360" width="200" height="4" rx="1" fill="#6a3aaa"/>
+        <text x="275" y="382" fill="#9a6ad0" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="1">NODE B — BANKNL</text>
+        <text x="275" y="398" fill="#cde0f2" font-family="JetBrains Mono, monospace" font-size="10" text-anchor="middle" font-weight="500">Amsterdam</text>
+        <text x="275" y="415" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Dutch Commercial Bank</text>
+        <line x1="195" y1="427" x2="355" y2="427" stroke="#1c2235" stroke-width="0.5"/>
+        <text x="195" y="441" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Vault: EUR FungibleTokens (liquidity)</text>
+        <text x="195" y="455" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">CorDapp: FXOracleResponder</text>
+        <text x="195" y="469" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Reg: DNB · MiCA · DORA</text>
+
+        <!-- BankAE Node (right) -->
+        <rect x="660" y="150" width="200" height="160" rx="2" fill="#0a1a10" stroke="#3aaa60" stroke-width="1.5"/>
+        <rect x="660" y="150" width="200" height="4" rx="1" fill="#3aaa60"/>
+        <text x="760" y="172" fill="#6ad090" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="1">NODE C — BANKAE</text>
+        <text x="760" y="188" fill="#cde0f2" font-family="JetBrains Mono, monospace" font-size="10" text-anchor="middle" font-weight="500">Dubai / ADGM</text>
+        <text x="760" y="205" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">UAE Commercial Bank</text>
+        <line x1="680" y1="218" x2="840" y2="218" stroke="#1c2235" stroke-width="0.5"/>
+        <text x="680" y="232" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Vault: AED FungibleTokens</text>
+        <text x="680" y="246" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">CorDapp: PaymentResponderFlow</text>
+        <text x="680" y="260" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">CorDapp: FXConversionCorDapp</text>
+        <text x="680" y="274" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Reg: ADGM FSRA · CBUAE PTSR</text>
+        <text x="680" y="288" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">RTGS Link: UAE RTGS (CBUAE)</text>
+
+        <!-- BFT Notary Cluster (bottom center-right) -->
+        <rect x="525" y="360" width="200" height="135" rx="2" fill="#1a1208" stroke="#d4aa44" stroke-width="1.5"/>
+        <rect x="525" y="360" width="200" height="4" rx="1" fill="#d4aa44"/>
+        <text x="625" y="382" fill="#d4aa44" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="1">BFT NOTARY CLUSTER</text>
+        <text x="625" y="398" fill="#9fb8d4" font-family="JetBrains Mono, monospace" font-size="8.5" text-anchor="middle">3-of-5 Signatories</text>
+        <text x="625" y="415" fill="#6888a8" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Independent governance body</text>
+        <line x1="545" y1="427" x2="705" y2="427" stroke="#2a3550" stroke-width="0.5"/>
+        <text x="545" y="441" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Istanbul BFT consensus</text>
+        <text x="545" y="455" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">Uniqueness validation only</text>
+        <text x="545" y="469" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7">No tx data visibility to notary</text>
+
+        <!-- Arrows: Banks to Network Map -->
+        <line x1="140" y1="150" x2="380" y2="96" stroke="#2a3550" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-muted)"/>
+        <line x1="760" y1="150" x2="520" y2="96" stroke="#2a3550" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-muted)"/>
+        <line x1="280" y1="360" x2="420" y2="96" stroke="#2a3550" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-muted)"/>
+
+        <!-- Main payment flow: BankFR → BankAE (bold) -->
+        <line x1="240" y1="228" x2="658" y2="228" stroke="#24a8ba" stroke-width="2" marker-end="url(#arr)"/>
+        <rect x="360" y="213" width="178" height="18" fill="#0d1018" rx="1"/>
+        <text x="449" y="225" fill="#24a8ba" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle">EUR TOKEN → AED REDEMPTION</text>
+
+        <!-- BankFR ↔ BankNL (liquidity link) -->
+        <line x1="140" y1="310" x2="240" y2="360" stroke="#6a3aaa" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        <text x="162" y="345" fill="#6a3aaa" font-family="JetBrains Mono, monospace" font-size="7" transform="rotate(-25,162,345)">EUR liquidity</text>
+
+        <!-- Banks to Notary -->
+        <line x1="180" y1="310" x2="560" y2="360" stroke="#b8922a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-gold)"/>
+        <line x1="660" y1="310" x2="696" y2="360" stroke="#b8922a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-gold)"/>
+        <line x1="375" y1="495" x2="524" y2="428" stroke="#b8922a" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-gold)"/>
+
+        <!-- Legend -->
+        <text x="42" y="500" fill="#24a8ba" font-family="JetBrains Mono, monospace" font-size="7.5">━━ Token transfer</text>
+        <text x="160" y="500" fill="#b8922a" font-family="JetBrains Mono, monospace" font-size="7.5">- - - Notary request</text>
+        <text x="278" y="500" fill="#6a3aaa" font-family="JetBrains Mono, monospace" font-size="7.5">- - - Liquidity flow</text>
+        <text x="396" y="500" fill="#3d5070" font-family="JetBrains Mono, monospace" font-size="7.5">- - - Network map lookup</text>
+      </svg>
+      <p class="diagram-caption">Corda network topology: three participant nodes + BFT notary cluster · EUR–AED corridor</p>
+    </div>
+
+    <!-- Node cards -->
+    <div class="node-grid">
+      <div class="node-card euro-a">
+        <p class="node-type">Node A · Originating Bank</p>
+        <h3>BankFR — Frankfurt</h3>
+        <p>German commercial bank. Licensed under BaFin, subject to MiCA as an issuer of e-money tokens under Title III, and DORA-compliant from January 2025 for all critical ICT services. Operates a Corda Enterprise 4.x node in its Frankfurt data center. Acts as the EUR token issuer in this network: it mints EUR-denominated <code>FungibleToken</code> states against its own fiat reserves on behalf of corporate clients.</p>
+        <ul>
+          <li>X.509 identity: O=BankFR, L=Frankfurt, C=DE</li>
+          <li>Vault currency: EUR (FungibleToken)</li>
+          <li>HSM: Thales Luna 7 (FIPS 140-2 Level 3)</li>
+          <li>DB: PostgreSQL 14 (Corda Enterprise)</li>
+          <li>AMQP broker: Apache Artemis (in-node)</li>
+          <li>Connects to: BaFin reporting gateway</li>
+        </ul>
+      </div>
+      <div class="node-card euro-b">
+        <p class="node-type">Node B · Liquidity Node</p>
+        <h3>BankNL — Amsterdam</h3>
+        <p>Dutch commercial bank. Licensed under DNB (De Nederlandsche Bank), subject to MiCA and DORA. Participates in this network primarily as an EUR liquidity provider and FX oracle operator. It does not originate payments in this scenario, but holds surplus EUR token positions that can be used for intraday liquidity provision and hosts the shared FX oracle service that supplies EUR/AED spot rates to the network.</p>
+        <ul>
+          <li>X.509 identity: O=BankNL, L=Amsterdam, C=NL</li>
+          <li>Vault currency: EUR (FungibleToken, liquidity pool)</li>
+          <li>Hosts: FX Oracle CorDapp (EUR/AED spot feed)</li>
+          <li>DB: PostgreSQL 14 (Corda Enterprise)</li>
+          <li>Connects to: ECB/DNB reporting gateways</li>
+          <li>Connects to: TARGET2 RTGS net settlement</li>
+        </ul>
+      </div>
+      <div class="node-card uae">
+        <p class="node-type">Node C · Receiving Bank</p>
+        <h3>BankAE — Dubai (ADGM)</h3>
+        <p>UAE commercial bank, incorporated and licensed in the Abu Dhabi Global Market (ADGM) under the ADGM Financial Services Regulatory Authority (FSRA) as a Deposit-Taking Institution with digital asset permissions. Also holds a CBUAE Payment Token Services license for dirham-denominated digital payment tokens, issued under the PTSR framework (June 2024, in force August 2025). Acts as the AED token issuer and redeemer at the receiving end.</p>
+        <ul>
+          <li>X.509 identity: O=BankAE, L=Dubai, C=AE</li>
+          <li>Vault currency: AED (FungibleToken)</li>
+          <li>HSM: AWS CloudHSM (FIPS 140-2 Level 3)</li>
+          <li>DB: PostgreSQL 14 (Corda Enterprise)</li>
+          <li>Connects to: CBUAE RTGS (UAE RTGS)</li>
+          <li>FX redemption: on-ledger AED credit at spot rate</li>
+        </ul>
+      </div>
+      <div class="node-card notary">
+        <p class="node-type">Notary Cluster · Consensus Layer</p>
+        <h3>BFT Notary — 3-of-5 Independent Signatories</h3>
+        <p>The notary cluster is the sole consensus mechanism in Corda. Its function is narrow and critical: confirming that the input states being consumed by a proposed transaction have not already been spent (uniqueness) and issuing a timestamped signature that makes the transaction irrevocable. The notary does <em>not</em> see the content of the transaction — only the state references being consumed and their identifiers. In a cross-jurisdictional network, the notary cluster must be governed by an entity that is jurisdictionally neutral or jointly governed by the participating banks. In production, this is typically a consortium entity (analogous to how SDX runs its own notary for European trades), a joint-venture vehicle, or a regulated third-party trust service provider. The Istanbul BFT algorithm tolerates up to <em>f</em> Byzantine faults where 5 nodes tolerate up to 1 fault (3-of-5 quorum). The five notary nodes run in geographically separated data centers: two in EU-regulated cloud zones, two in UAE-regulated cloud zones, and one in a jurisdictionally neutral location (e.g. Switzerland).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 3: CORDAPP STRUCTURE ═══════════ -->
+<section id="cordapp">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_03">Section 03</p>
+    <h2 class="sec-title" data-i18n="t-cordapp_structure__states">CorDapp structure: states, contracts, and flows</h2>
+    <p class="sec-lead">
+      A Corda Distributed Application (CorDapp) is the business logic layer installed on each node. The payment CorDapp for this network consists of three modules: a states-and-contracts module (defining what a payment token is and what rules govern its transfer), a workflows module (defining the step-by-step flows that execute between nodes), and a compliance module (encoding KYC attestation verification and ISO 20022 data validation). All three are packaged as JVM <code>.jar</code> files deployed identically to each participant node.
+    </p>
+
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1 — State definitions</h3>
+    <p>A Corda <em>state</em> is an immutable object representing a shared fact between two or more parties at a specific point in time. Once created, a state is never modified — it is consumed (spent) and replaced by a new state in a transaction. The two primary state types in this CorDapp are:</p>
+
+    <pre><code><span class="cm">// EUR deposit token — issued by BankFR, owned by BankAE after transfer</span>
+<span class="kw">data class</span> <span class="ty">EurDepositToken</span>(
+    <span class="kw">override val</span> amount: Amount&lt;IssuedTokenType&gt;,   <span class="cm">// e.g. 5,000,000 EUR, issued by BankFR</span>
+    <span class="kw">override val</span> holder: AbstractParty,              <span class="cm">// current holder (changes on transfer)</span>
+    <span class="kw">val</span> iso20022Payload: <span class="ty">String</span>,                     <span class="cm">// pacs.008 XML payload (base64 encoded)</span>
+    <span class="kw">val</span> kycAttestation: <span class="ty">SecureHash</span>,                  <span class="cm">// hash of originator KYC attestation VC</span>
+    <span class="kw">val</span> paymentReference: <span class="ty">UniqueIdentifier</span>,           <span class="cm">// end-to-end payment reference (UETR)</span>
+    <span class="kw">val</span> settlementCycle: <span class="ty">String</span>,                     <span class="cm">// "INTRADAY" or "EOD"</span>
+    <span class="kw">override val</span> participants: List&lt;AbstractParty&gt;
+) : <span class="ty">FungibleToken</span>
+
+<span class="cm">// FX obligation — created when BankAE commits to deliver AED against EUR</span>
+<span class="kw">data class</span> <span class="ty">FxObligationState</span>(
+    <span class="kw">val</span> eurAmount: Amount&lt;IssuedTokenType&gt;,           <span class="cm">// EUR leg</span>
+    <span class="kw">val</span> aedAmount: Amount&lt;IssuedTokenType&gt;,           <span class="cm">// AED leg (calculated from oracle rate)</span>
+    <span class="kw">val</span> fxRate: <span class="ty">BigDecimal</span>,                          <span class="cm">// EUR/AED spot rate from oracle</span>
+    <span class="kw">val</span> rateTimestamp: <span class="ty">Instant</span>,                      <span class="cm">// when rate was signed by oracle</span>
+    <span class="kw">val</span> obligor: Party,                               <span class="cm">// BankAE (owes AED)</span>
+    <span class="kw">val</span> beneficiary: Party,                           <span class="cm">// BankFR (receives AED equivalent)</span>
+    <span class="kw">val</span> linearId: UniqueIdentifier,
+    <span class="kw">override val</span> participants: List&lt;AbstractParty&gt;
+) : <span class="ty">LinearState</span></code></pre>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.2 — Contract logic</h3>
+    <p>Corda contracts encode the business rules that must be satisfied for any transaction consuming or creating a given state type to be valid. Every node verifies contract logic locally before signing. The <code>EurDepositTokenContract</code> enforces:</p>
+
+    <pre><code><span class="kw">class</span> <span class="ty">EurDepositTokenContract</span> : <span class="ty">Contract</span> {
+    <span class="kw">companion object</span> { <span class="kw">const val</span> ID = <span class="st">"com.postoaklabs.a2a.contracts.EurDepositTokenContract"</span> }
+
+    <span class="kw">override fun</span> <span class="fn">verify</span>(tx: <span class="ty">LedgerTransaction</span>) {
+        <span class="kw">val</span> cmd = tx.commands.requireSingleCommand&lt;Commands&gt;()
+        <span class="kw">when</span> (cmd.value) {
+            <span class="kw">is</span> Commands.Issue -> {
+                <span class="cm">// Only the issuer bank (BankFR) can mint tokens</span>
+                require(tx.inputs.isEmpty()) { <span class="st">"Issue: no inputs"</span> }
+                require(tx.outputs.size == <span class="nr">1</span>) { <span class="st">"Issue: exactly one output"</span> }
+                <span class="kw">val</span> out = tx.outputsOfType&lt;<span class="ty">EurDepositToken</span>&gt;().single()
+                require(out.amount.quantity > <span class="nr">0</span>) { <span class="st">"Issue: positive amount"</span> }
+                require(cmd.signers.contains(out.amount.token.issuer.party.owningKey))
+                    { <span class="st">"Issue: signed by issuer"</span> }
+                require(out.iso20022Payload.isNotBlank()) { <span class="st">"Issue: pacs.008 payload required"</span> }
+                require(out.kycAttestation != SecureHash.zeroHash) { <span class="st">"Issue: KYC attestation required"</span> }
+            }
+            <span class="kw">is</span> Commands.Move -> {
+                <span class="cm">// Holder signs the move; input and output amounts must balance</span>
+                <span class="kw">val</span> inputs  = tx.inputsOfType&lt;<span class="ty">EurDepositToken</span>&gt;()
+                <span class="kw">val</span> outputs = tx.outputsOfType&lt;<span class="ty">EurDepositToken</span>&gt;()
+                require(inputs.sumTokenStateAndRefs() == outputs.sumTokenStates())
+                    { <span class="st">"Move: amounts balance"</span> }
+                require(cmd.signers.containsAll(inputs.map { it.holder.owningKey }))
+                    { <span class="st">"Move: signed by holder"</span> }
+            }
+            <span class="kw">is</span> Commands.Redeem -> {
+                <span class="cm">// Redemption burns the token; signed by both holder and issuer</span>
+                require(tx.outputs.isEmpty()) { <span class="st">"Redeem: no outputs"</span> }
+                require(cmd.signers.containsAll(
+                    tx.inputsOfType&lt;<span class="ty">EurDepositToken</span>&gt;().flatMap {
+                        listOf(it.holder.owningKey, it.amount.token.issuer.party.owningKey)
+                    }
+                )) { <span class="st">"Redeem: signed by holder and issuer"</span> }
+            }
+        }
+    }
+    <span class="kw">interface</span> <span class="ty">Commands</span> : <span class="ty">CommandData</span> {
+        <span class="kw">class</span> <span class="ty">Issue</span>   : Commands
+        <span class="kw">class</span> <span class="ty">Move</span>    : Commands
+        <span class="kw">class</span> <span class="ty">Redeem</span>  : Commands
+    }
+}</code></pre>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.3 — Key flows</h3>
+    <p>Flows are the orchestration layer: they define the step-by-step protocol that executing nodes follow to propose, negotiate, sign, and finalise a transaction. Communication between nodes in a flow is point-to-point over encrypted AMQP channels — no other node on the network sees the flow messages.</p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th style="width:200px;">Flow Name</th>
+            <th>Initiating Node</th>
+            <th>Responder Node(s)</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl"><code>PaymentInitiatorFlow</code></td>
+            <td>BankFR</td>
+            <td>BankAE, Notary</td>
+            <td>Mints EUR token, embeds ISO 20022 payload and KYC attestation, initiates transfer to BankAE</td>
+          </tr>
+          <tr>
+            <td class="lbl"><code>FXOracleQueryFlow</code></td>
+            <td>BankFR</td>
+            <td>BankNL (oracle)</td>
+            <td>Requests a signed EUR/AED spot rate from the FX oracle CorDapp hosted on BankNL</td>
+          </tr>
+          <tr>
+            <td class="lbl"><code>FxObligationCreateFlow</code></td>
+            <td>BankFR</td>
+            <td>BankAE, Notary</td>
+            <td>Creates the FxObligationState committing BankAE to deliver AED at the oracle-signed rate</td>
+          </tr>
+          <tr>
+            <td class="lbl"><code>AtomicPvPSettlementFlow</code></td>
+            <td>BankFR</td>
+            <td>BankAE, Notary</td>
+            <td>Atomic transaction that simultaneously consumes EUR token (BankFR → BankAE) and AED token (BankAE → BankFR's beneficiary account), settling both legs in one notary-approved transaction</td>
+          </tr>
+          <tr>
+            <td class="lbl"><code>TokenRedemptionFlow</code></td>
+            <td>BankAE</td>
+            <td>BankFR (issuer), Notary</td>
+            <td>Burns the transferred EUR token after off-ledger RTGS net settlement is confirmed; BankAE credits local AED to the Dubai corporate recipient</td>
+          </tr>
+          <tr>
+            <td class="lbl"><code>ComplianceAttestationFlow</code></td>
+            <td>BankFR</td>
+            <td>BankAE</td>
+            <td>Exchanges Verifiable Credential attestations for originator (BankFR) and beneficiary (BankAE) before any payment token is minted; satisfies FATF Travel Rule (Recommendation 16) data exchange</td>
+          </tr>
+          <tr>
+            <td class="lbl"><code>RtgsConfirmationFlow</code></td>
+            <td>BankNL</td>
+            <td>BankFR, BankAE</td>
+            <td>Notifies participant nodes once the TARGET2 EUR net settlement and UAE RTGS AED net settlement have been confirmed end-of-cycle; triggers final vault state cleanup</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 4: LIFECYCLE ═══════════ -->
+<section id="lifecycle">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_04">Section 04</p>
+    <h2 class="sec-title" data-i18n="t-full_transaction_lifecycle">Full transaction lifecycle — 16 steps end-to-end</h2>
+    <p class="sec-lead">
+      A complete EUR→AED cross-border payment from a Frankfurt corporate client to a Dubai supplier moves through 16 distinct steps across three Corda nodes, the notary cluster, two RTGS systems, and two core banking integrations. The on-ledger portion (steps 1–11) completes in under 60 seconds under normal network conditions. Steps 12–16 involve off-ledger RTGS net settlement, which occurs intraday or end-of-day depending on the settlement cycle configuration.
+    </p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <p class="step-phase">Initiation · BankFR Core Banking</p>
+          <h4>Corporate payment instruction received by BankFR</h4>
+          <p>The Frankfurt corporate client submits a payment instruction via BankFR's corporate banking API (ISO 20022 pacs.008 format). BankFR's payment gateway validates the instruction against the client's account balance, AML risk score, and transaction limits. The instruction contains: debit account (Frankfurt), credit account (Dubai supplier), amount in EUR, value date, beneficiary details, and purpose code.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · Automated validation · ISO 20022 pacs.008 standard</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <p class="step-phase">Pre-Compliance · ComplianceAttestationFlow</p>
+          <h4>KYC/AML pre-screening and Travel Rule data exchange</h4>
+          <p>BankFR's compliance CorDapp performs originator sanctions screening using the structured ISO 20022 name + LEI fields (significantly fewer false positives than legacy MT free-text). BankFR then initiates <code>ComplianceAttestationFlow</code>, sending a Verifiable Credential (VC) containing the originator's LEI, jurisdiction, risk tier, and sanctions-clear attestation to BankAE over the AMQP channel. BankAE responds with a VC confirming beneficiary identity and acceptance. This exchange satisfies FATF Recommendation 16 (Travel Rule) obligations on both sides — EU (TFR, in force December 2024) and UAE (CBUAE AML/CFT requirements).</p>
+          <p class="step-timing">Timing: <span>1–3 seconds</span> · Point-to-point AMQP · VC exchange</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <p class="step-phase">FX Rate · FXOracleQueryFlow</p>
+          <h4>Signed EUR/AED spot rate obtained from BankNL FX oracle</h4>
+          <p>BankFR initiates <code>FXOracleQueryFlow</code> to BankNL, which acts as the designated FX oracle for this network. The oracle CorDapp on BankNL queries its live treasury FX feed (Bloomberg/Reuters mid-market rate), constructs a signed <code>FXRateState</code> object containing the EUR/AED rate, a validity window (e.g. 90 seconds), and BankNL's node signature over the data. BankFR receives and validates the signature. Using a shared trusted oracle rather than each bank providing its own rate eliminates ambiguity about which rate governs the conversion — a governance requirement specified in the network participation agreement.</p>
+          <p class="step-timing">Timing: <span>0.5–2 seconds</span> · Oracle rate validity window: 90 seconds</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <p class="step-phase">FX Commitment · FxObligationCreateFlow</p>
+          <h4>BankAE commits to deliver AED at the oracle-signed rate</h4>
+          <p>BankFR initiates <code>FxObligationCreateFlow</code> with BankAE. This creates a <code>FxObligationState</code> on both vaults: BankAE commits to deliver the AED equivalent of the EUR amount at the oracle-signed rate within the validity window. BankAE signs this obligation in its <code>FxObligationResponderFlow</code>. The obligation is finalized by the notary. At this point, both banks have an on-ledger, legally binding commitment to settle both legs. This mirrors the PvP design principle: neither leg settles until both parties have committed.</p>
+          <p class="step-timing">Timing: <span>2–5 seconds</span> · Notary-finalized obligation</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <p class="step-phase">Token Minting · BankFR Node</p>
+          <h4>BankFR mints the EUR FungibleToken representing its fiat reserve claim</h4>
+          <p>BankFR's node executes the <code>IssueTokens</code> flow from the Corda Token SDK. It creates a new <code>EurDepositToken</code> state with: amount (e.g. 5,000,000 EUR), issuer = BankFR, initial holder = BankFR (will be transferred), ISO 20022 pacs.008 payload (base64 encoded, containing full structured payment details), and a hash of the KYC attestation VC from step 2. The token is signed by BankFR's HSM-secured node key. The EUR fiat never moves at this point — it remains in BankFR's reserve account. The token is a digital claim on those reserves, minted on the permissioned ledger.</p>
+          <p class="step-timing">Timing: <span>1–2 seconds</span> · HSM-signed · EUR stays on BankFR balance sheet</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">06</div>
+        <div class="step-body">
+          <p class="step-phase">Transaction Proposal · PaymentInitiatorFlow</p>
+          <h4>BankFR constructs the atomic PvP transaction proposal</h4>
+          <p>BankFR constructs a single transaction proposal that atomically: (a) moves the EUR token from BankFR to BankAE; and (b) moves an AED token from BankAE to the designated AED recipient account. The transaction proposal is assembled in BankFR's node memory and sent over the AMQP channel exclusively to BankAE. No other node sees this proposal at this stage.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span> · AMQP point-to-point · zero third-party visibility</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">07</div>
+        <div class="step-body">
+          <p class="step-phase">Counterparty Verification · BankAE Node</p>
+          <h4>BankAE validates the transaction proposal against its local contract logic</h4>
+          <p>BankAE's <code>PaymentResponderFlow</code> receives the transaction proposal. BankAE's node independently runs the <code>EurDepositTokenContract</code> and <code>FxObligationContract</code> verification logic against the proposed transaction, without trusting BankFR's assertion. It checks: ISO 20022 payload is present and validates against the pacs.008 schema; KYC attestation hash matches the VC exchanged in step 2; FX rate is from the trusted oracle and within validity window; the proposed EUR amount matches the FX obligation created in step 4; the proposed AED output matches the AED amount committed in the obligation. If all checks pass, BankAE signs the transaction with its node key.</p>
+          <p class="step-timing">Timing: <span>1–3 seconds</span> · Independent local contract verification</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">08</div>
+        <div class="step-body">
+          <p class="step-phase">Notary Submission · BFT Notary Cluster</p>
+          <h4>Transaction submitted to the notary for uniqueness validation</h4>
+          <p>BankFR (as the initiating party) submits the fully signed transaction to the BFT notary cluster. The notary checks that the input states (EUR token, AED token, FX obligation) have not been previously consumed by any other transaction. The notary sees only the state references (hashes), not the transaction content — this is Corda's privacy architecture. Three of five notary nodes must sign for the transaction to achieve finality. Under Istanbul BFT consensus, this completes in one round of communication between the five notary nodes.</p>
+          <p class="step-timing">Timing: <span>1–4 seconds</span> · 3-of-5 BFT quorum · content-blind notary</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">09</div>
+        <div class="step-body">
+          <p class="step-phase">Transaction Finality · Both Vaults Update</p>
+          <h4>Notary signature received; both vaults update atomically</h4>
+          <p>The notary returns its signature over the transaction. BankFR's flow distributes the fully notarized transaction to BankAE. Both nodes add the transaction to their vault databases simultaneously: BankFR's vault marks the EUR token as consumed; BankAE's vault creates the new EUR token (now held by BankAE) and marks the AED token as consumed; the FX obligation state is marked settled. This is the moment of on-ledger finality — the transaction is irrevocable. Both banks now have identical, consistent views of the settled fact.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second after notary sig</span> · Both vaults atomic · IRREVOCABLE</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <p class="step-phase">Core Banking Notification · BankAE</p>
+          <h4>BankAE credits the Dubai supplier's AED account</h4>
+          <p>BankAE's Corda node emits a notification to its core banking system (via the Corda RPC API) containing the full ISO 20022 pacs.008 payload from the token's metadata. The core banking middleware (e.g. Temenos T24 or Oracle FLEXCUBE integration layer) processes this structured data and credits the Dubai corporate recipient's AED account. Because the ISO 20022 payload contains structured remittance information (invoice reference, beneficiary LEI, purpose code), the credit posts directly against the outstanding invoice without manual reconciliation. The recipient's account balance updates in real time, before the off-ledger RTGS cycle has settled.</p>
+          <p class="step-timing">Timing: <span>1–5 seconds</span> · Automated via Corda RPC → Core Banking API</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">11</div>
+        <div class="step-body">
+          <p class="step-phase">Audit Trail · Both Nodes</p>
+          <h4>Immutable ledger record created; regulatory reporting feeds generated</h4>
+          <p>Both BankFR and BankAE now have an immutable, timestamped, cryptographically signed record of the transaction in their vaults. The full ISO 20022 payload, KYC attestation hash, FX oracle rate, and notary signature are permanently associated with the transaction. BankFR's compliance module automatically generates the relevant AML and cross-border payment reporting records for BaFin and ECB statistical purposes. BankAE's compliance module generates the required CBUAE and ADGM FSRA transaction reports. No post-hoc reconstruction across multiple systems is needed.</p>
+          <p class="step-timing">Timing: <span>Automated</span> · Immutable audit trail from step 5 forward</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">12</div>
+        <div class="step-body">
+          <p class="step-phase">Net Position Calculation · BankNL Coordination</p>
+          <h4>Intraday net settlement positions calculated across all participants</h4>
+          <p>At each netting cycle (configured as every 4 hours in this scenario, or on-demand for large transactions above €50M), BankNL's liquidity coordination CorDapp aggregates all settled on-ledger token positions across the network. It calculates net EUR obligations between BankFR and BankNL, and the AED net position between BankAE and the EUR-side banks. These net figures are significantly smaller than the gross transaction flows — netting is the core liquidity efficiency mechanism that replaces nostro pre-funding with just-in-time central bank money settlement.</p>
+          <p class="step-timing">Timing: <span>Every 4 hours intraday, or on-demand</span></p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">13</div>
+        <div class="step-body">
+          <p class="step-phase">EUR RTGS Net Settlement · TARGET2</p>
+          <h4>Net EUR positions settled in central bank money via TARGET2</h4>
+          <p>BankFR and BankNL submit their net EUR settlement instruction to TARGET2 (the ECB's RTGS system, now running on ISO 20022 following the March 2023 T2 migration). The instruction covers the net position across all on-ledger token transactions in the cycle. TARGET2 settles in central bank money — claims on the ECB itself, the highest-quality settlement asset available. Once TARGET2 confirms settlement, BankNL's <code>RtgsConfirmationFlow</code> broadcasts the confirmation to the Corda network.</p>
+          <p class="step-timing">Timing: <span>TARGET2 operating hours</span> · ECB central bank money</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">14</div>
+        <div class="step-body">
+          <p class="step-phase">AED RTGS Net Settlement · UAE RTGS</p>
+          <h4>Net AED positions settled via UAE RTGS at the CBUAE</h4>
+          <p>BankAE submits its net AED settlement instruction to the CBUAE's UAE RTGS system. This covers the net AED obligations from all tokenized transactions in the cycle. The CBUAE's UAE RTGS processes the instruction and settles in UAE dirham central bank money — a direct liability of the CBUAE. This is the final, legal settlement of the AED obligations.</p>
+          <p class="step-timing">Timing: <span>UAE RTGS operating hours</span> · CBUAE central bank money</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">15</div>
+        <div class="step-body">
+          <p class="step-phase">Token Redemption · TokenRedemptionFlow</p>
+          <h4>EUR tokens burned; on-ledger positions reconcile with RTGS settlement</h4>
+          <p>Once RTGS confirmation is received by both BankFR/BankNL and BankAE, BankFR executes <code>TokenRedemptionFlow</code> against the EUR tokens transferred to BankAE. This burns the token states — they are marked as consumed with no output states. The on-ledger positions now match the off-ledger RTGS settlement exactly. The Corda vault reflects the settled, final state of the network for this settlement cycle.</p>
+          <p class="step-timing">Timing: <span>Post-RTGS confirmation</span> · Tokens burned · Cycle complete</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">16</div>
+        <div class="step-body">
+          <p class="step-phase">Reconciliation · Both Core Banking Systems</p>
+          <h4>Automated reconciliation with core banking; exception rate &lt;2%</h4>
+          <p>BankFR's and BankAE's core banking systems receive the final reconciliation feed from the Corda integration layer. Because the ISO 20022 pacs.008 payload traveled with the token from step 5 onward, both banks' systems can perform straight-through reconciliation against outstanding invoices, payments, and nostro positions without manual intervention. The structured remittance information (invoice references, purpose codes, LEI identifiers) eliminates the exceptions that legacy MT free-text fields generate. Industry benchmarks from early ISO 20022 adoption cohorts document 20–30% fewer payment exceptions versus MT-based workflows.</p>
+          <p class="step-timing">Timing: <span>Automated</span> · &lt;2% exception rate · no manual intervention</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 5: FX ═══════════ -->
+<section id="fx">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_05">Section 05</p>
+    <h2 class="sec-title" data-i18n="t-fx_handling__eur_aed_conve">FX handling: EUR/AED conversion on the Corda ledger</h2>
+    <p class="sec-lead">
+      Foreign exchange conversion is the most technically nuanced element of a multi-currency Corda A2A deployment. The EUR/AED pair is not a freely traded interbank pair with deep liquidity at all hours — the AED is pegged to the USD at 3.6725, which means EUR/AED fluctuates with EUR/USD. This creates specific requirements for how rates are sourced, how they are committed to on-ledger, and how FX risk between origination and settlement is managed.
+    </p>
+
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">5.1 — The Oracle pattern</h3>
+    <p>Corda handles non-deterministic external data (like FX rates) through the Oracle pattern. An oracle is a trusted network participant whose node signs external data and attests to its accuracy. In this network, BankNL acts as the FX oracle: it sources EUR/AED mid-market rates from its treasury FX system (connected to Bloomberg or Refinitiv), constructs a signed data object, and makes it available to other nodes via a dedicated flow. The oracle signature is embedded in the transaction — any node can independently verify that the rate used was attested by BankNL at a specific timestamp. This eliminates rate disputes and provides an auditable record of the FX basis for every payment.</p>
+
+    <pre><code><span class="cm">// FX Oracle data structure — signed by BankNL</span>
+<span class="kw">data class</span> <span class="ty">SignedFXRate</span>(
+    <span class="kw">val</span> base: <span class="ty">Currency</span>,              <span class="cm">// EUR</span>
+    <span class="kw">val</span> quote: <span class="ty">Currency</span>,             <span class="cm">// AED</span>
+    <span class="kw">val</span> mid: <span class="ty">BigDecimal</span>,             <span class="cm">// e.g. 3.9412 (EUR/AED mid at time of signing)</span>
+    <span class="kw">val</span> bid: <span class="ty">BigDecimal</span>,             <span class="cm">// buy side</span>
+    <span class="kw">val</span> ask: <span class="ty">BigDecimal</span>,             <span class="cm">// sell side</span>
+    <span class="kw">val</span> timestamp: <span class="ty">Instant</span>,          <span class="cm">// oracle signing time (UTC)</span>
+    <span class="kw">val</span> validUntil: <span class="ty">Instant</span>,         <span class="cm">// timestamp + 90 seconds validity window</span>
+    <span class="kw">val</span> oracleSignature: <span class="ty">DigitalSignature</span>  <span class="cm">// BankNL node key signature over above</span>
+)</code></pre>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">5.2 — Revenue capture: where the FX spread goes</h3>
+    <p>In correspondent banking, the FX spread on EUR/AED conversions is captured by the intermediary correspondent chain — not by BankFR, which has the direct client relationship. On the Corda A2A rail, FX conversion occurs on-ledger at the point of redemption by BankAE. BankAE applies a spread over the oracle mid-rate (its institutional EUR/AED dealing rate), and this spread is revenue for BankAE — which has the direct Dubai corporate client relationship. BankFR captures the fee income on the EUR origination leg. Neither bank pays the correspondent chain. The total FX economics shift from intermediaries to the institutions with direct customer relationships.</p>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">5.3 — Settlement risk: PvP eliminates principal risk</h3>
+    <p>In a conventional FX settlement, the EUR leg and the AED leg settle in different RTGS systems, at different times, creating a principal risk window during which one party has delivered and the other has not. The BIS CPMI has documented that roughly one-third of global FX transactions still settle without PvP arrangements, exposing the market to Herstatt-style risk.<sup><a href="#fn2">[2]</a></sup> The Corda atomic transaction model makes PvP the architectural default: the EUR token move and the AED token move are encoded in a single transaction that either succeeds completely or fails completely. There is no partial-settlement state.</p>
+
+    <div class="callout teal">
+      <p class="callout-label">Numerical example</p>
+      <p>BankFR corporate pays €5,000,000. Oracle EUR/AED mid: 3.9412. BankAE spread: 15bps over mid → dealing rate: 3.9412 × 1.0015 = 3.9471. AED credited to Dubai supplier: AED 19,735,500. BankAE FX revenue: AED 29,250 (≈ €7,411 at mid). BankFR fee on the EUR origination leg: €2,500 (5bps flat). Total corridor cost to the corporate: ~12.5bps of transaction value, versus a correspondent banking equivalent of approximately 2.5–3.5% all-in. The economics shift entirely from the correspondent chain to the two originating banks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 6: NOTARY ═══════════ -->
+<section id="notary">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_06">Section 06</p>
+    <h2 class="sec-title" data-i18n="t-notary_design_for_cross_ju">Notary design for cross-jurisdiction finality</h2>
+    <p class="sec-lead">
+      The notary is the most governance-sensitive component of a multi-jurisdiction Corda network. In a single-country deployment, the notary is typically operated by the network operator or a regulated market infrastructure. In a cross-jurisdiction network spanning EU-regulated banks and a UAE-regulated bank, notary governance requires careful design to ensure that no single jurisdiction's regulatory authority can unilaterally halt or reverse transactions, while still meeting the legal finality requirements of both the EU and UAE frameworks.
+    </p>
+
+    <p>The three-of-five BFT configuration described above tolerates one Byzantine fault: if one of the five notary nodes is offline, compromised, or under regulatory order in a single jurisdiction, the remaining four can still achieve the three-of-five quorum needed to finalize transactions. The geographic distribution — two EU-zone nodes, two UAE-zone nodes, one neutral (Switzerland) — ensures that neither EU nor UAE regulatory action can independently block the notary cluster from functioning.</p>
+
+    <p>The notary operator in a production deployment would most likely be one of three structures: a jointly governed consortium vehicle (similar to how SDX runs its own notary for Swiss DLT Act-compliant settlements); a regulated trust service provider with operations in both the EU (eIDAS-qualified) and the UAE (ADGM-licensed); or R3 itself operating a notary-as-a-service with governance agreements specifying the conditions under which any single jurisdiction can exercise authority.</p>
+
+    <div class="callout amber">
+      <p class="callout-label">Key governance constraint</p>
+      <p>The notary sees only state reference hashes — not transaction content. This is by design in Corda's privacy architecture. Regulatory orders directed at the notary cannot extract transaction data from the notary; they can only, in extremis, prevent the notary from signing new transactions. For this reason, the network participation agreement should specify clearly what constitutes a lawful order compelling a notary node operator to cease operations, and what happens to in-flight transactions if the notary is temporarily unavailable. This is not a technical problem — it is a governance and legal drafting problem that must be resolved before deployment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 7: ISO 20022 ═══════════ -->
+<section id="iso20022">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_07">Section 07</p>
+    <h2 class="sec-title" data-i18n="t-iso_20022_payload_inside_t">ISO 20022 payload inside the token: what travels and why it matters</h2>
+    <p class="sec-lead">
+      One of the most practically important features of this architecture is that the ISO 20022 pacs.008 (Customer Credit Transfer Initiation) payload travels inside the token state as metadata from the moment of minting. Unlike a SWIFT MT103 message that degrades through the correspondent chain, the ISO 20022 XML is cryptographically bound to the token and arrives at BankAE intact, structured, and machine-readable. This has concrete operational consequences.
+    </p>
+
+    <p>The pacs.008 message can carry: the originator's full legal name (not truncated to 35 characters as in legacy MT), structured postal address, Legal Entity Identifier (LEI), originator account IBAN, purpose code (e.g. <code>TRPT</code> for trade payment, <code>SCTL</code> for securities settlement), structured remittance information (invoice number, line items), regulatory reporting codes, and the payment's Unique End-to-End Transaction Reference (UETR). All of this is present in BankAE's vault at the moment the token is received — not reconstructed after the fact.</p>
+
+    <pre><code><span class="cm">&lt;!-- Abbreviated pacs.008 carried inside EurDepositToken.iso20022Payload --&gt;</span>
+&lt;Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"&gt;
+  &lt;FIToFICstmrCdtTrf&gt;
+    &lt;GrpHdr&gt;
+      &lt;MsgId&gt;BANKFR-20260415-00012345&lt;/MsgId&gt;
+      &lt;CreDtTm&gt;2026-04-15T09:32:11Z&lt;/CreDtTm&gt;
+      &lt;NbOfTxs&gt;1&lt;/NbOfTxs&gt;
+      &lt;SttlmInf&gt;
+        &lt;SttlmMtd&gt;INDA&lt;/SttlmMtd&gt;   <span class="cm">&lt;!-- Instructed agent settlement --&gt;</span>
+      &lt;/SttlmInf&gt;
+    &lt;/GrpHdr&gt;
+    &lt;CdtTrfTxInf&gt;
+      &lt;PmtId&gt;
+        &lt;InstrId&gt;BANKFR-INSTR-2026-00012345&lt;/InstrId&gt;
+        &lt;EndToEndId&gt;UETR-550e8400-e29b-41d4-a716-446655440000&lt;/EndToEndId&gt;
+      &lt;/PmtId&gt;
+      &lt;IntrBkSttlmAmt Ccy="EUR"&gt;5000000.00&lt;/IntrBkSttlmAmt&gt;
+      &lt;Dbtr&gt;
+        &lt;Nm&gt;Frankfurt Machinery GmbH&lt;/Nm&gt;
+        &lt;PstlAdr&gt;
+          &lt;StrtNm&gt;Mainzer Landstrasse 58&lt;/StrtNm&gt;
+          &lt;TwnNm&gt;Frankfurt am Main&lt;/TwnNm&gt;
+          &lt;Ctry&gt;DE&lt;/Ctry&gt;
+        &lt;/PstlAdr&gt;
+        &lt;Id&gt;&lt;OrgId&gt;&lt;LEI&gt;5299000CRDX2KFHPD419&lt;/LEI&gt;&lt;/OrgId&gt;&lt;/Id&gt;
+      &lt;/Dbtr&gt;
+      &lt;Cdtr&gt;
+        &lt;Nm&gt;Dubai Trading LLC&lt;/Nm&gt;
+        &lt;PstlAdr&gt;&lt;TwnNm&gt;Dubai&lt;/TwnNm&gt;&lt;Ctry&gt;AE&lt;/Ctry&gt;&lt;/PstlAdr&gt;
+        &lt;Id&gt;&lt;OrgId&gt;&lt;LEI&gt;984500E8MRZXBX7V1G62&lt;/LEI&gt;&lt;/OrgId&gt;&lt;/Id&gt;
+      &lt;/Cdtr&gt;
+      &lt;Purp&gt;&lt;Cd&gt;TRPT&lt;/Cd&gt;&lt;/Purp&gt;  <span class="cm">&lt;!-- Trade payment --&gt;</span>
+      &lt;RmtInf&gt;
+        &lt;Strd&gt;
+          &lt;CdtrRefInf&gt;&lt;Ref&gt;INV-2026-DXB-4471&lt;/Ref&gt;&lt;/CdtrRefInf&gt;
+        &lt;/Strd&gt;
+      &lt;/RmtInf&gt;
+    &lt;/CdtTrfTxInf&gt;
+  &lt;/FIToFICstmrCdtTrf&gt;
+&lt;/Document&gt;</code></pre>
+
+    <p>This payload is validated by BankAE's node at step 7 of the transaction lifecycle against the pacs.008 XSD schema before BankAE signs the transaction. The invoice reference (<code>INV-2026-DXB-4471</code>) feeds directly into BankAE's accounts receivable matching system — the Dubai supplier's invoice is automatically reconciled without manual intervention. The two LEIs resolve against the GLEIF registry to confirm legal entity names match the KYC records on file at both banks.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 8: KYC/AML ═══════════ -->
+<section id="kyc-aml">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_08">Section 08</p>
+    <h2 class="sec-title" data-i18n="t-kyc_aml_compliance_and_the">KYC/AML compliance and the Travel Rule across two jurisdictions</h2>
+    <p class="sec-lead">
+      AML compliance in a cross-jurisdiction Corda network operates at two layers simultaneously: each bank independently meets its own jurisdiction's AML requirements (BaFin/ECB for BankFR; ADGM FSRA/CBUAE for BankAE), and the network's shared attestation architecture satisfies the FATF Travel Rule requirements that apply when value moves between Virtual Asset Service Providers or regulated payment institutions.
+    </p>
+
+    <p>The EU's Transfer of Funds Regulation (TFR), which entered into force December 30, 2024 with no grace period, requires that crypto-asset service providers transmit originator and beneficiary identifying information for all transfers regardless of amount. For deposit-token payments on a Corda permissioned network, the relevant parties are BankFR (as the originating institution) and BankAE (as the beneficiary institution). Both are regulated entities — not anonymous wallet addresses — but the Travel Rule still applies to the structured data exchange between them.</p>
+
+    <p>The <code>ComplianceAttestationFlow</code> in step 2 handles this. It uses the W3C Verifiable Credentials model: BankFR issues a VC containing the originator's KYC data (name, address, LEI, risk tier, sanctions status) signed with BankFR's node key. BankAE's <code>ComplianceAttestationResponderFlow</code> validates the VC signature, checks the originator's LEI against the GLEIF registry, and responds with a VC confirming beneficiary acceptance. Both VCs are hashed and referenced in the <code>EurDepositToken</code> state — so the audit trail proves that Travel Rule data was exchanged before the token was minted.</p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>Compliance Requirement</th>
+            <th>Jurisdiction</th>
+            <th>How Handled in This Architecture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">AML/CFT Screening</td>
+            <td>EU (AMLD6) + UAE (CBUAE AML)</td>
+            <td>Structured ISO 20022 name + LEI fields fed to each bank's screening engine at step 1 (originator) and step 7 (beneficiary). Structured data reduces false positives by 30–50% versus MT free-text.<sup><a href="#fn3">[3]</a></sup></td>
+          </tr>
+          <tr>
+            <td class="lbl">Travel Rule (FATF R.16)</td>
+            <td>EU (TFR, Dec 2024) + UAE (CBUAE/ADGM)</td>
+            <td>ComplianceAttestationFlow at step 2 exchanges Verifiable Credentials between BankFR and BankAE. VC hashes recorded in token state. IVMS-101 data format used for interoperability.</td>
+          </tr>
+          <tr>
+            <td class="lbl">Sanctions Screening</td>
+            <td>EU (EU Sanctions Regulation) + UAE (UN + local)</td>
+            <td>Both banks run independent sanctions checks using structured LEI + structured name from ISO 20022 payload. The LEI resolves to the GLEIF registry — unambiguous legal entity identification.</td>
+          </tr>
+          <tr>
+            <td class="lbl">Transaction Reporting</td>
+            <td>ECB (EU) + CBUAE (UAE)</td>
+            <td>Immutable vault record with full ISO 20022 pacs.008 payload enables automated regulatory reporting feeds from each bank's compliance module, without manual data reconstruction.</td>
+          </tr>
+          <tr>
+            <td class="lbl">Data Residency</td>
+            <td>GDPR (EU) + ADGM Data Protection</td>
+            <td>Corda's point-to-point AMQP means personal data travels only between BankFR and BankAE — not to other network participants. Each bank stores vault data only in its own regulated data center or cloud zone.</td>
+          </tr>
+          <tr>
+            <td class="lbl">DORA (Digital Operational Resilience)</td>
+            <td>EU — in force Jan 17, 2025</td>
+            <td>BankFR and BankNL must classify the Corda node as a critical ICT service under DORA. Incident reporting obligations, resilience testing, and third-party risk management for Corda Enterprise apply. R3 as platform vendor must meet DORA ICT third-party requirements.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 9: REGULATORY ═══════════ -->
+<section id="regulatory">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_09">Section 09</p>
+    <h2 class="sec-title" data-i18n="t-regulatory_framework__mica">Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)</h2>
+    <p class="sec-lead">
+      The EUR–AED Corda network sits at the intersection of two of the world's most developed digital asset regulatory frameworks. The EU's MiCA regulation (in full effect December 2024) and the UAE's Payment Token Services Regulation (issued June 2024, in force August 2025) are broadly compatible — both require 1:1 reserve backing for payment tokens, at-par redemption rights, and AML/CFT obligations — but they differ in several implementation details that affect how the CorDapp must be structured.
+    </p>
+
+    <div class="reg-grid">
+      <div class="reg-cell">
+        <p class="reg-header">European Union — MiCA + DORA</p>
+        <h4>BankFR (BaFin) · BankNL (DNB)</h4>
+        <ul class="reg-list">
+          <li><strong>Token classification:</strong> EUR deposit tokens issued by BankFR are bank liabilities regulated under existing banking law (CRD VI) and the EBA's December 2024 Report on Tokenised Deposits. They are not e-money tokens under MiCA Title III — because they are issued by a licensed credit institution and remain on the bank's balance sheet. This avoids the 150M EUR issuance cap and monthly transaction limits that apply to large EMT issuers under MiCA Articles 23–24.</li>
+          <li><strong>MiCA applicability:</strong> MiCA Titles III and IV apply to stablecoins issued by non-bank entities. For bank-issued deposit tokens like BankFR's EUR token, MiCA provides the general framework but the primary regulation is the Banking Consolidation Directive (CRD) and the Capital Requirements Regulation (CRR). This is the EBA's documented position.<sup><a href="#fn4">[4]</a></sup></li>
+          <li><strong>DORA (in force Jan 17, 2025):</strong> Both BankFR and BankNL must classify the Corda node as a critical ICT system under DORA, given that it processes payment obligations. DORA requires: digital operational resilience testing (TLPT/penetration testing for systemic institutions); ICT-related incident reporting to BaFin/DNB within 4 hours of major incident; third-party risk management for R3 as ICT vendor (R3 must provide contractual resilience guarantees and audit rights).</li>
+          <li><strong>Transfer of Funds Regulation (TFR):</strong> In force December 30, 2024. BankFR must transmit originator data to BankAE for every token transfer, regardless of amount. Handled by ComplianceAttestationFlow. No grace period.</li>
+          <li><strong>TARGET2 RTGS:</strong> EUR net settlement via TARGET2, operating on ISO 20022 since the March 2023 T2 migration. All RTGS instructions from the Corda network must conform to the pacs.009 message standard.</li>
+        </ul>
+      </div>
+      <div class="reg-cell">
+        <p class="reg-header">United Arab Emirates — CBUAE PTSR + ADGM FSRA</p>
+        <h4>BankAE (ADGM + CBUAE)</h4>
+        <ul class="reg-list">
+          <li><strong>CBUAE Payment Token Services Regulation (June 2024, in force August 2025):</strong> Establishes a comprehensive framework for licensing payment token services in the UAE. Effective August 2025, only licensed Dirham Payment Tokens (DPTs) may be used for domestic payments in the UAE (excluding free zones). BankAE's AED token activities require a PTSR license from the CBUAE. The PTSR requires 1:1 AED reserve backing, mandatory redemption at par on demand, and AML/BSA compliance.<sup><a href="#fn5">[5]</a></sup></li>
+          <li><strong>ADGM FSRA digital asset permissions:</strong> BankAE, incorporated in ADGM, holds digital asset permissions under the FSRA's Financial Services and Markets Regulations. ADGM uses English common law, providing strong contract enforceability for CorDapp-governed obligations. The FSRA has an active regulatory sandbox (ADGM RegLab) and has worked directly with tokenized finance implementations including blockchain-based payment infrastructure.</li>
+          <li><strong>Foreign exchange controls:</strong> The AED is pegged to USD at 3.6725. Cross-border AED payments require CBUAE authorization and compliance with foreign exchange reporting requirements. The CBUAE's FIT Programme (Financial Infrastructure Transformation) — 85% complete as of January 2025 — includes a wholesale CBDC program and explicitly positions DLT-based settlement infrastructure as part of the UAE's strategic financial modernization agenda.<sup><a href="#fn6">[6]</a></sup></li>
+          <li><strong>Project Aber precedent:</strong> The CBUAE has directly participated in a Corda-evaluated cross-border CBDC project (Project Aber with the Saudi Central Bank), confirming that Corda's architecture is technically viable for UAE cross-border settlement and that the central bank is familiar with the technology.<sup><a href="#fn1">[1]</a></sup></li>
+          <li><strong>UAE RTGS:</strong> AED net settlement via the CBUAE-operated UAE RTGS. Cross-border AED payment flows require compliance with CBUAE's rulebook Chapter 3 (Cross-Border Payments), including mandatory AML/CFT documentation for all transactions above AED 3,500 (approximately $950).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <p class="callout-label">The key regulatory compatibility finding</p>
+      <p>Both MiCA (EU) and the CBUAE PTSR (UAE) require the same core structural properties for deposit tokens and payment tokens: 1:1 fiat reserve backing, at-par redemption on demand, AML/CFT compliance, and prudential supervision. The Corda architecture described here satisfies all four requirements on both sides simultaneously, because BankFR's EUR token is a bank-issued deposit token (regulated under EU banking law) and BankAE's AED token activities are licensed under the CBUAE PTSR. No new regulatory category is created. No stablecoin framework applies to bank-issued deposit tokens on either side. The regulatory risk for this deployment is materially lower than for a non-bank-issued stablecoin network operating the same corridor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 10: SETTLEMENT ═══════════ -->
+<section id="settlement">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_10">Section 10</p>
+    <h2 class="sec-title" data-i18n="t-rtgs_net_settlement_and_li">RTGS net settlement and liquidity management</h2>
+    <p class="sec-lead">
+      The Corda on-ledger layer handles real-time token transfer and PvP settlement. The RTGS layer handles final settlement in central bank money. Understanding how these two layers interact is essential for treasury teams evaluating the liquidity implications of this architecture.
+    </p>
+
+    <p>In correspondent banking, a €5M payment requires €5M in pre-funded nostro balances at the Frankfurt–Dubai correspondent chain. In the Corda A2A model, the payment is settled on-ledger atomically — the corporate's account is debited immediately and the Dubai supplier's account is credited within 60 seconds. The RTGS settlement happens later (at the next intraday netting cycle), and settles only the <em>net</em> position between BankFR and BankAE across all transactions in the cycle.</p>
+
+    <p>If in a given 4-hour cycle BankFR sends €20M to Dubai suppliers and BankAE sends €12M to Frankfurt corporate clients (in separate transactions), the net EUR obligation is €8M — not €32M gross. This netting is the core capital efficiency mechanism. At a 5% rate, the reduction from €32M to €8M in RTGS exposure frees approximately €1.2M in annual foregone yield on what would otherwise have been pre-funded nostro balances.</p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>Settlement Layer</th>
+            <th>Mechanism</th>
+            <th>Settlement Asset</th>
+            <th>Timing</th>
+            <th>Finality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">On-ledger (Corda)</td>
+            <td>Atomic PvP token transfer; notary-finalized</td>
+            <td>EUR deposit token (BankFR liability) ↔ AED deposit token (BankAE liability)</td>
+            <td>&lt;60 seconds</td>
+            <td>On-ledger technical finality immediately; legal finality on RTGS confirmation</td>
+          </tr>
+          <tr>
+            <td class="lbl">EUR RTGS (TARGET2)</td>
+            <td>Intraday net settlement; ISO 20022 pacs.009</td>
+            <td>ECB reserves (central bank money)</td>
+            <td>Every 4 hours during TARGET2 operating window</td>
+            <td>Final; ECB central bank money settlement</td>
+          </tr>
+          <tr>
+            <td class="lbl">AED RTGS (UAE RTGS)</td>
+            <td>Intraday net settlement; CBUAE payment format</td>
+            <td>CBUAE reserves (central bank money)</td>
+            <td>Intraday during UAE RTGS operating window</td>
+            <td>Final; CBUAE central bank money settlement</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>One operational complexity: TARGET2 operates on Central European Time (CET/CEST) business hours, while UAE RTGS operates on Gulf Standard Time (GST = UTC+4). There is a 3–4 hour overlap window during which both RTGS systems are simultaneously open (approximately 07:00–10:00 CET / 10:00–13:00 GST). For end-of-day netting cycles, the settlement orchestration CorDapp must account for this time zone mismatch and may need to queue UAE RTGS settlement instructions for the following GST business day if the cycle falls outside the overlap window. This is a known implementation complexity, not an architectural limitation, and is typically handled by configuring intraday settlement cycles to run during the overlap window.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 11: RISKS ═══════════ -->
+<section id="risks">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_11">Section 11</p>
+    <h2 class="sec-title" data-i18n="t-operational_risks_and_gove">Operational risks and governance design</h2>
+    <p class="sec-lead">
+      The architecture described is technically sound and has direct precedent in multiple production deployments. The risks that matter most are not technical — they are governance, legal, and operational. Banks evaluating this model for the EUR–AED corridor should stress-test the following before committing architecture.
+    </p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">R1</div>
+        <div class="step-body">
+          <p class="step-phase">Governance Risk</p>
+          <h4>Consortium governance failure is the most documented risk for permissioned DLT networks</h4>
+          <p>Contour (trade finance, Corda-based), we.trade, and Marco Polo all failed not due to technical shortcomings but because consortium governance — specifically, commercial incentive alignment between competing bank shareholders — proved impossible to sustain. Before any three-bank EUR–AED network is built, the governance framework must answer: who pays for network maintenance when volumes disappoint in year one? Who controls the upgrade roadmap for the payment CorDapp? What happens if one bank exits? Who is liable for a settlement failure caused by a bug in the shared CorDapp? These questions belong in the network participation agreement, not in the technical specification.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">R2</div>
+        <div class="step-body">
+          <p class="step-phase">Legal Finality Risk</p>
+          <h4>On-ledger finality and legal finality are distinct concepts</h4>
+          <p>When the notary signs a transaction, the state transitions on the Corda ledger are technically irrevocable. But <em>legal</em> finality — the right to retain funds against counterparty insolvency — depends on the legal framework governing the network. In the EU, the Settlement Finality Directive provides legal finality protection for transactions in designated payment systems. Corda networks are not (yet) designated payment systems under the SFD. Fnality's Sterling Fnality Payment System (£FnPS) received Bank of England Settlement Finality Designation in 2024 — the first DLT-based payment system to do so. The EUR–AED network described here would need equivalent regulatory engagement in both the EU and UAE before it could claim full legal finality protection. This is an 18–36 month regulatory process, not a technical one.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">R3</div>
+        <div class="step-body">
+          <p class="step-phase">HSM Key Management Risk</p>
+          <h4>Token minting authority is the single highest-value attack target</h4>
+          <p>The HSM that controls the BankFR node's token minting key is the critical security control. If the minting key is compromised, an attacker can create EUR tokens that are not backed by actual EUR reserves — a digital forgery. Multi-signature minting schemes (requiring M-of-N HSM keys, split between the treasury, compliance, and technology teams) mitigate this risk but introduce operational complexity. Disaster recovery procedures for HSM key material must be tested before production. Physical security of HSM hardware at BankFR's Frankfurt data center and BankAE's Dubai data center must meet FIPS 140-2 Level 3 minimum standards.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">R4</div>
+        <div class="step-body">
+          <p class="step-phase">Developer Talent Risk</p>
+          <h4>The Kotlin/JVM Corda developer pool is thin</h4>
+          <p>The global pool of Corda developers with production financial services experience is estimated at approximately 2,500 specialists, versus ~23,000 EVM/Solidity developers and ~8,000 Hyperledger Fabric developers. Senior Corda developers command consulting rates of $150,000–$300,000 annually — a material total cost of ownership item. For a three-bank network, the realistic internal developer requirement is 3–5 senior Corda engineers per bank plus 2–3 shared network engineers, sustained over a 24–36 month build-and-stabilisation period. Banks that do not have this talent internally must budget for it in the business case.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">R5</div>
+        <div class="step-body">
+          <p class="step-phase">Regulatory Sequencing Risk</p>
+          <h4>Technology readiness and regulatory approval must advance in parallel</h4>
+          <p>The correct order of operations for the EU-side banks is: (1) obtain BaFin/DNB informal guidance on deposit token infrastructure; (2) file a DORA ICT risk assessment covering the Corda node; (3) pilot internally with synthetic transactions; (4) seek formal payment system operator authorization or sandbox approval; (5) begin bilateral production transactions with BankAE. For BankAE, the correct sequence is: (1) ensure CBUAE PTSR license covers AED deposit token issuance and cross-border tokenized settlement; (2) engage ADGM FSRA on the CorDapp architecture; (3) complete the CBUAE FIT Programme integration requirements; (4) begin production with the European counterparties. Compressing this sequence is the most common error that inflates project timelines by 12–24 months.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTNOTES ═══════════ -->
+<div class="footnotes">
+  <div class="container">
+    <h3>References and Source Notes</h3>
+    <ol>
+      <li id="fn1">
+        <strong>Project Aber (SAMA / CBUAE, R3 Corda):</strong> The Saudi Central Bank (SAMA) and the Central Bank of the UAE (CBUAE) conducted Project Aber, a joint CBDC initiative involving six participating commercial banks across both countries evaluating Corda for cross-border dual-currency settlement. The project confirmed technical viability and that DLT can provide central banks the ability to operate both domestic and cross-border payment systems. R3 CBDC reference: <a href="https://digital-currencies-hub.r3.com/cbdcs/" target="_blank" rel="noopener">digital-currencies-hub.r3.com/cbdcs</a>. Note: Project Aber's architecture used a CBDC approach rather than commercial bank deposit tokens; the architecture described in this document uses deposit tokens issued by the commercial banks directly, which is a distinct but closely related model.
+      </li>
+      <li id="fn2">
+        <strong>FX principal risk and PvP:</strong> BIS CPMI, "PvP arrangements and the case for greater adoption," 2022, found that roughly one-third of global FX transactions — representing approximately $2.2 trillion in daily settlement value — still settle without PvP arrangements. See: <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener">bis.org/cpmi/publ/d208.htm</a>. The Herstatt failure (1974) remains the canonical case study for FX settlement risk.
+      </li>
+      <li id="fn3">
+        <strong>AML false positive reduction with ISO 20022:</strong> SWIFT ISO 20022 Migration Progress Report (2024) and Accenture "Transforming Financial Crime Compliance with AI and ISO 20022" (2023) both document 30–50% false-positive reduction ranges in structured-data environments. The mechanism is that structured LEI + structured name allows screening against legal entity registries rather than free text. See also: SWIFT, <a href="https://www.swift.com/standards/iso-20022" target="_blank" rel="noopener">swift.com/standards/iso-20022</a>.
+      </li>
+      <li id="fn4">
+        <strong>EBA position on tokenised deposits:</strong> European Banking Authority, "Report on tokenised deposits," EBA/REP/2024/24, December 2024. The EBA distinguishes bearer and non-bearer tokenised deposits and confirms that bank-issued deposit tokens (non-bearer form, remaining on the bank's balance sheet) are regulated under existing banking law (CRD/CRR) rather than MiCA Title III. This is the key regulatory classification that makes BankFR's EUR token issuance viable without MiCA e-money token authorization.
+      </li>
+      <li id="fn5">
+        <strong>CBUAE Payment Token Services Regulation:</strong> Issued June 2024; requirements entered into force August 2025. Establishes 1:1 reserve backing, at-par redemption, and AML/BSA obligations for licensed payment token issuers in the UAE (excluding free zones). See: <a href="https://rulebook.centralbank.ae" target="_blank" rel="noopener">rulebook.centralbank.ae</a>; TRM Labs Global Crypto Policy Review 2025/26 for implementation timeline detail.
+      </li>
+      <li id="fn6">
+        <strong>CBUAE Financial Infrastructure Transformation (FIT) Programme:</strong> Multi-pronged digital finance modernization plan launched February 2023, reported 85% complete as of January 2025. The first cross-border Digital Dirham payment (AED 50 million, via mBridge with China) took place in January 2024. The programme explicitly positions DLT-based settlement as part of UAE financial infrastructure strategy. See: Global Government Finance, "UAE aims to launch retail CBDC this year," April 2025; Ledger Insights, "UAE to launch CBDC in Q4 2025," March 2025.
+      </li>
+      <li id="fn7">
+        <strong>Corda architecture (nodes, states, flows, notary):</strong> R3 official documentation: <a href="https://docs.r3.com/en/platform/corda/5.2/key-concepts/cordapp-dev.html" target="_blank" rel="noopener">docs.r3.com</a>. Xoriant, "Understanding Corda Architecture," March 2026. Corda Token SDK design document: <a href="https://github.com/corda/token-sdk/blob/master/design/design.md" target="_blank" rel="noopener">github.com/corda/token-sdk</a>. R3, "20+ regulated TradFi networks live in production with over $10 billion in on-chain RWAs" — see <a href="https://r3.com/corda/" target="_blank" rel="noopener">r3.com/corda</a> and R3 press release February 2025.
+      </li>
+      <li id="fn8">
+        <strong>Corda Settler and off-ledger settlement patterns:</strong> Brenden, "R3 Corda Settler Tutorial — Integrate a Custom Off-Ledger Payment Rail," Corda Medium blog, 2019. GitHub: <a href="https://github.com/corda/corda-settler" target="_blank" rel="noopener">github.com/corda/corda-settler</a>. The settler pattern referenced here is adapted for bank-to-RTGS settlement rather than the XRP cryptocurrency settlement used in the original reference implementation.
+      </li>
+      <li id="fn9">
+        <strong>UAE regulatory framework (ADGM / DIFC / CBUAE / VARA):</strong> Chambers Practice Guides, "Fintech 2025 — UAE," 2025; TRM Labs, "Global Crypto Policy Review Outlook 2025/26"; Middle East Briefing, "UAE Fintech 2025 Regulatory Review." The UAE's dual onshore–offshore structure (CBUAE onshore; ADGM FSRA + DIFC DFSA offshore) creates multiple licensing pathways. BankAE's ADGM FSRA licensing is relevant for this document; banks operating in Dubai DIFC would fall under DFSA jurisdiction with comparable but distinct requirements.
+      </li>
+      <li id="fn10">
+        <strong>On Corda production deployments in financial services:</strong> SIX Digital Exchange (SDX, Switzerland): R3 Corda-based digital asset exchange under Swiss DLT Act. HQLAx: European collateral mobility network backed by BNP Paribas, Goldman Sachs, HSBC, JPMorgan, UBS. UK Regulated Liability Network: Corda-based tokenised deposit pilot with Barclays, HSBC, Lloyds, and others (2023). Wells Fargo Coin: Corda-based internal USD deposit token. Progmat Coin (Japan, MUFG): Corda-based stablecoin infrastructure. Euroclear D-FMI: World Bank 2023 digital bond issuance settled on Corda. Blockchainmagazine.com, "Why Everyone In Finance Is Talking About R3 Blockchain In 2025," May 2025, provides a useful aggregation of production deployment examples, though readers should cross-reference against primary sources.
+      </li>
+    </ol>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {"hero-h1": "A2A tokenization on Corda: two European banks, one UAE bank", "hero-sub": "A minute-detail walkthrough of how R3 Corda's permissioned distributed ledger enables tokenized account-to-account settlement across a three-bank network: a German commercial bank (Frankfurt), a Dutch", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Corda is the right infrastructure choice", "t-network_topology_and_node": "Network topology and node architecture", "t-cordapp_structure__states": "CorDapp structure: states, contracts, and flows", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-fx_handling__eur_aed_conve": "FX handling: EUR/AED conversion on the Corda ledger", "t-notary_design_for_cross_ju": "Notary design for cross-jurisdiction finality", "t-iso_20022_payload_inside_t": "ISO 20022 payload inside the token: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
+  es: {"hero-h1": "Tokenización A2A en Corda: dos bancos europeos, un banco de EAU", "hero-sub": "Guía técnica detallada de cómo Corda de R3 permite la liquidación A2A tokenizada en una red de tres bancos.", "kicker-section_01": "Sección 01", "kicker-section_02": "Sección 02", "kicker-section_03": "Sección 03", "kicker-section_04": "Sección 04", "kicker-section_05": "Sección 05", "kicker-section_06": "Sección 06", "kicker-section_07": "Sección 07", "kicker-section_08": "Sección 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Corda is the right infrastructure choice", "t-network_topology_and_node": "Network topology and node architecture", "t-cordapp_structure__states": "CorDapp structure: states, contracts, and flows", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-fx_handling__eur_aed_conve": "FX handling: EUR/AED conversion on the Corda ledger", "t-notary_design_for_cross_ju": "Notary design for cross-jurisdiction finality", "t-iso_20022_payload_inside_t": "ISO 20022 payload inside the token: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
+  fr: {"hero-h1": "Tokenisation A2A sur Corda : deux banques européennes, une banque des EAU", "hero-sub": "Présentation technique détaillée de R3 Corda pour la liquidation A2A tokenisée dans un réseau de trois banques.", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Corda is the right infrastructure choice", "t-network_topology_and_node": "Network topology and node architecture", "t-cordapp_structure__states": "CorDapp structure: states, contracts, and flows", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-fx_handling__eur_aed_conve": "FX handling: EUR/AED conversion on the Corda ledger", "t-notary_design_for_cross_ju": "Notary design for cross-jurisdiction finality", "t-iso_20022_payload_inside_t": "ISO 20022 payload inside the token: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
+  ar: {"hero-h1": "التوكينزيشن A2A على Corda: بنكان أوروبيان وبنك من الإمارات", "hero-sub": "جولة تقنية تفصيلية حول R3 Corda لتسوية A2A المرمّزة عبر شبكة ثلاثة بنوك.", "kicker-section_01": "القسم 01", "kicker-section_02": "القسم 02", "kicker-section_03": "القسم 03", "kicker-section_04": "القسم 04", "kicker-section_05": "القسم 05", "kicker-section_06": "القسم 06", "kicker-section_07": "القسم 07", "kicker-section_08": "القسم 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Corda is the right infrastructure choice", "t-network_topology_and_node": "Network topology and node architecture", "t-cordapp_structure__states": "CorDapp structure: states, contracts, and flows", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-fx_handling__eur_aed_conve": "FX handling: EUR/AED conversion on the Corda ledger", "t-notary_design_for_cross_ju": "Notary design for cross-jurisdiction finality", "t-iso_20022_payload_inside_t": "ISO 20022 payload inside the token: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
+  pt: {"hero-h1": "Tokenização A2A no Corda: dois bancos europeus, um banco dos EAU", "hero-sub": "Apresentação técnica detalhada do R3 Corda para liquidação A2A tokenizada em uma rede de três bancos.", "kicker-section_01": "Seção 01", "kicker-section_02": "Seção 02", "kicker-section_03": "Seção 03", "kicker-section_04": "Seção 04", "kicker-section_05": "Seção 05", "kicker-section_06": "Seção 06", "kicker-section_07": "Seção 07", "kicker-section_08": "Seção 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Corda is the right infrastructure choice", "t-network_topology_and_node": "Network topology and node architecture", "t-cordapp_structure__states": "CorDapp structure: states, contracts, and flows", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-fx_handling__eur_aed_conve": "FX handling: EUR/AED conversion on the Corda ledger", "t-notary_design_for_cross_ju": "Notary design for cross-jurisdiction finality", "t-iso_20022_payload_inside_t": "ISO 20022 payload inside the token: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
+  zh: {"hero-h1": "基于Corda的A2A代币化：两家欧洲银行，一家阿联酋银行", "hero-sub": "关于R3 Corda实现三行网络代币化A2A结算的详细技术演练。", "kicker-section_01": "第01节", "kicker-section_02": "第02节", "kicker-section_03": "第03节", "kicker-section_04": "第04节", "kicker-section_05": "第05节", "kicker-section_06": "第06节", "kicker-section_07": "第07节", "kicker-section_08": "第08节", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Corda is the right infrastructure choice", "t-network_topology_and_node": "Network topology and node architecture", "t-cordapp_structure__states": "CorDapp structure: states, contracts, and flows", "t-full_transaction_lifecycle": "Full transaction lifecycle — 16 steps end-to-end", "t-fx_handling__eur_aed_conve": "FX handling: EUR/AED conversion on the Corda ledger", "t-notary_design_for_cross_ju": "Notary design for cross-jurisdiction finality", "t-iso_20022_payload_inside_t": "ISO 20022 payload inside the token: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and CBUAE PTSR + ADGM FSRA (UAE)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"}
+};
+
+function setLang(lang) {
+  document.querySelectorAll(".lang-btn").forEach(b => {
+    b.classList.remove("active");
+    const oc = b.getAttribute("onclick") || "";
+    if (oc.includes("'" + lang + "'") || oc.includes('"' + lang + '"')) {
+      b.classList.add("active");
+    }
+  });
+  document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+}
+
+// Smooth active section highlighting in TOC
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(l => l.style.color = '');
+      const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+      if (active) active.style.color = 'var(--accent-lt)';
+    }
+  });
+}, { threshold: 0.2 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
+        

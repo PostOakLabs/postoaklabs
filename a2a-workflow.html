@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2A Tokenization Explained | Account-to-Account Institutional Payment Rails | Post Oak Labs</title>
+<meta name="description" content="What tokenized A2A payment infrastructure actually is, and isn't. The institutional settlement layer between consumer fast-payment systems and correspondent banking. Architecture, workflows, cost comparisons, and revenue models for banks and large corporates.">
+<meta name="keywords" content="tokenized A2A payments, account-to-account payment rails, institutional blockchain payments, cross-border payment infrastructure, stablecoin rails, CBDC integration, correspondent banking alternative, tokenized cross-border payments">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/a2a-workflow.html">
+<link rel="alternate" hreflang="x-default" href="https://postoaklabs.com/a2a-workflow.html">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="A2A Tokenization Explained | Account-to-Account Institutional Payment Rails | Post Oak Labs">
+<meta property="og:description" content="What tokenized A2A payment infrastructure actually is, the institutional settlement layer between consumer fast payments and correspondent banking. Architecture, cost structure, revenue model, and transaction lifecycle.">
+<meta property="og:url" content="https://postoaklabs.com/a2a-workflow.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="A2A Tokenization Explained | Institutional Payment Rails | Post Oak Labs">
+<meta name="twitter:description" content="What tokenized A2A payment infrastructure actually is: architecture, cost structure, revenue model, and transaction lifecycle.">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A2A Tokenization Explained: Account-to-Account Institutional Payment Rails",
+  "description": "A detailed technical explainer on tokenized A2A payment infrastructure, the institutional settlement layer above consumer fast-payment systems and below correspondent banking. Covers architecture, transaction lifecycle, cost structure, and revenue model.",
+  "author": {"@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com"},
+  "publisher": {"@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com"},
+  "url": "https://postoaklabs.com/a2a-workflow.html",
+  "mainEntityOfPage": "https://postoaklabs.com/a2a-workflow.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does tokenized A2A payment infrastructure actually do?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Tokenized A2A (account-to-account) infrastructure enables banks and large corporates to settle cross-border B2B payments directly on a permissioned distributed ledger, without routing through 3–5 correspondent bank intermediaries. The sender's bank mints a tokenized claim against its fiat balance; that token transfers to the receiver's bank on-ledger and is redeemed for local currency. Net positions settle via RTGS at end-of-cycle, preserving the existing settlement backbone while eliminating intermediary hops. Fee reductions of 70–80% have been observed in selected corridors vs. correspondent banking rails; actual savings vary by transaction size, currency pair, and regulatory environment. Settlement compresses from 2–5 days to seconds or minutes."}
+    },
+    {
+      "@type": "Question",
+      "name": "How does tokenized A2A relate to CBDC and stablecoins?",
+      "acceptedAnswer": {"@type": "Answer", "text": "CBDCs and stablecoins are the monetary primitive, the digital form of money that can optionally serve as the settlement asset on A2A rails. Tokenized A2A is the institutional payment rail, the infrastructure that moves that money between banks at scale. A2A can operate with tokenized fiat, stablecoin, or CBDC as the settlement asset. The two are complementary: CBDC/stablecoin answers 'what is the digital money?' and A2A answers 'how do banks move it institutionally?'"}
+    },
+    {
+      "@type": "Question",
+      "name": "What is the cost of tokenized A2A payments compared to correspondent banking?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Tokenized A2A direct settlement fees are approximately 0.2% of transaction value, compared to 2.5–5% plus FX spread via correspondent banking. This reflects elimination of 3–5 intermediary correspondent banks, each charging individual fees. A2A also significantly reduces nostro pre-funding costs, At a 5% rate, pre-funding $1 billion in a nostro account costs roughly $50 million per year in foregone yield. FX revenue is captured at the originating bank's point of redemption rather than distributed across the correspondent chain."}
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:      #050c15;
+  --deep:     #0a1628;
+  --navy:     #0e1e35;
+  --panel:    #142540;
+  --edge:     #1e3454;
+  --rim:      #2a4a70;
+  --muted:    #4a6a8a;
+  --body:     #7090b0;
+  --text:     #a8c0d8;
+  --bright:   #d0e4f4;
+  --white:    #ecf4fc;
+  --gold:     #c09040;
+  --gold-lt:  #d8b060;
+  --accent:   #2a7fc0;
+  --accent-lt:#4a9fd8;
+  --green:    #2a9060;
+  --green-lt: #3ab878;
+  --red:      #b03040;
+  --red-lt:   #d04858;
+  --amber:    #b07020;
+  --amber-lt: #d09030;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 16px;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── NAV ── */
+/* ── HERO ── */
+.hero {
+  padding: 5rem 0 4.5rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; top: -150px; right: -200px;
+  width: 800px; height: 800px;
+  background: radial-gradient(ellipse, rgba(42,127,192,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 28px; height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  color: var(--white); max-width: 760px; margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 1rem; color: var(--body);
+  max-width: 600px; line-height: 1.85; margin-bottom: 2rem;
+}
+.disambiguation {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--amber);
+  padding: 1.1rem 1.5rem;
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+}
+.disambiguation p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; line-height: 1.7;
+  color: var(--body);
+}
+.disambiguation strong { color: var(--amber-lt); }
+.hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--accent); color: var(--white);
+  border: 1px solid var(--accent); transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.btn-outline {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--edge); color: var(--muted);
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+/* ── AUDIENCE ROUTER ── */
+.audience-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+  margin-top: 3.5rem;
+}
+.audience-cell {
+  background: var(--deep); padding: 1.35rem 1.5rem;
+  cursor: pointer; transition: background 0.2s;
+  text-decoration: none;
+}
+.audience-cell:hover { background: var(--navy); }
+.audience-role {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.54rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 0.4rem;
+}
+.audience-cell h4 { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.audience-cell p { font-size: 0.75rem; color: var(--body); line-height: 1.65; }
+
+/* ── SECTIONS ── */
+section { padding: 4.5rem 0; }
+.sec-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem;
+}
+.sec-label::after {
+  content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--edge);
+}
+.sec-title { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bright); margin-bottom: 0.75rem; }
+.sec-intro { font-size: 0.9rem; color: var(--body); max-width: 620px; line-height: 1.85; margin-bottom: 2.5rem; }
+hr.rule { border: none; border-top: 1px solid var(--edge); }
+
+/* ── STAT STRIP ── */
+.stat-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+}
+.stat-cell { background: var(--deep); padding: 1.35rem 1.5rem; text-align: center; }
+.stat-num {
+  font-family: 'DM Serif Display', serif; font-size: 1.9rem;
+  color: var(--accent-lt); display: block; line-height: 1; margin-bottom: 0.3rem;
+}
+.stat-num.gold { color: var(--gold-lt); }
+.stat-num.green { color: var(--green-lt); }
+.stat-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); line-height: 1.5;
+}
+.stat-source { font-family: 'JetBrains Mono', monospace; font-size: 0.46rem; color: var(--edge); margin-top: 0.3rem; }
+
+/* ── DIAGRAM WRAPPER ── */
+.diagram-wrap {
+  margin: 2rem 0;
+  border: 1px solid var(--edge);
+  background: var(--deep);
+  padding: 2rem;
+  overflow-x: auto;
+}
+.diagram-wrap svg {
+  display: block;
+  margin: 0 auto;
+}
+.diagram-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.53rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 1rem; text-align: center;
+}
+
+/* ── COMPARISON TABLE ── */
+.compare-wrap { overflow-x: auto; margin: 2rem 0; }
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.compare-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.13em; text-transform: uppercase;
+  padding: 0.85rem 1.25rem; text-align: left;
+  border-bottom: 1px solid var(--edge);
+}
+.compare-table th:first-child { color: var(--muted); background: var(--deep); }
+.compare-table th.legacy { color: var(--red-lt); background: rgba(176,48,64,0.06); }
+.compare-table th.tokenized { color: var(--green-lt); background: rgba(42,144,96,0.06); }
+.compare-table td {
+  padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--edge);
+  color: var(--body); line-height: 1.6; vertical-align: top;
+}
+.compare-table td:first-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text); background: var(--deep);
+}
+.compare-table td.legacy { background: rgba(176,48,64,0.04); }
+.compare-table td.tokenized { background: rgba(42,144,96,0.04); color: var(--bright); }
+.compare-table tr:last-child td { border-bottom: none; }
+.tag-bad { color: var(--red-lt); }
+.tag-good { color: var(--green-lt); }
+
+/* ── LIFECYCLE STEPS ── */
+.lifecycle-steps {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--edge); border: 1px solid var(--edge);
+}
+.step-row {
+  display: grid; grid-template-columns: 56px 200px 1fr;
+  gap: 0; align-items: stretch;
+  background: var(--deep); transition: background 0.2s;
+}
+.step-row:hover { background: var(--navy); }
+.step-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem; color: var(--edge);
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid var(--edge);
+  padding: 1.25rem 0;
+  transition: color 0.2s;
+}
+.step-row:hover .step-num { color: var(--accent-lt); }
+.step-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.54rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--accent-lt); padding: 1.25rem 1.25rem;
+  border-right: 1px solid var(--edge);
+  display: flex; align-items: center;
+  line-height: 1.6;
+}
+.step-body { padding: 1.1rem 1.5rem; }
+.step-body h4 {
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.25rem;
+}
+.step-body p { font-size: 0.8rem; color: var(--body); line-height: 1.75; }
+.step-timing {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.3rem;
+}
+.step-timing span { color: var(--green-lt); }
+
+/* ── REVENUE GRID ── */
+.revenue-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+}
+.revenue-cell {
+  background: var(--deep); padding: 1.5rem 1.75rem;
+  transition: background 0.2s;
+}
+.revenue-cell:hover { background: var(--navy); }
+.revenue-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.53rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 0.5rem;
+}
+.revenue-cell h4 {
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.revenue-cell p { font-size: 0.79rem; color: var(--body); line-height: 1.75; }
+.revenue-metric {
+  font-family: 'DM Serif Display', serif; font-size: 1.15rem;
+  color: var(--gold-lt); display: block; margin-top: 0.5rem;
+}
+
+/* ── BEST PRACTICES ── */
+.practice-list {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--edge); border: 1px solid var(--edge);
+}
+.practice-item {
+  background: var(--deep); padding: 1.2rem 1.75rem;
+  display: grid; grid-template-columns: 180px 1fr;
+  gap: 1.5rem; align-items: baseline;
+  transition: background 0.2s;
+}
+.practice-item:hover { background: var(--navy); }
+.practice-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.54rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-lt);
+}
+.practice-item p { font-size: 0.82rem; color: var(--body); line-height: 1.78; }
+
+/* ── FEE CHART ── */
+.fee-chart { margin: 2rem 0; }
+.fee-bar-row {
+  display: grid; grid-template-columns: 160px 1fr 64px;
+  gap: 0.75rem; align-items: center; padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(30,52,84,0.5);
+}
+.fee-bar-row:last-child { border-bottom: none; }
+.fee-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+.fee-bar-track { background: var(--panel); height: 10px; border-radius: 0; position: relative; }
+.fee-bar { height: 100%; transition: width 1s ease; }
+.fee-value {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.08em; text-align: right;
+}
+
+/* ── CTA ── */
+.cta-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  padding: 3.5rem; text-align: center; margin-top: 3rem;
+  position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.cta-block h3 { font-size: 1.8rem; color: var(--white); margin-bottom: 0.5rem; }
+.cta-block p { font-size: 0.9rem; color: var(--body); max-width: 480px; margin: 0 auto 2rem; line-height: 1.85; }
+
+/* ── HIGHLIGHT BLOCK ── */
+.highlight-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  border-left: 3px solid var(--accent); padding: 1.5rem 2rem; margin-top: 2rem;
+}
+.highlight-block p { font-size: 0.85rem; color: var(--body); line-height: 1.85; }
+.highlight-block strong { color: var(--bright); font-weight: 500; }
+
+/* ── FOOTER ── */
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .audience-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  .revenue-grid { grid-template-columns: 1fr; }
+  .step-row { grid-template-columns: 40px 1fr; }
+  .step-phase { display: none; }
+  .practice-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  .nav-links { display: none; }
+}
+@media (max-width: 500px) {
+  .audience-grid { grid-template-columns: 1fr; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+/* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+/* ══════════════════════════════════════════════════ */
+</style>
+
+
+
+
+
+
+<link rel="me" href="https://ainumbers.co">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "A2A Tokenization Explained: Account-to-Account Institutional Payment Rails",
+  "datePublished": "2026-04-19",
+  "dateModified": "2026-05-11",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "publisher": {
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "mainEntityOfPage": "https://postoaklabs.com/a2a-workflow.html",
+  "image": "https://postoaklabs.com/og-image.png",
+  "about": "Tokenized account-to-account payment infrastructure",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Commercial banks, central banks, large corporates"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "A2A Payments",
+      "item": "https://postoaklabs.com/a2a-payments.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How It Works",
+      "item": "https://postoaklabs.com/a2a-workflow.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- Language bar -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow" data-i18n="hero-eyebrow">A2A Tokenization Explained · Institutional Payment Rails</p>
+    <h1 data-i18n="hero-h1">Account-to-account tokenization: what it is, how it works, and why it matters to your institution</h1>
+    <p class="hero-sub" data-i18n="hero-sub">A clear, structured explanation of tokenized A2A payment infrastructure, the bank-grade settlement layer that operates above consumer fast-payment systems and below traditional correspondent banking.</p>
+
+    <div class="disambiguation">
+      <p><strong>Disambiguation:</strong> "A2A" in this context means <strong>Account-to-Account</strong>, institutional, bank-account-based payment rails using tokenized settlement. This is distinct from: LLM "Agent-to-Agent" AI protocols, consumer P2P payments (Venmo, PayPal), and general asset tokenization (real estate, securities). This page covers the bank payment infrastructure definition only.</p>
+    </div>
+
+    <div class="hero-cta-row">
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="hero-cta-primary">Talk to Post Oak Labs</a>
+      <a href="#architecture" class="btn-outline">See the architecture</a>
+      <a href="a2a-payments.html" class="btn-outline">Market coverage →</a>
+    </div>
+
+    <!-- Audience router -->
+    <div class="audience-grid">
+      <a href="#cost" class="audience-cell">
+        <p class="audience-role">Bank Executives</p>
+        <h4>Strategic value & revenue</h4>
+        <p>New revenue models, competitive positioning, regulatory framing, and margin enhancement scenarios.</p>
+      </a>
+      <a href="#lifecycle" class="audience-cell">
+        <p class="audience-role">Treasury Managers</p>
+        <h4>Liquidity & working capital</h4>
+        <p>Near-instant settlement, nostro/vostro pre-funding reduction, intraday liquidity optimization.</p>
+      </a>
+      <a href="#lifecycle" class="audience-cell">
+        <p class="audience-role">Compliance Officers</p>
+        <h4>KYC/AML & audit trails</h4>
+        <p>Graduated KYC tiers, ISO 20022 data richness, immutable audit trails, PCI scope reduction.</p>
+      </a>
+      <a href="#architecture" class="audience-cell">
+        <p class="audience-role">Technology Teams</p>
+        <h4>Architecture & integration</h4>
+        <p>Four-corner model, system topology, core banking integration without core replacement.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ STATS ═══════════════════════════════════════ -->
+<section style="padding:2.5rem 0; border-bottom:1px solid var(--edge);">
+  <div class="container">
+    <div class="stat-strip">
+      <div class="stat-cell">
+        <span class="stat-num">$27T</span>
+        <p class="stat-label">Trapped in nostro/vostro pre-funding today, freed by tokenized A2A settlement</p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num gold">70–80%</span>
+        <p class="stat-label">Reduction in cross-border fees vs. correspondent banking rails in selected corridors (see fn. 1)</p>
+        <p class="stat-source">SQ Magazine, 2025</p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num green">&lt;10s</span>
+        <p class="stat-label">Cross-border settlement finality demonstrated in multi-CBDC corridors (PoC conditions; see fn. 5)</p>
+        <p class="stat-source">Project mBridge, Jasper-Ubin</p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">$50B+</span>
+        <p class="stat-label">Projected savings for business customers from tokenized payment infrastructure by 2030</p>
+        <p class="stat-source">Deloitte, 2025</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ WHAT IS A2A ═══════════════════════════════════════ -->
+<section id="what-is-a2a">
+  <div class="container">
+    <p class="sec-label" data-i18n="label-definition">Definition</p>
+    <h2 class="sec-title" data-i18n="title-where_tokenized_a2a_sits_">Where tokenized A2A sits in the payment stack</h2>
+    <p class="sec-intro">The payment system is layered. Tokenized A2A is a specific layer, not a replacement for everything below it, and not the same as what sits above or beside it. Understanding where it fits is the starting point for any implementation conversation.</p>
+
+    <!-- THE STACK DIAGRAM -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg" width="820" style="max-width:100%;">
+        <defs>
+          <linearGradient id="a2aGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="var(--accent-lt)" stop-opacity="0.15"/>
+          </linearGradient>
+          <linearGradient id="cbdcGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--green)" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="var(--green-lt)" stop-opacity="0.1"/>
+          </linearGradient>
+          <linearGradient id="rtgsGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--muted)" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="var(--muted)" stop-opacity="0.1"/>
+          </linearGradient>
+          <linearGradient id="consumerGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--muted)" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="var(--muted)" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+
+        <!-- background -->
+        <rect width="860" height="480" fill="var(--deep)" rx="2"/>
+
+        <!-- Layer labels left -->
+        <text x="18" y="70" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" text-anchor="start" transform="rotate(-90,18,70)" dy="0">LAYER</text>
+
+        <!-- Correspondent Banking / SWIFT (top — legacy) -->
+        <rect x="40" y="24" width="780" height="62" fill="var(--edge)" stroke="var(--rim)" stroke-width="1" rx="1"/>
+        <text x="60" y="48" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.2">CORRESPONDENT BANKING / SWIFT / RTGS</text>
+        <text x="60" y="65" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8.5">3–5 intermediary hops · 2–5 day settlement · high pre-funding requirements · limited data fields</text>
+        <text x="782" y="56" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="end">Legacy rails</text>
+
+        <!-- A2A Tokenized Layer (highlighted) -->
+        <rect x="40" y="100" width="780" height="82" fill="url(#a2aGrad)" stroke="var(--accent)" stroke-width="1.5" rx="1"/>
+        <!-- glow line top -->
+        <rect x="40" y="100" width="780" height="2" fill="var(--accent)" opacity="0.6" rx="0"/>
+        <text x="60" y="126" fill="var(--white)" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.5" font-weight="500">TOKENIZED A2A INSTITUTIONAL RAILS</text>
+        <text x="60" y="143" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8.5">Account-to-account tokenized settlement · 1–2 direct fees · near-instant finality · ISO 20022 data</text>
+        <text x="60" y="160" fill="var(--accent-lt)" font-family="JetBrains Mono, monospace" font-size="8">B2B cross-border · corporate treasury · interbank settlement · tokenized MMF distribution</text>
+        <!-- arrow badge -->
+        <rect x="732" y="112" width="78" height="22" fill="var(--accent)" rx="1"/>
+        <text x="771" y="126" fill="var(--white)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">← THIS LAYER</text>
+
+        <!-- CBDC / Stablecoin Layer -->
+        <rect x="40" y="196" width="780" height="62" fill="url(#cbdcGrad)" stroke="var(--green)" stroke-width="1" rx="1"/>
+        <text x="60" y="220" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.2">CBDC · STABLECOIN INFRASTRUCTURE</text>
+        <text x="60" y="238" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8.5">Central bank digital currency · private stablecoin rails · reserve management · programmable money</text>
+        <text x="782" y="230" fill="var(--green)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="end">Enabling layer</text>
+
+        <!-- Fast payment / consumer layer -->
+        <rect x="40" y="272" width="780" height="62" fill="url(#consumerGrad)" stroke="var(--edge)" stroke-width="1" rx="1"/>
+        <text x="60" y="296" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.2">CONSUMER FAST PAYMENT SYSTEMS</text>
+        <text x="60" y="313" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8.5">Pix (Brazil) · SPEI (Mexico) · FedNow (US) · UPI (India) · FPS (UK), consumer / retail P2P</text>
+        <text x="782" y="306" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="end">Not A2A</text>
+
+        <!-- Settlement / Ledger layer -->
+        <rect x="40" y="348" width="780" height="62" fill="url(#rtgsGrad)" stroke="var(--edge)" stroke-width="1" rx="1"/>
+        <text x="60" y="372" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.2">SETTLEMENT LEDGER / BLOCKCHAIN INFRASTRUCTURE</text>
+        <text x="60" y="389" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8.5">Permissioned DLT · L1 blockchains · central bank RTGS · Corda / Hyperledger / EVM-compatible</text>
+
+        <!-- connecting arrows between layers -->
+        <line x1="430" y1="86" x2="430" y2="100" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.5"/>
+        <line x1="430" y1="182" x2="430" y2="196" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.5"/>
+        <line x1="430" y1="258" x2="430" y2="272" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+        <line x1="430" y1="334" x2="430" y2="348" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+
+        <!-- Y axis label -->
+        <text x="430" y="455" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8.5" letter-spacing="1" text-anchor="middle">THE INSTITUTIONAL PAYMENT STACK, POST OAK LABS</text>
+      </svg>
+      <p class="diagram-caption">Payment stack layers, tokenized A2A operates between consumer fast payment systems and legacy correspondent banking</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ═══════════════════════════════════════ ARCHITECTURE ═══════════════════════════════════════ -->
+<section id="architecture">
+  <div class="container">
+    <p class="sec-label" data-i18n="label-architecture">Architecture</p>
+    <h2 class="sec-title" data-i18n="title-before__after_legacy_corr">Before & After: legacy correspondent banking vs. tokenized A2A</h2>
+    <p class="sec-intro">The structural difference between the two models goes deeper than speed. It is the number of actors, the cost structure at each hop, the data that travels with the payment, and the control available to the sending institution.</p>
+
+    <!-- BEFORE / AFTER DIAGRAM -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg" width="820" style="max-width:100%;">
+        <rect width="860" height="440" fill="var(--deep)" rx="2"/>
+
+        <!-- BEFORE label -->
+        <rect x="30" y="16" width="380" height="26" fill="var(--edge)" rx="1"/>
+        <text x="220" y="33" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.5" text-anchor="middle">LEGACY CORRESPONDENT BANKING</text>
+
+        <!-- AFTER label -->
+        <rect x="450" y="16" width="380" height="26" fill="#0e2510" stroke="var(--green)" stroke-width="1" rx="1"/>
+        <text x="640" y="33" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="1.5" text-anchor="middle">TOKENIZED A2A RAILS</text>
+
+        <!-- DIVIDER -->
+        <line x1="425" y1="16" x2="425" y2="424" stroke="var(--edge)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="425" y="232" fill="var(--edge)" font-family="JetBrains Mono, monospace" font-size="22" text-anchor="middle" dominant-baseline="middle">|</text>
+
+        <!-- === BEFORE SIDE === -->
+        <!-- Sender Bank -->
+        <rect x="42" y="62" width="100" height="46" fill="var(--panel)" stroke="var(--red)" stroke-width="1.5" rx="1"/>
+        <text x="92" y="82" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">SENDER</text>
+        <text x="92" y="98" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">BANK</text>
+
+        <!-- Arrow 1 -->
+        <line x1="142" y1="85" x2="168" y2="85" stroke="var(--body)" stroke-width="1"/>
+        <polygon points="168,81 175,85 168,89" fill="var(--body)"/>
+        <text x="155" y="79" fill="var(--red)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">fee</text>
+
+        <!-- Corresp Bank 1 -->
+        <rect x="175" y="62" width="82" height="46" fill="#1e1020" stroke="var(--red)" stroke-width="1" rx="1" opacity="0.9"/>
+        <text x="216" y="82" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">CORRESP</text>
+        <text x="216" y="97" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">BANK A</text>
+
+        <!-- Arrow 2 -->
+        <line x1="257" y1="85" x2="278" y2="85" stroke="var(--body)" stroke-width="1"/>
+        <polygon points="278,81 285,85 278,89" fill="var(--body)"/>
+        <text x="267" y="79" fill="var(--red)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">fee</text>
+
+        <!-- Corresp Bank 2 -->
+        <rect x="285" y="62" width="82" height="46" fill="#1e1020" stroke="var(--red)" stroke-width="1" rx="1" opacity="0.9"/>
+        <text x="326" y="82" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">CORRESP</text>
+        <text x="326" y="97" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">BANK B</text>
+
+        <!-- Arrow 3 → ellipsis (more hops implied) -->
+        <line x1="367" y1="85" x2="394" y2="85" stroke="var(--body)" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="405" y="90" fill="var(--red)" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">···</text>
+
+        <!-- below: pain points -->
+        <rect x="42" y="128" width="360" height="160" fill="#100810" stroke="var(--red)" stroke-width="0.5" rx="1" opacity="0.6"/>
+        <text x="222" y="148" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="8.5" text-anchor="middle" letter-spacing="1">PAIN POINTS</text>
+
+        <text x="58" y="168" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  3–5 intermediary hops per payment</text>
+        <text x="58" y="185" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  2–5 business day settlement</text>
+        <text x="58" y="202" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  $27T locked in nostro/vostro pre-funding</text>
+        <text x="58" y="219" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  Legacy MT messages: &lt;10 data fields</text>
+        <text x="58" y="236" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  FX spread markups at each hop</text>
+        <text x="58" y="253" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  Manual reconciliation, high exception rates</text>
+        <text x="58" y="270" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="8">✗  No real-time visibility on payment status</text>
+
+        <!-- cost box -->
+        <rect x="42" y="305" width="360" height="52" fill="#1e0a10" stroke="var(--red)" stroke-width="0.5" rx="1"/>
+        <text x="222" y="323" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="9" text-anchor="middle">TOTAL COST: 2.5–5% + FX spread</text>
+        <text x="222" y="338" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">SWIFT fees + correspondent fees + FX markup</text>
+        <text x="222" y="351" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">+ nostro maintenance + reconciliation labor</text>
+
+        <!-- time box -->
+        <rect x="42" y="368" width="360" height="36" fill="#1e0a10" stroke="var(--red)" stroke-width="0.5" rx="1"/>
+        <text x="222" y="383" fill="var(--red-lt)" font-family="JetBrains Mono, monospace" font-size="9" text-anchor="middle">SETTLEMENT TIME: 2–5 business days</text>
+        <text x="222" y="397" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">(SWIFT gpi median &lt;2h in-network; final crediting 2+ days)</text>
+
+        <!-- === AFTER SIDE === -->
+        <!-- Right panel x=450→830, width=380, center=640              -->
+        <!-- Sender center=510 (x=463,w=94), Ledger center=640 (x=610,w=60), Receiver center=770 (x=723,w=94) -->
+
+        <!-- Sender Bank, centered at 510 -->
+        <rect x="463" y="62" width="94" height="46" fill="var(--ink)" stroke="var(--green)" stroke-width="1.5" rx="1"/>
+        <text x="510" y="82" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">SENDER</text>
+        <text x="510" y="98" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">BANK</text>
+
+        <!-- Token arrow: Sender right edge (557) → Ledger left edge (610) -->
+        <line x1="557" y1="85" x2="610" y2="85" stroke="var(--green)" stroke-width="2"/>
+        <polygon points="606,81 614,85 606,89" fill="var(--green)"/>
+        <!-- TOKEN label above arrow, centered in gap midpoint 583 -->
+        <rect x="566" y="67" width="48" height="14" fill="var(--deep)" stroke="var(--green)" stroke-width="0.5" rx="1"/>
+        <text x="590" y="78" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">TOKEN</text>
+
+        <!-- Settlement Ledger, centered at 640 -->
+        <rect x="610" y="62" width="60" height="46" fill="var(--ink)" stroke="var(--gold-lt)" stroke-width="1.5" rx="1"/>
+        <text x="640" y="80" fill="var(--gold-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">SETTLE</text>
+        <text x="640" y="92" fill="var(--gold-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">LEDGER</text>
+        <text x="640" y="104" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="6.5" text-anchor="middle">1 fee</text>
+
+        <!-- Redemption arrow: Ledger right edge (670) → Receiver left edge (723) -->
+        <line x1="670" y1="85" x2="723" y2="85" stroke="var(--green)" stroke-width="2"/>
+        <polygon points="719,81 727,85 719,89" fill="var(--green)"/>
+        <!-- REDEEM label above arrow, centered in gap midpoint 696 -->
+        <rect x="672" y="67" width="48" height="14" fill="var(--deep)" stroke="var(--green)" stroke-width="0.5" rx="1"/>
+        <text x="696" y="78" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">REDEEM</text>
+
+        <!-- Receiver Bank, centered at 770 -->
+        <rect x="723" y="62" width="94" height="46" fill="var(--ink)" stroke="var(--green)" stroke-width="1.5" rx="1"/>
+        <text x="770" y="82" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">RECEIVER</text>
+        <text x="770" y="98" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">BANK</text>
+
+        <!-- benefits box -->
+        <rect x="456" y="128" width="362" height="160" fill="#081808" stroke="var(--green)" stroke-width="0.5" rx="1" opacity="0.7"/>
+        <text x="637" y="148" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="8.5" text-anchor="middle" letter-spacing="1">IMPROVEMENTS</text>
+
+        <text x="472" y="168" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  1–2 direct settlement fees only</text>
+        <text x="472" y="185" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  Near-instant or same-session finality</text>
+        <text x="472" y="202" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  No nostro/vostro pre-funding required</text>
+        <text x="472" y="219" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  ISO 20022: 200+ structured data fields</text>
+        <text x="472" y="236" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  On-ledger FX conversion at point of settlement</text>
+        <text x="472" y="253" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  Automated reconciliation, ~30% fewer exceptions</text>
+        <text x="472" y="270" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8">✓  Real-time payment status across all participants</text>
+
+        <!-- cost box -->
+        <rect x="456" y="305" width="362" height="52" fill="#081808" stroke="var(--green)" stroke-width="0.5" rx="1"/>
+        <text x="637" y="323" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="9" text-anchor="middle">TOTAL COST: ~0.2% direct settlement fee</text>
+        <text x="637" y="338" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">vs. credit card ~2.5%</text>
+        <text x="637" y="351" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">debit ~1.5% / ACH flat fee ($0.20–$1.50/txn)</text>
+
+        <!-- time box -->
+        <rect x="456" y="368" width="362" height="36" fill="#081808" stroke="var(--green)" stroke-width="0.5" rx="1"/>
+        <text x="637" y="383" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="9" text-anchor="middle">SETTLEMENT TIME: seconds to minutes</text>
+        <text x="637" y="397" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">(Multi-CBDC corridors: &lt;10 seconds demonstrated)</text>
+
+        <!-- bottom label -->
+        <text x="430" y="428" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.5">BEFORE / AFTER ARCHITECTURE COMPARISON, POST OAK LABS</text>
+      </svg>
+      <p class="diagram-caption">Correspondent banking (legacy) vs. tokenized A2A rails, structural cost and settlement comparison</p>
+    </div>
+
+    <!-- FOUR-CORNER MODEL -->
+    <p class="sec-label" style="margin-top:3rem;">Four-Corner Model</p>
+    <h3 class="sec-title" style="font-size:clamp(1.4rem,2.5vw,1.9rem);">How a tokenized A2A transaction flows</h3>
+    <p class="sec-intro" style="margin-bottom:1.5rem;">The four-corner model is the structural foundation of tokenized A2A. It defines who owns the fiat at each step, where the token lives, and how settlement occurs without moving correspondent balances between intermediaries.</p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 860 360" xmlns="http://www.w3.org/2000/svg" width="820" style="max-width:100%;">
+        <rect width="860" height="360" fill="var(--deep)" rx="2"/>
+
+        <!-- Corner boxes -->
+        <!-- 1. Sender Bank (top-left) -->
+        <rect x="40" y="40" width="160" height="100" fill="var(--navy)" stroke="var(--accent)" stroke-width="1.5" rx="2"/>
+        <text x="120" y="64" fill="var(--accent-lt)" font-family="JetBrains Mono, monospace" font-size="8.5" text-anchor="middle" letter-spacing="1">CORNER 1</text>
+        <text x="120" y="82" fill="var(--white)" font-family="DM Serif Display, serif" font-size="13" text-anchor="middle">Sender Bank</text>
+        <text x="120" y="100" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Holds fiat · issues token</text>
+        <text x="120" y="116" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">liability on its own ledger</text>
+        <text x="120" y="132" fill="var(--accent-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">KYC/AML: sender</text>
+
+        <!-- 2. Tokenization / Settlement Layer (center-top) -->
+        <rect x="330" y="40" width="200" height="100" fill="#0e1828" stroke="var(--gold-lt)" stroke-width="1.5" rx="2"/>
+        <rect x="330" y="40" width="200" height="3" fill="var(--gold-lt)" rx="0"/>
+        <text x="430" y="64" fill="var(--gold-lt)" font-family="JetBrains Mono, monospace" font-size="8.5" text-anchor="middle" letter-spacing="1">TOKENIZATION LAYER</text>
+        <text x="430" y="82" fill="var(--white)" font-family="DM Serif Display, serif" font-size="13" text-anchor="middle">Settlement Ledger</text>
+        <text x="430" y="100" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Token exists here as a claim</text>
+        <text x="430" y="116" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">on sender bank's fiat reserves</text>
+        <text x="430" y="132" fill="var(--gold-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">DLT · permissioned ledger · CBDC rail</text>
+
+        <!-- 3. Receiver Bank (top-right) -->
+        <rect x="660" y="40" width="160" height="100" fill="var(--navy)" stroke="var(--green-lt)" stroke-width="1.5" rx="2"/>
+        <text x="740" y="64" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="8.5" text-anchor="middle" letter-spacing="1">CORNER 2</text>
+        <text x="740" y="82" fill="var(--white)" font-family="DM Serif Display, serif" font-size="13" text-anchor="middle">Receiver Bank</text>
+        <text x="740" y="100" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Redeems token · credits</text>
+        <text x="740" y="116" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">customer account</text>
+        <text x="740" y="132" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">KYC/AML: receiver</text>
+
+        <!-- 4. Corporates / Participants (bottom) -->
+        <rect x="40" y="238" width="148" height="72" fill="#0a1020" stroke="var(--muted)" stroke-width="1" rx="2"/>
+        <text x="114" y="262" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle" letter-spacing="0.8">CORPORATE SENDER</text>
+        <text x="114" y="278" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Initiates payment</text>
+        <text x="114" y="294" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Fiat stays at bank</text>
+
+        <rect x="672" y="238" width="148" height="72" fill="#0a1020" stroke="var(--muted)" stroke-width="1" rx="2"/>
+        <text x="746" y="262" fill="var(--body)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle" letter-spacing="0.8">CORPORATE RECEIVER</text>
+        <text x="746" y="278" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Receives settlement</text>
+        <text x="746" y="294" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">Fiat credited locally</text>
+
+        <!-- Flow arrows -->
+        <!-- Corp Sender → Sender Bank -->
+        <line x1="114" y1="238" x2="114" y2="140" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <polygon points="110,142 114,134 118,142" fill="var(--muted)"/>
+        <text x="94" y="190" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">payment</text>
+        <text x="94" y="202" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">instruction</text>
+
+        <!-- Sender Bank → Settlement Ledger -->
+        <line x1="200" y1="88" x2="330" y2="88" stroke="var(--gold-lt)" stroke-width="1.5"/>
+        <polygon points="326,84 334,88 326,92" fill="var(--gold-lt)"/>
+        <rect x="218" y="74" width="96" height="16" fill="var(--deep)" rx="1"/>
+        <text x="266" y="85" fill="var(--gold-lt)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">token minted</text>
+
+        <!-- Settlement Ledger → Receiver Bank -->
+        <line x1="530" y1="88" x2="660" y2="88" stroke="var(--green-lt)" stroke-width="1.5"/>
+        <polygon points="656,84 664,88 656,92" fill="var(--green-lt)"/>
+        <rect x="547" y="74" width="95" height="16" fill="var(--deep)" rx="1"/>
+        <text x="595" y="85" fill="var(--green-lt)" font-family="JetBrains Mono, monospace" font-size="7.5" text-anchor="middle">token redeemed</text>
+
+        <!-- Receiver Bank → Corp Receiver -->
+        <line x1="746" y1="140" x2="746" y2="238" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <polygon points="742,236 746,244 750,236" fill="var(--muted)"/>
+        <text x="766" y="190" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">fiat</text>
+        <text x="766" y="202" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">credited</text>
+
+        <!-- Fiat stays annotation -->
+        <line x1="200" y1="140" x2="330" y2="200" stroke="var(--muted)" stroke-width="0.75" stroke-dasharray="3,3" opacity="0.5"/>
+
+        <!-- Key insight box bottom-center -->
+        <rect x="266" y="230" width="328" height="80" fill="#0c1424" stroke="var(--edge)" stroke-width="1" rx="1"/>
+        <text x="430" y="253" fill="var(--accent-lt)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="1">KEY INSIGHT</text>
+        <text x="430" y="270" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle">Fiat never moves between banks during the transaction.</text>
+        <text x="430" y="287" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle">The token is a transferable claim on the sender bank's</text>
+        <text x="430" y="304" fill="var(--text)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle">reserves. Settlement is via off-ledger netting or RTGS.</text>
+
+        <text x="430" y="345" fill="var(--muted)" font-family="JetBrains Mono, monospace" font-size="8" text-anchor="middle">FOUR-CORNER MODEL, POST OAK LABS</text>
+      </svg>
+      <p class="diagram-caption">Four-corner model, sender bank, settlement ledger, receiver bank, and corporate participants</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ═══════════════════════════════════════ LIFECYCLE ═══════════════════════════════════════ -->
+<section id="lifecycle">
+  <div class="container">
+    <p class="sec-label" data-i18n="label-transaction_lifecycl">Transaction Lifecycle</p>
+    <h2 class="sec-title" data-i18n="title-end-to-end_from_payment_i">End-to-end: from payment initiation to core banking reconciliation</h2>
+    <p class="sec-intro">A complete tokenized A2A transaction moves through seven distinct phases. Understanding what happens at each step, and who is responsible, is essential for banks designing integration architecture or evaluating compliance implications.</p>
+
+    <div class="lifecycle-steps">
+
+      <div class="step-row">
+        <div class="step-num">01</div>
+        <div class="step-phase">KYC / AML<br>Pre-screening</div>
+        <div class="step-body">
+          <h4>Identity verification and compliance check</h4>
+          <p>Sending institution validates corporate or individual sender against KYC/AML database. Graduated KYC tiers allow transaction-value-appropriate verification, low-value remittances share attestation data across network participants; high-value B2B triggers full due diligence. The compliance officer has full visibility at this layer.</p>
+          <p class="step-timing">Timing: <span>Real-time (automated)</span>. ISO 20022 structured data feeds compliance directly.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num">02</div>
+        <div class="step-phase">Payment<br>Instruction</div>
+        <div class="step-body">
+          <h4>Corporate initiates payment; bank validates and routes</h4>
+          <p>Corporate submits payment instruction via bank's API or portal. Bank validates account details, confirms available liquidity, and applies dynamic routing logic, evaluating whether to route via tokenized rail, ACH, RTP, or alternative mechanism based on corridor, amount, and speed.</p>
+          <p class="step-timing">Timing: <span>&lt;1 second</span>. Routing decision automated via pre-configured rules.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num">03</div>
+        <div class="step-phase">Token<br>Minting</div>
+        <div class="step-body">
+          <h4>Sender bank mints a tokenized claim on its fiat reserves</h4>
+          <p>The sending bank creates a token on the shared settlement ledger representing a claim on its fiat reserves. The amount does not leave the bank's balance sheet at this point. The token carries the full ISO 20022 data payload (200+ structured fields), enabling automated reconciliation at the receiving end. HSM-secured key management governs minting authority.</p>
+          <p class="step-timing">Timing: <span>Seconds</span>. Token is cryptographically signed and ledger-recorded.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num">04</div>
+        <div class="step-phase">On-Ledger<br>Transfer</div>
+        <div class="step-body">
+          <h4>Token transferred across the settlement ledger to receiver bank</h4>
+          <p>The token moves across the permissioned ledger to the receiving bank's ledger address. No correspondent bank intermediates this step. Programmable conditions (e.g., delivery confirmation for trade finance, milestone completion for supply chain) can gate this transfer. Atomic settlement ensures either the full transfer completes or nothing moves.</p>
+          <p class="step-timing">Timing: <span>Seconds to minutes</span>. Finality on permissioned ledger; no rollback after confirmation.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num">05</div>
+        <div class="step-phase">Token<br>Redemption</div>
+        <div class="step-body">
+          <h4>Receiver bank redeems token; credits customer account</h4>
+          <p>Receiving bank validates the token, redeems it for fiat equivalent, and credits the receiving corporate's account in local currency. FX conversion occurs at point of redemption at real-time on-ledger rates, capturing spread revenue that would previously have gone to a correspondent bank. The original account data is never exposed to the receiving bank.</p>
+          <p class="step-timing">Timing: <span>Near-instant</span>. Local currency credit; FX at point of redemption.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num">06</div>
+        <div class="step-phase">Off-Ledger<br>Settlement</div>
+        <div class="step-body">
+          <h4>Net settlement between participating banks via RTGS or bilateral netting</h4>
+          <p>End-of-cycle (intraday or end-of-day), the tokenized positions are netted across all participants and settled via RTGS or bilateral agreement. This mirrors how card networks net transactions, dramatically reducing gross settlement volumes and pre-funding requirements compared to payment-by-payment SWIFT instructions.</p>
+          <p class="step-timing">Timing: <span>Intraday or end-of-day</span>. Net exposure dramatically lower than gross.</p>
+        </div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-num">07</div>
+        <div class="step-phase">Core Banking<br>Reconciliation</div>
+        <div class="step-body">
+          <h4>Automated reconciliation; immutable audit trail generated</h4>
+          <p>ISO 20022 rich data enables automated reconciliation with core banking systems (Temenos, Finacle, etc.) without core replacement, integration via middleware API layer. Approximately 30% reduction in payment exceptions vs. legacy MT messages. Immutable on-ledger audit trail satisfies regulatory reporting requirements. PCI scope reduced because actual account data never transits the tokenized rail.</p>
+          <p class="step-timing">Timing: <span>Automated</span>. Roughly 30% fewer exceptions; audit trail immutable from step 03.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="highlight-block">
+      <p><strong>Compliance note:</strong> The tokenized A2A lifecycle generates an immutable, timestamped audit trail from token minting through redemption and settlement. Regulatory reporting (AML, sanctions screening, transaction reporting) can be embedded at the ledger layer rather than reconstructed from multiple systems post-hoc, reducing compliance cost and improving accuracy. ISO 20022 data richness means the compliance officer sees more information per transaction than any legacy MT-based workflow provides.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ═══════════════════════════════════════ COST ═══════════════════════════════════════ -->
+<section id="cost">
+  <div class="container">
+    <p class="sec-label" data-i18n="label-cost_case">Cost Case</p>
+    <h2 class="sec-title" data-i18n="title-the_quantifiable_economic">The quantifiable economics of switching to tokenized A2A</h2>
+    <p class="sec-intro">The cost case for tokenized A2A is built on external data, not projections. The numbers below are sourced from industry research and documented deployments. For institutional treasury teams evaluating the working capital impact, the settlement time value alone can justify the infrastructure investment.</p>
+
+    <!-- Fee comparison chart -->
+    <h3 style="font-size:1.1rem;color:var(--bright);margin-bottom:1.25rem;font-family:'DM Sans',sans-serif;font-weight:500;">Transaction fee comparison by rail type</h3>
+    <div class="fee-chart">
+      <div class="fee-bar-row">
+        <span class="fee-label">Credit Card</span>
+        <div class="fee-bar-track">
+          <div class="fee-bar" style="width:100%;background:linear-gradient(90deg,var(--red),var(--red-lt));"></div>
+        </div>
+        <span class="fee-value tag-bad">~2.5%</span>
+      </div>
+      <div class="fee-bar-row">
+        <span class="fee-label">Debit Card</span>
+        <div class="fee-bar-track">
+          <div class="fee-bar" style="width:60%;background:linear-gradient(90deg,var(--amber),var(--amber-lt));"></div>
+        </div>
+        <span class="fee-value" style="color:var(--amber-lt);">~1.5%</span>
+      </div>
+      <div class="fee-bar-row">
+        <span class="fee-label">ACH / SEPA</span>
+        <div class="fee-bar-track">
+          <div class="fee-bar" style="width:20%;background:linear-gradient(90deg,var(--muted),var(--body));"></div>
+        </div>
+        <span class="fee-value" style="color:var(--body);">flat fee<sup><a href="#wfn6" style="color:var(--accent);font-size:0.7em;">[6]</a></sup></span>
+      </div>
+      <div class="fee-bar-row">
+        <span class="fee-label">Tokenized A2A</span>
+        <div class="fee-bar-track">
+          <div class="fee-bar" style="width:8%;background:linear-gradient(90deg,var(--green),var(--green-lt));"></div>
+        </div>
+        <span class="fee-value tag-good">~0.2%<sup><a href="#wfn7" style="color:var(--accent);font-size:0.7em;">[7]</a></sup></span>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="compare-wrap" style="margin-top:2.5rem;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th class="legacy">Correspondent Banking (Legacy)</th>
+            <th class="tokenized">Tokenized A2A Rails</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Settlement speed</td>
+            <td class="legacy"><span class="tag-bad">2–5 business days</span><br>(SWIFT gpi median &lt;2h in-network; final credit 2+ days)</td>
+            <td class="tokenized"><span class="tag-good">Seconds to minutes</span><br>(Multi-CBDC corridors: &lt;10s demonstrated)</td>
+          </tr>
+          <tr>
+            <td>Fee structure</td>
+            <td class="legacy"><span class="tag-bad">3–5 intermediary fees</span><br>SWIFT + correspondent + FX spread + nostro maintenance</td>
+            <td class="tokenized"><span class="tag-good">1–2 direct fees</span><br>~0.2% direct settlement; FX captured on-ledger</td>
+          </tr>
+          <tr>
+            <td>Pre-funding</td>
+            <td class="legacy"><span class="tag-bad">$27T trapped globally</span><br>Nostro/vostro balances required across all corridors</td>
+            <td class="tokenized"><span class="tag-good">Near-zero pre-funding</span><br>Just-in-time settlement; capital freed for productive use</td>
+          </tr>
+          <tr>
+            <td>Data per transaction</td>
+            <td class="legacy"><span class="tag-bad">&lt;10 data fields</span><br>Legacy MT messages; manual reconciliation required</td>
+            <td class="tokenized"><span class="tag-good">200+ structured fields</span><br>ISO 20022; automated reconciliation; ~30% fewer exceptions</td>
+          </tr>
+          <tr>
+            <td>Programmability</td>
+            <td class="legacy"><span class="tag-bad">None</span><br>Static instructions; no conditional logic</td>
+            <td class="tokenized"><span class="tag-good">Full conditional logic</span><br>Escrow, milestone payment, trade finance automation</td>
+          </tr>
+          <tr>
+            <td>Transparency</td>
+            <td class="legacy"><span class="tag-bad">No real-time visibility</span><br>Status unknown until correspondent confirms</td>
+            <td class="tokenized"><span class="tag-good">Full real-time status</span><br>All participants see payment state across lifecycle</td>
+          </tr>
+          <tr>
+            <td>KYC/AML overhead</td>
+            <td class="legacy"><span class="tag-bad">Repeated at each hop</span><br>Correspondent banks run independent checks</td>
+            <td class="tokenized"><span class="tag-good">Shared attestation</span><br>Graduated KYC tiers; data shared across network participants</td>
+          </tr>
+          <tr>
+            <td>FX cost</td>
+            <td class="legacy"><span class="tag-bad">Opaque spread at each hop</span><br>Markup captured by correspondent, not originating bank</td>
+            <td class="tokenized"><span class="tag-good">On-ledger real-time FX</span><br>Originating bank captures spread; full transparency</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stat-strip" style="margin-top:2.5rem;">
+      <div class="stat-cell">
+        <span class="stat-num gold">12%+</span>
+        <p class="stat-label">Cross-border cost reduction by 2030 via A2A disintermediation<sup><a href="#wfn1" style="color:var(--accent);font-size:0.7em;">[1]</a></sup></p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num green">40-60%</span>
+        <p class="stat-label">Reduction in manual KYC review time with AI-integrated tokenized workflows<sup><a href="#wfn2" style="color:var(--accent);font-size:0.7em;">[2]</a></sup></p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">20-30%</span>
+        <p class="stat-label">Lower exception rates from ISO 20022 rich data vs. legacy MT messages<sup><a href="#wfn3" style="color:var(--accent);font-size:0.7em;">[3]</a></sup></p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num gold">~70%</span>
+        <p class="stat-label">Lower cost-per-transaction for recurring payments vs. card networks<sup><a href="#wfn4" style="color:var(--accent);font-size:0.7em;">[4]</a></sup></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ═══════════════════════════════════════ REVENUE ═══════════════════════════════════════ -->
+<section id="revenue">
+  <div class="container">
+    <p class="sec-label" data-i18n="label-revenue_model">Revenue Model</p>
+    <h2 class="sec-title" data-i18n="title-tokenized_a2a_as_a_profit">Tokenized A2A as a profit center</h2>
+    <p class="sec-intro">The cost case for efficiency is real. The more interesting question is: what new revenue does this enable? Tokenized A2A infrastructure creates multiple defensible, high-margin business lines that do not exist in a correspondent banking model.</p>
+
+    <div class="revenue-grid">
+
+      <div class="revenue-cell">
+        <p class="revenue-icon">FX Services</p>
+        <h4>Tokenized FX Revenue</h4>
+        <p>Monetize real-time, on-ledger FX conversion rather than losing the spread to correspondent banks. The originating bank now captures the FX margin in multi-currency corridors at point of settlement, a revenue stream that previously went entirely to intermediaries.</p>
+        <span class="revenue-metric">Margin recaptured</span>
+      </div>
+
+      <div class="revenue-cell">
+        <p class="revenue-icon">Stablecoin</p>
+        <h4>Bank-Issued Stablecoin</h4>
+        <p>Issue a bank-branded stablecoin backed by customer deposits. Revenue from float income on reserves, redemption fees, and API access fees for fintech partners building on the bank's rail. Positions the bank as infrastructure provider.</p>
+        <span class="revenue-metric">Float + API revenue</span>
+      </div>
+
+      <div class="revenue-cell">
+        <p class="revenue-icon">Tokenized MMF</p>
+        <h4>Local-Currency Tokenized MMFs</h4>
+        <p>Use A2A rails as distribution channel for tokenized money market funds denominated in local currency. Tokenized USD MMFs already exist, the gap is in local-currency equivalents for non-dollarized economies, where commercial banks can offer differentiated corporate treasury products. Distribution and management fee revenue on top of existing fund operations.</p>
+        <span class="revenue-metric">Distribution fee share</span>
+      </div>
+
+      <div class="revenue-cell">
+        <p class="revenue-icon">Infrastructure</p>
+        <h4>White-Label Rail Licensing</h4>
+        <p>License the tokenized A2A infrastructure to smaller banks, payment service providers, and fintechs in the region. Post Oak Labs projects that by 2030, approximately 64% of banks will act as tokenization service providers.<sup><a href="#wfn8">[8]</a></sup> Early movers capture the platform revenue while latecomers pay to access the rails they could have owned.</p>
+        <span class="revenue-metric">Platform licensing fees</span>
+      </div>
+
+      <div class="revenue-cell">
+        <p class="revenue-icon">Trade Finance</p>
+        <h4>Programmable Trade Finance</h4>
+        <p>Tokenized A2A enables smart contract-based letters of credit and supply chain finance, reducing LC processing from 20–30 days to hours. Banks capture documentary credit fees on a dramatically accelerated timeline. Early-payment programs on tokenized purchase orders yield 3–8% annualized returns for liquidity providers.</p>
+        <span class="revenue-metric">3–8% annualized yield</span>
+      </div>
+
+      <div class="revenue-cell">
+        <p class="revenue-icon">Data Services</p>
+        <h4>Payment Intelligence</h4>
+        <p>ISO 20022's 200+ data fields, aggregated across a bank's tokenized A2A network, create a real-time payment intelligence asset. Monetize aggregated, privacy-preserving payments data for corporate clients: supply chain payment visibility, cash flow forecasting, working capital optimization tools that command premium subscription fees.</p>
+        <span class="revenue-metric">Analytics subscriptions</span>
+      </div>
+
+    </div>
+
+    <div class="highlight-block">
+      <p><strong>The arbitrage opportunity:</strong> A bank that pays 2.5% traditionally on a cross-border corridor can offer the same corridor at 1.5% via tokenized A2A and retain 1.2% as network fee income. The FX spread, tokenized MMF distribution, and rail licensing to smaller banks each stack on top of that. The economics compound. This is why early movers in target markets with immature tokenized payment infrastructure have a structural, time-limited advantage that later entrants will pay dearly to access.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ═══════════════════════════════════════ BEST PRACTICES ═══════════════════════════════════════ -->
+<section id="best-practices">
+  <div class="container">
+    <p class="sec-label" data-i18n="label-implementation">Implementation</p>
+    <h2 class="sec-title" data-i18n="title-what_separates_banks_that">What separates banks that deploy from those that evaluate indefinitely</h2>
+    <p class="sec-intro">Post Oak Labs has built and deployed production tokenized payment systems. The implementation guidance below is drawn from that direct operational experience, not from research papers. These are the decisions that determine whether a project reaches production or stalls in the design phase.</p>
+
+    <div class="practice-list">
+
+      <div class="practice-item">
+        <span class="practice-label">ISO 20022 First</span>
+        <p>Migration to ISO 20022 messaging is the non-negotiable foundation before any tokenized A2A deployment. Early adopters gain faster settlement access and 20–30% lower exception handling costs. Institutions that defer this become structurally incompatible with the rail they are trying to access.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">Build vs. Join vs. Hybrid</span>
+        <p>The pre-flight decision matrix: build a proprietary rail if transaction volume exceeds threshold and regulatory clarity exists; join an existing network if the corridor is served and speed of deployment matters; use a hybrid model if both conditions partially apply. Gate criteria: transaction size, corridor volume, correspondent dependency, regulatory clarity, and internal engineering capacity.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">Regulatory Sequencing</span>
+        <p>The correct order of operations: sandbox approval → internal corporate pilots → payment system operator status application → public node deployment. Institutions that attempt to compress this sequence typically encounter regulatory friction that sets the project back 12–18 months. The sequence matters; compressing it typically sets the project back 12–18 months.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">Key Management & Custody</span>
+        <p>HSM architecture for token minting authority is non-negotiable. Multi-signature schemes for minting authority prevent single-point-of-failure attacks. Disaster recovery procedures for key material must be documented and tested before production. Custody should be transparent and auditable, opacity here is a red flag in regulatory engagement.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">Avoid Vendor Lock-In</span>
+        <p>Tying tokenized payment infrastructure to a single token provider creates strategic dependency that compounds over time. Best practice: network-agnostic or proprietary token vaults with data portability guarantees; open token standards compatible with future CBDC interoperability; middleware API design that abstracts the underlying ledger.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">Liquidity Management</span>
+        <p>Pre-funding optimization and intraday liquidity stress testing must be built into the deployment architecture, not retrofitted. Common trap: institutions build the token rail without modelling the intraday liquidity implications, they either over-fund (wasteful) or hit constraints under peak volume (operationally dangerous). The liquidity model should precede the technical build.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">KYC at the Network Layer</span>
+        <p>Implement graduated KYC tiers and share attestation data across network participants rather than requiring each institution to run independent checks on the same counterparties. Critical for Caribbean and South Asian deployments where data locality requirements interact with cross-border sharing rules, local regulatory counsel must be engaged at architecture design stage.</p>
+      </div>
+
+      <div class="practice-item">
+        <span class="practice-label">Core Integration Without Core Replacement</span>
+        <p>Tokenized A2A does not require replacing core banking systems (Temenos, Finacle, Flexcube). Integration via middleware API layer allows the tokenized rail to feed ISO 20022 data directly into existing reconciliation and reporting workflows. This is the most common architectural misunderstanding that inflates project cost estimates and delays executive sign-off.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ═══════════════════════════════════════ CTA ═══════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="cta-block">
+      <h3>Ready to move beyond evaluation?</h3>
+      <p>Post Oak Labs works with commercial banks, central banks, and large corporates that are ready to design and deploy tokenized A2A infrastructure. We have built production systems. We know what works and what doesn't.</p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+        <a href="mailto:contact@postoaklabs.com?subject=A2A Tokenization" class="btn-primary">Start a conversation</a>
+        <a href="a2a-payments.html" class="btn-outline">Market coverage & ideal client profile</a>
+        <a href="blockchain-advisory.html" class="btn-outline">Advisory track record</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.wf-footnotes { border-top: 1px solid var(--edge); padding: 2.5rem 0 2rem; background: var(--ink); }
+.wf-footnotes h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; font-weight: 400; }
+.wf-footnotes ol { padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem; }
+.wf-footnotes li { font-size: 0.68rem; color: var(--muted); line-height: 1.65; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+.wf-footnotes a { color: var(--accent); text-decoration: none; }
+.wf-footnotes a:hover { color: var(--accent-lt); }
+</style>
+
+<div class="wf-footnotes">
+  <div class="container">
+    <h3>References and Notes</h3>
+    <ol>
+      <li id="wfn1">
+        <strong>12%+ cross-border cost reduction by 2030:</strong> Deloitte, "Tokenization of Real-World Assets" (2025). Deloitte's methodology estimates that meaningful institutional adoption of tokenized rails across major trade corridors could reduce total cross-border payment costs by approximately 12.5% by 2030, corresponding to the >$50B in projected savings for business customers cited elsewhere on this site. The 12% figure represents total corridor cost reduction as a percentage of current total cross-border payment costs, not fee-level reduction alone. Per-corridor implementations have demonstrated larger reductions. The estimate incorporates expected adoption curves and does not assume full market penetration. Post Oak Labs considers this figure conservative relative to per-corridor implementations where direct tokenized settlement has demonstrated larger reductions; see fn. 1 on the A2A Payments page for corridor-level detail.
+      </li>
+      <li id="wfn2">
+        <strong>40-60% reduction in manual KYC review time:</strong> Derived from published outcomes in AI-augmented compliance deployments documented by Accenture Banking Technology Vision (2024) and corroborated by SWIFT's "AI in Financial Crime Compliance" white paper (2024). The range reflects variance between institutions with strong existing KYC data infrastructure (upper end) and those migrating from fragmented legacy databases (lower end). The specific mechanism is structured ISO 20022 data reducing the proportion of transactions requiring manual exception handling; the reduction applies to review time, not to the KYC standard itself. This estimate has not been independently audited in a tokenized A2A context specifically; the figure applies to AI-assisted compliance workflows generally.
+      </li>
+      <li id="wfn3">
+        <strong>20-30% fewer payment exceptions with ISO 20022:</strong> SWIFT documented a 20-30% reduction in payment exceptions following ISO 20022 adoption in early migration cohorts, cited in SWIFT's "ISO 20022 Migration Progress Report" (2024) and corroborated by independent analysis from the Bank for International Settlements (BIS) working paper on payment data richness (2023). The mechanism: ISO 20022 MX messages carry structured beneficiary name, structured address, LEI identifiers, and purpose codes where legacy MT messages carried free-text fields that generated false positives in sanctions screening and required manual resolution. The figure applies to straight-through processing rates and exception volumes; actual impact depends on implementation quality and counterparty adoption rates.
+      </li>
+      <li id="wfn4">
+        <strong>~70% lower cost-per-transaction vs. card networks for recurring payments:</strong> Derived from published card network interchange fee schedules (Visa, Mastercard) versus documented A2A direct debit and instant payment costs in markets with mature A2A infrastructure (UK Open Banking, EU SEPA Instant). Card interchange for recurring commercial payments typically runs 1.5-2.5%; A2A direct debit costs in equivalent markets run 0.1–0.5% including scheme fees. The ~70% figure applies specifically to recurring payment flows (subscriptions, trade payables) where card-alternative A2A channels are commercially available. It does not apply to single-use consumer card payments where card network infrastructure provides benefits (disputes, fraud protection) that A2A does not yet replicate at scale.
+      </li>
+      <li id="wfn5">
+        <strong>Sub-10-second settlement (Project mBridge / Jasper-Ubin):</strong> The under-10-second cross-border settlement finality figure refers to results from Project mBridge (BIS Innovation Hub, involving the BIS, Hong Kong Monetary Authority, Bank of Thailand, Digital Currency Institute of the People's Bank of China, and Central Bank of the UAE) and the Jasper-Ubin experiment (Bank of Canada / Monetary Authority of Singapore). These are proof-of-concept results achieved under controlled conditions, not live production at scale. They demonstrate what is technically achievable on multi-CBDC settlement infrastructure; production deployment timelines and performance at scale remain subject to regulatory, interoperability, and governance decisions across participating jurisdictions.
+      </li>
+      <li id="wfn6">
+        <strong>ACH / SEPA fee structure note:</strong> ACH (US domestic) is primarily a flat-fee instrument, typically $0.20–$1.50 per transaction at institutional and bank-direct rates, and free at many major banks for standard transfers. Some third-party payment processors charge a percentage fee (0.5%–1.5%) as a markup above network costs, but this is processor pricing, not network pricing. Presenting ACH as a percentage-based fee equivalent to cross-border rails is structurally misleading for B2B use cases, where ACH costs are near-zero on a per-transaction basis at scale. SEPA Credit Transfer (EU) follows a similar flat-fee or zero-fee structure for euro-area institutions. The fee bar above reflects this structure; direct cost comparison against percentage-based cross-border fees should account for the ACH/SEPA flat-fee model.
+      </li>
+      <li id="wfn7">
+        <strong>~0.2% Tokenized A2A fee (Post Oak Labs production benchmark):</strong> This figure is Post Oak Labs' direct settlement fee benchmark based on production deployments in targeted B2B corridors (settlement + platform overhead), not a universal industry average. It excludes FX conversion fees captured at point of redemption, which represent revenue to the originating bank rather than a direct cost to the sender. For external context: Noda (2024) reports 0.1–0.8% for merchant-facing A2A in B2C use cases; FSB G20 Roadmap targets retail cross-border costs well below 1%; OpenDue (2025) cites 1–4% all-in for many correspondent banking corridors as the baseline comparator. Actual costs in any given deployment depend on corridor, transaction size, FX handling, and platform configuration.
+      </li>
+      <li id="wfn8">
+        <strong>64% of banks as tokenization service providers by 2030, methodology note:</strong> This is a Post Oak Labs projection, not a published third-party forecast. It is based on observed institutional adoption curves in BIS and World Bank tokenization roadmap publications, announced tokenized payment pilots across major banking groups in Latin America, South Asia, and Southeast Asia, and Post Oak Labs' assessment of the pace of regulatory framework development in target markets. Key assumptions: continued regulatory progress enabling institutional tokenized rails in target jurisdictions; network expansion reaching critical mass in at least two to three major emerging market corridors by 2028; and no major regulatory reversal in leading markets. The projection should be treated as directional. The underlying trend toward banks offering tokenization services is well-supported by institutional announcements; the precise timing and penetration rate carry material uncertainty.
+      </li>
+    </ol>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {"hero-eyebrow": "A2A Tokenization Explained · Institutional Payment Rails", "hero-h1": "Account-to-account tokenization: what it is, how it works, and why it matters to your institution", "hero-sub": "A clear, structured explanation of tokenized A2A payment infrastructure, the bank-grade settlement layer that operates above consumer fast-payment systems and below traditional correspondent banking.", "hero-cta-primary": "Talk to Post Oak Labs", "label-definition": "Definition", "label-architecture": "Architecture", "label-four_corner_model": "Four-Corner Model", "label-transaction_lifecycle": "Transaction Lifecycle", "label-cost_case": "Cost Case", "title-where_tokenized_a2a_sits_in": "Where tokenized A2A sits in the payment stack", "title-before___after__legacy_corr": "Before & After: legacy correspondent banking vs. tokenized A2A", "title-end_to_end__from_payment_ini": "End-to-end: from payment initiation to core banking reconciliation", "title-the_quantifiable_economics_o": "The quantifiable economics of switching to tokenized A2A", "title-tokenized_a2a_as_a_profit_ce": "Tokenized A2A as a profit center", "title-what_separates_banks_that_de": "What separates banks that deploy from those that evaluate indefinitely"},
+  es: {"hero-eyebrow": "A2A Tokenizado Explicado · Rieles de Pago Institucionales", "hero-h1": "Tokenización de cuenta a cuenta: qué es, cómo funciona y por qué importa a su institución", "hero-sub": "Una explicación clara y estructurada de la infraestructura de pago A2A tokenizada, la capa de liquidación bancaria que opera por encima de los sistemas de pago rápido para consumidores y por debajo de la banca corresponsal tradicional.", "hero-cta-primary": "Hablar con Post Oak Labs", "label-definition": "Definición", "label-architecture": "Arquitectura", "label-four_corner_model": "Modelo de Cuatro Esquinas", "label-transaction_lifecycle": "Ciclo de Vida de la Transacción", "label-cost_case": "Análisis de Costos", "title-where_tokenized_a2a_sits_in": "Dónde se ubica el A2A tokenizado en la pila de pagos", "title-before___after__legacy_corr": "Antes y Después: banca corresponsal heredada vs. A2A tokenizado", "title-end_to_end__from_payment_ini": "De extremo a extremo: desde el inicio del pago hasta la reconciliación", "title-the_quantifiable_economics_o": "Los beneficios económicos cuantificables de migrar a A2A tokenizado", "title-tokenized_a2a_as_a_profit_ce": "El A2A tokenizado como centro de beneficios", "title-what_separates_banks_that_de": "Qué diferencia a los bancos que despliegan de los que evalúan indefinidamente"},
+  fr: {"hero-eyebrow": "A2A Tokenisé Expliqué · Rails de Paiement Institutionnels", "hero-h1": "Tokenisation de compte à compte : ce que c'est, comment ça fonctionne et pourquoi ça compte pour votre institution", "hero-sub": "Une explication claire et structurée de l'infrastructure de paiement A2A tokenisée, la couche de règlement bancaire qui opère au-dessus des systèmes de paiement rapide et en dessous de la banque correspondante traditionnelle.", "hero-cta-primary": "Parler à Post Oak Labs", "label-definition": "Définition", "label-architecture": "Architecture", "label-four_corner_model": "Modèle à Quatre Coins", "label-transaction_lifecycle": "Cycle de Vie de la Transaction", "label-cost_case": "Analyse des Coûts", "title-where_tokenized_a2a_sits_in": "Où se situe l'A2A tokenisé dans la pile de paiements", "title-before___after__legacy_corr": "Avant et Après : banque correspondante vs. A2A tokenisé", "title-end_to_end__from_payment_ini": "De bout en bout : de l'initiation du paiement à la réconciliation", "title-the_quantifiable_economics_o": "Les bénéfices économiques quantifiables du passage à l'A2A tokenisé", "title-tokenized_a2a_as_a_profit_ce": "L'A2A tokenisé comme centre de profit", "title-what_separates_banks_that_de": "Ce qui distingue les banques qui déploient de celles qui évaluent indéfiniment"},
+  ar: {"hero-eyebrow": "شرح A2A المرمّز · قضبان الدفع المؤسسية", "hero-h1": "التحويل المرمّز من حساب إلى حساب: ما هو، وكيف يعمل، ولماذا يهم مؤسستك", "hero-sub": "شرح واضح ومنظّم للبنية التحتية لمدفوعات A2A المرمّزة، طبقة التسوية المصرفية التي تعمل فوق أنظمة الدفع السريع للمستهلكين وأسفل المصرفية المراسلة التقليدية.", "hero-cta-primary": "تحدّث مع Post Oak Labs", "label-definition": "التعريف", "label-architecture": "البنية التحتية", "label-four_corner_model": "نموذج الزوايا الأربع", "label-transaction_lifecycle": "دورة حياة المعاملة", "label-cost_case": "تحليل التكاليف", "title-where_tokenized_a2a_sits_in": "موقع A2A المرمّز في منظومة المدفوعات", "title-before___after__legacy_corr": "قبل وبعد: المصرفية المراسلة التقليدية مقابل A2A المرمّز", "title-end_to_end__from_payment_ini": "من البداية إلى النهاية: من بدء الدفع إلى التسوية المحاسبية", "title-the_quantifiable_economics_o": "الجدوى الاقتصادية القابلة للقياس للتحوّل إلى A2A المرمّز", "title-tokenized_a2a_as_a_profit_ce": "A2A المرمّز كمركز للأرباح", "title-what_separates_banks_that_de": "ما الذي يميّز البنوك التي تُطبّق عن تلك التي تقيّم إلى أجل غير مسمى"},
+  pt: {"hero-eyebrow": "A2A Tokenizado Explicado · Trilhos de Pagamento Institucionais", "hero-h1": "Tokenização de conta a conta: o que é, como funciona e por que importa para sua instituição", "hero-sub": "Uma explicação clara e estruturada da infraestrutura de pagamento A2A tokenizada, a camada de liquidação bancária que opera acima dos sistemas de pagamento rápido ao consumidor e abaixo do banco correspondente tradicional.", "hero-cta-primary": "Falar com o Post Oak Labs", "label-definition": "Definição", "label-architecture": "Arquitetura", "label-four_corner_model": "Modelo de Quatro Cantos", "label-transaction_lifecycle": "Ciclo de Vida da Transação", "label-cost_case": "Análise de Custos", "title-where_tokenized_a2a_sits_in": "Onde o A2A tokenizado se situa na pilha de pagamentos", "title-before___after__legacy_corr": "Antes e Depois: banco correspondente legado vs. A2A tokenizado", "title-end_to_end__from_payment_ini": "De ponta a ponta: do início do pagamento à reconciliação", "title-the_quantifiable_economics_o": "Os benefícios econômicos quantificáveis de migrar para A2A tokenizado", "title-tokenized_a2a_as_a_profit_ce": "O A2A tokenizado como centro de lucro", "title-what_separates_banks_that_de": "O que separa os bancos que implantam daqueles que avaliam indefinidamente"},
+  zh: {"hero-eyebrow": "A2A代币化详解 · 机构支付轨道", "hero-h1": "账户间代币化：它是什么、如何运作，以及为何对您的机构至关重要", "hero-sub": "对代币化A2A支付基础设施的清晰系统性阐述——这一银行级结算层位于消费者即时支付系统之上，传统代理行银行业务之下。", "hero-cta-primary": "联系 Post Oak Labs", "label-definition": "定义", "label-architecture": "架构", "label-four_corner_model": "四角模型", "label-transaction_lifecycle": "交易生命周期", "label-cost_case": "成本分析", "title-where_tokenized_a2a_sits_in": "代币化A2A在支付体系中的位置", "title-before___after__legacy_corr": "改变前后：传统代理行银行业务 vs. 代币化A2A", "title-end_to_end__from_payment_ini": "端到端：从支付发起到核心银行对账", "title-the_quantifiable_economics_o": "切换至代币化A2A的可量化经济效益", "title-tokenized_a2a_as_a_profit_ce": "代币化A2A作为利润中心", "title-what_separates_banks_that_de": "区分落地部署银行与持续观望银行的关键因素"}
+};
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>

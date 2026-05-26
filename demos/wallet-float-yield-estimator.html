@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet Float Yield Estimator · BaaS Treasury Revenue · Post Oak Labs</title>
+
+<meta name="description" content="Model BaaS wallet-float revenue across allocation mix, rate-environment scenarios, and programme economics. Gross vs. net yield in bps and annual $, FDIC pass-through assumptions, custody-tier risk. AP2 v1.0 export. Client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/wallet-float-yield-estimator.html">
+<meta property="og:title" content="Wallet Float Yield Estimator — Post Oak Labs">
+<meta property="og:description" content="Model BaaS wallet-float revenue: allocation mix × rate scenario × programme economics. AP2 treasury mandate output. Browser-based. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/wallet-float-yield-estimator.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/wallet-float-yield-estimator.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "Wallet Float Yield Estimator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/wallet-float-yield-estimator.html",
+  "description": "Model BaaS wallet-float revenue across allocation mix (sweep deposits, MMF, non-yielding reserve), Fed Funds rate scenarios, dormancy assumptions, and programme economics (sponsor-bank share, BaaS take). Net yield in bps and annual $, FDIC pass-through assumptions surfaced. Exports an AP2 v1.0 treasury mandate against @ainumbers.co/wallet-float-v1.",
+  "featureList": [
+    "Programme deposit slider with allocation mix (sweep / MMF / non-yielding)",
+    "Fed Funds rate scenario + MMF yield spread inputs",
+    "Operating-cost stack (per-account, sponsor-bank share, BaaS provider share)",
+    "Dormancy & active-user assumptions",
+    "Gross-yield, net-yield, annual-revenue, revenue-per-active-user outputs",
+    "Programme economics flag (net margin band)",
+    "AP2 v1.0 treasury mandate export against @ainumbers.co/wallet-float-v1",
+    "Markdown treasury memo + MCP tool definition export"
+  ],
+  "keywords": "BaaS, wallet float, programme deposits, sweep MMF, FDIC pass-through, treasury yield, sponsor bank, Fed Funds, basis points, AP2 mandate, MCP",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+:root {
+  --pol-ink: #050c15; --pol-deep: #0a1628; --pol-edge: #1e3454;
+  --pol-body: #7090b0; --pol-accent: #2a7fc0; --pol-accent-lt: #4a9fdf; --pol-gold: #c09040;
+  --bg: #ffffff; --bg-soft: #fafbfc; --bg-mid: #f4f5f7; --bg-deep: #ebedef;
+  --border: #e6e8eb; --border-2: #d0d4d8;
+  --text: #0a1828; --text-muted: #6a7a8a;
+  --accent: var(--pol-accent); --gold: var(--pol-gold);
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626; --purple: #8b5cf6;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--pol-ink); color: var(--pol-body); font-family: var(--body-font); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: var(--accent); }
+
+nav.pol-nav { background: var(--pol-ink); border-bottom: 1px solid var(--pol-edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip { background: var(--pol-deep); border-top: 1px solid var(--pol-edge); border-bottom: 1px solid var(--pol-edge); padding: 0.85rem 0; color: var(--pol-body); }
+.showcase-header-strip .strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--pol-gold); font-weight: 500; }
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a { color: var(--pol-accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+main.demo-canvas { background: var(--bg); color: var(--text); font-family: var(--body-font); max-width: 1240px; margin: 2rem auto; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+.pii-banner { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.15); padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 1.5rem; border-radius: 4px; }
+
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500; }
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+.hero h1 { font-family: var(--heading); font-size: clamp(1.7rem, 3.4vw, 2.45rem); color: var(--text); line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+.hero-desc { font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; max-width: 860px; }
+.hero-desc b { color: var(--text); font-weight: 500; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.32rem 0.7rem; border-radius: 3px; border: 1px solid var(--border-2); color: var(--text-muted); }
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+.baas-callout { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.3); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 3px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+.baas-callout strong { color: var(--text); font-weight: 500; }
+.baas-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
+.baas-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+.value-at-risk { background: var(--bg-soft); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; margin: 0 0 1.5rem; border-radius: 2px; font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+.var-eyebrow { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.45rem; font-weight: 500; }
+.var-figure { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.45rem; line-height: 1.3; }
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+.lab-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; margin-top: 1.25rem; }
+@media (max-width: 1040px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
+.panel-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.55rem; }
+.panel-label-r { color: var(--accent); }
+.sec-h { font-family: var(--heading); font-size: 1.18rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+.slider-row { display: grid; grid-template-columns: 1fr 100px; gap: 0.65rem; align-items: center; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
+.slider-row:last-of-type { border-bottom: none; }
+.slider-label { font-size: 0.82rem; color: var(--text); }
+.slider-label .sl-sub { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; }
+.slider-val { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; text-align: right; color: var(--accent); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+/* Allocation strip */
+.alloc-strip { height: 26px; display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
+.alloc-strip .seg { display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.62rem; color: #fff; transition: flex 0.3s; padding: 0 0.3rem; min-width: 0; }
+.seg-sweep { background: var(--success); }
+.seg-mmf { background: var(--accent); }
+.seg-nyf { background: var(--warn); }
+.alloc-legend { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 0.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--text-muted); }
+.alloc-legend .ld { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 0.35rem; vertical-align: middle; }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin: 0.5rem 0 0.75rem; }
+@media (max-width: 720px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+.kpi { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.7rem; }
+.kpi-label { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+.kpi-val { font-family: var(--heading); font-size: 1.35rem; color: var(--text); line-height: 1.1; }
+.kpi-val.good { color: var(--success); }
+.kpi-val.warn { color: var(--warn); }
+.kpi-val.bad { color: var(--error); }
+.kpi-sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+/* Yield waterfall */
+.waterfall { font-family: var(--mono); font-size: 0.78rem; color: var(--text); margin-top: 0.55rem; }
+.wf-row { display: grid; grid-template-columns: 1fr 90px 110px; gap: 0.5rem; padding: 0.45rem 0; border-bottom: 1px dashed var(--border); align-items: center; }
+.wf-row:last-of-type { border-bottom: none; }
+.wf-row.total { border-top: 2px solid var(--text); border-bottom: none; margin-top: 0.35rem; padding-top: 0.65rem; font-weight: 700; }
+.wf-row.total .wf-net { color: var(--success); }
+.wf-row.total .wf-net.bad { color: var(--error); }
+.wf-label { font-family: var(--body-font); font-size: 0.82rem; color: var(--text); }
+.wf-label .wf-sub { display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--text-muted); margin-top: 0.1rem; letter-spacing: 0.04em; }
+.wf-bps { text-align: right; color: var(--text-muted); }
+.wf-dollar { text-align: right; color: var(--text); }
+.wf-bps.neg, .wf-dollar.neg { color: var(--error); }
+.wf-bps.pos, .wf-dollar.pos { color: var(--success); }
+
+.warn-banner { margin-top: 0.85rem; padding: 0.7rem 0.9rem; border-radius: 4px; font-size: 0.78rem; line-height: 1.55; }
+.warn-banner.good { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); color: var(--success); }
+.warn-banner.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); color: var(--warn); }
+.warn-banner.bad { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.3); color: var(--error); }
+.warn-banner strong { font-weight: 600; }
+
+/* Preview */
+.preview-sticky { position: sticky; top: 84px; }
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.7rem; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 3px; }
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; max-height: 380px; overflow: auto; font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text); }
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+.results-export-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.btn-export { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; }
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+.validation { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 3px; display: flex; align-items: center; gap: 0.5rem; }
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+footer.pol-footer { background: var(--pol-ink); border-top: 1px solid var(--pol-edge); padding: 2.25rem 0 2.5rem; margin-top: 2rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy { font-family: var(--body-font); font-size: 0.78rem; color: var(--pol-body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--text); border-left: 3px solid var(--success); padding: 0.7rem 1.1rem; font-family: var(--mono); font-size: 0.7rem; color: #fff; border-radius: 4px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.crosslinks { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-soft); border: 1px dashed var(--border-2); border-radius: 4px; font-size: 0.82rem; color: var(--text-muted); }
+.crosslinks h4 { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #17 of 33</span>
+      <span class="strip-title">Wallet Float Yield Estimator</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/baas/">BaaS Hub →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/156-wallet-float-yield-estimator.html" target="_blank" rel="noopener">Source Engine T156 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #17 · BaaS Revenue · Treasury Yield · BaaS Hub</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">Allocation × Rate × Cost stack</span>
+      <span class="eyebrow-badge eb-success">FDIC pass-through aware</span>
+      <span class="eyebrow-badge eb-gold">AP2 treasury mandate · @ainumbers.co/wallet-float-v1</span>
+    </div>
+    <h1>The line on a BaaS P&amp;L that actually pays the rent.</h1>
+    <p class="hero-desc">
+      Model the <b>wallet-float yield</b> a BaaS programme earns on customer deposit balances —
+      across the <b>allocation mix</b> (sweep deposits, MMF, non-yielding reserve), the
+      <b>rate environment</b> (Fed Funds + MMF spread), and the <b>cost stack</b>
+      (sponsor-bank share, BaaS provider take, per-account ops). Outputs net yield in basis
+      points and annual dollars, revenue per active user, and a programme-economics flag.
+      Exports an AP2 treasury mandate the runtime can re-evaluate when rates move.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side</span>
+      <span class="hero-badge warn">Illustrative — your sponsor bank's economics will differ</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <div class="baas-callout" role="note">
+    <div class="baas-eyebrow">BaaS · Custody · FDIC pass-through</div>
+    <p>
+      BaaS programmes do not hold deposits directly. Customer balances are held by a
+      <strong>sponsor bank</strong> on a pass-through basis; some programmes additionally sweep
+      into <strong>money-market mutual funds</strong> for higher yield (and lower
+      regulatory-deposit treatment). <strong>FDIC pass-through insurance</strong> only applies
+      when specific recordkeeping and disclosure requirements are met (12 CFR §330.5,
+      §330.7). After the 2024 Synapse–Evolve receivership, the FDIC's December 2024
+      recordkeeping rule proposal tightened these expectations materially.
+    </p>
+    <div class="baas-cite">Sources: 12 CFR §330 (FDIC pass-through) · FDIC Recordkeeping Rule (proposed 2024) · GENIUS Act 2024 (stablecoin yield bar) · SEC Rule 2a-7 (MMF)</div>
+  </div>
+
+  <aside class="value-at-risk" aria-label="Value at risk — programme failure / custody misrepresentation">
+    <h4 class="var-eyebrow">Value at risk · programme termination &amp; custody misrepresentation</h4>
+    <p class="var-figure">Synapse-Evolve precedent: $85M+ end-user losses, programme termination cascade, FDIC enforcement on misstated insurance</p>
+    <p class="var-body">Wallet-float economics evaporate the moment a sponsor-bank programme terminates. The <strong>2024 Synapse–Evolve</strong> failure produced mid-eight-figure end-user losses, multi-quarter receivership, and a wave of FDIC enforcement orders against fintechs that misrepresented pass-through insurance coverage. Sponsor-bank programme agreements typically include <strong>60–90 day termination clauses</strong> if allocation or recordkeeping rules are breached. Binding the float-allocation policy into an AP2 mandate the runtime cannot silently relax — and that auditors can read — is the audit-grade response.</p>
+    <p class="var-cite"><small>Synapse Ch. 11 (2024) · FDIC enforcement orders 2023–2025 · 12 CFR §330.5/§330.7 · FDIC Recordkeeping NPR 2024</small></p>
+  </aside>
+
+  <div class="lab-grid">
+    <div>
+      <!-- §1 Deposits & allocation -->
+      <section class="panel">
+        <div class="panel-label">§1 · Programme Deposits &amp; Allocation <span class="panel-label-r" id="alloc-readout">— allocation</span></div>
+        <h2 class="sec-h">Balance &amp; allocation mix</h2>
+        <p class="sec-sub">Total wallet balance and how it's split. Sweep deposits earn the sponsor-bank rate; MMF earns the SEC Rule 2a-7 fund yield; non-yielding reserve is held for daily-redemption liquidity.</p>
+
+        <div class="slider-row">
+          <div class="slider-label">Total programme deposits (USD)
+            <span class="sl-sub">Sum of customer wallet balances at any moment.</span>
+          </div>
+          <span class="slider-val" id="v-deposits">$250M</span>
+        </div>
+        <input type="range" id="r-deposits" min="10" max="2000" value="250" step="10">
+
+        <div class="slider-row">
+          <div class="slider-label">Active users (count)
+            <span class="sl-sub">Drives revenue-per-user readout. Dormant accounts excluded.</span>
+          </div>
+          <span class="slider-val" id="v-users">500,000</span>
+        </div>
+        <input type="range" id="r-users" min="10000" max="5000000" value="500000" step="10000">
+
+        <div class="slider-row">
+          <div class="slider-label">Sweep deposit allocation (%)
+            <span class="sl-sub">Held at sponsor bank, eligible for FDIC pass-through.</span>
+          </div>
+          <span class="slider-val" id="v-sweep">50%</span>
+        </div>
+        <input type="range" id="r-sweep" min="0" max="100" value="50" step="1">
+
+        <div class="slider-row">
+          <div class="slider-label">MMF allocation (%)
+            <span class="sl-sub">SEC Rule 2a-7 government MMF for sweep-MMF programmes.</span>
+          </div>
+          <span class="slider-val" id="v-mmf">35%</span>
+        </div>
+        <input type="range" id="r-mmf" min="0" max="100" value="35" step="1">
+
+        <div class="alloc-strip">
+          <div class="seg seg-sweep" id="seg-sweep"></div>
+          <div class="seg seg-mmf" id="seg-mmf"></div>
+          <div class="seg seg-nyf" id="seg-nyf"></div>
+        </div>
+        <div class="alloc-legend">
+          <span><span class="ld" style="background:var(--success);"></span>Sweep deposits</span>
+          <span><span class="ld" style="background:var(--accent);"></span>MMF (Rule 2a-7)</span>
+          <span><span class="ld" style="background:var(--warn);"></span>Non-yielding reserve</span>
+        </div>
+      </section>
+
+      <!-- §2 Rate environment -->
+      <section class="panel">
+        <div class="panel-label">§2 · Rate Environment <span class="panel-label-r">Fed Funds × MMF spread</span></div>
+        <h2 class="sec-h">Yield assumptions</h2>
+        <p class="sec-sub">Fed Funds anchors sponsor-bank pricing. MMF spread is typically <b>+5 to +25bps</b> over Fed Funds for government MMFs net of fund expenses.</p>
+
+        <div class="slider-row">
+          <div class="slider-label">Fed Funds upper bound (%)
+            <span class="sl-sub">Current target range upper bound. Sponsor-bank deposit rate paid on sweeps is typically Fed Funds − 50–100bps.</span>
+          </div>
+          <span class="slider-val" id="v-ff">5.25%</span>
+        </div>
+        <input type="range" id="r-ff" min="50" max="800" value="525" step="5">
+
+        <div class="slider-row">
+          <div class="slider-label">Sweep-rate haircut vs. Fed Funds (bps)
+            <span class="sl-sub">Sponsor bank pays Fed Funds minus this haircut on sweep deposits.</span>
+          </div>
+          <span class="slider-val" id="v-haircut">75 bps</span>
+        </div>
+        <input type="range" id="r-haircut" min="0" max="200" value="75" step="5">
+
+        <div class="slider-row">
+          <div class="slider-label">MMF yield spread over Fed Funds (bps)
+            <span class="sl-sub">Net of fund expenses; typical range +5 to +20bps for govt MMFs.</span>
+          </div>
+          <span class="slider-val" id="v-mmf-spread">12 bps</span>
+        </div>
+        <input type="range" id="r-mmf-spread" min="-20" max="40" value="12" step="1">
+      </section>
+
+      <!-- §3 Costs -->
+      <section class="panel">
+        <div class="panel-label">§3 · Cost Stack <span class="panel-label-r">Per-account + revenue share</span></div>
+        <h2 class="sec-h">Operating costs &amp; partner take</h2>
+        <p class="sec-sub">BaaS provider and sponsor-bank typically share the float upside. Per-account ops cost includes KYC, monitoring, customer service amortised across the programme.</p>
+
+        <div class="slider-row">
+          <div class="slider-label">Per-active-user ops cost (USD / month)
+            <span class="sl-sub">All-in fully loaded.</span>
+          </div>
+          <span class="slider-val" id="v-opex">$1.20</span>
+        </div>
+        <input type="range" id="r-opex" min="20" max="800" value="120" step="5">
+
+        <div class="slider-row">
+          <div class="slider-label">Sponsor-bank revenue share (% of gross yield)
+            <span class="sl-sub">Bank's cut of the float spread; varies by programme.</span>
+          </div>
+          <span class="slider-val" id="v-bankshare">25%</span>
+        </div>
+        <input type="range" id="r-bankshare" min="0" max="80" value="25" step="1">
+
+        <div class="slider-row">
+          <div class="slider-label">BaaS provider revenue share (% of gross yield)
+            <span class="sl-sub">Programme-platform provider's cut where applicable; set to 0 if direct.</span>
+          </div>
+          <span class="slider-val" id="v-baasshare">10%</span>
+        </div>
+        <input type="range" id="r-baasshare" min="0" max="50" value="10" step="1">
+      </section>
+    </div>
+
+    <!-- §4 Output -->
+    <div>
+      <section class="panel preview-sticky">
+        <div class="panel-label">§4 · Output <span class="panel-label-r">Live yield + AP2 mandate</span></div>
+        <h2 class="sec-h">Yield economics</h2>
+
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-label">Net yield (bps)</div><div class="kpi-val" id="kpi-bps">—</div><div class="kpi-sub" id="kpi-bps-sub">net of costs &amp; revshare</div></div>
+          <div class="kpi"><div class="kpi-label">Annual net revenue</div><div class="kpi-val" id="kpi-rev">—</div><div class="kpi-sub">per programme</div></div>
+          <div class="kpi"><div class="kpi-label">Revenue / active user</div><div class="kpi-val" id="kpi-rpu">—</div><div class="kpi-sub">$/year</div></div>
+          <div class="kpi"><div class="kpi-label">Net margin</div><div class="kpi-val" id="kpi-margin">—</div><div class="kpi-sub">of gross yield</div></div>
+        </div>
+
+        <div class="waterfall" id="waterfall"></div>
+
+        <div class="warn-banner good" id="programme-flag">Programme economics — neutral</div>
+
+        <div style="margin-top:1rem;">
+          <div class="preview-tabs" id="preview-tabs">
+            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab" data-tab="md">Treasury memo</button>
+            <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+          </div>
+
+          <div class="preview-body"><pre id="preview-out"></pre></div>
+
+          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/wallet-float-v1</div>
+
+          <div class="results-export-row">
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+            <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+            <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/sme-credit-passport-global-south.html">#6 — SME Credit Passport</a> for
+      the credit side of the BaaS balance sheet, or with <a href="/demos/ap2-aml-mandate-builder.html">#23 — AP2 AML Mandate Builder</a>
+      to wire the programme's AML obligations into the same runtime that reads this treasury mandate.
+      Position in the 259-tool atlas: <a href="/demos/composer.html">Tool Chain Composer</a>, T156 node.
+    </p>
+  </div>
+</div>
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/156-wallet-float-yield-estimator.html" target="_blank" rel="noopener">Deep Dive → AINumbers T156</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/baas/">BaaS Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── STATE ────────────────────────────────────────────────────────────
+  const state = {
+    deposits_m: 250,    // $M
+    users: 500000,
+    sweep_pct: 50,
+    mmf_pct: 35,        // implicit: nyf = 100 - sweep - mmf, clamped
+    ff_bps: 525,        // 5.25%
+    haircut_bps: 75,
+    mmf_spread_bps: 12,
+    opex_cents: 120,    // per active user / month, in cents
+    bank_share_pct: 25,
+    baas_share_pct: 10,
+    activeTab: 'ap2'
+  };
+
+  // ── COMPUTE ──────────────────────────────────────────────────────────
+  function compute(){
+    // clamp allocations so sum ≤ 100
+    let sweep = state.sweep_pct;
+    let mmf = state.mmf_pct;
+    if (sweep + mmf > 100) {
+      // proportionally scale down
+      const sum = sweep + mmf;
+      sweep = Math.floor(100 * sweep / sum);
+      mmf = 100 - sweep;
+    }
+    const nyf = Math.max(0, 100 - sweep - mmf);
+
+    const deposits = state.deposits_m * 1_000_000;
+
+    // Yields in bps
+    const sweep_yield_bps = Math.max(0, state.ff_bps - state.haircut_bps);
+    const mmf_yield_bps   = Math.max(0, state.ff_bps + state.mmf_spread_bps);
+    const nyf_yield_bps   = 0;
+
+    // Weighted gross yield in bps
+    const gross_bps = (sweep/100) * sweep_yield_bps + (mmf/100) * mmf_yield_bps + (nyf/100) * nyf_yield_bps;
+    const gross_usd = deposits * (gross_bps / 10000);
+
+    // Partner shares
+    const bank_take_usd = gross_usd * (state.bank_share_pct / 100);
+    const baas_take_usd = gross_usd * (state.baas_share_pct / 100);
+    const after_share_usd = gross_usd - bank_take_usd - baas_take_usd;
+
+    // Per-account ops
+    const opex_total_usd = state.users * (state.opex_cents / 100) * 12;
+
+    const net_usd = after_share_usd - opex_total_usd;
+    const net_bps = deposits > 0 ? (net_usd / deposits) * 10000 : 0;
+    const rpu = state.users > 0 ? net_usd / state.users : 0;
+    const margin_pct = gross_usd > 0 ? (net_usd / gross_usd) * 100 : 0;
+
+    let flag;
+    if (net_bps >= 100) flag = { cls:'good', txt:'Programme economics — strong (net yield ≥ 100bps).' };
+    else if (net_bps >= 25) flag = { cls:'good', txt:'Programme economics — viable (25–100bps net).' };
+    else if (net_bps >= 0)  flag = { cls:'warn', txt:'Programme economics — thin (0–25bps net). Sensitive to rate or cost movement.' };
+    else                    flag = { cls:'bad',  txt:'Programme economics — negative. Reallocate or renegotiate revshare/opex.' };
+
+    return {
+      sweep, mmf, nyf,
+      deposits,
+      sweep_yield_bps, mmf_yield_bps,
+      gross_bps, gross_usd,
+      bank_take_usd, baas_take_usd, after_share_usd,
+      opex_total_usd,
+      net_usd, net_bps, rpu, margin_pct,
+      flag
+    };
+  }
+
+  // ── FORMATTERS ───────────────────────────────────────────────────────
+  function fmtUSD(v){
+    const abs = Math.abs(v);
+    let s;
+    if (abs >= 1e9) s = '$' + (v/1e9).toFixed(2) + 'B';
+    else if (abs >= 1e6) s = '$' + (v/1e6).toFixed(2) + 'M';
+    else if (abs >= 1e3) s = '$' + (v/1e3).toFixed(1) + 'K';
+    else s = '$' + v.toFixed(0);
+    return s;
+  }
+  function fmtPct(v){ return v.toFixed(1) + '%'; }
+  function fmtBps(v){ return (v >= 0 ? '' : '') + v.toFixed(0) + ' bps'; }
+
+  // ── RENDER ───────────────────────────────────────────────────────────
+  function render(){
+    const m = compute();
+
+    // Allocation strip
+    document.getElementById('seg-sweep').style.flex = m.sweep || 0.0001;
+    document.getElementById('seg-mmf').style.flex = m.mmf || 0.0001;
+    document.getElementById('seg-nyf').style.flex = m.nyf || 0.0001;
+    document.getElementById('seg-sweep').textContent = m.sweep >= 8 ? m.sweep + '% Sweep' : '';
+    document.getElementById('seg-mmf').textContent = m.mmf >= 8 ? m.mmf + '% MMF' : '';
+    document.getElementById('seg-nyf').textContent = m.nyf >= 8 ? m.nyf + '% Reserve' : '';
+    document.getElementById('alloc-readout').textContent = m.sweep + '/' + m.mmf + '/' + m.nyf;
+
+    // KPI
+    const bpsEl = document.getElementById('kpi-bps');
+    bpsEl.textContent = fmtBps(m.net_bps);
+    bpsEl.className = 'kpi-val ' + (m.net_bps >= 25 ? 'good' : m.net_bps >= 0 ? 'warn' : 'bad');
+    document.getElementById('kpi-bps-sub').textContent = 'gross ' + fmtBps(m.gross_bps) + ' · margin ' + fmtPct(m.margin_pct);
+
+    const revEl = document.getElementById('kpi-rev');
+    revEl.textContent = fmtUSD(m.net_usd);
+    revEl.className = 'kpi-val ' + (m.net_usd >= 0 ? '' : 'bad');
+
+    document.getElementById('kpi-rpu').textContent = '$' + m.rpu.toFixed(2);
+    const mgEl = document.getElementById('kpi-margin');
+    mgEl.textContent = fmtPct(m.margin_pct);
+    mgEl.className = 'kpi-val ' + (m.margin_pct >= 50 ? 'good' : m.margin_pct >= 0 ? 'warn' : 'bad');
+
+    // Waterfall
+    const rows = [
+      { label: 'Gross yield (weighted)',     sub: 'Sweep ' + m.sweep + '% × ' + fmtBps(m.sweep_yield_bps) + ' + MMF ' + m.mmf + '% × ' + fmtBps(m.mmf_yield_bps), bps: m.gross_bps, usd: m.gross_usd, kind: 'pos' },
+      { label: '− Sponsor-bank revshare',    sub: state.bank_share_pct + '% of gross',                                                              bps: -m.gross_bps * (state.bank_share_pct/100), usd: -m.bank_take_usd, kind: 'neg' },
+      { label: '− BaaS provider revshare',   sub: state.baas_share_pct + '% of gross',                                                              bps: -m.gross_bps * (state.baas_share_pct/100), usd: -m.baas_take_usd, kind: 'neg' },
+      { label: '− Per-active-user ops',      sub: state.users.toLocaleString() + ' users × $' + (state.opex_cents/100).toFixed(2) + '/mo × 12',     bps: -m.opex_total_usd / m.deposits * 10000, usd: -m.opex_total_usd, kind: 'neg' }
+    ];
+    let wfHtml = rows.map(r => (
+      '<div class="wf-row">' +
+        '<div class="wf-label">' + r.label + '<span class="wf-sub">' + r.sub + '</span></div>' +
+        '<div class="wf-bps ' + r.kind + '">' + fmtBps(r.bps) + '</div>' +
+        '<div class="wf-dollar ' + r.kind + '">' + fmtUSD(r.usd) + '</div>' +
+      '</div>'
+    )).join('');
+    wfHtml +=
+      '<div class="wf-row total">' +
+        '<div class="wf-label">Net wallet-float revenue</div>' +
+        '<div class="wf-bps wf-net' + (m.net_bps < 0 ? ' bad' : '') + '">' + fmtBps(m.net_bps) + '</div>' +
+        '<div class="wf-dollar wf-net' + (m.net_usd < 0 ? ' bad' : '') + '">' + fmtUSD(m.net_usd) + '</div>' +
+      '</div>';
+    document.getElementById('waterfall').innerHTML = wfHtml;
+
+    // Programme flag
+    const pf = document.getElementById('programme-flag');
+    pf.className = 'warn-banner ' + m.flag.cls;
+    pf.innerHTML = '<strong>Programme economics — ' + (m.flag.cls === 'good' ? 'viable' : m.flag.cls === 'warn' ? 'thin' : 'negative') + '.</strong> ' + m.flag.txt;
+
+    renderPreview(m);
+  }
+
+  // ── AP2 mandate ──────────────────────────────────────────────────────
+  function buildMandate(model){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-17-' + Math.random().toString(36).slice(2,10);
+    return {
+      '$schema': '@ainumbers.co/wallet-float-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'BaaS treasury policy author (demonstration)' },
+      subject: { runtime: 'baas-treasury-engine', scope: 'wallet_float_allocation_and_economics' },
+      programme: {
+        programme_deposits_usd: Math.round(model.deposits),
+        active_users: state.users
+      },
+      allocation_policy: {
+        sweep_deposit_pct: model.sweep,
+        mmf_pct: model.mmf,
+        non_yielding_reserve_pct: model.nyf,
+        mmf_rule_2a7_required: true,
+        fdic_pass_through_assumed_on_sweep: true
+      },
+      rate_environment: {
+        fed_funds_upper_pct: state.ff_bps / 100,
+        sweep_haircut_bps: state.haircut_bps,
+        mmf_spread_over_ff_bps: state.mmf_spread_bps,
+        sweep_yield_bps: Math.round(model.sweep_yield_bps),
+        mmf_yield_bps: Math.round(model.mmf_yield_bps)
+      },
+      partner_economics: {
+        sponsor_bank_revshare_pct: state.bank_share_pct,
+        baas_provider_revshare_pct: state.baas_share_pct,
+        per_active_user_monthly_opex_usd: state.opex_cents / 100
+      },
+      computed: {
+        gross_yield_bps: Math.round(model.gross_bps),
+        net_yield_bps: Math.round(model.net_bps),
+        annual_net_revenue_usd: Math.round(model.net_usd),
+        revenue_per_active_user_usd: Number(model.rpu.toFixed(2)),
+        net_margin_pct: Number(model.margin_pct.toFixed(1)),
+        programme_flag: model.flag.cls
+      },
+      enforcement: {
+        binding: true,
+        re_evaluate_when: 'fed_funds_change_>=_25bps OR sponsor_bank_termination_notice',
+        recordkeeping_alignment: 'FDIC 12 CFR §330.5 / §330.7 + 2024 Recordkeeping Rule',
+        audit_trail_required: true
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/wallet-float-yield-estimator.html',
+        backing_tool: 'https://ainumbers.co/tools/156-wallet-float-yield-estimator.html',
+        license: 'CC BY 4.0'
+      }
+    };
+  }
+
+  function validate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/wallet-float-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!m.allocation_policy) errs.push('allocation_policy required');
+    const a = m.allocation_policy;
+    const sum = (a.sweep_deposit_pct || 0) + (a.mmf_pct || 0) + (a.non_yielding_reserve_pct || 0);
+    if (Math.abs(sum - 100) > 0.5) errs.push('allocation_policy sum must equal 100');
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    return errs;
+  }
+
+  function buildMd(m){
+    const out = [];
+    out.push('# BaaS Wallet-Float — Treasury Memo');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('## Programme');
+    out.push('- Programme deposits: ' + fmtUSD(m.programme.programme_deposits_usd));
+    out.push('- Active users: ' + m.programme.active_users.toLocaleString());
+    out.push('');
+    out.push('## Allocation policy');
+    out.push('- Sweep deposits: **' + m.allocation_policy.sweep_deposit_pct + '%** (sponsor bank, FDIC pass-through eligible)');
+    out.push('- MMF (Rule 2a-7): **' + m.allocation_policy.mmf_pct + '%**');
+    out.push('- Non-yielding reserve: **' + m.allocation_policy.non_yielding_reserve_pct + '%**');
+    out.push('');
+    out.push('## Rate environment');
+    out.push('- Fed Funds upper bound: ' + m.rate_environment.fed_funds_upper_pct + '%');
+    out.push('- Sweep haircut: ' + m.rate_environment.sweep_haircut_bps + 'bps → sweep yield ' + m.rate_environment.sweep_yield_bps + 'bps');
+    out.push('- MMF spread over Fed Funds: ' + m.rate_environment.mmf_spread_over_ff_bps + 'bps → MMF yield ' + m.rate_environment.mmf_yield_bps + 'bps');
+    out.push('');
+    out.push('## Partner economics');
+    out.push('- Sponsor-bank revshare: ' + m.partner_economics.sponsor_bank_revshare_pct + '% of gross');
+    out.push('- BaaS provider revshare: ' + m.partner_economics.baas_provider_revshare_pct + '% of gross');
+    out.push('- Per-active-user opex: $' + m.partner_economics.per_active_user_monthly_opex_usd.toFixed(2) + '/mo');
+    out.push('');
+    out.push('## Result');
+    out.push('- Gross yield: **' + m.computed.gross_yield_bps + ' bps**');
+    out.push('- Net yield: **' + m.computed.net_yield_bps + ' bps**');
+    out.push('- Annual net revenue: **' + fmtUSD(m.computed.annual_net_revenue_usd) + '**');
+    out.push('- Revenue per active user: **$' + m.computed.revenue_per_active_user_usd + '/yr**');
+    out.push('- Net margin: **' + m.computed.net_margin_pct + '%**');
+    out.push('- Programme flag: **' + m.computed.programme_flag + '**');
+    out.push('');
+    out.push('## Enforcement');
+    out.push('- Binding: ' + m.enforcement.binding);
+    out.push('- Re-evaluate when: ' + m.enforcement.re_evaluate_when);
+    out.push('- Recordkeeping alignment: ' + m.enforcement.recordkeeping_alignment);
+    out.push('');
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #17 (Wallet Float Yield Estimator). Source engine: AINumbers T156. CC BY 4.0. Zero PII._');
+    return out.join('\n');
+  }
+
+  function buildMcp(m){
+    return {
+      name: 'wallet_float_reprice',
+      description: 'Re-evaluate the bound wallet-float treasury mandate against a new rate environment or allocation proposal. Returns net yield, annual revenue, programme flag.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          fed_funds_upper_pct: { type: 'number', minimum: 0, maximum: 20 },
+          sweep_pct:           { type: 'integer', minimum: 0, maximum: 100 },
+          mmf_pct:             { type: 'integer', minimum: 0, maximum: 100 },
+          programme_deposits_usd: { type: 'number', minimum: 0 }
+        },
+        required: ['fed_funds_upper_pct','sweep_pct','mmf_pct']
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        re_evaluate_when: m.enforcement.re_evaluate_when
+      },
+      provenance: m.provenance
+    };
+  }
+
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function renderPreview(model){
+    const m = buildMandate(model);
+    const errs = validate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+    let body;
+    if (state.activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') body = buildMd(m);
+    else body = JSON.stringify(buildMcp(m), null, 2);
+    const isJson = state.activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+  }
+
+  // ── WIRE SLIDERS ─────────────────────────────────────────────────────
+  function bindSlider(rid, vid, key, fmt, transform){
+    const r = document.getElementById(rid);
+    const v = document.getElementById(vid);
+    r.addEventListener('input', () => {
+      let val = Number(r.value);
+      if (transform) val = transform(val);
+      state[key] = val;
+      v.textContent = fmt(val);
+      // for allocation, keep sweep+mmf ≤ 100
+      if (key === 'sweep_pct' || key === 'mmf_pct') {
+        if (state.sweep_pct + state.mmf_pct > 100) {
+          const other = key === 'sweep_pct' ? 'mmf_pct' : 'sweep_pct';
+          const otherInput = document.getElementById(other === 'sweep_pct' ? 'r-sweep' : 'r-mmf');
+          const otherSpan  = document.getElementById(other === 'sweep_pct' ? 'v-sweep' : 'v-mmf');
+          state[other] = 100 - state[key];
+          otherInput.value = state[other];
+          otherSpan.textContent = state[other] + '%';
+        }
+      }
+      render();
+    });
+    v.textContent = fmt(state[key]);
+  }
+
+  bindSlider('r-deposits',  'v-deposits',  'deposits_m',     v => '$' + v.toLocaleString() + 'M');
+  bindSlider('r-users',     'v-users',     'users',          v => v.toLocaleString());
+  bindSlider('r-sweep',     'v-sweep',     'sweep_pct',      v => v + '%');
+  bindSlider('r-mmf',       'v-mmf',       'mmf_pct',        v => v + '%');
+  bindSlider('r-ff',        'v-ff',        'ff_bps',         v => (v/100).toFixed(2) + '%');
+  bindSlider('r-haircut',   'v-haircut',   'haircut_bps',    v => v + ' bps');
+  bindSlider('r-mmf-spread','v-mmf-spread','mmf_spread_bps', v => (v>=0?'+':'') + v + ' bps');
+  bindSlider('r-opex',      'v-opex',      'opex_cents',     v => '$' + (v/100).toFixed(2));
+  bindSlider('r-bankshare', 'v-bankshare', 'bank_share_pct', v => v + '%');
+  bindSlider('r-baasshare', 'v-baasshare', 'baas_share_pct', v => v + '%');
+
+  // tabs
+  document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('#preview-tabs .preview-tab').forEach(b => b.classList.remove('sel'));
+      t.classList.add('sel');
+      state.activeTab = t.dataset.tab;
+      render();
+    });
+  });
+
+  // exports
+  function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
+  function download(filename, content, mime){ const blob = new Blob([content], { type: mime }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate(compute());
+    if (validate(m).length === 0) { download('wallet-float-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 treasury mandate exported'); }
+    else toast('Schema validation failed');
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('wallet-float-treasury-memo.md', buildMd(buildMandate(compute())), 'text/markdown');
+    toast('Treasury memo exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('wallet_float_reprice.mcp.json', JSON.stringify(buildMcp(buildMandate(compute())), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate(compute());
+    let txt;
+    if (state.activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') txt = buildMd(m);
+    else txt = JSON.stringify(buildMcp(m), null, 2);
+    try { await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); } catch(e) { toast('Copy failed'); }
+  });
+
+  // init
+  render();
+})();
+</script>
+
+</body>
+</html>

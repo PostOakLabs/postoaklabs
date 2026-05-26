@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP2 BaaS Infrastructure Mandate Builder · Sponsor-Bank-Audit-Ready Programme Policy · Post Oak Labs</title>
+
+<meta name="description" content="Compose AP2 v1.0 BaaS infrastructure mandates — programme-policy slots, sponsor-bank approval gates, BIN-tier ceilings, transaction limits, handoff workflows. The runtime enforces; the sponsor bank audits. Client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html">
+<meta property="og:title" content="AP2 BaaS Infrastructure Mandate Builder — Post Oak Labs">
+<meta property="og:description" content="Programme-policy + sponsor-bank gates + BIN ceilings + transaction limits → machine-readable BaaS mandate. AP2 v1.0 stable. Browser-based. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/ap2-baas-infrastructure-mandate-builder.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "AP2 BaaS Infrastructure Mandate Builder",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html",
+  "description": "Compose AP2 v1.0 BaaS infrastructure mandates an agentic runtime can read, follow and audit against. Configures programme-policy slots, sponsor-bank approval gates, BIN-tier ceilings, transaction-limit caps and handoff workflows. Exports a validated mandate against @ainumbers.co/baas-mandate-v1.",
+  "featureList": [
+    "Programme-policy slots: account ceiling, KYC tier, daily / monthly limits, customer-type allowlist",
+    "Sponsor-bank approval gates: auto-approve threshold, manual-review threshold, hard-stop ceiling",
+    "BIN-tier ceilings (commercial / consumer / prepaid) with issuance limits",
+    "Transaction-rail caps (ACH, wire, card, RTP) with per-rail thresholds",
+    "Handoff workflows: sponsor-bank reconciliation cadence, escalation matrix",
+    "AP2 v1.0 mandate export against @ainumbers.co/baas-mandate-v1",
+    "Markdown programme policy brief and MCP tool definition export"
+  ],
+  "keywords": "AP2, BaaS, sponsor bank, programme policy, BIN tier, ACH, wire, card, RTP, OCC interagency guidance, third-party risk, agentic infrastructure, MCP",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+:root {
+  --pol-ink: #050c15; --pol-deep: #0a1628; --pol-edge: #1e3454;
+  --pol-body: #7090b0; --pol-accent: #2a7fc0; --pol-accent-lt: #4a9fdf; --pol-gold: #c09040;
+  --bg: #ffffff; --bg-soft: #fafbfc; --bg-mid: #f4f5f7; --bg-deep: #ebedef;
+  --border: #e6e8eb; --border-2: #d0d4d8;
+  --text: #0a1828; --text-muted: #6a7a8a;
+  --accent: var(--pol-accent); --gold: var(--pol-gold);
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626; --purple: #8b5cf6;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--pol-ink); color: var(--pol-body); font-family: var(--body-font); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: var(--accent); }
+
+nav.pol-nav { background: var(--pol-ink); border-bottom: 1px solid var(--pol-edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip { background: var(--pol-deep); border-top: 1px solid var(--pol-edge); border-bottom: 1px solid var(--pol-edge); padding: 0.85rem 0; color: var(--pol-body); }
+.showcase-header-strip .strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--pol-gold); font-weight: 500; }
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a { color: var(--pol-accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+main.demo-canvas { background: var(--bg); color: var(--text); font-family: var(--body-font); max-width: 1240px; margin: 2rem auto; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+.pii-banner { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.15); padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 1.5rem; border-radius: 4px; }
+
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500; }
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+.hero h1 { font-family: var(--heading); font-size: clamp(1.7rem, 3.4vw, 2.45rem); color: var(--text); line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+.hero-desc { font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; max-width: 860px; }
+.hero-desc b { color: var(--text); font-weight: 500; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.32rem 0.7rem; border-radius: 3px; border: 1px solid var(--border-2); color: var(--text-muted); }
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+.baas-callout { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.3); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 3px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+.baas-callout strong { color: var(--text); font-weight: 500; }
+.baas-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
+.baas-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+.value-at-risk { background: var(--bg-soft); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; margin: 0 0 1.5rem; border-radius: 2px; font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+.var-eyebrow { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.45rem; font-weight: 500; }
+.var-figure { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.45rem; line-height: 1.3; }
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+.lab-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; margin-top: 1.25rem; }
+@media (max-width: 1040px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
+.panel-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.55rem; }
+.panel-label-r { color: var(--accent); }
+.sec-h { font-family: var(--heading); font-size: 1.18rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+.field-row { display: grid; grid-template-columns: 1fr 200px; gap: 0.75rem; align-items: center; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
+.field-row:last-of-type { border-bottom: none; }
+.field-label { font-size: 0.82rem; color: var(--text); }
+.field-label .fl-sub { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; }
+.field-row input[type=number], .field-row select {
+  font-family: var(--mono); font-size: 0.82rem;
+  padding: 0.42rem 0.55rem; border: 1px solid var(--border-2);
+  border-radius: 3px; background: var(--bg-soft); color: var(--text);
+  width: 100%;
+}
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+/* KYC tier toggle */
+.tier-row { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.45rem; }
+.tier-opt {
+  font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em;
+  background: var(--bg-soft); border: 1px solid var(--border-2);
+  color: var(--text-muted); padding: 0.38rem 0.7rem;
+  border-radius: 3px; cursor: pointer;
+}
+.tier-opt:hover { color: var(--accent); border-color: var(--accent); }
+.tier-opt.sel { background: var(--text); color: #fff; border-color: var(--text); }
+
+/* BIN tier rows */
+.bin-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.82rem; }
+.bin-table th { text-align: left; font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border); }
+.bin-table td { padding: 0.45rem 0.5rem; border-bottom: 1px dashed var(--border); vertical-align: middle; }
+.bin-table tr:last-of-type td { border-bottom: none; }
+.bin-table input[type=number] { width: 90px; font-family: var(--mono); font-size: 0.78rem; padding: 0.25rem 0.4rem; border: 1px solid var(--border-2); border-radius: 3px; text-align: right; }
+.bin-toggle { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); cursor: pointer; }
+.bin-toggle input[type=checkbox] { accent-color: var(--accent); }
+
+/* Rail caps */
+.rail-row { display: grid; grid-template-columns: 100px 1fr 120px 80px; gap: 0.6rem; align-items: center; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); font-size: 0.82rem; }
+.rail-row:last-of-type { border-bottom: none; }
+.rail-name { font-family: var(--mono); font-size: 0.78rem; color: var(--text); font-weight: 600; letter-spacing: 0.04em; }
+.rail-desc { color: var(--text-muted); font-size: 0.72rem; }
+.rail-cap input { width: 100%; font-family: var(--mono); font-size: 0.78rem; padding: 0.25rem 0.4rem; border: 1px solid var(--border-2); border-radius: 3px; text-align: right; }
+.rail-on { font-family: var(--mono); font-size: 0.66rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; }
+.rail-on input { accent-color: var(--accent); }
+
+/* Gate summary */
+.gate-summary { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.8rem; margin-top: 0.5rem; font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); line-height: 1.65; }
+.gate-summary strong { color: var(--text); }
+.gate-flag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em; }
+.gate-flag.ok { background: rgba(16,185,129,0.1); color: var(--success); }
+.gate-flag.warn { background: rgba(245,158,11,0.1); color: var(--warn); }
+.gate-flag.bad { background: rgba(220,38,38,0.1); color: var(--error); }
+
+/* Preview */
+.preview-sticky { position: sticky; top: 84px; }
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.7rem; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 3px; }
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; max-height: 460px; overflow: auto; font-family: var(--mono); font-size: 0.68rem; line-height: 1.7; color: var(--text); }
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+.results-export-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.btn-export { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; }
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+.validation { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 3px; display: flex; align-items: center; gap: 0.5rem; }
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+footer.pol-footer { background: var(--pol-ink); border-top: 1px solid var(--pol-edge); padding: 2.25rem 0 2.5rem; margin-top: 2rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy { font-family: var(--body-font); font-size: 0.78rem; color: var(--pol-body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--text); border-left: 3px solid var(--success); padding: 0.7rem 1.1rem; font-family: var(--mono); font-size: 0.7rem; color: #fff; border-radius: 4px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.crosslinks { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-soft); border: 1px dashed var(--border-2); border-radius: 4px; font-size: 0.82rem; color: var(--text-muted); }
+.crosslinks h4 { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #24 of 33</span>
+      <span class="strip-title">AP2 BaaS Infrastructure Mandate Builder</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/agentic-runtime/">Agentic Runtime Hub →</a>
+      <a href="/demos/baas/">BaaS Hub →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html" target="_blank" rel="noopener">Source Engine T164 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #24 · Cat-12 · AP2 × BaaS Infrastructure · Agentic + BaaS Hubs</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">AP2 v1.0 stable</span>
+      <span class="eyebrow-badge eb-success">OCC 2023 interagency aligned</span>
+      <span class="eyebrow-badge eb-gold">Programme policy + MCP def</span>
+    </div>
+    <h1>The programme policy your sponsor bank will actually sign.</h1>
+    <p class="hero-desc">
+      Translate <b>BaaS programme policy</b> — account ceilings, KYC tiers, sponsor-bank approval gates,
+      BIN-tier issuance ceilings, transaction-rail caps and handoff workflows — into a structured
+      <b>AP2 v1.0</b> mandate the agentic runtime enforces and the sponsor bank can audit. Same shape
+      as <a href="/demos/ap2-aml-mandate-builder.html">#23 AP2 AML Mandate</a>; different domain. Schema:
+      <code style="font-family:var(--mono);font-size:.78rem;background:var(--bg-soft);padding:.1rem .35rem;border-radius:3px;">@ainumbers.co/baas-mandate-v1</code>.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side</span>
+      <span class="hero-badge warn">Programme policy is a contract — model it once, enforce it everywhere</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <div class="baas-callout" role="note">
+    <div class="baas-eyebrow">OCC · FRB · FDIC — interagency third-party risk regime</div>
+    <p>
+      The <strong>2023 OCC/FRB/FDIC interagency guidance on third-party risk management</strong>
+      (June 2023, final) reset bank-fintech partnership expectations. Programmes are expected to
+      maintain auditable policy artifacts and demonstrate they are enforced — not merely documented.
+      <strong>2023–2024 consent orders</strong> against bank-fintech partnership programmes
+      (Cross River, Blue Ridge Bank, Choice Financial Group, Lineage Bank, Sutton) cited weak
+      programme-policy enforcement and inadequate sponsor-bank oversight as root causes.
+    </p>
+    <div class="baas-cite">Sources: OCC Bull. 2023-17 (interagency guidance) · Cross River consent order (2023) · Blue Ridge / MVB / Choice 2024 actions · 12 CFR §225.124 (Reg Y)</div>
+  </div>
+
+  <aside class="value-at-risk" aria-label="Value at risk — BaaS programme enforcement">
+    <h4 class="var-eyebrow">Value at risk · sponsor-bank enforcement &amp; programme termination</h4>
+    <p class="var-figure">2023–24 BaaS consent orders: $14M–$24M civil penalties + 60–90 day programme-termination clauses</p>
+    <p class="var-body">Recent BaaS enforcement actions (<strong>Cross River 2023</strong> — $620K + corrective order; <strong>Blue Ridge 2023–24</strong> — $14M total + consent order; <strong>Lineage Bank 2024</strong> — $14M + consent order) repeatedly cite <strong>inadequate enforcement of programme-policy boundaries</strong>. A machine-readable AP2 mandate the runtime cannot silently relax — and that the sponsor bank's audit team can read — is the artifact that turns "policy on a wiki" into "policy on the wire."</p>
+    <p class="var-cite"><small>OCC Bull. 2023-17 · FDIC Recordkeeping NPR (2024) · 12 CFR §225.124 · Cross River / Blue Ridge / Lineage consent orders 2023–24</small></p>
+  </aside>
+
+  <div class="lab-grid">
+    <div>
+      <!-- §1 Programme identity -->
+      <section class="panel">
+        <div class="panel-label">§1 · Programme &amp; Customer Scope <span class="panel-label-r">KYC tier · customer type</span></div>
+        <h2 class="sec-h">Who can hold an account</h2>
+        <p class="sec-sub">The programme's customer scope drives every downstream limit. The KYC tier sets minimum verification depth for the runtime to enforce on every onboarding action.</p>
+
+        <div class="field-row">
+          <div class="field-label">Programme label
+            <span class="fl-sub">Internal identifier; not PII. Used as programme_id in the mandate.</span>
+          </div>
+          <input type="text" id="f-programme" value="acme-checking-v3" maxlength="48" style="font-family:var(--mono);font-size:.82rem;padding:.42rem .55rem;border:1px solid var(--border-2);border-radius:3px;background:var(--bg-soft);color:var(--text);width:100%;">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Customer type
+            <span class="fl-sub">Limits available rails and BIN tiers downstream.</span>
+          </div>
+          <select id="f-ctype">
+            <option value="consumer">Consumer (retail)</option>
+            <option value="sole-prop">Sole proprietor</option>
+            <option value="smb" selected>Small business</option>
+            <option value="midmarket">Mid-market</option>
+          </select>
+        </div>
+
+        <div>
+          <div style="font-size:.82rem;color:var(--text);margin-top:.5rem;">Minimum KYC tier</div>
+          <div class="tier-row" id="tg-kyc">
+            <button class="tier-opt" data-v="kyc-light">Tier 1 · Light</button>
+            <button class="tier-opt sel" data-v="kyc-std">Tier 2 · Standard</button>
+            <button class="tier-opt" data-v="kyc-eddx">Tier 3 · EDD</button>
+            <button class="tier-opt" data-v="kyc-bsa">Tier 4 · BSA-grade</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- §2 Sponsor-bank gates -->
+      <section class="panel">
+        <div class="panel-label">§2 · Sponsor-Bank Approval Gates <span class="panel-label-r">Auto · Manual · Hard stop</span></div>
+        <h2 class="sec-h">Where the bank's hand is required</h2>
+        <p class="sec-sub">Three concentric thresholds. Below auto-approve: runtime decides. Between auto and manual: queued for sponsor-bank reviewer. Above hard-stop: refused at the runtime; no path forward without policy amendment.</p>
+
+        <div class="field-row">
+          <div class="field-label">Auto-approve ceiling (USD per account, per day)
+            <span class="fl-sub">Runtime can act unilaterally up to this amount.</span>
+          </div>
+          <input type="number" id="f-auto" min="0" max="500000" value="2500" step="100">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Manual-review ceiling (USD per account, per day)
+            <span class="fl-sub">Sponsor-bank reviewer approves before action.</span>
+          </div>
+          <input type="number" id="f-manual" min="0" max="1000000" value="25000" step="500">
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Hard-stop ceiling (USD per account, per day)
+            <span class="fl-sub">Refused without policy amendment. Cannot be relaxed by the runtime.</span>
+          </div>
+          <input type="number" id="f-hard" min="0" max="5000000" value="250000" step="1000">
+        </div>
+
+        <div class="gate-summary" id="gate-summary"></div>
+      </section>
+
+      <!-- §3 BIN tier ceilings -->
+      <section class="panel">
+        <div class="panel-label">§3 · BIN-Tier Issuance Ceilings <span class="panel-label-r">Card programme caps</span></div>
+        <h2 class="sec-h">Card issuance limits</h2>
+        <p class="sec-sub">Per-tier issuance ceilings cap how many cards of each BIN tier the programme can issue under this mandate. Set "off" to disable issuance entirely for that tier.</p>
+
+        <table class="bin-table">
+          <thead>
+            <tr><th>Tier</th><th>Description</th><th>Monthly issuance ceiling</th><th>Enabled</th></tr>
+          </thead>
+          <tbody id="bin-rows"></tbody>
+        </table>
+      </section>
+
+      <!-- §4 Rail caps -->
+      <section class="panel">
+        <div class="panel-label">§4 · Transaction-Rail Caps <span class="panel-label-r">ACH · Wire · Card · RTP</span></div>
+        <h2 class="sec-h">Per-rail per-transaction maxima</h2>
+        <p class="sec-sub">Per-rail thresholds the runtime enforces on every transaction. ACH has NACHA same-day caps; wires per Fed/CHIPS thresholds; RTP per The Clearing House $1M limit (raised Feb 2024).</p>
+
+        <div id="rails"></div>
+      </section>
+
+      <!-- §5 Handoff -->
+      <section class="panel">
+        <div class="panel-label">§5 · Handoff &amp; Reconciliation <span class="panel-label-r">Sponsor-bank cadence</span></div>
+        <h2 class="sec-h">Sponsor-bank reconciliation</h2>
+
+        <div class="field-row">
+          <div class="field-label">Reconciliation cadence
+            <span class="fl-sub">How often the runtime hands settlement state to the sponsor bank.</span>
+          </div>
+          <select id="f-recon">
+            <option value="real-time">Real-time stream</option>
+            <option value="hourly">Hourly batch</option>
+            <option value="daily" selected>Daily T+0 close</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <div class="field-label">Escalation cadence on policy breach
+            <span class="fl-sub">When a breach is detected, how fast the runtime must alert.</span>
+          </div>
+          <select id="f-escalate">
+            <option value="15min" selected>≤ 15 minutes</option>
+            <option value="1hr">≤ 1 hour</option>
+            <option value="4hr">≤ 4 hours</option>
+            <option value="24hr">≤ 24 hours</option>
+          </select>
+        </div>
+      </section>
+    </div>
+
+    <!-- Preview -->
+    <div>
+      <section class="panel preview-sticky">
+        <div class="panel-label">§6 · Mandate Preview <span class="panel-label-r">@ainumbers.co/baas-mandate-v1</span></div>
+        <h2 class="sec-h">AP2 output</h2>
+        <p class="sec-sub">The mandate the runtime loads, the policy your CCO will sign, the MCP tool definition the sponsor-bank auditor can call to verify enforcement.</p>
+
+        <div class="preview-tabs" id="preview-tabs">
+          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab" data-tab="md">Policy brief</button>
+          <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+        </div>
+
+        <div class="preview-body"><pre id="preview-out"></pre></div>
+
+        <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/baas-mandate-v1</div>
+
+        <div class="results-export-row">
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+          <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+          <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/ap2-aml-mandate-builder.html">#23 — AP2 AML Mandate Builder</a> to bind
+      AML policy to the same programme. Use <a href="/demos/wallet-float-yield-estimator.html">#17 — Wallet Float Yield Estimator</a>
+      to model the programme economics; this demo emits the policy that constrains where #17's allocation can live.
+      Position in the 259-tool atlas: <a href="/demos/composer.html">Tool Chain Composer</a>, T164 node.
+    </p>
+  </div>
+</div>
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html" target="_blank" rel="noopener">Deep Dive → AINumbers T164</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime Hub</a>
+      <a href="/demos/baas/">BaaS Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── STATE ────────────────────────────────────────────────────────────
+  const state = {
+    programme_label: 'acme-checking-v3',
+    customer_type: 'smb',
+    kyc_tier: 'kyc-std',
+    auto_approve_usd: 2500,
+    manual_review_usd: 25000,
+    hard_stop_usd: 250000,
+    bins: [
+      { id:'bin-consumer-debit', label:'Consumer debit',   desc:'Standard consumer-tier debit issuance',  ceiling: 50000, enabled: true },
+      { id:'bin-business-debit', label:'Business debit',   desc:'Commercial debit for SMB / sole-prop',   ceiling: 5000,  enabled: true },
+      { id:'bin-prepaid-gpr',    label:'Prepaid GPR',      desc:'General-purpose reloadable prepaid',     ceiling: 0,     enabled: false },
+      { id:'bin-virtual',        label:'Virtual card',     desc:'Single-use / tokenised virtual cards',   ceiling: 200000,enabled: true }
+    ],
+    rails: [
+      { id:'r-ach',  label:'ACH',  desc:'NACHA same-day cap $1M (2024)',                         per_tx_cap_usd: 100000, enabled: true },
+      { id:'r-wire', label:'WIRE', desc:'Fedwire / CHIPS — institution-set ceiling',             per_tx_cap_usd: 250000, enabled: true },
+      { id:'r-card', label:'CARD', desc:'Card-network purchase / withdrawal',                    per_tx_cap_usd: 5000,   enabled: true },
+      { id:'r-rtp',  label:'RTP',  desc:'TCH Real-Time Payments — $1M cap since Feb 2024',       per_tx_cap_usd: 100000, enabled: true }
+    ],
+    recon: 'daily',
+    escalate: '15min',
+    activeTab: 'ap2'
+  };
+
+  // ── BUILD MANDATE ────────────────────────────────────────────────────
+  function buildMandate(){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-24-' + Math.random().toString(36).slice(2,10);
+    return {
+      '$schema': '@ainumbers.co/baas-mandate-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'BaaS programme policy author (demonstration)' },
+      subject: { runtime: 'baas-programme-runtime', scope: 'programme_policy_and_controls' },
+      programme: {
+        programme_id: state.programme_label,
+        customer_type: state.customer_type,
+        minimum_kyc_tier: state.kyc_tier
+      },
+      sponsor_bank_gates: {
+        auto_approve_usd_per_day: state.auto_approve_usd,
+        manual_review_usd_per_day: state.manual_review_usd,
+        hard_stop_usd_per_day: state.hard_stop_usd
+      },
+      bin_tier_ceilings: state.bins
+        .filter(b => b.enabled)
+        .map(b => ({ bin_tier: b.id, label: b.label, monthly_issuance_ceiling: b.ceiling })),
+      transaction_rail_caps: state.rails
+        .filter(r => r.enabled)
+        .map(r => ({ rail: r.id, per_transaction_cap_usd: r.per_tx_cap_usd })),
+      handoff: {
+        sponsor_bank_reconciliation_cadence: state.recon,
+        breach_escalation_max_delay: state.escalate
+      },
+      enforcement: {
+        binding: true,
+        on_violation: 'halt_and_alert_sponsor_bank',
+        runtime_cannot_relax: ['hard_stop_usd_per_day','bin_tier_ceilings','minimum_kyc_tier'],
+        audit_trail_required: true,
+        interagency_alignment: 'OCC Bull. 2023-17 (June 2023 final)'
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html',
+        backing_tool: 'https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html',
+        license: 'CC BY 4.0'
+      }
+    };
+  }
+
+  function validate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/baas-mandate-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!m.programme || !m.programme.programme_id) errs.push('programme.programme_id required');
+    const g = m.sponsor_bank_gates;
+    if (!g) errs.push('sponsor_bank_gates required');
+    else {
+      if (g.auto_approve_usd_per_day > g.manual_review_usd_per_day) errs.push('auto-approve must be ≤ manual-review');
+      if (g.manual_review_usd_per_day > g.hard_stop_usd_per_day) errs.push('manual-review must be ≤ hard-stop');
+    }
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    if (!Array.isArray(m.transaction_rail_caps) || m.transaction_rail_caps.length === 0) errs.push('at least one transaction rail must be enabled');
+    return errs;
+  }
+
+  function buildMd(m){
+    const out = [];
+    out.push('# AP2 BaaS Infrastructure Mandate — Programme Policy Brief');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
+    out.push('**Programme ID:** `' + m.programme.programme_id + '`');
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('## Customer scope');
+    out.push('- Customer type: ' + m.programme.customer_type);
+    out.push('- Minimum KYC tier: ' + m.programme.minimum_kyc_tier);
+    out.push('');
+    out.push('## Sponsor-bank approval gates (USD / account / day)');
+    out.push('- Auto-approve ceiling: **$' + m.sponsor_bank_gates.auto_approve_usd_per_day.toLocaleString() + '**');
+    out.push('- Manual-review ceiling: **$' + m.sponsor_bank_gates.manual_review_usd_per_day.toLocaleString() + '**');
+    out.push('- Hard-stop ceiling: **$' + m.sponsor_bank_gates.hard_stop_usd_per_day.toLocaleString() + '** _(runtime cannot relax)_');
+    out.push('');
+    out.push('## BIN-tier issuance ceilings (monthly)');
+    out.push('');
+    if (m.bin_tier_ceilings.length === 0) out.push('- _No BIN tiers enabled._');
+    else m.bin_tier_ceilings.forEach(b => out.push('- **' + b.label + '** (`' + b.bin_tier + '`): ' + b.monthly_issuance_ceiling.toLocaleString() + ' cards / month'));
+    out.push('');
+    out.push('## Transaction-rail per-tx caps');
+    out.push('');
+    out.push('| Rail | Per-tx cap (USD) |');
+    out.push('|---|---:|');
+    m.transaction_rail_caps.forEach(r => out.push('| ' + r.rail + ' | $' + r.per_transaction_cap_usd.toLocaleString() + ' |'));
+    out.push('');
+    out.push('## Handoff &amp; reconciliation');
+    out.push('- Sponsor-bank reconciliation: ' + m.handoff.sponsor_bank_reconciliation_cadence);
+    out.push('- Breach escalation max delay: ' + m.handoff.breach_escalation_max_delay);
+    out.push('');
+    out.push('## Enforcement');
+    out.push('- Binding: ' + m.enforcement.binding);
+    out.push('- Runtime cannot relax: ' + m.enforcement.runtime_cannot_relax.join(', '));
+    out.push('- On violation: ' + m.enforcement.on_violation);
+    out.push('- Interagency alignment: ' + m.enforcement.interagency_alignment);
+    out.push('');
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #24 (AP2 BaaS Infrastructure Mandate Builder). Source engine: AINumbers T164. CC BY 4.0. Zero PII._');
+    return out.join('\n');
+  }
+
+  function buildMcp(m){
+    return {
+      name: 'baas_programme_evaluate',
+      description: 'Evaluate a candidate programme action (open account / issue card / move funds / change tier) against the loaded BaaS programme mandate. Returns allow/queue/refer/refuse with the gate or cap that fired.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action_type: { type: 'string', enum: ['open_account','issue_card','transfer','tier_change'] },
+          account_label: { type: 'string', description: 'synthetic / pseudonymous; must not be PII' },
+          amount_usd: { type: 'number', minimum: 0 },
+          rail: { type: 'string', enum: ['r-ach','r-wire','r-card','r-rtp'] },
+          bin_tier: { type: 'string' },
+          kyc_tier: { type: 'string', enum: ['kyc-light','kyc-std','kyc-eddx','kyc-bsa'] }
+        },
+        required: ['action_type']
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        programme_id: m.programme.programme_id
+      },
+      provenance: m.provenance
+    };
+  }
+
+  // ── HIGHLIGHT + RENDER ───────────────────────────────────────────────
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function fmtUSD(v){ return '$' + Number(v).toLocaleString(); }
+
+  function renderGateSummary(){
+    const auto = state.auto_approve_usd, man = state.manual_review_usd, hard = state.hard_stop_usd;
+    const ok = (auto <= man) && (man <= hard);
+    const cls = ok ? 'ok' : 'bad';
+    const lbl = ok ? 'gates monotonic' : 'gates inverted — fix before exporting';
+    document.getElementById('gate-summary').innerHTML =
+      '<span class="gate-flag ' + cls + '">' + lbl + '</span><br>' +
+      'Below ' + fmtUSD(auto) + '/day · <strong>runtime auto-approves</strong>.<br>' +
+      fmtUSD(auto) + ' → ' + fmtUSD(man) + '/day · <strong>sponsor-bank reviewer queue</strong>.<br>' +
+      fmtUSD(man) + ' → ' + fmtUSD(hard) + '/day · <strong>senior sponsor-bank approval</strong>.<br>' +
+      'Above ' + fmtUSD(hard) + '/day · <strong>refused at runtime; policy amendment required</strong>.';
+  }
+
+  function renderBins(){
+    const tb = document.getElementById('bin-rows');
+    tb.innerHTML = '';
+    state.bins.forEach(b => {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><strong style="font-family:var(--mono);font-size:.72rem;">' + b.id + '</strong></td>' +
+        '<td>' + b.label + '<br><span style="font-size:.7rem;color:var(--text-muted);">' + b.desc + '</span></td>' +
+        '<td><input type="number" min="0" max="10000000" step="100" value="' + b.ceiling + '" data-bin="' + b.id + '"' + (b.enabled ? '' : ' disabled') + '></td>' +
+        '<td><label class="bin-toggle"><input type="checkbox" ' + (b.enabled ? 'checked' : '') + ' data-bin-on="' + b.id + '">' + (b.enabled ? 'on' : 'off') + '</label></td>';
+      tb.appendChild(tr);
+    });
+    tb.querySelectorAll('input[data-bin]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const b = state.bins.find(x => x.id === inp.dataset.bin);
+        b.ceiling = Math.max(0, Number(inp.value) || 0);
+        render();
+      });
+    });
+    tb.querySelectorAll('input[data-bin-on]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const b = state.bins.find(x => x.id === cb.dataset.binOn);
+        b.enabled = cb.checked;
+        renderBins(); render();
+      });
+    });
+  }
+
+  function renderRails(){
+    const c = document.getElementById('rails');
+    c.innerHTML = '';
+    state.rails.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'rail-row';
+      row.innerHTML =
+        '<div class="rail-name">' + r.label + '</div>' +
+        '<div class="rail-desc">' + r.desc + '</div>' +
+        '<div class="rail-cap"><input type="number" min="0" max="10000000" step="100" value="' + r.per_tx_cap_usd + '" data-rail="' + r.id + '"' + (r.enabled ? '' : ' disabled') + '></div>' +
+        '<label class="rail-on"><input type="checkbox" ' + (r.enabled ? 'checked' : '') + ' data-rail-on="' + r.id + '">' + (r.enabled ? 'on' : 'off') + '</label>';
+      c.appendChild(row);
+    });
+    c.querySelectorAll('input[data-rail]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const r = state.rails.find(x => x.id === inp.dataset.rail);
+        r.per_tx_cap_usd = Math.max(0, Number(inp.value) || 0);
+        render();
+      });
+    });
+    c.querySelectorAll('input[data-rail-on]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const r = state.rails.find(x => x.id === cb.dataset.railOn);
+        r.enabled = cb.checked;
+        renderRails(); render();
+      });
+    });
+  }
+
+  function renderPreview(){
+    const m = buildMandate();
+    const errs = validate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+    let body;
+    if (state.activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') body = buildMd(m);
+    else body = JSON.stringify(buildMcp(m), null, 2);
+    const isJson = state.activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+  }
+
+  function render(){ renderGateSummary(); renderPreview(); }
+
+  // ── WIRE INPUTS ──────────────────────────────────────────────────────
+  document.getElementById('f-programme').addEventListener('input', e => {
+    state.programme_label = (e.target.value || '').replace(/[^a-z0-9\-_]/gi,'').slice(0,48) || 'unnamed';
+    render();
+  });
+  document.getElementById('f-ctype').addEventListener('change', e => { state.customer_type = e.target.value; render(); });
+  document.getElementById('f-recon').addEventListener('change', e => { state.recon = e.target.value; render(); });
+  document.getElementById('f-escalate').addEventListener('change', e => { state.escalate = e.target.value; render(); });
+
+  ['auto','manual','hard'].forEach(k => {
+    document.getElementById('f-' + k).addEventListener('input', e => {
+      const key = k === 'auto' ? 'auto_approve_usd' : k === 'manual' ? 'manual_review_usd' : 'hard_stop_usd';
+      state[key] = Math.max(0, Number(e.target.value) || 0);
+      render();
+    });
+  });
+
+  document.querySelectorAll('#tg-kyc .tier-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#tg-kyc .tier-opt').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      state.kyc_tier = btn.dataset.v;
+      render();
+    });
+  });
+
+  document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('#preview-tabs .preview-tab').forEach(b => b.classList.remove('sel'));
+      t.classList.add('sel');
+      state.activeTab = t.dataset.tab;
+      render();
+    });
+  });
+
+  // exports
+  function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800); }
+  function download(filename, content, mime){ const blob = new Blob([content], { type: mime }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate();
+    if (validate(m).length === 0) { download('ap2-baas-mandate.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    else toast('Schema validation failed — fix errors first');
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('baas-programme-policy-brief.md', buildMd(buildMandate()), 'text/markdown');
+    toast('Programme policy brief exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('baas_programme_evaluate.mcp.json', JSON.stringify(buildMcp(buildMandate()), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate();
+    let txt;
+    if (state.activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') txt = buildMd(m);
+    else txt = JSON.stringify(buildMcp(m), null, 2);
+    try { await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); } catch(e) { toast('Copy failed'); }
+  });
+
+  // init
+  renderBins();
+  renderRails();
+  render();
+})();
+</script>
+
+</body>
+</html>

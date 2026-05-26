@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BaaS Hub — Post Oak Labs Fintech Intelligence Showcase</title>
+
+<meta name="description" content="BaaS economics, sponsor-bank readiness, embedded-lending unit economics, BIN sponsorship — modeled in the browser, exported as AP2 mandates. 6 demos for Unit, Synctera, Treasury Prime, Marqeta, Galileo.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/baas/">
+<meta property="og:title" content="BaaS Hub — Post Oak Labs">
+<meta property="og:description" content="BaaS economics, sponsor-bank readiness, embedded-lending UE, BIN sponsorship — as AP2 mandates. 6 demos. $29B → $65B addressable.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/baas/">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/baas.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "BaaS Hub — Post Oak Labs",
+  "url": "https://postoaklabs.com/demos/baas/",
+  "description": "Six browser demos for BaaS platforms — provider comparator, embedded lending unit economics, SME credit passport, wallet float, VRP, AP2 BaaS mandate builder. All AP2-exportable, client-side, zero PII.",
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" },
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateModified": "2026-05-13",
+  "audience": { "@type": "Audience", "audienceType": "BaaS platforms — Unit, Synctera, Treasury Prime, Marqeta, Galileo" },
+  "hasPart": [
+    { "@type": "SoftwareApplication", "name": "Global South SME Lending Passport", "url": "https://postoaklabs.com/demos/sme-credit-passport-global-south.html" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root { --ink: #050c15; --deep: #0a1628; --navy: #0e1e35; --panel: #142540; --edge: #1e3454; --rim: #2a4a70; --body: #7090b0; --text: #d8e4f0; --muted: #5a7a95; --bright: #ffffff; --white: #ffffff; --accent: #2a7fc0; --accent-lt: #4a9fdf; --gold: #c09040; --gold-lt: #d0a050; --success: #10b981; --warn: #f59e0b; --error: #dc2626; }
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.18; color: var(--bright); }
+a { color: var(--accent-lt); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+nav.pol-nav { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; font-weight: 400; transition: color 0.15s; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+.hub-breadcrumb { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.7rem 0; }
+.hub-breadcrumb-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); }
+.hub-breadcrumb-inner a { color: var(--body); text-decoration: none; margin-right: 0.45rem; }
+.hub-breadcrumb-inner a:hover { color: var(--accent-lt); }
+.hub-breadcrumb-inner .crumb-sep { margin-right: 0.45rem; color: var(--edge); }
+.hub-breadcrumb-inner .crumb-current { color: var(--text); }
+
+.hub-hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--edge); background: radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.08) 0%, transparent 70%), radial-gradient(45% 65% at 88% 30%, rgba(192,144,64,0.06) 0%, transparent 65%), var(--ink); }
+.hub-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.6rem; }
+.hub-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); }
+.hub-hero h1 { font-size: clamp(2rem, 4vw, 3.05rem); color: #fff; margin-bottom: 1.1rem; max-width: 900px; letter-spacing: -0.01em; }
+.hub-hero h1 em { font-style: italic; color: var(--gold); }
+.hub-sub { font-size: 1.04rem; color: var(--body); max-width: 780px; line-height: 1.75; margin-bottom: 2.25rem; }
+.hub-sub strong { color: var(--text); font-weight: 500; }
+.hub-buyers { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px dashed var(--edge); max-width: 780px; }
+.hub-buyers strong { color: var(--accent-lt); font-weight: 500; letter-spacing: 0.1em; }
+.hub-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--edge); border-radius: 6px; background: rgba(14, 30, 53, 0.35); max-width: 780px; }
+.hub-stats > div { padding: 1.25rem 1.4rem; border-right: 1px solid var(--edge); }
+.hub-stats > div:last-child { border-right: none; }
+.hub-stats strong { display: block; font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--bright); font-weight: 400; line-height: 1.1; margin-bottom: 0.25rem; }
+.hub-stats .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+.hub-demos { padding: 3rem 0 2rem; border-bottom: 1px solid var(--edge); }
+.hub-demos-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 0.5rem; }
+.hub-section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 2.2vw, 1.9rem); color: var(--bright); margin-bottom: 0.6rem; max-width: 760px; line-height: 1.3; }
+.hub-section-intro { font-size: 0.95rem; color: var(--body); max-width: 700px; margin-bottom: 2.1rem; line-height: 1.7; }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+.demo-card { background: var(--deep); border: 1px solid var(--edge); border-radius: 6px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; position: relative; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; text-decoration: none; color: var(--body); }
+.demo-card[href]:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
+.demo-card.placeholder { opacity: 0.78; cursor: default; border-style: dashed; border-color: var(--rim); }
+.demo-card.placeholder:hover { transform: none; box-shadow: none; }
+.demo-card.cross-link { background: linear-gradient(180deg, rgba(192,144,64,0.04) 0%, var(--deep) 100%); }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; }
+.card-num { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; color: var(--muted); }
+.card-num strong { color: var(--gold); font-weight: 500; }
+.card-step { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; color: var(--accent-lt); font-weight: 500; text-transform: uppercase; }
+.card-status { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.18rem 0.45rem; border-radius: 2px; font-weight: 500; }
+.card-status.live { color: var(--success); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); }
+.card-status.coming { color: var(--gold); background: rgba(192,144,64,0.06); border: 1px solid rgba(192,144,64,0.3); }
+.card-status.cross { color: var(--accent-lt); background: rgba(42,127,192,0.06); border: 1px solid rgba(42,127,192,0.3); }
+.card-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; line-height: 1.3; }
+.card-desc { font-size: 0.82rem; color: var(--body); line-height: 1.6; flex: 1; }
+.card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; padding-top: 0.85rem; border-top: 1px solid var(--edge); }
+.card-meta .chip { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0.2rem 0.45rem; border: 1px solid var(--edge); border-radius: 2px; }
+
+.hub-callout { padding: 3rem 0; background: radial-gradient(60% 90% at 50% 0%, rgba(42,127,192,0.05) 0%, transparent 70%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-callout-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-callout-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
+.hub-callout h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--bright); margin-bottom: 1rem; line-height: 1.3; }
+.hub-callout p { color: var(--body); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; max-width: 720px; }
+.hub-callout p strong { color: var(--text); font-weight: 500; }
+.hub-callout-aside { border-left: 2px solid var(--accent); padding-left: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--text); line-height: 1.7; }
+.hub-callout-aside strong { color: var(--gold); display: block; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.5rem; }
+@media (max-width: 760px) { .hub-callout-grid { grid-template-columns: 1fr; gap: 1.5rem; } .hub-callout-aside { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 1rem; } }
+
+.hub-deep-dive { padding: 3rem 0 3.5rem; border-bottom: 1px solid var(--edge); }
+.hub-deep-dive-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.deep-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+.deep-list li { background: var(--deep); border: 1px solid var(--edge); border-radius: 4px; padding: 1.1rem 1.25rem; transition: border-color 0.15s, background 0.15s; }
+.deep-list li:hover { border-color: var(--accent); background: rgba(20, 37, 64, 0.6); }
+.deep-list a { text-decoration: none; color: var(--text); display: block; }
+.deep-id { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; color: var(--gold); font-weight: 500; margin-bottom: 0.35rem; }
+.deep-name { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--bright); font-weight: 500; margin-bottom: 0.3rem; }
+.deep-blurb { font-size: 0.78rem; color: var(--body); line-height: 1.55; }
+
+.hub-cta-row { padding: 3rem 0; background: radial-gradient(50% 80% at 50% 0%, rgba(192,144,64,0.04) 0%, transparent 65%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-cta-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+.hub-cta-text { max-width: 600px; }
+.hub-cta-text h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--bright); margin-bottom: 0.5rem; line-height: 1.3; }
+.hub-cta-text p { color: var(--body); font-size: 0.9rem; line-height: 1.65; }
+.hub-cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hub-cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.85rem 1.4rem; border-radius: 4px; text-decoration: none; font-weight: 500; transition: all 0.15s; }
+.hub-cta-btn.primary { color: #fff; background: var(--accent); }
+.hub-cta-btn.primary:hover { background: var(--accent-lt); }
+.hub-cta-btn.ghost { color: var(--text); border: 1px solid var(--rim); background: transparent; }
+.hub-cta-btn.ghost:hover { border-color: var(--accent-lt); color: var(--accent-lt); }
+
+footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.25rem 0 2.5rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+@media (max-width: 760px) {
+  .hub-stats { grid-template-columns: 1fr; }
+  .hub-stats > div { border-right: none; border-bottom: 1px solid var(--edge); }
+  .hub-stats > div:last-child { border-bottom: none; }
+  .hub-hero { padding: 2.5rem 0 2rem; }
+  .hub-demos { padding: 2.25rem 0 1.75rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hub-breadcrumb" aria-label="Breadcrumb">
+  <div class="hub-breadcrumb-inner">
+    <a href="/">Post Oak Labs</a><span class="crumb-sep">/</span>
+    <a href="/demos/">Showcase</a><span class="crumb-sep">/</span>
+    <span class="crumb-current">BaaS hub</span>
+  </div>
+</div>
+
+<header class="hub-hero">
+  <div class="hub-inner">
+    <span class="hub-eyebrow">For BaaS platforms</span>
+    <h1>BaaS economics, sponsor-bank readiness — <em>modeled</em> in the browser, exported as AP2 mandates.</h1>
+    <p class="hub-sub">
+      Provider comparator, embedded-lending unit economics, BIN sponsorship, programme
+      agreements, wallet float, VRP mandates, AP2 BaaS infrastructure mandates. <strong>Six demos
+      that walk a BaaS adopter from "which provider" all the way to "what mandate does
+      the agent runtime read."</strong> $29B → $65B addressable, every output mandate-replayable.
+    </p>
+    <p class="hub-buyers">
+      Built for <strong>Unit · Synctera · Treasury Prime · Marqeta BaaS · Galileo</strong>
+      &nbsp;·&nbsp; useful to any product team evaluating BaaS for a programme
+    </p>
+    <div class="hub-stats" aria-label="Hub at a glance">
+      <div><strong>6</strong><span class="stat-label">demos in this stack</span></div>
+      <div><strong>$29B&nbsp;→&nbsp;$65B</strong><span class="stat-label">BaaS market · 2026 → 2030</span></div>
+      <div><strong>AP2</strong><span class="stat-label">programme-policy export</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="hub-demos" aria-label="Demos in workflow order">
+  <div class="hub-demos-inner">
+    <div class="hub-section-label">Workflow · pick provider → model product → measure → automate</div>
+    <h2 class="hub-section-title">Six demos sequenced the way a BaaS adoption actually unfolds.</h2>
+    <p class="hub-section-intro">
+      Start with provider economics. Model the embedded-lending product. Apply to a
+      specific cohort (the SME passport demo is the only one already live). Layer in the
+      float revenue. Design the VRP sweep logic. Make the whole thing readable by an agent
+      runtime via an AP2 BaaS mandate.
+    </p>
+
+    <div class="demo-grid">
+
+      <div class="demo-card placeholder">
+        <div class="card-head"><span class="card-step">Step 1 · Pick provider</span><span class="card-status coming">Coming</span></div>
+        <span class="card-num"><strong>Demo #14</strong> · BaaS</span>
+        <h3 class="card-title">BaaS Provider Economics &amp; Comparator</h3>
+        <p class="card-desc">Compare BaaS provider unit economics — sponsor-bank costs, programme agreement terms, BIN sponsorship, regulatory passthrough. Surfaces the cost of choosing the wrong provider before the contract is signed.</p>
+        <div class="card-meta"><span class="chip">BaaS</span><span class="chip">$29B → $65B</span><span class="chip">Comparator</span></div>
+      </div>
+
+      <div class="demo-card placeholder">
+        <div class="card-head"><span class="card-step">Step 2 · Model product</span><span class="card-status coming">Coming</span></div>
+        <span class="card-num"><strong>Demo #12</strong> · Embedded Finance</span>
+        <h3 class="card-title">Embedded Lending Unit Economics Lab</h3>
+        <p class="card-desc">Unit economics for embedded-lending products — origination cost, default curves, capital cost, partner take-rate. The model the product team runs before the BaaS provider sees a term sheet.</p>
+        <div class="card-meta"><span class="chip">Embedded Finance</span><span class="chip">$148B+ 2026</span><span class="chip">Unit Economics</span></div>
+      </div>
+
+      <a class="demo-card" href="/demos/sme-credit-passport-global-south.html">
+        <div class="card-head"><span class="card-step">Step 3 · Apply to cohort</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #06</strong> · IFC / BCBS 207</span>
+        <h3 class="card-title">Global South SME Lending Passport</h3>
+        <p class="card-desc">Board-ready SME readiness scorecard for Brazil + Nigeria — credit score, CCC gap, factoring + RBF blend, AP2 credit-mandate export with IFC / BCBS alignment. The only one already shipping.</p>
+        <div class="card-meta"><span class="chip">IFC SME Finance</span><span class="chip">BCBS 207</span><span class="chip">AP2 Credit</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/wallet-float-yield-estimator.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 4 · Float revenue</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #17</strong> · BaaS revenue</span>
+        <h3 class="card-title">Wallet Float Yield Estimator</h3>
+        <p class="card-desc">Allocation mix (sweep / MMF / non-yielding) × rate scenario × cost stack → net yield in bps + annual revenue + revenue per active user. FDIC pass-through aware, with the Synapse-Evolve programme-failure cost framed as value-at-risk. AP2 treasury mandate output.</p>
+        <div class="card-meta"><span class="chip">Wallet Float</span><span class="chip">BaaS Revenue</span><span class="chip">FDIC Pass-thru</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/vrp-mandate-sweep-logic-designer.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 5 · Mandate design</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #18</strong> · VRP · UK CMA9</span>
+        <h3 class="card-title">VRP Mandate &amp; Sweep Logic Designer</h3>
+        <p class="card-desc">Sweep window × amount caps × idempotency × beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA. Live 24h permitted-window timeline visualisation, allowed-beneficiary whitelist with editable pills, AP2 mandate the bank-side validator can re-read on every PISP call.</p>
+        <div class="card-meta"><span class="chip">VRP</span><span class="chip">4 regimes</span><span class="chip">Timeline viz</span></div>
+      </a>
+
+      <a class="demo-card live cross-link" href="/demos/ap2-baas-infrastructure-mandate-builder.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 6 · Make agent-ready</span><span class="card-status live">Live · Cross</span></div>
+        <span class="card-num"><strong>Demo #24</strong> · AP2 × BaaS</span>
+        <h3 class="card-title">AP2 BaaS Infrastructure Mandate Builder</h3>
+        <p class="card-desc">Programme-policy slots + sponsor-bank gates + BIN-tier ceilings + rail caps + handoff cadence → machine-readable AP2 mandate. Same surface used by the Agentic Runtime hub for the "Apply (BaaS)" step.</p>
+        <div class="card-meta"><span class="chip">AP2</span><span class="chip">BaaS</span><span class="chip">Programme Policy</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="hub-callout" aria-label="Why this hub exists">
+  <div class="hub-callout-inner">
+    <div class="hub-callout-grid">
+      <div><div class="hub-section-label">Why this exists</div></div>
+      <div>
+        <h3>The BaaS economics question is the same question every time — just with different inputs.</h3>
+        <p>
+          Sponsor-bank passthrough, programme agreement terms, BIN sponsorship tiers, float
+          revenue under a given rate path, BaaS comparator economics — these all collapse
+          to the same calc. <strong>Every BaaS evaluation rebuilds the spreadsheet from
+          scratch.</strong> Every embedded-lending product team relearns origination
+          economics. Every programme manager renegotiates VRP mandate parameters that
+          should be the AP2 standard.
+        </p>
+        <p>
+          The catalog's BaaS cluster is the curated answer to that — modeled in the browser,
+          exported as an AP2 programme-policy mandate the runtime can enforce. Six demos
+          walk the buyer from "which provider" to "what mandate does my agent runtime read
+          at execution time" — the last cell in the spreadsheet that always gets left out.
+        </p>
+        <p>
+          The cross-link demo (24) is the same surface the Agentic Runtime hub exposes —
+          because the BaaS team's policy and the agent-runtime team's policy converge at
+          this mandate format.
+        </p>
+        <div class="hub-callout-aside" role="note">
+          <strong>For the acquirer reader</strong>
+          A BaaS surface that exports policy as AP2 mandates is the way a buyer plugs
+          embedded-finance customer demand into an agentic future without rebuilding the
+          programme-policy layer.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hub-deep-dive" aria-label="Deep links into AINumbers">
+  <div class="hub-deep-dive-inner">
+    <div class="hub-section-label">Deep links · AINumbers catalog</div>
+    <h2 class="hub-section-title">Seven tools underneath the BaaS demos.</h2>
+    <p class="hub-section-intro">
+      The catalog's BaaS cluster (T152–T164) plus the rules-based engines (RBE-08, RBE-13).
+      AP2-exportable, MCP-discoverable, none stateful.
+    </p>
+    <ul class="deep-list">
+
+      <li><a href="https://ainumbers.co/tools/152-baas-provider-comparator.html" target="_blank" rel="noopener">
+        <div class="deep-id">T152 ↗</div>
+        <div class="deep-name">BaaS Provider Comparator</div>
+        <div class="deep-blurb">Comparator across BaaS providers — fee structure, ledger model, sponsor-bank network, regulatory passthrough. The tool underneath Demo #14.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/154-ledger-architecture-builder.html" target="_blank" rel="noopener">
+        <div class="deep-id">T154 ↗</div>
+        <div class="deep-name">Ledger Architecture Builder</div>
+        <div class="deep-blurb">Builds the ledger architecture for a BaaS programme — sub-ledger granularity, FBO account structure, reconciliation cadence, audit-trail surface.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/155-bin-sponsorship-economics.html" target="_blank" rel="noopener">
+        <div class="deep-id">T155 ↗</div>
+        <div class="deep-name">BIN Sponsorship Economics</div>
+        <div class="deep-blurb">Models BIN sponsorship tier economics — issuer fees, scheme passthrough, tier-rate ceilings. The fast-second model a BaaS programme runs after the comparator.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/156-wallet-float-yield-estimator.html" target="_blank" rel="noopener">
+        <div class="deep-id">T156 ↗</div>
+        <div class="deep-name">Wallet Float Yield Estimator</div>
+        <div class="deep-blurb">Float-yield projection across interest-rate scenarios — programme deposit aggregation, MMF allocation, sweep window optimisation. The tool underneath Demo #17.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/160-embedded-lending-unit-economics.html" target="_blank" rel="noopener">
+        <div class="deep-id">T160 ↗</div>
+        <div class="deep-name">Embedded Lending Unit Economics</div>
+        <div class="deep-blurb">UE model for embedded-lending products — origination cost, default curves, capital cost. The tool underneath Demo #12.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/rbe-08-fee-schedule-engine.html" target="_blank" rel="noopener">
+        <div class="deep-id">RBE-08 ↗</div>
+        <div class="deep-name">Fee Schedule Engine</div>
+        <div class="deep-blurb">Declarative fee-schedule composition — passthrough vs. markup, tiered breakpoints, volume waivers. Exports as AP2 mandate the BaaS runtime can apply.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/rbe-13-interchange-qualification-engine.html" target="_blank" rel="noopener">
+        <div class="deep-id">RBE-13 ↗</div>
+        <div class="deep-name">Interchange Qualification Engine</div>
+        <div class="deep-blurb">Qualification logic for interchange tiering — MCC, data quality, settlement window. The tool every BaaS programme needs to predict interchange capture.</div>
+      </a></li>
+
+    </ul>
+  </div>
+</section>
+
+<section class="hub-cta-row" aria-label="Continue">
+  <div class="hub-cta-inner">
+    <div class="hub-cta-text">
+      <h3>See where these six demos sit in the full 259-tool chain.</h3>
+      <p>The Tool Chain Composer renders the AINumbers catalog as a DAG with the 27 demos highlighted. The BaaS cluster connects upward to the agentic runtime and sideways to processors — same mandate schema across all.</p>
+    </div>
+    <div class="hub-cta-buttons">
+      <a href="/demos/composer.html" class="hub-cta-btn primary">View the composer →</a>
+      <a href="/demos/" class="hub-cta-btn ghost">← All 27 demos</a>
+    </div>
+  </div>
+</section>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — Full tool catalog ↗</a>
+      <a href="/demos/">Fintech Intelligence Showcase</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime hub</a>
+      <a href="/demos/regtech/">RegTech hub</a>
+      <a href="/demos/baas/" class="this-hub">BaaS hub</a>
+      <a href="/demos/processors/">Processors hub</a>
+      <a href="/demos/stablecoin-issuer/">Stablecoin Issuer hub</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

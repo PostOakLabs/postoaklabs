@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYB Beneficial Ownership Network Mapper · CTA × 6AMLD × PSC × MAS · Post Oak Labs</title>
+
+<meta name="description" content="Visualise corporate ownership chains, identify ultimate beneficial owners against jurisdiction thresholds (FinCEN CTA 25%, EU 6AMLD 25%, UK PSC 25%, MAS 25%), flag sanctioned-proximity hops and circular ownership. AP2 mandate export. Client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html">
+<meta property="og:title" content="KYB Beneficial Ownership Network Mapper — Post Oak Labs">
+<meta property="og:description" content="Interactive ownership-chain visualisation with UBO identification, sanctioned-proximity hops, circular-ownership detection. AP2 mandate. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/kyb-beneficial-ownership-network-mapper.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "KYB Beneficial Ownership Network Mapper",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html",
+  "description": "Visualise a corporate ownership chain as a layered network graph. Identify ultimate beneficial owners against four jurisdictional disclosure thresholds (FinCEN Corporate Transparency Act, EU 6AMLD, UK Persons-with-Significant-Control regime, MAS), flag sanctioned-proximity hops in the counterparty graph, detect circular ownership. AP2 v1.0 KYB mandate export against @ainumbers.co/kyb-ubo-v1.",
+  "featureList": [
+    "Interactive SVG ownership-chain visualisation",
+    "Disclosure threshold slider (10–25% per jurisdiction)",
+    "Four-jurisdiction selector (US CTA / EU 6AMLD / UK PSC / MAS)",
+    "Sanctioned-proximity hop counter",
+    "Circular ownership detection",
+    "Per-UBO disclosure status (reportable / not reportable)",
+    "Composite KYB compliance score /100",
+    "AP2 v1.0 mandate export against @ainumbers.co/kyb-ubo-v1",
+    "Markdown KYB brief and MCP tool definition export"
+  ],
+  "keywords": "KYB, KYC business, beneficial ownership, UBO, ultimate beneficial owner, FinCEN Corporate Transparency Act, EU 6AMLD, UK PSC, MAS, sanctioned proximity, circular ownership, AP2 mandate, MCP",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" }
+}
+</script>
+
+<style>
+:root {
+  --pol-ink: #050c15; --pol-deep: #0a1628; --pol-edge: #1e3454;
+  --pol-body: #7090b0; --pol-accent: #2a7fc0; --pol-accent-lt: #4a9fdf; --pol-gold: #c09040;
+  --bg: #ffffff; --bg-soft: #fafbfc; --bg-mid: #f4f5f7; --bg-deep: #ebedef;
+  --border: #e6e8eb; --border-2: #d0d4d8;
+  --text: #0a1828; --text-muted: #6a7a8a;
+  --accent: var(--pol-accent); --gold: var(--pol-gold);
+  --success: #10b981; --warn: #f59e0b; --error: #dc2626; --purple: #8b5cf6;
+  --heading: 'DM Serif Display', Georgia, serif;
+  --body-font: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--pol-ink); color: var(--pol-body); font-family: var(--body-font); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: var(--accent); }
+
+nav.pol-nav { background: var(--pol-ink); border-bottom: 1px solid var(--pol-edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: var(--heading); font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip { background: var(--pol-deep); border-top: 1px solid var(--pol-edge); border-bottom: 1px solid var(--pol-edge); padding: 0.85rem 0; color: var(--pol-body); }
+.showcase-header-strip .strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--pol-gold); font-weight: 500; }
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a { color: var(--pol-accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+main.demo-canvas { background: var(--bg); color: var(--text); font-family: var(--body-font); max-width: 1240px; margin: 2rem auto; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2rem 2rem 2.5rem; }
+
+.pii-banner { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.15); padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--text-muted); margin-bottom: 1.5rem; border-radius: 4px; }
+
+.hero { margin-bottom: 1.25rem; }
+.tool-eyebrow { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.7rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0.85rem 0 0.75rem; }
+.eyebrow-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; font-weight: 500; }
+.eb-accent { border: 1px solid rgba(42,127,192,0.32); background: rgba(42,127,192,0.04); color: var(--accent); }
+.eb-success { border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); color: var(--success); }
+.eb-gold { border: 1px solid rgba(192,144,64,0.32); background: rgba(192,144,64,0.05); color: var(--gold); }
+.hero h1 { font-family: var(--heading); font-size: clamp(1.7rem, 3.4vw, 2.45rem); color: var(--text); line-height: 1.18; letter-spacing: -0.01em; margin-bottom: 0.7rem; }
+.hero-desc { font-size: 1.02rem; color: var(--text-muted); line-height: 1.65; max-width: 860px; }
+.hero-desc b { color: var(--text); font-weight: 500; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.hero-badge { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; padding: 0.32rem 0.7rem; border-radius: 3px; border: 1px solid var(--border-2); color: var(--text-muted); }
+.hero-badge.privacy { color: var(--success); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+.hero-badge.warn { color: var(--warn); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+
+.kyb-callout { background: rgba(42,127,192,0.04); border: 1px solid rgba(42,127,192,0.3); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 3px; font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+.kyb-callout strong { color: var(--text); font-weight: 500; }
+.kyb-eyebrow { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; font-weight: 500; }
+.kyb-cite { font-family: var(--mono); font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.04em; }
+
+.value-at-risk { background: var(--bg-soft); border-left: 4px solid var(--gold); padding: 1rem 1.25rem; margin: 0 0 1.5rem; border-radius: 2px; font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+.var-eyebrow { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.45rem; font-weight: 500; }
+.var-figure { font-family: var(--heading); font-size: 1.1rem; color: var(--text); margin-bottom: 0.45rem; line-height: 1.3; }
+.var-body { margin-bottom: 0.45rem; }
+.var-cite { font-size: 0.7rem; color: var(--text-muted); }
+.var-cite small { font-family: var(--mono); letter-spacing: 0.04em; }
+
+.lab-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; margin-top: 1.25rem; }
+@media (max-width: 1100px) { .lab-grid { grid-template-columns: 1fr; } }
+
+.panel { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
+.panel-label { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.55rem; }
+.panel-label-r { color: var(--accent); }
+.sec-h { font-family: var(--heading); font-size: 1.18rem; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
+.sec-sub { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.85rem; }
+.sec-sub b { color: var(--text); font-weight: 500; }
+
+/* Network graph */
+.graph-wrap { width: 100%; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem; overflow: hidden; }
+.graph-svg { width: 100%; height: auto; display: block; user-select: none; }
+.node-rect { rx: 4; ry: 4; cursor: pointer; transition: filter 0.15s; }
+.node-rect:hover { filter: brightness(1.08); }
+.node-rect.entity { fill: #e3effb; stroke: var(--accent); stroke-width: 1.5; }
+.node-rect.individual { fill: #fef3c7; stroke: var(--gold); stroke-width: 1.5; }
+.node-rect.nominee { fill: #f4f5f7; stroke: var(--text-muted); stroke-width: 1.5; stroke-dasharray: 4 2; }
+.node-rect.customer { fill: var(--text); stroke: var(--text); stroke-width: 1.5; }
+.node-rect.sanctioned { fill: #fee2e2; stroke: var(--error); stroke-width: 2; }
+.node-rect.ubo-reportable { stroke-width: 3; stroke: var(--gold); }
+.node-rect.circular { stroke-width: 2.5; stroke: var(--purple); stroke-dasharray: 3 2; }
+.node-label { font-family: var(--body-font); font-size: 11px; pointer-events: none; }
+.node-label.entity, .node-label.individual, .node-label.nominee, .node-label.sanctioned { fill: var(--text); }
+.node-label.customer { fill: #fff; font-weight: 600; }
+.node-sublabel { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.04em; pointer-events: none; }
+.node-sublabel.customer { fill: rgba(255,255,255,0.7); }
+.node-sublabel.entity, .node-sublabel.individual, .node-sublabel.nominee, .node-sublabel.sanctioned { fill: var(--text-muted); }
+
+.edge-line { stroke: var(--text-muted); stroke-width: 1.2; fill: none; }
+.edge-line.high { stroke: var(--gold); stroke-width: 2; }
+.edge-line.circular { stroke: var(--purple); stroke-dasharray: 4 2; }
+.edge-pct { font-family: var(--mono); font-size: 9.5px; fill: var(--text-muted); pointer-events: none; }
+.edge-pct.high { fill: var(--gold); font-weight: 600; }
+
+.graph-legend { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 0.6rem; font-family: var(--mono); font-size: 0.62rem; color: var(--text-muted); }
+.graph-legend .lg-swatch { display: inline-block; width: 11px; height: 11px; border-radius: 2px; vertical-align: middle; margin-right: 0.3rem; }
+
+/* Jurisdiction picker + slider */
+.juris-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.juris-btn { font-family: var(--body-font); font-size: 0.82rem; background: var(--bg-soft); border: 1px solid var(--border-2); color: var(--text); padding: 0.5rem 0.85rem; border-radius: 4px; cursor: pointer; transition: all 0.15s; }
+.juris-btn:hover { border-color: var(--accent); }
+.juris-btn.sel { background: var(--text); color: #fff; border-color: var(--text); font-weight: 600; }
+.juris-btn .jb-meta { display: block; font-family: var(--mono); font-size: 0.58rem; opacity: 0.7; margin-top: 0.1rem; letter-spacing: 0.04em; }
+
+.slider-row { display: grid; grid-template-columns: 1fr 110px; gap: 0.65rem; align-items: center; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
+.slider-row:last-of-type { border-bottom: none; }
+.slider-label { font-size: 0.82rem; color: var(--text); }
+.slider-label .sl-sub { display: block; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; }
+.slider-val { font-family: var(--mono); font-size: 0.82rem; font-weight: 500; text-align: right; color: var(--accent); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+/* Scenario picker */
+.scenario-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.45rem; }
+.scen-btn { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.05em; background: var(--bg-soft); border: 1px solid var(--border-2); color: var(--text-muted); padding: 0.4rem 0.75rem; border-radius: 3px; cursor: pointer; }
+.scen-btn:hover { color: var(--accent); border-color: var(--accent); }
+.scen-btn.sel { background: var(--text); color: #fff; border-color: var(--text); }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.5rem 0 0.75rem; }
+.kpi { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.7rem; }
+.kpi-label { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+.kpi-val { font-family: var(--heading); font-size: 1.5rem; color: var(--text); line-height: 1.1; }
+.kpi-val.good { color: var(--success); }
+.kpi-val.warn { color: var(--warn); }
+.kpi-val.bad { color: var(--error); }
+.kpi-sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.5; }
+
+/* UBO list */
+.ubo-list { margin-top: 0.5rem; }
+.ubo-line { display: grid; grid-template-columns: 1fr 80px 80px; gap: 0.55rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--border); font-size: 0.82rem; align-items: center; }
+.ubo-line:last-of-type { border-bottom: none; }
+.ubo-line .ul-name { color: var(--text); font-weight: 500; }
+.ubo-line .ul-name .ul-meta { display: block; font-family: var(--mono); font-size: 0.6rem; color: var(--text-muted); margin-top: 0.1rem; letter-spacing: 0.04em; font-weight: 400; }
+.ubo-line .ul-share { font-family: var(--mono); font-size: 0.85rem; text-align: right; font-weight: 700; color: var(--text); }
+.ubo-line .ul-state { font-family: var(--mono); font-size: 0.62rem; padding: 0.18rem 0.5rem; border-radius: 3px; text-align: center; font-weight: 600; letter-spacing: 0.04em; align-self: center; }
+.ubo-line .ul-state.report { background: rgba(192,144,64,0.12); color: var(--gold); }
+.ubo-line .ul-state.below { background: var(--bg-mid); color: var(--text-muted); }
+.ubo-line .ul-state.sanc { background: rgba(220,38,38,0.1); color: var(--error); }
+
+.warn-banner { margin-top: 0.85rem; padding: 0.7rem 0.9rem; border-radius: 4px; font-size: 0.78rem; line-height: 1.55; }
+.warn-banner.good { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); color: var(--success); }
+.warn-banner.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); color: var(--warn); }
+.warn-banner.bad { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.3); color: var(--error); }
+.warn-banner strong { font-weight: 600; }
+
+/* Preview */
+.preview-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.55rem; flex-wrap: wrap; }
+.preview-tab { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.7rem; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 3px; }
+.preview-tab.sel { background: var(--text); color: #fff; border-color: var(--text); }
+.preview-body { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 4px; padding: 0.9rem; max-height: 320px; overflow: auto; font-family: var(--mono); font-size: 0.66rem; line-height: 1.7; color: var(--text); }
+.preview-body pre { white-space: pre-wrap; word-break: break-word; }
+.preview-body .k { color: var(--accent); }
+.preview-body .s { color: var(--success); }
+.preview-body .n { color: var(--warn); }
+.preview-body .b { color: var(--purple); }
+
+.results-export-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.btn-export { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 0.65rem 1rem; border-radius: 4px; border: 1px solid; cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; }
+.btn-ap2 { background: rgba(42,127,192,0.08); border-color: var(--accent); color: var(--accent); }
+.btn-ap2:hover { background: var(--accent); color: #fff; }
+.btn-md { background: rgba(16,185,129,0.08); border-color: var(--success); color: var(--success); }
+.btn-md:hover { background: var(--success); color: #fff; }
+.btn-mcp { background: rgba(139,92,246,0.08); border-color: var(--purple); color: var(--purple); }
+.btn-mcp:hover { background: var(--purple); color: #fff; }
+.btn-copy { background: var(--bg-soft); border-color: var(--border-2); color: var(--text-muted); }
+.btn-copy:hover { color: var(--text); border-color: var(--text); }
+
+.validation { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.06em; margin-top: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 3px; display: flex; align-items: center; gap: 0.5rem; }
+.validation.ok { background: rgba(16,185,129,0.08); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+.validation.err { background: rgba(220,38,38,0.08); color: var(--error); border: 1px solid rgba(220,38,38,0.3); }
+.validation::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+footer.pol-footer { background: var(--pol-ink); border-top: 1px solid var(--pol-edge); padding: 2.25rem 0 2.5rem; margin-top: 2rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: var(--heading); font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-brand span { color: var(--pol-gold); }
+footer.pol-footer .footer-copy { font-family: var(--body-font); font-size: 0.78rem; color: var(--pol-body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--text); border-left: 3px solid var(--success); padding: 0.7rem 1.1rem; font-family: var(--mono); font-size: 0.7rem; color: #fff; border-radius: 4px; z-index: 9999; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.crosslinks { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--bg-soft); border: 1px dashed var(--border-2); border-radius: 4px; font-size: 0.82rem; color: var(--text-muted); }
+.crosslinks h4 { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+.crosslinks a { color: var(--accent); text-decoration: none; }
+.crosslinks a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase · #16 of 33</span>
+      <span class="strip-title">KYB Beneficial Ownership Network Mapper</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/regtech/">RegTech Hub →</a>
+      <a href="/demos/composer.html">Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/111-kyb-ubo-mapper.html" target="_blank" rel="noopener">Source T111 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" id="canvas">
+<div class="canvas-inner">
+
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <div class="hero">
+    <div class="tool-eyebrow">Demo #16 · KYB · UBO · Sanctioned-Proximity · RegTech Hub</div>
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge eb-accent">Interactive ownership graph</span>
+      <span class="eyebrow-badge eb-success">4 disclosure regimes</span>
+      <span class="eyebrow-badge eb-gold">@ainumbers.co/kyb-ubo-v1</span>
+    </div>
+    <h1>Five ownership layers. One question: who actually owns this account?</h1>
+    <p class="hero-desc">
+      Visualise a synthetic corporate ownership chain as a layered network graph. Adjust the
+      <b>disclosure threshold</b> to see who becomes a reportable <b>ultimate beneficial owner
+      (UBO)</b> under <b>FinCEN's Corporate Transparency Act</b>, <b>EU 6AMLD</b>, the <b>UK
+      Persons-with-Significant-Control regime</b>, and <b>MAS</b>. The graph flags
+      <b>sanctioned-proximity hops</b> and <b>circular ownership</b> in real time. Exports the
+      mandate the runtime enforces on every onboarding action.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-badge privacy">Zero PII · Client-side · Synthetic graph</span>
+      <span class="hero-badge warn">Click a node to highlight its chain</span>
+      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+    </div>
+  </div>
+
+  <div class="kyb-callout" role="note">
+    <div class="kyb-eyebrow">CTA · 6AMLD · UK PSC · MAS — convergence on 25% with caveats</div>
+    <p>
+      <strong>FinCEN's Corporate Transparency Act</strong> (31 USC §5336, BOI rule effective 1 Jan
+      2024) requires reporting of beneficial owners at the <strong>25% ownership / substantial-control
+      threshold</strong> — current status: <strong>injunction-affected for domestic entities</strong>
+      (March 2025 interim rule narrowed scope to foreign reporting companies). The
+      <strong>EU 6AMLD</strong> (Dir. 2018/1673) sets a 25% baseline with member-state discretion to go
+      lower; AMLA (Reg. 2024/1620) harmonises supervision from 2028. <strong>UK PSC regime</strong>
+      (Companies Act 2006 Part 21A) requires Persons of Significant Control disclosure at
+      25%+. <strong>MAS</strong> aligns at 25% across PSN02 and the Companies Act. Notes:
+      controllers via voting rights or trust arrangements can fall below the percentage but still
+      be reportable.
+    </p>
+    <div class="kyb-cite">Sources: 31 USC §5336 + FinCEN BOI Rule 2022; FinCEN Interim Rule (March 2025) · EU 2018/1673 (6AMLD) · UK Companies Act 2006 Pt 21A · MAS PSN02 · FATF Recommendation 24</div>
+  </div>
+
+  <aside class="value-at-risk" aria-label="Value at risk — KYB enforcement">
+    <h4 class="var-eyebrow">Value at risk · KYB enforcement</h4>
+    <p class="var-figure">FinCEN CTA: $591/day civil + criminal up to $10K / 2 years · EU 6AMLD: personal liability for directors · NYDFS recent KYB consent orders: 6–8 figure</p>
+    <p class="var-body">FinCEN's CTA penalty regime (31 USC §5336(h)) is <strong>$591 per day per violation</strong> (2024 inflation-adjusted) for civil enforcement, plus <strong>criminal exposure up to $10,000 and 2 years</strong> for willful failure. <strong>EU 6AMLD</strong> extends personal liability to named senior management. Recent enforcement — <strong>TD Bank 2024</strong> ($3B globally, with significant KYB-tied components) and <strong>NYDFS bank settlements 2023–2025</strong> consistently cite UBO-identification gaps as core programme defects. The mandate binds the chosen disclosure threshold so the runtime cannot silently relax it between examinations.</p>
+    <p class="var-cite"><small>31 USC §5336(h) · 31 CFR 1010.380 · EU 2018/1673 Art. 7 · FinCEN inflation-adjusted civil penalty (2024) · TD Bank 2024 settlement · NYDFS Coinbase 2023</small></p>
+  </aside>
+
+  <div class="lab-grid">
+    <!-- LEFT: Graph -->
+    <div>
+      <section class="panel">
+        <div class="panel-label">§1 · Ownership Graph <span class="panel-label-r" id="graph-meta">— nodes · — edges</span></div>
+        <h2 class="sec-h">Corporate-ownership chain</h2>
+        <p class="sec-sub">Customer entity (centre, dark) at the bottom; intermediate holdings and trusts mid-chain; individuals at the top. Edges show ownership share. Gold rings = reportable UBO under the current threshold; red = sanctioned-proximity; purple-dashed = circular-ownership cycle.</p>
+
+        <div class="graph-wrap">
+          <svg class="graph-svg" id="graph" viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text-muted)"></path>
+              </marker>
+              <marker id="arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--gold)"></path>
+              </marker>
+              <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--purple)"></path>
+              </marker>
+            </defs>
+            <g id="edges"></g>
+            <g id="nodes"></g>
+          </svg>
+        </div>
+
+        <div class="graph-legend">
+          <span><span class="lg-swatch" style="background:#0a1828;"></span>Customer entity</span>
+          <span><span class="lg-swatch" style="background:#e3effb;border:1px solid #2a7fc0;"></span>Entity / holding co.</span>
+          <span><span class="lg-swatch" style="background:#fef3c7;border:1px solid #c09040;"></span>Natural person</span>
+          <span><span class="lg-swatch" style="background:#f4f5f7;border:1px dashed #6a7a8a;"></span>Nominee / trust</span>
+          <span><span class="lg-swatch" style="background:#fee2e2;border:1px solid #dc2626;"></span>Sanctioned-proximity</span>
+          <span><span class="lg-swatch" style="background:#fff;border:3px solid #c09040;"></span>UBO (reportable)</span>
+        </div>
+      </section>
+
+      <!-- Scenarios -->
+      <section class="panel">
+        <div class="panel-label">§2 · Scenarios <span class="panel-label-r">Switch the synthetic graph</span></div>
+        <h2 class="sec-h">Test alternative structures</h2>
+        <p class="sec-sub">Three illustrative graphs — switch to see how the threshold and jurisdiction rules play out across different ownership patterns.</p>
+
+        <div class="scenario-row" id="scenario-row">
+          <button class="scen-btn sel" data-v="standard">Standard SMB (4 layers)</button>
+          <button class="scen-btn" data-v="layered">Layered holding (sanctioned-proximity)</button>
+          <button class="scen-btn" data-v="circular">Circular-ownership cycle</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT: Controls + output -->
+    <div>
+      <section class="panel">
+        <div class="panel-label">§3 · Disclosure Regime <span class="panel-label-r" id="juris-readout">FinCEN CTA</span></div>
+        <h2 class="sec-h">Jurisdiction</h2>
+
+        <div class="juris-row" id="juris-row"></div>
+
+        <div class="slider-row" style="margin-top:0.85rem;">
+          <div class="slider-label">Disclosure threshold (%)
+            <span class="sl-sub">All four regimes default to 25% but member-state / state-level discretion can go lower.</span>
+          </div>
+          <span class="slider-val" id="v-threshold">25%</span>
+        </div>
+        <input type="range" id="r-threshold" min="5" max="50" value="25" step="1">
+
+        <div class="slider-row">
+          <div class="slider-label">Sanctioned-proximity max hops
+            <span class="sl-sub">Counterparty within N hops of an OFAC-listed entity in the ownership graph triggers refer.</span>
+          </div>
+          <span class="slider-val" id="v-hops">2</span>
+        </div>
+        <input type="range" id="r-hops" min="1" max="4" value="2" step="1">
+      </section>
+
+      <section class="panel">
+        <div class="panel-label">§4 · Compliance Scorecard <span class="panel-label-r" id="score-readout">— / 100</span></div>
+        <h2 class="sec-h">UBOs &amp; risk</h2>
+
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-label">UBOs reportable</div><div class="kpi-val" id="kpi-ubo">—</div><div class="kpi-sub" id="kpi-ubo-sub">at current threshold</div></div>
+          <div class="kpi"><div class="kpi-label">Compliance</div><div class="kpi-val" id="kpi-score">—</div><div class="kpi-sub" id="kpi-score-sub">—</div></div>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin:.5rem 0 .3rem;">UBO disclosure list</div>
+        <div class="ubo-list" id="ubo-list"></div>
+
+        <div class="warn-banner" id="risk-flag">—</div>
+
+        <div style="margin-top:1rem;">
+          <div class="preview-tabs" id="preview-tabs">
+            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab" data-tab="md">KYB brief</button>
+            <button class="preview-tab" data-tab="mcp">MCP tool def</button>
+          </div>
+
+          <div class="preview-body"><pre id="preview-out"></pre></div>
+
+          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/kyb-ubo-v1</div>
+
+          <div class="results-export-row">
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
+            <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
+            <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="crosslinks">
+    <h4>Compose with</h4>
+    <p>
+      Pair with <a href="/demos/aml-transaction-monitoring-rule-builder.html">#11 — AML TM Rule Builder</a>
+      (UBO identification feeds the customer-risk-rating input that TM rules read) or
+      <a href="/demos/vasp-travel-rule-compliance-checker.html">#15 — VASP Travel Rule</a> (VASP-to-VASP
+      transfers require beneficial-ownership data on the originator side). The mandate this demo emits
+      is consumable by <a href="/demos/agentic-mandate-sandbox.html">#27 — Agentic Mandate Sandbox</a>
+      via custom-schema paste.
+    </p>
+  </div>
+</div>
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/111-kyb-ubo-mapper.html" target="_blank" rel="noopener">Deep Dive → AINumbers T111</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/regtech/">RegTech Hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Exported</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── SYNTHETIC GRAPHS ─────────────────────────────────────────────────
+  // Nodes have: id, label, type, layer (0 = customer, higher = upstream owners),
+  // x/y are layer-relative positions; ownership edges go child→parent with share %.
+  // Coordinates are precomputed for layered layout.
+  // Node types: customer | entity | individual | nominee | sanctioned
+
+  const scenarios = {
+    standard: {
+      name: 'Standard SMB (4 layers)',
+      nodes: [
+        // Layer 0 (customer)
+        { id:'c',  label:'Acme Trading LLC',           type:'customer',   x: 360, y: 410 },
+        // Layer 1 (immediate holdings)
+        { id:'h1', label:'Acme Holdings LLC',          type:'entity',     x: 180, y: 320 },
+        { id:'h2', label:'Acme Capital LP',            type:'entity',     x: 540, y: 320 },
+        // Layer 2 (upstream)
+        { id:'u1', label:'BetaCo (Delaware Inc.)',     type:'entity',     x:  90, y: 220 },
+        { id:'u2', label:'Family Trust',               type:'nominee',    x: 300, y: 220 },
+        { id:'u3', label:'Acme Founders Pte. Ltd.',    type:'entity',     x: 540, y: 220 },
+        // Layer 3 (individuals)
+        { id:'p1', label:'A. Patel',                   type:'individual', x:  90, y: 100 },
+        { id:'p2', label:'M. Chen',                    type:'individual', x: 240, y: 100 },
+        { id:'p3', label:'S. Rao',                     type:'individual', x: 400, y: 100 },
+        { id:'p4', label:'L. Garcia',                  type:'individual', x: 560, y: 100 }
+      ],
+      // edges: from owner → child (so parent owns share% of child)
+      edges: [
+        // Immediate holdings own the customer
+        { from:'h1', to:'c', share: 60 },
+        { from:'h2', to:'c', share: 40 },
+        // Layer 2 owns Layer 1
+        { from:'u1', to:'h1', share: 70 },
+        { from:'u2', to:'h1', share: 30 },
+        { from:'u3', to:'h2', share: 100 },
+        // Individuals own Layer 2
+        { from:'p1', to:'u1', share: 60 },
+        { from:'p2', to:'u1', share: 40 },
+        { from:'p3', to:'u2', share: 100 },
+        { from:'p4', to:'u3', share: 100 }
+      ],
+      sanctioned_node: null
+    },
+    layered: {
+      name: 'Layered holding (sanctioned-proximity)',
+      nodes: [
+        { id:'c',  label:'Acme Trading LLC',           type:'customer',   x: 360, y: 420 },
+        { id:'h1', label:'BVI Holdings I Ltd.',        type:'entity',     x: 360, y: 330 },
+        { id:'h2', label:'Cayman Holdings II Ltd.',    type:'entity',     x: 360, y: 240 },
+        { id:'h3', label:'Cyprus SPV',                 type:'entity',     x: 200, y: 150 },
+        { id:'h4', label:'UAE Trading Co.',            type:'sanctioned', x: 520, y: 150 },
+        { id:'p1', label:'V. Petrov',                  type:'individual', x: 200, y:  60 },
+        { id:'p2', label:'K. Volkov',                  type:'individual', x: 520, y:  60 }
+      ],
+      edges: [
+        { from:'h1', to:'c',  share: 100 },
+        { from:'h2', to:'h1', share: 100 },
+        { from:'h3', to:'h2', share: 51 },
+        { from:'h4', to:'h2', share: 49 },
+        { from:'p1', to:'h3', share: 100 },
+        { from:'p2', to:'h4', share: 100 }
+      ],
+      sanctioned_node: 'h4'
+    },
+    circular: {
+      name: 'Circular-ownership cycle',
+      nodes: [
+        { id:'c',  label:'Acme Trading LLC',           type:'customer',   x: 360, y: 420 },
+        { id:'h1', label:'Acme Holdings LLC',          type:'entity',     x: 180, y: 320 },
+        { id:'h2', label:'Acme Capital LP',            type:'entity',     x: 540, y: 320 },
+        // Cycle: h1 → c, h2 → c, h1 → h2 → h1 (mutual)
+        { id:'u1', label:'Beta Cycle LLC',             type:'entity',     x: 180, y: 200 },
+        { id:'u2', label:'Gamma Cycle LP',             type:'entity',     x: 540, y: 200 },
+        { id:'p1', label:'A. Patel',                   type:'individual', x: 360, y:  90 }
+      ],
+      edges: [
+        { from:'h1', to:'c',  share: 50 },
+        { from:'h2', to:'c',  share: 50 },
+        // Mutual ownership cycle between u1 and u2
+        { from:'u1', to:'h1', share: 100 },
+        { from:'u2', to:'h2', share: 100 },
+        { from:'u1', to:'u2', share: 60 },
+        { from:'u2', to:'u1', share: 60 }, // creates the cycle
+        { from:'p1', to:'u1', share: 40 },
+        { from:'p1', to:'u2', share: 40 }
+      ],
+      sanctioned_node: null
+    }
+  };
+
+  const jurisdictions = [
+    { id:'us-cta', name:'FinCEN CTA',  meta:'31 USC §5336', default_threshold: 25 },
+    { id:'eu',    name:'EU 6AMLD',     meta:'Dir. 2018/1673', default_threshold: 25 },
+    { id:'uk',    name:'UK PSC',       meta:'Companies Act 2006 Pt 21A', default_threshold: 25 },
+    { id:'sg',    name:'MAS',          meta:'PSN02', default_threshold: 25 }
+  ];
+
+  const state = {
+    scenario: 'standard',
+    jurisdiction: 'us-cta',
+    threshold: 25,
+    sanctioned_max_hops: 2,
+    activeTab: 'ap2'
+  };
+
+  // ── COMPUTE EFFECTIVE UBO SHARE ─────────────────────────────────────
+  // For each individual / nominee node, recursively compute aggregate effective
+  // ownership of the customer through all paths. Detect cycles via visited set.
+  function computeUBOs(scen){
+    const nodes = scen.nodes;
+    const edges = scen.edges;
+
+    // Build forward map: node -> list of (parent_node, share)
+    const ownedBy = {};
+    nodes.forEach(n => { ownedBy[n.id] = []; });
+    edges.forEach(e => {
+      // edge: e.from owns e.share% of e.to, so e.to is owned BY e.from
+      ownedBy[e.to].push({ owner: e.from, share: e.share });
+    });
+
+    // Recursive effective-ownership: share of customer attributable to node X
+    // = sum over all paths from X down to customer of product of shares / 100.
+    // We compute by walking UP from customer through its owners.
+    function walkOwners(nodeId, accumulatedShare, depth, visited){
+      if (visited.has(nodeId) || depth > 10) return; // cycle / safety
+      const newVisited = new Set(visited); newVisited.add(nodeId);
+      const owners = ownedBy[nodeId] || [];
+      owners.forEach(o => {
+        const contribution = accumulatedShare * (o.share / 100);
+        // record contribution at owner node
+        if (!effective[o.owner]) effective[o.owner] = 0;
+        effective[o.owner] += contribution;
+        // recurse up
+        walkOwners(o.owner, contribution, depth + 1, newVisited);
+      });
+    }
+
+    const effective = {};
+    walkOwners('c', 100, 0, new Set());
+
+    // Detect cycles: any node appearing as both ancestor and descendant in the edge set.
+    // Simple cycle detection via DFS from each node upward.
+    function hasCycleFrom(start){
+      const stack = [{ node: start, visited: new Set([start]) }];
+      while (stack.length) {
+        const { node, visited } = stack.pop();
+        const upstream = (ownedBy[node] || []).map(o => o.owner);
+        for (const u of upstream) {
+          if (u === start) return true; // self-cycle
+          if (visited.has(u)) return true; // cycle in path
+          const nv = new Set(visited); nv.add(u);
+          stack.push({ node: u, visited: nv });
+        }
+      }
+      return false;
+    }
+    const cycleNodes = new Set();
+    nodes.forEach(n => {
+      if (hasCycleFrom(n.id) && n.id !== 'c') cycleNodes.add(n.id);
+    });
+
+    // Sanctioned proximity: shortest path from customer 'c' to the sanctioned node
+    let sanctioned_hops = null;
+    let sanctioned_node = scen.sanctioned_node;
+    if (sanctioned_node) {
+      // BFS upward from c
+      const visited = new Set(['c']);
+      const queue = [{ node: 'c', d: 0 }];
+      while (queue.length) {
+        const { node, d } = queue.shift();
+        if (node === sanctioned_node) { sanctioned_hops = d; break; }
+        (ownedBy[node] || []).forEach(o => {
+          if (!visited.has(o.owner)) { visited.add(o.owner); queue.push({ node: o.owner, d: d + 1 }); }
+        });
+      }
+    }
+
+    // Build UBO list (individuals + nominees with effective ownership > 0)
+    const ubos = nodes
+      .filter(n => n.type === 'individual' || n.type === 'nominee' || n.type === 'sanctioned')
+      .map(n => ({
+        id: n.id,
+        label: n.label,
+        type: n.type,
+        effective_share: Math.round((effective[n.id] || 0) * 10) / 10,
+        is_sanctioned: n.id === sanctioned_node
+      }))
+      .filter(u => u.effective_share > 0.5)
+      .sort((a,b) => b.effective_share - a.effective_share);
+
+    return { effective, ubos, cycleNodes, sanctioned_hops, sanctioned_node };
+  }
+
+  // ── COMPUTE COMPLIANCE SCORE ────────────────────────────────────────
+  function compute(){
+    const scen = scenarios[state.scenario];
+    const { effective, ubos, cycleNodes, sanctioned_hops, sanctioned_node } = computeUBOs(scen);
+
+    const reportable = ubos.filter(u => u.effective_share >= state.threshold);
+    const triggersSanc = sanctioned_hops !== null && sanctioned_hops <= state.sanctioned_max_hops;
+    const triggersCycle = cycleNodes.size > 0;
+
+    // Score: high if reportable UBOs identified, no sanctioned proximity, no cycles
+    let score = 100;
+    if (reportable.length === 0) score -= 25; // can't satisfy disclosure if nothing's reportable
+    if (triggersSanc) score -= 30;
+    if (triggersCycle) score -= 20;
+    // Slight penalty if a nominee is a UBO (extra diligence required)
+    const nomineeUbo = reportable.some(u => u.type === 'nominee');
+    if (nomineeUbo) score -= 10;
+    score = Math.max(0, score);
+
+    return { scen, effective, ubos, reportable, cycleNodes, sanctioned_hops, sanctioned_node, triggersSanc, triggersCycle, nomineeUbo, score };
+  }
+
+  // ── RENDER GRAPH ─────────────────────────────────────────────────────
+  function renderGraph(model){
+    const scen = model.scen;
+    const W = 100, H = 32; // node box
+    const halfW = W / 2, halfH = H / 2;
+
+    const edgesG = document.getElementById('edges');
+    const nodesG = document.getElementById('nodes');
+    edgesG.innerHTML = '';
+    nodesG.innerHTML = '';
+
+    // edges
+    scen.edges.forEach((e, i) => {
+      const from = scen.nodes.find(n => n.id === e.from);
+      const to = scen.nodes.find(n => n.id === e.to);
+      // Determine if edge belongs to a high-share path leading to a reportable UBO
+      // (simple heuristic: if either endpoint has effective_share >= threshold OR share is large)
+      const fromEff = model.effective[from.id] || 0;
+      const isHigh = fromEff >= state.threshold || e.share >= state.threshold;
+      const isCircular = model.cycleNodes.has(from.id) && model.cycleNodes.has(to.id);
+
+      const x1 = from.x, y1 = from.y + halfH;
+      const x2 = to.x, y2 = to.y - halfH;
+      const cls = isCircular ? 'circular' : isHigh ? 'high' : '';
+      const marker = isCircular ? 'arrow-purple' : isHigh ? 'arrow-gold' : 'arrow';
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      path.setAttribute('x1', x1); path.setAttribute('y1', y1);
+      path.setAttribute('x2', x2); path.setAttribute('y2', y2);
+      path.setAttribute('class', 'edge-line ' + cls);
+      path.setAttribute('marker-end', 'url(#' + marker + ')');
+      edgesG.appendChild(path);
+
+      // pct label at mid
+      const mx = (x1 + x2) / 2 + 6;
+      const my = (y1 + y2) / 2;
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', mx); text.setAttribute('y', my);
+      text.setAttribute('class', 'edge-pct ' + (isHigh ? 'high' : ''));
+      text.textContent = e.share + '%';
+      edgesG.appendChild(text);
+    });
+
+    // nodes
+    scen.nodes.forEach(n => {
+      const eff = model.effective[n.id] || 0;
+      const isReportable = (n.type === 'individual' || n.type === 'nominee' || n.type === 'sanctioned') && eff >= state.threshold;
+      const isCircular = model.cycleNodes.has(n.id);
+      const cls = ['node-rect', n.type];
+      if (isReportable) cls.push('ubo-reportable');
+      if (isCircular && n.type !== 'customer') cls.push('circular');
+
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', n.x - halfW); rect.setAttribute('y', n.y - halfH);
+      rect.setAttribute('width', W); rect.setAttribute('height', H);
+      rect.setAttribute('class', cls.join(' '));
+      nodesG.appendChild(rect);
+
+      const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      tx.setAttribute('x', n.x); tx.setAttribute('y', n.y - 1);
+      tx.setAttribute('text-anchor', 'middle');
+      tx.setAttribute('class', 'node-label ' + n.type);
+      tx.textContent = n.label.length > 18 ? n.label.slice(0, 16) + '…' : n.label;
+      nodesG.appendChild(tx);
+
+      // sublabel: effective share for individuals
+      if (n.type === 'individual' || n.type === 'nominee' || n.type === 'sanctioned') {
+        const sub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        sub.setAttribute('x', n.x); sub.setAttribute('y', n.y + 11);
+        sub.setAttribute('text-anchor', 'middle');
+        sub.setAttribute('class', 'node-sublabel ' + n.type);
+        sub.textContent = eff.toFixed(1) + '% eff. of customer';
+        nodesG.appendChild(sub);
+      }
+    });
+
+    document.getElementById('graph-meta').textContent = scen.nodes.length + ' nodes · ' + scen.edges.length + ' edges';
+  }
+
+  // ── RENDER UBO LIST ──────────────────────────────────────────────────
+  function renderUBOList(model){
+    const c = document.getElementById('ubo-list');
+    c.innerHTML = '';
+    if (model.ubos.length === 0) {
+      c.innerHTML = '<p style="font-size:.78rem;color:var(--text-muted);">No individuals or nominees identified in this graph.</p>';
+      return;
+    }
+    model.ubos.forEach(u => {
+      const reportable = u.effective_share >= state.threshold;
+      const state_cls = u.is_sanctioned ? 'sanc' : reportable ? 'report' : 'below';
+      const state_lbl = u.is_sanctioned ? 'SANCTIONED' : reportable ? 'REPORTABLE' : 'below';
+      const row = document.createElement('div');
+      row.className = 'ubo-line';
+      row.innerHTML =
+        '<div class="ul-name">' + u.label + '<span class="ul-meta">' + u.type + (u.is_sanctioned ? ' · sanctioned-proximity' : '') + '</span></div>' +
+        '<div class="ul-share">' + u.effective_share.toFixed(1) + '%</div>' +
+        '<div class="ul-state ' + state_cls + '">' + state_lbl + '</div>';
+      c.appendChild(row);
+    });
+  }
+
+  // ── RENDER ───────────────────────────────────────────────────────────
+  function render(){
+    const m = compute();
+    renderGraph(m);
+    renderUBOList(m);
+
+    document.getElementById('score-readout').textContent = m.score + ' / 100';
+
+    document.getElementById('kpi-ubo').textContent = m.reportable.length + ' / ' + m.ubos.length;
+    document.getElementById('kpi-ubo-sub').textContent = '@ ' + state.threshold + '% threshold';
+
+    const ksv = document.getElementById('kpi-score');
+    ksv.textContent = m.score;
+    ksv.className = 'kpi-val ' + (m.score >= 80 ? 'good' : m.score >= 55 ? 'warn' : 'bad');
+    document.getElementById('kpi-score-sub').textContent =
+      m.score >= 85 ? 'Audit-ready'
+      : m.score >= 60 ? 'Manageable gaps'
+      : m.score >= 40 ? 'Material gaps'
+      : 'Escalate to second line';
+
+    // Risk flag
+    const rf = document.getElementById('risk-flag');
+    const reasons = [];
+    if (m.triggersSanc) reasons.push('sanctioned-proximity hop within max');
+    if (m.triggersCycle) reasons.push('circular ownership detected');
+    if (m.nomineeUbo) reasons.push('nominee in UBO chain — extra diligence');
+    if (m.reportable.length === 0) reasons.push('no UBOs identified — verify with director declaration');
+
+    if (reasons.length === 0) {
+      rf.className = 'warn-banner good';
+      rf.innerHTML = '<strong>Risk posture — clean.</strong> UBO chain identified, no sanctioned proximity, no cycles.';
+    } else {
+      const cls = m.triggersSanc || m.triggersCycle ? 'bad' : 'warn';
+      rf.className = 'warn-banner ' + cls;
+      rf.innerHTML = '<strong>Risk posture — review needed.</strong> ' + reasons.join('; ') + '.';
+    }
+
+    renderPreview(m);
+  }
+
+  // ── AP2 mandate ──────────────────────────────────────────────────────
+  function buildMandate(model){
+    const now = new Date().toISOString();
+    const mandateId = 'pol-demo-16-' + Math.random().toString(36).slice(2,10);
+    return {
+      '$schema': '@ainumbers.co/kyb-ubo-v1',
+      ap2_version: '1.0',
+      mandate_id: mandateId,
+      issued_at: now,
+      issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'KYB / UBO policy author (demonstration)' },
+      subject: { runtime: 'kyb-onboarding-engine', scope: 'beneficial_ownership_identification' },
+      jurisdiction: state.jurisdiction,
+      disclosure_policy: {
+        threshold_pct: state.threshold,
+        sanctioned_proximity_max_hops: state.sanctioned_max_hops,
+        also_capture_control_indicators: true,
+        also_capture_voting_rights_indicators: true,
+        nominee_treatment: 'flag_for_extra_diligence'
+      },
+      synthetic_graph: {
+        scenario: model.scen.name,
+        node_count: model.scen.nodes.length,
+        edge_count: model.scen.edges.length
+      },
+      identified_ubos: model.ubos.map(u => ({
+        synthetic_label: u.label,
+        type: u.type,
+        effective_share_pct: u.effective_share,
+        reportable_under_threshold: u.effective_share >= state.threshold,
+        is_sanctioned: u.is_sanctioned
+      })),
+      risk_findings: {
+        sanctioned_proximity_hops: model.sanctioned_hops,
+        triggers_sanctioned_proximity: model.triggersSanc,
+        circular_ownership_detected: model.triggersCycle,
+        nominee_in_ubo_chain: model.nomineeUbo
+      },
+      compliance_score: model.score,
+      enforcement: {
+        binding: true,
+        runtime_cannot_relax: ['disclosure_policy.threshold_pct','disclosure_policy.sanctioned_proximity_max_hops'],
+        on_violation: 'refer_to_second_line_with_chain_evidence',
+        audit_trail_required: true
+      },
+      provenance: {
+        source: 'https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html',
+        backing_tool: 'https://ainumbers.co/tools/111-kyb-ubo-mapper.html',
+        license: 'CC BY 4.0'
+      }
+    };
+  }
+
+  function validate(m){
+    const errs = [];
+    if (m['$schema'] !== '@ainumbers.co/kyb-ubo-v1') errs.push('schema mismatch');
+    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (!m.disclosure_policy || typeof m.disclosure_policy.threshold_pct !== 'number') errs.push('disclosure_policy.threshold_pct required');
+    if (m.disclosure_policy.threshold_pct < 5 || m.disclosure_policy.threshold_pct > 50) errs.push('threshold_pct must be 5..50');
+    if (!Array.isArray(m.identified_ubos)) errs.push('identified_ubos required');
+    if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
+    return errs;
+  }
+
+  function buildMd(m){
+    const out = [];
+    out.push('# KYB / UBO — Compliance Brief');
+    out.push('');
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
+    out.push('**Jurisdiction:** ' + m.jurisdiction);
+    out.push('**Source:** ' + m.provenance.source);
+    out.push('');
+    out.push('## Disclosure policy');
+    out.push('- Threshold: **' + m.disclosure_policy.threshold_pct + '%**');
+    out.push('- Sanctioned-proximity max hops: ' + m.disclosure_policy.sanctioned_proximity_max_hops);
+    out.push('- Capture control indicators: ' + m.disclosure_policy.also_capture_control_indicators);
+    out.push('- Nominee treatment: ' + m.disclosure_policy.nominee_treatment);
+    out.push('');
+    out.push('## Synthetic graph');
+    out.push('- Scenario: ' + m.synthetic_graph.scenario);
+    out.push('- Nodes: ' + m.synthetic_graph.node_count + ' · Edges: ' + m.synthetic_graph.edge_count);
+    out.push('');
+    out.push('## Identified UBOs');
+    out.push('');
+    if (m.identified_ubos.length === 0) out.push('_(none)_');
+    else {
+      out.push('| Synthetic label | Type | Effective share | Reportable | Sanctioned |');
+      out.push('|---|---|---:|---|---|');
+      m.identified_ubos.forEach(u => out.push('| ' + u.synthetic_label + ' | ' + u.type + ' | ' + u.effective_share_pct + '% | ' + (u.reportable_under_threshold ? 'yes' : 'no') + ' | ' + (u.is_sanctioned ? '**yes**' : 'no') + ' |'));
+    }
+    out.push('');
+    out.push('## Risk findings');
+    out.push('- Sanctioned proximity hops: ' + (m.risk_findings.sanctioned_proximity_hops === null ? 'none' : m.risk_findings.sanctioned_proximity_hops));
+    out.push('- Triggers sanctioned-proximity rule: ' + m.risk_findings.triggers_sanctioned_proximity);
+    out.push('- Circular ownership detected: ' + m.risk_findings.circular_ownership_detected);
+    out.push('- Nominee in UBO chain: ' + m.risk_findings.nominee_in_ubo_chain);
+    out.push('');
+    out.push('## Score');
+    out.push('- Compliance score: **' + m.compliance_score + ' / 100**');
+    out.push('');
+    out.push('---');
+    out.push('');
+    out.push('_Generated client-side by Post Oak Labs Showcase Demo #16 (KYB UBO Network Mapper). Source engine: AINumbers T111. CC BY 4.0. Zero PII._');
+    return out.join('\n');
+  }
+
+  function buildMcp(m){
+    return {
+      name: 'kyb_ubo_evaluate',
+      description: 'Evaluate a candidate corporate ownership graph against the loaded KYB / UBO mandate. Returns identified UBOs, sanctioned-proximity hops, circular-ownership flag, compliance score.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          candidate_label: { type: 'string', description: 'synthetic / pseudonymous; must not be PII' },
+          ownership_graph: {
+            type: 'object',
+            properties: {
+              nodes: { type: 'array', items: { type: 'object', properties: { id: { type: 'string' }, type: { type: 'string', enum: ['customer','entity','individual','nominee','sanctioned'] } }, required: ['id','type'] } },
+              edges: { type: 'array', items: { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' }, share: { type: 'number', minimum: 0, maximum: 100 } }, required: ['from','to','share'] } }
+            },
+            required: ['nodes','edges']
+          }
+        },
+        required: ['ownership_graph']
+      },
+      bound_mandate: {
+        schema: m['$schema'],
+        mandate_id: m.mandate_id,
+        threshold_pct: m.disclosure_policy.threshold_pct
+      },
+      provenance: m.provenance
+    };
+  }
+
+  function highlight(json){
+    return json
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="s">$1</span>')
+      .replace(/:\s*(true|false|null)/g, ': <span class="b">$1</span>')
+      .replace(/:\s*(-?\d+(?:\.\d+)?)/g, ': <span class="n">$1</span>');
+  }
+
+  function renderPreview(model){
+    const m = buildMandate(model);
+    const errs = validate(m);
+    const v = document.getElementById('validation');
+    if (errs.length === 0) {
+      v.className = 'validation ok';
+      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+    } else {
+      v.className = 'validation err';
+      v.textContent = 'Schema errors: ' + errs.join('; ');
+    }
+    let body;
+    if (state.activeTab === 'ap2') body = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') body = buildMd(m);
+    else body = JSON.stringify(buildMcp(m), null, 2);
+    const isJson = state.activeTab !== 'md';
+    document.getElementById('preview-out').innerHTML = isJson ? highlight(body) : body.replace(/</g,'&lt;');
+  }
+
+  // ── WIRE INPUTS ──────────────────────────────────────────────────────
+  // Jurisdictions
+  const jr = document.getElementById('juris-row');
+  jurisdictions.forEach(j => {
+    const btn = document.createElement('button');
+    btn.className = 'juris-btn' + (j.id === state.jurisdiction ? ' sel' : '');
+    btn.dataset.id = j.id;
+    btn.innerHTML = j.name + '<span class="jb-meta">' + j.meta + '</span>';
+    btn.addEventListener('click', () => {
+      state.jurisdiction = j.id;
+      document.querySelectorAll('.juris-btn').forEach(b => b.classList.toggle('sel', b.dataset.id === j.id));
+      document.getElementById('juris-readout').textContent = j.name;
+      // sync threshold to default
+      state.threshold = j.default_threshold;
+      document.getElementById('r-threshold').value = state.threshold;
+      document.getElementById('v-threshold').textContent = state.threshold + '%';
+      render();
+    });
+    jr.appendChild(btn);
+  });
+
+  document.getElementById('r-threshold').addEventListener('input', e => {
+    state.threshold = Number(e.target.value);
+    document.getElementById('v-threshold').textContent = state.threshold + '%';
+    render();
+  });
+  document.getElementById('r-hops').addEventListener('input', e => {
+    state.sanctioned_max_hops = Number(e.target.value);
+    document.getElementById('v-hops').textContent = state.sanctioned_max_hops;
+    render();
+  });
+
+  document.querySelectorAll('#scenario-row .scen-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#scenario-row .scen-btn').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      state.scenario = btn.dataset.v;
+      render();
+    });
+  });
+
+  document.querySelectorAll('#preview-tabs .preview-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('#preview-tabs .preview-tab').forEach(b => b.classList.remove('sel'));
+      t.classList.add('sel');
+      state.activeTab = t.dataset.tab;
+      render();
+    });
+  });
+
+  function toast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 1800); }
+  function download(filename, content, mime){ const blob = new Blob([content], { type: mime }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+  document.getElementById('btn-ap2').addEventListener('click', () => {
+    const m = buildMandate(compute());
+    if (validate(m).length === 0) { download('kyb-ubo-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    else toast('Schema validation failed');
+  });
+  document.getElementById('btn-md').addEventListener('click', () => {
+    download('kyb-ubo-brief.md', buildMd(buildMandate(compute())), 'text/markdown');
+    toast('KYB brief exported');
+  });
+  document.getElementById('btn-mcp').addEventListener('click', () => {
+    download('kyb_ubo_evaluate.mcp.json', JSON.stringify(buildMcp(buildMandate(compute())), null, 2), 'application/json');
+    toast('MCP tool definition exported');
+  });
+  document.getElementById('btn-copy').addEventListener('click', async () => {
+    const m = buildMandate(compute());
+    let txt;
+    if (state.activeTab === 'ap2') txt = JSON.stringify(m, null, 2);
+    else if (state.activeTab === 'md') txt = buildMd(m);
+    else txt = JSON.stringify(buildMcp(m), null, 2);
+    try { await navigator.clipboard.writeText(txt); toast('Copied to clipboard'); } catch(e) { toast('Copy failed'); }
+  });
+
+  // init
+  render();
+})();
+</script>
+
+</body>
+</html>

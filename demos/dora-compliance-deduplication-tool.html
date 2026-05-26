@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dual-Compliance Control Deduplicator · DORA × NIS2 · AINumbers.co</title>
+<!-- Per-demo meta (spec Part 5.1) -->
+<meta name="description" content="Dedupe overlapping ICT controls across DORA and NIS2 to surface real gaps. Browser-based, AP2 mandate export, EU enforcement-clock aware, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html">
+<meta property="og:title" content="DORA / NIS2 Dual-Compliance Deduplicator — Post Oak Labs">
+<meta property="og:description" content="One control library, two regulations, zero duplicates — audit-ready Consolidated Resilience Roadmap.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/dora-compliance-deduplication-tool.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- POL canonical font stack (spec Part 2.3) — DORA EXCEPTION (Part 1.2): no GFonts in template, inject here -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD (spec Part 5.2) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "DORA / NIS2 Dual-Compliance Control Deduplicator",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html",
+  "description": "For EU financial entities subject to both DORA (EU 2022/2554) and NIS2 (EU 2022/2555). Visualises control overlap, classifies incidents against the 4-hour NCA notification window, exports a Consolidated Resilience Roadmap as an AP2 mandate.",
+  "featureList": [
+    "DORA × NIS2 control-mapping Venn analysis with dedup tally",
+    "Incident classification against DORA Article 18 / 17 notification windows",
+    "AP2 v1.0 mandate export against @ainumbers.co/mandate-v1 schema",
+    "CRO-ready Consolidated Resilience Roadmap (Markdown)"
+  ],
+  "keywords": "DORA, NIS2, EU 2022/2554, EU 2022/2555, operational resilience, ICT risk, incident notification, AP2 mandate, dual compliance, control library",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<meta name="description" content="DORA × NIS2 control deduplication for EU financial entities. Venn overlap, incident classification wizard with 4-hour NCA countdown, AP2 JSON Consolidated Resilience Roadmap. Client-side. Zero PII.">
+<style>/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+</style>
+
+
+
+<style>
+:root{
+  --bg:#080E1A;--bg-2:#0D1627;--bg-3:#111E35;--bg-4:#162340;
+  --border:#1E2F4A;--border-2:#263855;--muted:#3A5270;--body:#6888A8;
+  --text:#A8C4DE;--bright:#D4E8F8;--white:#EEF6FD;
+  --teal:#14B8A6;--teal-dim:rgba(20,184,166,.12);--teal-lt:#2DD4BF;
+  --gold:#D4A847;--gold-dim:rgba(212,168,71,.12);
+  --green:#22C55E;--green-dim:rgba(34,197,94,.12);
+  --red:#EF4444;--red-dim:rgba(239,68,68,.12);
+  --warn:#F59E0B;--warn-dim:rgba(245,158,11,.12);
+  --purple:#9B72F5;--purple-dim:rgba(155,114,245,.12);
+  --radius:6px;--radius-lg:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-weight:300;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.2}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(20,184,166,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(20,184,166,.018) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+/* Lang bar */
+.lang-bar{background:var(--bg-2);border-bottom:1px solid var(--border);padding:.35rem 0;position:relative;z-index:201}
+.lang-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:flex-end;gap:.25rem}
+.lang-btn{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .6rem;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:transparent;border-radius:var(--radius)}
+.lang-btn.active{color:var(--teal);border-color:var(--teal)}
+
+/* Nav */
+nav{padding:0 1.5rem;height:52px;border-bottom:1px solid var(--border);background:rgba(8,14,26,.92);position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
+.nav-inner{max-width:1100px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{display:flex;flex-direction:column;gap:2px}
+.logo-name{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:500;color:var(--bright);letter-spacing:-.02em;line-height:1}
+.logo-ai{color:var(--teal)}.logo-co{color:var(--muted);font-size:.8rem}
+.logo-tag{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);line-height:1}
+.nav-bc{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--muted);display:flex;align-items:center;gap:.5rem}
+.nav-bc a{color:var(--muted);text-decoration:none}
+.nav-bc a:hover{color:var(--text)}
+.nav-bc-sep{color:var(--muted)}
+.back-link{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:.3rem .8rem;border-radius:4px}
+.back-link:hover{color:var(--teal);border-color:var(--teal)}
+
+/* Hero */
+.hero{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 1.5rem}
+.tool-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.6rem;color:var(--gold)}
+.hero h1{font-size:clamp(1.7rem,3.4vw,2.4rem);color:var(--white);line-height:1.15;margin-bottom:.6rem}
+.hero-desc{font-size:.86rem;color:var(--body);max-width:760px;line-height:1.75;margin-bottom:.85rem}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem}
+.hero-badge{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.08em;padding:.3rem .65rem;border-radius:3px;border:1px solid var(--border);color:var(--muted)}
+.badge-privacy{color:var(--teal);border-color:var(--teal)}
+.badge-warn{color:var(--gold)}
+.pii-notice{background:var(--bg-3);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:var(--radius);padding:.7rem 1rem;font-size:.74rem;color:var(--text);margin-bottom:1.2rem;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+
+/* Main grid */
+.tool-main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 1.5rem 3rem;display:flex;flex-direction:column;gap:1.5rem}
+
+/* Section */
+.panel{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.35rem 1.5rem}
+.panel-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.panel-label-r{color:var(--muted);font-weight:400;letter-spacing:.08em}
+.sec-h{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--bright);margin-bottom:.4rem}
+.sec-sub{font-size:.78rem;color:var(--body);margin-bottom:1.1rem;line-height:1.7}
+
+/* Venn diagram area */
+.venn-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:1.5rem;align-items:start}
+@media(max-width:820px){.venn-grid{grid-template-columns:1fr}}
+.venn-wrap{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;position:relative;overflow:hidden}
+.venn-svg{width:100%;height:auto;display:block}
+.venn-legend{display:flex;gap:.85rem;justify-content:center;margin-top:.5rem;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--body)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin-right:.3rem}
+.tally{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+.tally-cell{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .9rem}
+.tally-cell .num{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.tally-cell .lbl{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.25rem}
+.tally-cell .sub{font-size:.7rem;color:var(--body);margin-top:.25rem;line-height:1.5}
+.tally-cell.shared{border-left:3px solid var(--green)}.tally-cell.shared .num{color:var(--green)}
+.tally-cell.dora{border-left:3px solid var(--red)}.tally-cell.dora .num{color:var(--red)}
+.tally-cell.nis2{border-left:3px solid var(--teal)}.tally-cell.nis2 .num{color:var(--teal)}
+.tally-cell.dedup{border-left:3px solid var(--gold)}.tally-cell.dedup .num{color:var(--gold)}
+
+/* Control matrix */
+.control-row{display:grid;grid-template-columns:1fr 60px 60px 90px;gap:.6rem;align-items:start;padding:.65rem .25rem;border-bottom:1px solid var(--border);font-size:.74rem}
+.control-row:last-child{border-bottom:none}
+.control-row:hover{background:var(--bg-3)}
+.control-row.is-dim{opacity:.35}
+.ctrl-area{color:var(--bright);font-weight:500;font-size:.78rem}
+.ctrl-meta{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);margin-top:.15rem;letter-spacing:.04em}
+.ctrl-note{font-size:.7rem;color:var(--body);margin-top:.2rem;line-height:1.55}
+.tick{font-family:'JetBrains Mono',monospace;font-size:.85rem;text-align:center;padding-top:.1rem}
+.tick.y{color:var(--green)}.tick.n{color:var(--muted)}
+.badge{font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:700;padding:.2rem .4rem;border-radius:3px;text-align:center;display:inline-block;letter-spacing:.04em}
+.badge-shared{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge-dora-only{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.badge-nis2-only{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(20,184,166,.3)}
+.badge-ai-overlap{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(155,114,245,.3)}
+
+.filter-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
+.chip{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;padding:.3rem .65rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);cursor:pointer;background:transparent}
+.chip.active{color:var(--bright);border-color:var(--bright);background:var(--bg-3)}
+.chip[data-f="shared"].active{border-color:var(--green);color:var(--green)}
+.chip[data-f="dora-only"].active{border-color:var(--red);color:var(--red)}
+.chip[data-f="nis2-only"].active{border-color:var(--teal);color:var(--teal)}
+.chip[data-f="ai-overlap"].active{border-color:var(--purple);color:var(--purple)}
+
+/* Incident wizard */
+.wiz-grid{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start}
+@media(max-width:820px){.wiz-grid{grid-template-columns:1fr}}
+.wiz-step{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px dashed var(--border)}
+.wiz-step:last-of-type{border-bottom:none}
+.wiz-step-h{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.45rem}
+.wiz-q{font-size:.84rem;color:var(--bright);margin-bottom:.55rem}
+.wiz-opts{display:flex;flex-wrap:wrap;gap:.4rem}
+.wiz-opt{font-family:'Sora',sans-serif;font-size:.74rem;background:var(--bg-3);border:1px solid var(--border-2);color:var(--text);padding:.4rem .8rem;border-radius:var(--radius);cursor:pointer;transition:all .15s}
+.wiz-opt:hover{border-color:var(--teal);color:var(--teal)}
+.wiz-opt.sel{background:var(--teal);border-color:var(--teal);color:var(--bg);font-weight:600}
+
+.wiz-input{width:100%;background:var(--bg-3);border:1px solid var(--border-2);border-radius:var(--radius);padding:.5rem .75rem;color:var(--bright);font-family:'Sora',sans-serif;font-size:.82rem}
+
+.classify-out{margin-top:1rem;padding:.9rem 1rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-3)}
+.classify-major{border-left:3px solid var(--red);background:var(--red-dim)}
+.classify-minor{border-left:3px solid var(--gold);background:var(--gold-dim)}
+.classify-sig{border-left:3px solid var(--warn);background:var(--warn-dim)}
+.classify-h{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem}
+.classify-h.major{color:var(--red)}.classify-h.minor{color:var(--gold)}.classify-h.sig{color:var(--warn)}
+.classify-body{font-size:.78rem;color:var(--text);line-height:1.6}
+
+/* Countdown panel */
+.cd-panel{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;position:sticky;top:74px}
+.cd-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.cd-clock{font-family:'JetBrains Mono',monospace;font-size:2.6rem;font-weight:700;color:var(--red);line-height:1;letter-spacing:-.02em;margin-bottom:.4rem}
+.cd-clock.warn{color:var(--warn)}
+.cd-clock.idle{color:var(--muted)}
+.cd-clock.expired{color:var(--red);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.cd-meta{font-size:.7rem;color:var(--body);line-height:1.55;margin-bottom:.7rem}
+.cd-ref{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:.5rem}
+.cd-btns{display:flex;gap:.4rem;flex-wrap:wrap}
+.cd-btn{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;padding:.4rem .7rem;border-radius:4px;border:1px solid;cursor:pointer;background:transparent;text-transform:uppercase}
+.cd-btn-start{border-color:var(--red);color:var(--red)}
+.cd-btn-start:hover{background:var(--red);color:var(--bg)}
+.cd-btn-stop{border-color:var(--muted);color:var(--muted)}
+.cd-bar{height:4px;background:var(--bg-4);border-radius:2px;overflow:hidden;margin:.5rem 0 .7rem}
+.cd-bar-fill{height:100%;background:linear-gradient(90deg,var(--green) 0%,var(--gold) 50%,var(--red) 100%);width:0%;transition:width 1s linear}
+
+.deadlines{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--body);margin-top:.6rem;line-height:1.85}
+.deadlines b{color:var(--bright);font-weight:500}
+.dl-row{display:flex;justify-content:space-between;gap:.5rem;border-top:1px solid var(--border);padding:.3rem 0}
+.dl-row:first-child{border-top:none}
+
+/* Roadmap / Export */
+.roadmap-row{display:flex;align-items:flex-start;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--border)}
+.roadmap-row:last-of-type{border-bottom:none}
+.rm-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);min-width:32px;letter-spacing:.04em;padding-top:.2rem}
+.rm-body{flex:1}
+.rm-h{font-size:.82rem;color:var(--bright);font-weight:500;margin-bottom:.2rem}
+.rm-sub{font-size:.7rem;color:var(--body);line-height:1.6}
+.rm-tag{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.06em;padding:.18rem .42rem;border-radius:3px;background:var(--bg-4);color:var(--muted);margin-left:.35rem}
+
+.export-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem}
+.btn-export{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;padding:.65rem 1.1rem;border-radius:var(--radius);border:1px solid;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;transition:all .18s}
+.btn-ap2{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.btn-ap2:hover{background:var(--red);color:var(--bg)}
+.btn-md{background:var(--teal-dim);border-color:var(--teal);color:var(--teal)}
+.btn-md:hover{background:var(--teal);color:var(--bg)}
+.btn-pre{background:var(--bg-3);border-color:var(--border-2);color:var(--body)}
+.btn-pre:hover{color:var(--bright);border-color:var(--bright)}
+
+/* Hover venn */
+.venn-region{cursor:pointer;transition:fill-opacity .15s, stroke-width .15s}
+.venn-region.hot{fill-opacity:.55!important}
+
+/* AP2 preview drawer */
+.preview-drawer{display:none;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem;margin-top:1rem;max-height:340px;overflow:auto}
+.preview-drawer pre{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--teal);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.preview-drawer.open{display:block}
+
+/* Footer */
+footer{border-top:1px solid var(--border);margin-top:1rem;position:relative;z-index:1}
+.footer-inner{max-width:1100px;margin:0 auto;padding:1.5rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-l{display:flex;align-items:center;gap:.65rem;color:var(--body)}
+.footer-icon{background:var(--teal);color:#000;font-weight:700;font-size:.65rem;padding:.18rem .35rem;border-radius:3px;font-family:'JetBrains Mono',monospace}
+.footer-wm{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--bright)}
+.footer-r{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.06em}
+
+.toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--bg-3);border:1px solid var(--green);border-left:3px solid var(--green);padding:.7rem 1.1rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--green);z-index:9999;border-radius:var(--radius);box-shadow:0 4px 24px rgba(0,0,0,.5);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+
+</style>
+
+<style id="v6-wrapper-css">
+/* ═══ POL WRAPPER VARS + LIGHT CANVAS BRIDGE TOKENS ═══ */
+:root {
+  --pol-ink: #050c15;
+  --pol-deep: #0a1628;
+  --pol-edge: #1e3454;
+  --pol-body: #7090b0;
+  --pol-accent: #2a7fc0;
+  --pol-accent-lt: #4a9fdf;
+  --pol-gold: #c09040;
+  --showcase-bg: #ffffff;
+  --showcase-bg-soft: #fafbfc;
+  --showcase-text: #0a1828;
+  --showcase-text-muted: #6a7a8a;
+  --showcase-surface: #ffffff;
+  --showcase-border: #e6e8eb;
+  --showcase-accent: var(--pol-accent);
+  --showcase-gold: var(--pol-gold);
+  --showcase-success: #10b981;
+  --showcase-warn: #f59e0b;
+  --showcase-error: #dc2626;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font: 'DM Sans', sans-serif;
+  --showcase-mono-font: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--pol-ink) !important;
+  background-image: none !important;
+  color: var(--pol-body) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* DESCENDANT (not child-combinator) hide selectors — covers nested cases */
+nav:not(.pol-nav) { display: none !important; }
+footer:not(.pol-footer) { display: none !important; }
+.lang-bar { display: none !important; }
+
+/* POL nav */
+nav.pol-nav {
+  background: var(--pol-ink);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+/* Header strip */
+.showcase-header-strip {
+  background: var(--pol-deep);
+  border-top: 1px solid var(--pol-edge);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.85rem 0;
+  color: var(--pol-body);
+}
+.showcase-header-strip .strip-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem;
+}
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow {
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.7rem; color: var(--pol-gold); font-weight: 500;
+}
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a {
+  color: var(--pol-accent-lt); text-decoration: none;
+  margin-left: 1.25rem; font-size: 0.85rem;
+}
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+/* ═══ LIGHT DEMO CANVAS — rebind demo dark tokens ═══ */
+main.demo-canvas {
+  background: var(--showcase-bg);
+  color: var(--showcase-text);
+  font-family: var(--showcase-body-font);
+  max-width: 1440px;
+  margin: 2rem auto;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+  --bg: var(--showcase-bg);
+  --bg-2: var(--showcase-bg-soft);
+  --bg-3: #f4f5f7;
+  --bg-4: #ebedef;
+  --border: var(--showcase-border);
+  --border-2: #d0d4d8;
+  --muted: var(--showcase-text-muted);
+  --body: var(--showcase-text-muted);
+  --text: var(--showcase-text);
+  --bright: #0a1828;
+  --white: #0a1828;
+  --teal: var(--showcase-accent);
+  --teal-lt: var(--showcase-accent);
+  --teal-dim: rgba(42,127,192,0.10);
+  --gold-dim: rgba(192,144,64,0.10);
+  --green-dim: rgba(16,185,129,0.10);
+  --red-dim: rgba(220,38,38,0.10);
+  --warn-dim: rgba(245,158,11,0.10);
+  --purple-dim: rgba(155,114,245,0.10);
+}
+main.demo-canvas .canvas-inner { padding: 0; }
+
+/* PII banner + callouts use 28px gutter to align with demo content */
+.pii-banner {
+  background: rgba(42,127,192,0.04);
+  border: 1px solid rgba(42,127,192,0.15);
+  padding: 0.7rem 1rem;
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--showcase-text-muted);
+  margin: 1.25rem auto 0;
+  border-radius: 4px;
+  max-width: calc(1440px - 56px);
+  box-sizing: border-box;
+}
+
+/* DORA LIVE callout (spec Part 9.4) */
+.dora-callout {
+  background: rgba(16,185,129,0.05);
+  border: 1px solid rgba(16,185,129,0.3);
+  border-left: 4px solid var(--showcase-success);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto 0;
+  border-radius: 3px;
+  color: var(--showcase-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  max-width: calc(1440px - 56px);
+  box-sizing: border-box;
+}
+.dora-callout .dora-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--showcase-success);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+}
+.dora-live-badge {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--showcase-success);
+  color: #ffffff;
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.dora-live-badge::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.6);
+  animation: pulse-live 1.8s ease-out infinite;
+}
+@keyframes pulse-live {
+  0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+  70%  { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+.dora-callout .dora-cite {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  color: var(--showcase-text-muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+/* VaR sidebar — non-floated inline variant */
+.value-at-risk {
+  background: var(--showcase-bg-soft);
+  border-left: 4px solid var(--showcase-gold);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto 1.5rem;
+  max-width: calc(1440px - 56px);
+  border-radius: 2px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--showcase-text-muted);
+  box-sizing: border-box;
+}
+.value-at-risk .var-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--showcase-gold);
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+}
+.value-at-risk .var-figure {
+  font-family: var(--showcase-heading-font);
+  font-size: 1.1rem;
+  color: var(--showcase-text);
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
+}
+.value-at-risk .var-body { margin-bottom: 0.45rem; }
+.value-at-risk .var-cite { font-size: 0.7rem; color: var(--showcase-text-muted); }
+.value-at-risk .var-cite small { font-family: var(--showcase-mono-font); letter-spacing: 0.04em; }
+
+/* POL footer */
+footer.pol-footer {
+  background: var(--pol-ink);
+  border-top: 1px solid var(--pol-edge);
+  padding: 2.25rem 0 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--pol-body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+</head>
+<body>
+<!-- ═══ POL DARK NAV (spec Part 2.4) ═══ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
+      Post Oak <span>Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ SHOWCASE HEADER STRIP (spec Part 3.1) ═══ -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase</span>
+      <span class="strip-title">DORA / NIS2 Dual-Compliance Deduplicator</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/composer.html">View in Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/100-dora-resilience-auditor.html" target="_blank" rel="noopener">Open Source Engine →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LIGHT DEMO CANVAS ═══ -->
+<main class="demo-canvas">
+<div class="canvas-inner">
+
+<!-- PII BANNER -->
+<div class="pii-banner">
+  🔒 All inputs are processed locally in your browser. No data is transmitted, stored, or logged. Use synthetic or anonymised incident data only.
+</div>
+
+
+<div class="lang-bar"><div class="lang-inner">
+  <button class="lang-btn active">EN</button>
+  <button class="lang-btn">ES</button>
+  <button class="lang-btn">FR</button>
+  <button class="lang-btn">AR</button>
+  <button class="lang-btn">PT</button>
+  <button class="lang-btn">中文</button>
+</div></div>
+
+<nav><div class="nav-inner">
+  <a href="#" class="logo">
+    <svg width="32" height="32" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <rect width="48" height="48" rx="9" fill="#0D1627"></rect>
+      <rect x="1" y="1" width="46" height="46" rx="8" fill="none" stroke="#1E2F4A" stroke-width="1"></rect>
+      <rect x="9" y="9" width="8" height="8" rx="1.5" fill="#14B8A6"></rect>
+      <rect x="20" y="9" width="8" height="8" rx="1.5" fill="#14B8A6" opacity=".45"></rect>
+      <rect x="31" y="9" width="8" height="8" rx="1.5" fill="#EF4444" opacity=".75"></rect>
+      <rect x="9" y="20" width="8" height="8" rx="1.5" fill="#14B8A6" opacity=".6"></rect>
+      <rect x="20" y="20" width="8" height="8" rx="1.5" fill="#D4A847"></rect>
+      <rect x="31" y="20" width="8" height="8" rx="1.5" fill="#EF4444" opacity=".5"></rect>
+      <rect x="9" y="31" width="8" height="8" rx="1.5" fill="#14B8A6" opacity=".25"></rect>
+      <rect x="20" y="31" width="8" height="8" rx="1.5" fill="#14B8A6" opacity=".4"></rect>
+      <rect x="31" y="31" width="8" height="8" rx="1.5" fill="#EF4444" opacity=".3"></rect>
+    </svg>
+    <div class="logo-text">
+      <div class="logo-name"><span class="logo-ai">AI</span>Numbers<span class="logo-co">.co</span></div>
+      <div class="logo-tag">DORA × NIS2 · Dedup</div>
+    </div>
+  </a>
+  <div class="nav-bc">
+    <a href="#">All Tools</a>
+    <span class="nav-bc-sep">›</span>
+    <a href="#">Cat-22 · DORA Hub</a>
+    <span class="nav-bc-sep">›</span>
+    <span style="color:var(--gold)">Tool 312</span>
+  </div>
+  <a href="#" class="back-link">← All Tools</a>
+</div></nav>
+
+<div class="hero">
+  <div class="tool-eyebrow">T312 · Cat-22 · Operational Resilience · Dual-Compliance Deduplicator</div>
+        <div class="eyebrow-badges" style="display:flex;flex-wrap:wrap;gap:0.55rem;margin:0.85rem 0 0.5rem;">
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(42,127,192,.32);background:rgba(42,127,192,.04);color:var(--showcase-accent);border-radius:3px;font-weight:500;">Resilience Compliance</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(16,185,129,.4);background:rgba(16,185,129,.06);color:var(--showcase-success);border-radius:3px;font-weight:500;">DORA Live · Jan 2025</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(192,144,64,.32);background:rgba(192,144,64,.05);color:var(--showcase-gold);border-radius:3px;font-weight:500;">AP2 Mandate + CRO Memo</span>
+        </div>
+
+  <h1>Dual-Compliance Control Deduplicator</h1>
+  <p class="hero-desc">For EU financial entities subject to both <b style="color:var(--bright)">DORA (EU 2022/2554)</b> and <b style="color:var(--bright)">NIS2 (EU 2022/2555)</b>. Visualise the control overlap as a Venn diagram, classify a live incident against the 4-hour NCA notification window, and export a Consolidated Resilience Roadmap as an AP2 JSON mandate ready for your Chief Risk Officer.</p>
+  <div class="hero-meta">
+    <span class="hero-badge badge-privacy">Zero PII · Client-side</span>
+    <span class="hero-badge badge-warn">Lex specialis: DORA supersedes NIS2 on ICT risk for in-scope financial entities</span>
+    <span class="hero-badge">Last Reviewed · 2026-05-12</span>
+  </div>
+  <div class="pii-notice">🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.</div>
+</div>
+
+<!-- DORA LIVE CALLOUT (spec Part 9.4) -->
+<div class="dora-callout" role="note" aria-label="DORA / NIS2 compliance context">
+  <div class="dora-eyebrow">
+    DORA · in force since 17 January 2025
+    <span class="dora-live-badge">LIVE</span>
+  </div>
+  <p><strong>DORA (EU 2022/2554)</strong> entered application on 17 January 2025. Articles 17–19 incident classification and notification are live; major ICT-related incidents must be reported to the relevant National Competent Authority on a defined timeline. <strong>NIS2 (EU 2022/2555)</strong> transposition deadline was October 2024; member-state implementation continues to vary through 2026. Penalties for essential entities: up to <strong>€10M or 2% of global annual turnover</strong>.</p>
+  <div class="dora-cite">Sources: Regulation (EU) 2022/2554 (DORA) · Directive (EU) 2022/2555 (NIS2) · EBA RTS on ICT third-party risk</div>
+</div>
+
+<!-- VALUE-AT-RISK SIDEBAR (spec Part 17) -->
+<aside class="value-at-risk" aria-label="Value at risk — DORA Article 50 penalty">
+  <h4 class="var-eyebrow">Value at risk · DORA Article 50 penalty</h4>
+  <p class="var-figure">Up to €10M or 2% of global turnover per major ICT incident</p>
+  <p class="var-body">DORA Article 50 penalties apply to non-compliance with incident classification and reporting. The deduplicator surfaces overlapping ICT control mappings across DORA and NIS2 to prevent gaps and duplicates that show up in audit.</p>
+  <p class="var-cite"><small>EU 2022/2554 Article 50 · EBA / EIOPA / ESMA joint RTS · NCA notification windows (Art. 19)</small></p>
+</aside>
+
+
+<div class="orig-main tool-main" role="region">
+
+  <!-- ─────── VENN DIAGRAM ─────── -->
+  <section class="panel">
+    <div class="panel-label">§1 · Overlap Geometry <span class="panel-label-r">DORA ∩ NIS2 ∩ AI-Act</span></div>
+    <h2 class="sec-h">Where DORA and NIS2 collide</h2>
+    <p class="sec-sub">Hover a region to filter the 14-control matrix below. DORA is <b style="color:var(--red)">lex specialis</b> for ICT risk management on financial entities — the green intersection is your deduplication opportunity. The purple ring marks controls where the AI Act's High-Risk Management System obligations co-apply.</p>
+
+    <div class="venn-grid">
+      <div class="venn-wrap">
+        <svg class="venn-svg" viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="2" result="b"></feGaussianBlur>
+              <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+            </filter>
+          </defs>
+
+          <!-- AI Act ring (outer dashed) -->
+          <ellipse cx="260" cy="180" rx="245" ry="170" fill="none" stroke="#9B72F5" stroke-width="1.2" stroke-dasharray="4 4" opacity=".55"></ellipse>
+          <text x="260" y="28" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#9B72F5" letter-spacing="2">AI ACT · HIGH-RISK MGMT SYSTEM</text>
+
+          <!-- NIS2 circle (left, teal) -->
+          <circle class="venn-region" id="vn-nis2" cx="190" cy="190" r="135" fill="#14B8A6" fill-opacity=".22" stroke="#14B8A6" stroke-width="1.5" data-region="nis2-only"></circle>
+          <!-- DORA circle (right, red) -->
+          <circle class="venn-region" id="vn-dora" cx="330" cy="190" r="135" fill="#EF4444" fill-opacity=".22" stroke="#EF4444" stroke-width="1.5" data-region="dora-only"></circle>
+          <!-- Intersection hit-target -->
+          <ellipse class="venn-region" id="vn-shared" cx="260" cy="190" rx="35" ry="105" fill="#22C55E" fill-opacity=".18" stroke="#22C55E" stroke-width="1" data-region="shared"></ellipse>
+
+          <!-- Labels -->
+          <text x="105" y="100" font-family="DM Serif Display" font-size="22" fill="#A8C4DE">NIS2</text>
+          <text x="105" y="116" font-family="JetBrains Mono" font-size="8" fill="#6888A8">EU 2022/2555</text>
+          <text x="402" y="100" font-family="DM Serif Display" font-size="22" fill="#A8C4DE">DORA</text>
+          <text x="402" y="116" font-family="JetBrains Mono" font-size="8" fill="#6888A8">EU 2022/2554</text>
+
+          <!-- Tally numbers on the diagram (anchored via JS) -->
+          <text id="vnum-nis2" x="135" y="200" text-anchor="middle" font-family="DM Serif Display" font-size="30" fill="#14B8A6">3</text>
+          <text x="135" y="220" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#6888A8" letter-spacing="1">NIS2-ONLY</text>
+
+          <text id="vnum-dora" x="385" y="200" text-anchor="middle" font-family="DM Serif Display" font-size="30" fill="#EF4444">3</text>
+          <text x="385" y="220" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#6888A8" letter-spacing="1">DORA-ONLY</text>
+
+          <text id="vnum-shared" x="260" y="186" text-anchor="middle" font-family="DM Serif Display" font-size="34" fill="#22C55E">8</text>
+          <text x="260" y="208" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#A8C4DE" letter-spacing="1">SHARED</text>
+
+          <!-- Lex specialis arrow -->
+          <text x="260" y="335" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#D4A847" letter-spacing="2">DORA → LEX SPECIALIS — apply once, satisfy both</text>
+        </svg>
+        <div class="venn-legend">
+          <span><span class="dot" style="background:#14B8A6"></span>NIS2-only</span>
+          <span><span class="dot" style="background:#EF4444"></span>DORA-only</span>
+          <span><span class="dot" style="background:#22C55E"></span>Shared</span>
+          <span><span class="dot" style="background:#9B72F5"></span>AI-Act overlap</span>
+        </div>
+      </div>
+
+      <div class="tally">
+        <div class="tally-cell shared"><div class="num" id="tally-shared">8</div><div class="lbl">Shared controls</div><div class="sub">Satisfy both regimes with one implementation.</div></div>
+        <div class="tally-cell dedup"><div class="num" id="tally-dedup">8</div><div class="lbl">Dedup opportunities</div><div class="sub">Map one set of evidence to two regulators.</div></div>
+        <div class="tally-cell dora"><div class="num" id="tally-dora">3</div><div class="lbl">DORA-only</div><div class="sub">Lex specialis: financial-entity-only obligations.</div></div>
+        <div class="tally-cell nis2"><div class="num" id="tally-nis2">3</div><div class="lbl">NIS2-only</div><div class="sub">Sector-wide horizontal obligations.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────── CONTROL MATRIX ─────── -->
+  <section class="panel">
+    <div class="panel-label">§2 · Dual-Compliance Matrix <span class="panel-label-r">14 controls</span></div>
+    <div class="filter-row">
+      <button class="chip active" data-f="all">ALL (14)</button>
+      <button class="chip" data-f="shared">SHARED (8)</button>
+      <button class="chip" data-f="dora-only">DORA-ONLY (3)</button>
+      <button class="chip" data-f="nis2-only">NIS2-ONLY (3)</button>
+      <button class="chip" data-f="ai-overlap">AI-ACT (3)</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 60px 60px 90px;gap:.6rem;padding:.4rem .25rem;border-bottom:1px solid var(--border);margin-bottom:.25rem">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);letter-spacing:.1em">CONTROL AREA</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);text-align:center">DORA</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);text-align:center">NIS2</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--muted);text-align:center">CLASSIFICATION</div>
+    </div>
+    <div id="matrix-body"></div>
+  </section>
+
+  <!-- ─────── INCIDENT CLASSIFICATION WIZARD ─────── -->
+  <section class="panel">
+    <div class="panel-label">§3 · Incident Classification Wizard <span class="panel-label-r">DORA Art. 17–19 · ITS 2024/1772</span></div>
+    <h2 class="sec-h">Live incident triage — with NCA notification countdown</h2>
+    <p class="sec-sub">Answer the four thresholds to classify under DORA Art. 18 (major / significant cyber threat / minor). If classified as major, start the 4-hour countdown to your initial NCA notification under Art. 19(1).</p>
+
+    <div class="wiz-grid">
+      <div>
+        <div class="wiz-step">
+          <div class="wiz-step-h">Step 1 · Clients / Counterparties Affected</div>
+          <div class="wiz-q">Number of clients impacted or transactions affected?</div>
+          <div class="wiz-opts" data-wq="clients">
+            <button class="wiz-opt" data-v="0" data-pts="0">&lt; 10% &nbsp;<span style="color:var(--muted)">(0)</span></button>
+            <button class="wiz-opt" data-v="1" data-pts="1">10–25% &nbsp;<span style="color:var(--muted)">(1)</span></button>
+            <button class="wiz-opt" data-v="2" data-pts="2">&gt; 25% / &gt; 100k clients &nbsp;<span style="color:var(--muted)">(2)</span></button>
+          </div>
+        </div>
+
+        <div class="wiz-step">
+          <div class="wiz-step-h">Step 2 · Service Downtime</div>
+          <div class="wiz-q">Duration of service disruption to a critical or important function?</div>
+          <div class="wiz-opts" data-wq="downtime">
+            <button class="wiz-opt" data-v="0" data-pts="0">&lt; 1h &nbsp;<span style="color:var(--muted)">(0)</span></button>
+            <button class="wiz-opt" data-v="1" data-pts="1">1–24h &nbsp;<span style="color:var(--muted)">(1)</span></button>
+            <button class="wiz-opt" data-v="2" data-pts="2">&gt; 24h / unresolved &nbsp;<span style="color:var(--muted)">(2)</span></button>
+          </div>
+        </div>
+
+        <div class="wiz-step">
+          <div class="wiz-step-h">Step 3 · Geographical Spread</div>
+          <div class="wiz-q">Cross-border impact across EU member states?</div>
+          <div class="wiz-opts" data-wq="geo">
+            <button class="wiz-opt" data-v="0" data-pts="0">Single MS &nbsp;<span style="color:var(--muted)">(0)</span></button>
+            <button class="wiz-opt" data-v="1" data-pts="1">2 MS &nbsp;<span style="color:var(--muted)">(1)</span></button>
+            <button class="wiz-opt" data-v="2" data-pts="2">≥ 3 MS / third country &nbsp;<span style="color:var(--muted)">(2)</span></button>
+          </div>
+        </div>
+
+        <div class="wiz-step">
+          <div class="wiz-step-h">Step 4 · Data Loss / Economic Impact</div>
+          <div class="wiz-q">Confidentiality breach, integrity loss, or economic impact?</div>
+          <div class="wiz-opts" data-wq="data">
+            <button class="wiz-opt" data-v="0" data-pts="0">None / minimal &nbsp;<span style="color:var(--muted)">(0)</span></button>
+            <button class="wiz-opt" data-v="1" data-pts="1">Some PII / &lt; 0.1% own funds &nbsp;<span style="color:var(--muted)">(1)</span></button>
+            <button class="wiz-opt" data-v="2" data-pts="2">Mass PII / &gt; 0.1% own funds &nbsp;<span style="color:var(--muted)">(2)</span></button>
+          </div>
+        </div>
+
+        <div class="wiz-step">
+          <div class="wiz-step-h">Step 5 · Threat Vector (optional)</div>
+          <div class="wiz-q">Is this a malicious cyber threat that did NOT yet materialise as an incident?</div>
+          <div class="wiz-opts" data-wq="threat">
+            <button class="wiz-opt" data-v="no" data-pts="0">No — incident already realised</button>
+            <button class="wiz-opt" data-v="yes" data-pts="0">Yes — significant cyber threat</button>
+          </div>
+        </div>
+
+        <div id="classify-out" class="classify-out">
+          <div class="classify-h">— Awaiting Inputs —</div>
+          <div class="classify-body">Complete steps 1–4 to derive a DORA Art. 18 classification.</div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="cd-panel">
+          <div class="cd-label">NCA Initial Notification</div>
+          <div class="cd-clock idle" id="cd-clock">04:00:00</div>
+          <div class="cd-bar"><div class="cd-bar-fill" id="cd-fill"></div></div>
+          <div class="cd-meta" id="cd-meta">Idle. Classify a <b style="color:var(--red)">MAJOR</b> incident and start the clock to model your Art. 19(1) 4-hour window.</div>
+          <div class="cd-btns">
+            <button class="cd-btn cd-btn-start" id="cd-start" disabled="" style="opacity:.4;cursor:not-allowed">▶ Start T+0</button>
+            <button class="cd-btn cd-btn-stop" id="cd-reset">↻ Reset</button>
+          </div>
+          <div class="cd-ref">DORA Art. 19(1) · RTS 2024/1772 Art. 6</div>
+
+          <div class="deadlines">
+            <div class="dl-row"><span>Initial Notification</span><b id="dl-initial">T+4h</b></div>
+            <div class="dl-row"><span>Intermediate Report</span><b id="dl-inter">T+72h</b></div>
+            <div class="dl-row"><span>Final Report</span><b id="dl-final">T+1 month</b></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ─────── CONSOLIDATED ROADMAP ─────── -->
+  <section class="panel">
+    <div class="panel-label">§4 · Consolidated Resilience Roadmap <span class="panel-label-r">For the Chief Risk Officer</span></div>
+    <h2 class="sec-h">12-step deduplicated programme</h2>
+    <p class="sec-sub">A roadmap composed from the matrix above + the wizard outcome. Exports as an AP2 JSON mandate addressable by your governance / GRC agent stack.</p>
+
+    <div id="roadmap-body"></div>
+
+    <div class="export-row">
+      <button class="btn-export btn-ap2" id="export-ap2">{} Export AP2 JSON · Consolidated Roadmap</button>
+      <button class="btn-export btn-md" id="export-md">⬇ Export CRO Memo (.md)</button>
+      <button class="btn-export btn-pre" id="toggle-preview">Preview AP2 payload</button>
+    </div>
+
+    <div class="preview-drawer" id="preview"><pre id="preview-pre"></pre></div>
+  </section>
+
+</div><!-- /orig-main -->
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-l">
+      <div class="footer-icon">AI</div>
+      <span class="footer-wm">AINumbers.co</span>
+      <span style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.08em">·&nbsp; T312 · DORA × NIS2 Dedup</span>
+    </div>
+    <div class="footer-r">CC BY 4.0 · Post Oak Labs &nbsp;·&nbsp; 🔒 Zero PII · No server calls · Client-side</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">{} Exported</div>
+
+
+</div>
+</main>
+
+<!-- ═══ POL DARK FOOTER (spec Part 2.5) ═══ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--pol-gold)">Labs</span></div>
+      <p class="footer-copy">
+        &copy; 2026 Post Oak Labs &nbsp;·&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-copy">
+        Built by Post Oak Labs &nbsp;·&nbsp;
+        <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/100-dora-resilience-auditor.html" target="_blank" rel="noopener">Deep Dive → AINumbers.co</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ───────────────── CONTROL MATRIX ─────────────────
+const CONTROL_MATRIX = [
+  // 8 SHARED
+  {id:'C1', area:'ICT Risk Management Framework',          doraRef:'Art. 5–6',   nis2Ref:'Art. 21(2)(a)', overlap:'shared',     doraGoesFurther:true,  note:'Board-approved risk policy. DORA requires annual review; NIS2 accepts equivalent.'},
+  {id:'C2', area:'Asset & Dependency Inventory',           doraRef:'Art. 8',     nis2Ref:'Art. 21(2)(a)', overlap:'shared',     doraGoesFurther:false, note:'Classify ICT assets by criticality. Map third-party dependencies.'},
+  {id:'C3', area:'Business Continuity & Recovery',         doraRef:'Art. 11–12', nis2Ref:'Art. 21(2)(c)', overlap:'shared',     doraGoesFurther:true,  note:'DORA mandates RTO/RPO + annual BCP testing. NIS2 is principles-based.'},
+  {id:'C4', area:'Incident Detection, Classification, Logging', doraRef:'Art. 17', nis2Ref:'Art. 21(2)(b)', overlap:'shared', doraGoesFurther:false, note:'Central register with severity, duration, impact fields.'},
+  {id:'C5', area:'Incident Notification to Authority',     doraRef:'Art. 19',    nis2Ref:'Art. 23',       overlap:'shared',     doraGoesFurther:true,  note:'DORA: 4h / 72h / 1 month. NIS2: 24h / 72h / 1 month. Single workflow.'},
+  {id:'C6', area:'Vulnerability & Patch Management',       doraRef:'Art. 9',     nis2Ref:'Art. 21(2)(e)', overlap:'shared',     doraGoesFurther:false, note:'SLAs by severity; coordinated disclosure path.'},
+  {id:'C7', area:'Encryption & Cryptography',              doraRef:'Art. 9',     nis2Ref:'Art. 21(2)(h)', overlap:'shared',     doraGoesFurther:false, note:'At rest + in transit. Annual review against ENISA/NIST guidance.'},
+  {id:'C8', area:'Awareness & Training',                   doraRef:'Art. 13',    nis2Ref:'Art. 21(2)(g)', overlap:'shared',     doraGoesFurther:false, note:'All-staff cyber hygiene + management body training.'},
+
+  // 3 DORA-ONLY
+  {id:'C9',  area:'Threat-Led Penetration Testing (TLPT)', doraRef:'Art. 24–27', nis2Ref:'N/A',           overlap:'dora-only',  doraGoesFurther:true,  note:'TIBER-EU based test every 3y for in-scope entities. No NIS2 equivalent.'},
+  {id:'C10', area:'Critical ICT TPP Oversight (EU Register)',doraRef:'Art. 28–44', nis2Ref:'N/A',         overlap:'dora-only',  doraGoesFurther:true,  note:'Register critical ICT providers (CTPPs) via the EU register; Art. 30 mandatory clauses.'},
+  {id:'C11', area:'Pooled Incident Reporting via ESAs',    doraRef:'Art. 21',    nis2Ref:'N/A',           overlap:'dora-only',  doraGoesFurther:true,  note:'Cross-sector pooled mechanism handled by ESAs for financial entities.'},
+
+  // 3 NIS2-ONLY
+  {id:'C12', area:'Entity Registration with NCA',          doraRef:'N/A',        nis2Ref:'Art. 27',       overlap:'nis2-only',  doraGoesFurther:false, note:'NIS2 requires self-registration on the national register. No DORA equivalent.'},
+  {id:'C13', area:'Coordinated Vulnerability Disclosure',  doraRef:'N/A',        nis2Ref:'Art. 12',       overlap:'nis2-only',  doraGoesFurther:false, note:'Public-facing CVD policy aligned to ENISA coordinator.'},
+  {id:'C14', area:'Management Body Liability Statement',   doraRef:'Indirect',   nis2Ref:'Art. 20(1)',    overlap:'nis2-only',  doraGoesFurther:false, note:'Personal management-body liability for NIS2 non-compliance; not mirrored in DORA.'},
+];
+// Mark AI-overlap controls (subset of shared/dora-only that touch AI Act HRMS)
+const AI_OVERLAP_IDS = new Set(['C1','C4','C9']);
+CONTROL_MATRIX.forEach(c => { c.aiOverlap = AI_OVERLAP_IDS.has(c.id); });
+
+// Render matrix
+function renderMatrix(filter='all'){
+  const body = document.getElementById('matrix-body');
+  body.innerHTML = CONTROL_MATRIX.map(c => {
+    const overlapClass = c.aiOverlap && filter==='ai-overlap' ? 'ai-overlap'
+                       : c.overlap;
+    const isAI = c.aiOverlap;
+    const showOverlap = c.overlap;
+    const isMatch = filter==='all' || filter===c.overlap || (filter==='ai-overlap' && c.aiOverlap);
+    const cls = isMatch ? '' : 'is-dim';
+    const badgeKey = (filter==='ai-overlap' && isAI) ? 'ai-overlap' : c.overlap;
+    const badgeText = badgeKey==='shared' ? 'SHARED'
+                    : badgeKey==='dora-only' ? 'DORA-ONLY'
+                    : badgeKey==='nis2-only' ? 'NIS2-ONLY'
+                    : 'AI-OVERLAP';
+    return `<div class="control-row ${cls}" data-id="${c.id}">
+      <div>
+        <div class="ctrl-area">${c.id} · ${c.area}${isAI?' <span class="badge badge-ai-overlap" style="margin-left:.35rem">AI</span>':''}</div>
+        <div class="ctrl-meta">${c.doraRef!=='N/A'?'DORA '+c.doraRef:''}${c.doraRef!=='N/A'&&c.nis2Ref!=='N/A'?' · ':''}${c.nis2Ref!=='N/A'?'NIS2 '+c.nis2Ref:''}${c.doraGoesFurther?' · DORA stricter':''}</div>
+        <div class="ctrl-note">${c.note}</div>
+      </div>
+      <div class="tick ${c.doraRef!=='N/A'?'y':'n'}">${c.doraRef!=='N/A'?'✓':'—'}</div>
+      <div class="tick ${c.nis2Ref!=='N/A'?'y':'n'}">${c.nis2Ref!=='N/A'?'✓':'—'}</div>
+      <div><span class="badge badge-${showOverlap}">${badgeText}</span></div>
+    </div>`;
+  }).join('');
+}
+renderMatrix();
+
+// Update tallies
+function refreshTallies(){
+  const sh = CONTROL_MATRIX.filter(c=>c.overlap==='shared').length;
+  const doraOnly = CONTROL_MATRIX.filter(c=>c.overlap==='dora-only').length;
+  const nis2Only = CONTROL_MATRIX.filter(c=>c.overlap==='nis2-only').length;
+  document.getElementById('tally-shared').textContent = sh;
+  document.getElementById('tally-dedup').textContent = sh; // each shared = a dedup opportunity
+  document.getElementById('tally-dora').textContent = doraOnly;
+  document.getElementById('tally-nis2').textContent = nis2Only;
+  document.getElementById('vnum-shared').textContent = sh;
+  document.getElementById('vnum-dora').textContent = doraOnly;
+  document.getElementById('vnum-nis2').textContent = nis2Only;
+}
+refreshTallies();
+
+// Chip filtering
+let activeFilter = 'all';
+document.querySelectorAll('.chip').forEach(ch => {
+  ch.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    ch.classList.add('active');
+    activeFilter = ch.dataset.f;
+    renderMatrix(activeFilter);
+  });
+});
+
+// Venn region hover filtering
+document.querySelectorAll('.venn-region').forEach(r => {
+  r.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.venn-region').forEach(x=>x.classList.remove('hot'));
+    r.classList.add('hot');
+    renderMatrix(r.dataset.region);
+  });
+  r.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.venn-region').forEach(x=>x.classList.remove('hot'));
+    renderMatrix(activeFilter);
+  });
+  r.addEventListener('click', () => {
+    activeFilter = r.dataset.region;
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    const chip = document.querySelector(`.chip[data-f="${r.dataset.region}"]`);
+    if(chip) chip.classList.add('active');
+    renderMatrix(activeFilter);
+  });
+});
+
+// ───────────────── INCIDENT WIZARD ─────────────────
+const wizState = {clients:null, downtime:null, geo:null, data:null, threat:null};
+
+document.querySelectorAll('.wiz-opts').forEach(group => {
+  const key = group.dataset.wq;
+  group.querySelectorAll('.wiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.wiz-opt').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      wizState[key] = {v:btn.dataset.v, pts:parseInt(btn.dataset.pts,10)};
+      classify();
+      buildRoadmap();
+    });
+  });
+});
+
+function classify(){
+  const out = document.getElementById('classify-out');
+  const startBtn = document.getElementById('cd-start');
+
+  // Significant cyber threat short-circuits
+  if (wizState.threat && wizState.threat.v === 'yes') {
+    out.className = 'classify-out classify-sig';
+    out.innerHTML = `<div class="classify-h sig">⚠ Significant Cyber Threat · Art. 19(2)</div>
+      <div class="classify-body"><b>Voluntary</b> notification path. No 4-hour clock — but DORA Art. 19(2) encourages reporting non-realised threats with significant potential impact. Use this to share IOCs with the ESAs / FS-ISAC.</div>`;
+    startBtn.disabled = true; startBtn.style.opacity='.4'; startBtn.style.cursor='not-allowed';
+    return null;
+  }
+
+  const required = ['clients','downtime','geo','data'];
+  const answered = required.every(k => wizState[k] !== null);
+  if(!answered){
+    out.className = 'classify-out';
+    out.innerHTML = `<div class="classify-h">— Awaiting Inputs —</div>
+      <div class="classify-body">Complete steps 1–4 to derive a DORA Art. 18 classification.</div>`;
+    startBtn.disabled = true; startBtn.style.opacity='.4'; startBtn.style.cursor='not-allowed';
+    return null;
+  }
+
+  const score = required.reduce((s,k)=>s+wizState[k].pts,0);
+  const anyHigh = required.some(k=>wizState[k].pts === 2);
+  const isMajor = score >= 5 || (anyHigh && score >= 3);
+
+  if (isMajor){
+    out.className = 'classify-out classify-major';
+    out.innerHTML = `<div class="classify-h major">▲ MAJOR ICT-RELATED INCIDENT · Art. 18(1)</div>
+      <div class="classify-body">
+        Threshold score: <b style="color:var(--red)">${score}/8</b> · High-impact criterion: <b style="color:var(--red)">${anyHigh?'YES':'NO'}</b><br>
+        <b style="color:var(--bright)">Action required:</b> Initial notification to your National Competent Authority within <b style="color:var(--red)">4 hours</b> of classification (DORA Art. 19(1)). Then 72-hour intermediate report; final report within 1 month.
+      </div>`;
+    startBtn.disabled = false; startBtn.style.opacity='1'; startBtn.style.cursor='pointer';
+    return {kind:'major', score, anyHigh};
+  } else {
+    out.className = 'classify-out classify-minor';
+    out.innerHTML = `<div class="classify-h minor">○ Minor ICT Incident · Art. 17</div>
+      <div class="classify-body">
+        Threshold score: <b style="color:var(--bright)">${score}/8</b>. <b>No external notification</b> under DORA Art. 19(1). Log in your central incident register with severity, duration, business impact (Art. 17(7)) and feed into post-incident review (Art. 13).
+      </div>`;
+    startBtn.disabled = true; startBtn.style.opacity='.4'; startBtn.style.cursor='not-allowed';
+    return {kind:'minor', score, anyHigh};
+  }
+}
+
+// ───────────────── COUNTDOWN ─────────────────
+let cdT0 = null;
+let cdInterval = null;
+const TOTAL_MS = 4*60*60*1000;
+
+function fmt(ms){
+  if(ms<=0) return '00:00:00';
+  const s = Math.floor(ms/1000);
+  const hh = String(Math.floor(s/3600)).padStart(2,'0');
+  const mm = String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const ss = String(s%60).padStart(2,'0');
+  return `${hh}:${mm}:${ss}`;
+}
+function tickCD(){
+  const elapsed = Date.now() - cdT0;
+  const remain = TOTAL_MS - elapsed;
+  const clk = document.getElementById('cd-clock');
+  const fill = document.getElementById('cd-fill');
+  const meta = document.getElementById('cd-meta');
+  fill.style.width = Math.min(100, (elapsed/TOTAL_MS)*100) + '%';
+
+  // deadlines
+  const t0 = new Date(cdT0);
+  const dInit = new Date(cdT0 + TOTAL_MS);
+  const dInter= new Date(cdT0 + 72*3600*1000);
+  const dFin  = new Date(cdT0 + 30*24*3600*1000);
+  document.getElementById('dl-initial').textContent = dInit.toISOString().slice(11,19)+'Z';
+  document.getElementById('dl-inter').textContent = dInter.toISOString().slice(0,16).replace('T',' ')+'Z';
+  document.getElementById('dl-final').textContent = dFin.toISOString().slice(0,10);
+
+  if(remain<=0){
+    clk.textContent = '00:00:00';
+    clk.className = 'cd-clock expired';
+    meta.innerHTML = '<b style="color:var(--red)">DEADLINE BREACHED</b> · Art. 19(1) initial notification window has elapsed. Document justification and escalate to management body without delay.';
+    clearInterval(cdInterval); cdInterval=null;
+    return;
+  }
+  clk.textContent = fmt(remain);
+  if(remain < 30*60*1000) clk.className = 'cd-clock warn';
+  else clk.className = 'cd-clock';
+  meta.innerHTML = `T+0 set at <b style="color:var(--bright)">${new Date(cdT0).toISOString().slice(11,19)}Z</b>. Initial notification due in <b style="color:var(--red)">${fmt(remain)}</b>.`;
+}
+
+document.getElementById('cd-start').addEventListener('click', () => {
+  if(document.getElementById('cd-start').disabled) return;
+  cdT0 = Date.now();
+  if(cdInterval) clearInterval(cdInterval);
+  tickCD();
+  cdInterval = setInterval(tickCD, 1000);
+});
+document.getElementById('cd-reset').addEventListener('click', () => {
+  if(cdInterval){clearInterval(cdInterval); cdInterval=null;}
+  cdT0 = null;
+  document.getElementById('cd-clock').textContent='04:00:00';
+  document.getElementById('cd-clock').className='cd-clock idle';
+  document.getElementById('cd-fill').style.width='0%';
+  document.getElementById('cd-meta').innerHTML = 'Idle. Classify a <b style="color:var(--red)">MAJOR</b> incident and start the clock to model your Art. 19(1) 4-hour window.';
+  document.getElementById('dl-initial').textContent='T+4h';
+  document.getElementById('dl-inter').textContent='T+72h';
+  document.getElementById('dl-final').textContent='T+1 month';
+});
+
+// ───────────────── ROADMAP ─────────────────
+const ROADMAP_BASE = [
+  {step:1,  title:'Stand up unified ICT Risk Framework',           detail:'Single board-approved policy mapping to DORA Art. 5–6 and NIS2 Art. 21(2)(a). Annual review.',                 controls:['C1'],          horizon:'0–3 months', cost:'M', tag:'shared'},
+  {step:2,  title:'Consolidated ICT asset & dependency register',   detail:'One register satisfying DORA Art. 8 and NIS2 Art. 21(2)(a). Criticality tiering + concentration analytics.', controls:['C2'],          horizon:'0–3 months', cost:'M', tag:'shared'},
+  {step:3,  title:'Dual-trigger incident classification engine',    detail:'Codify DORA Art. 18 thresholds AND NIS2 Art. 23(3) thresholds into one classification rulebook.',           controls:['C4','C5'],     horizon:'0–6 months', cost:'L', tag:'shared'},
+  {step:4,  title:'4h / 24h / 72h / 1-month notification workflow', detail:'Pre-built templates for DORA initial/intermediate/final + NIS2 early-warning. Routing matrix per NCA.',     controls:['C5'],          horizon:'0–6 months', cost:'M', tag:'shared'},
+  {step:5,  title:'Unified BCP / RTO-RPO programme',                detail:'Single BCP framework, tested annually. DORA Art. 11 RTO targets accepted as NIS2 evidence.',                controls:['C3'],          horizon:'3–9 months', cost:'L', tag:'shared'},
+  {step:6,  title:'Vulnerability & patch SLAs',                     detail:'Severity-banded SLAs. Coordinated disclosure channel reused for NIS2 Art. 12.',                            controls:['C6','C13'],    horizon:'3–6 months', cost:'M', tag:'shared'},
+  {step:7,  title:'Encryption baseline & key management',           detail:'Crypto policy aligned to ENISA. Same evidence pack for DORA Art. 9 and NIS2 Art. 21(2)(h).',                controls:['C7'],          horizon:'3–9 months', cost:'M', tag:'shared'},
+  {step:8,  title:'TLPT readiness — DORA-only',                     detail:'TIBER-EU scoping, accredited tester procurement, remediation SLA bands. No NIS2 reuse.',                    controls:['C9'],          horizon:'6–18 months',cost:'L', tag:'dora-only'},
+  {step:9,  title:'Critical ICT TPP register + Art. 30 reclause',   detail:'Inventory critical providers; renegotiate contracts to include mandatory DORA clauses.',                    controls:['C10'],         horizon:'6–12 months',cost:'L', tag:'dora-only'},
+  {step:10, title:'NIS2 entity self-registration with NCA',         detail:'Submit registration to national NIS2 NCA. Recurring annual review.',                                       controls:['C12'],         horizon:'0–3 months', cost:'S', tag:'nis2-only'},
+  {step:11, title:'Management body liability statement',            detail:'Document board sign-off, training, and personal accountability per NIS2 Art. 20.',                          controls:['C14'],         horizon:'0–6 months', cost:'S', tag:'nis2-only'},
+  {step:12, title:'AI-Act overlap assessment',                      detail:'For any AI used in ICT/risk: run HRMS gap-check (Art. 9 AI Act). Map to C1, C4, C9 evidence.',              controls:['C1','C4','C9'],horizon:'6–12 months',cost:'M', tag:'ai-overlap'},
+];
+
+function buildRoadmap(){
+  const cls = classify();
+  const body = document.getElementById('roadmap-body');
+  // Reorder: if MAJOR incident pending, push notification workflow to top
+  let rm = [...ROADMAP_BASE];
+  if (cls && cls.kind === 'major'){
+    rm.sort((a,b)=>(a.controls.includes('C5')?-1:0)-(b.controls.includes('C5')?-1:0));
+  }
+  body.innerHTML = rm.map((s,i)=>{
+    const tagColor = s.tag==='shared'?'badge-shared':s.tag==='dora-only'?'badge-dora-only':s.tag==='nis2-only'?'badge-nis2-only':'badge-ai-overlap';
+    return `<div class="roadmap-row">
+      <div class="rm-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="rm-body">
+        <div class="rm-h">${s.title}
+          <span class="rm-tag">${s.horizon}</span>
+          <span class="rm-tag">Cost · ${s.cost}</span>
+          <span class="badge ${tagColor}" style="margin-left:.35rem">${s.tag.toUpperCase()}</span>
+        </div>
+        <div class="rm-sub">${s.detail} <span style="color:var(--muted)">· Controls: ${s.controls.join(', ')}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+buildRoadmap();
+
+// ───────────────── EXPORTS ─────────────────
+function buildAP2Mandate(){
+  const cls = classify();
+  const sh = CONTROL_MATRIX.filter(c=>c.overlap==='shared').length;
+  const doraOnly = CONTROL_MATRIX.filter(c=>c.overlap==='dora-only').length;
+  const nis2Only = CONTROL_MATRIX.filter(c=>c.overlap==='nis2-only').length;
+
+  return {
+    '@type':'@ainumbers.co/mandate-v1',
+    '@version':'1.0',
+    '@generated': new Date().toISOString(),
+    mandate_id: 'AIN-T312-' + Date.now().toString(36).toUpperCase(),
+    issued_by: 'ainumbers.co',
+    tool_id: 'dual-compliance-control-deduplicator',
+    tool_version: '1.0.0',
+    mandate_type: 'consolidated_resilience_roadmap',
+    addressed_to: 'Chief Risk Officer',
+    jurisdiction: ['EU','EEA'],
+    regulatory_frameworks: ['EU 2022/2554 DORA','EU 2022/2555 NIS2','EU 2024/1689 AI Act'],
+
+    overlap_summary: {
+      total_controls: CONTROL_MATRIX.length,
+      shared: sh,
+      dora_only: doraOnly,
+      nis2_only: nis2Only,
+      ai_act_overlap: CONTROL_MATRIX.filter(c=>c.aiOverlap).length,
+      deduplication_opportunities: sh
+    },
+
+    incident_classification: cls ? {
+      classification: cls.kind,
+      score: cls.score,
+      high_impact_criterion: cls.anyHigh,
+      thresholds: wizState,
+      notification_deadlines: cls.kind==='major' ? {
+        initial: 'T+4h (DORA Art. 19(1))',
+        intermediate: 'T+72h (DORA Art. 19(4))',
+        final: 'T+1 month (DORA Art. 19(4))'
+      } : null
+    } : null,
+
+    consolidated_roadmap: ROADMAP_BASE.map(r=>({
+      step: r.step, title: r.title, detail: r.detail,
+      controls: r.controls, horizon: r.horizon, cost_band: r.cost, classification: r.tag
+    })),
+
+    control_matrix: CONTROL_MATRIX.map(c=>({
+      id: c.id, area: c.area, dora_ref: c.doraRef, nis2_ref: c.nis2Ref,
+      overlap: c.overlap, dora_stricter: !!c.doraGoesFurther, ai_overlap: !!c.aiOverlap, note: c.note
+    })),
+
+    agent_instructions: [
+      'Implement shared controls (overlap=shared) once to satisfy both DORA and NIS2.',
+      'For controls where dora_stricter=true, default to DORA evidence — NIS2 accepts the higher standard.',
+      'Address nis2_only obligations (entity registration, CVD policy, mgmt body liability) on a separate track.',
+      'For controls with ai_overlap=true, additionally run an AI Act High-Risk Management System gap assessment.',
+      cls && cls.kind==='major' ? 'Incident classified as MAJOR — initiate Art. 19(1) 4-hour NCA notification immediately.' : ''
+    ].filter(Boolean),
+
+    audit_signature: {
+      client_side_executed: true,
+      zero_pii_verified: true,
+      deterministic_run: true
+    }
+  };
+}
+
+function download(blob, name){
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href);
+}
+function showToast(t){
+  const el=document.getElementById('toast'); el.textContent=t;
+  el.classList.add('show');
+  clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'), 2400);
+}
+
+document.getElementById('export-ap2').addEventListener('click', () => {
+  const m = buildAP2Mandate();
+  download(new Blob([JSON.stringify(m,null,2)],{type:'application/json'}), `consolidated-resilience-roadmap_${Date.now()}.ap2.json`);
+  showToast('{} AP2 mandate downloaded');
+});
+
+document.getElementById('export-md').addEventListener('click', () => {
+  const m = buildAP2Mandate();
+  let md = `# Consolidated Resilience Roadmap — CRO Memo\n\n`;
+  md += `**Issued:** ${m['@generated']}  \n`;
+  md += `**Mandate ID:** ${m.mandate_id}  \n`;
+  md += `**Frameworks:** DORA · NIS2 · AI Act\n\n`;
+  md += `## Overlap Summary\n`;
+  md += `- Shared controls: **${m.overlap_summary.shared}**\n`;
+  md += `- DORA-only: ${m.overlap_summary.dora_only}\n`;
+  md += `- NIS2-only: ${m.overlap_summary.nis2_only}\n`;
+  md += `- AI-Act overlap: ${m.overlap_summary.ai_act_overlap}\n`;
+  md += `- **Deduplication opportunities: ${m.overlap_summary.deduplication_opportunities}**\n\n`;
+  if (m.incident_classification){
+    md += `## Live Incident Classification\n`;
+    md += `- Classification: **${m.incident_classification.classification.toUpperCase()}**\n`;
+    md += `- Score: ${m.incident_classification.score}\n`;
+    if (m.incident_classification.notification_deadlines){
+      md += `- Initial: ${m.incident_classification.notification_deadlines.initial}\n`;
+      md += `- Intermediate: ${m.incident_classification.notification_deadlines.intermediate}\n`;
+      md += `- Final: ${m.incident_classification.notification_deadlines.final}\n`;
+    }
+    md += `\n`;
+  }
+  md += `## Roadmap\n| # | Action | Horizon | Cost | Class |\n|---|---|---|---|---|\n`;
+  m.consolidated_roadmap.forEach(r => {
+    md += `| ${r.step} | ${r.title} | ${r.horizon} | ${r.cost_band} | ${r.classification} |\n`;
+  });
+  md += `\n*Generated by AINumbers.co T312 · Client-side · Zero PII*\n`;
+  download(new Blob([md],{type:'text/markdown'}), `cro-memo_${Date.now()}.md`);
+  showToast('⬇ CRO memo downloaded');
+});
+
+document.getElementById('toggle-preview').addEventListener('click', () => {
+  const drawer = document.getElementById('preview');
+  const pre = document.getElementById('preview-pre');
+  if (drawer.classList.contains('open')){
+    drawer.classList.remove('open');
+  } else {
+    pre.textContent = JSON.stringify(buildAP2Mandate(), null, 2);
+    drawer.classList.add('open');
+  }
+});
+</script>
+
+
+</body></html>        

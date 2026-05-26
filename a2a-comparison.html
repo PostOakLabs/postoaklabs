@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2A Tokenization vs. Stablecoin vs. Correspondent Banking | Post Oak Labs</title>
+<meta name="description" content="A fully consolidated comparison framework: tokenized A2A payment rails vs. stablecoin infrastructure vs. correspondent banking and RTGS. Developed by Post Oak Labs for institutions evaluating where tokenization fits in their architecture and revenue model.">
+<meta name="keywords" content="tokenized A2A payments, stablecoin vs correspondent banking, RTGS comparison, institutional payment infrastructure, tokenized payment rails, blockchain payments comparison, nostro vostro alternative, cross-border payment infrastructure, ISO 20022">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/a2a-comparison.html">
+<link rel="alternate" hreflang="x-default" href="https://postoaklabs.com/a2a-comparison.html">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="A2A Tokenization vs. Stablecoin vs. Correspondent Banking | Post Oak Labs">
+<meta property="og:description" content="Three layers. One stack. A consolidated institutional reference framework comparing tokenized A2A rails, stablecoin infrastructure, and correspondent banking, with decision matrix and annotated footnotes.">
+<meta property="og:url" content="https://postoaklabs.com/a2a-comparison.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="A2A vs. Stablecoin vs. Correspondent Banking | Post Oak Labs">
+<meta name="twitter:description" content="Three layers. One stack. A consolidated institutional reference framework comparing tokenized A2A rails, stablecoin infrastructure, and correspondent banking.">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between tokenized A2A payments and stablecoins?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Stablecoins answer 'what is the digital money?', they are the monetary primitive. Tokenized A2A is the institutional payment rail, the infrastructure banks use to move that money at scale between accounts. The two are complementary layers, not competing alternatives. Stablecoins without A2A leave institutional rails fragmented; A2A without stablecoins can operate on tokenized fiat within the regulated banking system."}
+    },
+    {
+      "@type": "Question",
+      "name": "How does tokenized A2A compare to correspondent banking?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Correspondent banking routes payments through 3–5 intermediary banks with 2.5–5% total costs; SWIFT gpi delivers ~60% of payments to end beneficiaries within 30 minutes and nearly all within 24 hours, though legacy non-gpi routing can take longer. Tokenized A2A uses a direct four-corner model (sender bank, settlement ledger, receiver bank), with near-instant finality, approximately 0.2% in direct settlement fees (a Post Oak Labs production benchmark in targeted B2B corridors), and near-zero liquidity pre-funding requirements. Correspondent banking retains a genuine advantage in global network reach — SWIFT connects over 11,000 institutions across 200+ countries where A2A network participants have not yet been established."}
+    },
+    {
+      "@type": "Question",
+      "name": "What is nostro/vostro pre-funding and why is it a problem?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Nostro and vostro accounts are pre-funded balances that correspondent banks must maintain across every active corridor to facilitate cross-border payments. Industry estimates put total trapped capital globally at approximately $27 trillion.[fn] At a 5% rate, holding $1 billion in a non-interest-bearing nostro account costs roughly $50 million per year in foregone yield. Tokenized A2A infrastructure enables just-in-time settlement via netting cycles, freeing this capital for productive use."}
+    },
+    {
+      "@type": "Question",
+      "name": "What is the institutional payment stack?",
+      "acceptedAnswer": {"@type": "Answer", "text": "The institutional payment stack has four primary layers above the RTGS foundation: (Layer 4) Correspondent banking/SWIFT — the legacy cross-border layer; (Layer 3) Tokenized A2A institutional rails — interbank and B2B settlement; (Layer 2) CBDC/stablecoin infrastructure — the monetary enabling layer; (Layer 1) Consumer fast payment systems (Pix, FedNow, UPI) — the retail layer. RTGS sits as the foundation beneath all layers: it is abstracted and used more efficiently by A2A, not replaced. Note: layers are numbered bottom-to-top, consistent with the stack diagram on this page."}
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:      #050c15;
+  --deep:     #0a1628;
+  --navy:     #0e1e35;
+  --panel:    #142540;
+  --edge:     #1e3454;
+  --rim:      #2a4a70;
+  --muted:    #4a6a8a;
+  --body:     #7090b0;
+  --text:     #a8c0d8;
+  --bright:   #d0e4f4;
+  --white:    #ecf4fc;
+  --gold:     #c09040;
+  --gold-lt:  #d8b060;
+  --accent:   #2a7fc0;
+  --accent-lt:#4a9fd8;
+  --green:    #2a9060;
+  --green-lt: #3ab878;
+  --red:      #b03040;
+  --red-lt:   #d04858;
+  --amber:    #b07020;
+  --amber-lt: #d09030;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 16px;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── HERO ── */
+.hero {
+  padding: 5rem 0 4.5rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; top: -150px; right: -200px;
+  width: 800px; height: 800px;
+  background: radial-gradient(ellipse, rgba(42,127,192,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 28px; height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  color: var(--white); max-width: 760px; margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 1rem; color: var(--body);
+  max-width: 600px; line-height: 1.85; margin-bottom: 2rem;
+}
+.hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--accent); color: var(--white);
+  border: 1px solid var(--accent); transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.btn-outline {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--edge); color: var(--muted);
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+/* ── SECTIONS ── */
+section { padding: 4.5rem 0; }
+.sec-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem;
+}
+.sec-label::after {
+  content: ''; flex: 1; max-width: 40px; height: 1px; background: var(--edge);
+}
+.sec-kicker {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-lt);
+  margin-bottom: 0.5rem;
+}
+.sec-title { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bright); margin-bottom: 0.75rem; }
+.sec-title em { font-style: normal; color: var(--gold-lt); }
+.sec-intro { font-size: 0.9rem; color: var(--body); max-width: 700px; line-height: 1.85; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--edge); }
+hr.rule { border: none; border-top: 1px solid var(--edge); }
+
+/* ── STAT STRIP ── */
+.stat-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+  border-top: none;
+}
+@media (max-width: 700px) {
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-cell { background: var(--deep); padding: 1.35rem 1.5rem; text-align: center; }
+.stat-num {
+  font-family: 'DM Serif Display', serif; font-size: 1.9rem;
+  color: var(--accent-lt); display: block; line-height: 1; margin-bottom: 0.3rem;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); line-height: 1.5;
+}
+.stat-source { font-family: 'JetBrains Mono', monospace; font-size: 0.46rem; color: var(--muted); margin-top: 0.3rem; }
+.stat-source a { color: var(--accent-lt); text-decoration: none; }
+.stat-source a:hover { text-decoration: underline; }
+
+/* ── STACK DIAGRAM ── */
+.stack-diagram {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--edge);
+  margin-bottom: 2.5rem;
+}
+.stack-layer {
+  display: grid; grid-template-columns: 140px 1fr 120px;
+  align-items: stretch; border-bottom: 1px solid var(--edge); min-height: 60px;
+}
+.stack-layer:last-child { border-bottom: none; }
+.stack-layer-label {
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  padding: 0.9rem 1rem; display: flex; align-items: center; border-right: 1px solid var(--edge);
+}
+.stack-layer-content {
+  padding: 0.9rem 1.4rem; display: flex; flex-direction: column; gap: 0.3rem;
+}
+.stack-layer-content strong { font-size: 0.75rem; letter-spacing: 0.04em; color: var(--bright); font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.stack-layer-content p { font-size: 0.78rem; color: var(--body); line-height: 1.6; }
+.stack-layer-tag {
+  font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  padding: 0.9rem 1rem; display: flex; align-items: center; justify-content: flex-end;
+  border-left: 1px solid var(--edge); text-align: right;
+}
+.highlight-a2a { background: rgba(42,127,192,0.04); }
+.highlight-a2a .stack-layer-content strong { color: var(--accent-lt); }
+.highlight-a2a .stack-layer-label { color: var(--accent-lt); }
+.highlight-a2a .stack-layer-tag { color: var(--accent-lt); }
+
+/* ── ROLE CARDS ── */
+.role-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--edge); background: var(--edge); gap: 1px; margin-top: 1.5rem;
+}
+.role-card { background: var(--deep); padding: 1.5rem 1.75rem; }
+.role-card-icon {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.54rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 0.75rem; padding: 0.28rem 0.55rem;
+  border: 1px solid var(--edge); display: inline-block;
+}
+.role-card h3 { font-family: 'DM Sans', sans-serif; font-size: 0.97rem; font-weight: 500; color: var(--bright); margin-bottom: 0.65rem; line-height: 1.3; }
+.role-card p { font-size: 0.79rem; color: var(--body); line-height: 1.65; }
+
+/* ── COMPARISON TABLE ── */
+.compare-wrap { overflow-x: auto; margin: 2rem 0; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.compare-table th {
+  text-align: left; padding: 0.85rem 1.2rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  background: var(--panel); border-bottom: 1px solid var(--edge);
+  white-space: nowrap;
+}
+.compare-table th.col-a2a { color: var(--accent-lt); }
+.compare-table tbody tr { border-bottom: 1px solid var(--edge); transition: background 0.15s; }
+.compare-table tbody tr:hover { background: var(--navy); }
+.compare-table tbody tr:last-child { border-bottom: none; }
+.compare-table tbody td { padding: 0.78rem 1.2rem; vertical-align: top; color: var(--body); line-height: 1.6; }
+.compare-table tbody td:first-child {
+  color: var(--text); font-size: 0.76rem; letter-spacing: 0.02em;
+  border-right: 1px solid var(--edge); font-weight: 500; white-space: nowrap; padding-right: 1.4rem;
+}
+.compare-table tbody td.col-a2a {
+  color: var(--text); background: rgba(184,151,106,0.04); border-right: 1px solid var(--edge);
+}
+
+/* ── CONTEXTUAL TAGS ── */
+.tag {
+  display: inline-block; font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.08rem 0.4rem; margin-left: 0.3rem; vertical-align: middle; border: 1px solid;
+  cursor: help; white-space: nowrap;
+}
+.tag-tradeoff {
+  background: rgba(184,151,106,0.07); color: var(--muted); border-color: var(--edge);
+}
+.tag-context {
+  background: rgba(100,110,130,0.08); color: #7a8090; border-color: #3a4050;
+}
+sup a { color: var(--muted); text-decoration: none; font-size: 0.72em; font-family: 'DM Sans', sans-serif; }
+sup a:hover { color: var(--accent-lt); }
+
+/* ── INSIGHT BOX ── */
+.insight-box {
+  border: 1px solid var(--edge); background: rgba(42,127,192,0.04);
+  border-left: 3px solid var(--accent); padding: 1.5rem 2rem; margin-top: 2.5rem;
+}
+.insight-box-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 0.55rem;
+}
+.insight-box p { font-size: 0.88rem; color: var(--body); line-height: 1.75; }
+.insight-box strong { color: var(--bright); }
+
+/* ── DECISION MATRIX ── */
+.decision-grid { display: flex; flex-direction: column; border: 1px solid var(--edge); margin-top: 1rem; }
+.decision-row { display: grid; grid-template-columns: 2fr 1fr; border-bottom: 1px solid var(--edge); align-items: center; }
+.decision-row:last-child { border-bottom: none; }
+.decision-row.header-row { background: var(--panel); }
+.decision-scenario { padding: 0.85rem 1.4rem; font-size: 0.81rem; color: var(--body); border-right: 1px solid var(--edge); line-height: 1.55; }
+.header-row .decision-scenario, .header-row .decision-rec { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--muted); }
+.decision-rec { padding: 0.85rem 1.4rem; font-size: 0.79rem; font-weight: 500; line-height: 1.45; color: var(--body); }
+.rec-a2a { color: var(--accent-lt); }
+.rec-stable { color: var(--green-lt); }
+.rec-rtgs { color: var(--muted); }
+.rec-both { color: var(--gold-lt); }
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  padding: 3.5rem; text-align: center; margin-top: 3rem; position: relative; overflow: hidden;
+}
+.cta-block::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.cta-block h3 { font-size: 1.8rem; color: var(--white); margin-bottom: 0.5rem; }
+.cta-block p { font-size: 0.9rem; color: var(--body); max-width: 480px; margin: 0 auto 2rem; line-height: 1.85; }
+
+/* ── FOOTNOTES ── */
+.cmp-footnotes { border-top: 1px solid var(--edge); padding: 2.5rem 0 2rem; background: var(--ink); }
+.cmp-footnotes h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; font-weight: 400; }
+.cmp-footnotes ol { padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem; }
+.cmp-footnotes li { font-size: 0.68rem; color: var(--muted); line-height: 1.65; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+.cmp-footnotes a { color: var(--accent-lt); text-decoration: none; }
+.cmp-footnotes a:hover { text-decoration: underline; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .role-cards { grid-template-columns: 1fr; }
+  .stack-layer { grid-template-columns: 1fr; }
+  .stack-layer-label, .stack-layer-tag { display: none; }
+  .decision-row { grid-template-columns: 1fr; }
+  .decision-scenario { border-right: none; border-bottom: 1px solid var(--edge); }
+  .nav-links { display: none; }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .compare-table { font-size: 0.73rem; }
+  .compare-table tbody td:first-child { white-space: normal; }
+}
+
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+/* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+html[lang="ar"] body { direction: rtl; text-align: right; }
+html[lang="ar"] .lang-inner { justify-content: flex-start; }
+nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+/* ══════════════════════════════════════════════════ */
+</style>
+<link rel="me" href="https://ainumbers.co">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "A2A Tokenization vs. Stablecoin vs. Correspondent Banking",
+  "datePublished": "2026-04-19",
+  "dateModified": "2026-05-11",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "publisher": {
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "mainEntityOfPage": "https://postoaklabs.com/a2a-comparison.html",
+  "image": "https://postoaklabs.com/og-image.png",
+  "about": "Comparison of tokenized A2A, stablecoin, and correspondent banking rails",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Commercial banks, central banks, large corporates"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "A2A Payments",
+      "item": "https://postoaklabs.com/a2a-payments.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Comparison",
+      "item": "https://postoaklabs.com/a2a-comparison.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- Language bar -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow" data-i18n="hero-eyebrow">Post Oak Labs · Infrastructure Comparison Framework</p>
+    <h1 data-i18n="hero-h1">Three layers. One stack. <em>Knowing the difference</em> is the entire game.</h1>
+    <p class="hero-sub" data-i18n="hero-sub">Tokenized A2A, stablecoin infrastructure, and correspondent banking occupy distinct layers of the institutional payment stack. This framework is a fully consolidated reference for banks and corporates evaluating where tokenization fits in their architecture and revenue model.</p>
+    <div class="hero-cta-row">
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="hero-cta-primary">Talk to Post Oak Labs</a>
+      <a href="#stack" class="btn-outline" data-i18n="hero-cta-stack">See the stack →</a>
+      <a href="a2a-workflow.html" class="btn-outline">A2A architecture deep-dive →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── STAT STRIP ── -->
+<div style="border-top: 1px solid var(--edge);">
+  <div class="container">
+    <div class="stat-strip" style="border-top: none; border-left: none; border-right: none;">
+      <div class="stat-cell">
+        <span class="stat-num">~$27T</span>
+        <span class="stat-label">Estimated capital trapped in nostro/vostro pre-funding globally</span>
+        <p class="stat-source"><a href="https://www.opendue.com/blog/correspondent-banking-how-it-works-and-why-its-expensive" target="_blank">Keyrock/industry estimates — see fn. 2</a></p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">~0.2%</span>
+        <span class="stat-label">Post Oak production benchmark: direct settlement cost via tokenized A2A in targeted B2B corridors vs. 2.5–5%+ on correspondent rails</span>
+        <p class="stat-source"><a href="https://postoaklabs.com/a2a-workflow.html">Post Oak Labs production benchmark — see fn. 8</a></p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">$310B+</span>
+        <span class="stat-label">Stablecoin market outstanding at end-2025, up from ~$205B at start of year</span>
+        <p class="stat-source"><a href="https://thedefiant.io/news/defi/stablecoins-became-crypto-s-first-mainstream-use-case-in-2025" target="_blank">DefiLlama/The Defiant, Dec 2025 — see fn. 6</a></p>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">&lt;10s</span>
+        <span class="stat-label">Cross-border settlement finality demonstrated via multi-CBDC corridors (PoC conditions) vs. legacy correspondent banking delays</span>
+        <p class="stat-source">Project mBridge / Jasper-Ubin — see fn. 9</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════ SECTION 1: STACK OVERVIEW ═══════════════════════════════════════ -->
+<section id="stack" style="border-top: 1px solid var(--edge);">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="s1-kicker">The Institutional Payment Stack</p>
+    <h2 class="sec-title" data-i18n="s1-title">Where each layer sits, and why the order matters</h2>
+    <p class="sec-intro">
+      The most common mistake banks make is treating these three as substitutes. They are not. Stablecoin/CBDC infrastructure is the monetary primitive: what digital money is. Tokenized A2A is the institutional rail: how banks move it at scale. RTGS is the final settlement backbone beneath everything. The confusion costs institutions time, money, and the wrong vendor relationships.
+    </p>
+
+    <div class="stack-diagram">
+      <div class="stack-layer">
+        <div class="stack-layer-label">Layer 4</div>
+        <div class="stack-layer-content">
+          <strong>CORRESPONDENT BANKING / SWIFT / RTGS</strong>
+          <p>3–5 intermediary hops per payment · 2–5 day settlement on non-gpi routes (SWIFT gpi: ~60% within 30 min on connected corridors) · high pre-funding requirements · limited data fields per transaction</p>
+        </div>
+        <div class="stack-layer-tag">Legacy Rails</div>
+      </div>
+      <div class="stack-layer highlight-a2a">
+        <div class="stack-layer-label">Layer 3 · This Layer</div>
+        <div class="stack-layer-content">
+          <strong>TOKENIZED A2A INSTITUTIONAL RAILS</strong>
+          <p>Account-to-account tokenized settlement, near-instant finality, ISO 20022 data richness. B2B cross-border, corporate treasury, interbank settlement, tokenized MMF distribution.</p>
+        </div>
+        <div class="stack-layer-tag">This Layer</div>
+      </div>
+      <div class="stack-layer">
+        <div class="stack-layer-label">Layer 2</div>
+        <div class="stack-layer-content">
+          <strong>CBDC / STABLECOIN INFRASTRUCTURE</strong>
+          <p>Central bank digital currency, private stablecoin rails, reserve management, programmable money. The enabling base layer on which A2A can optionally operate.</p>
+        </div>
+        <div class="stack-layer-tag">Enabling Layer</div>
+      </div>
+      <div class="stack-layer">
+        <div class="stack-layer-label">Layer 1</div>
+        <div class="stack-layer-content">
+          <strong>CONSUMER FAST PAYMENT SYSTEMS</strong>
+          <p>Pix, FedNow, UPI, SPEI, FPS — the retail consumer layer. Not the institutional A2A layer.</p>
+        </div>
+        <div class="stack-layer-tag">Not A2A</div>
+      </div>
+      <div class="stack-layer">
+        <div class="stack-layer-label">Foundation</div>
+        <div class="stack-layer-content">
+          <strong>SETTLEMENT LEDGER / BLOCKCHAIN INFRASTRUCTURE</strong>
+          <p>Permissioned DLT, public L1 blockchains, central bank RTGS<sup><a href="#fn12">[12]</a></sup></p>
+        </div>
+        <div class="stack-layer-tag">Infrastructure</div>
+      </div>
+    </div>
+
+    <div class="role-cards">
+      <div class="role-card">
+        <div class="role-card-icon">Stablecoin / CBDC</div>
+        <h3>What is the digital money?</h3>
+        <p>The monetary primitive: a tokenized representation of fiat value. What the settlement asset is: bearer instrument, programmable on-chain value, CBDC unit, or tokenized deposit. Does not, by itself, solve how regulated banks move it at scale.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-card-icon">Tokenized A2A</div>
+        <h3>How do banks move it at scale?</h3>
+        <p>The institutional payment rail: orchestration, routing, and settlement workflow above the asset layer. How regulated banks, central banks, and large corporates transfer value efficiently across borders. Can carry stablecoins, CBDCs, or tokenized deposits as the underlying asset.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-card-icon">RTGS</div>
+        <h3>How do positions net finally?</h3>
+        <p>The settlement backbone: central bank money on central bank books. Not replaced by A2A; abstracted and used more efficiently. A2A nets positions across participants intraday and end-of-day, reducing gross RTGS settlement volumes while preserving finality in central bank money.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ SECTION 2: A2A vs STABLECOIN ═══════════════════════════════════════ -->
+<section id="a2a-vs-stablecoin" style="border-top: 1px solid var(--edge);">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="s2-kicker">Comparison 01</p>
+    <h2 class="sec-title" data-i18n="s2-title">Tokenized A2A vs. Stablecoin Infrastructure</h2>
+    <p class="sec-intro">
+      A2A is a payment rail: the mechanism by which value moves between bank accounts. Stablecoin is a monetary instrument: what moves on the rail. A bank that conflates the two will architect for the wrong problem. Where the two models differ on a structural dimension, a contextual note explains whether the difference is a design trade-off or a fit-for-purpose distinction. Neither model has a universal advantage over the other; each is optimized for a specific position in the stack.<sup><a href="#fn1">[1]</a></sup>
+    </p>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="min-width:155px;">Dimension</th>
+            <th class="col-a2a" style="min-width:260px;">Tokenized A2A</th>
+            <th style="min-width:260px;">Stablecoin Infrastructure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Role in Stack</td>
+            <td class="col-a2a">Orchestration, routing, and settlement workflow layer (application/network layer)</td>
+            <td>Base asset and settlement primitive layer (asset/ledger layer)</td>
+          </tr>
+          <tr>
+            <td>Position in Stack</td>
+            <td class="col-a2a">Operates above stablecoin/CBDC as institutional B2B settlement rail</td>
+            <td>Enabling/base layer; programmable money that A2A rails can optionally carry</td>
+          </tr>
+          <tr>
+            <td>Nature of Instrument</td>
+            <td class="col-a2a">Tokenized deposit: programmable claim on the sender bank's fiat reserves; fiat never leaves the bank balance sheet during the transaction</td>
+            <td>Privately issued digital bearer instrument representing fiat value; backed by reserves and operates entirely on-chain</td>
+          </tr>
+          <tr>
+            <td>Core Function</td>
+            <td class="col-a2a">Moves funds between bank accounts (B2B, interbank, treasury) via tokenized claims</td>
+            <td>Represents tokenized fiat value as an on-chain liability; enables direct P2P transfer</td>
+          </tr>
+          <tr>
+            <td>Balance-Sheet Treatment</td>
+            <td class="col-a2a">Stays on issuing bank's balance sheet; funds remain inside the banking system and support traditional lending</td>
+            <td>Off-balance-sheet for banks; reserves held with the stablecoin issuer, removing deposits from the banking system <span class="tag tag-tradeoff" title="This is a structural design difference, not a defect. Reserve-backed stablecoin issuers hold substantial Treasury assets as collateral — see footnote 2.">Trade-off<sup><a href="#fn2">[2]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Settlement Mechanism</td>
+            <td class="col-a2a">Tokenized claim transfer, then net settlement via RTGS at end-of-cycle; fiat never moves between banks during the transaction itself</td>
+            <td>Direct on-chain transfer of tokenized value via blockchain consensus; settlement is the transfer itself</td>
+          </tr>
+          <tr>
+            <td>Issuer Identity</td>
+            <td class="col-a2a">Regulated commercial bank or central bank (known, licensed entity)</td>
+            <td>Nonbanks (Circle, Paxos), bank subsidiaries, or regulated banks (JPMorgan, BNY Mellon)</td>
+          </tr>
+          <tr>
+            <td>Reserve Backing</td>
+            <td class="col-a2a">1:1 fiat reserves held at the originating bank; transparent custody under banking supervision</td>
+            <td>Varies by issuer: cash, Treasuries, crypto, or algorithmic. Reserve quality and transparency differ significantly by issuer. <span class="tag tag-context" title="The GENIUS Act (US, signed July 18, 2025, in force August 4, 2025; see fn. 3) requires 1:1 reserve backing with US dollars or short-term Treasuries for US-regulated stablecoin issuers and prohibits algorithmic stablecoins. Reserve quality is issuer-specific, not a property of the stablecoin instrument class — see footnote 3.">Context<sup><a href="#fn3">[3]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Redemption Rights</td>
+            <td class="col-a2a">Redeemable at par with the originating bank; clear legal claim under banking law</td>
+            <td>May trade at discount or premium in secondary markets. Redemption terms vary by issuer. Regulated issuers are moving toward standardized at-par redemption obligations. <span class="tag tag-context" title="MiCA (EU) and the GENIUS Act (US, signed July 18, 2025, in force August 4, 2025; see fn. 3) both require at-par redemption for regulated stablecoin issuers. Risk profile remains issuer-specific — see footnote 3.">Context<sup><a href="#fn3">[3]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Network Type</td>
+            <td class="col-a2a">Closed, permissioned ledgers among known, KYC'd institutional participants</td>
+            <td>Public or open blockchains, or private/permissioned ledgers, depending on the issuer and deployment</td>
+          </tr>
+          <tr>
+            <td>Access Model</td>
+            <td class="col-a2a">Restricted to regulated participants: banks, corporate treasury, central banks <span class="tag tag-context" title="Restricted access enables KYC/AML compliance and regulatory oversight. See footnote 4.">Context<sup><a href="#fn4">[4]</a></sup></span></td>
+            <td>Open wallet-based access: any party with a compatible wallet can hold and transfer, enabling consumer remittances and DeFi applications <span class="tag tag-context" title="Open access enables consumer remittances and DeFi applications. See footnote 4.">Context<sup><a href="#fn4">[4]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Regulatory Oversight</td>
+            <td class="col-a2a">Full banking supervision; settlement is a bank liability</td>
+            <td>Evolving. The GENIUS Act (US, signed July 18, 2025; in force August 4, 2025), MiCA (EU) establishing stablecoin-specific frameworks; not equivalent to banking supervision yet</td>
+          </tr>
+          <tr>
+            <td>Programmability</td>
+            <td class="col-a2a">Smart contracts for conditional payments, trade finance, escrow, and compliance automation within the permissioned network</td>
+            <td>Fully programmable on public EVM chains; broad DeFi composability; conditional payment logic via smart contracts</td>
+          </tr>
+          <tr>
+            <td>FX Revenue</td>
+            <td class="col-a2a">FX conversion captured at point of redemption by the originating bank, not lost to intermediaries <span class="tag tag-tradeoff" title="This is a commercial redistribution of FX revenue from correspondent banks to originating banks — see footnote 4.">Trade-off<sup><a href="#fn4">[4]</a></sup></span></td>
+            <td>FX conversion typically handled by the user or issuer at on-chain or off-ramp point; varies by deployment</td>
+          </tr>
+          <tr>
+            <td>Data Standard</td>
+            <td class="col-a2a">ISO 20022: rich structured data per transaction; automated reconciliation; ~30% fewer exceptions vs. legacy MT<sup><a href="#fn5">[5]</a></sup></td>
+            <td>On-chain data only; off-chain compliance data managed separately; ISO 20022 integration not standard</td>
+          </tr>
+          <tr>
+            <td>Primary Use Cases</td>
+            <td class="col-a2a">Institutional B2B, interbank settlement, corporate treasury, trade finance, tokenized MMF distribution</td>
+            <td>Consumer remittances, DeFi liquidity, merchant settlement, crypto-native commerce, cross-border B2C</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ SECTION 3: A2A vs CORRESPONDENT ═══════════════════════════════════════ -->
+<section id="a2a-vs-correspondent" style="border-top: 1px solid var(--edge);">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="s3-kicker">Comparison 02</p>
+    <h2 class="sec-title" data-i18n="s3-title">Tokenized A2A vs. Correspondent Banking / RTGS</h2>
+    <p class="sec-intro">
+      Tokenized A2A and correspondent banking both address the same problem: moving money between banks across borders. They differ fundamentally in how they achieve it. This table reflects the structural differences relevant to institutional architecture decisions. Where a difference is a design trade-off rather than a binary win, a contextual note explains why.
+    </p>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="min-width:155px;">Dimension</th>
+            <th class="col-a2a" style="min-width:260px;">Tokenized A2A Rails</th>
+            <th style="min-width:260px;">Correspondent Banking / RTGS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Topology</td>
+            <td class="col-a2a">Direct "four-corner" model: sender bank, settlement ledger, receiver bank; no intermediary banks on the token transfer path itself</td>
+            <td>Fragmented multi-hop network; payment passes through 3–5 or more correspondent banks, each adding fees and processing time<sup><a href="#fn7">[7]</a></sup></td>
+          </tr>
+          <tr>
+            <td>Intermediaries and Fees</td>
+            <td class="col-a2a">0–1 logical intermediaries; approximately 0.2% in direct settlement fees in selected B2B corridors where Post Oak Labs has deployed production infrastructure (excludes FX conversion fees, which are captured as originating bank revenue)<sup><a href="#fn8">[8]</a></sup></td>
+            <td>3–5 intermediary hops per payment; layered fees at each (SWIFT + correspondent + FX spread + nostro maintenance); total 2.5–5% plus FX spread<sup><a href="#fn7">[7]</a></sup></td>
+          </tr>
+          <tr>
+            <td>Settlement Speed</td>
+            <td class="col-a2a">Seconds to minutes; under 10 seconds demonstrated in multi-CBDC corridors (Project mBridge, PoC conditions)<sup><a href="#fn9">[9]</a></sup></td>
+            <td>2–5 business days for final settlement on legacy non-gpi routing; SWIFT gpi: ~60% of payments credited to end beneficiaries within 30 minutes, and nearly all within 24 hours on connected routes <sup><a href="#fn9">[9]</a></sup>. Delays beyond 24 hours occur primarily in corridors with capital controls, legacy back-office systems, or time-zone mismatches. These are not typical of standard gpi routing<sup><a href="#fn9">[9]</a></sup></td>
+          </tr>
+          <tr>
+            <td>Liquidity Pre-funding</td>
+            <td class="col-a2a">Near-zero for participants; just-in-time settlement via netting cycles; frees capital currently held in correspondent pre-funding<sup><a href="#fn2">[2]</a></sup></td>
+            <td>Heavy reliance on pre-funded nostro/vostro accounts across all active corridors; industry estimates put total trapped globally at approximately $27 trillion (McKinsey, 2016 estimate; some 2025 sources cite ~$28 trillion)<sup><a href="#fn2">[2]</a></sup></td>
+          </tr>
+          <tr>
+            <td>Capital Efficiency</td>
+            <td class="col-a2a">High; reduced trapped liquidity; capital freed for productive lending and investment</td>
+            <td>Low; significant capital lock-up in correspondent balances earning below-market returns while idle. At 5% rates, $1B in a non-interest-bearing nostro costs roughly $50M/year in lost yield (actual opportunity cost varies by treasury management practice; some balances earn partial overnight returns, but typically well below market) <span class="tag tag-context" title="The opportunity cost of nostro pre-funding is real and well-documented. Assumes non-interest-bearing accounts; actual cost varies by bank treasury practice. See footnote 2 for sources.">Context<sup><a href="#fn2">[2]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Operating Hours</td>
+            <td class="col-a2a">Typically 24/7 on DLT/permissioned ledger, subject to network risk policy and bilateral agreements</td>
+            <td>RTGS: limited to operating hours and maintenance windows; correspondent layers add timezone, cut-off, and batch processing effects</td>
+          </tr>
+          <tr>
+            <td>FX Handling</td>
+            <td class="col-a2a">On-ledger real-time FX at point of redemption; originating bank captures the spread rather than losing it to correspondents</td>
+            <td>Opaque spread markups at each correspondent hop; spread captured by intermediaries rather than the originating bank <span class="tag tag-tradeoff" title="This is a commercial redistribution of FX revenue between institutions. Correspondent banks provide genuine currency conversion services; A2A shifts where that revenue lands. See footnote 4.">Trade-off<sup><a href="#fn4">[4]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Data per Transaction</td>
+            <td class="col-a2a">ISO 20022: substantially richer structured data than legacy MT; automated reconciliation; approximately 30% fewer exceptions vs. MT-based workflows<sup><a href="#fn5">[5]</a></sup></td>
+            <td>Legacy MT messages carry far fewer data fields than ISO 20022; manual reconciliation required; high exception rates; zero real-time payment status visibility<sup><a href="#fn5">[5]</a></sup></td>
+          </tr>
+          <tr>
+            <td>Reconciliation</td>
+            <td class="col-a2a">Automated, ledger-native via ISO 20022 rich data; immutable audit trail from token minting</td>
+            <td>Manual, exception-heavy; post-hoc audit trail reconstruction from multiple systems at multiple institutions</td>
+          </tr>
+          <tr>
+            <td>Programmability</td>
+            <td class="col-a2a">Full conditional logic: escrow, milestone payments, trade finance automation, atomic settlement</td>
+            <td>Static instructions only; no conditional logic or programmable execution in legacy MT messaging</td>
+          </tr>
+          <tr>
+            <td>KYC/AML Overhead</td>
+            <td class="col-a2a">Shared attestation across network participants; graduated KYC tiers; compliance data travels with the payment</td>
+            <td>Repeated independently at each correspondent hop; each bank runs its own checks on the same counterparties <span class="tag tag-tradeoff" title="Repeated KYC is both a cost driver and a genuine compliance safeguard. Each correspondent bank bears independent regulatory responsibility. A2A shared attestation reduces duplication but requires trust in the shared framework. See footnote 10.">Trade-off<sup><a href="#fn10">[10]</a></sup></span></td>
+          </tr>
+          <tr>
+            <td>Audit Trail</td>
+            <td class="col-a2a">Immutable from token minting; regulatory reporting embedded at the ledger layer from inception</td>
+            <td>Fragmented; reconstructed from multiple systems at multiple institutions after the fact</td>
+          </tr>
+          <tr>
+            <td>PCI Scope</td>
+            <td class="col-a2a">Reduced; actual account data never transits the tokenized rail</td>
+            <td>Full account data transits through all intermediaries in the correspondent chain</td>
+          </tr>
+          <tr>
+            <td>Settlement Mechanism</td>
+            <td class="col-a2a">Token transfer on-ledger; net settlement via RTGS or bilateral netting at end-of-cycle; RTGS is retained as the final settlement backbone</td>
+            <td>Payment-by-payment SWIFT instructions; gross RTGS settlement on central bank books for each individual transaction</td>
+          </tr>
+          <tr>
+            <td>Network Reach</td>
+            <td class="col-a2a">Limited to participating institutions currently; A2A network effects are still building <span class="tag tag-tradeoff" title="A2A's current ceiling is network reach. For corridors not yet served by A2A participants, correspondent banking remains the only option. See footnote 11.">Trade-off<sup><a href="#fn11">[11]</a></sup></span></td>
+            <td>SWIFT connects over 11,000 financial institutions across 200-plus countries; established global reach with deep liquidity pools. That is a genuine structural strength of the correspondent model<sup><a href="#fn11">[11]</a></sup></td>
+          </tr>
+          <tr>
+            <td>Governance and Risk</td>
+            <td class="col-a2a">Closed multilateral platform with shared rules; consistency enforced by protocol; participants are known and permissioned</td>
+            <td>Bilateral correspondent relationships and SLAs; credit and FX risk held in intermediaries; RTGS operates with a central bank/sovereign backstop</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.78rem;color:var(--muted);margin-top:1.25rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;">For operational risk questions see the <a href="faq.html" style="color:var(--accent-lt);">FAQ</a>, particularly <a href="faq.html" style="color:var(--accent-lt);">What happens when a participant fails</a> and <a href="faq.html" style="color:var(--accent-lt);">Is tokenized A2A the same as Pix or FedNow</a>.</p>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-box-label" data-i18n="insight1-label">Key Insight</div>
+      <p>
+        <strong>A2A is not an RTGS replacement. It is an enhancement.</strong> RTGS remains the final settlement layer (central bank money); A2A is the transaction layer that uses RTGS for net settlement at end-of-cycle. RTGS is not eliminated. It is abstracted and used far more efficiently. That shift drives fewer intermediaries, less capital lock-up, faster perceived settlement, and richer compliance data. <strong>The primary near-term limitation of A2A is network reach:</strong> SWIFT's 11,000-plus member institution footprint represents a global coverage that tokenized A2A networks are still building toward, and correspondent banking remains the only viable option for corridors not yet served by A2A participants.<sup><a href="#fn11">[11]</a></sup>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ SECTION 4: DECISION MATRIX ═══════════════════════════════════════ -->
+<section id="decision" style="border-top: 1px solid var(--edge);">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="s4-kicker">Quick Reference</p>
+    <h2 class="sec-title" data-i18n="s4-title">Scenario Decision Matrix: which infrastructure, when</h2>
+    <p class="sec-intro">
+      The correct infrastructure choice depends on the scenario, counterparty type, market maturity, and regulatory environment. No single infrastructure is universally superior. Each is fit for specific use cases, and the most capable bank architectures combine all three in the correct dependency order. Correspondent banking retains a role wherever A2A network reach has not yet extended.
+    </p>
+
+    <div class="decision-grid">
+      <div class="decision-row header-row">
+        <div class="decision-scenario">Scenario</div>
+        <div class="decision-rec">Recommended Infrastructure</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Institutional B2B cross-border payments between regulated banks in networked corridors</div>
+        <div class="decision-rec rec-a2a">Tokenized A2A</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Consumer remittances to unbanked or underbanked recipients</div>
+        <div class="decision-rec rec-stable">Stablecoin (public) or consumer fast-payment rail</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Domestic high-value wholesale settlement in central bank money</div>
+        <div class="decision-rec rec-rtgs">RTGS</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Cross-border trade finance with conditional milestone logic</div>
+        <div class="decision-rec rec-a2a">Tokenized A2A (programmable)</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Crypto-native commerce, DeFi integration, on-chain settlement</div>
+        <div class="decision-rec rec-stable">Stablecoin infrastructure</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Bank-issued digital currency for institutional corporate clients</div>
+        <div class="decision-rec rec-both">Bank-issued stablecoin on A2A rails</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Markets with nascent or absent fast-payment infrastructure</div>
+        <div class="decision-rec rec-a2a">Tokenized A2A (greenfield advantage)</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Markets with mature instant payment schemes already deployed</div>
+        <div class="decision-rec rec-both">A2A as institutional overlay or stablecoin for specific use cases</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Tokenized money market fund distribution in local currency</div>
+        <div class="decision-rec rec-a2a">Tokenized A2A as distribution rail</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Corporate treasury FX optimization across multi-currency corridors</div>
+        <div class="decision-rec rec-a2a">Tokenized A2A with on-ledger FX capture</div>
+      </div>
+      <div class="decision-row">
+        <div class="decision-scenario">Cross-border payments to corridors not yet served by A2A participants</div>
+        <div class="decision-rec rec-rtgs">Correspondent banking (SWIFT/RTGS): still the only viable option for many corridors</div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <div class="insight-box-label" data-i18n="insight2-label">Practical Synthesis</div>
+      <p>
+        <strong>Stablecoin/CBDC = enabling layer</strong> (what is the digital money?). <strong>A2A = institutional payment rail</strong> (how do banks move it at scale?). <strong>RTGS = settlement backbone</strong> (how do positions net finally?). The most compelling institutional deployments combine all three in the correct order of dependency, not as competing bids for budget but as complementary layers of a single coherent architecture. Correspondent banking retains a genuine and important role for global reach in corridors where A2A network participants have not yet been established.
+      </p>
+    </div>
+
+    <div class="cta-block">
+      <h3 data-i18n="cta-h">Ready to move from framework to deployment?</h3>
+      <p data-i18n="cta-p">Post Oak Labs works with commercial banks, central banks, and large corporates that are ready to design and deploy tokenized A2A infrastructure. We have built production systems in the Caribbean and South Asia. We know what works.</p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+        <a href="mailto:contact@postoaklabs.com" class="btn-primary">contact@postoaklabs.com</a>
+        <a href="a2a-workflow.html" class="btn-outline">A2A Architecture Deep-Dive →</a>
+        <a href="a2a-payments.html" class="btn-outline">Market Coverage and Ideal Client →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ FOOTNOTES ═══════════════════════════════════════ -->
+<div class="cmp-footnotes">
+  <div class="container">
+    <h3 data-i18n="fn-heading">References and Notes</h3>
+    <ol>
+      <li id="fn1">
+        <strong>On contextual tags ("Trade-off" / "Context"):</strong> Where this document notes a structural difference between infrastructure models, the hover tag indicates whether the difference is a structural trade-off (each model makes a rational choice with associated costs and benefits) or a context-dependent distinction (neither is universally better; fitness depends on use case, user population, and regulatory environment). No cell in either comparison table implies that one infrastructure is globally superior. Each is fit for specific scenarios; the Decision Matrix provides scenario-level guidance.
+      </li>
+      <li id="fn2">
+        <strong>$27 trillion nostro/vostro pre-funding estimate:</strong> This is an industry estimate cited across multiple sources, including the Keyrock stablecoin report (cited in <a href="https://www.opendue.com/blog/correspondent-banking-how-it-works-and-why-its-expensive" target="_blank">opendue.com's correspondent banking explainer</a>), <a href="https://www.thegccedge.com/the-27-trillion-dollar-liquidity-problem-in-global-trade/" target="_blank">The GCC Edge (March 2026)</a>, and the <a href="https://fedpaymentsimprovement.org/news/blog/payments-across-borders-three-observations-on-challenges-and-developments/" target="_blank">Federal Reserve Payments Improvement blog</a>. It is not an official BIS or IMF statistic. Some 2025 sources cite figures closer to $28 trillion. At a 5% rate, holding $1B in a non-interest-bearing nostro account costs approximately $50 million per year in foregone yield (opendue.com). In practice, actual opportunity cost varies by bank treasury management: some nostro balances are swept into overnight facilities and earn partial returns, though typically well below what that capital could earn deployed productively. The opportunity cost is documented; the $50M/year figure represents the upper bound assuming zero yield on the balance. Stablecoin full reserve backing is a structural choice for issuer solvency, not the same as nostro pre-funding inefficiency; the two should not be directly equated.
+      </li>
+      <li id="fn3">
+        <strong>Stablecoin reserve quality and regulatory frameworks:</strong> Reserve composition varies significantly by issuer. The GENIUS Act (Guiding and Establishing National Innovation for US Stablecoins Act) was signed into law on July 18, 2025, with requirements entering into force on August 4, 2025 (the July 18 date is the signing date; August 4 is the effective date; source: Congress.gov), the first federal US regulatory framework for payment stablecoins. It requires 1:1 reserve backing with US dollars or short-term Treasuries, prohibits algorithmic stablecoins, and subjects issuers to AML/BSA obligations. Circle's USDC reserves consist predominantly of cash and short-dated US Treasuries; Tether's reserve mix differs and includes assets outside GENIUS's permitted list for US issuance. MiCA imposes comparable requirements in the EU. See <a href="https://economics.td.com/us-stablecoins-enter-the-mainstream" target="_blank">TD Economics, "Stablecoins Enter the Mainstream"</a> and <a href="https://www.ecb.europa.eu/press/financial-stability-publications/fsr/focus/2025/html/ecb.fsrbox202511_05~63636227b4.en.html" target="_blank">ECB Financial Stability Review, November 2025</a>. Reserve risk is issuer-specific, not a universal property of stablecoins as a class.
+      </li>
+      <li id="fn4">
+        <strong>On open vs. restricted access, and FX revenue redistribution:</strong> Open wallet-based access is a structural feature of public stablecoin infrastructure, enabling consumer remittances, DeFi, and financial inclusion for unbanked populations. Restricted permissioned access is a structural feature of institutional A2A rails, enabling KYC/AML compliance and regulatory oversight. Neither is universally preferable; they serve different user populations and regulatory contexts. The FX revenue shift in A2A (from correspondent bank margin to originating bank margin) is a commercial redistribution. Correspondent banks provide genuine currency conversion services; A2A changes which institution captures that revenue.
+      </li>
+      <li id="fn5">
+        <strong>ISO 20022 vs. legacy MT data richness:</strong> ISO 20022 MX messages can carry significantly more structured data than legacy MT messages. SWIFT's own standards documentation confirms that ISO 20022 "reporting messages support much richer data than MT"; see <a href="https://www.swift.com/standards/iso-20022/iso-20022-standards" target="_blank">SWIFT ISO 20022 standards page</a> (primary source) and <a href="https://www.iso20022.org" target="_blank">iso20022.org</a> for field-level specifications. A commonly cited figure is up to 10× more data capacity vs. MT, per <a href="https://medium.com/@scrumfox/a-technical-deep-dive-into-iso-20022-xml-messaging-cac7524666b8" target="_blank">technical analysis published December 2025</a> (secondary source; readers should cross-reference against SWIFT primary documentation). The approximately 30% reduction in payment exceptions is cited by Post Oak Labs based on production deployment experience and ISO 20022 migration industry benchmarking, corroborated by SWIFT's own ISO 20022 migration progress reporting and ACI Worldwide ISO 20022 guidance on straight-through processing improvements.
+      </li>
+      <li id="fn6">
+        <strong>Stablecoin transaction volume and market size:</strong> On-chain stablecoin transaction volume exceeded $8.9 trillion in H1 2025 per <a href="https://coinlaw.io/stablecoin-market-share-by-chain-statistics/" target="_blank">Coinlaw.io / DefiLlama</a>. This is gross on-chain settlement volume; net economic transfer value is materially lower due to market-maker liquidity recycling and arbitrage activity. Total stablecoin market outstanding reached approximately $310 billion by end-2025, up from roughly $205 billion at the start of the year, per <a href="https://thedefiant.io/news/defi/stablecoins-became-crypto-s-first-mainstream-use-case-in-2025" target="_blank">The Defiant / DefiLlama, December 2025</a>. Monthly on-chain volume exceeded $1 trillion for the first time in September 2025, per <a href="https://info.arkm.com/research/how-stablecoins-reached-a-300-billion-market-cap-in-2025" target="_blank">Arkham Intelligence, October 2025</a>.
+      </li>
+      <li id="fn7">
+        <strong>Correspondent banking intermediary count and cost range:</strong> The 3–5 intermediary hop estimate and 2.5–5% total cost range are widely cited. <a href="https://www.opendue.com/blog/correspondent-banking-how-it-works-and-why-its-expensive" target="_blank">Opendue.com</a> cites individual wire fees of $15–50 per intermediary with 1–4% total fees across corridors; the Keyrock stablecoin report estimates pre-funding costs at 3–5% annually on balances held. The 2.5–5% figure used by Post Oak Labs reflects higher-friction corridors including FX spread. Lower-friction corridors may be materially cheaper. <strong>Important B2B/B2C distinction:</strong> The World Bank's widely cited ~6.4% average remittance cost (Q3 2025) is a metric for small-value, retail/B2C transfers: consumer remittances, not institutional B2B payments. B2B cross-border payments via SWIFT gpi are often cheaper in percentage terms and settle within hours on standard routes per corrected SWIFT gpi data. The cost framing on this page targets B2B institutional corridors; readers should not conflate B2C remittance averages with institutional B2B payment economics.
+      </li>
+      <li id="fn8">
+        <strong>A2A fee estimate (~0.2%):</strong> This figure is cited by Post Oak Labs as a direct settlement fee benchmark based on production deployments and industry benchmarking; see <a href="https://postoaklabs.com/a2a-workflow.html" target="_blank">a2a-workflow.html cost case</a>. It does not include FX conversion fees captured at point of redemption, which represent revenue to the originating bank rather than a cost to the sender. For context on external ranges: credit card fees approximately 2.5%, debit card approximately 1.5%. ACH (domestic US) is primarily a flat-fee instrument, typically $0.20–$1.50 per transaction at institutional/bank-direct rates, and free at many major banks; some third-party processors charge 0.5%–1.5% as a markup. For external industry ranges on A2A specifically: Noda (2024) reports 0.1–0.8% for merchant-facing A2A; FSB G20 Roadmap targets retail cross-border costs well below 1%; OpenDue (2025) cites 1–4% all-in for many correspondent banking corridors.
+      </li>
+      <li id="fn9">
+        <strong>Settlement speed: SWIFT gpi and multi-CBDC corridors:</strong> SWIFT's own published data shows approximately 60% of gpi payments are credited to end beneficiaries within 30 minutes, and nearly all within 24 hours on connected routes (corridor-dependent) (<a href="https://www.swift.com/our-solutions/swift-gpi" target="_blank" rel="noopener">SWIFT gpi page</a>; October 2024 SWIFT press release). A BIS working paper on gpi data reports a median end-to-end processing time of approximately 1 hour 38 minutes across all routes. Delays beyond 24 hours occur primarily in corridors with capital controls, legacy back-office systems, or significant time-zone mismatches; they are not typical of standard gpi routing between connected markets. The under-10-second cross-border settlement finality figure refers to proof-of-concept results from <a href="https://www.bis.org/about/bisih/topics/cbdc/mbridge.htm" target="_blank" rel="noopener">Project mBridge</a> (originally involving the BIS Innovation Hub, Hong Kong Monetary Authority, Bank of Thailand, Digital Currency Institute of the People's Bank of China, and Central Bank of the UAE) and the Jasper-Ubin experiment (Bank of Canada/Monetary Authority of Singapore). These are PoC results under controlled conditions, not production at scale. <strong>Governance note:</strong> The BIS Innovation Hub stepped back from Project mBridge in October 2024, describing this as the project reaching operational maturity and transitioning to participant central bank governance. The project's current status should be verified with the remaining participant central banks before citing it as an active BIS-endorsed initiative.
+      </li>
+      <li id="fn10">
+        <strong>On repeated KYC as cost driver and compliance safeguard:</strong> Repeated KYC checks at each correspondent hop are simultaneously an operational cost driver and a genuine regulatory safeguard. Each institution in the chain bears independent responsibility for sanctions screening and AML compliance under its own jurisdiction's rules. A2A shared attestation frameworks reduce duplication but require participating institutions to trust the network's shared compliance architecture, which itself requires governance agreements, legal frameworks, and regulatory approval in each relevant jurisdiction. The efficiency gain is well-documented; the transition requires careful regulatory sequencing.
+      </li>
+      <li id="fn11">
+        <strong>SWIFT global reach and A2A network limitations:</strong> SWIFT connects over 11,000 financial institutions across more than 200 countries and territories. See <a href="https://www.swift.com/standards/iso-20022/iso-20022-standards" target="_blank">swift.com</a>. Tokenized A2A networks are expanding but currently reach a fraction of this footprint. For cross-border corridors not yet served by A2A network participants, correspondent banking via SWIFT remains the only viable institutional option. A2A's current ceiling is network reach. SWIFT connects 11,000 institutions across 200+ countries; A2A does not. This is a genuine structural advantage of the correspondent banking model that institutions should weigh in their architecture and vendor decisions. Post Oak Labs focuses on corridors and markets where A2A network effects are practical to establish; see <a href="https://postoaklabs.com/a2a-payments.html" target="_blank">a2a-payments.html</a>.
+      </li>
+      <li id="fn12">
+        <strong>Permissioned DLT vendors and protocols:</strong> The permissioned DLT layer encompasses a range of vendor implementations and open-source protocols with meaningfully different architectural characteristics. Key examples include: <strong>Hyperledger Besu</strong>, an open-source, EVM-compatible client maintained under the Linux Foundation's Hyperledger umbrella, enabling Solidity smart contracts and interoperability with public Ethereum tooling within a permissioned network; <strong>Hyperledger Fabric</strong>, also open-source under the Linux Foundation, a modular framework using a distinct execute-order-validate architecture with pluggable consensus, widely deployed in enterprise and trade finance applications; and <strong>R3 Corda</strong>, a proprietary platform purpose-built for regulated financial institutions, with point-to-point transaction visibility, CorDapps as the smart contract layer, and a commercial licensing model. Banks and corporates should treat vendor and protocol selection as a material architecture decision. Not all permissioned DLT is equivalent in governance model, licensing cost, regulatory acceptance, or interoperability with RTGS and CBDC infrastructure. For a detailed, practitioner-authored comparison of these platforms, see the <a href="enterprise-blockchain.html" target="_blank" rel="noopener" style="color:var(--accent-lt);">Post Oak Labs Enterprise Blockchain Market Briefing →</a>
+      </li>
+    </ol>
+  </div>
+</div>
+
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {
+    "hero-eyebrow": "Post Oak Labs · Infrastructure Comparison Framework",
+    "hero-h1": "Three layers. One stack. <em>Knowing the difference</em> is the entire game.",
+    "hero-sub": "Tokenized A2A, stablecoin infrastructure, and correspondent banking occupy distinct layers of the institutional payment stack. This framework is a fully consolidated reference for banks and corporates evaluating where tokenization fits in their architecture and revenue model.",
+    "hero-cta-primary": "Talk to Post Oak Labs",
+    "hero-cta-stack": "See the stack →",
+    "s1-kicker": "The Institutional Payment Stack",
+    "s1-title": "Where each layer sits, and why the order matters",
+    "s2-kicker": "Comparison 01",
+    "s2-title": "Tokenized A2A vs. Stablecoin Infrastructure",
+    "s3-kicker": "Comparison 02",
+    "s3-title": "Tokenized A2A vs. Correspondent Banking / RTGS",
+    "s4-kicker": "Quick Reference",
+    "s4-title": "Scenario Decision Matrix: which infrastructure, when",
+    "cta-h": "Ready to move from framework to deployment?",
+    "cta-p": "Post Oak Labs works with commercial banks, central banks, and large corporates that are ready to design and deploy tokenized A2A infrastructure. We have built production systems in the Caribbean and South Asia. We know what works.",
+    "insight1-label": "Key Insight",
+    "insight2-label": "Practical Synthesis",
+    "fn-heading": "References and Notes"
+  },
+  es: {
+    "hero-eyebrow": "Post Oak Labs · Marco de Comparación de Infraestructura",
+    "hero-h1": "Tres capas. Una pila. <em>Conocer la diferencia</em> es todo el juego.",
+    "hero-sub": "A2A tokenizado, infraestructura de stablecoin y banca corresponsal ocupan capas distintas de la pila de pagos institucionales. Este marco es una referencia consolidada para bancos y corporativos que evalúan dónde encaja la tokenización en su arquitectura.",
+    "hero-cta-primary": "Hablar con Post Oak Labs",
+    "hero-cta-stack": "Ver la pila →",
+    "s1-kicker": "La Pila de Pagos Institucionales",
+    "s1-title": "Dónde se ubica cada capa y por qué el orden importa",
+    "s2-kicker": "Comparación 01",
+    "s2-title": "A2A Tokenizado vs. Infraestructura Stablecoin",
+    "s3-kicker": "Comparación 02",
+    "s3-title": "A2A Tokenizado vs. Banca Corresponsal / RTGS",
+    "s4-kicker": "Referencia Rápida",
+    "s4-title": "Matriz de Decisión por Escenario: qué infraestructura y cuándo",
+    "cta-h": "¿Listo para pasar del marco al despliegue?",
+    "cta-p": "Post Oak Labs trabaja con bancos comerciales, bancos centrales y grandes corporativos listos para diseñar y desplegar infraestructura A2A tokenizada. Hemos construido sistemas de producción en el Caribe y el Sur de Asia. Sabemos qué funciona.",
+    "insight1-label": "Perspectiva Clave",
+    "insight2-label": "Síntesis Práctica",
+    "fn-heading": "Referencias y Notas"
+  },
+  fr: {
+    "hero-eyebrow": "Post Oak Labs · Cadre de Comparaison des Infrastructures",
+    "hero-h1": "Trois couches. Une pile. <em>Connaître la différence</em> est tout l'enjeu.",
+    "hero-sub": "L'A2A tokenisé, l'infrastructure stablecoin et la banque correspondante occupent des couches distinctes de la pile de paiements institutionnels. Ce cadre est une référence consolidée pour les banques et les entreprises qui évaluent la place de la tokenisation dans leur architecture.",
+    "hero-cta-primary": "Parler à Post Oak Labs",
+    "hero-cta-stack": "Voir la pile →",
+    "s1-kicker": "La Pile de Paiements Institutionnels",
+    "s1-title": "Où se situe chaque couche et pourquoi l'ordre compte",
+    "s2-kicker": "Comparaison 01",
+    "s2-title": "A2A Tokenisé vs. Infrastructure Stablecoin",
+    "s3-kicker": "Comparaison 02",
+    "s3-title": "A2A Tokenisé vs. Banque Correspondante / RTGS",
+    "s4-kicker": "Référence Rapide",
+    "s4-title": "Matrice de Décision par Scénario : quelle infrastructure et quand",
+    "cta-h": "Prêt à passer du cadre au déploiement ?",
+    "cta-p": "Post Oak Labs travaille avec des banques commerciales, des banques centrales et de grandes entreprises prêtes à concevoir et déployer une infrastructure A2A tokenisée. Nous avons construit des systèmes de production aux Caraïbes et en Asie du Sud. Nous savons ce qui fonctionne.",
+    "insight1-label": "Point Clé",
+    "insight2-label": "Synthèse Pratique",
+    "fn-heading": "Références et Notes"
+  },
+  ar: {
+    "hero-eyebrow": "Post Oak Labs · إطار المقارنة بين البنى التحتية",
+    "hero-h1": "ثلاث طبقات. منظومة واحدة. <em>معرفة الفرق</em> هي جوهر اللعبة.",
+    "hero-sub": "تشغل بنية A2A المرمّزة وبنية العملة المستقرة والمصرفية المراسلة طبقات متمايزة في منظومة المدفوعات المؤسسية. يمثّل هذا الإطار مرجعاً موحداً للبنوك والشركات التي تقيّم موضع التوكينزيشن في بنيتها التحتية ونموذج إيراداتها.",
+    "hero-cta-primary": "تحدّث مع Post Oak Labs",
+    "hero-cta-stack": "استعرض المنظومة →",
+    "s1-kicker": "منظومة المدفوعات المؤسسية",
+    "s1-title": "موقع كل طبقة وسبب أهمية الترتيب",
+    "s2-kicker": "مقارنة 01",
+    "s2-title": "A2A المرمّزة مقابل بنية العملة المستقرة",
+    "s3-kicker": "مقارنة 02",
+    "s3-title": "A2A المرمّزة مقابل المصرفية المراسلة / RTGS",
+    "s4-kicker": "مرجع سريع",
+    "s4-title": "مصفوفة القرار حسب السيناريو: أيّ بنية تحتية ومتى",
+    "cta-h": "هل أنت مستعد للانتقال من الإطار إلى التطبيق الفعلي؟",
+    "cta-p": "تعمل Post Oak Labs مع البنوك التجارية والبنوك المركزية والشركات الكبرى المستعدة لتصميم ونشر بنية A2A المرمّزة. لقد بنينا أنظمة إنتاجية في منطقة البحر الكاريبي وجنوب آسيا. نحن نعرف ما ينجح.",
+    "insight1-label": "رؤية أساسية",
+    "insight2-label": "تركيب عملي",
+    "fn-heading": "المراجع والملاحظات"
+  },
+  pt: {
+    "hero-eyebrow": "Post Oak Labs · Estrutura de Comparação de Infraestrutura",
+    "hero-h1": "Três camadas. Uma pilha. <em>Conhecer a diferença</em> é todo o jogo.",
+    "hero-sub": "A2A tokenizado, infraestrutura de stablecoin e banco correspondente ocupam camadas distintas da pilha de pagamentos institucionais. Esta estrutura é uma referência consolidada para bancos e corporativos que avaliam onde a tokenização se encaixa em sua arquitetura e modelo de receita.",
+    "hero-cta-primary": "Falar com o Post Oak Labs",
+    "hero-cta-stack": "Ver a pilha →",
+    "s1-kicker": "A Pilha de Pagamentos Institucionais",
+    "s1-title": "Onde cada camada se situa e por que a ordem importa",
+    "s2-kicker": "Comparação 01",
+    "s2-title": "A2A Tokenizado vs. Infraestrutura Stablecoin",
+    "s3-kicker": "Comparação 02",
+    "s3-title": "A2A Tokenizado vs. Banco Correspondente / RTGS",
+    "s4-kicker": "Referência Rápida",
+    "s4-title": "Matriz de Decisão por Cenário: qual infraestrutura e quando",
+    "cta-h": "Pronto para passar do framework para o deploy?",
+    "cta-p": "O Post Oak Labs trabalha com bancos comerciais, bancos centrais e grandes corporativos prontos para projetar e implantar infraestrutura A2A tokenizada. Construímos sistemas de produção no Caribe e no Sul da Ásia. Sabemos o que funciona.",
+    "insight1-label": "Insight Principal",
+    "insight2-label": "Síntese Prática",
+    "fn-heading": "Referências e Notas"
+  },
+  zh: {
+    "hero-eyebrow": "Post Oak Labs · 基础设施比较框架",
+    "hero-h1": "三层架构。一套体系。<em>理解差异</em>，才是关键所在。",
+    "hero-sub": "代币化A2A、稳定币基础设施与代理行银行业务分别占据机构支付体系的不同层级。本框架是供银行及企业评估代币化在其架构和收入模型中适配位置的全面参考资料。",
+    "hero-cta-primary": "联系 Post Oak Labs",
+    "hero-cta-stack": "查看体系架构 →",
+    "s1-kicker": "机构支付体系",
+    "s1-title": "各层级的位置及其顺序的重要性",
+    "s2-kicker": "比较 01",
+    "s2-title": "代币化A2A vs. 稳定币基础设施",
+    "s3-kicker": "比较 02",
+    "s3-title": "代币化A2A vs. 代理行银行业务 / RTGS",
+    "s4-kicker": "快速参考",
+    "s4-title": "场景决策矩阵：选择哪种基础设施及适用时机",
+    "cta-h": "准备好从框架走向实际部署了吗？",
+    "cta-p": "Post Oak Labs与准备设计和部署代币化A2A基础设施的商业银行、中央银行及大型企业合作。我们已在加勒比海地区和南亚建立了生产级系统。我们深知什么能够切实落地。",
+    "insight1-label": "核心洞察",
+    "insight2-label": "实践综合",
+    "fn-heading": "参考文献与注释"
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>

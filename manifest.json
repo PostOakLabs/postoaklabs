@@ -1,0 +1,41 @@
+{
+  "name": "Post Oak Labs",
+  "short_name": "Post Oak Labs",
+  "description": "Tokenized payment infrastructure, stablecoin strategy, and CBDC advisory for institutions across Latin America, Africa, the Caribbean, and South Asia.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#0a1828",
+  "theme_color": "#0a1828",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

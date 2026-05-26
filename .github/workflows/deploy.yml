@@ -1,0 +1,181 @@
+name: Deploy postoaklabs.com
+
+# push to main      → validate, then deploy to DreamHost
+# pull_request      → validate only (no deploy)
+# workflow_dispatch → validate, then deploy (Actions tab → Run workflow)
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run only (rsync --dry-run, no files transferred)"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+
+# Limit the default GITHUB_TOKEN to read-only (least privilege).
+permissions:
+  contents: read
+
+# Never run two deploys at once; let an in-progress deploy finish.
+concurrency:
+  group: pol-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  validate:
+    name: Validate (HTML + links)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Validate HTML
+        run: npx --yes html-validate@11 "**/*.html"
+
+      - name: Check internal links
+        if: ${{ !cancelled() }}
+        run: python3 .github/scripts/check-links.py
+
+  # ──────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to DreamHost
+    needs: validate
+    # Deploy on pushes to main and manual runs — never on pull requests.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      # ── 1. Guard: abort early if any required secret is missing ────────────
+      - name: Verify required secrets are present
+        env:
+          DH_SSH_KEY:  ${{ secrets.DH_SSH_KEY }}
+          DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
+          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
+          DH_WEB_ROOT: ${{ secrets.DH_WEB_ROOT }}
+          DH_SITE_URL: ${{ secrets.DH_SITE_URL }}
+        run: |
+          set -euo pipefail
+          missing=()
+          [ -z "${DH_SSH_KEY:-}"  ] && missing+=(DH_SSH_KEY)
+          [ -z "${DH_SSH_USER:-}" ] && missing+=(DH_SSH_USER)
+          [ -z "${DH_SSH_HOST:-}" ] && missing+=(DH_SSH_HOST)
+          [ -z "${DH_WEB_ROOT:-}" ] && missing+=(DH_WEB_ROOT)
+          [ -z "${DH_SITE_URL:-}" ] && missing+=(DH_SITE_URL)
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing repository secrets: ${missing[*]}"
+            echo "::error::Go to Settings → Secrets and variables → Actions and add the missing secrets."
+            exit 1
+          fi
+          echo "All required secrets are present."
+
+      # ── 2. Install SSH key and accept host fingerprint ─────────────────────
+      - name: Install SSH key
+        env:
+          DH_SSH_KEY:  ${{ secrets.DH_SSH_KEY }}
+          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          # tr -d '\r' strips Windows CRLF that corrupts PEM keys pasted from Windows
+          echo "$DH_SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DH_SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+          # Verify key was written correctly (safe — does not expose key content)
+          echo "Key header : $(head -1 ~/.ssh/deploy_key)"
+          echo "Key footer : $(tail -1 ~/.ssh/deploy_key)"
+          echo "Permissions: $(stat -c %a ~/.ssh/deploy_key)"
+
+      # ── 3. SSH connectivity test (fail fast before rsync) ─────────────────
+      - name: Test SSH connectivity
+        env:
+          DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
+          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
+        run: |
+          set -euo pipefail
+          echo "Testing SSH connection to ${DH_SSH_HOST}…"
+          ssh -i ~/.ssh/deploy_key \
+              -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=no \
+              -o ConnectTimeout=15 \
+              -o BatchMode=yes \
+              "${DH_SSH_USER}@${DH_SSH_HOST}" "echo 'SSH OK'"
+
+      # ── 4. Dry-run rsync (always runs; shows what would change) ───────────
+      - name: rsync dry run
+        env:
+          DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
+          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
+          DH_WEB_ROOT: ${{ secrets.DH_WEB_ROOT }}
+        run: |
+          set -euo pipefail
+          echo "=== DRY RUN — no files will be transferred ==="
+          rsync -rltvz --checksum --dry-run \
+            --exclude-from=.deployignore \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no" \
+            ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
+
+      # ── 5. Live deploy (skipped when dry_run input is "true") ─────────────
+      - name: Deploy (rsync live)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
+          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
+          DH_WEB_ROOT: ${{ secrets.DH_WEB_ROOT }}
+        run: |
+          set -euo pipefail
+          echo "=== LIVE DEPLOY ==="
+          # -r recursive  -l preserve symlinks  -t preserve times
+          # -z compress   -v verbose
+          # --checksum: compare by content hash, not mtime
+          #   (git checkouts have fresh mtimes; mtime comparison is unreliable)
+          # No --delete: additive only — never removes files already on the server
+          #   (handles assets that aren't committed to the repo)
+          rsync -rltvz --checksum \
+            --exclude-from=.deployignore \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no" \
+            ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
+
+      # ── 6. Smoke test: verify the site is reachable after deploy ──────────
+      - name: Smoke test (HTTP 200 check)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          DH_SITE_URL: ${{ secrets.DH_SITE_URL }}
+        run: |
+          set -euo pipefail
+          echo "Checking ${DH_SITE_URL}…"
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
+                   --max-time 15 --retry 3 --retry-delay 5 \
+                   "${DH_SITE_URL}")
+          if [ "$STATUS" -ne 200 ]; then
+            echo "::error::Smoke test failed — ${DH_SITE_URL} returned HTTP ${STATUS}"
+            exit 1
+          fi
+          echo "Smoke test passed (HTTP ${STATUS})."
+
+      # ── 7. Deploy summary ─────────────────────────────────────────────────
+      - name: Deploy summary
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          PAGE_COUNT=$(find . -name "*.html" ! -path './.git/*' ! -path './.github/*' | wc -l)
+          echo "## Deploy complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Item | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pages deployed | $PAGE_COUNT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Site | ${{ secrets.DH_SITE_URL }} |" >> $GITHUB_STEP_SUMMARY

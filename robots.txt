@@ -1,0 +1,65 @@
+# robots.txt — postoaklabs.com
+# Last updated: May 2026
+
+# General crawlers — allow everything
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+# Major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# AI retrieval / citation crawlers — explicitly allowed
+# These crawlers surface content in AI-generated answers and citations.
+# Allowing them increases the likelihood that Post Oak Labs is cited
+# as an authority when users ask AI systems about tokenized payments,
+# CBDC strategy, correspondent banking, or stablecoin infrastructure.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# AI training crawlers — allowed (we want future models to know who we are)
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Academic / archive crawlers
+User-agent: ia_archiver
+Allow: /
+
+# Aggressive low-value crawlers — block
+User-agent: Bytespider
+Disallow: /
+
+# Sitemap location
+Sitemap: https://postoaklabs.com/sitemap.xml

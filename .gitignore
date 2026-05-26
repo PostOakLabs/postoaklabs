@@ -1,0 +1,40 @@
+# ──────────────────────────────────────────────────────────────
+# postoaklabs.com — repository ignore rules
+# Only the deployable website + CI machinery is tracked in this repo.
+# Internal docs and the source for other properties stay local-only;
+# nothing below is moved or deleted, it is simply left untracked.
+# ──────────────────────────────────────────────────────────────
+
+# Internal working docs (audit reports, handover notes, deploy logs)
+*.md
+!README.md
+
+# Internal reference data
+*.csv
+
+# Pre-sweep rollback archive
+_archive_pre_sweep_2026-05-11/
+
+# Source for the separate-domain partner sites (Meridian, Apex)
+Partners/
+
+# Standalone Python project — not part of the website
+address-forge/
+
+# Historical tool archives (these tools now live on ainumbers.co)
+erratatoolsatainumbers/
+toolsnowatainumbers/
+
+# Superseded / residue files
+DELETE_ME_*
+
+# OS & editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Node (CI uses npx; nothing should land here, but just in case)
+node_modules/

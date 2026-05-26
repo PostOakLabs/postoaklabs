@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fintech Intelligence Showcase — Post Oak Labs</title>
+
+<!-- Per-page meta (spec Part 5.1) -->
+<meta name="description" content="33 working browser demos from the AINumbers tool catalog. Zero PII. AP2-exportable. MCP-proven. DORA · MiCA · EU AI Act · CBPR+ · FCA DPC · BIS 239 · IFC SME — verified deadlines, working AP2 exports.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/">
+<meta property="og:title" content="Fintech Intelligence Showcase — Post Oak Labs">
+<meta property="og:description" content="33 working browser demos. Zero PII. AP2-exportable. MCP-proven. Acquirer-readiness asset and public showcase in one surface.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/index.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- POL canonical font stack -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD (CollectionPage rather than SoftwareApplication, since this is the catalog index) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Post Oak Labs — Fintech Intelligence Showcase",
+  "url": "https://postoaklabs.com/demos/",
+  "description": "Public catalog of 33 browser-based fintech demos. Each demo is client-side, zero PII, AP2-exportable, and links into the AINumbers.co tool catalog.",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateModified": "2026-05-21",
+  "hasPart": [
+    { "@type": "SoftwareApplication", "name": "Merchant Payment Rails Blender", "url": "https://postoaklabs.com/demos/merchant-payment-rails-blender.html" },
+    { "@type": "SoftwareApplication", "name": "ISO 20022 Message Truncation Auditor", "url": "https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html" },
+    { "@type": "SoftwareApplication", "name": "DORA / NIS2 Dual-Compliance Deduplicator", "url": "https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html" },
+    { "@type": "SoftwareApplication", "name": "LATAM Corridor Liquidity Migration", "url": "https://postoaklabs.com/demos/latam-liquidity-migration-tool.html" },
+    { "@type": "SoftwareApplication", "name": "Nostro Capital Unlock Simulator", "url": "https://postoaklabs.com/demos/nostro-capital-optimization.html" },
+    { "@type": "SoftwareApplication", "name": "Global South SME Lending Passport", "url": "https://postoaklabs.com/demos/sme-credit-passport-global-south.html" },
+    { "@type": "SoftwareApplication", "name": "AP2 Agentic Payment Policy Guardrail", "url": "https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html" },
+    { "@type": "SoftwareApplication", "name": "Stablecoin Issuer Readiness Lab", "url": "https://postoaklabs.com/demos/stablecoin-issuer-readiness-mica-genius.html" },
+    { "@type": "SoftwareApplication", "name": "CFPB §1033 Financial Data Rights Mapper", "url": "https://postoaklabs.com/demos/cfpb-1033-financial-data-rights-mapper.html" },
+    { "@type": "SoftwareApplication", "name": "EU AI Act Article 6 Risk-Class Mapper for FS", "url": "https://postoaklabs.com/demos/eu-ai-act-financial-services-risk-mapper.html" },
+    { "@type": "SoftwareApplication", "name": "AML Transaction Monitoring Rule Builder", "url": "https://postoaklabs.com/demos/aml-transaction-monitoring-rule-builder.html" },
+    { "@type": "SoftwareApplication", "name": "Embedded Lending Unit Economics Lab", "url": "https://postoaklabs.com/demos/embedded-lending-unit-economics-lab.html" },
+    { "@type": "SoftwareApplication", "name": "FedNow / Instant-Payment Fraud Risk Lab", "url": "https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html" },
+    { "@type": "SoftwareApplication", "name": "BaaS Provider Economics & Comparator", "url": "https://postoaklabs.com/demos/baas-provider-economics-comparator.html" },
+    { "@type": "SoftwareApplication", "name": "VASP Travel Rule (FATF R.16) Compliance Checker", "url": "https://postoaklabs.com/demos/vasp-travel-rule-compliance-checker.html" },
+    { "@type": "SoftwareApplication", "name": "KYB Beneficial Ownership Network Mapper", "url": "https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html" },
+    { "@type": "SoftwareApplication", "name": "Wallet Float Yield Estimator", "url": "https://postoaklabs.com/demos/wallet-float-yield-estimator.html" },
+    { "@type": "SoftwareApplication", "name": "VRP Mandate & Sweep Logic Designer", "url": "https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html" },
+    { "@type": "SoftwareApplication", "name": "FATF Readiness Scorer + Sanctions Programme", "url": "https://postoaklabs.com/demos/fatf-sanctions-programme-readiness.html" },
+    { "@type": "SoftwareApplication", "name": "Customer Risk Rating Engine", "url": "https://postoaklabs.com/demos/customer-risk-rating-engine.html" },
+    { "@type": "SoftwareApplication", "name": "Tokenized RWA Compliance Pre-Checker", "url": "https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html" },
+    { "@type": "SoftwareApplication", "name": "ISO 20022 Migration Readiness Scorer", "url": "https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html" },
+    { "@type": "SoftwareApplication", "name": "AP2 AML Mandate Builder", "url": "https://postoaklabs.com/demos/ap2-aml-mandate-builder.html" },
+    { "@type": "SoftwareApplication", "name": "AP2 BaaS Infrastructure Mandate Builder", "url": "https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html" },
+    { "@type": "SoftwareApplication", "name": "Cross-Border FX Netting Simulator", "url": "https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html" },
+    { "@type": "SoftwareApplication", "name": "DORA ICT Risk Gap Analyser", "url": "https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html" },
+    { "@type": "SoftwareApplication", "name": "Agentic Mandate Sandbox", "url": "https://postoaklabs.com/demos/agentic-mandate-sandbox.html" },
+    { "@type": "SoftwareApplication", "name": "Basel IV Capital Stress Lab", "url": "https://postoaklabs.com/demos/basel-iv-capital-stress-lab.html" },
+    { "@type": "SoftwareApplication", "name": "Global Real-Time Rails Comparator", "url": "https://postoaklabs.com/demos/global-real-time-rails-comparator.html" },
+    { "@type": "SoftwareApplication", "name": "Card Programme Design Studio", "url": "https://postoaklabs.com/demos/card-programme-design-studio.html" },
+    { "@type": "SoftwareApplication", "name": "SME Credit Intelligence Platform", "url": "https://postoaklabs.com/demos/sme-credit-intelligence-platform.html" },
+    { "@type": "SoftwareApplication", "name": "Embedded Finance Licensing Navigator", "url": "https://postoaklabs.com/demos/embedded-finance-licensing-navigator.html" },
+    { "@type": "SoftwareApplication", "name": "Timor-Leste × Bangladesh Stablecoin Settlement Bridge", "url": "https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html" }
+  ]
+}
+</script>
+
+<style>
+/* ═══ POL palette (matches live site) ═══ */
+:root {
+  --ink: #050c15;
+  --deep: #0a1628;
+  --navy: #0e1e35;
+  --panel: #142540;
+  --edge: #1e3454;
+  --rim: #2a4a70;
+  --body: #7090b0;
+  --text: #d8e4f0;
+  --muted: #5a7a95;
+  --bright: #ffffff;
+  --white: #ffffff;
+  --accent: #2a7fc0;
+  --accent-lt: #4a9fdf;
+  --gold: #c09040;
+  --gold-lt: #d0a050;
+  --success: #10b981;
+  --warn: #f59e0b;
+  --error: #dc2626;
+}
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--body);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.18; color: var(--bright); }
+a { color: var(--accent-lt); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+/* ═══ POL NAV ═══ */
+nav.pol-nav {
+  background: var(--ink);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a {
+  color: var(--body); text-decoration: none;
+  font-size: 0.86rem; font-weight: 400;
+  transition: color 0.15s;
+}
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
+nav.pol-nav .nav-links a.nav-cta {
+  background: var(--accent);
+  color: #fff !important;
+  padding: 0.4rem 0.95rem;
+  border-radius: 4px;
+}
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+/* ═══ HERO ═══ */
+.showcase-hero {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--edge);
+  background:
+    radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.07) 0%, transparent 70%),
+    radial-gradient(40% 60% at 90% 30%, rgba(192,144,64,0.06) 0%, transparent 65%),
+    var(--ink);
+}
+.hero-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+}
+.hero-eyebrow-top {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hero-eyebrow-top::before {
+  content: ''; display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--gold);
+}
+.showcase-hero h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: #fff;
+  margin-bottom: 1rem;
+  max-width: 900px;
+  letter-spacing: -0.01em;
+}
+.showcase-hero h1 em { font-style: italic; color: var(--gold); }
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--body);
+  max-width: 760px;
+  line-height: 1.7;
+  margin-bottom: 2.25rem;
+}
+.hero-sub strong { color: var(--text); font-weight: 500; }
+.hero-trust-row {
+  display: flex; flex-wrap: wrap; gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+.hero-trust-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--edge);
+  color: var(--text);
+  border-radius: 3px;
+  background: rgba(20, 37, 64, 0.5);
+}
+.hero-trust-pill.accent { color: var(--accent-lt); border-color: rgba(42,127,192,0.4); }
+.hero-trust-pill.gold { color: var(--gold-lt); border-color: rgba(192,144,64,0.4); }
+
+/* ═══ HERO ROTATOR ═══ */
+.hero-rotator {
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  background: rgba(14, 30, 53, 0.4);
+  padding: 1.75rem 1.85rem;
+  min-height: 195px;
+  position: relative;
+  overflow: hidden;
+  max-width: 860px;
+}
+.hero-slide {
+  display: none;
+  animation: fadeIn 0.6s ease-out;
+}
+.hero-slide.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-slide .hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+.hero-slide h2 {
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  color: #fff;
+  margin-bottom: 1.1rem;
+  max-width: 720px;
+  font-family: 'DM Serif Display', serif;
+  line-height: 1.3;
+}
+.hero-slide .hero-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-lt);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(74, 159, 223, 0.4);
+  padding-bottom: 0.15rem;
+  font-weight: 500;
+}
+.hero-slide .hero-cta:hover { color: #fff; border-bottom-color: #fff; }
+.rotator-dots {
+  position: absolute;
+  bottom: 1.15rem; right: 1.5rem;
+  display: flex; gap: 0.4rem;
+}
+.rotator-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--edge); cursor: pointer; transition: background 0.2s;
+}
+.rotator-dot.active { background: var(--accent-lt); }
+
+/* ═══ MCP RECORDING EMBED ═══ */
+.mcp-recording {
+  margin-top: 2.25rem;
+  max-width: 860px;
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--deep);
+}
+.mcp-video-frame {
+  aspect-ratio: 16 / 9;
+  background:
+    repeating-linear-gradient(45deg, rgba(42,127,192,0.04) 0 14px, transparent 14px 28px),
+    var(--navy);
+  display: grid; place-items: center;
+  position: relative;
+  text-align: center;
+  padding: 1.5rem;
+}
+.mcp-video-frame .placeholder-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.55rem;
+}
+.mcp-video-frame .placeholder-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+  max-width: 460px;
+}
+.mcp-video-frame .placeholder-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  max-width: 460px;
+}
+.mcp-video-frame .placeholder-play {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  background: rgba(42,127,192,0.1);
+  display: grid; place-items: center;
+  margin-bottom: 1rem;
+}
+.mcp-video-frame .placeholder-play::after {
+  content: '';
+  display: block;
+  width: 0; height: 0;
+  border-left: 14px solid var(--accent-lt);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  margin-left: 4px;
+}
+.hero-rec-caption {
+  font-size: 0.82rem;
+  color: var(--body);
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid var(--edge);
+  background: rgba(20, 37, 64, 0.3);
+  font-style: italic;
+}
+
+/* ═══ HUB STRIP (buyer-archetype hubs) ═══ */
+.hubs-strip {
+  padding: 3rem 0 2.5rem;
+  border-bottom: 1px solid var(--edge);
+  background:
+    radial-gradient(50% 80% at 50% 100%, rgba(192,144,64,0.04) 0%, transparent 70%),
+    var(--ink);
+}
+.hubs-strip-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+}
+.hubs-strip-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.hubs-strip-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.hubs-strip-head h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  color: var(--bright);
+  margin-top: 0.35rem;
+  margin-bottom: 0.4rem;
+  max-width: 720px;
+  line-height: 1.3;
+}
+.hubs-strip-head p {
+  color: var(--body); font-size: 0.92rem;
+  max-width: 680px; line-height: 1.65;
+}
+.hubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.hub-card {
+  background: var(--deep);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  padding: 1.4rem 1.35rem;
+  display: flex; flex-direction: column;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: var(--body);
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.hub-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+.hub-card .hub-card-arch {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.hub-card .hub-card-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--bright);
+  line-height: 1.3;
+}
+.hub-card .hub-card-claim {
+  font-size: 0.78rem;
+  color: var(--body);
+  line-height: 1.55;
+  flex: 1;
+}
+.hub-card .hub-card-meta {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--edge);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.hub-card .hub-card-meta strong { color: var(--accent-lt); font-weight: 500; }
+.hub-card .hub-card-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-lt);
+  font-weight: 500;
+  margin-top: 0.4rem;
+}
+
+/* ═══ PERSONA FILTER ═══ */
+.persona-filter {
+  padding: 2.25rem 0 1.5rem;
+  border-bottom: 1px solid var(--edge);
+}
+.persona-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 1rem;
+}
+.persona-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.persona-btns {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+}
+.persona-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--edge);
+  color: var(--body);
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.persona-btn:hover { color: #fff; border-color: var(--rim); }
+.persona-btn.active {
+  color: var(--ink);
+  background: var(--accent-lt);
+  border-color: var(--accent-lt);
+  font-weight: 500;
+}
+.persona-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-left: auto;
+}
+
+/* ═══ DEMO GRID ═══ */
+.demo-grid-section {
+  padding: 2rem 0 3rem;
+}
+.demo-grid {
+  max-width: 1240px; margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+.demo-card {
+  background: var(--deep);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  padding: 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  position: relative;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  color: var(--body);
+}
+.demo-card[href]:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+.demo-card.placeholder {
+  opacity: 0.7;
+  cursor: default;
+  border-style: dashed;
+  border-color: var(--rim);
+}
+.demo-card.placeholder:hover { transform: none; box-shadow: none; }
+.card-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 0.8rem;
+}
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+.card-num strong { color: var(--gold); font-weight: 500; }
+.card-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.45rem;
+  border-radius: 2px;
+  font-weight: 500;
+}
+.card-status.live {
+  color: var(--success);
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.3);
+}
+.card-status.coming {
+  color: var(--gold);
+  background: rgba(192,144,64,0.06);
+  border: 1px solid rgba(192,144,64,0.3);
+}
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--body);
+  line-height: 1.6;
+  flex: 1;
+}
+.card-meta {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 0.4rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--edge);
+}
+.card-meta .chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+}
+
+/* ═══ COMPOSER LINK ═══ */
+.composer-link-section {
+  border-top: 1px solid var(--edge);
+  padding: 3rem 0;
+  background:
+    radial-gradient(50% 80% at 50% 0%, rgba(192,144,64,0.04) 0%, transparent 65%),
+    var(--ink);
+}
+.composer-link-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  text-align: center;
+}
+.composer-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.composer-link-section h2 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  color: #fff;
+  margin-bottom: 0.6rem;
+  max-width: 720px;
+  margin-left: auto; margin-right: auto;
+  line-height: 1.3;
+}
+.composer-link-section p {
+  font-size: 0.92rem;
+  color: var(--body);
+  max-width: 660px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.7;
+}
+.composer-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent);
+  padding: 0.85rem 1.4rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.composer-cta:hover { background: var(--accent-lt); }
+.composer-cta-note {
+  display: block;
+  margin-top: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* ═══ POL FOOTER (matches demos) ═══ */
+footer.pol-footer {
+  background: var(--ink);
+  border-top: 1px solid var(--edge);
+  padding: 2.25rem 0 2.5rem;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: #fff;
+}
+footer.pol-footer .footer-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links {
+  display: flex; flex-direction: column;
+  gap: 0.45rem; font-size: 0.85rem;
+}
+footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+
+/* ═══ MOTION & RESPONSIVE ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero-slide { animation: none; }
+}
+@media (max-width: 760px) {
+  .showcase-hero { padding: 2.5rem 0 2rem; }
+  .hero-rotator { padding: 1.25rem 1.25rem 2.25rem; min-height: 175px; }
+  .persona-inner { gap: 0.7rem; }
+  .persona-count { width: 100%; margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ POL DARK NAV (spec Part 2.4) ═══════════════ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
+      Post Oak <span>Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<header class="showcase-hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow-top">Post Oak Labs Showcase · v6 · 13 May 2026</span>
+    <h1>Fintech <em>Intelligence</em> Showcase.</h1>
+    <p class="hero-sub">
+      <strong>33 working browser demos</strong> from the AINumbers tool catalog.
+      Zero PII. AP2-exportable. MCP-proven. DORA, MiCA, EU AI Act, CBPR+, FCA DPC,
+      BIS&nbsp;239, IFC&nbsp;SME — verified enforcement-clock deadlines, working AP2 exports.
+    </p>
+    <div class="hero-trust-row" aria-label="Trust signals">
+      <span class="hero-trust-pill">🔒 Zero PII</span>
+      <span class="hero-trust-pill">💻 Client-side</span>
+      <span class="hero-trust-pill accent">AP2 v1.0</span>
+      <span class="hero-trust-pill accent">MCP-native</span>
+      <span class="hero-trust-pill gold">CC BY 4.0</span>
+    </div>
+
+    <!-- ROTATOR (spec Part 13.2) -->
+    <div class="hero-rotator" data-rotate-interval="6000" aria-roledescription="carousel" aria-label="Buyer archetype showcase">
+      <div class="hero-slide active" data-slide="0">
+        <span class="hero-eyebrow">Agentic Runtime</span>
+        <h2>The deterministic policy layer for AP2 / MCP agent runtimes.</h2>
+        <a href="/demos/agentic-runtime/" class="hero-cta">Explore Agentic Hub →</a>
+      </div>
+      <div class="hero-slide" data-slide="1">
+        <span class="hero-eyebrow">EU Compliance Stack</span>
+        <h2>DORA · MiCA · EU AI Act · CBPR+ — verified deadlines, working AP2 exports.</h2>
+        <a href="/demos/regtech/" class="hero-cta">Explore RegTech Hub →</a>
+      </div>
+      <div class="hero-slide" data-slide="2">
+        <span class="hero-eyebrow">Cross-Border B2B Treasury</span>
+        <h2>Stablecoin · FX netting · nostro optimization — the corridor playbook.</h2>
+        <a href="/demos/processors/" class="hero-cta">Explore Processors Hub →</a>
+      </div>
+      <div class="rotator-dots" role="tablist" aria-label="Slide selector">
+        <span class="rotator-dot active" data-dot="0" role="tab" aria-label="Slide 1"></span>
+        <span class="rotator-dot" data-dot="1" role="tab" aria-label="Slide 2"></span>
+        <span class="rotator-dot" data-dot="2" role="tab" aria-label="Slide 3"></span>
+      </div>
+    </div>
+
+    <!-- MCP TERMINAL DEMO -->
+    <style>
+    .mcp-terminal { aspect-ratio:16/9; background:#07101d; display:flex; flex-direction:column; overflow:hidden; }
+    .term-hdr { background:#111f32; border-bottom:1px solid #1e3454; padding:0.5rem 0.9rem; display:flex; align-items:center; gap:0.42rem; flex-shrink:0; }
+    .term-dot { width:12px; height:12px; border-radius:50%; display:inline-block; flex-shrink:0; }
+    .term-title { font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#4a6a80; margin-left:0.5rem; letter-spacing:0.04em; }
+    .term-body { flex:1; overflow:hidden; padding:0.9rem 1.15rem; font-family:'JetBrains Mono',monospace; font-size:0.73rem; line-height:1.58; color:#d8e4f0; margin:0; display:flex; flex-direction:column; justify-content:flex-end; gap:0; }
+    @keyframes termBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+    </style>
+    <div class="mcp-recording" aria-label="MCP live terminal demonstration">
+      <div class="mcp-terminal" id="mcpTerm" aria-label="Animated terminal showing Claude calling AINumbers tools via MCP">
+        <div class="term-hdr">
+          <span class="term-dot" style="background:#ff5f57"></span>
+          <span class="term-dot" style="background:#febc2e"></span>
+          <span class="term-dot" style="background:#28c840"></span>
+          <span class="term-title">ainumbers-mcp — claude</span>
+        </div>
+        <div class="term-body" id="mcpTermBody"></div>
+      </div>
+      <p class="hero-rec-caption">Live: Claude invoking AINumbers tools via MCP, receiving AP2 v1.0 mandates. — <a href="/demos/composer.html">View all 33 demos in the Tool Chain Composer →</a></p>
+    </div>
+    <script>
+    (function(){
+      var body = document.getElementById('mcpTermBody');
+      if (!body) return;
+      var CYAN='#4a9fdf', GREEN='#28c840', GOLD='#c09040', BLUE='#7a9ab8', DIM='#3d6070', YELLOW='#febc2e';
+      var SCRIPT = [
+        ['$ claude mcp connect --server ainumbers', CYAN, 'type'],
+        ['→ Connected \xb7 ainumbers MCP (268 tools \xb7 AP2 v1.0)', GREEN, 'fast'],
+        ['', '', 'blank'],
+        ['$ claude mcp call ainumbers:cfpb_1033_institution_classifier', CYAN, 'type'],
+        ['    --assets 28.4 --type depository_bank', DIM, 'type'],
+        ['⧋ Invoking…', YELLOW, 'spin'],
+        ['← ap2-v1.0 mandate received (287ms)', GOLD, 'fast'],
+        ['{ "tier": "Tier 2 \xb7 $10B–$500B",', BLUE, 'fast'],
+        ['  "deadline": "April 2027", "status": "COMPLIANT",', BLUE, 'fast'],
+        ['  "schema": "ap2-v1.0", "id": "cfpb-t2-0521" }', BLUE, 'fast'],
+        ['', '', 'blank'],
+        ['$ claude mcp call ainumbers:baas_provider_comparator', CYAN, 'type'],
+        ['    --caps card_issuance,rtp_fednow,kyb_tooling', DIM, 'type'],
+        ['⧋ Invoking…', YELLOW, 'spin'],
+        ['← ap2-v1.0 mandate received (312ms)', GOLD, 'fast'],
+        ['{ "top_match": "Column Bank", "matched": 4,', BLUE, 'fast'],
+        ['  "caps_met": true, "schema": "ap2-v1.0",', BLUE, 'fast'],
+        ['  "id": "baas-sel-0521" }', BLUE, 'fast'],
+        ['', '', 'blank'],
+        ['$ claude mcp call ainumbers:ap2_agentic_guardrail', CYAN, 'type'],
+        ['    --corridor "USD→BDT" --rail stablecoin_wholesale', DIM, 'type'],
+        ['⧋ Invoking…', YELLOW, 'spin'],
+        ['← ap2-v1.0 mandate received (198ms)', GOLD, 'fast'],
+        ['{ "verdict": "APPROVED", "fatf_r16": "PASS",', BLUE, 'fast'],
+        ['  "corridor": "USD→BDT via stablecoin_wholesale",', BLUE, 'fast'],
+        ['  "schema": "ap2-v1.0", "id": "ap2-grd-0521" }', BLUE, 'fast'],
+      ];
+      var idx = 0;
+      function addLine(text, color) {
+        var d = document.createElement('div');
+        if (text) { d.textContent = text; if (color) d.style.color = color; }
+        body.appendChild(d);
+        return d;
+      }
+      function typeLine(text, color, cb) {
+        var d = addLine('', color);
+        var i = 0;
+        function tick() {
+          d.textContent = text.slice(0,i) + (i < text.length ? '█' : '');
+          if (i < text.length) { i++; setTimeout(tick, 22 + Math.random()*18); }
+          else { d.textContent = text; cb && setTimeout(cb, 100); }
+        }
+        tick();
+      }
+      function run() {
+        if (idx >= SCRIPT.length) {
+          setTimeout(function(){ body.innerHTML=''; idx=0; run(); }, 3000);
+          return;
+        }
+        var row = SCRIPT[idx++];
+        var text=row[0], color=row[1], mode=row[2];
+        if (mode==='blank') { addLine('',''); setTimeout(run,80); }
+        else if (mode==='type') { typeLine(text, color, run); }
+        else if (mode==='spin') {
+          var d = addLine(text, color);
+          setTimeout(function(){ body.removeChild(d); run(); }, 700);
+        } else { addLine(text, color); setTimeout(run, 95); }
+      }
+      setTimeout(run, 600);
+    })();
+    </script>
+  </div>
+</header>
+
+<!-- ═══════════════ BUYER-ARCHETYPE HUBS (spec Part 14) ═══════════════ -->
+<section class="hubs-strip" aria-label="Buyer-archetype hubs">
+  <div class="hubs-strip-inner">
+    <div class="hubs-strip-head">
+      <div>
+        <div class="hubs-strip-label">Buyer-archetype hubs · five curated stacks</div>
+        <h2>Jump straight to a hub if you already know your archetype.</h2>
+        <p>Each hub filters and sequences the relevant subset of these 33 demos for one buyer archetype — workflow-ordered, with deep links into the underlying AINumbers tools.</p>
+      </div>
+    </div>
+    <div class="hubs-grid">
+
+      <a class="hub-card" href="/demos/agentic-runtime/">
+        <span class="hub-card-arch">Agentic Runtime</span>
+        <span class="hub-card-name">Deterministic policy layer for AP2 / MCP runtimes</span>
+        <p class="hub-card-claim">A schema-stable substrate 33 demos and 260 tools already export to. AP2 v1.0 stable, MCP-native discovery.</p>
+        <div class="hub-card-meta"><span><strong>6</strong> demos</span><span>Anthropic · Google · OpenAI</span></div>
+        <span class="hub-card-cta">Explore hub →</span>
+      </a>
+
+      <a class="hub-card" href="/demos/regtech/">
+        <span class="hub-card-arch">RegTech</span>
+        <span class="hub-card-name">Five enforcement clocks, one schema</span>
+        <p class="hub-card-claim">DORA + NIS2 + MiCA + EU AI Act + CFPB §1033 — dual- and triple-compliance evidence as AP2 mandates the audit team can replay.</p>
+        <div class="hub-card-meta"><span><strong>9</strong> demos</span><span>ComplyAdvantage · Sumsub</span></div>
+        <span class="hub-card-cta">Explore hub →</span>
+      </a>
+
+      <a class="hub-card" href="/demos/baas/">
+        <span class="hub-card-arch">BaaS</span>
+        <span class="hub-card-name">Sponsor-bank readiness, exported as AP2</span>
+        <p class="hub-card-claim">Provider economics, embedded-lending UE, BIN sponsorship, programme agreements, wallet float — modeled in browser.</p>
+        <div class="hub-card-meta"><span><strong>6</strong> demos</span><span>$29B → $65B market</span></div>
+        <span class="hub-card-cta">Explore hub →</span>
+      </a>
+
+      <a class="hub-card" href="/demos/processors/">
+        <span class="hub-card-arch">Processors</span>
+        <span class="hub-card-name">Card economics + A2A migration + ISO cutover</span>
+        <p class="hub-card-claim">14 Nov 2026 SWIFT cutover, FCA DPC, FX netting, real-time fraud at FedNow speed. Four of eight already live.</p>
+        <div class="hub-card-meta"><span><strong>8</strong> demos</span><span>Stripe · Adyen · Worldpay</span></div>
+        <span class="hub-card-cta">Explore hub →</span>
+      </a>
+
+      <a class="hub-card" href="/demos/stablecoin-issuer/">
+        <span class="hub-card-arch">Stablecoin Issuer</span>
+        <span class="hub-card-name">Issuer-grade readiness in the browser</span>
+        <p class="hub-card-claim">MiCA Phase 2 + GENIUS Act + FATF R.16 + tokenized RWA — three regimes, one VASP edge, one AML overlay.</p>
+        <div class="hub-card-meta"><span><strong>4</strong> demos</span><span>Paxos · Circle · Bridge</span></div>
+        <span class="hub-card-cta">Explore hub →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PERSONA FILTER ═══════════════ -->
+<section class="persona-filter" aria-label="Filter by persona">
+  <div class="persona-inner">
+    <span class="persona-label">View as:</span>
+    <div class="persona-btns" id="personaBtns" role="tablist">
+      <button class="persona-btn active" data-persona="all" type="button" role="tab" aria-selected="true">All 33</button>
+      <button class="persona-btn" data-persona="engineer" type="button" role="tab" aria-selected="false">Engineer</button>
+      <button class="persona-btn" data-persona="compliance" type="button" role="tab" aria-selected="false">Compliance</button>
+      <button class="persona-btn" data-persona="treasury" type="button" role="tab" aria-selected="false">Treasury</button>
+      <button class="persona-btn" data-persona="product" type="button" role="tab" aria-selected="false">Product</button>
+      <button class="persona-btn" data-persona="analyst" type="button" role="tab" aria-selected="false">Analyst</button>
+    </div>
+    <span class="persona-count" id="personaCount">Showing 33 of 33</span>
+  </div>
+</section>
+
+<!-- ═══════════════ DEMO GRID ═══════════════ -->
+<section class="demo-grid-section">
+  <div class="demo-grid" id="demoGrid">
+
+    <!-- ── LIVE: the 7 original demos ── -->
+    <a class="demo-card live" href="/demos/merchant-payment-rails-blender.html" data-persona="engineer product analyst">
+      <div class="card-head">
+        <span class="card-num"><strong>#01</strong> · Tool T-217 · Cat-06</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Merchant Payment Rails Blender</h3>
+      <p class="card-desc">Blended card + A2A take-rate and net-contribution modeler with FCA DPC (PS26/1, 15 Jul 2026) compliance modeling and AP2 routing-policy export.</p>
+      <div class="card-meta">
+        <span class="chip">FCA DPC</span><span class="chip">A2A</span><span class="chip">AP2 Routing</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/iso20022-message-truncation-auditor.html" data-persona="engineer compliance">
+      <div class="card-head">
+        <span class="card-num"><strong>#02</strong> · Tool T77 · CBPR+</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">ISO 20022 Message Truncation Auditor</h3>
+      <p class="card-desc">Field-by-field pacs.008 → MT103 truncation analysis with countdown to 14 November 2026 SWIFT cutover and AP2 remediation-brief export.</p>
+      <div class="card-meta">
+        <span class="chip">SWIFT CBPR+</span><span class="chip">14 Nov 2026</span><span class="chip">AP2 Remediation</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/dora-compliance-deduplication-tool.html" data-persona="compliance">
+      <div class="card-head">
+        <span class="card-num"><strong>#03</strong> · Tool T312 · Cat-22</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">DORA / NIS2 Dual-Compliance Deduplicator</h3>
+      <p class="card-desc">Control-overlap Venn for DORA (EU 2022/2554) + NIS2 (EU 2022/2555) with 4-hour NCA notification window classification and AP2 mandate export.</p>
+      <div class="card-meta">
+        <span class="chip">DORA Live</span><span class="chip">NIS2</span><span class="chip">AP2 Mandate</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/latam-liquidity-migration-tool.html" data-persona="treasury analyst">
+      <div class="card-head">
+        <span class="card-num"><strong>#04</strong> · Treasury · BIS 239</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">LATAM Corridor Liquidity Migration</h3>
+      <p class="card-desc">Six-corridor (BRL/MXN/COP/CLP/ARS/PEN) FRTB-aligned liquidity migration with 99%/90d haircut, BIS 239 framing, AP2 liquidity-mandate export, shareable URL.</p>
+      <div class="card-meta">
+        <span class="chip">BIS 239 · FRTB</span><span class="chip">PIX · SPEI · Bre-B</span><span class="chip">AP2 Liquidity</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/nostro-capital-optimization.html" data-persona="treasury analyst">
+      <div class="card-head">
+        <span class="card-num"><strong>#05</strong> · Treasury · Basel III LCR</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Nostro Capital Unlock Simulator</h3>
+      <p class="card-desc">Migrate SWIFT correspondent rails to tokenized A2A on a chosen corridor — trapped capital release waterfall, FX spread compression, AP2 capital-brief export.</p>
+      <div class="card-meta">
+        <span class="chip">Basel III LCR</span><span class="chip">Tokenized A2A</span><span class="chip">AP2 Capital Brief</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/sme-credit-passport-global-south.html" data-persona="compliance product">
+      <div class="card-head">
+        <span class="card-num"><strong>#06</strong> · IFC / BCBS 207</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Global South SME Lending Passport</h3>
+      <p class="card-desc">Board-ready SME readiness scorecard for Brazil + Nigeria — credit score, CCC gap, factoring + RBF blend, AP2 credit-mandate export with IFC/BCBS alignment.</p>
+      <div class="card-meta">
+        <span class="chip">IFC SME Finance</span><span class="chip">BCBS 207</span><span class="chip">AP2 Credit</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/ap2-agentic-payment-policy-guardrail.html" data-persona="engineer product">
+      <div class="card-head">
+        <span class="card-num"><strong>#07</strong> · AP2 · MCP</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">AP2 Agentic Payment Policy Guardrail</h3>
+      <p class="card-desc">Visualize any AP2 v1.0 policy mandate, surface its intent envelope, compile to runtime guards and emit MCP tool definitions — all client-side.</p>
+      <div class="card-meta">
+        <span class="chip">AP2 v1.0</span><span class="chip">MCP Tool Def</span><span class="chip">Policy JSON</span>
+      </div>
+    </a>
+
+    <!-- ── PLACEHOLDERS: 20 new demos per Part 13.1, persona-tagged per Part 13.3 ── -->
+    <a class="demo-card live" href="/demos/stablecoin-issuer-readiness-mica-genius.html" data-persona="compliance treasury product" data-slug="stablecoin-issuer-readiness-mica-genius" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#08</strong> · MiCA Title III · GENIUS Act</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Stablecoin Issuer Readiness Lab</h3>
+      <p class="card-desc">Reserve composition × redemption rights × operational safeguards against MiCA Title III (Arts. 35–42) + GENIUS Act payment-stablecoin regime. Live MiCA checklist + composite score + AP2 mandate.</p>
+      <div class="card-meta">
+        <span class="chip">MiCA Phase 2</span><span class="chip">GENIUS Act</span><span class="chip">$315B mkt</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/cfpb-1033-financial-data-rights-mapper.html" data-persona="compliance product" data-slug="cfpb-1033-financial-data-rights-mapper" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#09</strong> · CFPB §1033</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">CFPB §1033 Financial Data Rights Mapper</h3>
+      <p class="card-desc">Personal financial data rights mapping for US covered FIs — phased compliance April 2026 → April 2030, subject to current CFPB reconsideration.</p>
+      <div class="card-meta">
+        <span class="chip">CFPB §1033</span><span class="chip">Apr 2026 phase 1</span><span class="chip">Open banking</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/eu-ai-act-financial-services-risk-mapper.html" data-persona="compliance product" data-slug="eu-ai-act-financial-services-risk-mapper" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#10</strong> · EU AI Act Art. 6</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">EU AI Act Article 6 Risk-Class Mapper for FS</h3>
+      <p class="card-desc">Map financial-services AI use cases to EU AI Act Annex III risk classes — €35M / 7% turnover penalty exposure, Article 6 evidence requirements.</p>
+      <div class="card-meta">
+        <span class="chip">EU AI Act</span><span class="chip">Art. 6 · Annex III</span><span class="chip">€35M / 7%</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/aml-transaction-monitoring-rule-builder.html" data-persona="engineer compliance" data-slug="aml-transaction-monitoring-rule-builder" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#11</strong> · AML</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">AML Transaction Monitoring Rule Builder</h3>
+      <p class="card-desc">Threshold + behavioural rule composer for transaction monitoring, with false-positive / true-positive modeling against a 100K-tx synthetic population. AP2 ruleset export.</p>
+      <div class="card-meta">
+        <span class="chip">AML</span><span class="chip">Tx Monitoring</span><span class="chip">$4–22B mkt</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/embedded-lending-unit-economics-lab.html" data-persona="product analyst" data-slug="embedded-lending-unit-economics-lab" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#12</strong> · Embedded Finance</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Embedded Lending Unit Economics Lab</h3>
+      <p class="card-desc">Unit economics for embedded-lending products — origination cost, default curves, capital cost, partner take-rate.</p>
+      <div class="card-meta">
+        <span class="chip">Embedded Finance</span><span class="chip">$148B+ 2026</span><span class="chip">Unit Economics</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/instant-payment-fraud-risk-lab.html" data-persona="engineer analyst" data-slug="instant-payment-fraud-risk-lab" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#13</strong> · Fraud · Instant Pay</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">FedNow / Instant-Payment Fraud Risk Lab</h3>
+      <p class="card-desc">Six-signal score model × decision threshold × intervention budget × sub-200ms latency. Live confusion matrix + expected $ loss + AP2 fraud-policy mandate against @ainumbers.co/instant-pay-fraud-v1.</p>
+      <div class="card-meta">
+        <span class="chip">FedNow</span><span class="chip">RTP irrevocable</span><span class="chip">200ms budget</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/baas-provider-economics-comparator.html" data-persona="product analyst" data-slug="baas-provider-economics-comparator" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#14</strong> · BaaS</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">BaaS Provider Economics &amp; Comparator</h3>
+      <p class="card-desc">Compare BaaS provider unit economics — sponsor-bank costs, programme agreement terms, BIN sponsorship, regulatory passthrough.</p>
+      <div class="card-meta">
+        <span class="chip">BaaS</span><span class="chip">$29B → $65B</span><span class="chip">Comparator</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/vasp-travel-rule-compliance-checker.html" data-persona="compliance" data-slug="vasp-travel-rule-compliance-checker" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#15</strong> · FATF R.16</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">VASP Travel Rule (FATF R.16) Compliance Checker</h3>
+      <p class="card-desc">Originator + beneficiary data sufficiency across FATF baseline, EU TFR (2024/1624), FinCEN, UK MLR and MAS. Field-by-field requirement matrix, sunrise-issue awareness, AP2 mandate.</p>
+      <div class="card-meta">
+        <span class="chip">FATF R.16</span><span class="chip">EU TFR live</span><span class="chip">5 regimes</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/kyb-beneficial-ownership-network-mapper.html" data-persona="compliance" data-slug="kyb-beneficial-ownership-network-mapper" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#16</strong> · KYB / UBO</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">KYB Beneficial Ownership Network Mapper</h3>
+      <p class="card-desc">Interactive SVG ownership-chain graph with disclosure-threshold slider, four-regime selector (FinCEN CTA / 6AMLD / UK PSC / MAS), sanctioned-proximity hop counter, circular-ownership detection. AP2 mandate.</p>
+      <div class="card-meta">
+        <span class="chip">KYB</span><span class="chip">UBO graph</span><span class="chip">4 regimes</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/wallet-float-yield-estimator.html" data-persona="treasury analyst" data-slug="wallet-float-yield-estimator" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#17</strong> · BaaS Revenue</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Wallet Float Yield Estimator</h3>
+      <p class="card-desc">Programme deposits × allocation mix × rate environment × cost stack. Live gross/net bps + annual revenue + revenue/active-user. AP2 treasury mandate against @ainumbers.co/wallet-float-v1.</p>
+      <div class="card-meta">
+        <span class="chip">Wallet Float</span><span class="chip">BaaS Revenue</span><span class="chip">FDIC Pass-thru</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/vrp-mandate-sweep-logic-designer.html" data-persona="engineer product" data-slug="vrp-mandate-sweep-logic-designer" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#18</strong> · VRP · UK CMA9</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">VRP Mandate &amp; Sweep Logic Designer</h3>
+      <p class="card-desc">Sweep windows × amount caps × idempotency × allowed-beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA. Live 24h permitted-window timeline visualisation, AP2 mandate.</p>
+      <div class="card-meta">
+        <span class="chip">VRP</span><span class="chip">4 regimes</span><span class="chip">Timeline viz</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/fatf-sanctions-programme-readiness.html" data-persona="compliance" data-slug="fatf-sanctions-programme-readiness" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#19</strong> · FATF · OFAC</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">FATF Readiness Scorer + Sanctions Programme</h3>
+      <p class="card-desc">FATF mutual-evaluation readiness scoring + OFAC/EU sanctions programme effectiveness review.</p>
+      <div class="card-meta">
+        <span class="chip">FATF</span><span class="chip">OFAC</span><span class="chip">Sanctions</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/customer-risk-rating-engine.html" data-persona="compliance" data-slug="customer-risk-rating-engine" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#20</strong> · CRR · KYC</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Customer Risk Rating Engine</h3>
+      <p class="card-desc">Composable customer-risk-rating engine — geographic, product, behavioural factors with FATF risk-based-approach alignment.</p>
+      <div class="card-meta">
+        <span class="chip">CRR</span><span class="chip">FATF RBA</span><span class="chip">AML</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/tokenized-rwa-compliance-pre-checker.html" data-persona="compliance treasury" data-slug="tokenized-rwa-compliance-pre-checker" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#21</strong> · Tokenized RWA</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Tokenized RWA Compliance Pre-Checker</h3>
+      <p class="card-desc">8 asset classes × 7 jurisdictions × offering structure → MiCA + Howey classification, pathway verdict (viable / remediate / not-viable), AP2 mandate. Pre-issuance counsel pre-mortem.</p>
+      <div class="card-meta">
+        <span class="chip">Tokenized RWA</span><span class="chip">MiCA + Howey</span><span class="chip">7 jurisdictions</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/iso20022-migration-readiness-scorer.html" data-persona="engineer compliance" data-slug="iso20022-migration-readiness-scorer" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#22</strong> · ISO 20022 (depth)</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">ISO 20022 Migration Readiness Scorer</h3>
+      <p class="card-desc">Six-message-family coverage matrix × gateway tier × structured-address (CBPR+) state × hybrid plan → composite readiness /100, T-minus countdown to 14 Nov 2026 cutover, AP2 mandate.</p>
+      <div class="card-meta">
+        <span class="chip">ISO 20022</span><span class="chip">14 Nov 2026</span><span class="chip">T-minus live</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/ap2-aml-mandate-builder.html" data-persona="engineer compliance" data-slug="ap2-aml-mandate-builder" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#23</strong> · AP2 × AML</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">AP2 AML Mandate Builder</h3>
+      <p class="card-desc">Compose AP2 mandates for AML use cases — customer risk tiers, TM rule parameters, sanctions cadence, SAR triggers, FATF R.16 travel rule. Validates against @ainumbers.co/aml-mandate-v1.</p>
+      <div class="card-meta">
+        <span class="chip">AP2</span><span class="chip">AML</span><span class="chip">Agentic AML</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/ap2-baas-infrastructure-mandate-builder.html" data-persona="engineer product" data-slug="ap2-baas-infrastructure-mandate-builder" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#24</strong> · AP2 × BaaS</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">AP2 BaaS Infrastructure Mandate Builder</h3>
+      <p class="card-desc">Programme policy + sponsor-bank gates + BIN-tier ceilings + transaction-rail caps + handoff cadence → AP2 mandate against @ainumbers.co/baas-mandate-v1. OCC 2023 interagency aligned.</p>
+      <div class="card-meta">
+        <span class="chip">AP2</span><span class="chip">BaaS</span><span class="chip">Programme Policy</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/cross-border-fx-netting-simulator.html" data-persona="treasury analyst" data-slug="cross-border-fx-netting-simulator" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#25</strong> · Treasury · FX Netting</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Cross-Border FX Netting Simulator</h3>
+      <p class="card-desc">Editable 4-sub × 3-currency payable matrix with gross / bilateral / multilateral modes. Live settlement compression, FX-spread savings, nostro freed, Herstatt-risk reduction. AP2 treasury mandate.</p>
+      <div class="card-meta">
+        <span class="chip">FX Netting</span><span class="chip">$7.5T daily</span><span class="chip">Multilateral</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/dora-ict-risk-gap-analyser.html" data-persona="compliance" data-slug="dora-ict-risk-gap-analyser" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#26</strong> · DORA Art. 28</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">DORA ICT Risk Gap Analyser</h3>
+      <p class="card-desc">Five-pillar maturity + Article 28 third-party concentration depth (HHI, sub-outsourcing, CIF tiers, EBA RTS 2024/1773). AP2 mandate against @ainumbers.co/dora-gap-v1.</p>
+      <div class="card-meta">
+        <span class="chip">DORA Art. 28</span><span class="chip">3rd-party ICT</span><span class="chip">EBA RTS</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/agentic-mandate-sandbox.html" data-persona="engineer product" data-slug="agentic-mandate-sandbox" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#27</strong> · Agentic Runtime</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Agentic Mandate Sandbox</h3>
+      <p class="card-desc">Load any AP2 mandate this showcase emits, queue a candidate action, see the per-step execution trace + decision. Five bundled templates spanning every schema. AP2 sandbox-trace export.</p>
+      <div class="card-meta">
+        <span class="chip">AP2 Sandbox</span><span class="chip">5 schemas</span><span class="chip">Trace + decision</span>
+      </div>
+    </a>
+
+    <!-- ── NEW v6 demos #28–#33 (2026-05-16) ── -->
+    <a class="demo-card live" href="/demos/basel-iv-capital-stress-lab.html" data-persona="compliance treasury analyst" data-slug="basel-iv-capital-stress-lab" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#28</strong> · Tools T201–T204 · Basel IV</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Basel IV Capital Stress Lab</h3>
+      <p class="card-desc">Loan portfolio mix × macro shock → standardised-approach RWA, post-stress CET1 ratio, RAROC break-even, and IFRS 9 stage migration matrix in one boardroom-ready workflow. Policy Mandate export.</p>
+      <div class="card-meta">
+        <span class="chip">Basel IV</span><span class="chip">CET1 · RAROC</span><span class="chip">IFRS 9 ECL</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/global-real-time-rails-comparator.html" data-persona="engineer treasury product" data-slug="global-real-time-rails-comparator" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#29</strong> · Tools T212·T229·T254·T255</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Global Real-Time Rails Comparator</h3>
+      <p class="card-desc">Score SEPA Instant / FedNow / RTP / PIX / UPI / FPS / SWIFT gpi on speed, finality, cost, ISO 20022 readiness, and participation by corridor. Weighted recommendation. Policy Mandate export.</p>
+      <div class="card-meta">
+        <span class="chip">7 rails</span><span class="chip">ISO 20022</span><span class="chip">4 corridor presets</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/card-programme-design-studio.html" data-persona="product compliance engineer" data-slug="card-programme-design-studio" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#30</strong> · Tools T163·T225·T226·T228·T233</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Card Programme Design Studio</h3>
+      <p class="card-desc">End-to-end card-launch workflow — BIN sponsorship economics, interchange qualification waterfall, PCI DSS v4 scope, 3DS/EMV readiness, scheme-fee benchmarking, composite launch-readiness score.</p>
+      <div class="card-meta">
+        <span class="chip">PCI DSS v4</span><span class="chip">3DS 2.3</span><span class="chip">Reg II</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/sme-credit-intelligence-platform.html" data-persona="product analyst compliance" data-slug="sme-credit-intelligence-platform" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#31</strong> · Tools T239·T240·T241·T243·T246</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">SME Credit Intelligence Platform</h3>
+      <p class="card-desc">Open-finance signals layered over an SME profile, credit score with decile, working-capital gap, 12-month cash-flow stress, loan-readiness verdict and recommended facility (term / RBF / invoice).</p>
+      <div class="card-meta">
+        <span class="chip">Open Finance</span><span class="chip">CCC stress</span><span class="chip">Facility match</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/embedded-finance-licensing-navigator.html" data-persona="compliance product" data-slug="embedded-finance-licensing-navigator" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#32</strong> · Tools T149·T150·T158·T162</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Embedded Finance Licensing Navigator</h3>
+      <p class="card-desc">For a product stack × target markets, map required licences (MTL / EMI / PI / MiCA / etc.), passport eligibility, sponsor-bank readiness score, and compliance control gaps. M&amp;A diligence binder export.</p>
+      <div class="card-meta">
+        <span class="chip">9 jurisdictions</span><span class="chip">EU passport</span><span class="chip">Sponsor bank</span>
+      </div>
+    </a>
+
+    <a class="demo-card live" href="/demos/timor-leste-bangladesh-stablecoin-settlement.html" data-persona="treasury compliance engineer" data-slug="timor-leste-bangladesh-stablecoin-settlement" style="text-decoration:none;">
+      <div class="card-head">
+        <span class="card-num"><strong>#33</strong> · Tools T58·T75·T157·T217·T218·T220·T221·T325</span>
+        <span class="card-status live">Live</span>
+      </div>
+      <h3 class="card-title">Timor-Leste × Bangladesh Stablecoin Settlement Bridge</h3>
+      <p class="card-desc">USD-pegged wholesale stablecoin bridge across a thin-correspondent corridor. Architecture viability (CBDC vs stablecoin vs nostro), 3-hour UTC overlap diagnostics, collateral + repo engine, ISO 20022 double-entry ledger schema.</p>
+      <div class="card-meta">
+        <span class="chip">Frontier markets</span><span class="chip">Wholesale CBDC vs stablecoin</span><span class="chip">ISO 20022 ledger</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════════════ COMPOSER LINK ═══════════════ -->
+<section class="composer-link-section" aria-label="Tool Chain Composer link">
+  <div class="composer-link-inner">
+    <div class="composer-eyebrow">Tool Chain Composer · 260 nodes</div>
+    <h2>The catalog isn't 260 calculators. It's one composable platform with 260 nodes.</h2>
+    <p>View all 33 demos in context of the full 260-tool AINumbers chain — AP2 schemas, MCP discovery edges, and persona / category filters at a single URL.</p>
+    <a href="/demos/composer.html" class="composer-cta">View all 33 demos in the 260-tool chain →</a>
+    <small class="composer-cta-note">Live · 260 nodes · 15 categories · filterable by capability and persona</small>
+  </div>
+</section>
+
+<!-- ═══════════════ POL DARK FOOTER (spec Part 2.5) ═══════════════ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <p class="footer-copy">
+        &copy; 2026 Post Oak Labs &nbsp;·&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-copy">
+        Built by Post Oak Labs &nbsp;·&nbsp;
+        <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — Full tool catalog ↗</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime hub</a>
+      <a href="/demos/regtech/">RegTech hub</a>
+      <a href="/demos/baas/">BaaS hub</a>
+      <a href="/demos/processors/">Processors hub</a>
+      <a href="/demos/stablecoin-issuer/">Stablecoin Issuer hub</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// ROTATOR (auto-advance, pause on hover, prefers-reduced-motion aware)
+// ════════════════════════════════════════════════════════════════════════
+(function(){
+  var rotator = document.querySelector('.hero-rotator');
+  if (!rotator) return;
+  var slides = rotator.querySelectorAll('.hero-slide');
+  var dots = rotator.querySelectorAll('.rotator-dot');
+  if (slides.length < 2) return;
+
+  var interval = parseInt(rotator.dataset.rotateInterval, 10) || 6000;
+  var current = 0;
+  var paused = false;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function go(i){
+    i = ((i % slides.length) + slides.length) % slides.length;
+    slides.forEach(function(s, idx){
+      s.classList.toggle('active', idx === i);
+    });
+    dots.forEach(function(d, idx){
+      d.classList.toggle('active', idx === i);
+      d.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+    });
+    current = i;
+  }
+
+  function tick(){
+    if (paused) return;
+    go(current + 1);
+  }
+
+  if (!reduceMotion) {
+    var timer = setInterval(tick, interval);
+    rotator.addEventListener('mouseenter', function(){ paused = true; });
+    rotator.addEventListener('mouseleave', function(){ paused = false; });
+    rotator.addEventListener('focusin', function(){ paused = true; });
+    rotator.addEventListener('focusout', function(){ paused = false; });
+  }
+
+  dots.forEach(function(d, idx){
+    d.addEventListener('click', function(){
+      go(idx);
+      paused = true;
+      setTimeout(function(){ paused = false; }, 1500);
+    });
+  });
+})();
+
+// ════════════════════════════════════════════════════════════════════════
+// PERSONA FILTER
+// ════════════════════════════════════════════════════════════════════════
+(function(){
+  var btns = document.querySelectorAll('.persona-btn');
+  var grid = document.getElementById('demoGrid');
+  var count = document.getElementById('personaCount');
+  if (!btns.length || !grid) return;
+
+  var cards = grid.querySelectorAll('.demo-card');
+  var total = cards.length;
+
+  function apply(persona){
+    var shown = 0;
+    cards.forEach(function(c){
+      var personas = (c.dataset.persona || '').split(/\s+/);
+      var match = persona === 'all' || personas.indexOf(persona) >= 0;
+      c.style.display = match ? '' : 'none';
+      if (match) shown += 1;
+    });
+    if (count) {
+      count.textContent = 'Showing ' + shown + ' of ' + total;
+    }
+  }
+
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){
+        x.classList.remove('active');
+        x.setAttribute('aria-selected', 'false');
+      });
+      b.classList.add('active');
+      b.setAttribute('aria-selected', 'true');
+      apply(b.dataset.persona);
+    });
+  });
+})();
+</script>
+</body>
+</html>

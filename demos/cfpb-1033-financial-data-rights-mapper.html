@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFPB §1033 Financial Data Rights Mapper — Open Banking Compliance · Post Oak Labs</title>
+
+<meta name="description" content="Map your CFPB §1033 open banking compliance obligations. Classify institution type, scope data access rights across 7 categories, assess third-party authorizer status, navigate the 2025–2030 compliance calendar, and export an AP2 v1.0 mandate. Browser-based, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/cfpb-1033-financial-data-rights-mapper.html">
+<meta property="og:title" content="CFPB §1033 Financial Data Rights Mapper — Post Oak Labs">
+<meta property="og:description" content="Open banking compliance mapper for CFPB §1033: institution classification, data categories, third-party auth rules, phased compliance calendar. AP2-exportable.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/cfpb-1033-financial-data-rights-mapper.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/cfpb-1033-financial-data-rights-mapper.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "GovernmentService"],
+  "name": "CFPB §1033 Financial Data Rights Mapper",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/cfpb-1033-financial-data-rights-mapper.html",
+  "description": "Interactive compliance mapper for CFPB §1033 Personal Financial Data Rights rule. Classifies institutions, scopes 7 data-access right categories, maps third-party authorizer obligations, surfaces the 2025–2030 phased compliance calendar, and exports an AP2 v1.0 mandate. Browser-based, zero PII.",
+  "featureList": [
+    "Institution classification: Tier 1 (>$500B), Tier 2 (>$10B), Tier 3 (>$1.5B), Tier 4 (<$1.5B), TPPP",
+    "7 data category scoping: account/transaction, payment initiation, upcoming payment, account terms, account status, verification, authorized third party",
+    "Third-party data provider and recipient obligation mapping",
+    "Phased compliance calendar: Apr 2026 → Oct 2026 → Apr 2027 → Apr 2028 → Apr 2030",
+    "Consumer authorization workflow checklist (initial auth, ongoing, revocation)",
+    "Technical standard readiness: FDX API, OAuth 2.0, screen-scraping sunset",
+    "AP2 v1.0 mandate export: @ainumbers.co/cfpb-1033-v1"
+  ],
+  "keywords": "CFPB 1033, open banking, financial data rights, personal financial data, FDX, PSD2, data access, open finance, RegTech, compliance, BaaS, data aggregation, Plaid, MX, Finicity, Yodlee",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-14",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+:root {
+  --ink:      #050c15;  --deep:     #0a1628;  --navy:     #0e1e35;
+  --edge:     #1e3454;  --body:     #7090b0;  --muted:    #4a6280;
+  --accent:   #2a7fc0;  --accent-lt:#4a9fdf;  --gold:     #c09040;
+
+  --showcase-bg:           #ffffff;
+  --showcase-bg-soft:      #fafbfc;
+  --showcase-text:         #0a1828;
+  --showcase-text-muted:   #6a7a8a;
+  --showcase-border:       #e6e8eb;
+  --showcase-accent:       #2a7fc0;
+  --showcase-gold:         #c09040;
+  --showcase-success:      #10b981;
+  --showcase-warn:         #f59e0b;
+  --showcase-error:        #dc2626;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font:    'DM Sans', sans-serif;
+  --showcase-mono-font:    'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.2; }
+a { color: var(--accent); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+/* NAV */
+nav[role="navigation"] { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-bc { font-family: var(--showcase-mono-font); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem; }
+.nav-bc a { color: var(--body); text-decoration: none; }
+.nav-bc a:hover { color: var(--accent-lt); }
+.nav-bc span[aria-current] { color: var(--accent-lt); }
+.nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+.nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; }
+.nav-links a:hover { color: #fff; }
+.nav-links a.nav-cta { background: var(--accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+.nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+/* HEADER STRIP */
+.showcase-header-strip { background: var(--deep); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge); padding: 0.85rem 0; }
+.strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--gold); font-weight: 500; }
+.strip-title { font-weight: 500; color: #fff; font-size: 0.875rem; }
+.strip-actions a { color: var(--accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.strip-actions a:hover { color: #fff; }
+
+/* CANVAS */
+.demo-canvas { background: var(--showcase-bg); color: var(--showcase-text); font-family: var(--showcase-body-font); max-width: 1240px; margin: 2rem auto; padding: 0; border-radius: 8px; box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2.5rem 2.5rem 3rem; }
+@media (max-width: 760px) { .canvas-inner { padding: 1.5rem 1.25rem 2rem; } }
+.demo-canvas h1, .demo-canvas h2, .demo-canvas h3 { color: var(--showcase-text); }
+
+/* HERO */
+.hero { padding-bottom: 2rem; border-bottom: 1px solid var(--showcase-border); margin-bottom: 2.5rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.25rem; }
+.eyebrow-badge { font-family: var(--showcase-mono-font); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; border: 1px solid var(--showcase-border); color: var(--showcase-text-muted); }
+.eyebrow-badge.accent { border-color: rgba(42,127,192,0.35); color: var(--showcase-accent); }
+.eyebrow-badge.gold   { border-color: rgba(192,144,64,0.35);  color: var(--showcase-gold); }
+.eyebrow-badge.warn   { border-color: rgba(245,158,11,0.35);  color: var(--showcase-warn); }
+.hero h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin-bottom: 0.85rem; }
+.hero h1 em { font-style: italic; color: var(--showcase-accent); }
+.hero-sub { color: var(--showcase-text-muted); font-size: 0.95rem; line-height: 1.7; max-width: 760px; margin-bottom: 1.5rem; }
+.hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 4px; overflow: hidden; }
+.hstat { background: var(--showcase-bg-soft); padding: 0.85rem 1.1rem; }
+.hstat-l { font-family: var(--showcase-mono-font); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.3rem; }
+.hstat-v { font-family: var(--showcase-heading-font); font-size: 1.3rem; line-height: 1.1; }
+.hstat-v.accent { color: var(--showcase-accent); }
+.hstat-v.gold   { color: var(--showcase-gold); }
+.hstat-v.warn   { color: var(--showcase-warn); }
+.hstat-note { font-size: 0.72rem; color: var(--showcase-text-muted); margin-top: 0.2rem; }
+
+/* PII BANNER */
+.pii-banner { display: flex; align-items: flex-start; gap: 0.75rem; background: #f0f9f4; border: 1px solid #a7f3d0; border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 2rem; font-size: 0.83rem; color: #065f46; }
+.pii-banner svg { flex-shrink: 0; margin-top: 1px; }
+
+/* LAYOUT */
+.tool-layout { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start; }
+@media (max-width: 900px) { .tool-layout { grid-template-columns: 1fr; } }
+
+/* SIDEBAR */
+.var-sidebar { background: var(--ink); border-radius: 6px; padding: 1.5rem; border-left: 3px solid var(--gold); }
+.var-sidebar-label { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.var-sidebar h3 { font-family: var(--showcase-heading-font); color: #fff; font-size: 1.35rem; line-height: 1.2; margin-bottom: 0.5rem; }
+.var-sidebar p { font-size: 0.85rem; color: var(--body); line-height: 1.6; margin-bottom: 1rem; }
+.var-sidebar p:last-child { margin-bottom: 0; }
+.var-sidebar .cite { font-size: 0.72rem; color: var(--muted); margin-top: 0.75rem; }
+.var-stat { font-family: var(--showcase-mono-font); font-size: 0.78rem; color: var(--accent-lt); margin-top: 0.5rem; }
+
+/* SECTION HEADER */
+.section-hd { font-family: var(--showcase-mono-font); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--showcase-text-muted); border-bottom: 1px solid var(--showcase-border); padding-bottom: 0.5rem; margin-bottom: 1.25rem; }
+
+/* SCENARIOS */
+.scenario-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.scenario-btn { font-family: var(--showcase-mono-font); font-size: 0.72rem; letter-spacing: 0.08em; padding: 0.45rem 1rem; border-radius: 4px; border: 1px solid var(--showcase-border); color: var(--showcase-text-muted); background: var(--showcase-bg-soft); transition: all 0.15s; }
+.scenario-btn:hover, .scenario-btn.active { background: var(--showcase-accent); border-color: var(--showcase-accent); color: #fff; }
+
+/* FORM */
+.field-group { margin-bottom: 2rem; }
+.field-group h3 { font-family: var(--showcase-heading-font); font-size: 1rem; margin-bottom: 1rem; }
+.select-field { display: flex; flex-direction: column; gap: 0.35rem; max-width: 520px; }
+.select-field label { font-family: var(--showcase-mono-font); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); }
+.select-field select { font-family: var(--showcase-mono-font); font-size: 0.88rem; padding: 0.6rem 0.75rem; border: 1px solid var(--showcase-border); border-radius: 4px; background: var(--showcase-bg); color: var(--showcase-text); appearance: auto; }
+.select-field select:focus { outline: none; border-color: var(--showcase-accent); }
+.select-field .hint { font-size: 0.75rem; color: var(--showcase-text-muted); }
+
+/* CHECKBOX GRID */
+.check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.65rem; margin-bottom: 1.5rem; }
+.check-item { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.75rem 0.9rem; border: 1px solid var(--showcase-border); border-radius: 5px; cursor: pointer; transition: all 0.15s; }
+.check-item:hover { border-color: var(--showcase-accent); background: rgba(42,127,192,0.04); }
+.check-item input[type="checkbox"] { margin-top: 3px; accent-color: var(--showcase-accent); width: 15px; height: 15px; flex-shrink: 0; }
+.check-item-body {}
+.check-item-label { font-weight: 500; font-size: 0.88rem; color: var(--showcase-text); }
+.check-item-desc { font-size: 0.75rem; color: var(--showcase-text-muted); margin-top: 0.15rem; line-height: 1.4; }
+
+/* RUN BUTTON */
+.run-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--showcase-accent); color: #fff; padding: 0.75rem 2rem; border-radius: 5px; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em; border: none; cursor: pointer; transition: background 0.15s; margin-top: 0.5rem; }
+.run-btn:hover { background: var(--accent-lt); }
+
+/* RESULTS */
+.results-section { margin-top: 2rem; border-top: 1px solid var(--showcase-border); padding-top: 2rem; display: none; }
+.results-section.visible { display: block; }
+
+/* TIER VERDICT */
+.verdict-card { border-radius: 6px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid var(--showcase-border); }
+.verdict-card.t1 { background: rgba(220,38,38,0.06); border-color: rgba(220,38,38,0.3); }
+.verdict-card.t2 { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.3); }
+.verdict-card.t3 { background: rgba(42,127,192,0.06); border-color: rgba(42,127,192,0.25); }
+.verdict-card.t4 { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.25); }
+.verdict-card.tppp { background: rgba(139,92,246,0.06); border-color: rgba(139,92,246,0.3); }
+.verdict-eyebrow { font-family: var(--showcase-mono-font); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.verdict-card.t1 .verdict-eyebrow { color: #dc2626; }
+.verdict-card.t2 .verdict-eyebrow { color: #f59e0b; }
+.verdict-card.t3 .verdict-eyebrow { color: #2a7fc0; }
+.verdict-card.t4 .verdict-eyebrow { color: #10b981; }
+.verdict-card.tppp .verdict-eyebrow { color: #8b5cf6; }
+.verdict-title { font-family: var(--showcase-heading-font); font-size: 1.25rem; margin-bottom: 0.5rem; }
+.verdict-desc { font-size: 0.88rem; color: var(--showcase-text-muted); line-height: 1.65; }
+
+/* DEADLINE BADGE */
+.deadline-badge { display: inline-block; font-family: var(--showcase-mono-font); font-size: 0.75rem; padding: 0.3rem 0.75rem; border-radius: 4px; background: rgba(220,38,38,0.1); color: #dc2626; border: 1px solid rgba(220,38,38,0.25); margin-top: 0.5rem; }
+.deadline-badge.ok { background: rgba(16,185,129,0.1); color: #10b981; border-color: rgba(16,185,129,0.25); }
+.deadline-badge.warn { background: rgba(245,158,11,0.1); color: #f59e0b; border-color: rgba(245,158,11,0.25); }
+
+/* CALENDAR TIMELINE */
+.calendar-section { margin-bottom: 2rem; }
+.timeline { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--showcase-border); border-radius: 6px; overflow: hidden; }
+.tl-row { display: grid; grid-template-columns: 140px 1fr; gap: 0; border-bottom: 1px solid var(--showcase-border); }
+.tl-row:last-child { border-bottom: none; }
+.tl-date { background: var(--showcase-bg-soft); padding: 0.85rem 1rem; font-family: var(--showcase-mono-font); font-size: 0.78rem; font-weight: 500; display: flex; align-items: center; border-right: 1px solid var(--showcase-border); color: var(--showcase-text); }
+.tl-date.past    { color: var(--showcase-text-muted); }
+.tl-date.current { color: #dc2626; background: rgba(220,38,38,0.06); }
+.tl-date.future  { color: var(--showcase-accent); }
+.tl-content { padding: 0.85rem 1.1rem; }
+.tl-tier { font-family: var(--showcase-mono-font); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.3rem; }
+.tl-obligation { font-size: 0.88rem; color: var(--showcase-text); }
+.tl-obligation strong { color: var(--showcase-text); }
+.tl-flag { display: inline-block; font-family: var(--showcase-mono-font); font-size: 0.6rem; padding: 0.15rem 0.5rem; border-radius: 2px; margin-left: 0.5rem; vertical-align: middle; }
+.tl-flag.applies { background: rgba(220,38,38,0.1); color: #dc2626; border: 1px solid rgba(220,38,38,0.2); }
+.tl-flag.partial { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+.tl-flag.na { background: rgba(106,122,138,0.1); color: #6a7a8a; border: 1px solid rgba(106,122,138,0.2); }
+
+/* DATA RIGHTS TABLE */
+.rights-table-wrap { overflow-x: auto; margin-bottom: 2rem; }
+table.rights-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+table.rights-table th { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); padding: 0.6rem 0.85rem; border-bottom: 2px solid var(--showcase-border); text-align: left; background: var(--showcase-bg-soft); }
+table.rights-table td { padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--showcase-border); vertical-align: top; }
+table.rights-table td:first-child { font-weight: 500; color: var(--showcase-text); }
+.scope-badge { display: inline-block; font-family: var(--showcase-mono-font); font-size: 0.62rem; padding: 0.2rem 0.55rem; border-radius: 3px; }
+.scope-badge.required  { background: rgba(220,38,38,0.1); color: #dc2626; border: 1px solid rgba(220,38,38,0.2); }
+.scope-badge.optional  { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+.scope-badge.provider  { background: rgba(139,92,246,0.1); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.2); }
+.scope-badge.na        { background: rgba(106,122,138,0.08); color: #6a7a8a; border: 1px solid rgba(106,122,138,0.15); }
+
+/* AUTH CHECKLIST */
+.auth-checklist { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+.auth-item { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.75rem 1rem; border: 1px solid var(--showcase-border); border-radius: 5px; }
+.auth-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.auth-body {}
+.auth-title { font-weight: 500; font-size: 0.88rem; color: var(--showcase-text); }
+.auth-detail { font-size: 0.78rem; color: var(--showcase-text-muted); margin-top: 0.15rem; line-height: 1.5; }
+
+/* GAP SUMMARY */
+.gap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 6px; overflow: hidden; margin-bottom: 2rem; }
+.gap-cell { background: var(--showcase-bg-soft); padding: 1rem 1.25rem; }
+.gap-label { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.35rem; }
+.gap-val { font-family: var(--showcase-heading-font); font-size: 1.35rem; }
+.gap-val.red { color: var(--showcase-error); }
+.gap-val.warn { color: var(--showcase-warn); }
+.gap-val.green { color: var(--showcase-success); }
+.gap-sub { font-size: 0.72rem; color: var(--showcase-text-muted); margin-top: 0.2rem; }
+
+/* EXPORT ROW */
+.results-export-row { display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 1.5rem; border-top: 1px solid var(--showcase-border); margin-top: 2rem; }
+.export-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border-radius: 4px; font-size: 0.83rem; font-weight: 500; border: 1px solid var(--showcase-border); color: var(--showcase-text); background: var(--showcase-bg-soft); cursor: pointer; transition: all 0.15s; }
+.export-btn:hover { border-color: var(--showcase-accent); color: var(--showcase-accent); }
+.export-btn.primary { background: var(--showcase-accent); border-color: var(--showcase-accent); color: #fff; }
+.export-btn.primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+
+/* FOOTER */
+footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem; }
+.footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: #fff; margin-bottom: 0.35rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-size: 0.78rem; color: var(--muted); }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.footer-links a { font-size: 0.82rem; color: var(--body); text-decoration: none; }
+.footer-links a:hover { color: var(--accent-lt); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Post Oak Labs navigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Post Oak <span>Labs</span></a>
+    <div class="nav-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="/demos/">Showcase</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">CFPB §1033</span>
+    </div>
+    <nav class="nav-links" aria-label="Site links">
+      <a href="/demos/">← All Demos</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html" class="nav-cta">Talk to us</a>
+    </nav>
+  </div>
+</nav>
+
+<!-- HEADER STRIP -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Fintech Intelligence Showcase</span>
+      <span class="strip-title">Demo #9 — CFPB §1033 Financial Data Rights Mapper</span>
+    </div>
+    <div class="strip-actions">
+      <a href="https://ainumbers.co/tools/165-cfpb-1033-institution-classifier.html" target="_blank" rel="noopener">T165 Institution Classifier ↗</a>
+      <a href="https://ainumbers.co/tools/166-cfpb-1033-data-rights-scoper.html" target="_blank" rel="noopener">T166 Data Rights Scoper ↗</a>
+      <a href="https://ainumbers.co/tools/167-cfpb-1033-tppp-mapper.html" target="_blank" rel="noopener">T167 TPPP Mapper ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- CANVAS -->
+<main class="demo-canvas" role="main">
+  <div class="canvas-inner">
+
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow-badges">
+        <span class="eyebrow-badge accent">Open Banking · RegTech</span>
+        <span class="eyebrow-badge gold">T165 + T166 + T167</span>
+        <span class="eyebrow-badge warn">CFPB §1033</span>
+        <span class="eyebrow-badge">AP2 v1.0</span>
+        <span class="eyebrow-badge">Zero PII</span>
+      </div>
+      <h1 id="hero-title">CFPB §1033 <em>Financial Data Rights</em> Mapper</h1>
+      <p class="hero-sub">The CFPB's Personal Financial Data Rights rule (12 CFR Part 1033) mandates that covered financial institutions give consumers and authorised third parties machine-readable access to their financial data. Map your institution's obligations, scope the seven data categories you must expose, navigate the four-wave compliance calendar from April 2026 through April 2030, and generate an AP2 mandate for your open-banking programme.</p>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-l">Rule Published</div>
+          <div class="hstat-v gold">Oct 2024</div>
+          <div class="hstat-note">CFPB Final Rule</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">First Deadline</div>
+          <div class="hstat-v warn" id="countdown-val">Apr 2026</div>
+          <div class="hstat-note" id="countdown-label">Tier 1 institutions</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">Covered Entities</div>
+          <div class="hstat-v accent">~4,000+</div>
+          <div class="hstat-note">Banks, CUs, fintechs, TPPPs</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">Data Categories</div>
+          <div class="hstat-v">7</div>
+          <div class="hstat-note">Mandated access types</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-l">Standard</div>
+          <div class="hstat-v accent">FDX API</div>
+          <div class="hstat-note">Screen-scraping sunset</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PII BANNER -->
+    <div class="pii-banner" role="note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+    </div>
+
+    <!-- TOOL LAYOUT -->
+    <div class="tool-layout">
+      <div class="tool-main">
+
+        <!-- SCENARIOS -->
+        <div class="section-hd">Quick Scenarios</div>
+        <div class="scenario-row" role="group" aria-label="Scenario presets">
+          <button class="scenario-btn" onclick="applyScenario('bank')">🏦 Tier 2 National Bank</button>
+          <button class="scenario-btn" onclick="applyScenario('baas')">⚙️ BaaS / Processor TPPP</button>
+          <button class="scenario-btn" onclick="applyScenario('neobank')">📱 Neobank Tier 4</button>
+          <button class="scenario-btn" onclick="applyScenario('aggregator')">🔗 Data Aggregator</button>
+        </div>
+
+        <!-- INSTITUTION CLASSIFICATION -->
+        <div class="field-group">
+          <div class="section-hd">Step 1 — Institution Classification</div>
+          <div class="select-field">
+            <label for="inp-tier">Institution Type</label>
+            <select id="inp-tier" onchange="onTierChange()">
+              <option value="">— Select institution type —</option>
+              <option value="t1">Tier 1 — Large Depository (>$500B assets) · Deadline: Apr 2026</option>
+              <option value="t2">Tier 2 — Mid-Size Depository ($10B–$500B) · Deadline: Oct 2026</option>
+              <option value="t3">Tier 3 — Smaller Depository ($1.5B–$10B) · Deadline: Apr 2027</option>
+              <option value="t4">Tier 4 — Small Depository (&lt;$1.5B) / Fintech · Deadline: Apr 2028</option>
+              <option value="tppp">TPPP — Third-Party Payment Processor or Data Aggregator · Deadline: Apr 2030</option>
+            </select>
+            <span class="hint">Based on total domestic assets or CFPB-defined covered entity classification.</span>
+          </div>
+        </div>
+
+        <!-- PRODUCT SCOPE -->
+        <div class="field-group">
+          <div class="section-hd">Step 2 — Covered Products &amp; Accounts</div>
+          <div class="check-grid" id="productGrid">
+            <label class="check-item"><input type="checkbox" id="prod-checking" value="checking"><div class="check-item-body"><div class="check-item-label">Checking / Demand Deposit Account</div><div class="check-item-desc">Core DDA — always covered for Tier 1–4</div></div></label>
+            <label class="check-item"><input type="checkbox" id="prod-savings" value="savings"><div class="check-item-body"><div class="check-item-label">Savings / Money Market Account</div><div class="check-item-desc">MMDA and savings products in scope</div></div></label>
+            <label class="check-item"><input type="checkbox" id="prod-credit" value="credit"><div class="check-item-body"><div class="check-item-label">Credit Card (TILA-covered)</div><div class="check-item-desc">Open-end credit cards; transaction data required</div></div></label>
+            <label class="check-item"><input type="checkbox" id="prod-prepaid" value="prepaid"><div class="check-item-body"><div class="check-item-label">Prepaid Account (Reg E)</div><div class="check-item-desc">GPR prepaid, payroll cards covered</div></div></label>
+            <label class="check-item"><input type="checkbox" id="prod-digital" value="digital"><div class="check-item-body"><div class="check-item-label">Digital Wallet / BNPL Account</div><div class="check-item-desc">Non-bank BNPL providers may fall under TPPP classification</div></div></label>
+            <label class="check-item"><input type="checkbox" id="prod-loan" value="loan"><div class="check-item-body"><div class="check-item-label">Closed-End Loan (HMDA / CRA)</div><div class="check-item-desc">Mortgage, auto, personal loans — limited scope</div></div></label>
+          </div>
+        </div>
+
+        <!-- ROLE -->
+        <div class="field-group">
+          <div class="section-hd">Step 3 — Data Access Role</div>
+          <div class="select-field">
+            <label for="inp-role">Primary Role under §1033</label>
+            <select id="inp-role">
+              <option value="provider">Data Provider — I hold consumer financial data and must make it available</option>
+              <option value="recipient">Authorised Data Recipient — I receive data on behalf of consumers (fintech app)</option>
+              <option value="both">Both — I operate as a provider and a recipient (BaaS platform, aggregator)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- TECHNICAL READINESS -->
+        <div class="field-group">
+          <div class="section-hd">Step 4 — Technical Readiness</div>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" id="tech-fdx"><div class="check-item-body"><div class="check-item-label">FDX API implemented / in roadmap</div><div class="check-item-desc">Financial Data Exchange v6.0+ API standard</div></div></label>
+            <label class="check-item"><input type="checkbox" id="tech-oauth"><div class="check-item-body"><div class="check-item-label">OAuth 2.0 / PKCE authorization</div><div class="check-item-desc">Token-based third-party authorization flows</div></div></label>
+            <label class="check-item"><input type="checkbox" id="tech-scraping"><div class="check-item-body"><div class="check-item-label">Screen-scraping sunset plan in place</div><div class="check-item-desc">§1033 displaces screen-scraping by compliance date</div></div></label>
+            <label class="check-item"><input type="checkbox" id="tech-registry"><div class="check-item-body"><div class="check-item-label">Third-party registry / vetting process</div><div class="check-item-desc">Provider must vet authorised data recipients</div></div></label>
+            <label class="check-item"><input type="checkbox" id="tech-consent"><div class="check-item-body"><div class="check-item-label">Consumer authorization &amp; revocation UI</div><div class="check-item-desc">Consent dashboard, access logs, one-click revocation</div></div></label>
+            <label class="check-item"><input type="checkbox" id="tech-rate"><div class="check-item-body"><div class="check-item-label">Rate limiting / availability SLA defined</div><div class="check-item-desc">§1033 requires reasonable availability; no discriminatory limits</div></div></label>
+          </div>
+        </div>
+
+        <!-- RUN -->
+        <button class="run-btn" onclick="runMapper()" aria-label="Map §1033 obligations">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Map §1033 Obligations
+        </button>
+
+        <!-- RESULTS -->
+        <div class="results-section" id="resultsSection">
+
+          <!-- VERDICT -->
+          <div id="verdictCard"></div>
+
+          <!-- GAP SUMMARY -->
+          <div class="section-hd">Readiness Snapshot</div>
+          <div class="gap-grid" id="gapGrid"></div>
+
+          <!-- COMPLIANCE CALENDAR -->
+          <div class="calendar-section">
+            <div class="section-hd">§1033 Compliance Calendar</div>
+            <div class="timeline" id="timeline"></div>
+          </div>
+
+          <!-- DATA RIGHTS TABLE -->
+          <div class="section-hd">Data Category Obligations</div>
+          <div class="rights-table-wrap">
+            <table class="rights-table">
+              <thead>
+                <tr>
+                  <th>Data Category</th>
+                  <th>Description</th>
+                  <th>Scope for You</th>
+                  <th>Format Required</th>
+                </tr>
+              </thead>
+              <tbody id="rightsTbody"></tbody>
+            </table>
+          </div>
+
+          <!-- AUTH CHECKLIST -->
+          <div class="section-hd">Consumer Authorization Workflow Requirements</div>
+          <div class="auth-checklist" id="authChecklist"></div>
+
+          <!-- EXPORT -->
+          <div class="results-export-row">
+            <button class="export-btn primary" onclick="exportAP2()">⬇ AP2 JSON Mandate</button>
+            <button class="export-btn" onclick="exportMarkdown()">⬇ Markdown Report</button>
+          </div>
+        </div>
+        <!-- /results -->
+
+      </div><!-- /tool-main -->
+
+      <!-- SIDEBAR -->
+      <aside class="var-sidebar" aria-label="Regulatory context">
+        <div class="var-sidebar-label">Regulatory Context</div>
+        <h3>CFPB §1033 Final Rule</h3>
+        <p>Published October 2024 under Dodd-Frank §1033, this rule creates a US open banking framework requiring covered institutions to give consumers API-accessible data — displacing screen-scraping and legacy credential-sharing.</p>
+        <div class="var-stat">📅 First deadline: Apr 2026 (Tier 1)</div>
+        <div class="var-stat">📅 Final wave: Apr 2030 (TPPPs)</div>
+        <p style="margin-top:1rem;">Financial Data Exchange (FDX) API is the industry-consensus technical standard. CFPB has not mandated FDX specifically, but rule-makers expect providers to use recognised standards for machine-readable delivery.</p>
+        <div class="var-stat">🔒 OAuth 2.0 + PKCE required for auth</div>
+        <div class="var-stat">🚫 Screen-scraping sunset at compliance date</div>
+        <p style="margin-top:1rem;">Non-compliance risk: CFPB can bring enforcement under Dodd-Frank UDAAP authority — potential for 7-figure civil money penalties and consent orders.</p>
+        <div class="var-stat">⚠️ UDAAP enforcement risk post-deadline</div>
+        <div class="cite">Sources: CFPB 12 CFR Part 1033 (Oct 2024); FDX API v6.0; Dodd-Frank §1033 (12 U.S.C. § 5533).</div>
+      </aside>
+    </div><!-- /tool-layout -->
+
+  </div><!-- /canvas-inner -->
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <div class="footer-copy">© 2026 Post Oak Labs · CC BY 4.0 · postoaklabs.com</div>
+    </div>
+    <nav class="footer-links" aria-label="Footer links">
+      <a href="/demos/">Showcase</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CFPB §1033 Financial Data Rights Mapper
+   Post Oak Labs · Fintech Intelligence Showcase · Demo #9
+   AP2 schema: @ainumbers.co/cfpb-1033-v1
+   ============================================================ */
+
+// --------------- TIER DEFINITIONS ---------------
+const TIERS = {
+  t1:   { id: 't1',   label: 'Tier 1 — Large Depository', assets: '>$500B', deadline: '2026-04-01', wave: 1, cls: 't1', color: '#dc2626' },
+  t2:   { id: 't2',   label: 'Tier 2 — Mid-Size Depository', assets: '$10B–$500B', deadline: '2026-10-01', wave: 2, cls: 't2', color: '#f59e0b' },
+  t3:   { id: 't3',   label: 'Tier 3 — Smaller Depository', assets: '$1.5B–$10B', deadline: '2027-04-01', wave: 3, cls: 't3', color: '#2a7fc0' },
+  t4:   { id: 't4',   label: 'Tier 4 — Small Institution / Fintech', assets: '<$1.5B', deadline: '2028-04-01', wave: 4, cls: 't4', color: '#10b981' },
+  tppp: { id: 'tppp', label: 'TPPP / Data Aggregator', assets: 'N/A', deadline: '2030-04-01', wave: 5, cls: 'tppp', color: '#8b5cf6' },
+};
+
+// --------------- COMPLIANCE CALENDAR ---------------
+const CALENDAR = [
+  { date: 'Apr 2026', iso: '2026-04-01', tiers: ['t1'], obligation: 'Tier 1 institutions must expose all 7 data categories via structured API. Screen-scraping must be deprecated for covered accounts.' },
+  { date: 'Oct 2026', iso: '2026-10-01', tiers: ['t2'], obligation: 'Tier 2 institutions (mid-size banks, large credit unions) come into scope. Same data category requirements as Tier 1.' },
+  { date: 'Apr 2027', iso: '2027-04-01', tiers: ['t3'], obligation: 'Tier 3 smaller depositories, community banks with >$1.5B assets, and qualifying credit unions must comply.' },
+  { date: 'Apr 2028', iso: '2028-04-01', tiers: ['t4'], obligation: 'Tier 4 small institutions and fintech account providers must expose data. Most neobanks and programme managers fall here.' },
+  { date: 'Apr 2030', iso: '2030-04-01', tiers: ['tppp'], obligation: 'Third-Party Payment Processors and data aggregators face specific authorisation, data retention, and consent management obligations.' },
+];
+
+// --------------- DATA CATEGORIES ---------------
+const DATA_CATEGORIES = [
+  { id: 'txn',      label: 'Transaction Information',         desc: 'Posted and pending transactions, merchant name, amount, date, MCC', required: true,  format: 'FDX TransactionList JSON' },
+  { id: 'acct',     label: 'Account Balance & Information',   desc: 'Current/available balance, account type, routing/account numbers', required: true,  format: 'FDX AccountDetail JSON' },
+  { id: 'payment',  label: 'Payment Initiation Details',       desc: 'Scheduled and recurring payments, bill pay, ACH instructions', required: true,  format: 'FDX PaymentNetwork JSON' },
+  { id: 'upcoming', label: 'Upcoming Payment Information',     desc: 'Future-dated payments, loan due dates, subscription charges', required: true,  format: 'FDX UpcomingTransactions JSON' },
+  { id: 'terms',    label: 'Account Terms & Conditions',       desc: 'Interest rates, fee schedules, credit limits, promotional offers', required: true,  format: 'FDX AccountTerms JSON' },
+  { id: 'status',   label: 'Account Ownership & Status',       desc: 'Account holder identity attributes for verification; open/closed status', required: true,  format: 'FDX AccountOwner JSON' },
+  { id: 'auth3p',   label: 'Authorised Third-Party Data',      desc: 'Confirmation of active third-party access grants, token metadata, access scope', required: false, format: 'FDX ConsentMetadata JSON' },
+];
+
+// --------------- AUTH WORKFLOW ITEMS ---------------
+const AUTH_ITEMS = [
+  { icon: '🔐', title: 'Initial Authorization', detail: 'Consumer must explicitly authorize each third-party data recipient. Consent must be informed, specific, and documented with purpose, data categories, and duration.' },
+  { icon: '🔄', title: 'Authorization Refresh / Reconfirmation', detail: '§1033 limits authorization duration. Providers may require periodic reconfirmation (at minimum annually). Stale tokens must be expired automatically.' },
+  { icon: '🚫', title: 'Revocation on Demand', detail: 'Consumers must be able to revoke third-party access at any time via the provider\'s interface. Revocation must propagate to the recipient within a reasonable time frame.' },
+  { icon: '📋', title: 'Access Log / Audit Trail', detail: 'Providers must make available a log of which third parties have been authorized, what data was accessed, and when. Consumer-facing consent dashboard required.' },
+  { icon: '🔒', title: 'Third-Party Vetting', detail: 'Data providers must establish a process to vet and register authorised data recipients. Recipients must agree to data use restrictions — no secondary use without consent.' },
+  { icon: '⚡', title: 'API Rate Limiting & Availability', detail: 'Providers may not apply discriminatory rate limits that disadvantage specific third parties vs. internal systems. Reasonable uptime SLAs must be published.' },
+];
+
+// --------------- SCENARIOS ---------------
+const SCENARIOS = {
+  bank:        { tier: 't2', products: ['checking','savings','credit'],   role: 'provider',   techs: ['fdx','oauth'] },
+  baas:        { tier: 'tppp', products: ['checking','prepaid','digital'], role: 'both',       techs: ['fdx','oauth','registry'] },
+  neobank:     { tier: 't4', products: ['checking','savings','digital'],  role: 'both',       techs: ['oauth','consent'] },
+  aggregator:  { tier: 'tppp', products: [],                             role: 'recipient',  techs: ['oauth','scraping','consent','rate'] },
+};
+
+let lastResult = null;
+
+// --------------- HELPERS ---------------
+function daysUntil(isoDate) {
+  const ms = new Date(isoDate) - new Date();
+  return Math.ceil(ms / 86400000);
+}
+
+function dateStatus(iso) {
+  const d = daysUntil(iso);
+  if (d < 0)   return 'past';
+  if (d < 365) return 'current';
+  return 'future';
+}
+
+// --------------- COUNTDOWN ---------------
+function initCountdown() {
+  const d = daysUntil('2026-04-01');
+  const el = document.getElementById('countdown-val');
+  const lb = document.getElementById('countdown-label');
+  if (!el) return;
+  if (d > 0) {
+    el.textContent = d + 'd';
+    lb.textContent = 'Until Tier 1 deadline';
+    el.classList.add('warn');
+  } else {
+    el.textContent = 'Passed';
+    lb.textContent = 'Tier 1 deadline';
+  }
+}
+
+// --------------- TIER CHANGE ---------------
+function onTierChange() { /* could prefill products based on tier */ }
+
+// --------------- SCENARIO APPLY ---------------
+function applyScenario(key) {
+  const s = SCENARIOS[key];
+  if (!s) return;
+
+  // Tier
+  document.getElementById('inp-tier').value = s.tier;
+
+  // Products
+  ['checking','savings','credit','prepaid','digital','loan'].forEach(id => {
+    const el = document.getElementById('prod-' + id);
+    if (el) el.checked = s.products.includes(id);
+  });
+
+  // Role
+  document.getElementById('inp-role').value = s.role;
+
+  // Techs
+  ['fdx','oauth','scraping','registry','consent','rate'].forEach(id => {
+    const el = document.getElementById('tech-' + id);
+    if (el) el.checked = s.techs.includes(id);
+  });
+
+  document.querySelectorAll('.scenario-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['bank','baas','neobank','aggregator'][i] === key);
+  });
+}
+
+// --------------- RUN MAPPER ---------------
+function runMapper() {
+  const tierId = document.getElementById('inp-tier').value;
+  if (!tierId) { alert('Please select an institution type first.'); return; }
+  const tier = TIERS[tierId];
+
+  const products = ['checking','savings','credit','prepaid','digital','loan']
+    .filter(id => document.getElementById('prod-' + id)?.checked);
+
+  const role = document.getElementById('inp-role').value;
+
+  const techs = ['fdx','oauth','scraping','registry','consent','rate']
+    .filter(id => document.getElementById('tech-' + id)?.checked);
+
+  const techScore = techs.length;
+  const maxTech = 6;
+  const pct = Math.round((techScore / maxTech) * 100);
+
+  const daysToDeadline = daysUntil(tier.deadline);
+  const isOverdue = daysToDeadline < 0;
+  const isUrgent  = daysToDeadline >= 0 && daysToDeadline < 365;
+
+  lastResult = { tier, products, role, techs, techScore, pct, daysToDeadline, isOverdue, isUrgent };
+  renderResults(lastResult);
+  document.getElementById('resultsSection').classList.add('visible');
+  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// --------------- RENDER ---------------
+function renderResults({ tier, products, role, techs, techScore, pct, daysToDeadline, isOverdue, isUrgent }) {
+
+  // Verdict
+  const deadlineStr = isOverdue
+    ? `<span class="deadline-badge">OVERDUE — ${Math.abs(daysToDeadline)} days past deadline</span>`
+    : isUrgent
+      ? `<span class="deadline-badge warn">⚠ ${daysToDeadline} days until compliance deadline</span>`
+      : `<span class="deadline-badge ok">✓ ${daysToDeadline} days until compliance deadline</span>`;
+
+  document.getElementById('verdictCard').innerHTML = `
+    <div class="verdict-card ${tier.cls}" style="margin-bottom:2rem;">
+      <div class="verdict-eyebrow">§1033 Classification · Wave ${tier.wave}</div>
+      <div class="verdict-title">${tier.label}</div>
+      <div class="verdict-desc">
+        Asset range: ${tier.assets}.<br>
+        Compliance deadline: <strong>${tier.deadline.slice(0,7).replace('-','/')}</strong> — you must provide structured API access to all 7 covered data categories by this date.
+        ${deadlineStr}
+      </div>
+    </div>
+  `;
+
+  // Gap grid
+  const missingTechs = 6 - techScore;
+  const gapClass = pct >= 80 ? 'green' : pct >= 50 ? 'warn' : 'red';
+  document.getElementById('gapGrid').innerHTML = `
+    <div class="gap-cell"><div class="gap-label">Technical Readiness</div><div class="gap-val ${gapClass}">${pct}%</div><div class="gap-sub">${techScore} / 6 controls checked</div></div>
+    <div class="gap-cell"><div class="gap-label">Products in Scope</div><div class="gap-val">${products.length || '0'}</div><div class="gap-sub">${products.length === 0 ? 'None selected' : products.join(', ')}</div></div>
+    <div class="gap-cell"><div class="gap-label">Days to Deadline</div><div class="gap-val ${isOverdue ? 'red' : isUrgent ? 'warn' : 'green'}">${isOverdue ? 'Overdue' : daysToDeadline + 'd'}</div><div class="gap-sub">${tier.deadline}</div></div>
+    <div class="gap-cell"><div class="gap-label">Missing Controls</div><div class="gap-val ${missingTechs > 2 ? 'red' : missingTechs > 0 ? 'warn' : 'green'}">${missingTechs}</div><div class="gap-sub">${missingTechs === 0 ? 'All controls in place' : 'Technical gaps to close'}</div></div>
+    <div class="gap-cell"><div class="gap-label">Role</div><div class="gap-val" style="font-size:1rem;padding-top:0.1rem;">${role === 'provider' ? 'Data Provider' : role === 'recipient' ? 'Data Recipient' : 'Provider + Recipient'}</div><div class="gap-sub">Under §1033</div></div>
+  `;
+
+  // Timeline
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+  CALENDAR.forEach(row => {
+    const status = dateStatus(row.iso);
+    const appliesToMe = row.tiers.includes(tier.id);
+    const flagHtml = appliesToMe
+      ? `<span class="tl-flag applies">APPLIES TO YOU</span>`
+      : `<span class="tl-flag na">Not your tier</span>`;
+
+    const tr = document.createElement('div');
+    tr.className = 'tl-row';
+    tr.innerHTML = `
+      <div class="tl-date ${status}">${row.date}</div>
+      <div class="tl-content">
+        <div class="tl-tier">Wave ${CALENDAR.indexOf(row)+1} — ${row.tiers.map(t => TIERS[t]?.label || t).join(', ')} ${flagHtml}</div>
+        <div class="tl-obligation">${row.obligation}</div>
+      </div>
+    `;
+    tl.appendChild(tr);
+  });
+
+  // Data rights table
+  const tbody = document.getElementById('rightsTbody');
+  tbody.innerHTML = '';
+  DATA_CATEGORIES.forEach(cat => {
+    let scope, scopeClass;
+    if (tier.id === 'tppp' && cat.id === 'auth3p') {
+      scope = 'REQUIRED'; scopeClass = 'required';
+    } else if (cat.required) {
+      scope = role === 'recipient' ? 'RECEIVE' : 'PROVIDE'; scopeClass = 'required';
+    } else {
+      scope = role === 'provider' ? 'OPTIONAL' : 'N/A'; scopeClass = cat.required ? 'required' : 'optional';
+    }
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${cat.label}</td>
+      <td style="font-size:0.8rem;color:var(--showcase-text-muted);">${cat.desc}</td>
+      <td><span class="scope-badge ${scopeClass}">${scope}</span></td>
+      <td style="font-family:var(--showcase-mono-font);font-size:0.76rem;color:var(--showcase-text-muted);">${cat.format}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Auth checklist
+  const authList = document.getElementById('authChecklist');
+  authList.innerHTML = '';
+  AUTH_ITEMS.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'auth-item';
+    div.innerHTML = `<div class="auth-icon">${item.icon}</div><div class="auth-body"><div class="auth-title">${item.title}</div><div class="auth-detail">${item.detail}</div></div>`;
+    authList.appendChild(div);
+  });
+}
+
+// --------------- AP2 EXPORT ---------------
+function exportAP2() {
+  if (!lastResult) { alert('Run the mapper first.'); return; }
+  const { tier, products, role, techs, pct, daysToDeadline, isOverdue } = lastResult;
+
+  const mandate = {
+    "@schema": "@ainumbers.co/cfpb-1033-v1",
+    "@version": "1.0",
+    "@generated": new Date().toISOString(),
+    "mandate_id": "AIN-1033-" + Date.now().toString(36).toUpperCase(),
+    "tool_id": "cfpb-1033-financial-data-rights-mapper",
+    "issuer": "post-oak-labs",
+    "institution_classification": {
+      "tier": tier.id,
+      "tier_label": tier.label,
+      "compliance_deadline": tier.deadline,
+      "days_to_deadline": daysToDeadline,
+      "status": isOverdue ? "OVERDUE" : "PENDING",
+      "wave": tier.wave,
+    },
+    "data_access_role": role,
+    "covered_products": products,
+    "technical_readiness": {
+      "score_pct": pct,
+      "controls_checked": techs,
+      "missing_controls": ['fdx','oauth','scraping','registry','consent','rate'].filter(t => !techs.includes(t)),
+    },
+    "required_data_categories": DATA_CATEGORIES.filter(c => c.required).map(c => c.id),
+    "compliance_calendar": CALENDAR.map(row => ({
+      wave: CALENDAR.indexOf(row) + 1,
+      date: row.date,
+      tiers: row.tiers,
+      applies_to_institution: row.tiers.includes(tier.id),
+    })),
+    "agent_instructions": [
+      `Assign §1033 programme to Compliance and Engineering leads. Deadline: ${tier.deadline}.`,
+      `Prioritise FDX API v6.0 implementation for all ${products.length || 'covered'} account products.`,
+      "Implement OAuth 2.0 / PKCE consumer authorization before compliance date. Deprecate screen-scraping flows.",
+      "Build consumer consent dashboard with real-time access logs and one-click revocation.",
+      "Establish third-party data recipient vetting and registration process before first API token issuance.",
+      "This mandate is deterministic and client-side generated. No PII was transmitted.",
+    ],
+    "regulatory_basis": {
+      "rule": "12 CFR Part 1033 — Personal Financial Data Rights",
+      "authority": "Dodd-Frank Wall Street Reform and Consumer Protection Act § 1033 (12 U.S.C. § 5533)",
+      "published": "2024-10-22",
+      "effective": "2024-12-13",
+    },
+    "audit_signature": { client_side_executed: true, deterministic_run: true, no_pii_transmitted: true },
+  };
+
+  const blob = new Blob([JSON.stringify(mandate, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `cfpb-1033-mandate-${Date.now()}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// --------------- MARKDOWN EXPORT ---------------
+function exportMarkdown() {
+  if (!lastResult) { alert('Run the mapper first.'); return; }
+  const { tier, products, role, techs, pct, daysToDeadline, isOverdue } = lastResult;
+  const missingTechs = ['fdx','oauth','scraping','registry','consent','rate'].filter(t => !techs.includes(t));
+  const techLabels = { fdx:'FDX API', oauth:'OAuth 2.0 / PKCE', scraping:'Screen-scraping sunset', registry:'Third-party registry', consent:'Consumer auth UI', rate:'Rate limiting SLA' };
+
+  const md = [
+    `# CFPB §1033 Financial Data Rights — Compliance Mapping Report`,
+    ``,
+    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
+    `**Tool:** Post Oak Labs CFPB §1033 Financial Data Rights Mapper  `,
+    `**Schema:** \`@ainumbers.co/cfpb-1033-v1\``,
+    ``,
+    `## Institution Classification`,
+    ``,
+    `| Field | Value |`,
+    `|-------|-------|`,
+    `| Institution Type | ${tier.label} |`,
+    `| Asset Range | ${tier.assets} |`,
+    `| Compliance Wave | Wave ${tier.wave} |`,
+    `| **Compliance Deadline** | **${tier.deadline}** |`,
+    `| Days to Deadline | ${isOverdue ? 'OVERDUE' : daysToDeadline + ' days'} |`,
+    `| Data Access Role | ${role} |`,
+    `| Covered Products | ${products.length > 0 ? products.join(', ') : 'None selected'} |`,
+    ``,
+    `## Technical Readiness`,
+    ``,
+    `**Readiness Score: ${pct}% (${techs.length} / 6 controls)**`,
+    ``,
+    `| Control | Status |`,
+    `|---------|--------|`,
+    ...['fdx','oauth','scraping','registry','consent','rate'].map(t => `| ${techLabels[t]} | ${techs.includes(t) ? '✓ In place' : '✗ Gap identified'} |`),
+    ``,
+    missingTechs.length > 0 ? `### ⚠️ Gaps to Close\n\n${missingTechs.map(t => `- **${techLabels[t]}** — must be remediated before ${tier.deadline}`).join('\n')}\n` : `### ✓ All technical controls in place\n`,
+    `## Required Data Categories`,
+    ``,
+    `All §1033 covered institutions must expose these 7 data categories via structured API:`,
+    ``,
+    ...DATA_CATEGORIES.map(c => `- **${c.label}** — ${c.desc} (\`${c.format}\`)`),
+    ``,
+    `## Compliance Calendar`,
+    ``,
+    `| Date | Tier | Applies? |`,
+    `|------|------|----------|`,
+    ...CALENDAR.map(row => `| ${row.date} | ${row.tiers.map(t => TIERS[t]?.label || t).join(', ')} | ${row.tiers.includes(tier.id) ? '✓ **YES**' : 'No'} |`),
+    ``,
+    `---`,
+    `*This report is for informational purposes only. It does not constitute legal advice. Consult qualified legal counsel for compliance decisions.*`,
+    ``,
+    `*© Post Oak Labs · postoaklabs.com · CC BY 4.0*`,
+  ].join('\n');
+
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `cfpb-1033-report-${Date.now()}.md`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// --------------- INIT ---------------
+initCountdown();
+setTimeout(() => applyScenario('bank'), 80);
+</script>
+</body>
+</htm

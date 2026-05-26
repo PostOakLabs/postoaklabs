@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FATF Readiness Scorer & Sanctions Programme Gap Analyser · Post Oak Labs</title>
+
+<meta name="description" content="Score your financial institution's FATF 40 Recommendations readiness and sanctions programme (OFAC / EU / UN) gap. Identifies high-priority deficiencies, maps to enforcement risk, and exports an AP2-formatted compliance mandate. Browser-based, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/fatf-sanctions-programme-readiness.html">
+<meta property="og:title" content="FATF Readiness & Sanctions Programme Analyser — Post Oak Labs">
+<meta property="og:description" content="Score your FATF 40 Recommendations readiness and sanctions programme gaps (OFAC/EU/UN). AP2-exportable. Zero PII.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/fatf-sanctions-programme-readiness.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/fatf-sanctions-programme-readiness.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "FATF Readiness Scorer & Sanctions Programme Gap Analyser",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/fatf-sanctions-programme-readiness.html",
+  "description": "Two-module AML/CFT compliance tool: (1) FATF 40 Recommendations readiness scoring for financial institutions, with per-recommendation gap analysis and priority ranking; (2) Sanctions programme assessment across OFAC, EU Consolidated List, and UN Security Council regimes, with control gap identification and enforcement risk scoring. AP2 v1.0 exportable mandate.",
+  "featureList": [
+    "FATF 40 Recommendations readiness scoring across 11 categories",
+    "Per-recommendation maturity rating (Compliant / Largely Compliant / Partially Compliant / Non-Compliant)",
+    "Sanctions programme gap assessment: OFAC SDN, EU Consolidated List, UN Security Council",
+    "Enforcement risk scoring with OFAC/EU penalty calibration",
+    "Priority remediation roadmap with effort and impact scoring",
+    "AP2 v1.0 mandate export against @ainumbers.co/fatf-sanctions-v1 schema"
+  ],
+  "keywords": "FATF, AML, CFT, sanctions, OFAC, SDN, EU sanctions, UN sanctions, compliance, RegTech, financial crime, AML programme, KYC, transaction monitoring, AP2 mandate",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-14",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   POL DARK WRAPPER
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --ink:      #050c15;
+  --deep:     #0a1628;
+  --navy:     #0e1e35;
+  --panel:    #142540;
+  --edge:     #1e3454;
+  --rim:      #2a4a70;
+  --body:     #7090b0;
+  --text:     #a8c4de;
+  --muted:    #4a6280;
+  --bright:   #d4e8f8;
+  --white:    #eef6fd;
+  --accent:   #2a7fc0;
+  --accent-lt:#4a9fdf;
+  --gold:     #c09040;
+  --gold-lt:  #d0a050;
+
+  /* Semantic Bridge — light canvas */
+  --showcase-bg:           #ffffff;
+  --showcase-bg-soft:      #fafbfc;
+  --showcase-text:         #0a1828;
+  --showcase-text-muted:   #6a7a8a;
+  --showcase-border:       #e6e8eb;
+  --showcase-accent:       #2a7fc0;
+  --showcase-gold:         #c09040;
+  --showcase-success:      #10b981;
+  --showcase-warn:         #f59e0b;
+  --showcase-error:        #dc2626;
+  --showcase-purple:       #7c3aed;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font:    'DM Sans', sans-serif;
+  --showcase-mono-font:    'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.2; }
+a { color: var(--accent); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+/* ═══ POL NAV ═══ */
+nav[role="navigation"] { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #ffffff; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-bc { font-family: var(--showcase-mono-font); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.06em; display: flex; align-items: center; gap: 0.4rem; }
+.nav-bc a { color: var(--body); text-decoration: none; }
+.nav-bc a:hover { color: var(--accent-lt); }
+.nav-bc span[aria-current] { color: var(--accent-lt); }
+.nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+.nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; transition: color 0.15s; }
+.nav-links a:hover { color: #ffffff; }
+.nav-links a.nav-cta { background: var(--accent); color: #ffffff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+.nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+/* ═══ SHOWCASE HEADER STRIP ═══ */
+.showcase-header-strip { background: var(--deep); border-top: 1px solid var(--edge); border-bottom: 1px solid var(--edge); padding: 0.85rem 0; }
+.strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem; }
+.strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.strip-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.7rem; color: var(--gold); font-weight: 500; }
+.strip-title { font-weight: 500; color: #ffffff; }
+.strip-actions a { color: var(--accent-lt); text-decoration: none; margin-left: 1.25rem; font-size: 0.85rem; }
+.strip-actions a:hover { color: #ffffff; }
+
+/* ═══ LIGHT DEMO CANVAS ═══ */
+.demo-canvas { background: var(--showcase-bg); color: var(--showcase-text); font-family: var(--showcase-body-font); max-width: 1240px; margin: 2rem auto; padding: 0; border-radius: 8px; box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25); overflow: hidden; }
+.canvas-inner { padding: 2.5rem 2.5rem 3rem; }
+@media (max-width: 760px) { .canvas-inner { padding: 1.5rem 1.25rem 2rem; } }
+.demo-canvas h1, .demo-canvas h2, .demo-canvas h3, .demo-canvas h4 { color: var(--showcase-text); }
+
+/* ═══ HERO ═══ */
+.hero { padding-bottom: 2rem; border-bottom: 1px solid var(--showcase-border); margin-bottom: 2.5rem; }
+.eyebrow-badges { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.25rem; }
+.eyebrow-badge { font-family: var(--showcase-mono-font); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.35rem 0.7rem; border-radius: 3px; border: 1px solid var(--showcase-border); color: var(--showcase-text-muted); }
+.eyebrow-badge.accent { border-color: rgba(42,127,192,0.35); color: var(--showcase-accent); }
+.eyebrow-badge.gold   { border-color: rgba(192,144,64,0.35);  color: var(--showcase-gold); }
+.eyebrow-badge.error  { border-color: rgba(220,38,38,0.35);   color: var(--showcase-error); }
+.eyebrow-badge.warn   { border-color: rgba(245,158,11,0.35);  color: var(--showcase-warn); }
+.hero h1 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); color: var(--showcase-text); margin-bottom: 0.85rem; }
+.hero h1 em { font-style: italic; color: var(--showcase-accent); }
+.hero-sub { color: var(--showcase-text-muted); font-size: 0.95rem; line-height: 1.7; max-width: 760px; margin-bottom: 1.5rem; }
+.hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 4px; overflow: hidden; }
+.hstat { background: var(--showcase-bg-soft); padding: 0.85rem 1.1rem; }
+.hstat-l { font-family: var(--showcase-mono-font); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.3rem; }
+.hstat-v { font-family: var(--showcase-heading-font); font-size: 1.3rem; color: var(--showcase-text); line-height: 1.1; }
+.hstat-v.gold  { color: var(--showcase-gold); }
+.hstat-v.accent{ color: var(--showcase-accent); }
+.hstat-v.error { color: var(--showcase-error); }
+.hstat-v.warn  { color: var(--showcase-warn); }
+.hstat-s { font-family: var(--showcase-mono-font); font-size: 0.55rem; color: var(--showcase-text-muted); margin-top: 0.2rem; letter-spacing: 0.04em; }
+
+/* ═══ PII BANNER ═══ */
+.pii-banner { background: rgba(42,127,192,0.05); border: 1px solid rgba(42,127,192,0.18); border-radius: 4px; padding: 0.65rem 1rem; font-size: 0.8rem; color: var(--showcase-text-muted); margin-bottom: 2rem; line-height: 1.5; }
+
+/* ═══ VALUE-AT-RISK SIDEBAR ═══ */
+.value-at-risk { background: var(--showcase-bg-soft); border-left: 4px solid var(--showcase-gold); padding: 1rem 1.2rem; margin: 0 0 2rem; max-width: 340px; float: right; border-radius: 0 3px 3px 0; }
+@media (max-width: 700px) { .value-at-risk { float: none; max-width: 100%; } }
+.var-eyebrow { font-family: var(--showcase-mono-font); font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--showcase-gold); font-weight: 500; margin-bottom: 0.4rem; }
+.var-figure { font-family: var(--showcase-heading-font); font-size: 1.15rem; color: var(--showcase-text); margin-bottom: 0.45rem; line-height: 1.2; }
+.var-body { font-size: 0.8rem; color: var(--showcase-text-muted); line-height: 1.65; margin-bottom: 0.45rem; }
+.var-cite { font-family: var(--showcase-mono-font); font-size: 0.55rem; color: var(--showcase-text-muted); letter-spacing: 0.04em; }
+
+/* ═══ SECTION ═══ */
+.section { margin-bottom: 2.5rem; clear: both; }
+.section-title { font-family: var(--showcase-heading-font); font-size: 1.2rem; color: var(--showcase-text); margin-bottom: 0.5rem; display: flex; align-items: baseline; gap: 0.6rem; }
+.num { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.2em; color: var(--showcase-gold); font-weight: 500; }
+.section-sub { color: var(--showcase-text-muted); font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.25rem; }
+.section-divider { border: none; border-top: 1px solid var(--showcase-border); margin: 2rem 0; }
+
+/* ═══ TAB BAR ═══ */
+.tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--showcase-border); margin-bottom: 1.5rem; }
+.tab-btn {
+  padding: 0.65rem 1.25rem; font-family: var(--showcase-mono-font); font-size: 0.6rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--showcase-text-muted);
+  border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: all 0.15s;
+}
+.tab-btn:hover { color: var(--showcase-text); }
+.tab-btn.active { color: var(--showcase-accent); border-bottom-color: var(--showcase-accent); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ═══ TOOL GRID ═══ */
+.tool-grid { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; align-items: start; }
+@media (max-width: 840px) { .tool-grid { grid-template-columns: 1fr; } }
+
+/* ═══ PANEL (input) ═══ */
+.panel { background: var(--showcase-bg-soft); border: 1px solid var(--showcase-border); border-radius: 6px; overflow: hidden; }
+.panel-header { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--showcase-border); background: var(--showcase-bg); }
+.panel-title { font-family: var(--showcase-mono-font); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--showcase-accent); font-weight: 500; }
+.panel-body { padding: 1.2rem; }
+.field { margin-bottom: 0.95rem; }
+.field label { display: block; font-family: var(--showcase-mono-font); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.3rem; }
+.field select, .field input { width: 100%; background: var(--showcase-bg); border: 1px solid var(--showcase-border); color: var(--showcase-text); font-family: var(--showcase-mono-font); font-size: 0.78rem; padding: 0.45rem 0.7rem; border-radius: 4px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+.field select:focus, .field input:focus { border-color: var(--showcase-accent); }
+.field-hint { font-size: 0.62rem; color: var(--showcase-text-muted); margin-top: 0.22rem; line-height: 1.4; }
+
+/* Maturity radio rows */
+.rec-group { margin-bottom: 1.1rem; border: 1px solid var(--showcase-border); border-radius: 4px; overflow: hidden; }
+.rec-group-header { padding: 0.55rem 0.85rem; background: var(--showcase-bg); border-bottom: 1px solid var(--showcase-border); font-family: var(--showcase-mono-font); font-size: 0.48rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--showcase-text-muted); }
+.rec-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.85rem; border-bottom: 1px solid var(--showcase-border); }
+.rec-row:last-child { border-bottom: none; }
+.rec-id { font-family: var(--showcase-mono-font); font-size: 0.52rem; color: var(--showcase-accent); width: 28px; flex-shrink: 0; }
+.rec-label { font-size: 0.78rem; color: var(--showcase-text); flex: 1; line-height: 1.4; }
+.rec-select { font-family: var(--showcase-mono-font); font-size: 0.6rem; padding: 0.2rem 0.45rem; border: 1px solid var(--showcase-border); border-radius: 3px; background: var(--showcase-bg); color: var(--showcase-text); outline: none; -webkit-appearance: none; width: 92px; flex-shrink: 0; }
+.rec-select:focus { border-color: var(--showcase-accent); }
+
+/* Sanctions checkboxes */
+.sanc-grid { display: grid; grid-template-columns: 1fr; gap: 0.45rem; }
+.sanc-item { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.75rem; background: var(--showcase-bg); border: 1px solid var(--showcase-border); border-radius: 4px; cursor: pointer; transition: border-color 0.2s; }
+.sanc-item:hover { border-color: var(--showcase-accent); }
+.sanc-item input[type="checkbox"] { width: 13px; height: 13px; accent-color: var(--showcase-accent); flex-shrink: 0; margin-top: 2px; }
+.sanc-lbl { font-size: 0.76rem; color: var(--showcase-text); line-height: 1.5; cursor: pointer; }
+.sanc-lbl small { display: block; font-size: 0.68rem; color: var(--showcase-text-muted); margin-top: 0.1rem; }
+
+.run-btn { width: 100%; background: var(--showcase-accent); color: #ffffff; border: none; padding: 0.65rem; border-radius: 4px; font-family: var(--showcase-mono-font); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; transition: background 0.15s; margin-top: 0.85rem; }
+.run-btn:hover { background: var(--accent-lt); }
+
+/* ═══ SCENARIO PRESETS ═══ */
+.scenario-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.scenario-btn { padding: 0.45rem 0.9rem; border-radius: 4px; border: 1px solid var(--showcase-border); background: var(--showcase-bg-soft); color: var(--showcase-text-muted); font-family: var(--showcase-mono-font); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.18s; cursor: pointer; }
+.scenario-btn:hover { border-color: var(--showcase-accent); color: var(--showcase-accent); }
+.scenario-btn.active { border-color: var(--showcase-accent); color: var(--showcase-accent); background: rgba(42,127,192,0.06); }
+
+/* ═══ OUTPUT ═══ */
+.output-panel { display: flex; flex-direction: column; gap: 1.25rem; }
+.out-section { background: var(--showcase-bg-soft); border: 1px solid var(--showcase-border); border-radius: 6px; overflow: hidden; }
+.out-header { padding: 0.7rem 1.2rem; border-bottom: 1px solid var(--showcase-border); background: var(--showcase-bg); display: flex; align-items: center; justify-content: space-between; }
+.out-title { font-family: var(--showcase-mono-font); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--showcase-accent); font-weight: 500; }
+.out-body { padding: 1.2rem; }
+
+/* Score gauge */
+.score-gauge { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.gauge-ring { width: 80px; height: 80px; flex-shrink: 0; }
+.gauge-score { font-family: var(--showcase-heading-font); font-size: 1.8rem; color: var(--showcase-text); line-height: 1; }
+.gauge-label { font-family: var(--showcase-mono-font); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--showcase-text-muted); margin-top: 0.25rem; }
+.gauge-verdict { font-size: 0.88rem; color: var(--showcase-text-muted); line-height: 1.6; max-width: 400px; }
+
+/* Rating pill */
+.rating-pill { display: inline-block; font-family: var(--showcase-mono-font); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 99px; border: 1px solid; }
+.rating-c  { background: rgba(16,185,129,0.08); color: var(--showcase-success); border-color: rgba(16,185,129,0.3); }
+.rating-lc { background: rgba(42,127,192,0.08); color: var(--showcase-accent); border-color: rgba(42,127,192,0.3); }
+.rating-pc { background: rgba(245,158,11,0.08); color: var(--showcase-warn); border-color: rgba(245,158,11,0.3); }
+.rating-nc { background: rgba(220,38,38,0.08); color: var(--showcase-error); border-color: rgba(220,38,38,0.3); }
+.rating-na { background: rgba(106,122,138,0.08); color: var(--showcase-text-muted); border-color: rgba(106,122,138,0.3); }
+
+/* Gap table */
+.gap-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.gap-table th { font-family: var(--showcase-mono-font); font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--showcase-text-muted); padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid var(--showcase-border); background: var(--showcase-bg); }
+.gap-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--showcase-border); vertical-align: top; color: var(--showcase-text); line-height: 1.45; }
+.gap-table tr:last-child td { border-bottom: none; }
+.gap-table tr:hover td { background: rgba(42,127,192,0.03); }
+.priority-high { color: var(--showcase-error); font-weight: 500; }
+.priority-med  { color: var(--showcase-warn); }
+.priority-low  { color: var(--showcase-text-muted); }
+
+/* Sanctions risk card */
+.sanctions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--showcase-border); border: 1px solid var(--showcase-border); border-radius: 4px; overflow: hidden; margin-bottom: 1rem; }
+.sanctions-cell { background: var(--showcase-bg-soft); padding: 0.85rem 1rem; }
+.sc-regime { font-family: var(--showcase-mono-font); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.35rem; }
+.sc-status { font-family: var(--showcase-heading-font); font-size: 1.15rem; line-height: 1; margin-bottom: 0.25rem; }
+.sc-status.ok   { color: var(--showcase-success); }
+.sc-status.gap  { color: var(--showcase-error); }
+.sc-status.warn { color: var(--showcase-warn); }
+.sc-note { font-size: 0.74rem; color: var(--showcase-text-muted); line-height: 1.55; }
+
+/* ═══ EXPORT ROW ═══ */
+.results-export-row { display: flex; gap: 0.75rem; flex-wrap: wrap; padding: 1.1rem 1.2rem; border-top: 1px solid var(--showcase-border); background: var(--showcase-bg-soft); align-items: center; }
+.export-btn { padding: 0.45rem 1rem; border-radius: 4px; font-family: var(--showcase-mono-font); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; transition: all 0.15s; cursor: pointer; border: 1px solid; }
+.export-btn.primary   { background: var(--showcase-accent); color: #ffffff; border-color: var(--showcase-accent); }
+.export-btn.primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.export-btn.secondary { background: transparent; color: var(--showcase-accent); border-color: rgba(42,127,192,0.4); }
+.export-btn.secondary:hover { background: rgba(42,127,192,0.08); }
+.export-lbl { font-family: var(--showcase-mono-font); font-size: 0.55rem; color: var(--showcase-text-muted); letter-spacing: 0.04em; margin-left: auto; }
+
+/* ═══ SOURCE NOTES ═══ */
+.source-notes { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--showcase-border); }
+.source-notes h4 { font-family: var(--showcase-mono-font); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--showcase-text-muted); margin-bottom: 0.85rem; }
+.source-item { display: flex; gap: 0.6rem; margin-bottom: 0.5rem; font-size: 0.77rem; line-height: 1.55; }
+.source-num { font-family: var(--showcase-mono-font); font-size: 0.55rem; color: var(--showcase-accent); flex-shrink: 0; padding-top: 1px; min-width: 1.4rem; }
+.source-text { color: var(--showcase-text-muted); }
+.source-text a { color: var(--showcase-accent); }
+
+/* ═══ DARK FOOTER ═══ */
+footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.5rem 0 3rem; margin-top: 3rem; }
+.footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; }
+.footer-brand { font-family: 'DM Serif Display', serif; color: #ffffff; font-size: 1.05rem; margin-bottom: 0.5rem; }
+.footer-brand span { color: var(--gold); }
+.footer-tagline { font-size: 0.8rem; color: var(--muted); line-height: 1.6; max-width: 260px; }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+.footer-links a { color: var(--body); text-decoration: none; font-size: 0.82rem; transition: color 0.15s; }
+.footer-links a:hover { color: #ffffff; }
+.footer-badge { font-family: var(--showcase-mono-font); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.9; margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<!-- ╔══ POL NAV ══╗ -->
+<nav role="navigation" aria-label="Post Oak Labs">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Post Oak <span>Labs</span></a>
+    <nav class="nav-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href="/demos/">Demos</a><span aria-hidden="true">›</span>
+      <span aria-current="page">FATF & Sanctions</span>
+    </nav>
+    <div class="nav-links">
+      <a href="/">About</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="/demos/composer.html">Tool Chain</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers ↗</a>
+      <a href="mailto:contact@postoaklabs.com" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ╔══ SHOWCASE HEADER STRIP ══╗ -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">RegTech · Processors</span>
+      <span class="strip-title">Demo #19 — FATF Readiness Scorer & Sanctions Programme Gap Analyser</span>
+    </div>
+    <div class="strip-actions">
+      <a href="https://ainumbers.co/tools/124-fatf-readiness-scorer.html" target="_blank" rel="noopener">Open in AINumbers ↗</a>
+      <a href="/demos/">← All Demos</a>
+    </div>
+  </div>
+</div>
+
+<main>
+<div class="demo-canvas">
+<div class="canvas-inner">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow-badges">
+      <span class="eyebrow-badge gold">FATF 40 Recommendations</span>
+      <span class="eyebrow-badge error">OFAC · EU · UN Sanctions</span>
+      <span class="eyebrow-badge accent">AML / CFT</span>
+      <span class="eyebrow-badge warn">$4–22B AML Market</span>
+    </div>
+    <h1>FATF Readiness & <em>Sanctions Programme</em> Gap Analyser</h1>
+    <p class="hero-sub">Two-module AML/CFT assessment tool. Score your institution's FATF 40 Recommendations readiness across eleven categories — then assess your sanctions screening programme against OFAC SDN, EU Consolidated List, and UN Security Council regimes. Outputs per-recommendation gap analysis, priority remediation roadmap, and an AP2-formatted compliance mandate.</p>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-l">OFAC Max Penalty</div>
+        <div class="hstat-v error">$1.1B+</div>
+        <div class="hstat-s">per enforcement action</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-l">FATF Categories</div>
+        <div class="hstat-v accent">11</div>
+        <div class="hstat-s">40 Recommendations</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-l">Sanctions Regimes</div>
+        <div class="hstat-v gold">3</div>
+        <div class="hstat-s">OFAC · EU · UN</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-l">AML TAM 2026</div>
+        <div class="hstat-v warn">$4–22B</div>
+        <div class="hstat-s">AML software market</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-l">Global Illicit Flows</div>
+        <div class="hstat-v error">$1.6–4T</div>
+        <div class="hstat-s">per year (UNODC est.)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE-AT-RISK SIDEBAR -->
+  <div class="value-at-risk">
+    <div class="var-eyebrow">Value at Risk</div>
+    <div class="var-figure">$1.1B+ per OFAC action; up to 2× global turnover for EU violations</div>
+    <div class="var-body">OFAC's 2025 enforcement calendar averaged $220M per settled case. EU AMLA regulations effective 2027 align penalties with GDPR-scale: up to 10% of global turnover. FATF mutual evaluation adverse findings trigger enhanced correspondent banking scrutiny and market access risk.</div>
+    <div class="var-cite">Source: OFAC Annual Enforcement Report 2025 · EU AMLA Regulation 2024 · FATF Methodology 2024</div>
+  </div>
+
+  <!-- PII BANNER -->
+  <div class="pii-banner">
+    🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('fatf', this)">Module 1 — FATF Readiness</button>
+    <button class="tab-btn" onclick="switchTab('sanctions', this)">Module 2 — Sanctions Programme</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODULE 1: FATF READINESS
+       ══════════════════════════════════════════════ -->
+  <div class="tab-pane active" id="pane-fatf">
+    <section class="section" style="margin-bottom:1.5rem">
+      <div class="section-title"><span class="num">01</span> FATF Readiness Scorer</div>
+      <p class="section-sub">Rate your institution's maturity against the FATF 40 Recommendations most relevant to financial services. C = Compliant · LC = Largely Compliant · PC = Partially Compliant · NC = Non-Compliant.</p>
+
+      <div class="scenario-row">
+        <button class="scenario-btn" onclick="applyScenario('bank', event)">Retail Bank</button>
+        <button class="scenario-btn" onclick="applyScenario('baas', event)">BaaS Provider</button>
+        <button class="scenario-btn" onclick="applyScenario('vasp', event)">VASP / Crypto Exchange</button>
+      </div>
+
+      <div class="tool-grid">
+        <!-- INPUT -->
+        <div>
+          <div class="panel" style="margin-bottom:1rem">
+            <div class="panel-header"><div class="panel-title">Institution Profile</div></div>
+            <div class="panel-body">
+              <div class="field">
+                <label for="instType">Institution Type</label>
+                <select id="instType">
+                  <option value="bank">Bank / Credit Institution</option>
+                  <option value="baas">BaaS Provider / Sponsor Bank</option>
+                  <option value="msp">Money Service Business / MSB</option>
+                  <option value="vasp">VASP / Crypto Exchange</option>
+                  <option value="insurer">Insurance Company</option>
+                  <option value="asset_mgr">Asset Manager / Fund</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="jurisdiction">Primary Jurisdiction</label>
+                <select id="jurisdiction">
+                  <option value="us">United States</option>
+                  <option value="eu">European Union</option>
+                  <option value="uk">United Kingdom</option>
+                  <option value="sg">Singapore</option>
+                  <option value="ae">UAE / DIFC</option>
+                  <option value="other">Other / Multi-jurisdiction</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="amlProgramAge">AML Programme Age (years)</label>
+                <select id="amlProgramAge">
+                  <option value="0">Less than 1 year</option>
+                  <option value="1">1–2 years</option>
+                  <option value="3" selected>3–5 years</option>
+                  <option value="6">6–10 years</option>
+                  <option value="11">11+ years (mature)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- FATF recommendations by category -->
+          <div id="recGroups">
+            <!-- Populated by JS -->
+          </div>
+
+          <button class="run-btn" onclick="runFATF()">▶ Score FATF Readiness</button>
+        </div>
+
+        <!-- OUTPUT -->
+        <div class="output-panel" id="fatfOutput">
+          <div class="out-section">
+            <div class="out-header"><span class="out-title">Readiness Score</span></div>
+            <div class="out-body" style="text-align:center;padding:2rem;color:var(--showcase-text-muted);font-size:0.88rem">
+              <div style="font-size:2rem;margin-bottom:0.5rem;opacity:0.4">📋</div>
+              Rate your FATF recommendation compliance above and run the scorer.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODULE 2: SANCTIONS PROGRAMME
+       ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="pane-sanctions">
+    <section class="section" style="margin-bottom:1.5rem">
+      <div class="section-title"><span class="num">02</span> Sanctions Programme Gap Assessor</div>
+      <p class="section-sub">Assess your institution's sanctions screening programme across OFAC SDN, EU Consolidated List, and UN Security Council regimes. Check the controls you have in place; the tool identifies gaps and enforcement risk.</p>
+
+      <div class="scenario-row">
+        <button class="scenario-btn" onclick="applySancScenario('mature')">Mature Programme</button>
+        <button class="scenario-btn" onclick="applySancScenario('partial')">Partial Controls</button>
+        <button class="scenario-btn" onclick="applySancScenario('startup')">Early-Stage</button>
+      </div>
+
+      <div class="tool-grid">
+        <!-- INPUT -->
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">Sanctions Controls Assessment</div></div>
+          <div class="panel-body">
+            <div class="field">
+              <label>Screening Coverage</label>
+              <div class="sanc-grid">
+                <label class="sanc-item"><input type="checkbox" id="sc_ofac" checked><span class="sanc-lbl">OFAC SDN List<small>US Treasury, Office of Foreign Assets Control</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="sc_eu"><span class="sanc-lbl">EU Consolidated Sanctions List<small>European External Action Service (EEAS)</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="sc_un"><span class="sanc-lbl">UN Security Council Consolidated List<small>1267 Committee and related regimes</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="sc_uk"><span class="sanc-lbl">UK OFSI / Financial Sanctions<small>HM Treasury — post-Brexit independent list</small></span></label>
+              </div>
+            </div>
+            <div class="field" style="margin-top:1rem">
+              <label>Programme Controls</label>
+              <div class="sanc-grid">
+                <label class="sanc-item"><input type="checkbox" id="ctrl_realtime" checked><span class="sanc-lbl">Real-time transaction screening<small>Screens each payment before settlement</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_batch"><span class="sanc-lbl">Daily batch customer re-screening<small>Full customer base rescreened against list updates</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_fuzzy"><span class="sanc-lbl">Fuzzy / transliteration name matching<small>Handles spelling variants, Arabic/Cyrillic transliteration</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_ownership"><span class="sanc-lbl">50% rule / beneficial ownership screening<small>Screens entities majority-owned by SDN designees</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_correspondent"><span class="sanc-lbl">Correspondent bank due diligence<small>Assesses downstream counterparty sanctions exposure</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_geo"><span class="sanc-lbl">Geographic / country risk controls<small>Blocked country restrictions, SWIFT message filtering</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_testing"><span class="sanc-lbl">Annual programme testing / red-team<small>Independent validation of screening effectiveness</small></span></label>
+                <label class="sanc-item"><input type="checkbox" id="ctrl_sdn_alert"><span class="sanc-lbl">Automated SDN match escalation process<small>Defined SLA for match review, OFAC reporting workflow</small></span></label>
+              </div>
+            </div>
+            <div class="field" style="margin-top:0.5rem">
+              <label for="sancJuris">Primary Exposure Jurisdiction</label>
+              <select id="sancJuris">
+                <option value="us">US-dollar transactions (OFAC primary)</option>
+                <option value="eu">Euro-denominated (EU primary)</option>
+                <option value="multi">Multi-currency / global</option>
+                <option value="crypto">Crypto / stablecoin</option>
+              </select>
+            </div>
+            <button class="run-btn" onclick="runSanctions()">▶ Assess Sanctions Programme</button>
+          </div>
+        </div>
+
+        <!-- OUTPUT -->
+        <div class="output-panel" id="sanctionsOutput">
+          <div class="out-section">
+            <div class="out-header"><span class="out-title">Sanctions Assessment</span></div>
+            <div class="out-body" style="text-align:center;padding:2rem;color:var(--showcase-text-muted);font-size:0.88rem">
+              <div style="font-size:2rem;margin-bottom:0.5rem;opacity:0.4">🛡</div>
+              Select your controls above and run the assessment.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- EXPORT ROW (always visible once either module has run) -->
+  <div class="results-export-row" id="exportRow" style="display:none">
+    <button class="export-btn primary" onclick="exportAP2()">↓ AP2 Mandate JSON</button>
+    <button class="export-btn secondary" onclick="exportMarkdown()">↓ Compliance Report</button>
+    <span class="export-lbl">Schema: @ainumbers.co/fatf-sanctions-v1 · AP2 v1.0</span>
+  </div>
+
+  <!-- SOURCE NOTES -->
+  <div class="source-notes">
+    <h4>Source Notes</h4>
+    <div class="source-item"><span class="source-num">[1]</span><span class="source-text">FATF 40 Recommendations — Financial Action Task Force, updated 2023. <a href="https://www.fatf-gafi.org/en/topics/fatf-recommendations.html" target="_blank" rel="noopener">fatf-gafi.org</a></span></div>
+    <div class="source-item"><span class="source-num">[2]</span><span class="source-text">OFAC Enforcement Actions and Penalties — US Treasury, 2025 Annual Report. Maximum civil penalty: greater of $368,136 per violation or twice the amount of the transaction (economic sanctions violations).</span></div>
+    <div class="source-item"><span class="source-num">[3]</span><span class="source-text">EU Anti-Money Laundering Authority (AMLA) — Regulation 2024/1620. AMLA assumes direct supervisory powers over high-risk obliged entities from 2027. Penalty ceiling: 10% of global annual turnover.</span></div>
+    <div class="source-item"><span class="source-num">[4]</span><span class="source-text">UN Security Council Consolidated List — maintained by the 1267/1989/2253 ISIL and Al-Qaida Sanctions Committee. <a href="https://www.un.org/securitycouncil/content/un-sc-consolidated-list" target="_blank" rel="noopener">un.org</a></span></div>
+    <div class="source-item"><span class="source-num">[5]</span><span class="source-text">OFAC 50% Rule — entities majority-owned (≥50%) by one or more SDN-designated persons are themselves treated as blocked, regardless of whether they appear on the SDN List by name. OFAC FAQ #398.</span></div>
+    <div class="source-item"><span class="source-num">[6]</span><span class="source-text">UNODC global illicit financial flows estimate ($1.6–4T/yr) — United Nations Office on Drugs and Crime, "Financial Flows from Illicit Trade," 2024.</span></div>
+    <div class="source-item"><span class="source-num">[7]</span><span class="source-text">AML software market size ($4–22B, 2026) — Mordor Intelligence / Grand View Research AML Technology Market Report, 2025.</span></div>
+    <div class="source-item" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--showcase-border);">
+      <span class="source-num" style="color:var(--showcase-text-muted)">⚠</span>
+      <span class="source-text" style="color:var(--showcase-text-muted);font-size:0.74rem;">This tool provides AI-assisted gap analysis for informational purposes only. It does not constitute legal or compliance advice. FATF compliance assessments require qualified AML counsel and independent programme review. OFAC and sanctions screening obligations are highly fact-specific. Consult qualified legal counsel before taking compliance actions.</span>
+    </div>
+  </div>
+
+</div><!-- /canvas-inner -->
+</div><!-- /demo-canvas -->
+</main>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <div class="footer-tagline">Fintech intelligence tools for embedded finance, RegTech, and agentic payments infrastructure.</div>
+    </div>
+    <div>
+      <div class="footer-links">
+        <a href="/">About</a>
+        <a href="/demos/">Demos</a>
+        <a href="/demos/composer.html">Tool Chain</a>
+        <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers ↗</a>
+        <a href="mailto:contact@postoaklabs.com">Contact</a>
+      </div>
+      <div class="footer-badge">
+        🔒 No data leaves your browser · 💻 Client-side only · CC BY 4.0<br>
+        Built by Post Oak Labs · contact@postoaklabs.com
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+// ════════════════════════════════════════════════════════════════════════
+// FATF 40 RECOMMENDATIONS — FS-relevant subset, 11 categories
+// Source: FATF 40 Recommendations (2023 revision)
+// ════════════════════════════════════════════════════════════════════════
+const FATF_RECS = [
+  { cat: 'AML/CFT Policies & Coordination', recs: [
+    { id: 'R1',  label: 'Assessing risks & applying risk-based approach' },
+    { id: 'R2',  label: 'National cooperation and coordination' },
+  ]},
+  { cat: 'Money Laundering & Confiscation', recs: [
+    { id: 'R3',  label: 'Money laundering offence (criminalisation)' },
+    { id: 'R4',  label: 'Confiscation and provisional measures' },
+  ]},
+  { cat: 'Terrorist & Proliferation Financing', recs: [
+    { id: 'R5',  label: 'Terrorist financing offence' },
+    { id: 'R6',  label: 'Targeted financial sanctions — terrorism/TF' },
+    { id: 'R7',  label: 'Targeted financial sanctions — proliferation' },
+  ]},
+  { cat: 'Preventive Measures', recs: [
+    { id: 'R10', label: 'Customer due diligence (CDD)' },
+    { id: 'R11', label: 'Record keeping' },
+    { id: 'R12', label: 'Politically exposed persons (PEPs)' },
+    { id: 'R13', label: 'Correspondent banking' },
+    { id: 'R14', label: 'Money or value transfer services (MVTS)' },
+    { id: 'R15', label: 'New technologies (VASPs, DeFi, crypto)' },
+    { id: 'R16', label: 'Wire transfers (Travel Rule)' },
+    { id: 'R17', label: 'Reliance on third parties' },
+    { id: 'R18', label: 'Internal controls and foreign branches/subsidiaries' },
+    { id: 'R19', label: 'Higher-risk countries — enhanced due diligence' },
+    { id: 'R20', label: 'Reporting of suspicious transactions (STRs/SARs)' },
+    { id: 'R21', label: 'Tipping-off and confidentiality' },
+    { id: 'R22', label: 'DNFBPs — customer due diligence' },
+    { id: 'R23', label: 'DNFBPs — other measures' },
+  ]},
+  { cat: 'Transparency & Beneficial Ownership', recs: [
+    { id: 'R24', label: 'Transparency of legal persons (UBO register)' },
+    { id: 'R25', label: 'Transparency of legal arrangements (trusts)' },
+  ]},
+  { cat: 'Financial Intelligence', recs: [
+    { id: 'R29', label: 'Financial intelligence units (FIUs)' },
+    { id: 'R30', label: 'Responsibilities of law enforcement and investigation' },
+  ]},
+  { cat: 'International Cooperation', recs: [
+    { id: 'R37', label: 'Mutual legal assistance' },
+    { id: 'R38', label: 'Mutual legal assistance — freezing and confiscation' },
+    { id: 'R39', label: 'Extradition' },
+    { id: 'R40', label: 'Other forms of international cooperation' },
+  ]},
+];
+
+// Weights for scoring (higher = more enforcement weight for FS institutions)
+const REC_WEIGHTS = {
+  R1:1.5, R2:0.8, R3:1.0, R4:0.8,
+  R5:1.2, R6:2.0, R7:2.0,
+  R10:2.0, R11:1.5, R12:1.5, R13:1.8, R14:1.2, R15:1.5, R16:1.5, R17:1.2, R18:1.5, R19:1.5, R20:2.0, R21:1.0, R22:0.6, R23:0.6,
+  R24:1.3, R25:1.0,
+  R29:0.8, R30:0.6,
+  R37:0.5, R38:0.5, R39:0.4, R40:0.6,
+};
+
+const MATURITY = { C:100, LC:75, PC:40, NC:0, NA:null };
+const MATURITY_LABELS = { C:'Compliant', LC:'Largely Compliant', PC:'Partially Compliant', NC:'Non-Compliant', NA:'Not Applicable' };
+const MATURITY_CLASS  = { C:'rating-c', LC:'rating-lc', PC:'rating-pc', NC:'rating-nc', NA:'rating-na' };
+
+// ════════════════════════════════════════════════════════════════════════
+// RENDER FATF RECOMMENDATION INPUTS
+// ════════════════════════════════════════════════════════════════════════
+function renderRecGroups() {
+  const container = document.getElementById('recGroups');
+  container.innerHTML = FATF_RECS.map(cat => `
+    <div class="rec-group">
+      <div class="rec-group-header">${cat.cat}</div>
+      ${cat.recs.map(r => `
+        <div class="rec-row">
+          <span class="rec-id">${r.id}</span>
+          <span class="rec-label">${r.label}</span>
+          <select class="rec-select" id="rec_${r.id}">
+            <option value="C">C</option>
+            <option value="LC">LC</option>
+            <option value="PC" selected>PC</option>
+            <option value="NC">NC</option>
+            <option value="NA">N/A</option>
+          </select>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SCENARIO PRESETS
+// ════════════════════════════════════════════════════════════════════════
+const FATF_SCENARIOS = {
+  bank: {
+    label:'Retail Bank',
+    instType:'bank', jurisdiction:'us', amlProgramAge:'6',
+    ratings: { R1:'LC',R2:'C',R3:'C',R4:'LC',R5:'C',R6:'C',R7:'LC',R10:'C',R11:'C',R12:'LC',R13:'LC',R14:'LC',R15:'PC',R16:'LC',R17:'LC',R18:'C',R19:'LC',R20:'C',R21:'C',R22:'NA',R23:'NA',R24:'LC',R25:'LC',R29:'LC',R30:'LC',R37:'NA',R38:'NA',R39:'NA',R40:'LC' },
+  },
+  baas: {
+    label:'BaaS Provider',
+    instType:'baas', jurisdiction:'us', amlProgramAge:'3',
+    ratings: { R1:'PC',R2:'LC',R3:'C',R4:'LC',R5:'LC',R6:'LC',R7:'PC',R10:'LC',R11:'LC',R12:'PC',R13:'NC',R14:'PC',R15:'PC',R16:'PC',R17:'PC',R18:'PC',R19:'PC',R20:'LC',R21:'LC',R22:'NA',R23:'NA',R24:'PC',R25:'PC',R29:'LC',R30:'LC',R37:'NA',R38:'NA',R39:'NA',R40:'LC' },
+  },
+  vasp: {
+    label:'VASP / Crypto Exchange',
+    instType:'vasp', jurisdiction:'eu', amlProgramAge:'1',
+    ratings: { R1:'PC',R2:'PC',R3:'LC',R4:'PC',R5:'LC',R6:'PC',R7:'NC',R10:'PC',R11:'PC',R12:'NC',R13:'NC',R14:'PC',R15:'LC',R16:'NC',R17:'NC',R18:'NC',R19:'NC',R20:'PC',R21:'PC',R22:'NA',R23:'NA',R24:'NC',R25:'NC',R29:'PC',R30:'PC',R37:'NA',R38:'NA',R39:'NA',R40:'PC' },
+  },
+};
+
+function applyScenario(key, e) {
+  const s = FATF_SCENARIOS[key];
+  if (!s) return;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+  (e||event).target.classList.add('active');
+  document.getElementById('instType').value = s.instType;
+  document.getElementById('jurisdiction').value = s.jurisdiction;
+  document.getElementById('amlProgramAge').value = s.amlProgramAge;
+  Object.entries(s.ratings).forEach(([id, val]) => {
+    const el = document.getElementById('rec_' + id);
+    if (el) el.value = val;
+  });
+  runFATF();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// RUN FATF SCORER
+// ════════════════════════════════════════════════════════════════════════
+let lastFATFResult = null;
+let lastSancResult = null;
+
+function runFATF() {
+  const allRecs = FATF_RECS.flatMap(c => c.recs);
+  const ratings = {};
+  let totalWeight = 0, totalScore = 0;
+  const gaps = [];
+
+  allRecs.forEach(r => {
+    const val = document.getElementById('rec_' + r.id)?.value || 'PC';
+    ratings[r.id] = val;
+    const w = REC_WEIGHTS[r.id] || 1;
+    if (val !== 'NA') {
+      totalWeight += w;
+      const score = MATURITY[val];
+      totalScore += score * w;
+      if (score < 100) {
+        gaps.push({ id: r.id, label: r.label, rating: val, score, weight: w, priority: w * (100 - score) / 100 });
+      }
+    }
+  });
+
+  const overallScore = totalWeight > 0 ? Math.round(totalScore / totalWeight) : 0;
+  gaps.sort((a, b) => b.priority - a.priority);
+
+  const verdict = overallScore >= 85 ? { label:'Strong', color:'var(--showcase-success)', desc:'Your FATF readiness is strong. Focus on maintaining compliance documentation and preparing for the next mutual evaluation cycle.' }
+    : overallScore >= 65 ? { label:'Adequate', color:'var(--showcase-accent)', desc:'Adequate readiness with notable gaps in higher-risk recommendations. Prioritise the items below before your next regulatory review or mutual evaluation.' }
+    : overallScore >= 45 ? { label:'At Risk', color:'var(--showcase-warn)', desc:'Material gaps exist in core AML/CFT recommendations. Regulatory scrutiny, correspondent banking restrictions, or enforcement action are meaningful risks.' }
+    : { label:'Critical', color:'var(--showcase-error)', desc:'Critical FATF compliance deficiencies. Immediate action required. Exposure to de-risking by correspondent banks, regulatory sanctions, and reputational harm is elevated.' };
+
+  const gaugeColor = overallScore >= 85 ? '#10b981' : overallScore >= 65 ? '#2a7fc0' : overallScore >= 45 ? '#f59e0b' : '#dc2626';
+  const circumference = 2 * Math.PI * 32;
+  const dashoffset = circumference - (overallScore / 100) * circumference;
+
+  // Category breakdown
+  const catScores = FATF_RECS.map(cat => {
+    let cw = 0, cs = 0;
+    cat.recs.forEach(r => {
+      const val = ratings[r.id] || 'PC';
+      const w = REC_WEIGHTS[r.id] || 1;
+      if (val !== 'NA') { cw += w; cs += (MATURITY[val] || 0) * w; }
+    });
+    return { cat: cat.cat, score: cw > 0 ? Math.round(cs / cw) : 0 };
+  });
+
+  document.getElementById('fatfOutput').innerHTML = `
+    <div class="out-section">
+      <div class="out-header"><span class="out-title">Overall Readiness Score</span></div>
+      <div class="out-body">
+        <div class="score-gauge">
+          <svg class="gauge-ring" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#e6e8eb" stroke-width="8"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="${gaugeColor}" stroke-width="8"
+              stroke-dasharray="${circumference.toFixed(1)}" stroke-dashoffset="${dashoffset.toFixed(1)}"
+              stroke-linecap="round" transform="rotate(-90 40 40)"/>
+            <text x="40" y="44" text-anchor="middle" fill="${gaugeColor}" font-family="'DM Serif Display',serif" font-size="16">${overallScore}</text>
+          </svg>
+          <div>
+            <div class="gauge-score">${overallScore}<span style="font-size:1rem;color:var(--showcase-text-muted)">/100</span></div>
+            <div class="gauge-label" style="color:${gaugeColor}">${verdict.label}</div>
+          </div>
+          <div class="gauge-verdict">${verdict.desc}</div>
+        </div>
+
+        <!-- Category scores -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:4px;overflow:hidden;margin-bottom:1rem;">
+          ${catScores.map(cs => {
+            const cc = cs.score >= 85 ? 'var(--showcase-success)' : cs.score >= 65 ? 'var(--showcase-accent)' : cs.score >= 45 ? 'var(--showcase-warn)' : 'var(--showcase-error)';
+            return `<div style="background:var(--showcase-bg-soft);padding:0.7rem 0.85rem;">
+              <div style="font-family:var(--showcase-mono-font);font-size:0.44rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:0.25rem;">${cs.cat}</div>
+              <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:${cc};">${cs.score}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Priority gap table -->
+    ${gaps.length ? `
+    <div class="out-section">
+      <div class="out-header"><span class="out-title">Priority Gaps (${gaps.length} recommendations)</span></div>
+      <div class="out-body" style="padding:0">
+        <table class="gap-table">
+          <thead><tr><th>Rec.</th><th>Description</th><th>Rating</th><th>Priority</th><th>Key Action</th></tr></thead>
+          <tbody>
+            ${gaps.slice(0, 12).map(g => {
+              const priorityClass = g.priority > 1.2 ? 'priority-high' : g.priority > 0.6 ? 'priority-med' : 'priority-low';
+              const priorityLabel = g.priority > 1.2 ? 'Critical' : g.priority > 0.6 ? 'High' : 'Medium';
+              const action = getFATFAction(g.id, g.rating);
+              return `<tr>
+                <td style="font-family:var(--showcase-mono-font);font-size:0.6rem;color:var(--showcase-accent)">${g.id}</td>
+                <td>${g.label}</td>
+                <td><span class="rating-pill ${MATURITY_CLASS[g.rating]}">${g.rating}</span></td>
+                <td class="${priorityClass}">${priorityLabel}</td>
+                <td style="font-size:0.74rem;color:var(--showcase-text-muted)">${action}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>` : `<div class="out-section"><div class="out-body" style="text-align:center;padding:1.5rem;color:var(--showcase-success)">✓ No gaps identified — all rated recommendations are Compliant.</div></div>`}
+  `;
+
+  lastFATFResult = { overallScore, verdict, gaps, ratings, catScores, instType: document.getElementById('instType').value, jurisdiction: document.getElementById('jurisdiction').value };
+  document.getElementById('exportRow').style.display = 'flex';
+}
+
+function getFATFAction(id, rating) {
+  const actions = {
+    R1: 'Complete risk assessment documentation; implement risk-based resource allocation',
+    R6: 'Implement targeted financial sanctions screening against UN/OFAC/EU lists with real-time update feeds',
+    R7: 'Extend TFS screening to proliferation financing (DPRK/Iran) with enhanced controls',
+    R10: 'Strengthen CDD procedures; implement risk-based EDD thresholds',
+    R12: 'Implement PEP identification, enhanced screening, and senior management sign-off process',
+    R13: 'Conduct correspondent bank due diligence; document respondent AML programme assessment',
+    R15: 'Update programme for VASP/crypto exposure; implement Travel Rule compliance for digital assets',
+    R16: 'Implement Travel Rule / wire transfer originator-beneficiary information requirements',
+    R18: 'Formalise group-wide AML policy; audit foreign branch compliance annually',
+    R19: 'Implement FATF high-risk jurisdiction controls; apply enhanced CDD for listed countries',
+    R20: 'Review SAR/STR filing quality and completeness; implement analyst training programme',
+    R24: 'Implement UBO identification to 25% threshold; verify against beneficial ownership register',
+  };
+  return actions[id] || `Review and strengthen ${id} implementation; document evidence of compliance`;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// SANCTIONS PROGRAMME SCENARIOS
+// ════════════════════════════════════════════════════════════════════════
+const SANC_SCENARIOS = {
+  mature: { ofac:true, eu:true, un:true, uk:true, realtime:true, batch:true, fuzzy:true, ownership:true, correspondent:true, geo:true, testing:true, sdn_alert:true, juris:'multi' },
+  partial: { ofac:true, eu:false, un:true, uk:false, realtime:true, batch:false, fuzzy:false, ownership:false, correspondent:false, geo:true, testing:false, sdn_alert:true, juris:'us' },
+  startup: { ofac:true, eu:false, un:false, uk:false, realtime:false, batch:false, fuzzy:false, ownership:false, correspondent:false, geo:false, testing:false, sdn_alert:false, juris:'us' },
+};
+
+function applySancScenario(key) {
+  const s = SANC_SCENARIOS[key];
+  if (!s) return;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+  (e||event).target.classList.add('active');
+  ['ofac','eu','un','uk'].forEach(k => { const el = document.getElementById('sc_' + k); if (el) el.checked = s[k]; });
+  ['realtime','batch','fuzzy','ownership','correspondent','geo','testing','sdn_alert'].forEach(k => {
+    const el = document.getElementById('ctrl_' + k); if (el) el.checked = s[k];
+  });
+  document.getElementById('sancJuris').value = s.juris;
+  runSanctions();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// RUN SANCTIONS ASSESSMENT
+// ════════════════════════════════════════════════════════════════════════
+function runSanctions() {
+  const coverage = {
+    ofac: document.getElementById('sc_ofac').checked,
+    eu:   document.getElementById('sc_eu').checked,
+    un:   document.getElementById('sc_un').checked,
+    uk:   document.getElementById('sc_uk').checked,
+  };
+  const controls = {
+    realtime:     document.getElementById('ctrl_realtime').checked,
+    batch:        document.getElementById('ctrl_batch').checked,
+    fuzzy:        document.getElementById('ctrl_fuzzy').checked,
+    ownership:    document.getElementById('ctrl_ownership').checked,
+    correspondent:document.getElementById('ctrl_correspondent').checked,
+    geo:          document.getElementById('ctrl_geo').checked,
+    testing:      document.getElementById('ctrl_testing').checked,
+    sdn_alert:    document.getElementById('ctrl_sdn_alert').checked,
+  };
+  const juris = document.getElementById('sancJuris').value;
+
+  // Score: coverage 40%, controls 60%
+  const coverageCount = Object.values(coverage).filter(Boolean).length;
+  const controlCount  = Object.values(controls).filter(Boolean).length;
+
+  // Jurisdiction-weighted coverage requirement
+  const requiredLists = juris === 'us' ? ['ofac'] : juris === 'eu' ? ['ofac','eu','un'] : juris === 'crypto' ? ['ofac','eu','un'] : ['ofac','eu','un'];
+  const missingRequired = requiredLists.filter(l => !coverage[l]);
+
+  const coverageScore = Math.round((coverageCount / 4) * 100);
+  const controlScore  = Math.round((controlCount / 8) * 100);
+  const overallScore  = Math.round(coverageScore * 0.4 + controlScore * 0.6);
+
+  // Per-regime status
+  const regimes = [
+    { id:'ofac', label:'OFAC SDN', active: coverage.ofac,
+      note: coverage.ofac ? (controls.realtime ? 'Real-time screening active' : 'Batch only — real-time gap') : 'Not screened — critical OFAC gap',
+      status: coverage.ofac ? (controls.realtime && controls.sdn_alert ? 'ok' : 'warn') : 'gap' },
+    { id:'eu', label:'EU Consolidated', active: coverage.eu,
+      note: coverage.eu ? (controls.fuzzy ? 'Fuzzy matching enabled' : 'Exact match only — transliteration risk') : 'Not screened — EU exposure gap',
+      status: coverage.eu ? (controls.fuzzy ? 'ok' : 'warn') : 'gap' },
+    { id:'un', label:'UN SC List', active: coverage.un,
+      note: coverage.un ? 'UNSC 1267/1989 regimes covered' : 'Not screened — TF/proliferation exposure',
+      status: coverage.un ? 'ok' : 'gap' },
+    { id:'uk', label:'UK OFSI', active: coverage.uk,
+      note: coverage.uk ? 'Post-Brexit UK financial sanctions' : 'Not screened — relevant for GBP/UK activity',
+      status: coverage.uk ? 'ok' : 'warn' },
+  ];
+
+  // Control gaps
+  const controlGaps = [];
+  if (!controls.realtime)      controlGaps.push({ ctrl:'Real-time screening', risk:'Critical', action:'Implement pre-settlement screening; batch-only creates violation window on each payment cycle' });
+  if (!controls.fuzzy)         controlGaps.push({ ctrl:'Fuzzy name matching', risk:'High', action:'Deploy transliteration and phonetic matching engine; exact-match-only creates evasion vulnerability' });
+  if (!controls.ownership)     controlGaps.push({ ctrl:'50% Rule / UBO screening', risk:'High', action:'Screen entities majority-owned by SDN designees (OFAC FAQ #398); requires UBO data enrichment' });
+  if (!controls.batch)         controlGaps.push({ ctrl:'Daily customer re-screening', risk:'High', action:'Screen full customer base daily against list updates; new designations require immediate rescreening' });
+  if (!controls.correspondent) controlGaps.push({ ctrl:'Correspondent bank due diligence', risk:'High', action:'Conduct sanctions risk assessment on all correspondent relationships; document findings' });
+  if (!controls.testing)       controlGaps.push({ ctrl:'Annual programme testing', risk:'Medium', action:'Engage independent consultant for red-team/validation testing; required by regulators for sound programme' });
+  if (!controls.sdn_alert)     controlGaps.push({ ctrl:'SDN match escalation process', risk:'Medium', action:'Define SLA, escalation path, and OFAC reporting workflow for potential matches' });
+  if (!controls.geo)           controlGaps.push({ ctrl:'Geographic/country controls', risk:'Medium', action:'Implement blocked country restrictions aligned with OFAC comprehensive sanctions programmes' });
+
+  const verdict = overallScore >= 80 ? { label:'Strong', color:'var(--showcase-success)' }
+    : overallScore >= 60 ? { label:'Adequate — gaps present', color:'var(--showcase-accent)' }
+    : overallScore >= 40 ? { label:'Deficient — enforcement risk', color:'var(--showcase-warn)' }
+    : { label:'Critical — immediate action required', color:'var(--showcase-error)' };
+
+  document.getElementById('sanctionsOutput').innerHTML = `
+    <div class="out-section">
+      <div class="out-header"><span class="out-title">Sanctions Programme Score: ${overallScore}/100</span></div>
+      <div class="out-body">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.6rem;margin-bottom:0.3rem;color:${verdict.color}">${overallScore}<span style="font-size:1rem;color:var(--showcase-text-muted)">/100 — ${verdict.label}</span></div>
+
+        <div class="sanctions-grid" style="margin-top:1rem">
+          ${regimes.map(r => `
+            <div class="sanctions-cell">
+              <div class="sc-regime">${r.label}</div>
+              <div class="sc-status ${r.status}">${r.status === 'ok' ? '✓ Covered' : r.status === 'warn' ? '⚠ Partial' : '✕ Gap'}</div>
+              <div class="sc-note">${r.note}</div>
+            </div>`).join('')}
+        </div>
+
+        ${missingRequired.length ? `<div style="padding:0.7rem 0.9rem;background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.25);border-radius:4px;font-size:0.8rem;color:var(--showcase-error);margin-bottom:1rem">
+          ⚠ Missing required lists for your jurisdiction: ${missingRequired.map(l => l.toUpperCase()).join(', ')}
+        </div>` : ''}
+      </div>
+    </div>
+
+    ${controlGaps.length ? `
+    <div class="out-section">
+      <div class="out-header"><span class="out-title">Control Gaps (${controlGaps.length})</span></div>
+      <div class="out-body" style="padding:0">
+        <table class="gap-table">
+          <thead><tr><th>Control</th><th>Risk Level</th><th>Recommended Action</th></tr></thead>
+          <tbody>
+            ${controlGaps.map(g => `<tr>
+              <td style="font-weight:500">${g.ctrl}</td>
+              <td class="${g.risk === 'Critical' ? 'priority-high' : g.risk === 'High' ? 'priority-med' : 'priority-low'}">${g.risk}</td>
+              <td style="font-size:0.74rem;color:var(--showcase-text-muted)">${g.action}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>` : `<div class="out-section"><div class="out-body" style="text-align:center;padding:1.5rem;color:var(--showcase-success)">✓ All key sanctions controls are in place.</div></div>`}
+  `;
+
+  lastSancResult = { overallScore, verdict, coverage, controls, regimes, controlGaps, juris };
+  document.getElementById('exportRow').style.display = 'flex';
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════════════════════════════════
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-' + tab).classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// AP2 EXPORT — @ainumbers.co/fatf-sanctions-v1
+// ════════════════════════════════════════════════════════════════════════
+function buildAP2() {
+  const mandate = {
+    "@type": "@ainumbers.co/fatf-sanctions-v1",
+    "@version": "1.0",
+    "@generated": new Date().toISOString(),
+    "mandate_id": "AIN-FATF-" + Date.now().toString(36).toUpperCase(),
+    "tool_id": "fatf-sanctions-programme-readiness",
+    "issuer": "post-oak-labs",
+  };
+
+  if (lastFATFResult) {
+    mandate.fatf_readiness = {
+      overall_score: lastFATFResult.overallScore,
+      verdict: lastFATFResult.verdict.label,
+      institution_type: lastFATFResult.instType,
+      jurisdiction: lastFATFResult.jurisdiction,
+      gap_count: lastFATFResult.gaps.length,
+      critical_gaps: lastFATFResult.gaps.filter(g => g.priority > 1.2).map(g => ({ recommendation: g.id, label: g.label, rating: g.rating })),
+      category_scores: Object.fromEntries(lastFATFResult.catScores.map(c => [c.cat, c.score])),
+    };
+  }
+
+  if (lastSancResult) {
+    mandate.sanctions_programme = {
+      overall_score: lastSancResult.overallScore,
+      verdict: lastSancResult.verdict.label,
+      coverage: lastSancResult.coverage,
+      control_gaps: lastSancResult.controlGaps.map(g => ({ control: g.ctrl, risk: g.risk, action: g.action })),
+      regime_status: Object.fromEntries(lastSancResult.regimes.map(r => [r.id, r.status])),
+    };
+  }
+
+  mandate.agent_instructions = [
+    "Use fatf_readiness.critical_gaps to prioritise remediation workstreams.",
+    "Cross-reference sanctions_programme.control_gaps with existing BSA/AML programme documentation.",
+    "FATF R6/R7 gaps must be resolved before any TFS-related sanctions screening gaps — they are prerequisites.",
+    "Escalate mandate to Chief Compliance Officer and General Counsel if overall FATF score < 55 or sanctions score < 50.",
+    "Schedule re-assessment after remediation. FATF mutual evaluation cycles are typically 5–7 years; internal readiness reviews should occur annually.",
+  ];
+
+  mandate.audit_signature = { client_side_executed: true, deterministic_run: true, no_pii_transmitted: true };
+
+  if (!mandate.fatf_readiness && !mandate.sanctions_programme) throw new Error('Run at least one module before exporting');
+  return mandate;
+}
+
+function exportAP2() {
+  try {
+    const m = buildAP2();
+    const blob = new Blob([JSON.stringify(m, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `fatf-sanctions-${Date.now()}.json`; a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) { alert('Export error: ' + e.message); }
+}
+
+function exportMarkdown() {
+  const lines = [
+    '# FATF & Sanctions Programme Compliance Report',
+    '',
+    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
+    `**Tool:** Post Oak Labs FATF Readiness & Sanctions Programme Gap Analyser  `,
+    `**Schema:** \`@ainumbers.co/fatf-sanctions-v1\``,
+    '',
+  ];
+
+  if (lastFATFResult) {
+    lines.push('## FATF Readiness Assessment', '');
+    lines.push(`**Overall Score:** ${lastFATFResult.overallScore}/100 — ${lastFATFResult.verdict.label}`, '');
+    lines.push(`**Institution:** ${lastFATFResult.instType} | **Jurisdiction:** ${lastFATFResult.jurisdiction}`, '');
+    lines.push('### Priority Gaps', '');
+    lines.push('| Recommendation | Description | Rating | Priority |');
+    lines.push('|---|---|---|---|');
+    lastFATFResult.gaps.forEach(g => {
+      const p = g.priority > 1.2 ? 'Critical' : g.priority > 0.6 ? 'High' : 'Medium';
+      lines.push(`| ${g.id} | ${g.label} | ${MATURITY_LABELS[g.rating]} | ${p} |`);
+    });
+    lines.push('');
+  }
+
+  if (lastSancResult) {
+    lines.push('## Sanctions Programme Assessment', '');
+    lines.push(`**Overall Score:** ${lastSancResult.overallScore}/100 — ${lastSancResult.verdict.label}`, '');
+    lines.push('### Regime Coverage', '');
+    lastSancResult.regimes.forEach(r => lines.push(`- **${r.label}:** ${r.status === 'ok' ? '✓ Covered' : r.status === 'warn' ? '⚠ Partial' : '✕ Gap'} — ${r.note}`));
+    lines.push('', '### Control Gaps', '');
+    lastSancResult.controlGaps.forEach(g => lines.push(`- **${g.ctrl}** [${g.risk}]: ${g.action}`));
+    lines.push('');
+  }
+
+  lines.push('---', '*This report is for informational purposes only. It does not constitute legal or compliance advice.*', '', '*© Post Oak Labs · postoaklabs.com · CC BY 4.0*');
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `fatf-sanctions-report-${Date.now()}.md`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════════
+renderRecGroups();
+// Auto-load retail bank scenario
+document.querySelectorAll('.scenario-btn')[0]?.dispatchEvent(new Event('click'));
+</script>
+</body>
+</html>

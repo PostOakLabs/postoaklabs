@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stablecoin Issuer Hub — Post Oak Labs Fintech Intelligence Showcase</title>
+
+<meta name="description" content="MiCA Title III + GENIUS Act + FATF R.16 + tokenized RWA — issuer-grade readiness in browser-based demos. 4 demos for Paxos, Circle, Bridge, Anchorage. AP2-exportable, client-side, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/stablecoin-issuer/">
+<meta property="og:title" content="Stablecoin Issuer Hub — Post Oak Labs">
+<meta property="og:description" content="MiCA Title III · GENIUS Act · FATF R.16 · tokenized RWA. Issuer-grade readiness in the browser. ~$320B stablecoin market.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/stablecoin-issuer/">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/stablecoin-issuer.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Stablecoin Issuer Hub — Post Oak Labs",
+  "url": "https://postoaklabs.com/demos/stablecoin-issuer/",
+  "description": "Four browser demos for stablecoin issuers — MiCA Title III / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA pre-check, AML transaction monitoring. AP2-exportable, client-side, zero PII.",
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" },
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateModified": "2026-05-25",
+  "audience": { "@type": "Audience", "audienceType": "Stablecoin issuers — Paxos, Circle, Bridge (post-Stripe), Anchorage" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root { --ink: #050c15; --deep: #0a1628; --navy: #0e1e35; --panel: #142540; --edge: #1e3454; --rim: #2a4a70; --body: #7090b0; --text: #d8e4f0; --muted: #5a7a95; --bright: #ffffff; --white: #ffffff; --accent: #2a7fc0; --accent-lt: #4a9fdf; --gold: #c09040; --gold-lt: #d0a050; --success: #10b981; --warn: #f59e0b; --error: #dc2626; }
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ink); color: var(--body); font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.18; color: var(--bright); }
+a { color: var(--accent-lt); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+nav.pol-nav { background: var(--ink); border-bottom: 1px solid var(--edge); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
+nav.pol-nav .nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--body); text-decoration: none; font-size: 0.86rem; font-weight: 400; transition: color 0.15s; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+.hub-breadcrumb { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.7rem 0; }
+.hub-breadcrumb-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); }
+.hub-breadcrumb-inner a { color: var(--body); text-decoration: none; margin-right: 0.45rem; }
+.hub-breadcrumb-inner a:hover { color: var(--accent-lt); }
+.hub-breadcrumb-inner .crumb-sep { margin-right: 0.45rem; color: var(--edge); }
+.hub-breadcrumb-inner .crumb-current { color: var(--text); }
+
+.hub-hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--edge); background: radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.08) 0%, transparent 70%), radial-gradient(45% 65% at 88% 30%, rgba(192,144,64,0.06) 0%, transparent 65%), var(--ink); }
+.hub-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.6rem; }
+.hub-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); }
+.hub-hero h1 { font-size: clamp(2rem, 4vw, 3.05rem); color: #fff; margin-bottom: 1.1rem; max-width: 900px; letter-spacing: -0.01em; }
+.hub-hero h1 em { font-style: italic; color: var(--gold); }
+.hub-sub { font-size: 1.04rem; color: var(--body); max-width: 780px; line-height: 1.75; margin-bottom: 2.25rem; }
+.hub-sub strong { color: var(--text); font-weight: 500; }
+.hub-buyers { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px dashed var(--edge); max-width: 780px; }
+.hub-buyers strong { color: var(--accent-lt); font-weight: 500; letter-spacing: 0.1em; }
+.hub-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--edge); border-radius: 6px; background: rgba(14, 30, 53, 0.35); max-width: 780px; }
+.hub-stats > div { padding: 1.25rem 1.4rem; border-right: 1px solid var(--edge); }
+.hub-stats > div:last-child { border-right: none; }
+.hub-stats strong { display: block; font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--bright); font-weight: 400; line-height: 1.1; margin-bottom: 0.25rem; }
+.hub-stats .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+.hub-demos { padding: 3rem 0 2rem; border-bottom: 1px solid var(--edge); }
+.hub-demos-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 0.5rem; }
+.hub-section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 2.2vw, 1.9rem); color: var(--bright); margin-bottom: 0.6rem; max-width: 760px; line-height: 1.3; }
+.hub-section-intro { font-size: 0.95rem; color: var(--body); max-width: 700px; margin-bottom: 2.1rem; line-height: 1.7; }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+.demo-card { background: var(--deep); border: 1px solid var(--edge); border-radius: 6px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; position: relative; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; text-decoration: none; color: var(--body); }
+.demo-card[href]:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.35); }
+.demo-card.placeholder { opacity: 0.78; cursor: default; border-style: dashed; border-color: var(--rim); }
+.demo-card.placeholder:hover { transform: none; box-shadow: none; }
+.demo-card.cross-link { background: linear-gradient(180deg, rgba(192,144,64,0.04) 0%, var(--deep) 100%); }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; }
+.card-num { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; color: var(--muted); }
+.card-num strong { color: var(--gold); font-weight: 500; }
+.card-step { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; color: var(--accent-lt); font-weight: 500; text-transform: uppercase; }
+.card-status { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.18rem 0.45rem; border-radius: 2px; font-weight: 500; }
+.card-status.live { color: var(--success); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); }
+.card-status.coming { color: var(--gold); background: rgba(192,144,64,0.06); border: 1px solid rgba(192,144,64,0.3); }
+.card-status.cross { color: var(--accent-lt); background: rgba(42,127,192,0.06); border: 1px solid rgba(42,127,192,0.3); }
+.card-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: #fff; line-height: 1.3; }
+.card-desc { font-size: 0.82rem; color: var(--body); line-height: 1.6; flex: 1; }
+.card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; padding-top: 0.85rem; border-top: 1px solid var(--edge); }
+.card-meta .chip { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding: 0.2rem 0.45rem; border: 1px solid var(--edge); border-radius: 2px; }
+
+.hub-callout { padding: 3rem 0; background: radial-gradient(60% 90% at 50% 0%, rgba(42,127,192,0.05) 0%, transparent 70%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-callout-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-callout-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
+.hub-callout h3 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--bright); margin-bottom: 1rem; line-height: 1.3; }
+.hub-callout p { color: var(--body); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; max-width: 720px; }
+.hub-callout p strong { color: var(--text); font-weight: 500; }
+.hub-callout-aside { border-left: 2px solid var(--accent); padding-left: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--text); line-height: 1.7; }
+.hub-callout-aside strong { color: var(--gold); display: block; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.5rem; }
+@media (max-width: 760px) { .hub-callout-grid { grid-template-columns: 1fr; gap: 1.5rem; } .hub-callout-aside { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 1rem; } }
+
+.hub-deep-dive { padding: 3rem 0 3.5rem; border-bottom: 1px solid var(--edge); }
+.hub-deep-dive-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.deep-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+.deep-list li { background: var(--deep); border: 1px solid var(--edge); border-radius: 4px; padding: 1.1rem 1.25rem; transition: border-color 0.15s, background 0.15s; }
+.deep-list li:hover { border-color: var(--accent); background: rgba(20, 37, 64, 0.6); }
+.deep-list a { text-decoration: none; color: var(--text); display: block; }
+.deep-id { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em; color: var(--gold); font-weight: 500; margin-bottom: 0.35rem; }
+.deep-name { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--bright); font-weight: 500; margin-bottom: 0.3rem; }
+.deep-blurb { font-size: 0.78rem; color: var(--body); line-height: 1.55; }
+
+.hub-cta-row { padding: 3rem 0; background: radial-gradient(50% 80% at 50% 0%, rgba(192,144,64,0.04) 0%, transparent 65%), var(--ink); border-bottom: 1px solid var(--edge); }
+.hub-cta-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; justify-content: space-between; }
+.hub-cta-text { max-width: 600px; }
+.hub-cta-text h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--bright); margin-bottom: 0.5rem; line-height: 1.3; }
+.hub-cta-text p { color: var(--body); font-size: 0.9rem; line-height: 1.65; }
+.hub-cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hub-cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.85rem 1.4rem; border-radius: 4px; text-decoration: none; font-weight: 500; transition: all 0.15s; }
+.hub-cta-btn.primary { color: #fff; background: var(--accent); }
+.hub-cta-btn.primary:hover { background: var(--accent-lt); }
+.hub-cta-btn.ghost { color: var(--text); border: 1px solid var(--rim); background: transparent; }
+.hub-cta-btn.ghost:hover { border-color: var(--accent-lt); color: var(--accent-lt); }
+
+footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.25rem 0 2.5rem; }
+footer.pol-footer .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--body); line-height: 1.65; margin-top: 0.35rem; }
+footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+@media (max-width: 760px) {
+  .hub-stats { grid-template-columns: 1fr; }
+  .hub-stats > div { border-right: none; border-bottom: 1px solid var(--edge); }
+  .hub-stats > div:last-child { border-bottom: none; }
+  .hub-hero { padding: 2.5rem 0 2rem; }
+  .hub-demos { padding: 2.25rem 0 1.75rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hub-breadcrumb" aria-label="Breadcrumb">
+  <div class="hub-breadcrumb-inner">
+    <a href="/">Post Oak Labs</a><span class="crumb-sep">/</span>
+    <a href="/demos/">Showcase</a><span class="crumb-sep">/</span>
+    <span class="crumb-current">Stablecoin Issuer hub</span>
+  </div>
+</div>
+
+<header class="hub-hero">
+  <div class="hub-inner">
+    <span class="hub-eyebrow">For stablecoin issuers</span>
+    <h1>MiCA Phase 2. GENIUS Act. FATF R.16. Tokenized RWA. <em>Issuer-grade</em> readiness.</h1>
+    <p class="hub-sub">
+      <strong>Three regulatory regimes are live or imminent.</strong> Reserve adequacy, redemption
+      mechanics, operational safeguards, VASP travel-rule data sufficiency, tokenized-RWA
+      classification — every one is a separate audit lens, and they overlap unevenly. Four
+      demos plus the AML transaction-monitoring cross-link give an issuer the readiness
+      surface in the browser, exportable as AP2 mandates the audit team can replay.
+    </p>
+    <p class="hub-buyers">
+      Built for <strong>Paxos · Circle · Bridge (post-Stripe) · Anchorage</strong>
+      &nbsp;·&nbsp; usable by any covered VASP entering EU or US licensing
+    </p>
+    <div class="hub-stats" aria-label="Hub at a glance">
+      <div><strong>4</strong><span class="stat-label">demos in this stack</span></div>
+      <div><strong>$315B</strong><span class="stat-label">stablecoin market · 2026</span></div>
+      <div><strong>3 regimes</strong><span class="stat-label">MiCA · GENIUS · FATF R.16</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="hub-demos" aria-label="Demos in workflow order">
+  <div class="hub-demos-inner">
+    <div class="hub-section-label">Workflow · issuance → VASP-to-VASP → adjacent assets → financial-crime overlay</div>
+    <h2 class="hub-section-title">Four demos sequenced the way an issuer's compliance team walks readiness review.</h2>
+    <p class="hub-section-intro">
+      Start at the issuance surface — reserve adequacy, redemption rights, operational
+      safeguards. Move to the VASP-to-VASP edge (Travel Rule). Pin the tokenized-RWA
+      adjacency (where issuer business models increasingly extend). Close with the
+      financial-crime overlay that pulls every transaction through AML transaction
+      monitoring.
+    </p>
+
+    <div class="demo-grid">
+
+      <a class="demo-card live" href="/demos/stablecoin-issuer-readiness-mica-genius.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 1 · Issuance</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #08</strong> · MiCA Title III · GENIUS Act</span>
+        <h3 class="card-title">Stablecoin Issuer Readiness Lab</h3>
+        <p class="card-desc">Reserve composition × redemption rights × operational safeguards scored against MiCA Title III (Arts. 35–42) and GENIUS Act payment-stablecoin regime. Live MiCA checklist line-by-line, GENIUS classification check, composite readiness score /100, AP2 mandate export — the artifact the issuer's risk committee can sign.</p>
+        <div class="card-meta"><span class="chip">MiCA Phase 2</span><span class="chip">GENIUS Act</span><span class="chip">$315B mkt</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/vasp-travel-rule-compliance-checker.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 2 · VASP edge</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #15</strong> · FATF R.16</span>
+        <h3 class="card-title">VASP Travel Rule (FATF R.16) Compliance Checker</h3>
+        <p class="card-desc">Originator + beneficiary data sufficiency scored across FATF baseline, EU TFR (Reg. 2024/1624, applicable from 30 Dec 2024), FinCEN 31 CFR 1010.410(f), UK MLR and MAS PSN02. Field-by-field requirement matrix, de-minimis threshold, sunrise-issue handling. The VASP-edge layer the stablecoin issuer's redemption partners read.</p>
+        <div class="card-meta"><span class="chip">FATF R.16</span><span class="chip">EU TFR live</span><span class="chip">5 regimes</span></div>
+      </a>
+
+      <a class="demo-card live" href="/demos/tokenized-rwa-compliance-pre-checker.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 3 · Adjacent</span><span class="card-status live">Live</span></div>
+        <span class="card-num"><strong>Demo #21</strong> · Tokenized RWA</span>
+        <h3 class="card-title">Tokenized RWA Compliance Pre-Checker</h3>
+        <p class="card-desc">Pre-issuance pathway determination — 8 asset classes × 7 jurisdictions × offering structure → MiCA + Howey classification + pathway verdict (viable / remediate / not-viable). The adjacency every stablecoin issuer's business team is modelling.</p>
+        <div class="card-meta"><span class="chip">Tokenized RWA</span><span class="chip">MiCA + Howey</span><span class="chip">$1T+ proj.</span></div>
+      </a>
+
+      <a class="demo-card live cross-link" href="/demos/aml-transaction-monitoring-rule-builder.html" style="text-decoration:none;">
+        <div class="card-head"><span class="card-step">Step 4 · Financial crime</span><span class="card-status live">Live · Cross</span></div>
+        <span class="card-num"><strong>Demo #11</strong> · AML</span>
+        <h3 class="card-title">AML Transaction Monitoring Rule Builder</h3>
+        <p class="card-desc">Six rule families with FP/TP modeled against a synthetic 100K-tx population, precision/recall live, AP2 ruleset export. Cross-link from the RegTech hub; every issuer reads every transaction through this surface before settlement.</p>
+        <div class="card-meta"><span class="chip">AML</span><span class="chip">Tx Monitoring</span><span class="chip">FP/TP modeled</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="hub-callout" aria-label="Why this hub exists">
+  <div class="hub-callout-inner">
+    <div class="hub-callout-grid">
+      <div><div class="hub-section-label">Why this exists</div></div>
+      <div>
+        <h3>Issuer readiness isn't one document — it's three regimes, one VASP edge, and an AML overlay.</h3>
+        <p>
+          MiCA Phase 2 is live in the EU; the GENIUS Act has set the US framework; FATF R.16
+          governs the VASP-to-VASP edge; AMLA 2026 will harmonise. <strong>The reserve audit
+          team, the redemption-mechanism team, the VASP-onboarding team, and the TM team
+          all read different parts of the same regulation set — and the issuer pays for
+          the overlap once.</strong>
+        </p>
+        <p>
+          The four demos here are the curated path. Reserve adequacy and redemption
+          mechanics in the first demo. VASP-to-VASP data sufficiency in the second. Tokenized
+          RWA adjacency in the third — because every issuer's growth story now includes a
+          tokenized-asset sleeve. The AML cross-link in the fourth, because the TM surface
+          is what catches the issuer if the issuance side is well-engineered but the
+          downstream rails leak.
+        </p>
+        <p>
+          <strong>Every output exports as an AP2 mandate</strong> — the audit team replays it,
+          a downstream agent runtime enforces it, the same JSON is the trail.
+        </p>
+        <div class="hub-callout-aside" role="note">
+          <strong>For the acquirer reader</strong>
+          A stablecoin issuer surface that pre-encodes the MiCA-plus-GENIUS-plus-FATF
+          overlap into a single mandate format is the IP that lets a buyer compress
+          issuer readiness from a multi-quarter audit cycle to a credentialed export.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hub-deep-dive" aria-label="Deep links into AINumbers">
+  <div class="hub-deep-dive-inner">
+    <div class="hub-section-label">Deep links · AINumbers catalog</div>
+    <h2 class="hub-section-title">Five tools underneath the stablecoin issuer demos.</h2>
+    <p class="hub-section-intro">
+      The stablecoin / RWA cluster in the catalog — reserve auditing, VASP travel-rule
+      checking, stablecoin AML mapping, tokenized-asset compliance, RWA tokenization cost
+      modelling.
+    </p>
+    <ul class="deep-list">
+
+      <li><a href="https://ainumbers.co/tools/75-stablecoin-reserve-auditor.html" target="_blank" rel="noopener">
+        <div class="deep-id">T75 ↗</div>
+        <div class="deep-name">Stablecoin Reserve Auditor</div>
+        <div class="deep-blurb">Reserve-adequacy and redemption-mechanism auditor against MiCA Articles 35–42 and GENIUS Act equivalents. The tool underneath Demo #08.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/126-vasp-travel-rule-checker.html" target="_blank" rel="noopener">
+        <div class="deep-id">T126 ↗</div>
+        <div class="deep-name">VASP Travel Rule Checker</div>
+        <div class="deep-blurb">Originator / beneficiary data-sufficiency check for VASP-to-VASP transfers per FATF R.16, MiCA, and AMLA 2026. The tool underneath Demo #15.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/128-stablecoin-vasp-aml-mapper.html" target="_blank" rel="noopener">
+        <div class="deep-id">T128 ↗</div>
+        <div class="deep-name">Stablecoin VASP AML Mapper</div>
+        <div class="deep-blurb">Maps stablecoin VASP obligations across AML / CTF jurisdictions — onboarding, monitoring, reporting, sanctions. Reads same control library as Demo #11.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/63-tokenized-asset-compliance.html" target="_blank" rel="noopener">
+        <div class="deep-id">T63 ↗</div>
+        <div class="deep-name">Tokenized Asset Compliance</div>
+        <div class="deep-blurb">Compliance framework for tokenized assets — MiCA classification, securities-law fit, custody disclosure. The tool underneath Demo #21.</div>
+      </a></li>
+
+      <li><a href="https://ainumbers.co/tools/66-rwa-tokenization-cost-model.html" target="_blank" rel="noopener">
+        <div class="deep-id">T66 ↗</div>
+        <div class="deep-name">RWA Tokenization Cost Model</div>
+        <div class="deep-blurb">Cost model for tokenizing a real-world-asset class — issuance, custody, secondary-market liquidity. Pairs with T63 for the full RWA business case.</div>
+      </a></li>
+
+    </ul>
+  </div>
+</section>
+
+<section class="hub-cta-row" aria-label="Continue">
+  <div class="hub-cta-inner">
+    <div class="hub-cta-text">
+      <h3>See where these four demos sit in the full 259-tool chain.</h3>
+      <p>The Tool Chain Composer renders the AINumbers catalog as a DAG with the 33 demos highlighted. The stablecoin / RWA cluster connects sideways to the regtech surface and to the agentic-runtime mandate layer.</p>
+    </div>
+    <div class="hub-cta-buttons">
+      <a href="/demos/composer.html" class="hub-cta-btn primary">View the composer →</a>
+      <a href="/demos/" class="hub-cta-btn ghost">← All 27 demos</a>
+    </div>
+  </div>
+</section>
+
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
+      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — Full tool catalog ↗</a>
+      <a href="/demos/">Fintech Intelligence Showcase</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/">Agentic Runtime hub</a>
+      <a href="/demos/regtech/">RegTech hub</a>
+      <a href="/demos/baas/">BaaS hub</a>
+      <a href="/demos/processors/">Processors hub</a>
+      <a href="/demos/stablecoin-issuer/" class="this-hub">Stablecoin Issuer hub</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Permissioned Blockchain: Market Briefing | Post Oak Labs</title>
+<meta name="description" content="A candid, practitioner-authored market briefing on enterprise permissioned blockchain: R3 Corda, Hyperledger Fabric, Besu, and Digital Asset Canton. Market sizing, deployment data, revenue transparency, and use-case guidance. April 2026.">
+<meta name="keywords" content="enterprise blockchain, R3 Corda, Hyperledger Fabric, Hyperledger Besu, permissioned DLT, blockchain market share, tokenized RWA, Digital Asset Canton, blockchain advisory, blockchain consulting">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/enterprise-blockchain.html">
+<link rel="alternate" hreflang="x-default" href="https://postoaklabs.com/enterprise-blockchain.html">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Enterprise Permissioned Blockchain: Market Briefing | Post Oak Labs">
+<meta property="og:description" content="A practitioner-authored briefing on enterprise permissioned DLT, with candid assessment of market share claims, revenue transparency, deployment realities, and vendor dependency risks.">
+<meta property="og:url" content="https://postoaklabs.com/enterprise-blockchain.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Enterprise Permissioned Blockchain: Market Briefing | Post Oak Labs">
+<meta name="twitter:description" content="Candid practitioner briefing on enterprise DLT: market data, deployment realities, and due diligence guidance. April 2026.">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:          #050c15;
+    --deep:         #0a1628;
+    --navy:         #0e1e35;
+    --panel:        #142540;
+    --edge:         #1e3454;
+    --rim:          #2a4a70;
+    --muted:        #4a6a8a;
+    --body:         #7090b0;
+    --text:         #a8c0d8;
+    --bright:       #d0e4f4;
+    --white:        #ecf4fc;
+    --gold:         #c09040;
+    --gold-lt:      #d8b060;
+    --accent:       #2a7fc0;
+    --accent-lt:    #4a9fd8;
+    /* Aliases used throughout this file */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+  a { color: inherit; text-decoration: none; }
+
+  /* footnote superscripts, matching a2a-comparison.html */
+  sup a { color: var(--rim); text-decoration: none; font-size: 0.72em; font-family: 'DM Sans', sans-serif; }
+  sup a:hover { color: var(--accent-lt); }
+
+  /* ---- NAV - aligned to site-wide standard ---- */
+
+  /* ---- HERO ---- */
+  .hero { padding: 5rem 0 4rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
+  .hero-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+  .hero-kicker { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.4rem; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: normal; line-height: 1.18; color: var(--white); max-width: 760px; margin-bottom: 1.4rem; }
+  .hero h1 em { font-style: normal; color: var(--gold-lt); }
+  .hero-lead { font-size: 1rem; color: var(--text); max-width: 650px; line-height: 1.78; margin-bottom: 2rem; }
+  .hero-cta { display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; }
+  .btn-primary { background: var(--accent); color: var(--white); padding: 0.52rem 1.35rem; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--accent); transition: background 0.2s, border-color 0.2s; }
+  .btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+  .btn-secondary { color: var(--accent); font-size: 0.8rem; letter-spacing: 0.03em; text-decoration: none; border-bottom: 1px solid var(--rim); padding-bottom: 1px; transition: color 0.2s, border-color 0.2s; }
+  .btn-secondary:hover { color: var(--text); border-color: var(--text); }
+
+  /* ---- STAT BAR ---- */
+  .stat-bar { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 980px; margin: 0 auto; border: 1px solid var(--edge); }
+  .stat-item { padding: 1.35rem 1.5rem; border-right: 1px solid var(--edge); }
+  .stat-item:last-child { border-right: none; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--accent-lt); font-weight: normal; line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.74rem; color: var(--text); line-height: 1.5; }
+  .stat-source { font-size: 0.67rem; color: var(--muted); margin-top: 0.25rem; }
+  .stat-source a { color: var(--muted); text-decoration: none; }
+  .stat-source a:hover { color: var(--accent-lt); }
+
+  /* ---- SECTIONS ---- */
+  section { max-width: 980px; margin: 0 auto; padding: 4rem 2rem; border-bottom: 1px solid var(--edge); }
+  section:last-of-type { border-bottom: none; }
+  .section-anchor { display: block; height: 1px; margin-top: -80px; padding-top: 80px; visibility: hidden; }
+  .section-kicker { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.55rem; }
+  .sec-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: normal; color: var(--bright); margin-bottom: 0.7rem; line-height: 1.28; }
+  .sec-title em { font-style: normal; color: var(--gold-lt); }
+  .section-lead { font-size: 0.91rem; color: var(--text); max-width: 700px; line-height: 1.78; margin-bottom: 2.4rem; padding-bottom: 2rem; border-bottom: 1px solid var(--edge); }
+
+  /* ---- CAUTION BOX ---- */
+  .caution-box { background: var(--panel); border: 1px solid var(--rim); border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  .caution-label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.5rem; }
+  .caution-box p { font-size: 0.83rem; color: var(--body); line-height: 1.82; }
+
+  /* ---- INSIGHT BOX ---- */
+  .insight-box { border: 1px solid var(--edge); background: var(--deep); padding: 1.5rem 1.8rem; margin-top: 2.2rem; }
+  .insight-label { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rim); margin-bottom: 0.55rem; font-family: 'JetBrains Mono', monospace; }
+  .insight-box p { font-size: 0.88rem; color: var(--text); line-height: 1.72; }
+  .insight-box strong { color: var(--text); }
+
+  /* ---- OBSERVATIONS ---- */
+  .obs-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-bottom: 2rem; }
+  .obs-item { background: var(--deep); padding: 1.25rem 1.75rem; display: grid; grid-template-columns: 160px 1fr; gap: 1.5rem; align-items: start; transition: background 0.2s; }
+  .obs-item:hover { background: var(--navy); }
+  .obs-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-lt); padding-top: 0.15rem; line-height: 1.5; }
+  .obs-tag.warn { color: var(--gold-lt); }
+  .obs-body { font-size: 0.83rem; color: var(--body); line-height: 1.82; }
+  .obs-body strong { color: var(--text); font-weight: 500; }
+
+  /* ---- PLATFORM LIST ---- */
+  .platform-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-bottom: 2.5rem; }
+  .platform-item { background: var(--deep); padding: 1.5rem 1.75rem 1.75rem; transition: background 0.2s; }
+  .platform-item:hover { background: var(--navy); }
+  .platform-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .platform-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-lt); }
+  .platform-tag.dim { color: var(--muted); }
+  .platform-item h3 { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; color: var(--bright); margin: 0; }
+  .platform-body { font-size: 0.83rem; color: var(--body); line-height: 1.82; margin-bottom: 0.85rem; }
+  .platform-body strong { color: var(--text); font-weight: 500; }
+  .platform-note { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; color: var(--muted); line-height: 1.6; border-top: 1px solid var(--edge); padding-top: 0.75rem; margin-top: 0.75rem; }
+
+  /* ---- SPEC TABLE ---- */
+  .spec-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.25rem; font-size: 0.81rem; }
+  .spec-table th { background: var(--panel); padding: 0.65rem 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-lt); border: 1px solid var(--edge); text-align: left; font-weight: 400; }
+  .spec-table td { background: transparent; padding: 0.7rem 1rem; border: 1px solid var(--edge); font-size: 0.81rem; color: var(--body); vertical-align: top; line-height: 1.65; }
+  .spec-table td.lbl { font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--bright); white-space: nowrap; border-right: 1px solid var(--edge); }
+  .spec-table td em { color: var(--gold-lt); font-style: normal; font-size: 0.77rem; }
+
+  /* ---- COMPARISON TABLE (share snapshot) ---- */
+  .comparison-table-wrap { overflow-x: auto; margin-top: 0.5rem; }
+  .comparison-table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.81rem; }
+  .comparison-table-wrap thead th { text-align: left; padding: 0.85rem 1.2rem; font-size: 0.67rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--edge); background: var(--deep); white-space: nowrap; font-weight: 400; }
+  .comparison-table-wrap tbody tr { border-bottom: 1px solid var(--edge); transition: background 0.12s; }
+  .comparison-table-wrap tbody tr:hover { background: var(--deep); }
+  .comparison-table-wrap tbody tr:last-child { border-bottom: none; }
+  .comparison-table-wrap tbody td { padding: 0.78rem 1.2rem; vertical-align: top; color: var(--text); line-height: 1.55; }
+  .comparison-table-wrap tbody td:first-child { color: var(--text); font-size: 0.76rem; letter-spacing: 0.02em; padding-right: 1.4rem; border-right: 1px solid var(--edge); font-weight: 500; white-space: nowrap; }
+
+  /* ---- USE CASE GRID ---- */
+  .usecase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-bottom: 2rem; }
+  .usecase-cell { background: var(--navy); padding: 1.4rem 1.6rem; }
+  .uc-label { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 0.35rem; }
+  .usecase-cell h4 { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+  .usecase-cell p { font-size: 0.8rem; color: var(--body); line-height: 1.75; }
+
+  /* ---- CHECKLIST ---- */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-bottom: 2rem; }
+  .checklist li { background: var(--deep); padding: 1rem 1.5rem; display: flex; gap: 1rem; align-items: start; font-size: 0.83rem; color: var(--body); line-height: 1.82; transition: background 0.2s; }
+  .checklist li:hover { background: var(--navy); }
+  .checklist li::before { content: '->'; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent); flex-shrink: 0; margin-top: 0.15rem; letter-spacing: -0.05em; }
+  .checklist li.primary { background: var(--panel); border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; }
+  .checklist li.primary::before { color: var(--gold-lt); }
+  .checklist li.primary:hover { background: var(--navy); }
+
+  /* ---- FOOTNOTES ---- */
+  .footnotes { max-width: 980px; margin: 0 auto; padding: 2.5rem 2rem 3rem; border-top: 1px solid var(--edge); }
+  .footnotes h3 { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; font-family: 'JetBrains Mono', monospace; font-weight: 400; }
+  .footnotes ol { padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footnotes li { font-size: 0.68rem; color: var(--muted); line-height: 1.65; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  .footnotes a { color: var(--rim); text-decoration: none; }
+  .footnotes a:hover { color: var(--accent-lt); }
+
+  /* ---- FOOTER ---- */
+  footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.4rem 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.4rem; }
+  .footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.88rem; color: var(--text); margin-bottom: 0.35rem; }
+  .footer-brand span { color: var(--accent); }
+  .footer-copy { font-size: 0.52rem; color: var(--muted); }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+  .footer-links a { color: var(--text); text-decoration: none; font-size: 0.52rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-lt); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .stat-bar { grid-template-columns: repeat(2,1fr); }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--edge); }
+    .obs-item { grid-template-columns: 1fr; gap: 0.25rem; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .comparison-table-wrap table { font-size: 0.73rem; }
+    .comparison-table-wrap tbody td:first-child { white-space: normal; }
+  }
+
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+/* ═══ CANONICAL NAV/FOOTER - site-wide standard ═══ */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+/* ══════════════════════════════════════════════════ */
+</style>
+
+
+
+
+
+
+<link rel="me" href="https://ainumbers.co">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Enterprise Permissioned Blockchain: Market Briefing",
+  "datePublished": "2026-04-19",
+  "dateModified": "2026-05-11",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "publisher": {
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "mainEntityOfPage": "https://postoaklabs.com/enterprise-blockchain.html",
+  "image": "https://postoaklabs.com/og-image.png",
+  "about": "R3 Corda, Hyperledger Fabric, Besu, and Digital Asset Canton \u2014 market analysis",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Commercial banks, central banks, large corporates"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Enterprise Blockchain",
+      "item": "https://postoaklabs.com/enterprise-blockchain.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+  <div class="hero-kicker">Post Oak Labs · Enterprise Blockchain Market Briefing · April 2026</div>
+  <h1 data-i18n="hero-h1">Permissioned blockchain: what the market actually looks like</h1>
+  <p class="hero-lead" data-i18n="hero-sub">Post Oak Labs principals have worked inside several of the large vendors covered in this briefing. We approach vendor claims in this market with professional skepticism. This briefing condenses the available evidence on market sizing, platform deployment, and revenue - and says plainly where the data runs thin.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="mailto:contact@postoaklabs.com">Talk to Post Oak Labs</a>
+    <a class="btn-secondary" href="a2a-comparison.html">A2A vs. Correspondent Banking →</a>
+    <a class="btn-secondary" href="glossary.html">DLT Glossary →</a>
+  </div>
+  </div>
+</div>
+
+<div class="stat-bar">
+  <div class="stat-item">
+    <div class="stat-number">$39.8B</div>
+    <div class="stat-label">Projected global blockchain technology market, 2026</div>
+    <div class="stat-source">Mordor Intelligence, see <a href="#fn1">fn. 1</a></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">~42%</div>
+    <div class="stat-label">Permissioned / consortium chain share of total blockchain market, 2026E</div>
+    <div class="stat-source">Segment forecast, see <a href="#fn1">fn. 1</a></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">&gt;$10B</div>
+    <div class="stat-label">Tokenized real-world assets on live Corda-based platforms, February 2025</div>
+    <div class="stat-source"><a href="https://r3.com/r3s-corda-leads-tokenized-rwa-market-with-over-10-billion-in-on-chain-assets-and-unrivaled-industry-adoption/" target="_blank" rel="noopener">R3 press release, Feb 2025</a>, see <a href="#fn4">fn. 4</a></div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">~46%</div>
+    <div class="stat-label">Estimated enterprise permissioned deployment share held by Hyperledger Fabric</div>
+    <div class="stat-source">Hyperledger Foundation survey, 2024, see <a href="#fn6">fn. 6</a></div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════ SECTION 1 ════════════════════════ -->
+<section id="overview">
+  <span class="section-anchor"></span>
+  <div class="section-kicker">Section 01, Market Overview</div>
+  <h2 class="sec-title" data-i18n="title-size__structure__and_why_the">Size, structure, and why the data is murky</h2>
+  <p class="section-lead">The global blockchain technology market was valued at approximately $24.5 billion in 2025 and is projected to reach roughly $39.8 billion in 2026 per Mordor Intelligence, with a CAGR near 63% through 2031.<sup><a href="#fn1">[1]</a></sup> Private and consortium chains are projected to capture approximately 42% of total blockchain market share in 2026, though that figure reflects enterprise software procurement spending, not on-chain transaction volume, which is measured differently and dominated by public chains. Blockchain-as-a-Service is the primary revenue vehicle, projected at around 52% of the permissioned segment by 2026, with AWS, Azure, and Google Cloud controlling approximately 63% of the public cloud BaaS market and capturing the lion's share of platform economics.<sup><a href="#fn1">[1]</a></sup></p>
+
+  <div class="caution-box">
+    <p class="caution-label">On the data - read this first</p>
+    <p>No single authoritative dataset exists for permissioned blockchain market share. Vendor revenues are privately held and rarely disclosed at the platform level.<sup><a href="#fn2">[2]</a></sup> Figures throughout this briefing derive from deployment surveys, analyst estimates, and verified public disclosures, not audited financials. All market-share percentages should be treated as directional indicators. Pilot inflation has been a persistent feature of this industry for a decade: announced pilots have chronically outnumbered live production networks, and press-release volume is not a reliable proxy for economic activity.</p>
+  </div>
+
+  <h3 style="font-family:'DM Sans', sans-serif;font-size:0.88rem;font-weight:500;color:var(--bright);margin-bottom:0.75rem;">Why 'market share' is so murky</h3>
+
+  <div class="obs-list">
+    <div class="obs-item">
+      <span class="obs-tag">Open-source ≠ revenue</span>
+      <p class="obs-body">Hyperledger Fabric generates no licensing income. Economic value flows to IBM, AWS, Oracle, and systems integrators, none of whom isolate blockchain revenue in their financial disclosures.<sup><a href="#fn2">[2]</a></sup></p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag">Private company opacity</span>
+      <p class="obs-body">R3, ConsenSys, and Digital Asset are not publicly listed and are not required to publish audited financials. Revenue estimates from third-party SaaS databases are indicative only.<sup><a href="#fn3">[3]</a></sup></p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag">Definition drift</span>
+      <p class="obs-body">'Market share' is sometimes deployment count, sometimes analyst mindshare survey, sometimes developer activity. PeerSpot mindshare figures showed Corda rising from 7.1% to 31.0% year-on-year while Fabric fell from 42.9% to 33.8%, using a methodology that differs substantially from deployment surveys and produces incomparable results.<sup><a href="#fn7">[7]</a></sup></p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag warn">Pilot inflation &amp; chainwashing</span>
+      <p class="obs-body">For most of the past decade, announced pilots far outnumbered live production networks. The ratio has improved, but the history of high-profile wind-downs (TradeLens, we.trade, Marco Polo, Contour) should inform how seriously any new announcement is weighted.<sup><a href="#fn9">[9]</a></sup> A persistent contributor to this pattern is what practitioners call <strong>chainwashing</strong><sup><a href="#fn23">[23]</a></sup>: marketing by vendors and startups that positions blockchain as the solution to problems that existing relational databases, message queues, or shared APIs could address more cheaply. The due-diligence question, initially posed by a director at R3, and independently documented across the literature, remains: what is it about a blockchain that solves a problem that cannot be solved with existing technology? Where a traditional database with appropriate access controls would serve, adding a blockchain layer adds complexity, cost, and vendor dependency without adding the value to justify it.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ SECTION 2 ════════════════════════ -->
+<section id="platforms">
+  <span class="section-anchor"></span>
+  <div class="section-kicker">Section 02, Platform Profiles</div>
+  <h2 class="sec-title" data-i18n="title-four_platforms__meaningfully">Four platforms, meaningfully different architectures</h2>
+  <p class="section-lead">Four platforms dominate institutional permissioned DLT in 2026. Their architectures, target verticals, governance models, and economics differ substantially enough that treating them as interchangeable alternatives is a procurement error.</p>
+
+  <div class="platform-list">
+
+    <!-- FABRIC -->
+    <div class="platform-item">
+      <div class="platform-header">
+        <span class="platform-tag">Permissioned · Open Source</span>
+        <h3>Hyperledger Fabric</h3>
+        <span class="platform-tag dim">Linux Foundation Decentralized Trust</span>
+      </div>
+      <table class="spec-table">
+        <tr><th style="width:165px;">Attribute</th><th>Detail</th></tr>
+        <tr><td class="lbl">Status</td><td>Open-source framework hosted by LF Decentralized Trust. No licensing revenue. Value flows to IBM, AWS, Oracle, and SIs.<sup><a href="#fn2">[2]</a></sup></td></tr>
+        <tr><td class="lbl">Deployment share</td><td>~46% of enterprise permissioned deployments <span style="color:var(--gold-lt);font-size:0.77rem;">(Hyperledger Foundation survey, 2024, cited by ChainLaunch - not independently audited)</span><sup><a href="#fn6">[6]</a></sup></td></tr>
+        <tr><td class="lbl">Smart contracts</td><td>Go, Java, Node.js (chaincode)</td></tr>
+        <tr><td class="lbl">Throughput</td><td>~3,500 TPS (Raft consensus); benchmarks vary significantly by configuration</td></tr>
+        <tr><td class="lbl">Primary verticals</td><td>Supply chain, trade finance, government records, healthcare interoperability, CBDC pilots</td></tr>
+        <tr><td class="lbl">Revenue model</td><td>None at platform level. IBM, AWS, and Oracle capture value through BaaS and consulting; none break out blockchain-specific revenue.<sup><a href="#fn2">[2]</a></sup></td></tr>
+      </table>
+      <p class="platform-body"><strong>Notable deployments.</strong> IBM Food Trust (food-safety provenance; Walmart and its supplier network) and TradeLens (container logistics; 42M+ shipments tracked across 300+ organisations before wind-down) are the most-cited examples.<sup><a href="#fn8">[8]</a></sup> TradeLens is a structural lesson: technically functional, commercially unsustainable. Thirteen CBDC initiatives were identified using Hyperledger frameworks as of 2021; production status of most remains unclear.<sup><a href="#fn10">[10]</a></sup> IBM Research published Fabric-X enhancements in May 2025 targeting regulated digital asset use cases.</p>
+      <p class="platform-note">Developer community: Stack Overflow activity for Fabric has declined since 2024. Developers have migrated to private Discord/Slack channels and AI-assisted tooling, a shift that complicates traditional community-health metrics.</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-fabric-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Hyperledger Fabric A2A Tokenization: Europe–Saudi Arabia Settlement Corridor. Channel design, Go chaincode, Fabric Token SDK, ISO 20022 embedding, and net settlement against TARGET2 and SARIE.</p>
+    </div>
+
+    <!-- CORDA -->
+    <div class="platform-item">
+      <div class="platform-header">
+        <span class="platform-tag">Permissioned · Commercial</span>
+        <h3>R3 Corda</h3>
+        <span class="platform-tag dim">Private · ~364 employees · ~$112M total funding</span>
+      </div>
+      <table class="spec-table">
+        <tr><th style="width:165px;">Attribute</th><th>Detail</th></tr>
+        <tr><td class="lbl">Status &amp; funding</td><td>Private company. Series A $107M (2017) plus 2019 debt round; ~$112M total. 45+ institutional investors including Bank of America, HSBC, ING, Temasek, and Intel.<sup><a href="#fn5">[5]</a></sup></td></tr>
+        <tr><td class="lbl">Revenue</td><td>'Generating revenue' stage as of early 2025; exact figures not publicly disclosed. India subsidiary (R3 Corda LLP) reported approximately $2.5M in FY2024 corporate filings, the only audited figure in the public record.<sup><a href="#fn3">[3]</a></sup></td></tr>
+        <tr><td class="lbl">On-chain RWAs</td><td>&gt;$17B in tokenized assets across live Corda-based platforms by late 2025, with more than 20 regulated traditional finance networks running live on Corda. &gt;1M transactions/day <span style="color:var(--gold-lt);font-size:0.77rem;">(R3 press release, February 13, 2025; corroborated by RWA.xyz data cited in the release - vendor-issued, not independently audited)</span><sup><a href="#fn4">[4]</a></sup></td></tr>
+        <tr><td class="lbl">Smart contracts</td><td>Kotlin, Java (JVM-based CorDapps)</td></tr>
+        <tr><td class="lbl">Throughput</td><td>~1,000 TPS (benchmarked); immediate transaction finality</td></tr>
+        <tr><td class="lbl">Primary verticals</td><td>Capital markets, RWA tokenisation, digital bond issuance, FX settlement, CBDC pilots</td></tr>
+        <tr><td class="lbl">Strategic direction</td><td>Corda protocol launching on Solana (H1 2026) via R3 Foundation, a Solana-native curated RWA yield vault. The President of the Solana Foundation joined R3's board. Signals a deliberate pivot toward hybrid public-private architecture.<sup><a href="#fn11">[11]</a></sup></td></tr>
+      </table>
+      <p class="platform-body"><strong>Notable live deployments:</strong> SIX Digital Exchange (SDX), Euroclear D-FMI (used by the World Bank for its 2023 digital bond issuance),<sup><a href="#fn12">[12]</a></sup> HQLAx (collateral mobility), Wells Fargo Coin, Progmat Coin, and the UK Regulated Liability Network (Barclays, Citi, HSBC, Lloyds, and others). R3 reported tokenisation of $17B in RWAs by late 2025.</p>
+      <p class="platform-body"><strong>Ecosystem volatility note:</strong> Contour, a Corda-based trade finance network backed by eight major banks including BNP Paribas, HSBC, ING, and Standard Chartered, went live in October 2020 but ceased operations permanently in November 2023 after failing to secure further funding from its bank shareholders - despite reducing LC processing times from ten days to under twenty-four hours in live trades.<sup><a href="#fn9">[9]</a></sup> The platform was subsequently acquired by XDC Ventures in 2025 for a restructured relaunch. Contour is the canonical cautionary case for this market: technically sound, commercially unsustainable. Network sustainability requires more than sound technology; it requires durable commercial incentives across all consortium members and a governance model that survives the departure of any one of them.</p>
+      <p class="platform-note">Talent: Corda's Kotlin/JVM developer pool is estimated at ~2,500 specialists globally, thin relative to deployment ambition. Senior Corda developers command $150K–$300K in consulting rates.</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-corda-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Corda A2A Tokenization: Europe–Middle East Cross-Border Settlement. Node topology, CorDapp flows, FX handling, notary design, and regulatory framework (MiCA + CBUAE).</p>
+    </div>
+
+    <!-- BESU -->
+    <div class="platform-item">
+      <div class="platform-header">
+        <span class="platform-tag">EVM-Compatible · Open Source</span>
+        <h3>Hyperledger Besu</h3>
+        <span class="platform-tag dim">Linux Foundation Decentralized Trust · formerly ConsenSys Quorum</span>
+      </div>
+      <p class="platform-body">Besu is an enterprise-grade Ethereum client holding approximately 28% of enterprise permissioned deployment share per the same 2024 Hyperledger Foundation survey.<sup><a href="#fn6">[6]</a></sup> Its primary competitive advantage is EVM compatibility: the ~23,000-strong Solidity/EVM developer pool is the largest of any permissioned platform, and it supports ERC-20/721/1155 token standards natively, making public-chain migration paths far less disruptive.</p>
+      <p class="platform-body">Key deployments include Nigeria's eNaira CBDC<sup><a href="#fn10">[10]</a></sup> and institutional tokenisation work by Citi. Approximately 31% of enterprises now run multiple DLT protocols concurrently, e.g., Fabric alongside Besu, reflecting pragmatic multi-platform reality rather than platform exclusivity.<sup><a href="#fn6">[6]</a></sup></p>
+      <p class="platform-body"><strong>Critical migration alert:</strong> Tessera, the original Quorum private transaction manager, was deprecated in early 2026, with GitHub archival set for <strong>June 1, 2026</strong>. Any enterprise running Tessera should have migration plans in place.<sup><a href="#fn13">[13]</a></sup></p>
+      <p class="platform-note">ConsenSys company-wide revenue was somewhere around $90M in 2025 by one estimate, though the figure is unaudited. Primary sources: MetaMask, Infura, Linea, and enterprise tools, no Besu-specific revenue figure is disclosed.<sup><a href="#fn3">[3]</a></sup></p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-besu-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Hyperledger Besu A2A Tokenization (Adhara): Europe–Middle East Cross-Border Settlement. QBFT consensus, smart contract architecture, FX handling, privacy layers, and regulatory framework (MiCA + SAMA).</p>
+    </div>
+
+    <!-- CANTON -->
+    <div class="platform-item">
+      <div class="platform-header">
+        <span class="platform-tag">Capital Markets · Commercial</span>
+        <h3>Digital Asset, Canton Network &amp; Daml</h3>
+        <span class="platform-tag dim">Private · $135M raised, 2025</span>
+      </div>
+      <p class="platform-body">Canton is purpose-built for capital markets with privacy-by-design guarantees derived from the Daml smart contract language. Digital Asset raised $135M in 2025 from Goldman Sachs, BNP Paribas, DTCC, and Tradeweb, among others, and claims ~400 ecosystem participants.<sup><a href="#fn14">[14]</a></sup> Notable deployments include Goldman Sachs' Digital Asset Platform, HSBC Orion (compressing fixed-income settlement from T+5 toward near-T+1), and DTCC tokenisation of U.S. Treasury securities (production launch 2026).</p>
+      <p class="platform-body">Revenue is not publicly disclosed. The claim of 'trillions of dollars in RWAs' on Canton networks in company press materials is aspirational rather than audited.<sup><a href="#fn14">[14]</a></sup></p>
+      <p class="platform-note">Daml is a purpose-designed smart contract language, not Solidity or JVM, which has both technical advantages for regulated workflows and a correspondingly narrow developer pool.</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-canton-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture. Synchronizer topology, Daml templates, sub-transaction privacy, atomic DvP, across Deutsche Börse / Clearstream D7, DTCC ComposerX, Broadridge DLR, and Euroclear D-FMI.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════ SECTION 3 ════════════════════════ -->
+<section id="share">
+  <span class="section-anchor"></span>
+  <div class="section-kicker">Section 03, Market Share at a Glance</div>
+  <h2 class="sec-title" data-i18n="title-what_the_data_actually_shows">What the data actually shows, and what it does not</h2>
+  <p class="section-lead">All figures below are estimates from industry surveys and analyst commentary, not audited data. Vendor-specific revenue figures derive from third-party SaaS databases or subsidiary corporate filings and should be treated as indicative only.<sup><a href="#fn2">[2]</a></sup><sup><a href="#fn3">[3]</a></sup></p>
+
+  <div class="comparison-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Platform / Stack</th>
+          <th>Deployment Indicator</th>
+          <th>Revenue Context</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hyperledger Fabric</td>
+          <td>~46% of enterprise permissioned deployments<sup><a href="#fn6">[6]</a></sup></td>
+          <td>No platform revenue. IBM/AWS/Oracle/SIs capture economics; none disclose blockchain-specific figures.<sup><a href="#fn2">[2]</a></sup></td>
+        </tr>
+        <tr>
+          <td>Hyperledger Besu</td>
+          <td>~28% of enterprise permissioned deployments<sup><a href="#fn6">[6]</a></sup></td>
+          <td>ConsenSys (whole company) est. ~$90M in 2025 (unaudited). Revenue primarily MetaMask, Infura, Linea, Besu not broken out.<sup><a href="#fn3">[3]</a></sup></td>
+        </tr>
+        <tr>
+          <td>R3 Corda</td>
+          <td>Dominant in high-value financial services; not quantified by %. &gt;$10B on-chain RWAs, &gt;1M tx/day.<sup><a href="#fn4">[4]</a></sup></td>
+          <td>Not disclosed. Total funding ~$112M.<sup><a href="#fn5">[5]</a></sup> India subsidiary ~$2.5M FY2024 (only audited figure).<sup><a href="#fn3">[3]</a></sup></td>
+        </tr>
+        <tr>
+          <td>Digital Asset (Canton)</td>
+          <td>~400 ecosystem participants; 'trillions in RWAs' claimed (press release, unverified).<sup><a href="#fn14">[14]</a></sup></td>
+          <td>Not disclosed. $135M funding round, 2025.<sup><a href="#fn14">[14]</a></sup></td>
+        </tr>
+        <tr>
+          <td>Kaleido (multi-protocol BaaS)</td>
+          <td>Multi-protocol; deployment share not reported per underlying platform.</td>
+          <td>Est. ~$7M in 2024, up from ~$3.5M in 2023 (Latka SaaS database, unaudited).<sup><a href="#fn3">[3]</a></sup></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box">
+    <p class="insight-label">Interpretation guidance</p>
+    <p>These metrics should inform directional understanding, not precise financial modelling, procurement scoring, or investment theses. For any material decision, supplement with direct vendor RFPs, reference calls with production users in comparable regulatory environments, and independent technical proof-of-concept work. The absence of publicly audited revenue figures is itself diagnostic: this is not an industry that has yet achieved the commercial maturity its press coverage suggests.</p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ SECTION 4 ════════════════════════ -->
+<section id="observations">
+  <span class="section-anchor"></span>
+  <div class="section-kicker">Section 04, Structural Observations</div>
+  <h2 class="sec-title" data-i18n="title-from_practitioners_who_worke">From practitioners who worked inside these organisations</h2>
+  <p class="section-lead">Not from analysts who observed them from the outside. Post Oak Labs principals have held positions at several of the large vendors discussed in this briefing, on both the technology and commercial sides. The observations below reflect that experience alongside available public evidence.</p>
+
+  <h3 style="font-family:'DM Sans', sans-serif;font-size:0.88rem;font-weight:500;color:var(--bright);margin-bottom:0.75rem;">What appears to have been delivered, and what cannot be independently verified</h3>
+
+  <div class="obs-list">
+    <div class="obs-item">
+      <span class="obs-tag">Claimed production</span>
+      <p class="obs-body">A small number of deployments are cited repeatedly as evidence that permissioned DLT works at scale: SDX, Euroclear D-FMI, HQLAx, Goldman DAP, HSBC Orion, IBM Food Trust.<sup><a href="#fn8">[8]</a></sup><sup><a href="#fn12">[12]</a></sup> These are real systems. Whether their actual transaction volumes, operational economics, and total cost of ownership justify the infrastructure versus simpler alternatives is not publicly disclosed. Vendor case studies are marketing materials. None of the parties involved publish independently audited throughput data, cost-per-transaction figures, or net economics compared to what the blockchain deployment replaced. Some of these systems may be working well. Some may be running at a cost that would not survive independent scrutiny. The publicly available evidence does not allow a confident judgment either way.</p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag">RWA tokenisation</span>
+      <p class="obs-body">Vendor-claimed figures for on-chain RWA values (R3's press-released $10B+, Digital Asset's claimed trillions) are not independently audited.<sup><a href="#fn4">[4]</a></sup> They should be read as marketing, not market measurement. The underlying trend, financial institutions experimenting with tokenised settlement and bond issuance, is real. BlackRock's BUIDL fund launched on Ethereum in March 2024 and crossed $1B AUM in March 2025, deployed on a public chain, not a permissioned one.<sup><a href="#fn15">[15]</a></sup> Standard Chartered projects $30.1T in tokenised RWAs by 2034 - the bank has commercial interests in the outcome, and the ten-year window means it can't be falsified any time soon.<sup><a href="#fn16">[16]</a></sup></p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag">CBDC reality</span>
+      <p class="obs-body">CBDC outcomes so far are sobering. Nigeria's eNaira, built on Hyperledger Besu and launched in October 2021, had fewer than 1.15 million users by late 2022, under 0.5% of the population, with only 8% of opened wallets active. An IMF working paper noted adoption had not moved beyond a limited initial wave.<sup><a href="#fn10">[10]</a></sup> Cornell researchers concluded that as implemented, with all nodes running on Central Bank of Nigeria computers, eNaira was functionally indistinguishable from a centralised banking app. The eNaira was subsequently restructured in 2023: the Central Bank of Nigeria revised its distribution model, brought in additional aggregators and mobile money operators, and lowered barriers to wallet creation. Despite these changes, it hasn't been called a success by anyone outside Nigeria's central bank. Thirteen CBDC initiatives identified using Hyperledger frameworks as of 2021 remain at various stages; the current production status of most is not publicly documented.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'DM Sans', sans-serif;font-size:0.88rem;font-weight:500;color:var(--bright);margin-top:2rem;margin-bottom:0.75rem;">What remains structurally unresolved</h3>
+
+  <div class="obs-list">
+    <div class="obs-item">
+      <span class="obs-tag warn">The value-capture trap</span>
+      <p class="obs-body"><strong>This is the central tension in the for-profit permissioned blockchain market, and vendors don't discuss it openly.</strong> It's structurally very difficult for a private company to recoup its investment if the underlying protocol is open source with no vendor-controlled dependencies. Open source, by design, allows anyone to run the software without paying the original developer. This creates a powerful commercial incentive to deliberately insert the vendor as a key dependency: through proprietary tooling, a controlled ordering service, a closed certificate authority, a purpose-built smart contract language with no alternative runtime, or a BaaS layer only the vendor can operate at scale. The dependency is the product, even when it is not disclosed as such. The network's apparent openness may coexist with a commercial architecture that guarantees the vendor's lock-in. The Hyperledger projects under the Linux Foundation at least have a credible argument for vendor-neutrality by design that closed-source commercial platforms do not, though even open-source projects depend on who funds the maintainers and controls the roadmap.<sup><a href="#fn22">[22]</a></sup></p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag warn">Governance risk</span>
+      <p class="obs-body"><strong>Consortium governance has not been solved.</strong> A peer-reviewed study applying Elinor Ostrom's theory of the commons to TradeLens identified lack of stakeholder engagement, unclear governance, and confidentiality concerns as the primary failure factors, not technical shortcomings.<sup><a href="#fn9">[9]</a></sup> TradeLens, we.trade, Marco Polo, and Contour all failed between 2022 and 2024 despite significant institutional backing. Researcher Timothy Ruff argued the common factor was simple: the architecture required one party to be in control, which defeated the point. IBM exited its enterprise blockchain business following TradeLens, with analysts noting the ROI was not there. No one has demonstrated a governance model that durably aligns the commercial interests of competing consortium members at scale.</p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag warn">Developer scarcity</span>
+      <p class="obs-body">Corda's Kotlin/JVM specialist pool (~2,500) and Fabric's chaincode developer base (~8,000) are thin relative to deployment ambition, compared to the ~23,000 EVM developers available for Besu-based work.<sup><a href="#fn6">[6]</a></sup> Senior Corda developers command $150K-$300K; Fabric $150K-$200K; Besu/Solidity $120K-$170K. Proprietary smart contract languages narrow the pool further and create a switching cost that compounds over time. This is a total cost of ownership issue, not a licensing one.</p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag warn">Revenue opacity</span>
+      <p class="obs-body">For open-source platforms, economic value flows to the SI and cloud layer.<sup><a href="#fn2">[2]</a></sup> For closed-source vendors, revenue figures are either undisclosed or unaudited.<sup><a href="#fn3">[3]</a></sup> R3's only publicly audited revenue figure is its Indian subsidiary at ~$2.5M for FY2024. Digital Asset does not disclose revenue despite $135M in funding. This opacity is not incidental: it reflects an industry where the commercial case for the technology has not yet been demonstrated in public, auditable form. Buyers must model total ecosystem cost independently, including developer hiring, BaaS fees, SI implementation, governance overhead, and ongoing support.</p>
+    </div>
+    <div class="obs-item">
+      <span class="obs-tag">Boundary dissolution</span>
+      <p class="obs-body">The wall between permissioned and public DLT is dissolving. R3's Solana integration,<sup><a href="#fn11">[11]</a></sup> JPMorgan's use of Solana for commercial paper issuance ($50M Galaxy Digital transaction, December 2025),<sup><a href="#fn17">[17]</a></sup> and ~31% of enterprises already running multiple protocols concurrently all point the same direction. BlackRock BUIDL and JPMorgan Kinexys demonstrate that major institutions will use public chains when they meet regulatory requirements. Pure permissioned vendors face a fundamental strategic question about where they sit in a converged landscape.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ SECTION 5 ════════════════════════ -->
+<section id="usecases">
+  <span class="section-anchor"></span>
+  <div class="section-kicker">Section 05, Use-Case Considerations</div>
+  <h2 class="sec-title" data-i18n="title-questions_to_ask__not_answer">Questions to ask, not answers to assume</h2>
+  <p class="section-lead">No single platform has demonstrated decisive, durable fit-for-purpose superiority across the full range of enterprise use cases - not in 2026, and not with the track record this market has. The industry's history of high-profile wind-downs and stalled pilots should induce caution about any document, including this one, that purports to tell you which platform to choose. What follows is not a recommendation guide; it is a set of questions that practitioners have found useful for stress-testing vendor proposals.</p>
+
+  <div class="caution-box">
+    <p class="caution-label">On endorsements - read before proceeding</p>
+    <p>This briefing does not endorse any platform for any use case. Technology selection for critical financial infrastructure is a context-specific determination. It requires your lawyers, your technical architects, and the people who will actually run the thing after go-live - not a market briefing from an advisory firm. No one currently knows with confidence which architecture will prove most durable over a ten-year horizon. Treat vendor proposals, analyst rankings, and documents like this one with appropriate skepticism.</p>
+  </div>
+
+  <div class="usecase-grid">
+    <div class="usecase-cell">
+      <p class="uc-label">If your use case involves bilateral financial privacy</p>
+      <h4>Investigate: data isolation guarantees, counterparty identity models, and regulatory recognition</h4>
+      <p>Capital markets workflows involving digital bond issuance, bilateral settlement, and RWA tokenisation often require transaction-level privacy between identified counterparties. Before selecting any platform, verify independently what the privacy model actually guarantees in your legal jurisdiction, whether regulators in your markets have formally engaged with the platform, and what the exit cost is if the vendor encounters commercial difficulty.</p>
+    </div>
+    <div class="usecase-cell">
+      <p class="uc-label">If your use case involves multi-party data sharing</p>
+      <h4>Investigate: consortium governance model, BaaS dependencies, and long-term incentive alignment</h4>
+      <p>Supply chain, government records, and multi-organisation networks have consistently struggled not with technical delivery but with governance sustainability. TradeLens, we.trade, Marco Polo, and Contour all failed with significant institutional backing.<sup><a href="#fn9">[9]</a></sup> Before committing architecture, stress-test the governance model: who pays when volumes disappoint? Who controls the ordering service? What happens if a major consortium member exits? Who benefits commercially from keeping the network running?</p>
+    </div>
+    <div class="usecase-cell">
+      <p class="uc-label">If your use case requires Ethereum toolchain compatibility</p>
+      <h4>Investigate: EVM version alignment, migration pathways, and privacy layer maturity</h4>
+      <p>EVM-compatible permissioned chains offer the largest developer pool and the most portable token standards, but also inherit Ethereum's complexity surface and dependency on a large, fast-moving ecosystem. The June 2026 deprecation of Tessera<sup><a href="#fn13">[13]</a></sup> illustrates how quickly infrastructure dependencies can shift with no warning to deployers. Verify which privacy layer you are actually depending on and whether it has a funded, independent maintenance path.</p>
+    </div>
+    <div class="usecase-cell">
+      <p class="uc-label">If your use case targets regulated fixed-income or derivatives settlement</p>
+      <h4>Investigate: smart contract language portability, regulatory engagement, and total cost of a proprietary dev stack</h4>
+      <p>Purpose-designed smart contract languages may offer stronger formal verification properties for regulated workflows, but they also constrain your developer pool, reduce competitive tension among implementers, and create switching costs that compound over time. Claimed deployments in capital markets exist<sup><a href="#fn14">[14]</a></sup> but are narrow. Evaluate independently whether regulators in your jurisdiction have specifically approved the platform in question, and model the full cost of a bespoke developer talent pipeline before committing.</p>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <p class="insight-label">The structural problem no vendor will name</p>
+    <p>The deeper problem in this market isn't that the technology is immature. It's that the incentives are misaligned. <strong>A private company can't easily make money from a truly open, dependency-free protocol.</strong> The commercial pressure runs toward inserting lock-in - through tooling, hosting, language design, governance control - that makes the vendor indispensable. That's not a technical problem. It's a business model problem, and it applies to every for-profit vendor here to varying degrees. If your deployment plan doesn't spell out what happens when the vendor changes its terms or goes under, you haven't finished your due diligence. The Hyperledger projects have the most credible claim to vendor-neutrality in this market. That claim is worth stress-testing: look at who funds the maintainers, and who controls the roadmap in practice.</p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ SECTION 6 ════════════════════════ -->
+<section id="diligence">
+  <span class="section-anchor"></span>
+  <div class="section-kicker">Section 06, Due Diligence Checklist</div>
+  <h2 class="sec-title" data-i18n="title-supplement_this_briefing_wit">Supplement this briefing with independent validation</h2>
+  <p class="section-lead">Before any architecture decision or procurement, go beyond analyst reports and vendor decks. The data limitations described throughout this briefing are characteristic of this market.</p>
+
+  <ul class="checklist">
+    <li class="primary">
+      <div>
+        <strong>Map every single point of failure and every single point of trust. This is the most important item on this list.</strong>
+        <span style="display:block; margin-top:0.75rem;">Blockchains are architecturally designed to eliminate single points of failure through distribution and redundancy, but many enterprise permissioned deployments reintroduce them through implementation choices. Each question below targets a specific failure mode. Scrutinise every one before signing anything.</span>
+      </div>
+    </li>
+    <li><div><strong>Is the codebase open source?</strong> If not, you are dependent on a vendor whose pricing changes, strategic pivots, financial distress, or discontinuation you cannot independently audit or anticipate. A closed codebase means the vendor's risk is your risk, with no independent recourse.<sup><a href="#fn18">[18]</a></sup></div></li>
+    <li><div><strong>Is there a neutral, publicly available protocol specification?</strong> Multiple competing implementations of a single open specification are the strongest defence against vendor dependency. This is the same principle behind Apple deliberately sourcing critical components from at least two independent suppliers.<sup><a href="#fn19">[19]</a></sup> It is also the fundamental fragility that economists identified in the USSR's centrally planned economy: when one organisation controls a critical resource without alternatives, the entire dependent system inherits its risk profile.<sup><a href="#fn20">[20]</a></sup></div></li>
+    <li><div><strong>Who controls the ordering service, the certificate authority, and the node infrastructure?</strong> Who controls upgrades to the smart contract runtime? BaaS deployments hosted on a single cloud provider introduce a further layer of centralisation into what is nominally a decentralised system. Academic literature has specifically flagged that BaaS architectures "erode the trustless mechanism and incur the lock-in risk."<sup><a href="#fn21">[21]</a></sup> Anything that is a single point of control is a single point of failure.</div></li>
+    <li><div>Issue vendor RFPs requesting reference architectures, production case studies in comparable regulatory environments, and SLA terms. Capability decks and pilot announcements are not evidence of production readiness.</div></li>
+    <li><div>Conduct reference calls with existing production users in your sector. Design partners and pilot participants are not the same as production users with live transaction volume and real operational experience over multiple years.</div></li>
+    <li><div>Run an independent technical proof-of-concept under realistic load. Evaluate integration complexity, upgrade pathways, and vendor lock-in risk before committing architecture.</div></li>
+    <li><div>Engage legal and regulatory counsel on smart contract enforceability in your jurisdiction, data residency requirements, and cross-border compliance obligations. These vary significantly by market and by platform.</div></li>
+    <li><div>Build a total cost of ownership model that includes developer hiring and training, BaaS infrastructure fees, governance overhead, and support channel strategy. Public developer forums are declining; specialist channels and AI tooling are replacing them with different cost structures.</div></li>
+    <li><div>Assess ecosystem sustainability: contributor diversity, governance model resilience, and long-term roadmap commitment beyond the current funding cycle. A well-funded vendor is not the same as a commercially sustainable network. IBM's exit from enterprise blockchain after TradeLens should inform how you weight vendor size as a proxy for commitment.</div></li>
+  </ul>
+
+  <div style="border-bottom:none; text-align:center; padding: 3rem 0 1rem;">
+    <div class="section-kicker" style="text-align:center;">Post Oak Labs</div>
+    <h2 data-i18n="title-talk_to_practitioners__not_a" class="sec-title" style="text-align:center; max-width:520px; margin: 0.5rem auto 1rem;">Talk to practitioners, not analysts</h2>
+    <p style="font-size:0.9rem; color:var(--text); max-width:500px; margin:0 auto 2rem; line-height:1.78;">Post Oak Labs principals have worked inside several of the large vendors covered in this briefing. If you are evaluating permissioned blockchain infrastructure, stablecoin integration, or tokenized payment architecture, we are happy to have a direct conversation.</p>
+    <div style="display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap;">
+      <a class="btn-primary" href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      <a class="btn-secondary" href="faq.html">FAQ &rarr;</a>
+      <a class="btn-secondary" href="a2a-comparison.html">A2A vs. Correspondent Banking →</a>
+      <a class="btn-secondary" href="a2a-payments.html">Market Coverage →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ FOOTNOTES ════════════════════════ -->
+<div class="footnotes">
+  <h3>References and Notes</h3>
+  <ol>
+    <li id="fn1">
+      <strong>Market sizing, Mordor Intelligence, and why the CAGR comparison between permissioned and public chains deserves scrutiny:</strong> The global blockchain technology market was valued at $24.46B in 2025 and projected to reach $39.82B in 2026, with a CAGR of approximately 62.8% through 2031. Private/permissioned networks are projected to capture ~42% of total blockchain market share in 2026. BaaS is projected at 51.72% of the permissioned market in 2026. AWS, Microsoft Azure, and Google Cloud together control approximately 63% of the public cloud BaaS market. Enterprise identity management shows permissioned network share of 71.28%. Enterprise blockchain market is separately forecast at $145.9B by 2030 at 47.4% CAGR in long-horizon projections. These are analyst forecasts, not audited actuals.
+      <br><br>
+      <strong>The 64.9% vs ~62.8% CAGR comparison requires significant qualification.</strong> The 64.9% figure comes from Mordor's Web 3.0 blockchain report and applies specifically to consortium blockchain networks, not to the full permissioned/private segment, and the source of the differential is modelling assumptions about regulated enterprise adoption, not measured on-chain activity. This comparison is therefore not ly apples-to-apples with public chain growth figures.
+      <br><br>
+      More significantly, Mordor's own asset tokenization market report (January 2026) shows permissionless (public) chains growing at a faster 51.6% CAGR than permissioned chains in the asset tokenization segment, not slower, with the rationale that public chains offer composability with DeFi and 24×7 global liquidity. On-chain data is directionally consistent: tokenized real-world assets on public chains reached $23.6 billion by March 2026, up 66% year-to-date and up roughly 5× from ~$6 billion in 2022, per DeFiLlama and rwa.xyz data cited in industry analysis. Ethereum alone held approximately 68% of all DeFi total value locked in early 2026 (~$90–100 billion), with Solana as the second-largest hub at approximately $9.2 billion in DeFi TVL; neither of these figures is captured in permissioned blockchain market sizing. BlackRock's BUIDL tokenised Treasury fund launched in March 2024 and surpassed $1 billion AUM on Ethereum in March 2025, and JPMorgan settled a $50M commercial paper transaction using the Solana public blockchain in December 2025, events that occur entirely outside the permissioned market perimeter as Mordor defines it.
+      <br><br>
+      The core methodological issue is scope: Mordor's permissioned segment captures enterprise software spending (BaaS subscriptions, consulting, implementation), while public chain "market size" metrics are typically measured in on-chain TVL or transaction volume, fundamentally different units that make growth-rate comparisons misleading. A permissioned chain adding one large bank client can generate substantial software revenue; that same bank executing comparable value on Ethereum may generate negligible "market revenue" in Mordor's framework but settles orders of magnitude more economic value on-chain. Readers should treat the CAGR comparison as a description of enterprise software procurement trends, not as a claim about which type of blockchain is processing more economic activity.
+    </li>
+    <li id="fn2">
+      <strong>Revenue transparency, open-source platforms and embedded vendor reporting:</strong> Hyperledger Fabric generates no direct platform revenue as an open-source project; economic value accrues to vendors providing BaaS, consulting, and implementation layers. IBM does not disclose blockchain-specific revenue separately from its hybrid cloud and AI consulting segments, though IBM holds 100+ blockchain patents and connects companies across 85+ networks per its own disclosures. Oracle Blockchain Platform (built on Hyperledger Fabric) revenue is embedded within Oracle Cloud Infrastructure reporting and not broken out separately, see <a href="https://investor.oracle.com" target="_blank" rel="noopener">investor.oracle.com</a>. AWS Managed Blockchain (supporting Fabric) revenue is embedded within AWS infrastructure segments, see <a href="https://aws.amazon.com/managed-blockchain/" target="_blank" rel="noopener">aws.amazon.com/managed-blockchain</a>. Global systems integrators (Accenture, TCS, Capgemini, and others) embed blockchain implementation revenue within broader professional services portfolios. None of these figures are separately disclosed in public financial statements. For decision-making purposes: blockchain-specific revenue comparisons between platform vendors are not possible from public data.
+    </li>
+    <li id="fn3">
+      <strong>Private company revenue estimates, methodology and limitations:</strong> Revenue estimates for ConsenSys (~$90M in 2025) and Kaleido (~$7M in 2024, up from ~$5.7M earlier in 2024 and ~$3.5M in 2023) derive from <a href="https://getlatka.com" target="_blank" rel="noopener">Latka SaaS database</a>, which collects self-reported or model-estimated figures and does not constitute an audit. ConsenSys revenue primarily reflects MetaMask (swaps, wallet features), Infura (APIs/node infrastructure), Linea (L2), and enterprise tools, no breakdown by product line is publicly available; see <a href="https://consensys.io" target="_blank" rel="noopener">consensys.io</a>. R3 is at a 'generating revenue' stage per early 2025 company disclosure; the only figure in the public audited record is R3 Corda LLP (India subsidiary), which reported approximately $2.5M USD in FY ending March 31, 2024, per corporate filings. R3 also reported 70% year-on-year growth in its India subsidiary as a regional indicator, but this figure is not representative of global company revenue. Digital Asset does not disclose revenue; it is funded at $135M (2025 round). All revenue figures marked 'unaudited' or 'estimated' throughout this briefing should be treated as directional indicators only.
+    </li>
+    <li id="fn4">
+      <strong>R3 Corda RWA milestone, $10B, February 2025:</strong> R3 announced on February 13, 2025 that Corda-based platforms hold over $10 billion in on-chain real-world assets (RWAs), processing over 1 million transactions per day. See <a href="https://r3.com/r3s-corda-leads-tokenized-rwa-market-with-over-10-billion-in-on-chain-assets-and-unrivaled-industry-adoption/" target="_blank" rel="noopener">R3 press release (r3.com)</a> and the <a href="https://www.globenewswire.com/news-release/2025/02/13/3025637/0/en/R3-s-Corda-leads-tokenized-rwa-market-with-over-10-billion-in-on-chain-assets-and-unrivalled-industry-adoption.html" target="_blank" rel="noopener">GlobeNewswire release</a>. The figure is described as sourced from RWA.xyz data alongside R3's own metrics. This is a vendor-issued figure; it has not been independently audited. R3 subsequently reported tokenising $17B in RWAs by late 2025 in further press materials. Coverage from <a href="https://www.gtreview.com" target="_blank" rel="noopener">GTReview</a> corroborates the February 2025 announcement.
+    </li>
+    <li id="fn5">
+      <strong>R3 funding history:</strong> R3 raised approximately $107M in its Series A round in 2017, with 45+ institutional investors including Bank of America, HSBC, ING, Intel, Temasek, BNY Mellon, and others. A debt financing round followed in 2019. Total funding is approximately $112M per <a href="https://tracxn.com" target="_blank" rel="noopener">Tracxn</a>, corroborated by reporting from <a href="https://www.fintechfutures.com" target="_blank" rel="noopener">Fintech Futures</a>. R3 has approximately 364 employees as of early 2026 company profile data.
+    </li>
+    <li id="fn6">
+      <strong>Deployment share and developer pool, Hyperledger Foundation Annual Survey 2024:</strong> The Hyperledger Foundation Annual Survey (2024), cited by ChainLaunch, estimates Hyperledger Fabric holds approximately 46% of enterprise permissioned deployments and Hyperledger Besu approximately 28%. The same source notes that approximately 31% of enterprises run multiple DLT protocols concurrently. Developer pool estimates, ~8,000 active Fabric/chaincode developers, ~23,000 Solidity/EVM developers, ~2,500 Corda/Kotlin specialists, derive from developer survey data cited in the same ecosystem analysis. These are industry survey estimates, not comprehensive registries. The Hyperledger Foundation survey is not independently audited; it reflects self-reported deployment data from participating organisations.
+    </li>
+    <li id="fn7">
+      <strong>PeerSpot mindshare rankings, April 2026:</strong> PeerSpot User Choice Awards (April 2026) ranked R3 Corda #1 in enterprise blockchain with 31.0% mindshare (up from 7.1% year-on-year) and Hyperledger Fabric #2 with 33.8% mindshare (down from 42.9% year-on-year). These figures reflect PeerSpot's methodology, based on buyer preference surveys among its user base, not deployment counts, revenue, or developer activity. The large year-on-year swing for Corda illustrates why different methodologies produce incompatible 'share' figures. PeerSpot mindshare and Hyperledger Foundation deployment share are measuring different things and should not be directly compared.
+    </li>
+    <li id="fn8">
+      <strong>IBM Food Trust and TradeLens:</strong> IBM Food Trust is a Hyperledger Fabric-based food safety and provenance network deployed with Walmart and its supplier network, tracking food from farm to shelf. It is documented on the <a href="https://www.lfdecentralizedtrust.org" target="_blank" rel="noopener">Linux Foundation Decentralized Trust (lfdecentralizedtrust.org)</a> site. TradeLens was a container shipping logistics network built on Hyperledger Fabric by IBM and Maersk, tracking 42M+ shipments across 300+ organisations and 600+ ports and terminals at its peak before being wound down in late 2022 / early 2023. TradeLens is a case study in consortium governance failure rather than technical failure; the underlying platform performed as designed. See also LF Decentralized Trust year-end ecosystem reports.
+    </li>
+    <li id="fn9">
+      <strong>Consortium failures: Contour, we.trade, Marco Polo, TradeLens, and Komgo:</strong> A 2025 peer-reviewed study in Frontiers in Blockchain applied Elinor Ostrom's theory of the commons to TradeLens and found that lack of stakeholder engagement, unclear governance, and confidentiality concerns were the primary failure factors, not technical shortcomings. See: <a href="https://www.frontiersin.org/journals/blockchain/articles/10.3389/fbloc.2025.1503595/full" target="_blank" rel="noopener">Frontiers in Blockchain, 2025</a>. Researcher Timothy Ruff documented all five failures and argued the root cause was simple: the architecture required one party to be in control, which defeated the point. See: <a href="https://rufftimo.medium.com/five-failed-blockchains-why-trade-needs-protocols-not-platforms-d12a77386690" target="_blank" rel="noopener">Timothy Ruff, Medium, 2024</a>. IBM exited enterprise blockchain following TradeLens; Computerworld reported an analyst noting "the ROI just wasn't there" and IBM was "no longer willing to take losses on their enterprise blockchain projects." See: <a href="https://www.computerworld.com/article/1615596/maersks-tradelens-demise-likely-a-death-knell-for-blockchain-consortiums.html" target="_blank" rel="noopener">Computerworld, 2022</a>.
+    </li>
+    <li id="fn10">
+      <strong>CBDC deployments using Hyperledger frameworks, and eNaira outcomes:</strong> LF Decentralized Trust (formerly Hyperledger) identified 13 CBDC production deployments or active pilots using Hyperledger frameworks as of 2021. Nigeria's eNaira, built on Hyperledger Besu and launched October 2021, is the most documented case study. An IMF working paper (WP/23/104, May 2023) found that after one year, eNaira had not moved beyond a limited initial wave of adoption, with only 0.8% of bank accounts and approximately 10% of merchants using it. See: <a href="https://www.imf.org/en/publications/wp/issues/2023/05/16/nigerias-enaira-one-year-after-533487" target="_blank" rel="noopener">IMF Working Paper WP/23/104</a>. Rest of World reported fewer than 1.15 million Nigerians had used eNaira by late 2022, under 0.5% of the population, with only 8% of opened wallets active. See: <a href="https://restofworld.org/2023/nigeria-digital-currency-failing/" target="_blank" rel="noopener">Rest of World, 2023</a>. Cornell researchers concluded that as implemented, with all nodes running on Central Bank of Nigeria computers, eNaira was functionally indistinguishable from a centralised banking app. See: <a href="https://business.cornell.edu/hub/2023/04/28/nigerias-enaira-cbdc-what-went-wrong/" target="_blank" rel="noopener">Cornell Business, 2023</a>. The eNaira has since been restructured. CBDC projects involving Corda include pilots or production deployments with Wells Fargo Coin, Progmat Coin, the Monetary Authority of Singapore (MAS), the Swiss National Bank, and the Bank of Italy, documented in the April 2025 SEC staff meeting memo; see <a href="https://www.sec.gov" target="_blank" rel="noopener">sec.gov</a>.
+    </li>
+    <li id="fn11">
+      <strong>R3 Solana integration and R3 Foundation:</strong> R3 announced the forthcoming launch of Corda protocol on behalf of R3 Foundation in December 2025. The Corda protocol is a Solana-native curated RWA yield vault set to launch H1 2026, enabling institutions to bring tokenised RWAs on-chain with institutional-grade security and compliance. R3 Foundation was formed in summer 2025 as an independent foundation. The President of the Solana Foundation joined R3's board. See <a href="https://www.disruptionbanking.com/2025/12/12/r3-announces-launch-of-corda-protocol-on-behalf-of-r3-foundation-to-bring-institutional-grade-curated-yield-to-solana/" target="_blank" rel="noopener">Disruption Banking, December 2025</a>. This integration is framed by R3 as convergence of TradFi private permissioned infrastructure with public DeFi liquidity, not a replacement of the permissioned Corda platform. R3 separately reported $17B in tokenised RWAs by late 2025 in connection with this Solana-related announcement.
+    </li>
+    <li id="fn12">
+      <strong>Euroclear D-FMI, World Bank digital bond, SIX Digital Exchange, and HQLAx:</strong> The World Bank issued a digital bond in 2023 using Euroclear's D-FMI (Digital Financial Market Infrastructure) platform, which is built on R3 Corda. Documented in the April 2025 SEC staff meeting memo summarising Corda-based production examples (available via <a href="https://www.sec.gov" target="_blank" rel="noopener">sec.gov</a>). SIX Digital Exchange (SDX), Switzerland's regulated digital asset exchange, a subsidiary of SIX Group, is built on Corda and operates as the first central securities depository in the world to offer integrated issuance, trading, and settlement of digital securities under Swiss financial market law. HQLAx is a high-quality liquid asset exchange platform built on Corda, enabling collateral mobility for the securities financing market among participating banks. All three are documented in sec.gov materials and R3 ecosystem disclosures.
+    </li>
+    <li id="fn13">
+      <strong>Tessera deprecation, June 1, 2026:</strong> Tessera is the private transaction manager originally developed as part of ConsenSys Quorum (now Hyperledger Besu). The GitHub repository for Tessera is scheduled to be archived on June 1, 2026, following its deprecation in early 2026. Enterprises running Tessera for privacy in permissioned Besu deployments should migrate to alternative privacy solutions. The deprecation was noted in TechTarget coverage of the Quorum/Besu ecosystem transition and in the Tessera GitHub repository deprecation notice. The broader Quorum ecosystem has been nudged toward Hyperledger Besu for permissioned EVM deployments.
+    </li>
+    <li id="fn14">
+      <strong>Digital Asset Canton Network, $135M funding and ecosystem claims:</strong> Digital Asset raised a $135M funding round in 2025 with investors including Goldman Sachs, BNP Paribas, DTCC, and Tradeweb, among others. The Canton Network claims approximately 400 ecosystem participants. Digital Asset press materials describe 'trillions of dollars' worth of real-world assets on the Canton blockchain, this figure is aspirational rather than audited. Production deployments documented in public sources include Goldman Sachs' Digital Asset Platform (DAP), HSBC's Orion platform for tokenised bonds (compressing settlement from T+5 to near T+1), and DTCC tokenisation of U.S. Treasury securities (production launch 2026). Revenue is not publicly disclosed. Digital Asset targets fixed-income and capital markets regulated settlement workflows using Daml, a purpose-designed smart contract language.
+    </li>
+    <li id="fn15">
+      <strong>BlackRock BUIDL tokenised fund:</strong> BlackRock BUIDL launched on Ethereum in March 2024. It crossed $1B AUM a year later; see <a href="https://www.prnewswire.com/news-releases/blackrock-usd-institutional-digital-liquidity-fund-buidl-tokenized-by-securitize-surpasses-1b-in-aum-302401480.html" target="_blank" rel="noopener">Securitize press release, March 2025</a>. Cited here as a scale benchmark for tokenised RWAs, not as a permissioned DLT deployment.
+    </li>
+    <li id="fn16">
+      <strong>Standard Chartered RWA market projection, $30.1 trillion by 2034:</strong> Standard Chartered Research has projected that demand for tokenised real-world assets could reach $30.1 trillion by 2034. This figure is cited in R3's February 2025 press release, in GTReview coverage of the R3 RWA milestone, and in Digital Asset and other vendor materials describing the tokenisation market opportunity. It is an analyst forecast, not a market measurement, and carries the uncertainty inherent in decade-long projections in an early-stage market.
+    </li>
+    <li id="fn17">
+      <strong>JPMorgan Kinexys and Solana, December 2025:</strong> JPMorgan's Kinexys platform (formerly Onyx) settled a $50M commercial paper transaction with Galaxy Digital using the Solana public blockchain in December 2025. This is documented in public disclosures and represents a significant data point in the trend of regulated financial institutions using public Layer-1 blockchains for institutional settlement workflows, a development that converges with, but is distinct from, the permissioned DLT ecosystem described throughout this briefing. It is cited here as evidence of the dissolving boundary between permissioned and public DLT for institutional use cases.
+    </li>
+    <li id="fn18">
+      <strong>Open source, vendor dependency, and trust minimisation in blockchain systems:</strong> The principle that open-source code reduces the number of entities a deployer must trust is foundational to blockchain design but often undermined in practice by proprietary implementations. Vendor dependency, defined as critical reliance on a single supplier that creates strategic and operational vulnerability, has been studied extensively in the context of technology systems. When a vendor controls closed-source code, a buyer inherits that vendor's strategic decisions, pricing power, and business continuity risk without independent recourse. Academic literature on blockchain-as-a-service (BaaS) has flagged specifically that centralised BaaS deployments "erode the trustless mechanism and incur the lock-in risk", see: Xu, M. et al. (2021), "Research advances on blockchain-as-a-service: architectures, applications and challenges," Digital Communications and Networks, <a href="https://www.sciencedirect.com/science/article/pii/S2352864821000092" target="_blank" rel="noopener">ScienceDirect</a>. The same paper notes that Hyperledger Fabric's Kafka ordering service, in earlier configurations, ran on a single node in a single organisation. This created a central point of failure within a system that is decentralised in name. Blockchain Commons, an open standards organisation, has articulated the principle that multiple independent implementations of a neutral specification are essential for genuine resilience: see <a href="https://www.blockchaincommons.com" target="_blank" rel="noopener">blockchaincommons.com</a>. The Enterprise Ethereum Alliance (EEA) DLT Interoperability Specification v1.0 (September 2024) similarly emphasises open, layered, vendor-agnostic architecture as the basis for trustworthy cross-chain systems: see <a href="https://entethalliance.org/specs/dlt-interop/" target="_blank" rel="noopener">entethalliance.org</a>.
+    </li>
+    <li id="fn19">
+      <strong>Apple's multi-supplier strategy as a model for avoiding single-point dependency:</strong> Apple Inc. deliberately sources critical hardware components from at least two independent suppliers to avoid dependence on any single vendor, a strategy documented in academic supply chain literature as a hedge against both operational disruption and commercial leverage by a dominant supplier. See, e.g., Goertek's 2022–2023 diversification away from Apple as a sole major customer in response to geopolitical risk: Supplier Response to Apple's Friendshoring, Journal of World Business, ScienceDirect (2025), <a href="https://www.sciencedirect.com/science/article/pii/S0148296325004370" target="_blank" rel="noopener">available here</a>. The principle, that redundancy across independent providers eliminates single-point-of-failure risk, applies directly to enterprise blockchain procurement: an organisation that deploys on a platform with a single vendor controlling the codebase, ordering service, certificate authority, and BaaS hosting has not achieved resilience through decentralisation; it has reintroduced centralisation at the vendor layer.
+    </li>
+    <li id="fn20">
+      <strong>Central planning as a case study in single-point-of-dependency failure, the Soviet economy:</strong> The Soviet economy literature is a developed body of work on what happens when critical functions have no independent fallback. Kornai's "economy of shortage" is the most cited framework. The blockchain parallel is direct: a permissioned network controlled by one vendor has the same structural fragility as a centrally planned economy where the planner's interests diverge from the network's. See Campbell, R.W. (1992), Indiana University Press; and <a href="https://tnsr.org/2018/02/assessing-soviet-economic-performance-cold-war/" target="_blank" rel="noopener">tnsr.org</a>.
+    </li>
+    <li id="fn21">
+      <strong>BaaS centralisation and lock-in risk, academic and industry sources:</strong> Blockchain-as-a-Service deployments hosted by a single cloud provider introduce a layer of centralisation that contradicts the trust-distribution properties that blockchain architectures nominally provide. The academic peer-reviewed literature on BaaS explicitly identifies this: "BaaS systems are provided in a centralized way which erodes the trustless mechanism and incurs the lock-in risk", Xu, M. et al. (2021), Digital Communications and Networks, <a href="https://www.sciencedirect.com/science/article/pii/S2352864821000092" target="_blank" rel="noopener">ScienceDirect</a>. Industry sources confirm the practical risk: "Relying on a single BaaS provider can lead to vendor lock-in, making it difficult to switch to another provider or move to an on-premises solution if needed", Analytics Insight (2024), <a href="https://www.analyticsinsight.net/blockchain/blockchain-as-a-service-baas-platforms-what-to-know" target="_blank" rel="noopener">analyticsinsight.net</a>. The diversification.com financial risk glossary (March 2026) documents the broader principle: "History is replete with examples where seemingly robust systems failed due to unforeseen operational vulnerabilities or insufficient due diligence" when single points of failure were not identified in advance: <a href="https://diversification.com/term/single-points-of-failure" target="_blank" rel="noopener">diversification.com</a>. Prospective customers should evaluate every component of their proposed stack, code, ordering service, certificate authority, BaaS hosting, upgrade governance, and ask: if the controlling entity for this component ceased to operate or changed its terms, what is the independent alternative?
+    </li>
+    <li id="fn22">
+      <strong>Linux Foundation / Hyperledger vendor-neutrality claim and its limits:</strong> The Linux Foundation Decentralized Trust (LF Decentralized Trust, formerly Hyperledger Foundation) hosts Hyperledger Fabric, Besu, and related projects under a structure designed to prevent any single commercial entity from controlling the project roadmap or codebase. Foundation governance requires multi-stakeholder participation and prohibits vendor capture of project direction. See: <a href="https://www.lfdecentralizedtrust.org" target="_blank" rel="noopener">lfdecentralizedtrust.org</a>. This structure provides meaningful structural protection relative to closed-source commercial platforms, but it is not without its own dynamics: IBM was the dominant early contributor to Hyperledger Fabric, and the distribution of contributor influence across corporate sponsors warrants scrutiny. The identity of who funds the maintainers, who employs them, and whose interests are weighted most heavily in technical decisions is relevant to any assessment of genuine vendor-neutrality. Organisations considering deployment should review the active contributor and governance records of any Hyperledger project they intend to build on, available via the LF Decentralized Trust GitHub organisations and community meeting records.
+    </li>
+    <li id="fn23">
+      <strong>Chainwashing: blockchain as a solution in search of a problem:</strong> The term chainwashing was coined by Tim Swanson, then Director of Market Research at R3, to describe the practice of marketing a product or service as blockchain-enabled primarily to attract investor attention or differentiate from competitors, when the underlying use case could be served by a conventional database, shared API, or other existing infrastructure. The term is an explicit analogue to greenwashing in environmental marketing, where products are presented as environmentally beneficial without meaningful evidence, and to cloudwashing, which described the earlier practice of rebranding legacy products as "cloud" during that technology's hype cycle. Swanson estimated that 97% of blockchain pitches he evaluated at R3 fell into this category, with only a small number of companies demonstrating genuine differentiated need for a distributed ledger architecture; see reporting via <a href="https://bitcoinist.com/chainwashing-r3-swanson-blockchain-hype/" target="_blank" rel="noopener">Bitcoinist (2017)</a>. The diagnostic question Swanson posed, "What is it about a blockchain that solves a problem that couldn't be solved with existing technology?", remains the correct starting point for any serious evaluation. In practice, a traditional relational database with access controls (e.g. PostgreSQL, Oracle) is the right tool if: (a) all parties trust a single administrator; (b) there is no need for cryptographic proof of immutability visible to counterparties; or (c) data does not need to be reconciled across organisational boundaries without a central arbiter. Blockchain adds genuine value primarily when: (a) multiple organisations with divergent interests must share a single authoritative record without trusting any one party to maintain it; (b) cryptographic auditability and finality are required by regulation or contract; or (c) programmable settlement logic must execute across counterparty boundaries automatically. Where these conditions do not hold, the addition of a blockchain layer adds cost and complexity without the payoff. The greenwashing analogy is instructive: just as environmental claims require substantiation against a counterfactual (what would have happened without the 'green' feature?), blockchain claims require substantiation against a relational-database counterfactual. Vendor case studies rarely provide this comparison.
+    </li>
+  </ol>
+</div>
+
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {"hero-h1": "Permissioned blockchain: what the market actually looks like", "hero-sub": "Post Oak Labs principals have worked inside several of the large vendors covered in this briefing. We approach vendor claims in this market with professional skepticism.", "hero-kicker": "Post Oak Labs · Enterprise Blockchain Market Briefing · April 2026", "title-size__structure__and_why_the": "Size, structure, and why the data is murky", "title-four_platforms__meaningfully": "Four platforms, meaningfully different architectures", "title-what_the_data_actually_shows": "What the data actually shows, and what it does not", "title-from_practitioners_who_worke": "From practitioners who worked inside these organisations", "title-questions_to_ask__not_answer": "Questions to ask, not answers to assume", "title-supplement_this_briefing_wit": "Supplement this briefing with independent validation", "title-talk_to_practitioners__not_a": "Talk to practitioners, not analysts"},
+  es: {"hero-h1": "Blockchain permisionado: lo que el mercado realmente parece", "hero-sub": "Los directivos de Post Oak Labs han trabajado dentro de varios de los grandes proveedores cubiertos en este informe. Abordamos las afirmaciones de los proveedores con escepticismo profesional.", "hero-kicker": "Post Oak Labs · Resumen del Mercado de Blockchain Empresarial · Abril 2026", "title-size__structure__and_why_th": "Tamaño, estructura y por qué los datos son confusos", "title-four_platforms__meaningfull": "Cuatro plataformas, arquitecturas significativamente diferentes", "title-what_the_data_actually_show": "Lo que los datos realmente muestran y lo que no", "title-from_practitioners_who_work": "Desde practicantes que trabajaron dentro de estas organizaciones", "title-questions_to_ask__not_answe": "Preguntas para hacer, no respuestas para asumir", "title-supplement_this_briefing_wi": "Complementar este informe con validación independiente", "title-talk_to_practitioners__not_": "Hablar con practicantes, no con analistas", "title-size__structure__and_why_the": "Size, structure, and why the data is murky", "title-supplement_this_briefing_wit": "Supplement this briefing with independent validation", "title-what_the_data_actually_shows": "What the data actually shows, and what it does not", "title-four_platforms__meaningfully": "Four platforms, meaningfully different architectures", "title-from_practitioners_who_worke": "From practitioners who worked inside these organisations", "title-questions_to_ask__not_answer": "Questions to ask, not answers to assume", "title-talk_to_practitioners__not_a": "Hablar con practicantes, no con analistas"},
+  fr: {"hero-h1": "Blockchain à permission : ce que le marché ressemble vraiment", "hero-sub": "Les directeurs de Post Oak Labs ont travaillé au sein de plusieurs des grands fournisseurs couverts dans ce rapport. Nous abordons les affirmations avec un scepticisme professionnel.", "hero-kicker": "Post Oak Labs · Rapport sur le Marché de la Blockchain d'Entreprise · Avril 2026", "title-size__structure__and_why_th": "Taille, structure et pourquoi les données sont opaques", "title-four_platforms__meaningfull": "Quatre plateformes, architectures significativement différentes", "title-what_the_data_actually_show": "Ce que les données montrent réellement et ce qu'elles ne montrent pas", "title-from_practitioners_who_work": "Par des praticiens qui ont travaillé dans ces organisations", "title-questions_to_ask__not_answe": "Questions à poser, pas réponses à supposer", "title-supplement_this_briefing_wi": "Compléter ce rapport par une validation indépendante", "title-talk_to_practitioners__not_": "Parler aux praticiens, pas aux analystes", "title-size__structure__and_why_the": "Size, structure, and why the data is murky", "title-supplement_this_briefing_wit": "Supplement this briefing with independent validation", "title-what_the_data_actually_shows": "What the data actually shows, and what it does not", "title-four_platforms__meaningfully": "Four platforms, meaningfully different architectures", "title-from_practitioners_who_worke": "From practitioners who worked inside these organisations", "title-questions_to_ask__not_answer": "Questions to ask, not answers to assume", "title-talk_to_practitioners__not_a": "Parler aux praticiens, pas aux analystes"},
+  ar: {"hero-h1": "البلوك تشين المرخّص: كيف يبدو السوق فعلياً", "hero-sub": "عمل مديرو Post Oak Labs داخل عدد من الشركات الكبرى المشمولة في هذه الإحاطة. نتعامل مع ادعاءات الموردين بتشكيك مهني.", "hero-kicker": "Post Oak Labs · إحاطة سوق البلوك تشين المؤسسي · أبريل 2026", "title-size__structure__and_why_th": "الحجم والهيكل وسبب غموض البيانات", "title-four_platforms__meaningfull": "أربع منصات وبنى مختلفة جوهرياً", "title-what_the_data_actually_show": "ما تُظهره البيانات فعلاً وما لا تُظهره", "title-from_practitioners_who_work": "من ممارسين عملوا داخل هذه المنظمات", "title-questions_to_ask__not_answe": "أسئلة يجب طرحها وليس إجابات يجب افتراضها", "title-supplement_this_briefing_wi": "استكمال هذه الإحاطة بالتحقق المستقل", "title-talk_to_practitioners__not_": "التحدث مع الممارسين لا مع المحللين", "title-size__structure__and_why_the": "Size, structure, and why the data is murky", "title-supplement_this_briefing_wit": "Supplement this briefing with independent validation", "title-what_the_data_actually_shows": "What the data actually shows, and what it does not", "title-four_platforms__meaningfully": "Four platforms, meaningfully different architectures", "title-from_practitioners_who_worke": "From practitioners who worked inside these organisations", "title-questions_to_ask__not_answer": "Questions to ask, not answers to assume", "title-talk_to_practitioners__not_a": "التحدث مع الممارسين لا مع المحللين"},
+  pt: {"hero-h1": "Blockchain com permissão: como o mercado realmente parece", "hero-sub": "Os diretores do Post Oak Labs trabalharam dentro de vários dos grandes fornecedores cobertos neste relatório. Abordamos as afirmações dos fornecedores com ceticismo profissional.", "hero-kicker": "Post Oak Labs · Relatório do Mercado de Blockchain Empresarial · Abril 2026", "title-size__structure__and_why_th": "Tamanho, estrutura e por que os dados são opacos", "title-four_platforms__meaningfull": "Quatro plataformas, arquiteturas significativamente diferentes", "title-what_the_data_actually_show": "O que os dados realmente mostram e o que não mostram", "title-from_practitioners_who_work": "De profissionais que trabalharam dentro dessas organizações", "title-questions_to_ask__not_answe": "Perguntas a fazer, não respostas a assumir", "title-supplement_this_briefing_wi": "Complementar este relatório com validação independente", "title-talk_to_practitioners__not_": "Falar com profissionais, não com analistas", "title-size__structure__and_why_the": "Size, structure, and why the data is murky", "title-supplement_this_briefing_wit": "Supplement this briefing with independent validation", "title-what_the_data_actually_shows": "What the data actually shows, and what it does not", "title-four_platforms__meaningfully": "Four platforms, meaningfully different architectures", "title-from_practitioners_who_worke": "From practitioners who worked inside these organisations", "title-questions_to_ask__not_answer": "Questions to ask, not answers to assume", "title-talk_to_practitioners__not_a": "Falar com profissionais, não com analistas"},
+  zh: {"hero-h1": "许可区块链：市场的真实面貌", "hero-sub": "Post Oak Labs的主管曾在本简报所涵盖的几家大型供应商内部工作。我们以专业的怀疑态度审视该市场中的供应商主张。", "hero-kicker": "Post Oak Labs · 企业区块链市场简报 · 2026年4月", "title-size__structure__and_why_th": "规模、结构及数据模糊的原因", "title-four_platforms__meaningfull": "四个平台，架构差异显著", "title-what_the_data_actually_show": "数据的真实呈现及其局限", "title-from_practitioners_who_work": "来自曾在这些机构内工作的实践者", "title-questions_to_ask__not_answe": "应提出的问题，而非应假设的答案", "title-supplement_this_briefing_wi": "以独立验证补充本简报", "title-talk_to_practitioners__not_": "与实践者交流，而非依赖分析师", "title-size__structure__and_why_the": "Size, structure, and why the data is murky", "title-supplement_this_briefing_wit": "Supplement this briefing with independent validation", "title-what_the_data_actually_shows": "What the data actually shows, and what it does not", "title-four_platforms__meaningfully": "Four platforms, meaningfully different architectures", "title-from_practitioners_who_worke": "From practitioners who worked inside these organisations", "title-questions_to_ask__not_answer": "Questions to ask, not answers to assume", "title-talk_to_practitioners__not_a": "与实践者交流，而非依赖分析师"}
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>

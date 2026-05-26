@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fintech Tools | Post Oak Labs</title>
+<meta name="description" content="33 browser-based fintech intelligence demos — payments, compliance, stablecoin, ISO 20022 — plus the full 268-tool catalog at AINumbers.co. Client-side, zero PII, AP2-exportable.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/tools.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fintech Tools | Post Oak Labs">
+<meta property="og:description" content="33 interactive fintech demos on this site — payments, compliance, stablecoin, Basel IV — plus 268 tools in the full AINumbers.co catalog.">
+<meta property="og:url" content="https://postoaklabs.com/tools.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:     #050c15;
+  --deep:    #0a1628;
+  --navy:    #0e1e35;
+  --panel:   #142540;
+  --edge:    #1e3454;
+  --rim:     #2a4a70;
+  --muted:   #4a6a8a;
+  --body:    #7090b0;
+  --text:    #a8c0d8;
+  --bright:  #d0e4f4;
+  --white:   #ecf4fc;
+  --gold:    #c09040;
+  --gold-lt: #d8b060;
+  --accent:  #2a7fc0;
+  --accent-lt:#4a9fd8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 16px;
+  display: flex; flex-direction: column; min-height: 100vh;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── LANG BAR ── */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+html[lang="ar"] .lang-inner { justify-content: flex-start; }
+
+/* ── NAV ── */
+nav {
+  padding: 0 2rem; height: 52px;
+  border-bottom: 1px solid var(--edge);
+  background: rgba(5,12,21,0.97);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(8px);
+}
+.nav-inner {
+  max-width: 980px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+
+/* ── HERO ── */
+.hero {
+  padding: 4rem 0 3.5rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 28px; height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  color: var(--white); max-width: 640px; margin-bottom: 0.9rem;
+}
+.hero-sub {
+  font-size: 0.9rem; color: var(--body);
+  max-width: 560px; line-height: 1.85;
+}
+
+/* ── STATS ── */
+.stats-row {
+  display: flex; flex-wrap: wrap; gap: 1.5rem 3rem;
+  margin-top: 2rem;
+}
+.stat { text-align: left; }
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem; color: var(--white);
+  display: block; line-height: 1;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem; color: var(--muted);
+  letter-spacing: .1em; text-transform: uppercase;
+  margin-top: 0.3rem; display: block;
+}
+
+/* ── SECTIONS ── */
+section { padding: 3.5rem 0; }
+.sec-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.sec-title { font-size: clamp(1.3rem, 2.5vw, 1.8rem); color: var(--bright); margin-bottom: 2rem; }
+
+/* ── DESTINATION CARDS ── */
+.cards-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+}
+@media (max-width: 640px) { .cards-grid { grid-template-columns: 1fr; } }
+.dest-card {
+  background: var(--deep); border: 1px solid var(--edge);
+  padding: 2rem 1.75rem; display: flex; flex-direction: column;
+  transition: background 0.2s, transform 0.2s;
+}
+.dest-card:hover { background: var(--navy); transform: translateY(-2px); }
+.dest-card.accent { border-top: 3px solid var(--accent); }
+.dest-card.gold   { border-top: 3px solid var(--gold); }
+.dest-icon { font-size: 2rem; margin-bottom: 1rem; }
+.dest-card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem; color: var(--white); margin-bottom: 0.55rem;
+}
+.dest-card p {
+  font-size: 0.88rem; color: var(--body);
+  line-height: 1.65; flex: 1; margin-bottom: 1.25rem;
+}
+.dest-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.4rem; }
+.dest-tag {
+  font-size: 0.65rem; padding: 0.2rem 0.6rem;
+  border: 1px solid var(--edge); color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+}
+.dest-btn {
+  display: inline-block; padding: 0.5rem 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: all 0.2s;
+}
+.dest-btn.blue { background: var(--accent); color: var(--white); border: 1px solid var(--accent); }
+.dest-btn.blue:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.dest-btn.outline { border: 1px solid var(--gold); color: var(--gold); }
+.dest-btn.outline:hover { border-color: var(--gold-lt); color: var(--gold-lt); }
+
+/* ── ARCHETYPE STRIP ── */
+.strip {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem;
+}
+@media (max-width: 720px) { .strip { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 400px) { .strip { grid-template-columns: 1fr; } }
+.strip-card {
+  background: var(--deep); border: 1px solid var(--edge);
+  padding: 1.1rem 0.9rem; text-align: center;
+  transition: background 0.18s, border-color 0.18s;
+}
+.strip-card:hover { background: var(--navy); border-color: var(--accent); }
+.strip-card .s-icon { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+.strip-card .s-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text); display: block; line-height: 1.4;
+}
+
+/* ── CONTEXT BLOCK ── */
+.context-block {
+  background: var(--deep); border: 1px solid var(--edge);
+  border-left: 3px solid var(--accent);
+  padding: 1.75rem 2rem;
+}
+.context-block h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem; color: var(--white); margin-bottom: 0.75rem;
+}
+.context-block p {
+  font-size: 0.85rem; color: var(--body); line-height: 1.75;
+  max-width: 680px; margin-bottom: 0.75rem;
+}
+.context-block p:last-child { margin-bottom: 0; }
+.context-block a { color: var(--accent-lt); border-bottom: 1px solid var(--edge); }
+.context-block a:hover { border-color: var(--accent-lt); }
+
+/* ── CANONICAL FOOTER GRID ── */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: auto; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+@media (max-width: 680px) { .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- Language bar -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html">A2A Payments</a>
+      <a href="a2a-workflow.html">How It Works</a>
+      <a href="a2a-comparison.html">Comparison</a>
+      <a href="blockchain-advisory.html">Advisory</a>
+      <a href="enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow">Fintech Intelligence</p>
+    <h1>The tools grew up.</h1>
+    <p class="hero-sub">What started as 27 prototype tools is now a 268-tool intelligence catalog, 33 working browser demos, and a live MCP endpoint — all client-side, zero PII, AP2-exportable.</p>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-num">268</span>
+        <span class="stat-label">Tools at AINumbers.co</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">33</span>
+        <span class="stat-label">Working Demos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">AP2</span>
+        <span class="stat-label">Export Schema</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">0</span>
+        <span class="stat-label">PII Collected</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DESTINATION CARDS ── -->
+<section>
+  <div class="container">
+    <p class="sec-tag">Where to go</p>
+    <h2 class="sec-title">Two destinations</h2>
+    <div class="cards-grid">
+
+      <div class="dest-card accent">
+        <div class="dest-icon">🖥️</div>
+        <h2>Fintech Intelligence Showcase</h2>
+        <p>33 fully interactive browser tools — run them right now, no sign-up, no server. Covers payments, compliance, open banking, stablecoin settlement, and agentic workflows.</p>
+        <div class="dest-tags">
+          <span class="dest-tag">browser-native</span>
+          <span class="dest-tag">MCP-proven</span>
+          <span class="dest-tag">AP2 export</span>
+          <span class="dest-tag">zero PII</span>
+        </div>
+        <a href="demos/" class="dest-btn blue">Open the Showcase →</a>
+      </div>
+
+      <div class="dest-card gold">
+        <div class="dest-icon">📚</div>
+        <h2>AINumbers.co Full Catalog</h2>
+        <p>The complete 268-tool fintech intelligence library. Deeper coverage, MCP manifests, policy mandate exports (AP2 v1.0), and the full taxonomy across all five buyer archetypes.</p>
+        <div class="dest-tags">
+          <span class="dest-tag">268 tools</span>
+          <span class="dest-tag">MCP catalog</span>
+          <span class="dest-tag">AP2 v1.0</span>
+          <span class="dest-tag">CC BY 4.0</span>
+        </div>
+        <a href="https://ainumbers.co/" target="_blank" rel="noopener" class="dest-btn outline">Visit AINumbers.co ↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCHETYPE STRIP ── -->
+<section style="padding-top:0;">
+  <div class="container">
+    <p class="sec-tag" style="margin-bottom:1.25rem;">Browse demos by buyer archetype</p>
+    <div class="strip">
+      <a href="demos/agentic-runtime/" class="strip-card">
+        <span class="s-icon">🤖</span>
+        <span class="s-name">Agentic Runtime</span>
+      </a>
+      <a href="demos/regtech/" class="strip-card">
+        <span class="s-icon">⚖️</span>
+        <span class="s-name">RegTech</span>
+      </a>
+      <a href="demos/processors/" class="strip-card">
+        <span class="s-icon">⚡</span>
+        <span class="s-name">Processors</span>
+      </a>
+      <a href="demos/stablecoin-issuer/" class="strip-card">
+        <span class="s-icon">🪙</span>
+        <span class="s-name">Stablecoin Issuer</span>
+      </a>
+      <a href="demos/baas/" class="strip-card">
+        <span class="s-icon">🏦</span>
+        <span class="s-name">BaaS</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTEXT ── -->
+<section>
+  <div class="container">
+    <div class="context-block">
+      <h3>From prototype to platform</h3>
+      <p>The original 27 tools on this page were proof-of-concept prototypes built to test the AINumbers thesis: that structured fintech intelligence, delivered client-side with zero PII, could be genuinely useful to practitioners.</p>
+      <p>They proved it. The catalog grew to 268 tools across payments, compliance, open banking, stablecoin, ISO 20022, CFPB §1033, Basel IV, and more — each with an AP2 v1.0 policy mandate export and a live MCP manifest for agentic retrieval.</p>
+      <p>For a curated, demo-first experience, start with the <a href="demos/">Showcase</a>. For the full catalog with MCP integration, visit <a href="https://ainumbers.co/" target="_blank" rel="noopener">ainumbers.co</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {},
+  es: {},
+  fr: {},
+  ar: {},
+  pt: {},
+  zh: {}
+};
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';

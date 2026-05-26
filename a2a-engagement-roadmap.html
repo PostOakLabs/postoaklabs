@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2A Readiness &amp; Engagement Roadmap | Post Oak Labs</title>
+<meta name="description" content="A structured four-phase engagement roadmap for banks and large corporates evaluating tokenized A2A payment infrastructure. Includes readiness diagnostic, outcome benchmarks, and regulatory clarity.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/a2a-engagement-roadmap.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="A2A Readiness &amp; Engagement Roadmap | Post Oak Labs">
+<meta property="og:description" content="A structured four-phase engagement roadmap for banks and large corporates evaluating tokenized A2A payment infrastructure.">
+<meta property="og:url" content="https://postoaklabs.com/a2a-engagement-roadmap.html">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "A2A Readiness & Engagement Roadmap",
+  "url": "https://postoaklabs.com/a2a-engagement-roadmap.html",
+  "description": "Four-phase engagement roadmap and readiness diagnostic for banks evaluating tokenized A2A payment infrastructure.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Post Oak Labs",
+    "url": "https://postoaklabs.com"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+/* ── DESIGN SYSTEM ── */
+:root {
+  --ink:      #050c15;
+  --deep:     #0a1628;
+  --navy:     #0e1e35;
+  --panel:    #142540;
+  --edge:     #1e3454;
+  --rim:      #2a4a70;
+  --muted:    #4a6a8a;
+  --body:     #7090b0;
+  --text:     #a8c0d8;
+  --bright:   #d0e4f4;
+  --white:    #ecf4fc;
+  --gold:     #c09040;
+  --gold-lt:  #d8b060;
+  --accent:   #2a7fc0;
+  --accent-lt:#4a9fd8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 16px;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── LANGUAGE BAR ── */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+/* ── NAV ── */
+nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+
+/* ── FOOTER ── */
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+
+/* ── HERO ── */
+.hero { padding: 4rem 0 3.5rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+.hero-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 1.25rem; }
+.hero h1 { font-size: clamp(2rem, 4vw, 3rem); color: var(--white); max-width: 660px; margin-bottom: 1.25rem; }
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub { font-size: 0.95rem; color: var(--body); max-width: 560px; line-height: 1.85; margin-bottom: 2rem; }
+.hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+/* ── STAT ROW ── */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-top: 3rem; }
+.stat-cell { background: var(--deep); padding: 1.35rem 1.5rem; text-align: center; }
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--accent-lt); display: block; line-height: 1; margin-bottom: 0.3rem; }
+.stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); line-height: 1.5; }
+
+/* ── SECTIONS ── */
+section { padding: 4rem 0; }
+.sec-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+.sec-title { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bright); margin-bottom: 0.75rem; }
+.sec-intro { font-size: 0.88rem; color: var(--body); max-width: 580px; line-height: 1.85; margin-bottom: 2rem; }
+hr.rule { border: none; border-top: 1px solid var(--edge); }
+
+/* ── BUTTONS ── */
+.btn-primary { display: inline-block; padding: 0.7rem 1.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--white); border: 1px solid var(--accent); transition: all 0.2s; }
+.btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.btn-outline { display: inline-block; padding: 0.7rem 1.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--edge); color: var(--muted); transition: all 0.2s; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+/* ── BORDERED LIST BLOCK ── */
+.list-block { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); }
+.list-item { background: var(--deep); padding: 1.5rem 2rem; display: grid; grid-template-columns: 180px 1fr; gap: 1.5rem; align-items: start; transition: background 0.2s; }
+.list-item:hover { background: var(--navy); }
+.list-item-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-lt); padding-top: 0.2rem; }
+.list-item h3 { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.list-item p { font-size: 0.82rem; color: var(--body); line-height: 1.8; }
+.list-item-links { margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+.list-item-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-lt); transition: color 0.2s; }
+.list-item-links a:hover { color: var(--gold-lt); }
+
+/* ── TWO-COL GRID ── */
+.two-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--edge); border: 1px solid var(--edge); }
+.col-cell { background: var(--navy); padding: 1.5rem 1.75rem; }
+.col-cell .cell-label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 0.4rem; }
+.col-cell h4 { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.col-cell p { font-size: 0.8rem; color: var(--body); line-height: 1.75; }
+.col-cell-link { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-lt); display: inline-block; margin-top: 0.75rem; transition: color 0.2s; }
+.col-cell-link:hover { color: var(--gold-lt); }
+
+/* ── CALLOUT BLOCK ── */
+.callout-block { background: var(--panel); border: 1px solid var(--edge); border-left: 3px solid var(--gold); padding: 1.75rem 2rem; margin-top: 2rem; }
+.callout-block p { font-size: 0.85rem; color: var(--body); line-height: 1.85; }
+.callout-block a { color: var(--accent-lt); transition: color 0.2s; }
+.callout-block a:hover { color: var(--gold-lt); }
+.callout-links { margin-top: 0.75rem; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.callout-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-lt); transition: color 0.2s; }
+.callout-links a:hover { color: var(--gold-lt); }
+
+/* ── DIAGNOSTIC TOOL ── */
+.diagnostic-tool { background: var(--panel); border: 1px solid var(--edge); padding: 2rem; margin-top: 2rem; }
+.diag-input-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.diag-field label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+.diag-field input, .diag-field select { width: 100%; background: var(--deep); border: 1px solid var(--edge); color: var(--bright); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; padding: 0.6rem 0.75rem; outline: none; transition: border-color 0.2s; }
+.diag-field input:focus, .diag-field select:focus { border-color: var(--accent); }
+.diag-field select option { background: var(--deep); }
+
+.gauge-label { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+.gauge-value { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold-lt); margin-bottom: 0.25rem; }
+.gauge-bar { height: 6px; background: var(--edge); margin: 0.5rem 0 1.25rem; position: relative; }
+.gauge-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold-lt)); transition: width 0.4s ease; width: 0%; }
+
+.dim-section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; margin-top: 1.5rem; }
+.dim-row { display: flex; flex-direction: column; gap: 0.75rem; }
+.dim-item { display: flex; align-items: center; gap: 1rem; }
+.dim-label { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); min-width: 160px; }
+.dim-bar { flex: 1; height: 4px; background: var(--edge); }
+.dim-fill { height: 100%; background: var(--accent-lt); transition: width 0.5s ease; }
+.dim-score { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; color: var(--accent-lt); min-width: 30px; text-align: right; }
+
+.diag-blur { opacity: 0.35; filter: blur(2px); pointer-events: none; transition: opacity 0.4s, filter 0.4s; }
+.diag-blur.revealed { opacity: 1; filter: none; pointer-events: auto; }
+
+.diag-gate { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--edge); }
+.diag-gate-label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.diag-gate-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 0.75rem; align-items: end; }
+.diag-gate-row .diag-field label { color: var(--muted); }
+.diag-gate-row .diag-field input { background: var(--deep); }
+
+.diag-confirm { display: none; margin-top: 1.75rem; padding: 1.5rem; background: var(--deep); border: 1px solid var(--edge); border-left: 3px solid var(--accent); }
+.diag-confirm.visible { display: block; }
+.diag-confirm-title { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 0.75rem; }
+.diag-confirm p { font-size: 0.82rem; color: var(--body); margin-bottom: 1rem; line-height: 1.75; }
+.diag-confirm-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.dim-note { font-size: 0.75rem; color: var(--body); margin-top: 0.3rem; line-height: 1.65; display: none; }
+.dim-note.visible { display: block; }
+
+/* ── REGULATORY TABLE ── */
+.reg-table { width: 100%; border-collapse: collapse; border: 1px solid var(--edge); margin-top: 1.5rem; }
+.reg-table th { background: var(--panel); font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); padding: 0.9rem 1.25rem; text-align: left; border-bottom: 1px solid var(--edge); }
+.reg-table td { background: var(--deep); font-size: 0.82rem; color: var(--body); padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--edge); line-height: 1.65; }
+.reg-table tr:last-child td { border-bottom: none; }
+.reg-table tr:hover td { background: var(--navy); }
+.reg-table td:first-child { color: var(--text); font-size: 0.78rem; font-weight: 500; }
+
+/* ── TRUST BAR ── */
+.trust-bar { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--edge); display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.trust-label { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.trust-logos { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.trust-logo { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--body); border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
+
+/* ── CTA BLOCK ── */
+.cta-block { background: var(--panel); border: 1px solid var(--edge); padding: 3rem; text-align: center; margin-top: 3rem; }
+.cta-block h3 { font-size: 1.7rem; color: var(--white); margin-bottom: 0.5rem; }
+.cta-block p { font-size: 0.88rem; color: var(--body); max-width: 440px; margin: 0 auto 1.75rem; line-height: 1.85; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .list-item { grid-template-columns: 1fr; gap: 0.3rem; }
+  .two-col { grid-template-columns: 1fr; }
+  .cta-block { padding: 2rem 1.25rem; }
+  .nav-links { display: none; }
+  .diag-input-row { grid-template-columns: 1fr; }
+  .diag-gate-row { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+}
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="me" href="https://ainumbers.co">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "A2A Payments",
+      "item": "https://postoaklabs.com/a2a-payments.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Engagement Roadmap",
+      "item": "https://postoaklabs.com/a2a-engagement-roadmap.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- ── LANGUAGE BAR ── -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="container">
+    <p class="hero-tag">A2A Engagement · Readiness Diagnostic · Phased Deployment</p>
+    <h1>From evaluation to production: a <em>structured path</em> for institutional A2A deployment</h1>
+    <p class="hero-sub">This is not a pitch page — it's a working tool. Treasury teams and ALCO leads can run a diagnostic, receive a readiness score across five dimensions, and see exactly what a Phase 1 scoping engagement looks like before committing budget. No ambiguity about what happens next.</p>
+    <div class="hero-cta-row">
+      <a href="#diagnostic" class="btn-primary">Run the Readiness Diagnostic</a>
+      <a href="#phases" class="btn-outline">View Engagement Phases</a>
+      <a href="contact.html" class="btn-outline">Begin Phase 1 →</a>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Readiness Dimensions Scored</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Time-Boxed Phases</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">T+0</span>
+        <span class="stat-label">Sub-Second Finality · Pilot Target</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">~4.5%</span>
+        <span class="stat-label">tMMF Yield Recovery · $50M Nostro Equivalent</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODULE 01 · READINESS DIAGNOSTIC ── -->
+<section id="diagnostic">
+  <div class="container">
+    <p class="sec-tag">Module 01 · Readiness Diagnostic</p>
+    <h2 class="sec-title">Where does your institution stand?</h2>
+    <p class="sec-intro">Enter three data points and receive a live Opportunity Leakage gauge and a five-dimension Readiness Score. The preview is ungated — full dimension scores, a 90-day framework PDF, and a calendar link are released on form completion.</p>
+
+    <div class="diagnostic-tool">
+
+      <!-- Stage 1: Inputs -->
+      <div class="diag-input-row">
+        <div class="diag-field">
+          <label for="diag-volume">Monthly Cross-Border Volume ($M)</label>
+          <input type="number" id="diag-volume" placeholder="e.g. 50" min="0" oninput="updateDiagnostic()">
+        </div>
+        <div class="diag-field">
+          <label for="diag-corridors">Primary Corridors</label>
+          <input type="text" id="diag-corridors" placeholder="e.g. MX→US, NG→GB">
+        </div>
+        <div class="diag-field">
+          <label for="diag-iso">ISO 20022 Migration Status</label>
+          <select id="diag-iso" onchange="updateDiagnostic()">
+            <option value="">Select status</option>
+            <option value="not_started">Not started</option>
+            <option value="in_assessment">In assessment</option>
+            <option value="in_progress">In progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Stage 2: Live Preview -->
+      <div id="diag-preview">
+        <p class="gauge-label">Estimated Annual Nostro Float Drag</p>
+        <p class="gauge-value" id="gauge-value-label">Enter volume above to calculate</p>
+        <div class="gauge-bar">
+          <div class="gauge-fill" id="gauge-fill" style="width:0%"></div>
+        </div>
+
+        <p class="dim-section-label">Five-Dimension Readiness Score</p>
+        <div class="dim-row" id="dim-rows">
+
+          <div class="dim-item">
+            <span class="dim-label">ISO 20022 Alignment</span>
+            <div class="dim-bar"><div class="dim-fill diag-blur" id="dim-iso" style="width:15%"></div></div>
+            <span class="dim-score diag-blur" id="dim-iso-score">15%</span>
+          </div>
+          <div class="dim-note diag-blur" id="note-iso">Your ISO 20022 migration status is the primary driver of Phase 1 timeline. Institutions already in progress can compress Phase 1 by 2–3 weeks.</div>
+
+          <div class="dim-item">
+            <span class="dim-label">Liquidity Model Fit</span>
+            <div class="dim-bar"><div class="dim-fill diag-blur" id="dim-liq" style="width:20%"></div></div>
+            <span class="dim-score diag-blur" id="dim-liq-score">20%</span>
+          </div>
+          <div class="dim-note diag-blur" id="note-liq">Corridor volume determines potential tMMF yield recovery. Higher monthly volumes increase the economic case for liquidity model redesign.</div>
+
+          <div class="dim-item">
+            <span class="dim-label">Regulatory Posture</span>
+            <div class="dim-bar"><div class="dim-fill diag-blur" id="dim-reg" style="width:25%"></div></div>
+            <span class="dim-score diag-blur" id="dim-reg-score">25%</span>
+          </div>
+          <div class="dim-note diag-blur" id="note-reg">Tokenized deposits operate within your existing banking license. Phase 1 regulatory mapping surfaces jurisdiction-specific considerations before architecture begins.</div>
+
+          <div class="dim-item">
+            <span class="dim-label">Technical Capacity</span>
+            <div class="dim-bar"><div class="dim-fill diag-blur" id="dim-tech" style="width:30%"></div></div>
+            <span class="dim-score diag-blur" id="dim-tech-score">30%</span>
+          </div>
+          <div class="dim-note diag-blur" id="note-tech">Core system integration paths vary by vendor. The architecture phase identifies no-change-required integration options where available.</div>
+
+          <div class="dim-item">
+            <span class="dim-label">Corridor Economics</span>
+            <div class="dim-bar"><div class="dim-fill diag-blur" id="dim-corr" style="width:20%"></div></div>
+            <span class="dim-score diag-blur" id="dim-corr-score">20%</span>
+          </div>
+          <div class="dim-note diag-blur" id="note-corr">Corridor-specific FX spread, settlement lag, and correspondent dependency determine net economic benefit of A2A rail deployment.</div>
+
+        </div>
+      </div>
+
+      <!-- Stage 3: Gate -->
+      <div class="diag-gate">
+        <p class="diag-gate-label">Get Full Readiness Report</p>
+        <div class="diag-gate-row">
+          <div class="diag-field">
+            <label for="diag-email">Work Email</label>
+            <input type="email" id="diag-email" placeholder="you@institution.com">
+          </div>
+          <div class="diag-field">
+            <label for="diag-institution">Institution Name</label>
+            <input type="text" id="diag-institution" placeholder="Your bank or corporate">
+          </div>
+          <button class="btn-primary" onclick="submitDiagGate()" style="white-space:nowrap;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;">Get Full Report + Schedule Review</button>
+        </div>
+      </div>
+
+      <!-- Confirmation State -->
+      <div class="diag-confirm" id="diag-confirm">
+        <p class="diag-confirm-title">Full Readiness Report Unlocked</p>
+        <p>Your five-dimension scores are now fully visible below. The 90-Day Pilot Framework document summarizes what Phases 1–3 include, what they cost in time, and what decisions they produce at each gate.</p>
+        <div class="diag-confirm-btns">
+          <a href="pilot-framework.pdf" class="btn-primary">Download 90-Day Pilot Framework (PDF)</a>
+          <a href="contact.html" class="btn-outline">Schedule 30-Min Treasury Review</a>
+        </div>
+      </div>
+
+    </div><!-- /diagnostic-tool -->
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── MODULE 02 · ENGAGEMENT ROADMAP ── -->
+<section id="phases">
+  <div class="container">
+    <p class="sec-tag">Module 02 · Engagement Roadmap</p>
+    <h2 class="sec-title">A time-boxed, reversible path to production</h2>
+    <p class="sec-intro">Each phase ends with a Go/No-Go gate. Budget approvals stay within ALCO norms. Nothing requires a multi-year commitment upfront. Phases are independently approvable and designed to deliver standalone value at each stage.</p>
+
+    <div class="list-block">
+      <div class="list-item">
+        <div class="list-item-tag">Phase 01 · 4–6 Wks</div>
+        <div>
+          <h3>Feasibility &amp; Regulatory Mapping</h3>
+          <p>Use-case validation, jurisdiction scan, and ISO 20022 readiness assessment against your active corridors. Deliverable: board-ready memo and risk register scoped to your balance sheet. Gate: Go/No-Go to Architecture.</p>
+          <div class="list-item-links">
+            <a href="iso20022-a2a.html">ISO 20022 Readiness →</a>
+            <a href="faq.html">Regulatory FAQ →</a>
+          </div>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-tag">Phase 02 · 6–8 Wks</div>
+        <div>
+          <h3>Architecture &amp; Platform Selection</h3>
+          <p>DLT platform selection, node topology design, and counterparty onboarding plan. Deliverable: technical design document and RFP criteria for platform vendor engagement. Gate: Go/No-Go to Pilot Budget.</p>
+          <div class="list-item-links">
+            <a href="example-corda-a2a.html">Corda Architecture →</a>
+            <a href="a2a-comparison.html">Platform Comparison Matrix →</a>
+          </div>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-tag">Phase 03 · 8–10 Wks</div>
+        <div>
+          <h3>Pilot Scope &amp; Sandbox Build</h3>
+          <p>Limited live pilot across 2 corridors. Smart contract configuration, compliance system integration, and operational runbook development. Production-equivalent test environment with full audit trail. Gate: Go/No-Go to Production.</p>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-tag">Phase 04 · Ongoing</div>
+        <div>
+          <h3>Production Scaling</h3>
+          <p>Full corridor deployment, liquidity provisioning strategy, tMMF integration for Nostro yield recovery, and TARGET2/SARIE hook configuration where applicable. Deliverable: live rails and internal handoff kit for operations team.</p>
+          <div class="list-item-links">
+            <a href="tmmf-a2a.html">tMMF Architecture →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-block">
+      <p><em>Phase 1 is the only required commitment. Each subsequent phase is independently approvable. Most ALCO committees can authorize Phase 1 without board sign-off.</em></p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── MODULE 03 · VALIDATED BENCHMARKS ── -->
+<section id="benchmarks">
+  <div class="container">
+    <p class="sec-tag">Module 03 · Validated Benchmarks</p>
+    <h2 class="sec-title">What institutions have measured</h2>
+    <p class="sec-intro">Anonymized benchmark cards drawn from advisory engagements across four institution types. These are reference points, not guarantees. Each card links to the relevant architecture brief for technical depth on the approach used.</p>
+
+    <div class="two-col">
+      <div class="col-cell">
+        <div class="cell-label">West Africa · Tier-2 Commercial Bank</div>
+        <h4>$4.1M annual yield recovered on $120M/yr corridors</h4>
+        <p>89% reduction in manual reconciliation load. Phase 1–3 completed over 18 weeks. ISO 20022 migration was already underway, which compressed Phase 1 by two weeks.</p>
+        <a href="iso20022-a2a.html" class="col-cell-link">ISO 20022 Integration →</a>
+      </div>
+      <div class="col-cell">
+        <div class="cell-label">Caribbean · Regional Development Bank</div>
+        <h4>T+2 settlement eliminated on 3 active corridors</h4>
+        <p>Sub-second finality via tokenized A2A rails. Correspondent banking dependency reduced from 4 banks to 1. Sandbox to production in 9 weeks.</p>
+        <a href="a2a-workflow.html" class="col-cell-link">How A2A Settlement Works →</a>
+      </div>
+      <div class="col-cell">
+        <div class="cell-label">South Asia · Large Corporate Treasury</div>
+        <h4>LCR buffer reduced by 12% via tMMF integration</h4>
+        <p>Nostro balances partially converted to yield-bearing tokenized money market positions. No change to existing core banking vendor. Integration completed entirely through API layer.</p>
+        <a href="tmmf-a2a.html" class="col-cell-link">tMMF Architecture →</a>
+      </div>
+      <div class="col-cell">
+        <div class="cell-label">Latin America · Correspondent Network</div>
+        <h4>3 corridors live, 6 onboarded in Phase 4</h4>
+        <p>Phased rollout across MX, CO, and PE. DLT platform: Corda. Phase 1 regulatory mapping surfaced two jurisdiction-specific issues resolved before architecture began.</p>
+        <a href="example-corda-a2a.html" class="col-cell-link">Corda for A2A →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── MODULE 04 · REGULATORY CLARITY ── -->
+<section id="regulatory">
+  <div class="container">
+    <p class="sec-tag">Module 04 · Regulatory Clarity</p>
+    <h2 class="sec-title">Not a stablecoin project</h2>
+    <p class="sec-intro">The liability structure, capital treatment, and regulatory perimeter of tokenized deposits are fundamentally different from third-party stablecoins. This panel is for compliance teams and board risk committees who need to understand the distinction before engagement begins.</p>
+
+    <table class="reg-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Tokenized Deposit</th>
+          <th>Third-Party Stablecoin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Liability Holder</td>
+          <td>Issuing bank (you)</td>
+          <td>Stablecoin issuer (third party)</td>
+        </tr>
+        <tr>
+          <td>Basel III Capital</td>
+          <td>Standard deposit treatment</td>
+          <td>Potentially 1250% risk weight (crypto exposure)</td>
+        </tr>
+        <tr>
+          <td>Deposit Insurance</td>
+          <td>Eligible (jurisdiction-dependent)</td>
+          <td>Not eligible</td>
+        </tr>
+        <tr>
+          <td>Core System Audit</td>
+          <td>Native integration path</td>
+          <td>Requires reconciliation bridge</td>
+        </tr>
+        <tr>
+          <td>Regulatory Perimeter</td>
+          <td>Existing banking license</td>
+          <td>New licensing regime in most jurisdictions</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-block">
+      <p><em>Same regulatory perimeter your board already understands. Same deposit franchise. The tokenization layer sits inside existing infrastructure, not alongside it.</em></p>
+      <div class="callout-links">
+        <a href="faq.html">→ Regulatory FAQ</a>
+        <a href="iso20022-a2a.html">→ ISO 20022 Compliance Alignment</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── MODULE 05 · BEGIN ENGAGEMENT ── -->
+<section id="engage">
+  <div class="container">
+    <p class="sec-tag">Module 05 · Begin Engagement</p>
+    <h2 class="sec-title">What happens when you reach out</h2>
+    <p class="sec-intro">No RFP process, no 6-week scoping discovery call. Phase 1 starts with a 30-minute treasury review to confirm corridor fit and jurisdiction coverage. From there, the memo and risk register take 4–6 weeks.</p>
+
+    <div class="list-block">
+      <div class="list-item">
+        <div class="list-item-tag">Primary Engagement</div>
+        <div>
+          <h3>Begin Phase 1 Scoping</h3>
+          <p>A 30-minute treasury review to confirm corridor fit, jurisdiction coverage, and ISO readiness posture. The memo and risk register follow within 4–6 weeks. No budget commitment required for Phase 1 initiation.</p>
+          <div class="list-item-links" style="margin-top:0.85rem;">
+            <a href="contact.html?subject=Phase+1+Scoping" class="btn-primary">Begin Phase 1 Scoping →</a>
+          </div>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-tag">Downloads</div>
+        <div>
+          <h3>90-Day Pilot Framework</h3>
+          <p>One-page overview of what Phases 1–3 include, what they cost in time, and what decisions they produce at each Go/No-Go gate. Structured for distribution to ALCO and board risk committees.</p>
+          <div class="list-item-links" style="margin-top:0.85rem;">
+            <a href="pilot-framework.pdf" class="btn-outline">Download Framework (PDF)</a>
+          </div>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-item-tag">Architecture Review</div>
+        <div>
+          <h3>Review Architecture Matrix</h3>
+          <p>Compare DLT platforms, corridor economics, and settlement topology before committing to Phase 2. The matrix covers Corda, DAML, Hyperledger Fabric, and hybrid approaches across jurisdiction classes.</p>
+          <div class="list-item-links" style="margin-top:0.85rem;">
+            <a href="a2a-comparison.html" class="btn-outline">Architecture Matrix →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-bar">
+      <span class="trust-label">Platform partners</span>
+      <div class="trust-logos">
+        <span class="trust-logo">R3 · Corda</span>
+        <span class="trust-logo">Digital Asset · DAML</span>
+        <span class="trust-logo">Hyperledger · Fabric</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLOSING CTA BLOCK ── -->
+<div class="container">
+  <div class="cta-block">
+    <h3>We work with a limited number of institutions at a time</h3>
+    <p>If you're evaluating tokenized A2A infrastructure or have a live corridor problem, the fastest path to clarity is a direct conversation. No deck, no discovery call.</p>
+    <a href="contact.html" class="btn-primary">contact@postoaklabs.com</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+// ── LANGUAGE SWITCHER (stub v1) ──
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    if (btn.textContent.trim().toLowerCase() === lang) btn.classList.add('active');
+  });
+}
+
+// ── ISO STATUS → SCORE MAP ──
+const isoScoreMap = {
+  'not_started':   15,
+  'in_assessment': 35,
+  'in_progress':   65,
+  'completed':     90
+};
+
+// ── LIVE DIAGNOSTIC UPDATE ──
+function updateDiagnostic() {
+  const volRaw = parseFloat(document.getElementById('diag-volume').value) || 0;
+  const isoStatus = document.getElementById('diag-iso').value;
+
+  // Gauge
+  const annualDrag = volRaw * 12 * 0.045;
+  const gaugePct = Math.min(volRaw / 200 * 100, 100);
+  document.getElementById('gauge-fill').style.width = gaugePct + '%';
+
+  if (volRaw > 0) {
+    document.getElementById('gauge-value-label').textContent =
+      '~$' + annualDrag.toFixed(1) + 'M/yr locked in Nostro float';
+  } else {
+    document.getElementById('gauge-value-label').textContent = 'Enter volume above to calculate';
+  }
+
+  // Dimension preview bars (blurred until gated)
+  // ISO bar uses migration status
+  const isoScore = isoStatus ? isoScoreMap[isoStatus] : 15;
+  // Other bars use volume as proxy (scaled 0–80%)
+  const volProxy = Math.min(Math.round(volRaw / 200 * 80), 80);
+  const liqScore  = Math.max(volProxy, 20);
+  const regScore  = Math.max(Math.round(volProxy * 0.85), 25);
+  const techScore = Math.max(Math.round(volProxy * 0.9), 30);
+  const corrScore = Math.max(Math.round(volProxy * 0.75), 20);
+
+  setDimBar('dim-iso',  'dim-iso-score',  isoScore);
+  setDimBar('dim-liq',  'dim-liq-score',  liqScore);
+  setDimBar('dim-reg',  'dim-reg-score',  regScore);
+  setDimBar('dim-tech', 'dim-tech-score', techScore);
+  setDimBar('dim-corr', 'dim-corr-score', corrScore);
+}
+
+function setDimBar(barId, scoreId, pct) {
+  const bar = document.getElementById(barId);
+  const score = document.getElementById(scoreId);
+  if (bar) bar.style.width = pct + '%';
+  if (score) score.textContent = pct + '%';
+}
+
+// ── GATE SUBMIT ──
+function submitDiagGate() {
+  const email = document.getElementById('diag-email').value.trim();
+  const inst  = document.getElementById('diag-institution').value.trim();
+
+  if (!email || !inst) {
+    alert('Please enter your work email and institution name to unlock the full report.');
+    return;
+  }
+
+  // Recalculate final scores
+  const volRaw = parseFloat(document.getElementById('diag-volume').value) || 50;
+  const isoStatus = document.getElementById('diag-iso').value || 'not_started';
+
+  const isoScore  = isoScoreMap[isoStatus] || 15;
+  const volProxy  = Math.min(Math.round(volRaw / 200 * 80), 80);
+  const liqScore  = Math.max(volProxy, 20);
+  const regScore  = Math.max(Math.round(volProxy * 0.85), 25);
+  const techScore = Math.max(Math.round(volProxy * 0.9), 30);
+  const corrScore = Math.max(Math.round(volProxy * 0.75), 20);
+
+  setDimBar('dim-iso',  'dim-iso-score',  isoScore);
+  setDimBar('dim-liq',  'dim-liq-score',  liqScore);
+  setDimBar('dim-reg',  'dim-reg-score',  regScore);
+  setDimBar('dim-tech', 'dim-tech-score', techScore);
+  setDimBar('dim-corr', 'dim-corr-score', corrScore);
+
+  // Remove blur from all dimension elements
+  document.querySelectorAll('.diag-blur').forEach(el => {
+    el.classList.add('revealed');
+  });
+
+  // Show dimension notes
+  document.querySelectorAll('.dim-note').forEach(el => {
+    el.classList.add('visible');
+    el.classList.remove('diag-blur');
+  });
+
+  // Show confirmation block
+  const confirm = document.getElementById('diag-confirm');
+  confirm.classList.add('visible');
+
+  // Smooth scroll to confirmation
+  setTimeout(() => {
+    confirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 150);
+}
+</script>
+

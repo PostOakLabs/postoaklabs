@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basel IV Capital Stress Lab — CET1, RWA, RAROC, IFRS 9 · Post Oak Labs</title>
+
+<meta name="description" content="Model how a bank's CET1 ratio moves under a macro stress scenario. Compute Basel IV standardized-approach RWA, RAROC break-even pricing, and IFRS 9 stage migration in one boardroom-ready workflow. Browser-based, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/basel-iv-capital-stress-lab.html">
+<meta property="og:title" content="Basel IV Capital Stress Lab — Post Oak Labs">
+<meta property="og:description" content="Loan portfolio mix + macro shock → CET1 movement, RAROC break-even, IFRS 9 stage migration. Policy Mandate export.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/basel-iv-capital-stress-lab.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "Basel IV Capital Stress Lab",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/basel-iv-capital-stress-lab.html",
+  "description": "Bank capital adequacy stress-testing demo. Input loan portfolio mix and macro shock; compute Basel IV standardized RWA, post-stress CET1 ratio, RAROC break-even pricing, and IFRS 9 stage migration matrix. Outputs a Policy Mandate.",
+  "featureList": [
+    "Basel IV standardized-approach RWA by asset class",
+    "Macro shock scenarios: mild / moderate / severe recession",
+    "Post-stress CET1 ratio movement vs. regulatory minimum",
+    "RAROC break-even pricing under stressed PD/LGD",
+    "IFRS 9 Stage 1 → 2 → 3 migration matrix with ECL recompute",
+    "Policy Mandate export: @postoaklabs.com/basel-iv-stress-v1"
+  ],
+  "keywords": "Basel IV, CET1, RWA, RAROC, IFRS 9, stress testing, capital adequacy, credit migration, expected credit loss, ECL, M&A bank capital",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-16",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+:root {
+  --ink:#050c15;--deep:#0a1628;--navy:#0e1e35;--edge:#1e3454;--body:#7090b0;--muted:#4a6280;
+  --accent:#2a7fc0;--accent-lt:#4a9fdf;--gold:#c09040;
+  --showcase-bg:#ffffff;--showcase-bg-soft:#fafbfc;--showcase-bg-deep:#f4f6f9;
+  --showcase-text:#0a1828;--showcase-text-muted:#6a7a8a;
+  --showcase-border:#e6e8eb;--showcase-border-dark:#d4d8de;
+  --showcase-accent:#2a7fc0;--showcase-gold:#c09040;
+  --showcase-success:#10b981;--showcase-warn:#f59e0b;--showcase-error:#dc2626;--showcase-purple:#8b5cf6;
+  --showcase-heading-font:'DM Serif Display',serif;--showcase-body-font:'DM Sans',sans-serif;--showcase-mono-font:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--body);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.2}
+a{color:var(--accent)}
+button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit}
+
+nav[role="navigation"]{background:var(--ink);border-bottom:1px solid var(--edge);padding:.9rem 0;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:1.15rem;color:#fff;text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-bc{font-family:var(--showcase-mono-font);font-size:.6rem;color:var(--muted);letter-spacing:.06em;display:flex;align-items:center;gap:.4rem}
+.nav-bc a{color:var(--body);text-decoration:none}
+.nav-bc a:hover{color:var(--accent-lt)}
+.nav-bc span[aria-current]{color:var(--accent-lt)}
+.nav-links{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
+.nav-links a{color:var(--body);text-decoration:none;font-size:.86rem}
+.nav-links a:hover{color:#fff}
+.nav-links a.nav-cta{background:var(--accent);color:#fff !important;padding:.4rem .95rem;border-radius:4px}
+.nav-links a.nav-cta:hover{background:var(--accent-lt)}
+
+.showcase-header-strip{background:var(--deep);border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);padding:.85rem 0}
+.strip-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.strip-left{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.strip-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.7rem;color:var(--gold);font-weight:500}
+.strip-title{font-weight:500;color:#fff;font-size:.875rem}
+.strip-actions{display:flex;flex-wrap:wrap;gap:.25rem 1rem}
+.strip-actions a{color:var(--accent-lt);text-decoration:none;font-size:.78rem;white-space:nowrap}
+.strip-actions a:hover{color:#fff}
+
+.demo-canvas{background:var(--showcase-bg);color:var(--showcase-text);font-family:var(--showcase-body-font);max-width:1240px;margin:2rem auto;padding:0;border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,.04),0 0 40px rgba(0,0,0,.25);overflow:hidden}
+.canvas-inner{padding:2.5rem 2.5rem 3rem}
+@media(max-width:760px){.canvas-inner{padding:1.5rem 1.25rem 2rem}}
+.demo-canvas h1,.demo-canvas h2,.demo-canvas h3,.demo-canvas h4{color:var(--showcase-text)}
+
+.hero{padding-bottom:2rem;border-bottom:1px solid var(--showcase-border);margin-bottom:2.5rem}
+.eyebrow-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:1.25rem}
+.eyebrow-badge{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border-radius:3px;border:1px solid var(--showcase-border);color:var(--showcase-text-muted)}
+.eyebrow-badge.accent{border-color:rgba(42,127,192,.35);color:var(--showcase-accent)}
+.eyebrow-badge.gold{border-color:rgba(192,144,64,.35);color:var(--showcase-gold)}
+.eyebrow-badge.purple{border-color:rgba(139,92,246,.35);color:var(--showcase-purple)}
+.hero h1{font-size:clamp(1.6rem,2.8vw,2.2rem);margin-bottom:.85rem}
+.hero h1 em{font-style:italic;color:var(--showcase-accent)}
+.hero-sub{color:var(--showcase-text-muted);font-size:.95rem;line-height:1.7;max-width:820px;margin-bottom:1.5rem}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:4px;overflow:hidden}
+.hstat{background:var(--showcase-bg-soft);padding:.85rem 1.1rem}
+.hstat-l{font-family:var(--showcase-mono-font);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.3rem}
+.hstat-v{font-family:var(--showcase-heading-font);font-size:1.3rem;line-height:1.1}
+.hstat-v.accent{color:var(--showcase-accent)}.hstat-v.gold{color:var(--showcase-gold)}.hstat-v.success{color:var(--showcase-success)}.hstat-v.warn{color:var(--showcase-warn)}.hstat-v.error{color:var(--showcase-error)}.hstat-v.purple{color:var(--showcase-purple)}
+.hstat-note{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.2rem}
+
+.pii-banner{display:flex;align-items:flex-start;gap:.75rem;background:#f0f9f4;border:1px solid #a7f3d0;border-radius:4px;padding:.75rem 1rem;margin-bottom:2rem;font-size:.83rem;color:#065f46}
+.pii-banner svg{flex-shrink:0;margin-top:1px}
+
+.tool-layout{display:grid;grid-template-columns:1fr 290px;gap:2rem;align-items:start}
+@media(max-width:960px){.tool-layout{grid-template-columns:1fr}}
+
+.var-sidebar{background:var(--ink);border-radius:6px;padding:1.5rem;border-left:3px solid var(--gold);position:sticky;top:100px}
+.var-sidebar-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+.var-sidebar h3{font-family:var(--showcase-heading-font);color:#fff !important;font-size:1.2rem;line-height:1.2;margin-bottom:.5rem}
+.var-sidebar p{font-size:.82rem;color:var(--body);line-height:1.6;margin-bottom:.9rem}
+.var-sidebar p:last-child{margin-bottom:0}
+.var-sidebar .cite{font-size:.7rem;color:var(--muted);margin-top:.75rem}
+.var-stat{font-family:var(--showcase-mono-font);font-size:.76rem;color:var(--accent-lt);margin-top:.5rem}
+
+.panel{margin-bottom:2.25rem}
+.panel-hd{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--showcase-border);padding-bottom:.65rem;margin-bottom:1.25rem}
+.panel-num{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--showcase-accent)}
+.panel-hd h2{font-size:1.25rem;color:var(--showcase-text)}
+.panel-hd .sub{font-size:.78rem;color:var(--showcase-text-muted)}
+
+.scenario-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+.scenario-btn{font-family:var(--showcase-mono-font);font-size:.7rem;letter-spacing:.06em;padding:.45rem 1rem;border-radius:4px;border:1px solid var(--showcase-border);color:var(--showcase-text-muted);background:var(--showcase-bg-soft);transition:all .15s}
+.scenario-btn:hover,.scenario-btn.active{background:var(--showcase-accent);border-color:var(--showcase-accent);color:#fff}
+
+.section-hd{font-family:var(--showcase-mono-font);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--showcase-text-muted);border-bottom:1px solid var(--showcase-border);padding-bottom:.5rem;margin-bottom:1.1rem}
+
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label{font-family:var(--showcase-mono-font);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted)}
+.field input[type=number],.field input[type=text],.field select{font-family:var(--showcase-mono-font);font-size:.88rem;padding:.55rem .75rem;border:1px solid var(--showcase-border);border-radius:4px;background:var(--showcase-bg);color:var(--showcase-text);width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--showcase-accent)}
+.field .hint{font-size:.7rem;color:var(--showcase-text-muted)}
+
+/* PORTFOLIO MIX */
+.mix-row{display:grid;grid-template-columns:200px 1fr 80px;gap:.85rem;align-items:center;margin-bottom:.55rem}
+.mix-row .lbl{font-family:var(--showcase-mono-font);font-size:.72rem;color:var(--showcase-text);text-transform:none;letter-spacing:.02em}
+.mix-row input[type=range]{width:100%;accent-color:var(--showcase-accent)}
+.mix-row .val{font-family:var(--showcase-mono-font);font-size:.78rem;color:var(--showcase-accent);text-align:right}
+.mix-total{font-family:var(--showcase-mono-font);font-size:.72rem;color:var(--showcase-text-muted);text-align:right;margin-top:.4rem}
+.mix-total.warn{color:var(--showcase-warn)}
+
+/* DIAGNOSTICS GRID */
+.diag-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:6px;overflow:hidden;margin-bottom:1.25rem}
+.diag-cell{background:var(--showcase-bg-soft);padding:.95rem 1.1rem}
+.diag-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.35rem}
+.diag-val{font-family:var(--showcase-heading-font);font-size:1.3rem;line-height:1.1}
+.diag-val.success{color:var(--showcase-success)}.diag-val.warn{color:var(--showcase-warn)}.diag-val.error{color:var(--showcase-error)}.diag-val.accent{color:var(--showcase-accent)}
+.diag-sub{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.2rem}
+
+/* RWA TABLE */
+.rwa-table-wrap{overflow-x:auto;margin-bottom:1rem}
+table.rwa-table{width:100%;border-collapse:collapse;font-size:.84rem}
+table.rwa-table th{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);padding:.6rem .85rem;border-bottom:2px solid var(--showcase-border);text-align:right;background:var(--showcase-bg-soft)}
+table.rwa-table th:first-child{text-align:left}
+table.rwa-table td{padding:.65rem .85rem;border-bottom:1px solid var(--showcase-border);text-align:right;font-family:var(--showcase-mono-font);font-size:.8rem}
+table.rwa-table td:first-child{text-align:left;font-family:var(--showcase-body-font);font-weight:500;font-size:.85rem;color:var(--showcase-text)}
+table.rwa-table tr.totals td{border-top:2px solid var(--showcase-text);font-weight:500}
+
+/* CET1 BAR */
+.cet1-wrap{background:var(--showcase-bg-deep);border:1px solid var(--showcase-border);border-radius:6px;padding:1.2rem 1.3rem;margin-bottom:1.25rem}
+.cet1-wrap h4{font-family:var(--showcase-heading-font);font-size:1rem;margin-bottom:.85rem}
+.cet1-bar{position:relative;height:34px;background:#fff;border:1px solid var(--showcase-border);border-radius:4px;overflow:hidden;margin-bottom:.65rem}
+.cet1-bar .fill{position:absolute;top:0;left:0;bottom:0;background:linear-gradient(90deg,var(--showcase-accent),var(--showcase-success));transition:width .4s}
+.cet1-bar .fill.stressed{background:linear-gradient(90deg,var(--showcase-warn),var(--showcase-error));top:50%;height:50%}
+.cet1-bar .fill.base{top:0;height:50%}
+.cet1-bar .threshold{position:absolute;top:0;bottom:0;border-left:2px dashed var(--showcase-error);z-index:5}
+.cet1-bar .threshold span{position:absolute;top:-1.1rem;left:-1.5rem;font-family:var(--showcase-mono-font);font-size:.55rem;color:var(--showcase-error);white-space:nowrap}
+.cet1-legend{display:flex;flex-wrap:wrap;gap:1rem;font-family:var(--showcase-mono-font);font-size:.62rem;color:var(--showcase-text-muted);margin-top:.4rem}
+.cet1-legend span{display:inline-flex;align-items:center;gap:.35rem}
+.cet1-legend i{display:inline-block;width:10px;height:10px;border-radius:1px}
+.cet1-legend i.base{background:var(--showcase-accent)}
+.cet1-legend i.stressed{background:var(--showcase-warn)}
+
+/* STAGE MIGRATION MATRIX */
+.matrix-wrap{overflow-x:auto;margin-bottom:1rem}
+table.matrix{width:100%;border-collapse:collapse;font-family:var(--showcase-mono-font);font-size:.78rem}
+table.matrix th{padding:.55rem .75rem;border-bottom:2px solid var(--showcase-border);background:var(--showcase-bg-soft);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted)}
+table.matrix th.r,table.matrix td.r{text-align:right}
+table.matrix td{padding:.55rem .75rem;border-bottom:1px solid var(--showcase-border)}
+table.matrix td.s1{background:rgba(16,185,129,.06);color:var(--showcase-success)}
+table.matrix td.s2{background:rgba(245,158,11,.08);color:var(--showcase-warn)}
+table.matrix td.s3{background:rgba(220,38,38,.08);color:var(--showcase-error)}
+
+/* RAROC */
+.raroc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.75rem;margin-bottom:1rem}
+.raroc-card{border:1px solid var(--showcase-border);border-radius:5px;padding:.95rem 1rem}
+.raroc-card.warn{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.04)}
+.raroc-card.err{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.04)}
+.raroc-card.ok{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.04)}
+.raroc-card h5{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.5rem}
+.raroc-val{font-family:var(--showcase-heading-font);font-size:1.35rem;line-height:1.1;margin-bottom:.25rem}
+.raroc-val.warn{color:var(--showcase-warn)}.raroc-val.err{color:var(--showcase-error)}.raroc-val.ok{color:var(--showcase-success)}
+.raroc-sub{font-size:.72rem;color:var(--showcase-text-muted)}
+
+.run-row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin:1.5rem 0 .5rem}
+.run-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--showcase-accent);color:#fff;padding:.75rem 2rem;border-radius:5px;font-size:.9rem;font-weight:500;letter-spacing:.02em;border:none}
+.run-btn:hover{background:var(--accent-lt)}
+.run-note{font-size:.78rem;color:var(--showcase-text-muted)}
+
+.results-section{margin-top:1rem;display:none}
+.results-section.visible{display:block}
+
+.results-export-row{display:flex;flex-wrap:wrap;gap:.75rem;padding-top:1.5rem;border-top:1px solid var(--showcase-border);margin-top:2rem}
+.export-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border-radius:4px;font-size:.83rem;font-weight:500;border:1px solid var(--showcase-border);color:var(--showcase-text);background:var(--showcase-bg-soft);cursor:pointer;transition:all .15s}
+.export-btn:hover{border-color:var(--showcase-accent);color:var(--showcase-accent)}
+.export-btn.primary{background:var(--showcase-accent);border-color:var(--showcase-accent);color:#fff}
+.export-btn.primary:hover{background:var(--accent-lt);border-color:var(--accent-lt)}
+
+footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2rem}
+.footer-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:1.05rem;color:#fff;margin-bottom:.35rem}
+.footer-brand span{color:var(--gold)}
+.footer-copy{font-size:.78rem;color:var(--muted)}
+.footer-badges{font-family:var(--showcase-mono-font);font-size:.65rem;color:var(--muted);margin-top:.4rem;letter-spacing:.04em}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-size:.82rem;color:var(--body);text-decoration:none}
+.footer-links a:hover{color:var(--accent-lt)}
+</style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Post Oak Labs navigation" class="pol-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Post Oak <span>Labs</span></a>
+    <div class="nav-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href="/demos/">Showcase</a><span aria-hidden="true">›</span>
+      <span aria-current="page">Basel IV Capital Stress Lab</span>
+    </div>
+    <nav class="nav-links" aria-label="Site links">
+      <a href="/demos/">← All Demos</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html" class="nav-cta">Talk to us</a>
+    </nav>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Fintech Intelligence Showcase</span>
+      <span class="strip-title">Demo #28 — Basel IV Capital Stress Lab</span>
+    </div>
+    <div class="strip-actions">
+      <a href="https://ainumbers.co/tools/201-basel-rwa-calculator.html" target="_blank" rel="noopener">T201 RWA ↗</a>
+      <a href="https://ainumbers.co/tools/202-credit-stress-testing-workbench.html" target="_blank" rel="noopener">T202 Stress ↗</a>
+      <a href="https://ainumbers.co/tools/203-raroc-loan-pricing-model.html" target="_blank" rel="noopener">T203 RAROC ↗</a>
+      <a href="https://ainumbers.co/tools/204-ifrs9-credit-migration-matrix.html" target="_blank" rel="noopener">T204 IFRS 9 ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" role="main">
+  <div class="canvas-inner">
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow-badges">
+        <span class="eyebrow-badge accent">Bank Capital · Risk</span>
+        <span class="eyebrow-badge gold">T201 · T202 · T203 · T204</span>
+        <span class="eyebrow-badge purple">Basel IV · IFRS 9</span>
+        <span class="eyebrow-badge">CET1 · RWA · RAROC</span>
+        <span class="eyebrow-badge">Zero PII</span>
+      </div>
+      <h1 id="hero-title">Basel IV <em>Capital Stress Lab</em></h1>
+      <p class="hero-sub">Model how your loan-book CET1 ratio moves under a macro shock. Composes four AINumbers tools — Basel IV standardized-approach RWA, a credit stress workbench, RAROC break-even pricing, and an IFRS 9 stage-migration matrix — into a single boardroom-ready workflow. Set the portfolio mix, pick a stress scenario, and read the capital headroom, the break-even pricing shift, and the stage-1 → stage-3 expected-credit-loss path. Export a Policy Mandate suitable for board / acquirer review.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-l">Basel IV Min CET1</div><div class="hstat-v accent">4.5%</div><div class="hstat-note">+ buffers ≈ 10.5–13%</div></div>
+        <div class="hstat"><div class="hstat-l">Output Floor</div><div class="hstat-v gold">72.5%</div><div class="hstat-note">Standardized floor on IRB</div></div>
+        <div class="hstat"><div class="hstat-l">Scenarios</div><div class="hstat-v">3</div><div class="hstat-note">Mild · Moderate · Severe</div></div>
+        <div class="hstat"><div class="hstat-l">Asset Classes</div><div class="hstat-v">5</div><div class="hstat-note">Sovereign · Corp · SME · Retail · MBS</div></div>
+        <div class="hstat"><div class="hstat-l">IFRS 9 Stages</div><div class="hstat-v purple">3</div><div class="hstat-note">12-mo ECL · Lifetime · Default</div></div>
+        <div class="hstat"><div class="hstat-l">Schema</div><div class="hstat-v success">v1.0</div><div class="hstat-note">@postoaklabs.com/basel-iv-stress-v1</div></div>
+      </div>
+    </section>
+
+    <div class="pii-banner" role="note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+    </div>
+
+    <div class="tool-layout">
+      <div class="tool-main">
+
+        <div class="section-hd">Stress Scenarios</div>
+        <div class="scenario-row" role="group" aria-label="Stress preset">
+          <button class="scenario-btn" data-scenario="mild">🌤 Mild Slowdown</button>
+          <button class="scenario-btn" data-scenario="moderate">⛅ Moderate Recession</button>
+          <button class="scenario-btn" data-scenario="severe">⛈ Severe (1-in-25y)</button>
+        </div>
+
+        <div class="section-hd">Bank Inputs</div>
+        <div class="inputs-grid">
+          <div class="field">
+            <label for="inp-book">Loan Book Size (USD)</label>
+            <input type="number" id="inp-book" value="20000000000" min="100000000" max="2000000000000" step="100000000">
+            <span class="hint">Total gross loans</span>
+          </div>
+          <div class="field">
+            <label for="inp-cet1">Current CET1 Capital (USD)</label>
+            <input type="number" id="inp-cet1" value="2400000000" min="10000000" max="200000000000" step="10000000">
+            <span class="hint">Tier-1 common equity</span>
+          </div>
+          <div class="field">
+            <label for="inp-minimum">Regulatory Min CET1 (%)</label>
+            <input type="number" id="inp-minimum" value="10.5" min="4.5" max="20" step="0.25">
+            <span class="hint">Incl. capital conservation buffer</span>
+          </div>
+          <div class="field">
+            <label for="inp-shock">PD Shock Multiplier (×)</label>
+            <input type="number" id="inp-shock" value="2.5" min="1" max="8" step="0.5">
+            <span class="hint">Probability-of-default uplift</span>
+          </div>
+          <div class="field">
+            <label for="inp-lgdshock">LGD Shock Uplift (pp)</label>
+            <input type="number" id="inp-lgdshock" value="8" min="0" max="35" step="1">
+            <span class="hint">Loss-given-default add-on</span>
+          </div>
+          <div class="field">
+            <label for="inp-rate">Loan Yield (%/yr)</label>
+            <input type="number" id="inp-rate" value="6.5" min="1" max="20" step="0.1">
+            <span class="hint">Average gross asset yield</span>
+          </div>
+        </div>
+
+        <div class="section-hd">Portfolio Mix (must sum to 100%)</div>
+        <div id="mixRows"></div>
+        <div class="mix-total" id="mixTotal">Total: 100%</div>
+
+        <div class="run-row">
+          <button class="run-btn" id="runBtn">Run Capital Stress →</button>
+          <span class="run-note">Deterministic · client-side · ~40 ms runtime</span>
+        </div>
+
+        <section class="results-section" id="results">
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div><div class="panel-num">Panel 01 · RWA &amp; CET1</div><h2>Risk-Weighted Assets &amp; Capital Headroom</h2></div>
+              <div class="sub">Basel IV standardized-approach RWA by asset class; pre / post stress</div>
+            </div>
+            <div class="rwa-table-wrap">
+              <table class="rwa-table" id="rwaTable">
+                <thead><tr><th>Asset Class</th><th>Exposure (USD)</th><th>Base RW</th><th>Stressed RW</th><th>Base RWA</th><th>Stressed RWA</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="cet1-wrap">
+              <h4>CET1 Ratio — Pre vs. Post-Stress</h4>
+              <div class="cet1-bar" id="cet1Bar">
+                <div class="fill base" id="cet1Base" style="width:0%"></div>
+                <div class="fill stressed" id="cet1Stressed" style="width:0%"></div>
+                <div class="threshold" id="cet1Thresh" style="left:0%"><span>Min</span></div>
+              </div>
+              <div class="cet1-legend">
+                <span><i class="base"></i> Base CET1</span>
+                <span><i class="stressed"></i> Post-stress CET1</span>
+                <span style="color:var(--showcase-error)">— — Regulatory minimum</span>
+              </div>
+            </div>
+            <div class="diag-grid" id="cet1Grid"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div><div class="panel-num">Panel 02 · RAROC Break-Even</div><h2>Pricing Under Stress</h2></div>
+              <div class="sub">Required yield for risk-adjusted return on capital ≥ hurdle rate</div>
+            </div>
+            <div class="raroc-grid" id="rarocGrid"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-hd">
+              <div><div class="panel-num">Panel 03 · IFRS 9 Stage Migration</div><h2>Stage 1 → 2 → 3 Migration Matrix</h2></div>
+              <div class="sub">Expected credit loss (12-mo / lifetime) recomputed under shock</div>
+            </div>
+            <div class="matrix-wrap">
+              <table class="matrix" id="matrixTable">
+                <thead><tr><th>From → To</th><th class="r">Stage 1</th><th class="r">Stage 2</th><th class="r">Stage 3</th><th class="r">Row Total</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="diag-grid" id="iframsGrid"></div>
+          </div>
+
+          <div class="results-export-row">
+            <button class="export-btn primary" id="ap2ExportBtn" type="button">📋 Export Policy Mandate (JSON)</button>
+            <button class="export-btn" id="mdExportBtn" type="button">📝 Export Markdown Report</button>
+            <button class="export-btn" id="csvExportBtn" type="button">📊 Export RWA Table (CSV)</button>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="var-sidebar" aria-labelledby="var-title">
+        <div class="var-sidebar-label">Value at Risk</div>
+        <h3 id="var-title">Why this matters for acquirers</h3>
+        <p>Capital adequacy headroom is the first question on every bank-M&amp;A diligence. A book that looks profitable at 6.5% yield can sit below the 10.5% CET1 minimum after a moderate shock — and the gap shows up only when RWA, LGD, and stage migration are recomputed together.</p>
+        <p>This lab does the recompute in one click. The Policy Mandate export gives an acquirer a deterministic, reproducible run they can re-execute on their own machine.</p>
+        <div class="var-stat">Output floor (IRB → SA): 72.5%</div>
+        <div class="var-stat">Buffer headroom flag: &lt; 100 bps</div>
+        <div class="cite">Refs: BCBS d424 (Dec 2017), BCBS Final Basel IV (Jan 2023), IFRS 9 ECL standard, BIS BIS QIS 2024.</div>
+      </aside>
+    </div>
+
+  </div>
+</main>
+
+<footer role="contentinfo" class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <div class="footer-copy">© 2026 Post Oak Labs · CC BY 4.0 · Houston, TX</div>
+      <div class="footer-badges">🔒 No data leaves your browser · 💻 Client-side only · CC BY 4.0</div>
+    </div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/demos/">Showcase</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+// Basel IV standardized-approach risk weights (illustrative bucket midpoints)
+const ASSET_CLASSES = [
+  { id: 'sovereign', name: 'Sovereign (AA– to AAA)',  baseRW: 0.00, basePD: 0.0010, baseLGD: 0.45 },
+  { id: 'corporate', name: 'Corporate (BBB)',          baseRW: 1.00, basePD: 0.0150, baseLGD: 0.40 },
+  { id: 'sme',       name: 'SME (unrated)',            baseRW: 0.85, basePD: 0.0300, baseLGD: 0.50 },
+  { id: 'retail',    name: 'Retail / Mortgage',        baseRW: 0.35, basePD: 0.0080, baseLGD: 0.25 },
+  { id: 'mbs',       name: 'Securitisation / MBS',     baseRW: 0.50, basePD: 0.0050, baseLGD: 0.35 }
+];
+
+const SCENARIOS = {
+  mild:     { shock: 1.5, lgdshock: 3,  rate: 6.5,  defaults: { sovereign:30, corporate:35, sme:18, retail:15, mbs:2 } },
+  moderate: { shock: 2.5, lgdshock: 8,  rate: 6.5,  defaults: { sovereign:30, corporate:35, sme:18, retail:15, mbs:2 } },
+  severe:   { shock: 4.0, lgdshock: 15, rate: 6.5,  defaults: { sovereign:30, corporate:35, sme:18, retail:15, mbs:2 } }
+};
+
+let lastResult = null;
+
+const fmt  = (n, d = 0) => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtK = (n) => n >= 1e9 ? '$' + (n/1e9).toFixed(2) + 'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(0) + 'K' : '$' + Math.round(n);
+const pct  = (n, d = 1) => Number(n).toFixed(d) + '%';
+const uuid4 = () => {
+  const b = new Uint8Array(16); crypto.getRandomValues(b);
+  b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+  const h = Array.from(b, x => x.toString(16).padStart(2,'0')).join('');
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+};
+const hashStub = (s) => {
+  let h = 0n;
+  for (const c of s) h = (h * 1315423911n + BigInt(c.charCodeAt(0))) & 0xffffffffffffffffn;
+  const head = h.toString(16).padStart(16, '0');
+  return (head + head + head + head).slice(0, 64);
+};
+
+// ============== MIX UI ==============
+function renderMixRows() {
+  const c = document.getElementById('mixRows');
+  c.innerHTML = '';
+  const defaults = { sovereign:30, corporate:35, sme:18, retail:15, mbs:2 };
+  ASSET_CLASSES.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'mix-row';
+    row.innerHTML = `
+      <div class="lbl">${a.name}</div>
+      <input type="range" min="0" max="100" step="1" value="${defaults[a.id]}" data-mix="${a.id}">
+      <div class="val" id="mixVal-${a.id}">${defaults[a.id]}%</div>`;
+    c.appendChild(row);
+  });
+  c.querySelectorAll('input[type=range]').forEach(r => r.addEventListener('input', () => {
+    document.getElementById('mixVal-' + r.dataset.mix).textContent = r.value + '%';
+    refreshMixTotal();
+  }));
+  refreshMixTotal();
+}
+
+function readMix() {
+  const m = {};
+  document.querySelectorAll('input[data-mix]').forEach(r => { m[r.dataset.mix] = Number(r.value)/100; });
+  return m;
+}
+
+function refreshMixTotal() {
+  const m = readMix();
+  const total = Object.values(m).reduce((a,b)=>a+b, 0);
+  const el = document.getElementById('mixTotal');
+  el.textContent = `Total: ${(total*100).toFixed(0)}%` + (Math.abs(total-1) > 0.005 ? ' — will be normalised at run-time' : '');
+  el.classList.toggle('warn', Math.abs(total-1) > 0.005);
+}
+
+function readInputs() {
+  return {
+    book:     Number(document.getElementById('inp-book').value)     || 0,
+    cet1:     Number(document.getElementById('inp-cet1').value)     || 0,
+    minimum:  Number(document.getElementById('inp-minimum').value)  || 0,
+    shock:    Number(document.getElementById('inp-shock').value)    || 1,
+    lgdshock: Number(document.getElementById('inp-lgdshock').value) || 0,
+    rate:     Number(document.getElementById('inp-rate').value)     || 0,
+    mix:      readMix()
+  };
+}
+
+// ============== MODEL ==============
+function compute(inp) {
+  // Normalize mix
+  const totalMix = Object.values(inp.mix).reduce((a,b)=>a+b, 0) || 1;
+  const norm = {};
+  for (const k of Object.keys(inp.mix)) norm[k] = inp.mix[k] / totalMix;
+
+  // Stressed RW lift heuristic — PD shock × LGD-elasticity per class
+  const lgdScale = inp.lgdshock / 100;
+  const stressLift = (cls) => {
+    // simple but defensible: stressed RW = baseRW × (1 + (shock-1) × elasticity) + lgd add
+    const elast = cls.id === 'retail' ? 0.55 : cls.id === 'sme' ? 0.80 : cls.id === 'corporate' ? 0.70 : cls.id === 'mbs' ? 0.65 : 0.20;
+    const sov_floor = cls.id === 'sovereign' ? 0.0 : 0.15;
+    const lifted = Math.max(sov_floor, cls.baseRW * (1 + (inp.shock - 1) * elast) + lgdScale * (cls.baseRW > 0 ? 0.30 : 0.05));
+    return Math.min(2.0, lifted); // cap at 200% per BCBS d424 standardized
+  };
+
+  const rows = ASSET_CLASSES.map(c => {
+    const exp = inp.book * (norm[c.id] || 0);
+    const baseRW = c.baseRW;
+    const stressedRW = stressLift(c);
+    return {
+      cls: c,
+      exposure: exp,
+      baseRW, stressedRW,
+      baseRWA: exp * baseRW,
+      stressedRWA: exp * stressedRW,
+      basePD: c.basePD,
+      stressedPD: Math.min(0.40, c.basePD * inp.shock),
+      stressedLGD: Math.min(0.90, c.baseLGD + lgdScale)
+    };
+  });
+
+  const baseRWA = rows.reduce((a,r)=>a+r.baseRWA, 0);
+  const stressedRWA = rows.reduce((a,r)=>a+r.stressedRWA, 0);
+
+  // Expected losses (12-mo) at base and stress
+  const baseEL  = rows.reduce((a,r)=>a + r.exposure * r.basePD * r.cls.baseLGD, 0);
+  const stressEL= rows.reduce((a,r)=>a + r.exposure * r.stressedPD * r.stressedLGD, 0);
+  const elDelta = stressEL - baseEL;
+
+  // CET1 ratios
+  const cet1Base = baseRWA > 0 ? inp.cet1 / baseRWA : 0;
+  const cet1Stressed = stressedRWA > 0 ? (inp.cet1 - elDelta) / stressedRWA : 0;
+  const headroomBpsBase = (cet1Base*100 - inp.minimum) * 100;
+  const headroomBpsStressed = (cet1Stressed*100 - inp.minimum) * 100;
+
+  // RAROC
+  // Required yield: covers expected loss + capital charge × hurdle
+  const hurdle = 0.15; // 15% ROE hurdle
+  const stressedYieldReq = ((stressEL / inp.book) + ((stressedRWA / inp.book) * hurdle * inp.minimum/100*10)) * 100;
+  // Simplified break-even: covers stressed EL and stressed cost of capital
+  const stressedCoC = stressedRWA * inp.minimum/100 * hurdle;
+  const currentReturn = inp.book * (inp.rate/100) - stressEL - stressedCoC;
+  const raroc = (stressedRWA * inp.minimum/100) > 0 ? currentReturn / (stressedRWA * inp.minimum/100) * 100 : 0;
+  const breakevenRate = ((stressEL + stressedCoC) / inp.book) * 100;
+
+  // IFRS 9 Stage migration matrix (Stage1 → Stage1/2/3, etc.)
+  const baseTM = [
+    [0.93, 0.06, 0.01],
+    [0.20, 0.65, 0.15],
+    [0.00, 0.05, 0.95]
+  ];
+  // stress: shift mass towards higher stages by shock factor
+  const k = Math.min(0.35, (inp.shock - 1) * 0.08 + lgdScale * 0.30);
+  const stressedTM = [
+    [Math.max(0.55, baseTM[0][0] - k*1.2), baseTM[0][1] + k, baseTM[0][2] + k*0.2],
+    [Math.max(0.05, baseTM[1][0] - k*0.5), Math.max(0.40, baseTM[1][1] - k*0.4), baseTM[1][2] + k*0.9],
+    [0, Math.max(0, baseTM[2][1] - k*0.05), Math.min(1, baseTM[2][2] + k*0.05)]
+  ];
+  // Normalize each row
+  for (const row of stressedTM) {
+    const s = row.reduce((a,b)=>a+b,0); if (s>0) for (let i=0;i<row.length;i++) row[i] /= s;
+  }
+
+  // Stage population (illustrative pre / post)
+  const baseStages = { s1: inp.book * 0.92, s2: inp.book * 0.07, s3: inp.book * 0.01 };
+  const stressedStages = {
+    s1: baseStages.s1 * stressedTM[0][0] + baseStages.s2 * stressedTM[1][0] + baseStages.s3 * stressedTM[2][0],
+    s2: baseStages.s1 * stressedTM[0][1] + baseStages.s2 * stressedTM[1][1] + baseStages.s3 * stressedTM[2][1],
+    s3: baseStages.s1 * stressedTM[0][2] + baseStages.s2 * stressedTM[1][2] + baseStages.s3 * stressedTM[2][2]
+  };
+  const baseEclTotal = baseStages.s1 * 0.005 + baseStages.s2 * 0.045 + baseStages.s3 * 0.45;
+  const stressEclTotal = stressedStages.s1 * 0.012 + stressedStages.s2 * 0.10 + stressedStages.s3 * 0.55;
+
+  return {
+    rows, baseRWA, stressedRWA, baseEL, stressEL, elDelta,
+    cet1Base, cet1Stressed, headroomBpsBase, headroomBpsStressed,
+    raroc, breakevenRate, stressedYieldReq,
+    stressedTM, baseStages, stressedStages, baseEclTotal, stressEclTotal
+  };
+}
+
+// ============== RENDER ==============
+function renderRwa(res) {
+  const tbody = document.querySelector('#rwaTable tbody');
+  tbody.innerHTML = '';
+  res.rows.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.cls.name}</td>
+      <td>${fmtK(r.exposure)}</td>
+      <td>${pct(r.baseRW*100)}</td>
+      <td>${pct(r.stressedRW*100)}</td>
+      <td>${fmtK(r.baseRWA)}</td>
+      <td>${fmtK(r.stressedRWA)}</td>`;
+    tbody.appendChild(tr);
+  });
+  const tot = document.createElement('tr');
+  tot.className = 'totals';
+  tot.innerHTML = `<td><strong>Total RWA</strong></td><td></td><td></td><td></td>
+    <td><strong>${fmtK(res.baseRWA)}</strong></td>
+    <td><strong>${fmtK(res.stressedRWA)}</strong></td>`;
+  tbody.appendChild(tot);
+}
+
+function renderCet1Bar(res, inp) {
+  const maxScale = Math.max(res.cet1Base*100, res.cet1Stressed*100, inp.minimum) * 1.4;
+  const basePct = (res.cet1Base*100) / maxScale * 100;
+  const stressPct = (res.cet1Stressed*100) / maxScale * 100;
+  const threshPct = inp.minimum / maxScale * 100;
+  document.getElementById('cet1Base').style.width = basePct + '%';
+  document.getElementById('cet1Stressed').style.width = Math.max(0, stressPct) + '%';
+  document.getElementById('cet1Thresh').style.left = threshPct + '%';
+}
+
+function renderCet1Grid(res, inp) {
+  const c = document.getElementById('cet1Grid');
+  c.innerHTML = '';
+  const cells = [
+    { l:'Base CET1 Ratio',    v: pct(res.cet1Base*100,2),     s:'Pre-stress',    cls: res.cet1Base*100 >= inp.minimum ? 'success':'error' },
+    { l:'Stressed CET1 Ratio',v: pct(res.cet1Stressed*100,2), s:'Post-stress',   cls: res.cet1Stressed*100 >= inp.minimum ? 'success': res.cet1Stressed*100 >= inp.minimum-2 ? 'warn':'error' },
+    { l:'Headroom (Base)',    v: Math.round(res.headroomBpsBase) + ' bps',     s:'Over reg. min', cls: res.headroomBpsBase > 100 ? 'success':'warn' },
+    { l:'Headroom (Stress)',  v: Math.round(res.headroomBpsStressed) + ' bps', s:'Over reg. min', cls: res.headroomBpsStressed > 50 ? 'success': res.headroomBpsStressed > -100 ? 'warn':'error' },
+    { l:'Expected Loss Δ',    v: fmtK(res.elDelta),         s:'Stress – Base ECL', cls: 'warn' }
+  ];
+  for (const x of cells) {
+    const el = document.createElement('div');
+    el.className = 'diag-cell';
+    el.innerHTML = `<div class="diag-label">${x.l}</div><div class="diag-val ${x.cls}">${x.v}</div><div class="diag-sub">${x.s}</div>`;
+    c.appendChild(el);
+  }
+}
+
+function renderRaroc(res, inp) {
+  const c = document.getElementById('rarocGrid');
+  c.innerHTML = '';
+  const cards = [
+    { hdr: 'Current Loan Yield',  val: pct(inp.rate), sub: 'Contractual gross', cls: 'ok' },
+    { hdr: 'Stressed Break-Even Rate', val: pct(res.breakevenRate, 2), sub: 'Covers EL + CoC', cls: res.breakevenRate < inp.rate ? 'ok' : res.breakevenRate < inp.rate*1.3 ? 'warn' : 'err' },
+    { hdr: 'Pricing Gap (bps)',  val: Math.round((res.breakevenRate - inp.rate)*100) + ' bps', sub: 'Repricing required', cls: (res.breakevenRate - inp.rate) <= 0 ? 'ok' : (res.breakevenRate - inp.rate) < 1.5 ? 'warn' : 'err' },
+    { hdr: 'Stressed RAROC',     val: pct(res.raroc, 1), sub: 'vs. 15% hurdle', cls: res.raroc >= 15 ? 'ok' : res.raroc >= 8 ? 'warn' : 'err' },
+    { hdr: 'Required Yield (stress)', val: pct(res.stressedYieldReq, 2), sub: 'EL + capital charge', cls: 'warn' }
+  ];
+  for (const x of cards) {
+    const el = document.createElement('div');
+    el.className = 'raroc-card ' + x.cls;
+    el.innerHTML = `<h5>${x.hdr}</h5><div class="raroc-val ${x.cls}">${x.val}</div><div class="raroc-sub">${x.sub}</div>`;
+    c.appendChild(el);
+  }
+}
+
+function renderMatrix(res) {
+  const tbody = document.querySelector('#matrixTable tbody');
+  tbody.innerHTML = '';
+  const labels = ['Stage 1', 'Stage 2', 'Stage 3'];
+  res.stressedTM.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    const rowSum = row.reduce((a,b)=>a+b,0);
+    tr.innerHTML = `<td>${labels[i]}</td>
+      <td class="r s1">${pct(row[0]*100,1)}</td>
+      <td class="r s2">${pct(row[1]*100,1)}</td>
+      <td class="r s3">${pct(row[2]*100,1)}</td>
+      <td class="r">${pct(rowSum*100,1)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  const c = document.getElementById('iframsGrid');
+  c.innerHTML = '';
+  const cells = [
+    { l:'Stage 1 → 2 Migration', v: pct(res.stressedTM[0][1]*100,1), s:'12-mo to lifetime ECL', cls: 'warn' },
+    { l:'Stage 2 → 3 Migration', v: pct(res.stressedTM[1][2]*100,1), s:'Lifetime to default',  cls: 'error' },
+    { l:'Stressed Stage 3 Pool', v: fmtK(res.stressedStages.s3), s:'Defaulted exposures', cls: 'error' },
+    { l:'Base ECL (total)',      v: fmtK(res.baseEclTotal),        s:'Pre-stress',  cls: 'success' },
+    { l:'Stressed ECL (total)',  v: fmtK(res.stressEclTotal),      s:'Post-stress', cls: 'warn' }
+  ];
+  for (const x of cells) {
+    const el = document.createElement('div');
+    el.className = 'diag-cell';
+    el.innerHTML = `<div class="diag-label">${x.l}</div><div class="diag-val ${x.cls}">${x.v}</div><div class="diag-sub">${x.s}</div>`;
+    c.appendChild(el);
+  }
+}
+
+// ============== RUN ==============
+function run() {
+  const inp = readInputs();
+  const res = compute(inp);
+  renderRwa(res);
+  renderCet1Bar(res, inp);
+  renderCet1Grid(res, inp);
+  renderRaroc(res, inp);
+  renderMatrix(res);
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  lastResult = { inp, res };
+}
+
+function applyScenario(name) {
+  const s = SCENARIOS[name];
+  if (!s) return;
+  document.getElementById('inp-shock').value = s.shock;
+  document.getElementById('inp-lgdshock').value = s.lgdshock;
+  document.getElementById('inp-rate').value = s.rate;
+  // restore default mix
+  for (const k of Object.keys(s.defaults)) {
+    const inp = document.querySelector(`input[data-mix="${k}"]`);
+    if (inp) { inp.value = s.defaults[k]; document.getElementById('mixVal-'+k).textContent = s.defaults[k] + '%'; }
+  }
+  refreshMixTotal();
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b.dataset.scenario === name));
+  run();
+}
+
+// ============== EXPORTS ==============
+function exportPolicyMandate() {
+  if (!lastResult) { alert('Run the stress lab first.'); return; }
+  const { inp, res } = lastResult;
+  const mandate = {
+    mandate_schema: '@postoaklabs.com/basel-iv-stress-v1',
+    mandate_id: uuid4(),
+    schema_version: '1.0.0',
+    issued_at: new Date().toISOString(),
+    issued_by: 'Post Oak Labs · Basel IV Capital Stress Lab',
+    bank_inputs: {
+      loan_book_usd: inp.book,
+      cet1_capital_usd: inp.cet1,
+      regulatory_min_pct: inp.minimum,
+      pd_shock_multiplier: inp.shock,
+      lgd_shock_pp: inp.lgdshock,
+      gross_yield_pct: inp.rate,
+      portfolio_mix: inp.mix
+    },
+    rwa_table: res.rows.map(r => ({
+      asset_class: r.cls.id,
+      exposure_usd: Math.round(r.exposure),
+      base_risk_weight_pct: +(r.baseRW*100).toFixed(2),
+      stressed_risk_weight_pct: +(r.stressedRW*100).toFixed(2),
+      base_rwa_usd: Math.round(r.baseRWA),
+      stressed_rwa_usd: Math.round(r.stressedRWA)
+    })),
+    capital_ratios: {
+      base_cet1_pct: +(res.cet1Base*100).toFixed(2),
+      stressed_cet1_pct: +(res.cet1Stressed*100).toFixed(2),
+      headroom_base_bps: Math.round(res.headroomBpsBase),
+      headroom_stressed_bps: Math.round(res.headroomBpsStressed),
+      regulatory_min_pct: inp.minimum
+    },
+    expected_loss: {
+      base_el_usd: Math.round(res.baseEL),
+      stress_el_usd: Math.round(res.stressEL),
+      el_delta_usd: Math.round(res.elDelta)
+    },
+    raroc_breakeven: {
+      stressed_raroc_pct: +res.raroc.toFixed(2),
+      breakeven_yield_pct: +res.breakevenRate.toFixed(2),
+      required_yield_pct: +res.stressedYieldReq.toFixed(2),
+      pricing_gap_bps: Math.round((res.breakevenRate - inp.rate)*100)
+    },
+    ifrs9_stage_migration: {
+      stressed_transition_matrix: res.stressedTM.map(row => row.map(v => +v.toFixed(4))),
+      stressed_stages_usd: {
+        stage1: Math.round(res.stressedStages.s1),
+        stage2: Math.round(res.stressedStages.s2),
+        stage3: Math.round(res.stressedStages.s3)
+      },
+      base_ecl_usd: Math.round(res.baseEclTotal),
+      stress_ecl_usd: Math.round(res.stressEclTotal)
+    },
+    obligations: [
+      'Maintain CET1 ≥ regulatory minimum (incl. capital conservation buffer) through the modelled scenario.',
+      'Re-run stress quarterly with updated portfolio mix and macro shock assumptions.',
+      'Re-price (or exit) facilities whose stressed RAROC falls below the 15% hurdle for two consecutive quarters.',
+      'Reclassify Stage 1 → Stage 2 facilities at the 30-day past-due or significant-increase-in-credit-risk trigger (IFRS 9 §5.5).',
+      'Report capital headroom < 100 bps to the board risk committee within 5 business days.'
+    ],
+    audit_signature: {
+      client_side_executed: true,
+      deterministic_run: true,
+      no_pii_transmitted: true,
+      input_hash: hashStub(JSON.stringify(inp))
+    }
+  };
+  const blob = new Blob([JSON.stringify(mandate, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `basel-iv-stress-mandate-${Date.now()}.policy.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportMarkdown() {
+  if (!lastResult) { alert('Run the stress lab first.'); return; }
+  const { inp, res } = lastResult;
+  const md = [
+    `# Basel IV Capital Stress Lab — Report`,
+    ``,
+    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
+    `**Tool:** Post Oak Labs · Basel IV Capital Stress Lab  `,
+    `**Schema:** \`@postoaklabs.com/basel-iv-stress-v1\``,
+    ``,
+    `## Bank Inputs`,
+    ``,
+    `| Parameter | Value |`,
+    `|-----------|-------|`,
+    `| Loan Book | ${fmt(inp.book)} |`,
+    `| CET1 Capital | ${fmt(inp.cet1)} |`,
+    `| Regulatory Min CET1 | ${pct(inp.minimum)} |`,
+    `| PD Shock | ${inp.shock}× |`,
+    `| LGD Shock Uplift | ${inp.lgdshock} pp |`,
+    `| Gross Yield | ${pct(inp.rate)} |`,
+    ``,
+    `## RWA & Capital`,
+    ``,
+    `| Asset Class | Exposure | Base RW | Stress RW | Base RWA | Stress RWA |`,
+    `|-------------|----------|---------|-----------|----------|------------|`,
+    ...res.rows.map(r => `| ${r.cls.name} | ${fmtK(r.exposure)} | ${pct(r.baseRW*100)} | ${pct(r.stressedRW*100)} | ${fmtK(r.baseRWA)} | ${fmtK(r.stressedRWA)} |`),
+    `| **Total** | ${fmtK(inp.book)} | — | — | **${fmtK(res.baseRWA)}** | **${fmtK(res.stressedRWA)}** |`,
+    ``,
+    `- Base CET1: **${pct(res.cet1Base*100,2)}** (${Math.round(res.headroomBpsBase)} bps headroom)`,
+    `- Stressed CET1: **${pct(res.cet1Stressed*100,2)}** (${Math.round(res.headroomBpsStressed)} bps headroom)`,
+    ``,
+    `## RAROC Break-Even`,
+    ``,
+    `- Stressed RAROC: **${pct(res.raroc,1)}** (vs 15% hurdle)`,
+    `- Break-even yield: **${pct(res.breakevenRate,2)}**`,
+    `- Pricing gap: **${Math.round((res.breakevenRate - inp.rate)*100)} bps**`,
+    ``,
+    `## IFRS 9 Stage Migration`,
+    ``,
+    `Stressed transition matrix (rows = from, cols = to):`,
+    ``,
+    `|     | Stage 1 | Stage 2 | Stage 3 |`,
+    `|-----|---------|---------|---------|`,
+    ...['Stage 1','Stage 2','Stage 3'].map((l,i) => `| ${l} | ${pct(res.stressedTM[i][0]*100,1)} | ${pct(res.stressedTM[i][1]*100,1)} | ${pct(res.stressedTM[i][2]*100,1)} |`),
+    ``,
+    `- Base ECL: **${fmtK(res.baseEclTotal)}**`,
+    `- Stressed ECL: **${fmtK(res.stressEclTotal)}**`,
+    ``,
+    `*© Post Oak Labs · postoaklabs.com · CC BY 4.0*`
+  ].join('\n');
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `basel-iv-stress-report-${Date.now()}.md`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportCsv() {
+  if (!lastResult) { alert('Run the stress lab first.'); return; }
+  const { res } = lastResult;
+  const rows = [['asset_class','exposure_usd','base_rw_pct','stressed_rw_pct','base_rwa_usd','stressed_rwa_usd']];
+  for (const r of res.rows) rows.push([r.cls.id, Math.round(r.exposure), (r.baseRW*100).toFixed(2), (r.stressedRW*100).toFixed(2), Math.round(r.baseRWA), Math.round(r.stressedRWA)]);
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `basel-iv-rwa-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ============== WIRING ==============
+renderMixRows();
+document.getElementById('runBtn').addEventListener('click', run);
+document.getElementById('ap2ExportBtn').addEventListener('click', exportPolicyMandate);
+document.getElementById('mdExportBtn').addEventListener('click', exportMarkdown);
+document.getElementById('csvExportBtn').addEventListener('click', exportCsv);
+document.querySelectorAll('.scenario-btn').forEach(b => b.addEventListener('click', () => applyScenario(b.dataset.scenario)));
+setTimeout(() => applyScenario('moderate'), 60);
+</script>
+</body>
+</html>

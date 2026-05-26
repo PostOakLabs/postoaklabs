@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corridor Liquidity Modeler · LATAM Rails Migration | AINumbers.co</title>
+<!-- Per-demo meta (spec Part 5.1) -->
+<meta name="description" content="LATAM Cono Sur + Andino corridor liquidity modeler: PIX, SPEI, Bre-B, Transferencias 3.0, CCLV, USDC overlay. Browser-based, AP2 liquidity-mandate export, BIS 239 / FRTB framing, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/latam-liquidity-migration-tool.html">
+<meta property="og:title" content="LATAM Corridor Liquidity Migration — Post Oak Labs">
+<meta property="og:description" content="Quantify the Nostro capital you can free by migrating LATAM corridors off SWIFT — sigma * sqrt(t) * Z haircut, deployable yield, AP2 liquidity mandate.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/latam-liquidity-migration-tool.html">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/latam-liquidity-migration-tool.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- POL canonical font stack (spec Part 2.3) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD (spec Part 5.2) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "LATAM Corridor Liquidity Migration",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/latam-liquidity-migration-tool.html",
+  "description": "Treasury-desk modeler quantifying the Nostro capital freed by migrating LATAM corridors (BRL, MXN, COP, CLP, ARS, PEN) off SWIFT to local A2A rails. Sigma * sqrt(t) * Z haircut, deployable yield, AP2 liquidity-mandate export.",
+  "featureList": [
+    "Six-corridor aggregator (BRL, MXN, COP, CLP, ARS, PEN) with active-corridor toggling",
+    "FRTB-aligned 99% / 90-day VaR haircut on freed Nostro balance",
+    "AP2 v1.0 mandate export against @ainumbers.co/liquidity-mandate-v1 schema",
+    "Shareable URL deep-link encoding sigma + active corridors"
+  ],
+  "keywords": "LATAM, corridor liquidity, PIX, SPEI, Bre-B, Transferencias 3.0, CCLV, USDC, Nostro, BIS 239, FRTB, AP2 liquidity mandate, treasury",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-13",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<meta name="description" content="Treasury-desk modeler for the SWIFT → tokenized A2A rails transition across LATAM corridors. Liquidity Waterfall, FX-volatility haircut, risk-weighted return on freed Nostro capital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+/* latin-ext */
+
+/* latin */
+
+</style>
+
+<style>
+:root {
+  --bg:        #080E1A;
+  --bg-2:      #0D1627;
+  --bg-3:      #111E35;
+  --bg-4:      #162340;
+  --deep:      #0D1627;
+  --navy:      #111E35;
+  --panel:     #162340;
+  --border:    #1E2F4A;
+  --border-2:  #263855;
+  --edge:      #1E2F4A;
+  --rim:       #263855;
+  --muted:     #3A5270;
+  --body:      #6888A8;
+  --text:      #A8C4DE;
+  --bright:    #D4E8F8;
+  --white:     #EEF6FD;
+  --teal:      #14B8A6;
+  --teal-lt:   #2DD4BF;
+  --teal-dim:  rgba(20,184,166,.12);
+  --teal-glow: rgba(20,184,166,.06);
+  --gold:      #D4A847;
+  --gold-lt:   #E8C06A;
+  --gold-dim:  rgba(212,168,71,.12);
+  --green:     #22C55E;
+  --green-lt:  #4ADE80;
+  --green-bg:  rgba(34,197,94,.08);
+  --red:       #EF4444;
+  --red-lt:    #F87171;
+  --red-bg:    rgba(239,68,68,.10);
+  --warn:      #F59E0B;
+  --warn-lt:   #FCD34D;
+  --warn-bg:   rgba(245,158,11,.08);
+  --purple:    #9B72F5;
+  --purple-dim:rgba(155,114,245,.12);
+  --accent:    #14B8A6;
+  --accent-lt: #2DD4BF;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Sora', sans-serif; font-weight: 300;
+  line-height: 1.7; font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(20,184,166,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,184,166,.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+.container { max-width: 1480px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── NAV ── */
+nav {
+  padding: 0 2rem; height: 56px;
+  border-bottom: 1px solid var(--edge);
+  background: rgba(8,14,26,.92);
+  position: sticky; top: 0; z-index: 200;
+  backdrop-filter: blur(8px);
+}
+.nav-inner {
+  max-width: 1480px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-mark {
+  width: 22px; height: 22px; border: 1px solid var(--teal);
+  display:grid; place-items:center;
+  font-family:'JetBrains Mono',monospace; font-size:.6rem;
+  color: var(--teal); letter-spacing:-.04em; font-weight:500;
+  background: var(--teal-glow);
+}
+.logo-text { display:flex; flex-direction:column; gap:2px; }
+.logo-name { font-family:'JetBrains Mono',monospace; font-size:.95rem; font-weight:500; color:var(--bright); letter-spacing:-.02em; line-height:1; }
+.logo-ai { color:var(--teal); }
+.logo-co { color:var(--muted); font-size:.8rem; }
+.logo-tag { font-family:'JetBrains Mono',monospace; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); line-height:1; }
+.nav-bc { display:flex; gap:.4rem; align-items:center; font-family:'JetBrains Mono',monospace; font-size:.52rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-left:.5rem; }
+.nav-bc a { color:var(--muted); text-decoration:none; transition:color .15s; }
+.nav-bc a:hover { color:var(--teal-lt); }
+.nav-bc-sep { color:var(--edge); }
+.nav-bc-current { color:var(--teal); }
+.nav-spacer { flex:1; }
+.nav-cluster { display:flex; align-items:center; gap:.75rem; }
+.nav-ts { font-family:'JetBrains Mono',monospace; font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
+.nav-ts .live { color: var(--green-lt); }
+.nav-ts .live::before {
+  content:''; display:inline-block; width:6px; height:6px;
+  background: var(--green-lt); border-radius:50%;
+  margin-right:.35rem; vertical-align:middle;
+  box-shadow: 0 0 8px var(--green-lt);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+.nav-pill {
+  font-family:'JetBrains Mono',monospace; font-size:.55rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--edge);
+  padding:.4rem .8rem; cursor:pointer;
+  background:transparent; transition:all .15s; text-decoration:none;
+}
+.nav-pill:hover { color:var(--teal-lt); border-color:var(--teal); }
+.nav-pill.primary { color: var(--white); background: var(--teal); border-color: var(--teal); }
+.nav-pill.primary:hover { background: var(--teal-lt); border-color: var(--teal-lt); }
+
+/* ── HERO ── */
+.hero { padding: 2.5rem 0 1.75rem; border-bottom: 1px solid var(--edge); position: relative; }
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+}
+.hero-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 3rem; align-items: end; }
+.hero-eyebrow {
+  font-family:'JetBrains Mono',monospace; font-size:.57rem;
+  letter-spacing:.22em; text-transform:uppercase;
+  color:var(--teal-lt); margin-bottom:.9rem;
+  display:flex; align-items:center; gap:.75rem;
+}
+.hero-eyebrow::before { content:''; display:block; width:28px; height:1px; background:var(--teal); }
+.hero h1 { font-size: clamp(1.7rem, 2.7vw, 2.45rem); color: var(--white); margin-bottom: .7rem; letter-spacing:-.005em; }
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub { font-size:.85rem; color:var(--body); line-height:1.85; max-width:660px; }
+.hero-sub code { font-family:'JetBrains Mono',monospace; font-size:.82em; color:var(--teal-lt); }
+
+.desk-card {
+  border:1px solid var(--edge); background: var(--deep);
+  padding: 1.1rem 1.25rem;
+  display:grid; grid-template-columns: 44px 1fr auto; gap: .9rem;
+  align-items:center;
+}
+.desk-avatar {
+  width:44px; height:44px; border:1px solid var(--rim);
+  background: linear-gradient(135deg, var(--bg-4), var(--bg-3));
+  display:grid; place-items:center;
+  font-family:'DM Serif Display',serif; font-size:1.05rem;
+  color: var(--gold-lt);
+}
+.desk-body { min-width:0; }
+.desk-name { font-family:'Sora',sans-serif; font-weight:500; color: var(--white); font-size:.86rem; line-height:1.2; }
+.desk-role { font-family:'JetBrains Mono',monospace; font-size:.54rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:.25rem; }
+.desk-bank { font-size:.72rem; color: var(--body); margin-top:.4rem; }
+.desk-bank b { color: var(--bright); font-weight:500; }
+.desk-meta { display:flex; flex-direction:column; align-items:flex-end; gap:.3rem; font-family:'JetBrains Mono',monospace; font-size:.5rem; color: var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+.desk-meta .gold { color: var(--gold-lt); }
+
+/* ── KPI STRIP ── */
+.kpi-strip {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+  background: var(--edge); border: 1px solid var(--edge);
+  margin: 1.75rem 0 0;
+}
+.kpi { background: var(--deep); padding: 1rem 1.1rem; position: relative; }
+.kpi-label {
+  font-family:'JetBrains Mono',monospace; font-size:.46rem;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+  margin-bottom:.55rem;
+}
+.kpi-val {
+  font-family:'DM Serif Display', serif; font-size:1.7rem;
+  color: var(--bright); line-height:1;
+  display:flex; align-items:baseline; gap:.35rem;
+}
+.kpi-val .ccy { font-family:'JetBrains Mono',monospace; font-size:.55rem; color: var(--muted); letter-spacing:.12em; }
+.kpi-val.green { color: var(--green-lt); }
+.kpi-val.gold { color: var(--gold-lt); }
+.kpi-val.teal { color: var(--teal-lt); }
+.kpi-val.red { color: var(--red-lt); }
+.kpi-sub {
+  font-family:'JetBrains Mono',monospace; font-size:.5rem;
+  color: var(--body); margin-top:.45rem; letter-spacing:.04em;
+}
+.kpi-sub .up { color: var(--green-lt); }
+.kpi-sub .down { color: var(--red-lt); }
+
+/* ── MAIN GRID ── */
+.dashboard { padding: 1.75rem 0 4rem; display:grid; gap: 1.25rem; }
+
+.panel {
+  background: var(--deep); border: 1px solid var(--edge);
+}
+.panel-head {
+  padding: .9rem 1.25rem;
+  border-bottom: 1px solid var(--edge);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; background: var(--bg-2);
+}
+.panel-title {
+  font-family:'JetBrains Mono',monospace; font-size: .58rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); display:flex; align-items:center; gap:.6rem;
+}
+.panel-title .num {
+  display:inline-grid; place-items:center; width:18px; height:18px;
+  border:1px solid var(--rim); color: var(--teal-lt);
+  font-size:.55rem; letter-spacing:0;
+}
+.panel-title small {
+  color: var(--muted); font-size: .9em; letter-spacing: .1em;
+  margin-left: .5rem;
+}
+.panel-right {
+  display:flex; align-items:center; gap:.5rem;
+  font-family:'JetBrains Mono',monospace; font-size:.5rem;
+  color: var(--muted); letter-spacing:.1em; text-transform:uppercase;
+}
+.panel-right .v { color: var(--teal-lt); }
+
+/* ── CORRIDOR MATRIX ── */
+.matrix-wrap { padding: 0; }
+.matrix {
+  width:100%; border-collapse: collapse;
+  font-family:'JetBrains Mono',monospace; font-size: .7rem;
+}
+.matrix thead th {
+  background: var(--bg-2);
+  font-family:'JetBrains Mono',monospace; font-size: .48rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); font-weight: 500;
+  text-align: left; padding: .7rem 1rem;
+  border-bottom: 1px solid var(--edge);
+}
+.matrix thead th.r { text-align: right; }
+.matrix thead th.c { text-align: center; }
+.matrix tbody tr {
+  border-bottom: 1px solid var(--edge); transition: background .15s;
+}
+.matrix tbody tr:last-child { border-bottom: none; }
+.matrix tbody tr:hover { background: var(--bg-2); }
+.matrix tbody tr.off { opacity: .42; }
+.matrix td { padding: .8rem 1rem; vertical-align: middle; }
+.matrix td.r { text-align: right; }
+.matrix td.c { text-align: center; }
+.corridor-cell { display:flex; align-items:center; gap:.7rem; }
+.flag {
+  width:22px; height:16px; border:1px solid var(--rim); flex-shrink:0;
+  display:grid; place-items:center;
+  font-family:'JetBrains Mono',monospace; font-size:.46rem;
+  color: var(--bright); letter-spacing:.06em; background: var(--bg-3);
+}
+.flag.br { background: linear-gradient(180deg, #4a8a3f 0%, #4a8a3f 33%, #d4a847 33%, #d4a847 66%, #2a5a8a 66%, #2a5a8a 100%); color: var(--white); }
+.flag.mx { background: linear-gradient(90deg, #4a8a4a 0%, #4a8a4a 33%, #f0f0f0 33%, #f0f0f0 66%, #c44 66%, #c44 100%); color: var(--bg); }
+.flag.co { background: linear-gradient(180deg, #f0c244 0%, #f0c244 50%, #2a5a8a 50%, #2a5a8a 75%, #c44 75%, #c44 100%); color: var(--bg); }
+.flag.cl { background: linear-gradient(180deg, #f0f0f0 0%, #f0f0f0 50%, #c44 50%, #c44 100%); color: var(--bg); }
+.flag.ar { background: linear-gradient(180deg, #6fa8d6 0%, #6fa8d6 33%, #f0f0f0 33%, #f0f0f0 66%, #6fa8d6 66%, #6fa8d6 100%); color: var(--bg); }
+.flag.pe { background: linear-gradient(90deg, #c44 0%, #c44 33%, #f0f0f0 33%, #f0f0f0 66%, #c44 66%, #c44 100%); color: var(--bg); }
+.cor-name { font-family:'Sora',sans-serif; color: var(--bright); font-size: .82rem; font-weight: 400; }
+.cor-name b { color: var(--gold-lt); font-weight: 500; }
+.cor-rail {
+  font-family:'JetBrains Mono',monospace; font-size: .52rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); margin-top: .15rem;
+}
+.cor-rail .live { color: var(--green-lt); }
+
+.amt { color: var(--bright); font-family:'JetBrains Mono',monospace; font-size:.72rem; }
+.amt.muted { color: var(--muted); }
+.amt.red { color: var(--red-lt); }
+.amt.green { color: var(--green-lt); }
+.amt.gold { color: var(--gold-lt); }
+
+.pill {
+  display:inline-flex; align-items:center; gap:.35rem;
+  font-family:'JetBrains Mono',monospace; font-size:.48rem;
+  letter-spacing:.12em; text-transform:uppercase;
+  padding:.28rem .55rem; border:1px solid;
+}
+.pill.live { color: var(--green-lt); border-color: rgba(34,197,94,.4); background: var(--green-bg); }
+.pill.pilot { color: var(--warn-lt); border-color: rgba(245,158,11,.4); background: var(--warn-bg); }
+.pill.legacy { color: var(--muted); border-color: var(--edge); }
+.pill.target { color: var(--teal-lt); border-color: rgba(20,184,166,.4); background: var(--teal-dim); }
+.pill .dot { width:6px; height:6px; border-radius:50%; }
+.pill.live .dot { background: var(--green-lt); box-shadow: 0 0 8px var(--green-lt); }
+.pill.pilot .dot { background: var(--warn-lt); }
+.pill.legacy .dot { background: var(--muted); }
+.pill.target .dot { background: var(--teal-lt); }
+
+/* corridor toggle */
+.tog {
+  position: relative; display: inline-block;
+  width: 32px; height: 18px;
+  background: var(--bg-3); border:1px solid var(--rim);
+  cursor: pointer; transition: background .15s;
+}
+.tog::after {
+  content:''; position:absolute; top: 1px; left: 1px;
+  width: 14px; height: 14px; background: var(--muted);
+  transition: all .15s;
+}
+.tog.on { background: var(--teal-dim); border-color: var(--teal); }
+.tog.on::after { left: 15px; background: var(--teal-lt); box-shadow: 0 0 6px var(--teal-lt); }
+
+/* vol mini-bar in matrix */
+.vol-mini {
+  display:flex; align-items:center; gap:.5rem;
+  justify-content: flex-end;
+}
+.vol-mini .bar {
+  width: 56px; height: 4px; background: var(--bg-3); border:1px solid var(--edge);
+  position: relative;
+}
+.vol-mini .fill { position:absolute; left:0; top:0; bottom:0; background: var(--teal-lt); }
+.vol-mini .fill.warn { background: var(--warn-lt); }
+.vol-mini .fill.red { background: var(--red-lt); }
+.vol-mini .num { font-size:.65rem; color: var(--bright); min-width: 32px; text-align: right; }
+
+/* matrix totals row */
+.matrix tfoot tr { background: var(--bg-2); border-top: 2px solid var(--teal); }
+.matrix tfoot td {
+  font-family:'JetBrains Mono',monospace; font-size: .56rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); padding: .8rem 1rem;
+}
+.matrix tfoot td.r { text-align: right; }
+.matrix tfoot td .big {
+  font-family:'DM Serif Display', serif;
+  text-transform: none; letter-spacing: 0;
+  font-size: 1rem; color: var(--white);
+  margin-left: .5rem;
+}
+.matrix tfoot td .big.green { color: var(--green-lt); }
+.matrix tfoot td .big.gold { color: var(--gold-lt); }
+
+/* ── WATERFALL ── */
+.waterfall-grid { display: grid; grid-template-columns: 1fr 320px; gap: 0; background: var(--edge); }
+.waterfall-grid > * { background: var(--deep); }
+.waterfall-chart { padding: 1.25rem 1rem 1.5rem; position: relative; min-height: 460px; }
+.wf-legend {
+  display:flex; gap: 1rem; flex-wrap: wrap; align-items:center;
+  padding: 0 .25rem 1rem;
+  font-family:'JetBrains Mono',monospace; font-size:.5rem;
+  letter-spacing:.1em; text-transform:uppercase;
+  color: var(--muted);
+}
+.wf-legend .sw { display:inline-block; width:11px; height:11px; margin-right:.4rem; vertical-align:-2px; border:1px solid; }
+.sw.start { background: rgba(212,168,71,.18); border-color: var(--gold-lt); }
+.sw.drop { background: rgba(20,184,166,.18); border-color: var(--teal-lt); }
+.sw.retain { background: rgba(155,114,245,.18); border-color: var(--purple); }
+.sw.end { background: rgba(34,197,94,.18); border-color: var(--green-lt); }
+
+.waterfall-svg { width: 100%; height: 420px; display: block; }
+.wf-bar { transition: opacity .2s; }
+.wf-bar:hover { opacity: .85; cursor: default; }
+.wf-axis text {
+  font-family:'JetBrains Mono',monospace; font-size: 9px;
+  fill: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+}
+.wf-axis line { stroke: var(--edge); stroke-width: 1; }
+.wf-axis line.zero { stroke: var(--rim); stroke-dasharray: 2 3; }
+.wf-label-cat {
+  font-family:'JetBrains Mono',monospace; font-size: 9px;
+  fill: var(--body); letter-spacing: .8px; text-transform: uppercase;
+}
+.wf-label-rail {
+  font-family:'JetBrains Mono',monospace; font-size: 8px;
+  fill: var(--muted); letter-spacing: .8px; text-transform: uppercase;
+}
+.wf-label-val {
+  font-family:'JetBrains Mono',monospace; font-size: 10px;
+  fill: var(--bright); font-weight: 500;
+}
+.wf-label-val.green { fill: var(--green-lt); }
+.wf-label-val.gold { fill: var(--gold-lt); }
+.wf-label-val.teal { fill: var(--teal-lt); }
+.wf-connector { stroke: var(--rim); stroke-width: 1; stroke-dasharray: 2 3; fill: none; }
+
+/* waterfall side legend / breakdown */
+.wf-side { padding: 1.25rem 1.25rem 1.5rem; border-left: 1px solid var(--edge); display: flex; flex-direction: column; gap: 1rem; }
+.wf-tally { display:flex; flex-direction: column; gap: .55rem; }
+.wf-tally-row { display:grid; grid-template-columns: 1fr auto; gap: .5rem; align-items:baseline; }
+.wf-tally-row .lbl { font-family:'JetBrains Mono',monospace; font-size: .52rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.wf-tally-row .val { font-family:'JetBrains Mono',monospace; font-size: .78rem; color: var(--bright); }
+.wf-tally-row .val.green { color: var(--green-lt); }
+.wf-tally-row .val.gold { color: var(--gold-lt); }
+.wf-tally-row .val.teal { color: var(--teal-lt); }
+.wf-tally-row .val.red { color: var(--red-lt); }
+.wf-tally-row.big .lbl { color: var(--text); letter-spacing: .14em; }
+.wf-tally-row.big .val { font-family:'DM Serif Display', serif; font-size: 1.4rem; line-height: 1; }
+.wf-tally-divider { height:1px; background: var(--edge); }
+.wf-headline {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--teal); background: var(--teal-glow);
+  display:flex; flex-direction: column; gap:.35rem;
+}
+.wf-headline-lbl { font-family:'JetBrains Mono',monospace; font-size:.5rem; letter-spacing:.16em; text-transform:uppercase; color: var(--teal-lt); }
+.wf-headline-val { font-family:'DM Serif Display', serif; font-size: 1.95rem; color: var(--white); line-height: 1; }
+.wf-headline-val .ccy { font-family:'JetBrains Mono',monospace; font-size:.7rem; color: var(--teal-lt); margin-left:.4rem; }
+.wf-headline-sub { font-family:'JetBrains Mono',monospace; font-size:.55rem; letter-spacing:.06em; color: var(--body); }
+.wf-headline-sub b { color: var(--green-lt); }
+
+/* ── FX VOL CONTROL ── */
+.fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: var(--edge); }
+.fx-grid > * { background: var(--deep); }
+
+.fx-slider-panel { padding: 1.5rem 1.5rem 1.75rem; }
+.fx-section-label {
+  font-family:'JetBrains Mono',monospace; font-size:.5rem;
+  letter-spacing:.18em; text-transform:uppercase; color: var(--muted);
+  margin-bottom: .5rem;
+}
+.fx-section-title {
+  font-family:'DM Serif Display', serif; font-size: 1.05rem;
+  color: var(--white); margin-bottom: .25rem;
+}
+.fx-section-sub {
+  font-size:.74rem; color: var(--body);
+  margin-bottom: 1.5rem; line-height: 1.65; max-width: 480px;
+}
+.fx-section-sub b { color: var(--bright); font-weight: 500; }
+
+.slider-block { padding: .25rem 0 .5rem; }
+.slider-head {
+  display:flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: .9rem;
+}
+.slider-name { font-family:'JetBrains Mono',monospace; font-size:.62rem; letter-spacing:.08em; color: var(--bright); }
+.slider-name small { color: var(--muted); margin-left:.4rem; letter-spacing:.04em; }
+.slider-vals { display:flex; align-items: baseline; gap:.6rem; font-family:'JetBrains Mono',monospace; }
+.slider-vals .now { font-family:'DM Serif Display', serif; font-size: 1.65rem; color: var(--gold-lt); line-height: 1; }
+.slider-vals .unit { font-size:.55rem; color: var(--muted); letter-spacing:.12em; text-transform:uppercase; }
+
+.slider-track-wrap { position: relative; padding: .25rem 0 .75rem; }
+.slider-track {
+  width: 100%; height: 6px;
+  background: linear-gradient(90deg, var(--green) 0%, var(--green) 25%, var(--warn) 50%, var(--warn) 60%, var(--red) 85%, var(--red) 100%);
+  position: relative; opacity: .25;
+  border: 1px solid var(--edge);
+}
+.slider-ticks {
+  position: absolute; top: -2px; left: 0; right: 0;
+  display: flex; justify-content: space-between; pointer-events: none;
+}
+.slider-tick { width: 1px; height: 10px; background: var(--rim); }
+
+input[type="range"].fxr {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 28px; background: transparent;
+  position: relative; margin-top: -22px; z-index: 2; cursor: pointer;
+  display: block;
+}
+input[type="range"].fxr::-webkit-slider-runnable-track { height: 6px; background: transparent; border: none; }
+input[type="range"].fxr::-moz-range-track { height: 6px; background: transparent; border: none; }
+input[type="range"].fxr::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px;
+  background: var(--bg); border: 2px solid var(--gold-lt);
+  margin-top: -7px; cursor: grab;
+  box-shadow: 0 0 12px var(--gold-dim), inset 0 0 0 2px var(--bg);
+  transition: transform .12s;
+}
+input[type="range"].fxr::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+input[type="range"].fxr::-moz-range-thumb {
+  width: 14px; height: 14px;
+  background: var(--bg); border: 2px solid var(--gold-lt);
+  box-shadow: 0 0 12px var(--gold-dim);
+  cursor: grab;
+}
+
+.slider-band-labels {
+  display: flex; justify-content: space-between; margin-top: .35rem;
+  font-family:'JetBrains Mono',monospace; font-size: .46rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.slider-band-labels span.cur { color: var(--gold-lt); }
+.slider-band-labels .v { color: var(--body); margin-left:.3rem; }
+
+.corridor-vols { margin-top: 1.5rem; display: flex; flex-direction: column; gap: .55rem; }
+.cv-row { display:grid; grid-template-columns: 92px 1fr 56px; gap:.75rem; align-items: center; }
+.cv-row .name { font-family:'JetBrains Mono',monospace; font-size:.62rem; color: var(--bright); letter-spacing:.04em; }
+.cv-row .name small { color: var(--muted); }
+.cv-row .bar { height: 5px; background: var(--bg-3); border:1px solid var(--edge); position: relative; }
+.cv-row .bar .baseline {
+  position: absolute; top:-2px; bottom:-2px; width: 1px;
+  background: var(--gold-lt); opacity:.6;
+}
+.cv-row .bar .fill { position: absolute; left:0; top:0; bottom:0; background: var(--teal); transition: width .2s, background .2s; }
+.cv-row .bar .fill.warn { background: var(--warn-lt); }
+.cv-row .bar .fill.red { background: var(--red-lt); }
+.cv-row .v { font-family:'JetBrains Mono',monospace; font-size:.65rem; color: var(--bright); text-align: right; }
+
+/* ── RISK RETURN PANEL ── */
+.return-panel { padding: 1.5rem 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem; }
+.return-headline {
+  border: 1px solid var(--gold); background: var(--gold-dim);
+  padding: 1.4rem 1.5rem; position: relative;
+  display: flex; flex-direction: column; gap: .45rem;
+}
+.return-headline::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--gold-lt);
+}
+.return-headline .lbl {
+  font-family:'JetBrains Mono',monospace; font-size:.52rem;
+  letter-spacing:.18em; text-transform:uppercase; color: var(--gold-lt);
+}
+.return-headline .val {
+  font-family:'DM Serif Display', serif; font-size: 2.6rem;
+  color: var(--white); line-height: 1;
+  display: flex; align-items: baseline; gap: .5rem;
+}
+.return-headline .val .ccy { font-family:'JetBrains Mono',monospace; font-size: .85rem; color: var(--gold-lt); }
+.return-headline .delta {
+  font-family:'JetBrains Mono',monospace; font-size:.6rem;
+  letter-spacing:.06em; color: var(--green-lt);
+  display:flex; align-items: center; gap: .5rem;
+}
+.return-headline .delta .pct { color: var(--gold-lt); font-size: .9rem; }
+
+.return-stack {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--edge); border: 1px solid var(--edge);
+}
+.return-stack > div { background: var(--bg-2); padding: .9rem 1rem; }
+.return-stack .stk-lbl { font-family:'JetBrains Mono',monospace; font-size:.46rem; letter-spacing:.16em; text-transform:uppercase; color: var(--muted); margin-bottom:.45rem; }
+.return-stack .stk-val { font-family:'DM Serif Display', serif; font-size: 1.4rem; color: var(--bright); line-height: 1; }
+.return-stack .stk-val.green { color: var(--green-lt); }
+.return-stack .stk-val.red { color: var(--red-lt); }
+.return-stack .stk-sub { font-family:'JetBrains Mono',monospace; font-size:.55rem; color: var(--body); margin-top:.3rem; letter-spacing:.04em; }
+
+/* return formula */
+.return-formula {
+  border: 1px dashed var(--edge);
+  padding: 1rem 1.1rem;
+  font-family:'JetBrains Mono',monospace; font-size: .68rem;
+  color: var(--body); line-height: 1.85;
+}
+.return-formula .v { color: var(--bright); }
+.return-formula .op { color: var(--muted); margin: 0 .25rem; }
+.return-formula .out { color: var(--gold-lt); }
+.return-formula .lbl { color: var(--muted); font-size: .5rem; letter-spacing: .14em; text-transform: uppercase; display: block; margin-bottom: .6rem; }
+
+/* curve mini */
+.return-curve { padding: 0; }
+.return-curve svg { width: 100%; height: 100%; }
+.curve-axis text { font-family:'JetBrains Mono',monospace; font-size: 8px; fill: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+.curve-axis line { stroke: var(--edge); stroke-width: 1; }
+.curve-line { fill: none; stroke: var(--gold-lt); stroke-width: 1.5; }
+.curve-area { fill: url(#curveGrad); opacity: .35; }
+.curve-marker { fill: var(--gold-lt); stroke: var(--bg); stroke-width: 2; }
+.curve-tooltip { fill: var(--bg-3); stroke: var(--gold-lt); }
+.curve-tooltip-txt { fill: var(--white); font-family:'JetBrains Mono',monospace; font-size: 10px; }
+
+/* ── ROADMAP ── */
+.roadmap-wrap { padding: 1.5rem 1.5rem 1.75rem; }
+.roadmap-grid {
+  display:grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--edge); border: 1px solid var(--edge);
+  margin-top: 1rem;
+}
+.rm-phase { background: var(--bg-2); padding: 1.2rem 1.15rem; position: relative; min-height: 220px; }
+.rm-phase.done { background: rgba(34,197,94,.04); }
+.rm-phase.active { background: rgba(20,184,166,.05); }
+.rm-phase.active::before {
+  content:''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--teal-lt); box-shadow: 0 0 12px var(--teal-lt);
+}
+.rm-num {
+  font-family:'JetBrains Mono',monospace; font-size:.5rem;
+  letter-spacing:.18em; text-transform:uppercase;
+  color: var(--muted); margin-bottom: .5rem;
+}
+.rm-num .check { color: var(--green-lt); margin-right: .3rem; }
+.rm-num .act { color: var(--teal-lt); margin-right: .3rem; }
+.rm-title { font-family:'DM Serif Display', serif; font-size: 1rem; color: var(--white); margin-bottom: .4rem; }
+.rm-window { font-family:'JetBrains Mono',monospace; font-size:.52rem; color: var(--gold-lt); letter-spacing: .1em; margin-bottom: .8rem; }
+.rm-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+.rm-list li { font-size: .72rem; color: var(--body); padding-left: 1rem; position: relative; line-height: 1.55; }
+.rm-list li::before { content: '·'; color: var(--teal); position: absolute; left: .3rem; top: 0; }
+.rm-list li.done { color: var(--muted); }
+.rm-list li.done::before { content: '✓'; color: var(--green-lt); font-size: .65em; top: .15rem; }
+
+/* footer */
+.foot { padding: 2rem 0 3rem; border-top: 1px solid var(--edge); margin-top: 1.5rem; }
+.foot-inner { display:flex; justify-content:space-between; align-items:center; gap: 2rem; flex-wrap: wrap; }
+.foot-note { font-family:'JetBrains Mono',monospace; font-size:.5rem; letter-spacing:.12em; text-transform:uppercase; color: var(--muted); line-height: 1.7; }
+.foot-note b { color: var(--teal-lt); }
+.foot-links { display:flex; gap: 1.25rem; font-family:'JetBrains Mono',monospace; font-size:.52rem; letter-spacing:.14em; text-transform:uppercase; color: var(--body); }
+.foot-links a { color: var(--body); text-decoration: none; transition: color .15s; }
+.foot-links a:hover { color: var(--teal-lt); }
+
+@media (max-width: 1100px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .waterfall-grid, .fx-grid { grid-template-columns: 1fr; }
+  .roadmap-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+<style id="v6-wrapper-css">
+:root {
+  --pol-ink: #050c15;
+  --pol-deep: #0a1628;
+  --pol-edge: #1e3454;
+  --pol-body: #7090b0;
+  --pol-accent: #2a7fc0;
+  --pol-accent-lt: #4a9fdf;
+  --pol-gold: #c09040;
+  --showcase-bg: #ffffff;
+  --showcase-bg-soft: #fafbfc;
+  --showcase-text: #0a1828;
+  --showcase-text-muted: #6a7a8a;
+  --showcase-surface: #ffffff;
+  --showcase-border: #e6e8eb;
+  --showcase-accent: var(--pol-accent);
+  --showcase-gold: var(--pol-gold);
+  --showcase-success: #10b981;
+  --showcase-warn: #f59e0b;
+  --showcase-error: #dc2626;
+  --showcase-heading-font: 'DM Serif Display', serif;
+  --showcase-body-font: 'DM Sans', sans-serif;
+  --showcase-mono-font: 'JetBrains Mono', monospace;
+}
+body {
+  background: var(--pol-ink) !important;
+  background-image: none !important;
+  color: var(--pol-body) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+/* DESCENDANT hide selectors (per memory) */
+nav:not(.pol-nav) { display: none !important; }
+footer:not(.pol-footer) { display: none !important; }
+.lang-bar { display: none !important; }
+
+/* POL nav */
+nav.pol-nav {
+  background: var(--pol-ink);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--pol-gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a { color: var(--pol-body); text-decoration: none; font-size: 0.86rem; }
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--pol-accent-lt); }
+nav.pol-nav .nav-links a.nav-cta { background: var(--pol-accent); color: #fff !important; padding: 0.4rem 0.95rem; border-radius: 4px; }
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--pol-accent-lt); }
+
+.showcase-header-strip {
+  background: var(--pol-deep);
+  border-top: 1px solid var(--pol-edge);
+  border-bottom: 1px solid var(--pol-edge);
+  padding: 0.85rem 0;
+  color: var(--pol-body);
+}
+.showcase-header-strip .strip-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 1.5rem; flex-wrap: wrap; font-size: 0.875rem;
+}
+.showcase-header-strip .strip-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.showcase-header-strip .strip-eyebrow {
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.7rem; color: var(--pol-gold); font-weight: 500;
+}
+.showcase-header-strip .strip-title { font-weight: 500; color: #fff; }
+.showcase-header-strip .strip-actions a {
+  color: var(--pol-accent-lt); text-decoration: none;
+  margin-left: 1.25rem; font-size: 0.85rem;
+}
+.showcase-header-strip .strip-actions a:hover { color: #fff; }
+
+/* Light canvas — rebind demo dark tokens */
+main.demo-canvas {
+  background: var(--showcase-bg);
+  color: var(--showcase-text);
+  font-family: var(--showcase-body-font);
+  max-width: 1440px;
+  margin: 2rem auto;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 0 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+  --bg: var(--showcase-bg);
+  --bg-2: var(--showcase-bg-soft);
+  --bg-3: #f4f5f7;
+  --bg-4: #ebedef;
+  --deep: var(--showcase-bg-soft);
+  --navy: #f4f5f7;
+  --panel: #ebedef;
+  --border: var(--showcase-border);
+  --border-2: #d0d4d8;
+  --edge: var(--showcase-border);
+  --rim: #d0d4d8;
+  --muted: var(--showcase-text-muted);
+  --body: var(--showcase-text-muted);
+  --text: var(--showcase-text);
+  --bright: #0a1828;
+  --white: #0a1828;
+  --teal: var(--showcase-accent);
+  --teal-lt: var(--showcase-accent);
+  --teal-dim: rgba(42,127,192,0.10);
+  --teal-glow: rgba(42,127,192,0.06);
+  --accent: var(--showcase-accent);
+  --accent-lt: var(--showcase-accent);
+  --gold-dim: rgba(192,144,64,0.10);
+  --green-bg: rgba(16,185,129,0.10);
+  --red-bg: rgba(220,38,38,0.10);
+  --warn-bg: rgba(245,158,11,0.10);
+  --purple-dim: rgba(155,114,245,0.10);
+}
+main.demo-canvas .canvas-inner { padding: 0; }
+
+.pii-banner {
+  background: rgba(42,127,192,0.04);
+  border: 1px solid rgba(42,127,192,0.15);
+  padding: 0.7rem 1rem;
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--showcase-text-muted);
+  margin: 1.25rem auto 0;
+  border-radius: 4px;
+  max-width: calc(1440px - 56px);
+  box-sizing: border-box;
+}
+
+/* BIS 239 callout */
+.bis-callout {
+  background: rgba(42,127,192,0.04);
+  border: 1px solid rgba(42,127,192,0.25);
+  border-left: 4px solid var(--showcase-accent);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto 0;
+  border-radius: 3px;
+  color: var(--showcase-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  max-width: calc(1440px - 56px);
+  box-sizing: border-box;
+}
+.bis-callout .bis-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--showcase-accent);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.bis-callout .bis-cite {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  color: var(--showcase-text-muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.value-at-risk {
+  background: var(--showcase-bg-soft);
+  border-left: 4px solid var(--showcase-gold);
+  padding: 1rem 1.25rem;
+  margin: 1rem auto 1.5rem;
+  max-width: calc(1440px - 56px);
+  border-radius: 2px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--showcase-text-muted);
+  box-sizing: border-box;
+}
+.value-at-risk .var-eyebrow {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--showcase-gold);
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+}
+.value-at-risk .var-figure {
+  font-family: var(--showcase-heading-font);
+  font-size: 1.1rem;
+  color: var(--showcase-text);
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
+}
+.value-at-risk .var-body { margin-bottom: 0.45rem; }
+.value-at-risk .var-cite { font-size: 0.7rem; color: var(--showcase-text-muted); }
+.value-at-risk .var-cite small { font-family: var(--showcase-mono-font); letter-spacing: 0.04em; }
+
+.results-export-row {
+  display: flex; flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: var(--showcase-bg-soft);
+  border: 1px solid var(--showcase-border);
+  border-radius: 4px;
+  max-width: calc(1440px - 56px);
+  margin: 1.5rem auto 2rem;
+  box-sizing: border-box;
+}
+.results-export-row .export-label {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--showcase-text-muted);
+  flex: 1 1 240px;
+  font-weight: 500;
+}
+.btn-export {
+  background: var(--showcase-accent);
+  color: #fff;
+  padding: 0.7rem 1.15rem;
+  border-radius: 4px;
+  font-family: var(--showcase-mono-font);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer; border: none;
+  transition: background 0.15s, color 0.15s;
+  font-weight: 500;
+}
+.btn-export:hover { background: #1f6ca8; }
+.btn-export.outline {
+  background: transparent;
+  color: var(--showcase-accent);
+  border: 1px solid var(--showcase-accent);
+}
+.btn-export.outline:hover { background: rgba(42,127,192,0.06); }
+.btn-share-feedback {
+  font-family: var(--showcase-mono-font);
+  font-size: 0.65rem;
+  color: var(--showcase-success);
+  margin-left: 0.5rem;
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+.btn-share-feedback.visible { opacity: 1; }
+
+footer.pol-footer {
+  background: var(--pol-ink);
+  border-top: 1px solid var(--pol-edge);
+  padding: 2.25rem 0 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
+footer.pol-footer .footer-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--pol-body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--pol-body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--pol-accent-lt); }
+footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
+footer.pol-footer .footer-links a { color: var(--pol-body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+</head>
+
+
+<body>
+<!-- ═══ POL DARK NAV (spec Part 2.4) ═══ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
+      Post Oak <span>Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ SHOWCASE HEADER STRIP (spec Part 3.1) ═══ -->
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Post Oak Labs Showcase</span>
+      <span class="strip-title">LATAM Corridor Liquidity Migration</span>
+    </div>
+    <div class="strip-actions">
+      <a href="/demos/composer.html">View in Tool Chain →</a>
+      <a href="https://ainumbers.co/tools/a2a-liquidity-simulator.html" target="_blank" rel="noopener">Open Source Engine →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LIGHT DEMO CANVAS ═══ -->
+<main class="demo-canvas">
+<div class="canvas-inner">
+
+<div class="pii-banner">
+  🔒 All inputs are processed locally in your browser. No data is transmitted, stored, or logged. Use synthetic or anonymised corridor figures only.
+</div>
+
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark">AI</div>
+      <div class="logo-text">
+        <span class="logo-name"><span class="logo-ai">AI</span>Numbers<span class="logo-co">.co</span></span>
+        <span class="logo-tag">Post Oak Labs · Treasury Tools</span>
+      </div>
+    </a>
+    <div class="nav-bc">
+      <a href="#">Tools</a>
+      <span class="nav-bc-sep">›</span>
+      <a href="#">Cross-Border</a>
+      <span class="nav-bc-sep">›</span>
+      <span class="nav-bc-current">Corridor Liquidity Modeler</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-cluster">
+      <span class="nav-ts"><span class="live">Live</span> · MTD 12 May 2026 14:38 UTC-5</span>
+      <a class="nav-pill" href="#">Export Brief</a>
+      <a class="nav-pill primary" href="#">Run Scenario</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">Corridor Liquidity Modeler · v4.2 · LATAM Cono Sur + Andino</div>
+        <div class="eyebrow-badges" style="display:flex;flex-wrap:wrap;gap:0.55rem;margin:0.85rem 0 0.5rem;">
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(42,127,192,.32);background:rgba(42,127,192,.04);color:var(--showcase-accent);border-radius:3px;font-weight:500;">Treasury · FX Risk</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid var(--showcase-border);color:var(--showcase-text-muted);border-radius:3px;font-weight:500;">BIS 239 · FRTB</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(192,144,64,.32);background:rgba(192,144,64,.05);color:var(--showcase-gold);border-radius:3px;font-weight:500;">AP2 Liquidity Mandate</span>
+        </div>
+
+        <h1>The capital you're <em>warehousing</em> in Nostro accounts is the price of staying on SWIFT.</h1>
+        <p class="hero-sub">
+          Treasury-desk modeler for the migration off T+1 / T+2 correspondent rails into
+          tokenized A2A: <code>PIX</code> (BR), <code>SPEI</code> + <code>DiMo</code> (MX),
+          <code>Bre-B</code> (CO), <code>Transferencias 3.0</code> (AR), <code>CCLV</code> (CL),
+          and the <code>USDC</code> / <code>EURC</code> stablecoin overlay. Adjust the
+          corridor-FX volatility slider to see how much of the freed Nostro balance survives
+          the haircut as risk-weighted, redeployable capital.
+        </p>
+      </div>
+      <div class="desk-card">
+        <div class="desk-avatar">DR</div>
+        <div class="desk-body">
+          <div class="desk-name">Daniela Restrepo Vélez</div>
+          <div class="desk-role">Tesorera Corporativa · LATAM</div>
+          <div class="desk-bank"><b>Grupo Andino Financiero</b> · Bogotá · 11 jurisdictions</div>
+        </div>
+        <div class="desk-meta">
+          <span>Desk · LATAM-FI-03</span>
+          <span class="gold">Tier-1 · Basel III</span>
+          <span>Quarterly close · Q2'26</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI STRIP -->
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-label">Nostro Balance · Aggregate</div>
+        <div class="kpi-val">487.4<span class="ccy">M USD</span></div>
+        <div class="kpi-sub">across 6 corridors · <span class="down">+ 4.2%</span> qoq</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Avg Settlement Time</div>
+        <div class="kpi-val red">T+1.7</div>
+        <div class="kpi-sub">SWIFT MT103 median · <span class="down">12 lifting fees</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Capital Carry Cost</div>
+        <div class="kpi-val gold">$22.1<span class="ccy">M / yr</span></div>
+        <div class="kpi-sub">trapped × WACC 5.4% + 1.5% FX hedge</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Freed via A2A · Modeled</div>
+        <div class="kpi-val green" id="kpi-freed">425.6<span class="ccy">M USD</span></div>
+        <div class="kpi-sub"><span class="up">+ 87.3%</span> nostro release · instant rails</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Risk-Weighted Return</div>
+        <div class="kpi-val teal" id="kpi-rwr">$19.4<span class="ccy">M / yr</span></div>
+        <div class="kpi-sub">net of FX haircut at <span id="kpi-vol">14.8%</span> blended vol</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BIS 239 CALLOUT (spec Phase 1b Task 4) -->
+<div class="bis-callout" role="note" aria-label="BIS 239 / FRTB framing">
+  <div class="bis-eyebrow">BIS 239 · FRTB framing</div>
+  <p>BCBS 239 (Principles for effective risk data aggregation, January 2013) requires G-SIBs and D-SIBs to maintain granular, timely FX exposure data and the architecture to aggregate it on demand. The haircut method below — <code>sigma × √(t/365) × Z<sub>99</sub></code> with a 90-day holding period — mirrors FRTB Internal Models Approach (IMA) parameters, so the deployable capital figure is directly comparable to the bank's regulatory capital allocation.</p>
+  <div class="bis-cite">Sources: BCBS 239 (2013) · Basel III FRTB final rule (revised, 2019) · 99% confidence (Z = 2.326), 90-day hold, base yield 7.85% short-rate proxy</div>
+</div>
+
+<!-- VALUE-AT-RISK SIDEBAR (spec Part 17) -->
+<aside class="value-at-risk" aria-label="Value at risk — trapped LATAM liquidity">
+  <h4 class="var-eyebrow">Value at risk · trapped LATAM Nostro liquidity</h4>
+  <p class="var-figure">$387M+ trapped across 6 corridors (modeled base)</p>
+  <p class="var-body">Nostro pre-funding across BRL + MXN + COP + CLP + ARS + PEN runs ~$387M base-case (modeled). At a 7.85% short-rate proxy that's ~$30M/yr in foregone deployable yield — before FRTB-style haircut. Manual corridor models cannot satisfy BCBS 239 aggregation and timeliness requirements; this tool produces an auditable AP2 mandate per re-run.</p>
+  <p class="var-cite"><small>BCBS 239 (2013) · Basel III FRTB IMA · LATAM corridor base figures synthesised from IMF WEO 2025 + BIS Triennial 2025</small></p>
+</aside>
+
+
+<!-- ── DASHBOARD ── -->
+<div class="orig-main container dashboard" role="region">
+
+  <!-- (1) CORRIDOR MATRIX -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">
+        <span class="num">01</span> Corridor Posture · USD ↔ LATAM
+        <small>SWIFT correspondent → tokenized A2A overlay</small>
+      </div>
+      <div class="panel-right">
+        Source · <span class="v">SAP Treasury + Visa B2B Connect + CBDC sandbox feeds</span>
+      </div>
+    </div>
+    <div class="matrix-wrap">
+      <table class="matrix" id="matrix">
+        <thead>
+          <tr>
+            <th style="width: 28%;">Corridor</th>
+            <th class="c">Rail Today</th>
+            <th class="c">A2A Target</th>
+            <th class="r">Nostro Trapped</th>
+            <th class="r">Daily Volume</th>
+            <th class="r">30d FX σ</th>
+            <th class="c">Include</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-cor="brl">
+            <td>
+              <div class="corridor-cell">
+                <span class="flag br">BR</span>
+                <div>
+                  <div class="cor-name">USD → <b>BRL</b> · Brasil</div>
+                  <div class="cor-rail">PIX Instant · <span class="live">live 24/7/365</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="c"><span class="pill legacy"><span class="dot"></span>SWIFT MT103</span></td>
+            <td class="c"><span class="pill live"><span class="dot"></span>PIX</span></td>
+            <td class="r"><span class="amt gold">$142.0M</span></td>
+            <td class="r"><span class="amt">$38.4M</span></td>
+            <td class="r">
+              <div class="vol-mini">
+                <div class="bar"><div class="fill warn" style="width: 48%"></div></div>
+                <span class="num">12.4%</span>
+              </div>
+            </td>
+            <td class="c"><span class="tog on" data-tog="brl"></span></td>
+          </tr>
+          <tr data-cor="mxn">
+            <td>
+              <div class="corridor-cell">
+                <span class="flag mx">MX</span>
+                <div>
+                  <div class="cor-name">USD → <b>MXN</b> · México</div>
+                  <div class="cor-rail">SPEI + DiMo · <span class="live">live 24/7</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="c"><span class="pill legacy"><span class="dot"></span>SWIFT MT103</span></td>
+            <td class="c"><span class="pill live"><span class="dot"></span>SPEI</span></td>
+            <td class="r"><span class="amt gold">$118.0M</span></td>
+            <td class="r"><span class="amt">$31.7M</span></td>
+            <td class="r">
+              <div class="vol-mini">
+                <div class="bar"><div class="fill" style="width: 35%"></div></div>
+                <span class="num">9.1%</span>
+              </div>
+            </td>
+            <td class="c"><span class="tog on" data-tog="mxn"></span></td>
+          </tr>
+          <tr data-cor="cop">
+            <td>
+              <div class="corridor-cell">
+                <span class="flag co">CO</span>
+                <div>
+                  <div class="cor-name">USD → <b>COP</b> · Colombia</div>
+                  <div class="cor-rail">Bre-B (BanRep) · <span class="live">live Q3 ’25</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="c"><span class="pill legacy"><span class="dot"></span>ACH + SWIFT</span></td>
+            <td class="c"><span class="pill target"><span class="dot"></span>Bre-B + USDC</span></td>
+            <td class="r"><span class="amt gold">$54.4M</span></td>
+            <td class="r"><span class="amt">$11.8M</span></td>
+            <td class="r">
+              <div class="vol-mini">
+                <div class="bar"><div class="fill warn" style="width: 62%"></div></div>
+                <span class="num">15.8%</span>
+              </div>
+            </td>
+            <td class="c"><span class="tog on" data-tog="cop"></span></td>
+          </tr>
+          <tr data-cor="clp">
+            <td>
+              <div class="corridor-cell">
+                <span class="flag cl">CL</span>
+                <div>
+                  <div class="cor-name">USD → <b>CLP</b> · Chile</div>
+                  <div class="cor-rail">CCLV / CCAV · <span class="live">RTGS T+0</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="c"><span class="pill legacy"><span class="dot"></span>SWIFT MT202</span></td>
+            <td class="c"><span class="pill live"><span class="dot"></span>CCLV</span></td>
+            <td class="r"><span class="amt gold">$31.6M</span></td>
+            <td class="r"><span class="amt">$8.9M</span></td>
+            <td class="r">
+              <div class="vol-mini">
+                <div class="bar"><div class="fill warn" style="width: 55%"></div></div>
+                <span class="num">13.7%</span>
+              </div>
+            </td>
+            <td class="c"><span class="tog on" data-tog="clp"></span></td>
+          </tr>
+          <tr data-cor="ars">
+            <td>
+              <div class="corridor-cell">
+                <span class="flag ar">AR</span>
+                <div>
+                  <div class="cor-name">USD → <b>ARS</b> · Argentina</div>
+                  <div class="cor-rail">Transferencias 3.0 + USDC · <span class="live">capital ctrl</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="c"><span class="pill legacy"><span class="dot"></span>SWIFT (CEPO)</span></td>
+            <td class="c"><span class="pill pilot"><span class="dot"></span>USDC stable</span></td>
+            <td class="r"><span class="amt gold">$28.2M</span></td>
+            <td class="r"><span class="amt">$4.2M</span></td>
+            <td class="r">
+              <div class="vol-mini">
+                <div class="bar"><div class="fill red" style="width: 96%"></div></div>
+                <span class="num">38.6%</span>
+              </div>
+            </td>
+            <td class="c"><span class="tog on" data-tog="ars"></span></td>
+          </tr>
+          <tr data-cor="pen">
+            <td>
+              <div class="corridor-cell">
+                <span class="flag pe">PE</span>
+                <div>
+                  <div class="cor-name">USD → <b>PEN</b> · Perú</div>
+                  <div class="cor-rail">CCE Inmediato · <span class="live">interoperable</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="c"><span class="pill legacy"><span class="dot"></span>SWIFT MT103</span></td>
+            <td class="c"><span class="pill target"><span class="dot"></span>CCE + Yape</span></td>
+            <td class="r"><span class="amt gold">$13.2M</span></td>
+            <td class="r"><span class="amt">$3.1M</span></td>
+            <td class="r">
+              <div class="vol-mini">
+                <div class="bar"><div class="fill" style="width: 28%"></div></div>
+                <span class="num">7.2%</span>
+              </div>
+            </td>
+            <td class="c"><span class="tog on" data-tog="pen"></span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Aggregate · 6 corridors selected</td>
+            <td class="r">Trapped <span class="big gold" id="tot-trap">$387.4M</span></td>
+            <td class="r">Daily <span class="big" id="tot-vol">$98.1M</span></td>
+            <td class="r">Blend σ <span class="big" id="tot-sigma">14.8%</span></td>
+            <td class="c">
+              <span class="pill target" style="font-size: .42rem;"><span class="dot"></span>6/6 ON</span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <!-- (2) LIQUIDITY WATERFALL -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">
+        <span class="num">02</span> Liquidity Waterfall · Nostro Release
+        <small>Trapped capital → instant-rail release · still-held residual</small>
+      </div>
+      <div class="panel-right">
+        Horizon · <span class="v">90-day rolling · steady state post-cutover</span>
+      </div>
+    </div>
+    <div class="waterfall-grid">
+      <div class="waterfall-chart">
+        <div class="wf-legend">
+          <span><span class="sw start"></span>Nostro pre-funding (today)</span>
+          <span><span class="sw drop"></span>Released by A2A rail</span>
+          <span><span class="sw retain"></span>Held — compliance / ops float</span>
+          <span><span class="sw end"></span>Net deployable capital</span>
+        </div>
+        <svg class="waterfall-svg" viewBox="0 0 780 380" preserveAspectRatio="xMidYMid meet" id="wf-svg">
+          <defs>
+            <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(155,114,245,.4)" stroke-width="2"></line>
+            </pattern>
+          </defs>
+          <!-- Y axis grid -->
+          <g class="wf-axis">
+            <!-- 0M, 100M, 200M, 300M, 400M, 500M -->
+            <line x1="58" y1="40" x2="758" y2="40"></line>
+            <line x1="58" y1="100" x2="758" y2="100"></line>
+            <line x1="58" y1="160" x2="758" y2="160"></line>
+            <line x1="58" y1="220" x2="758" y2="220"></line>
+            <line x1="58" y1="280" x2="758" y2="280"></line>
+            <line class="zero" x1="58" y1="340" x2="758" y2="340"></line>
+            <text x="52" y="44" text-anchor="end">500M</text>
+            <text x="52" y="104" text-anchor="end">400M</text>
+            <text x="52" y="164" text-anchor="end">300M</text>
+            <text x="52" y="224" text-anchor="end">200M</text>
+            <text x="52" y="284" text-anchor="end">100M</text>
+            <text x="52" y="344" text-anchor="end">0</text>
+            <text x="44" y="20" text-anchor="end" style="fill: var(--body);">USD</text>
+          </g>
+
+          <!--
+            Scale: 100M = 60px. 0 line at y=340.
+            Bars (left to right):
+            1) START         487.4M    top=340-292=48
+            2) BRL release   -132.0M   top going up from prev bottom
+            3) MXN release   -110.0M
+            4) COP release   -50.0M
+            5) CLP release   -29.0M
+            6) ARS release   -26.0M
+            7) PEN release   -12.4M
+            8) HELD CMP+OPS  +62.0M  (residual still held — purple hatched)
+            9) END           62.0M (start - releases = residual still held)
+                actually let's display: end = total still held (~62M)
+                AND a separate "Released" total label
+          -->
+
+          <!-- Bar 1: START 487.4M -->
+          <g class="wf-bar">
+            <rect x="68" y="48" width="74" height="292" fill="rgba(212,168,71,.16)" stroke="var(--gold-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val gold" x="105" y="42" text-anchor="middle">487.4M</text>
+            <text class="wf-label-cat" x="105" y="358" text-anchor="middle">NOSTRO TODAY</text>
+            <text class="wf-label-rail" x="105" y="370" text-anchor="middle">SWIFT · T+1.7</text>
+          </g>
+
+          <!-- connector -->
+          <line class="wf-connector" x1="142" y1="48" x2="158" y2="48"></line>
+
+          <!-- Bar 2: BRL release  start_top=48 height=132M*0.6=79.2 → ends at 127.2  -->
+          <g class="wf-bar">
+            <rect x="158" y="48" width="68" height="79.2" fill="rgba(20,184,166,.18)" stroke="var(--teal-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val teal" x="192" y="42" text-anchor="middle">−132.0M</text>
+            <text class="wf-label-cat" x="192" y="358" text-anchor="middle">PIX RELEASE</text>
+            <text class="wf-label-rail" x="192" y="370" text-anchor="middle">BR · INSTANT</text>
+          </g>
+
+          <line class="wf-connector" x1="226" y1="127.2" x2="242" y2="127.2"></line>
+
+          <!-- Bar 3: MXN release  height=110M*0.6=66 → 127.2 to 193.2 -->
+          <g class="wf-bar">
+            <rect x="242" y="127.2" width="68" height="66" fill="rgba(20,184,166,.18)" stroke="var(--teal-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val teal" x="276" y="121.2" text-anchor="middle">−110.0M</text>
+            <text class="wf-label-cat" x="276" y="358" text-anchor="middle">SPEI RELEASE</text>
+            <text class="wf-label-rail" x="276" y="370" text-anchor="middle">MX · INSTANT</text>
+          </g>
+
+          <line class="wf-connector" x1="310" y1="193.2" x2="326" y2="193.2"></line>
+
+          <!-- Bar 4: COP release height=50M*0.6=30 → 193.2 to 223.2 -->
+          <g class="wf-bar">
+            <rect x="326" y="193.2" width="68" height="30" fill="rgba(20,184,166,.18)" stroke="var(--teal-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val teal" x="360" y="187.2" text-anchor="middle">−50.0M</text>
+            <text class="wf-label-cat" x="360" y="358" text-anchor="middle">Bre-B RELEASE</text>
+            <text class="wf-label-rail" x="360" y="370" text-anchor="middle">CO · 30s</text>
+          </g>
+
+          <line class="wf-connector" x1="394" y1="223.2" x2="410" y2="223.2"></line>
+
+          <!-- Bar 5: CLP release height=29M*0.6=17.4 → 223.2 to 240.6 -->
+          <g class="wf-bar">
+            <rect x="410" y="223.2" width="68" height="17.4" fill="rgba(20,184,166,.18)" stroke="var(--teal-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val teal" x="444" y="217.2" text-anchor="middle">−29.0M</text>
+            <text class="wf-label-cat" x="444" y="358" text-anchor="middle">CCLV RELEASE</text>
+            <text class="wf-label-rail" x="444" y="370" text-anchor="middle">CL · RTGS</text>
+          </g>
+
+          <line class="wf-connector" x1="478" y1="240.6" x2="494" y2="240.6"></line>
+
+          <!-- Bar 6: ARS release height=26M*0.6=15.6 → 240.6 to 256.2 -->
+          <g class="wf-bar">
+            <rect x="494" y="240.6" width="68" height="15.6" fill="rgba(20,184,166,.18)" stroke="var(--teal-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val teal" x="528" y="234.6" text-anchor="middle">−26.0M</text>
+            <text class="wf-label-cat" x="528" y="358" text-anchor="middle">USDC OVERLAY</text>
+            <text class="wf-label-rail" x="528" y="370" text-anchor="middle">AR · TOKENIZED</text>
+          </g>
+
+          <line class="wf-connector" x1="562" y1="256.2" x2="578" y2="256.2"></line>
+
+          <!-- Bar 7: PEN release height=12.4M*0.6=7.44 → 256.2 to 263.64 -->
+          <g class="wf-bar">
+            <rect x="578" y="256.2" width="68" height="7.44" fill="rgba(20,184,166,.18)" stroke="var(--teal-lt)" stroke-width="1"></rect>
+            <text class="wf-label-val teal" x="612" y="250.2" text-anchor="middle">−12.4M</text>
+            <text class="wf-label-cat" x="612" y="358" text-anchor="middle">CCE RELEASE</text>
+            <text class="wf-label-rail" x="612" y="370" text-anchor="middle">PE · INSTANT</text>
+          </g>
+
+          <line class="wf-connector" x1="646" y1="263.64" x2="662" y2="263.64"></line>
+
+          <!-- Bar 8: HELD (still trapped) residual = 487.4 - 132 - 110 - 50 - 29 - 26 - 12.4 = 128M
+               Wait — that's 128M. Let me redo: capital still held = 62M as residual.
+               But released = 359.4M (these add up to ≠ 425M from KPI).
+               Need to reconcile. Actually:
+               Released (KPI = 425.6) > sum of corridor releases above.
+               Let me adjust: corridor releases scale to ~360M, then total still held is 128M.
+               Actually — let me just go with bar values that ADD UP correctly and update KPI.
+               Sum of bars 2-7 = 132+110+50+29+26+12.4 = 359.4M released
+               Residual = 487.4 - 359.4 = 128M still held
+               Of that 128M: 62M compliance reserves + 38M FX hedge collateral + 28M ops float
+               OK adjusting KPI numbers below.
+
+               Bar 8 should be the END bar showing residual still held.
+               height = 128M*0.6 = 76.8 → top at 340-76.8 = 263.2
+               BUT — we want it shown as a final bar at right.
+          -->
+          <g class="wf-bar">
+            <rect x="662" y="263.2" width="74" height="76.8" fill="url(#hatch)" stroke="var(--purple)" stroke-width="1"></rect>
+            <text class="wf-label-val" x="699" y="257.2" text-anchor="middle" style="fill: var(--purple);">128.0M</text>
+            <text class="wf-label-cat" x="699" y="358" text-anchor="middle">STILL HELD</text>
+            <text class="wf-label-rail" x="699" y="370" text-anchor="middle">CMP · OPS · HEDGE</text>
+          </g>
+
+          <!-- A2A FREED indicator (full released sum) -->
+          <g>
+            <line x1="158" y1="20" x2="646" y2="20" stroke="var(--green-lt)" stroke-width="1" stroke-dasharray="3 2"></line>
+            <line x1="158" y1="16" x2="158" y2="24" stroke="var(--green-lt)" stroke-width="1"></line>
+            <line x1="646" y1="16" x2="646" y2="24" stroke="var(--green-lt)" stroke-width="1"></line>
+            <rect x="350" y="6" width="104" height="20" fill="var(--bg)" stroke="var(--green-lt)" stroke-width="1"></rect>
+            <text x="402" y="20" text-anchor="middle" style="font-family:'JetBrains Mono',monospace; font-size: 10px; fill: var(--green-lt); letter-spacing: 1px;">
+              FREED · 359.4M
+            </text>
+          </g>
+        </svg>
+      </div>
+
+      <aside class="wf-side">
+        <div class="wf-headline">
+          <span class="wf-headline-lbl">Net Deployable · Risk-Weighted</span>
+          <span class="wf-headline-val" id="wf-hl-val">$307.6M<span class="ccy">USD</span></span>
+          <span class="wf-headline-sub">After <b id="wf-hl-vol">14.8%</b> FX haircut on $359.4M freed</span>
+        </div>
+
+        <div class="wf-tally">
+          <div class="wf-tally-row">
+            <span class="lbl">Pre-funded today</span>
+            <span class="val gold">$487.4M</span>
+          </div>
+          <div class="wf-tally-row">
+            <span class="lbl">Released by A2A · gross</span>
+            <span class="val teal">$359.4M</span>
+          </div>
+          <div class="wf-tally-row">
+            <span class="lbl">Held · compliance reserves</span>
+            <span class="val">$62.0M</span>
+          </div>
+          <div class="wf-tally-row">
+            <span class="lbl">Held · FX hedge collateral</span>
+            <span class="val">$38.0M</span>
+          </div>
+          <div class="wf-tally-row">
+            <span class="lbl">Held · operational float</span>
+            <span class="val">$28.0M</span>
+          </div>
+          <div class="wf-tally-divider"></div>
+          <div class="wf-tally-row big">
+            <span class="lbl">Net released</span>
+            <span class="val teal">$359.4M</span>
+          </div>
+          <div class="wf-tally-row">
+            <span class="lbl">FX vol haircut</span>
+            <span class="val red" id="tally-haircut">− $51.8M</span>
+          </div>
+          <div class="wf-tally-row big">
+            <span class="lbl">Deployable</span>
+            <span class="val green" id="tally-deploy">$307.6M</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- (3) FX VOL + RISK-WEIGHTED RETURN -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">
+        <span class="num">03</span> Corridor FX Volatility · Risk-Weighted Return
+        <small>30-day realised σ → haircut → redeployable yield</small>
+      </div>
+      <div class="panel-right">
+        Model · <span class="v">Garman-Klass + EWMA(λ=0.94) · Basel III FRTB SA</span>
+      </div>
+    </div>
+    <div class="fx-grid">
+      <!-- LEFT: slider -->
+      <div class="fx-slider-panel">
+        <div class="fx-section-label">Control</div>
+        <div class="fx-section-title">Blended corridor FX volatility</div>
+        <p class="fx-section-sub">
+          Drag to stress-test. The haircut applied to freed Nostro capital scales as
+          <b>haircut = σ × √(holding-days) × confidence(99%)</b>. At baseline the desk runs
+          at <b>14.8% blended σ</b>; capital controls in AR add tail risk above 25%.
+        </p>
+
+        <div class="slider-block">
+          <div class="slider-head">
+            <div class="slider-name">Blended σ <small>30-day, vol-weighted by corridor</small></div>
+            <div class="slider-vals">
+              <span class="now" id="vol-display">14.8%</span>
+              <span class="unit">annualised</span>
+            </div>
+          </div>
+
+          <div class="slider-track-wrap">
+            <div class="slider-track"></div>
+            <div class="slider-ticks">
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+              <span class="slider-tick"></span>
+            </div>
+            <input type="range" class="fxr" id="fxv" min="4" max="40" value="14.8" step="0.1">
+          </div>
+
+          <div class="slider-band-labels">
+            <span>4% Calm</span>
+            <span>15% <span class="v">baseline</span></span>
+            <span>40% Tail</span>
+          </div>
+        </div>
+
+        <div class="corridor-vols" id="cor-vols">
+          <div class="cv-row" data-base="12.4">
+            <span class="name">BRL <small>BR</small></span>
+            <div class="bar"><div class="baseline" style="left: 31%;"></div><div class="fill" style="width: 31%;"></div></div>
+            <span class="v">12.4%</span>
+          </div>
+          <div class="cv-row" data-base="9.1">
+            <span class="name">MXN <small>MX</small></span>
+            <div class="bar"><div class="baseline" style="left: 22.75%;"></div><div class="fill" style="width: 22.75%;"></div></div>
+            <span class="v">9.1%</span>
+          </div>
+          <div class="cv-row" data-base="15.8">
+            <span class="name">COP <small>CO</small></span>
+            <div class="bar"><div class="baseline" style="left: 39.5%;"></div><div class="fill" style="width: 39.5%;"></div></div>
+            <span class="v">15.8%</span>
+          </div>
+          <div class="cv-row" data-base="13.7">
+            <span class="name">CLP <small>CL</small></span>
+            <div class="bar"><div class="baseline" style="left: 34.25%;"></div><div class="fill" style="width: 34.25%;"></div></div>
+            <span class="v">13.7%</span>
+          </div>
+          <div class="cv-row" data-base="38.6">
+            <span class="name">ARS <small>AR</small></span>
+            <div class="bar"><div class="baseline" style="left: 96.5%;"></div><div class="fill red" style="width: 96.5%;"></div></div>
+            <span class="v">38.6%</span>
+          </div>
+          <div class="cv-row" data-base="7.2">
+            <span class="name">PEN <small>PE</small></span>
+            <div class="bar"><div class="baseline" style="left: 18%;"></div><div class="fill" style="width: 18%;"></div></div>
+            <span class="v">7.2%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: return -->
+      <div class="return-panel">
+        <div class="fx-section-label">Output</div>
+        <div class="fx-section-title">Risk-weighted annual return on freed capital</div>
+
+        <div class="return-headline">
+          <span class="lbl">Annual return · post-haircut · 90d deploy horizon</span>
+          <span class="val">
+            <span id="ret-val">$19.4M</span>
+            <span class="ccy">USD</span>
+          </span>
+          <span class="delta">
+            Yield captured ·
+            <span class="pct" id="ret-pct">6.32%</span>
+            on <span id="ret-base">$307.6M</span> deployable
+          </span>
+        </div>
+
+        <div class="return-stack">
+          <div>
+            <div class="stk-lbl">Base yield · target deploy</div>
+            <div class="stk-val">7.85%</div>
+            <div class="stk-sub">LATAM short-dated sovereigns · USD blend</div>
+          </div>
+          <div>
+            <div class="stk-lbl">FX haircut applied</div>
+            <div class="stk-val red" id="stk-hc">−14.4%</div>
+            <div class="stk-sub">on freed capital · 99% CVaR · 90d hold</div>
+          </div>
+          <div>
+            <div class="stk-lbl">Carry cost avoided</div>
+            <div class="stk-val green">+$19.4M</div>
+            <div class="stk-sub">vs SWIFT nostro pre-funding · steady state</div>
+          </div>
+          <div>
+            <div class="stk-lbl">Break-even σ</div>
+            <div class="stk-val">28.4%</div>
+            <div class="stk-sub">vol above which A2A savings &lt; legacy carry</div>
+          </div>
+        </div>
+
+        <div class="return-formula">
+          <span class="lbl">Model</span>
+          R<sub>w</sub> <span class="op">=</span>
+          <span class="v">C<sub>freed</sub></span>
+          <span class="op">·</span>
+          <span class="v">y<sub>base</sub></span>
+          <span class="op">·</span>
+          (1 <span class="op">−</span> <span class="v">σ</span><span class="op">·</span>√<span class="v">τ</span><span class="op">·</span>z<sub>99</sub>)
+          <span class="op">→</span>
+          <span class="out" id="formula-out">$19.4M</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (4) ROADMAP -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">
+        <span class="num">04</span> Migration Path · Q2 ’26 → Q1 ’28
+        <small>Risk-controlled cutover · corridor-by-corridor</small>
+      </div>
+      <div class="panel-right">
+        Owner · <span class="v">D. Restrepo · Treasury Steering Co · biweekly</span>
+      </div>
+    </div>
+    <div class="roadmap-wrap">
+      <div class="roadmap-grid">
+        <div class="rm-phase done">
+          <div class="rm-num"><span class="check">✓</span>Phase 01 · Q2 '26</div>
+          <div class="rm-title">Pilot · BR + MX</div>
+          <div class="rm-window">10 May → 30 Jun '26</div>
+          <ul class="rm-list">
+            <li class="done">PIX gateway · ISO 20022 wrapper</li>
+            <li class="done">SPEI dual-rail with Banxico sandbox</li>
+            <li class="done">Reconciliation harness · T+0 attestation</li>
+            <li class="done">$240M nostro reduction · signed</li>
+          </ul>
+        </div>
+        <div class="rm-phase active">
+          <div class="rm-num"><span class="act">●</span>Phase 02 · Q3 '26 — current</div>
+          <div class="rm-title">Andean Tier · CO + CL</div>
+          <div class="rm-window">01 Jul → 30 Sep '26</div>
+          <ul class="rm-list">
+            <li class="done">Bre-B technical onboarding · BanRep</li>
+            <li>FX hedge re-collateralization · $38M</li>
+            <li>CCLV connectivity certification</li>
+            <li>Treasury policy update · Basel III sign-off</li>
+          </ul>
+        </div>
+        <div class="rm-phase">
+          <div class="rm-num">Phase 03 · Q4 '26</div>
+          <div class="rm-title">Stablecoin Overlay · AR + PE</div>
+          <div class="rm-window">01 Oct → 31 Dec '26</div>
+          <ul class="rm-list">
+            <li>USDC custody · Anchorage / BitGo</li>
+            <li>Cross-border AR settlement · capital ctrl carve-out</li>
+            <li>CCE Inmediato live · interop with Yape</li>
+            <li>Conditional payment scripts · escrow tests</li>
+          </ul>
+        </div>
+        <div class="rm-phase">
+          <div class="rm-num">Phase 04 · 2027 → '28</div>
+          <div class="rm-title">SWIFT Decommission</div>
+          <div class="rm-window">Q1 '27 → Q1 '28</div>
+          <ul class="rm-list">
+            <li>Correspondent bank consolidation · 11 → 3</li>
+            <li>Nostro account closures · $360M+ release</li>
+            <li>Legacy MT103/MT202 sunset · CBPR+ exit</li>
+            <li>Final Tesoreria charter update</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /orig-main -->
+
+<footer class="foot">
+  <div class="container foot-inner">
+    <div class="foot-note">
+      Modeler runs <b>client-side</b> · no PII transmitted · figures illustrative ·
+      reproduce with your own SAP / Kyriba / FIS feed via the Treasury API kit.
+    </div>
+    <div class="foot-links">
+      <a href="#">Methodology</a>
+      <a href="#">Export CSV</a>
+      <a href="#">API Docs</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══ AP2 EXPORT ROW (spec Part 5.4 Demo 4) + SHAREABLE URL ═══ -->
+<div class="results-export-row">
+  <span class="export-label">Liquidity Mandate · validated against AP2 v1.0 schema</span>
+  <button class="btn-export" id="exportAp2" type="button">Download AP2 Mandate (JSON)</button>
+  <button class="btn-export outline" id="exportMd" type="button">Markdown Summary</button>
+  <button class="btn-export outline" id="copyShareUrl" type="button">Copy Share URL</button>
+  <span class="btn-share-feedback" id="shareFeedback">Copied ✓</span>
+</div>
+
+</div>
+</main>
+
+<!-- ═══ POL DARK FOOTER (spec Part 2.5) ═══ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--pol-gold)">Labs</span></div>
+      <p class="footer-copy">
+        &copy; 2026 Post Oak Labs &nbsp;·&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-copy">
+        Built by Post Oak Labs &nbsp;·&nbsp;
+        <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/tools/a2a-liquidity-simulator.html" target="_blank" rel="noopener">Deep Dive → AINumbers.co</a>
+      <a href="/demos/">All Demos</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/">postoaklabs.com</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------ *
+ *  Corridor Liquidity Modeler — interactive logic
+ *  Wiring: FX volatility slider → haircut → risk-weighted return,
+ *  plus matrix toggles that recompute aggregate sigma.
+ * ------------------------------------------------------------------ */
+
+(function () {
+  'use strict';
+
+  // ── Corridor catalog (steady-state model) ─────────────────────────
+  const CORRIDORS = {
+    brl: { trapped: 142.0, freed: 132.0, daily: 38.4, vol: 12.4, name: 'BRL' },
+    mxn: { trapped: 118.0, freed: 110.0, daily: 31.7, vol:  9.1, name: 'MXN' },
+    cop: { trapped:  54.4, freed:  50.0, daily: 11.8, vol: 15.8, name: 'COP' },
+    clp: { trapped:  31.6, freed:  29.0, daily:  8.9, vol: 13.7, name: 'CLP' },
+    ars: { trapped:  28.2, freed:  26.0, daily:  4.2, vol: 38.6, name: 'ARS' },
+    pen: { trapped:  13.2, freed:  12.4, daily:  3.1, vol:  7.2, name: 'PEN' },
+  };
+
+  const BASE_YIELD = 0.0785;       // 7.85% — short-dated sovereign blend
+  const HOLD_DAYS  = 90;
+  const Z99        = 2.326;        // 99% one-tail normal
+  const BASELINE_VOL = 14.8;       // %
+
+  const active = new Set(Object.keys(CORRIDORS));
+
+  // ── Helpers ───────────────────────────────────────────────────────
+  const fmtUSD = (m) => {
+    if (Math.abs(m) >= 1000) return '$' + (m/1000).toFixed(2) + 'B';
+    return '$' + m.toFixed(1) + 'M';
+  };
+  const fmtPct = (x) => x.toFixed(1) + '%';
+
+  function aggregates () {
+    let trapped = 0, freed = 0, daily = 0, volw = 0, dailySum = 0;
+    active.forEach(k => {
+      const c = CORRIDORS[k];
+      trapped += c.trapped; freed += c.freed; daily += c.daily;
+      volw += c.vol * c.daily; dailySum += c.daily;
+    });
+    const sigma = dailySum > 0 ? (volw / dailySum) : 0;
+    return { trapped, freed, daily, sigma };
+  }
+
+  // ── Slider + corridor vol bars ────────────────────────────────────
+  const slider     = document.getElementById('fxv');
+  const corVols    = document.querySelectorAll('#cor-vols .cv-row');
+  const volDisplay = document.getElementById('vol-display');
+  const kpiVol     = document.getElementById('kpi-vol');
+
+  function setCorridorVols (blendedSigma) {
+    // Scale each corridor's vol by (blendedSigma / BASELINE_VOL).
+    const factor = blendedSigma / BASELINE_VOL;
+    corVols.forEach(row => {
+      const baseVol = parseFloat(row.dataset.base);
+      const scaled  = baseVol * factor;
+      // bar % of 40 scale
+      const pct = Math.min(100, (scaled / 40) * 100);
+      const fill = row.querySelector('.fill');
+      const valEl= row.querySelector('.v');
+      fill.style.width = pct + '%';
+      fill.classList.toggle('warn', scaled >= 14 && scaled < 25);
+      fill.classList.toggle('red',  scaled >= 25);
+      valEl.textContent = scaled.toFixed(1) + '%';
+      // Update CORRIDORS in-place so aggregates reflect the slider
+      const key = Object.keys(CORRIDORS).find(k => CORRIDORS[k].name === row.querySelector('.name').firstChild.textContent.trim());
+      if (key) CORRIDORS[key].vol = scaled;
+    });
+  }
+
+  // ── Waterfall + return computation ────────────────────────────────
+  const elFreedKpi   = document.getElementById('kpi-freed');
+  const elRwrKpi     = document.getElementById('kpi-rwr');
+  const elTallyHair  = document.getElementById('tally-haircut');
+  const elTallyDepl  = document.getElementById('tally-deploy');
+  const elHlVal      = document.getElementById('wf-hl-val');
+  const elHlVol      = document.getElementById('wf-hl-vol');
+  const elRetVal     = document.getElementById('ret-val');
+  const elRetPct     = document.getElementById('ret-pct');
+  const elRetBase    = document.getElementById('ret-base');
+  const elStkHc      = document.getElementById('stk-hc');
+  const elFormulaOut = document.getElementById('formula-out');
+  const elTotTrap    = document.getElementById('tot-trap');
+  const elTotVol     = document.getElementById('tot-vol');
+  const elTotSigma   = document.getElementById('tot-sigma');
+
+  function recompute () {
+    const sigmaPct = parseFloat(slider.value);
+    const sigma    = sigmaPct / 100;
+    const haircut  = Math.min(0.95, sigma * Math.sqrt(HOLD_DAYS / 365) * Z99);
+
+    // Per-corridor visual update
+    setCorridorVols(sigmaPct);
+
+    // Aggregate over active corridors
+    const ag = aggregates();
+    const freed = ag.freed;
+    const haircutDollars = freed * haircut;
+    const deployable     = freed - haircutDollars;
+    const returnDollars  = deployable * BASE_YIELD;
+    const yieldOnFreed   = (deployable * BASE_YIELD) / freed * 100; // % of gross freed
+
+    // Slider display
+    volDisplay.textContent = sigmaPct.toFixed(1) + '%';
+    kpiVol.textContent     = sigmaPct.toFixed(1) + '%';
+
+    // KPI strip
+    elFreedKpi.firstChild.textContent = freed.toFixed(1);
+
+    // Waterfall side
+    elHlVal.firstChild.textContent = '$' + deployable.toFixed(1) + 'M';
+    elHlVol.textContent = sigmaPct.toFixed(1) + '%';
+    elTallyHair.textContent = '− $' + haircutDollars.toFixed(1) + 'M';
+    elTallyDepl.textContent = '$' + deployable.toFixed(1) + 'M';
+
+    // Return panel
+    elRwrKpi.firstChild.textContent = '$' + returnDollars.toFixed(1);
+    elRetVal.textContent  = '$' + returnDollars.toFixed(1) + 'M';
+    elRetPct.textContent  = yieldOnFreed.toFixed(2) + '%';
+    elRetBase.textContent = '$' + deployable.toFixed(1) + 'M';
+    elStkHc.textContent   = '−' + (haircut * 100).toFixed(1) + '%';
+    elFormulaOut.textContent = '$' + returnDollars.toFixed(1) + 'M';
+
+    // Matrix totals
+    elTotTrap.textContent  = '$' + ag.trapped.toFixed(1) + 'M';
+    elTotVol.textContent   = '$' + ag.daily.toFixed(1) + 'M';
+    elTotSigma.textContent = ag.sigma.toFixed(1) + '%';
+
+    // Waterfall last "still held" bar — tone changes with stress
+    const lastBar = document.querySelector('#wf-svg .wf-bar:nth-last-of-type(1) rect');
+    // no-op — kept stable for legibility
+  }
+
+  slider.addEventListener('input', recompute);
+
+  // ── Corridor toggles (matrix) ─────────────────────────────────────
+  document.querySelectorAll('.tog[data-tog]').forEach(t => {
+    t.addEventListener('click', () => {
+      const k = t.dataset.tog;
+      t.classList.toggle('on');
+      const row = t.closest('tr');
+      if (t.classList.contains('on')) { active.add(k); row.classList.remove('off'); }
+      else                            { active.delete(k); row.classList.add('off'); }
+      recompute();
+    });
+  });
+
+  // ── Initial paint ─────────────────────────────────────────────────
+  recompute();
+})();
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   AP2 export — schema @ainumbers.co/liquidity-mandate-v1 (spec Part 5.4 Demo 4)
+   + Shareable URL deep-link encoding
+   ════════════════════════════════════════════════════════════════════════ */
+(function(){
+  function getActiveCorridors(){
+    var arr = [];
+    try {
+      active.forEach(function(k){
+        var c = CORRIDORS[k];
+        arr.push({
+          key: k,
+          name: c.name,
+          trapped_usd_m: c.trapped,
+          freed_usd_m: c.freed,
+          daily_volume_usd_m: c.daily,
+          annual_vol_pct: c.vol
+        });
+      });
+    } catch(_) {}
+    return arr;
+  }
+
+  function getCurrentResults(){
+    var sigmaPct = parseFloat(document.getElementById('fxv').value);
+    var sigma = sigmaPct / 100;
+    var haircut = Math.min(0.95, sigma * Math.sqrt(HOLD_DAYS / 365) * Z99);
+    var ag = aggregates();
+    var freed = ag.freed;
+    var haircutDollars = freed * haircut;
+    var deployable = freed - haircutDollars;
+    var returnDollars = deployable * BASE_YIELD;
+    return {
+      sigmaPct: sigmaPct,
+      sigma: sigma,
+      haircut: haircut,
+      trapped: ag.trapped,
+      daily: ag.daily,
+      portfolioSigma: ag.sigma,
+      freed: freed,
+      haircutDollars: haircutDollars,
+      deployable: deployable,
+      returnDollars: returnDollars
+    };
+  }
+
+  function buildAP2Mandate(){
+    var r = getCurrentResults();
+    var activeCorridors = getActiveCorridors();
+    var perCorridor = activeCorridors.map(function(c){
+      var corrHaircut = Math.min(0.95, (r.sigma) * Math.sqrt(HOLD_DAYS/365) * Z99);
+      var corrFreed = c.freed_usd_m;
+      var corrDeployable = corrFreed * (1 - corrHaircut);
+      return {
+        corridor: c.key,
+        name: c.name,
+        trapped_usd_m: c.trapped_usd_m,
+        freed_usd_m: c.freed_usd_m,
+        annual_vol_pct: c.annual_vol_pct,
+        haircut_pct: +(corrHaircut * 100).toFixed(2),
+        deployable_usd_m: +corrDeployable.toFixed(2),
+        annualized_yield_usd_m: +(corrDeployable * BASE_YIELD * (365/HOLD_DAYS)).toFixed(3)
+      };
+    });
+    return {
+      "@type": "@ainumbers.co/liquidity-mandate-v1",
+      "@version": "1.0",
+      "@generated": new Date().toISOString(),
+      mandate_id: "AIN-LATAM-" + Date.now().toString(36).toUpperCase(),
+      tool_id: "latam-corridor-liquidity",
+      issuer: "post-oak-labs",
+      model_parameters: {
+        fx_sigma_pct: r.sigmaPct,
+        hold_days: HOLD_DAYS,
+        confidence_interval: "99%",
+        z_score: Z99,
+        base_yield_pct: BASE_YIELD * 100
+      },
+      active_corridors: activeCorridors,
+      aggregate_results: {
+        total_trapped_usd_m: +r.trapped.toFixed(2),
+        total_freed_usd_m: +r.freed.toFixed(2),
+        haircut_pct: +(r.haircut * 100).toFixed(2),
+        deployable_usd_m: +r.deployable.toFixed(2),
+        projected_annual_yield_usd_m: +(r.returnDollars * (365 / HOLD_DAYS)).toFixed(2)
+      },
+      per_corridor: perCorridor,
+      agent_instructions: [
+        "Allocate freed capital to short-dated sovereign instruments in each corridor.",
+        "Re-run with sigma +5pp quarterly to stress-test haircut sensitivity.",
+        "Hedge ARS corridor separately — vol > 35% warrants FX option overlay."
+      ],
+      audit_signature: {
+        client_side_executed: true,
+        deterministic_run: true
+      }
+    };
+  }
+
+  function validateAP2(m){
+    var req = ['@type','@version','@generated','mandate_id','tool_id','issuer',
+               'model_parameters','active_corridors','aggregate_results','per_corridor',
+               'agent_instructions','audit_signature'];
+    for (var i=0;i<req.length;i++) if (!(req[i] in m)) return { ok:false, reason:'missing '+req[i] };
+    if (!String(m['@type']).startsWith('@ainumbers.co/')) return { ok:false, reason:'@type prefix' };
+    if (m['@version'] !== '1.0') return { ok:false, reason:'version' };
+    return { ok:true };
+  }
+
+  function downloadFile(filename, content, mime){
+    var blob = new Blob([content], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }
+
+  document.addEventListener('click', function(e){
+    if (!e.target) return;
+    if (e.target.id === 'exportAp2') {
+      var m = buildAP2Mandate();
+      var v = validateAP2(m);
+      if (!v.ok) { alert('AP2 validation failed: ' + v.reason); return; }
+      downloadFile('latam-liquidity-mandate-' + m.mandate_id + '.json',
+                   JSON.stringify(m, null, 2), 'application/json');
+    } else if (e.target.id === 'exportMd') {
+      var m2 = buildAP2Mandate();
+      var lines = [
+        '# LATAM Corridor Liquidity Mandate',
+        '',
+        '**Mandate ID:** ' + m2.mandate_id + '  ',
+        '**Generated:** ' + m2['@generated'] + '  ',
+        '**Schema:** ' + m2['@type'] + '@' + m2['@version'],
+        '',
+        '## Model Parameters',
+        '',
+        '- FX sigma: ' + m2.model_parameters.fx_sigma_pct + '%',
+        '- Hold days: ' + m2.model_parameters.hold_days,
+        '- Confidence: ' + m2.model_parameters.confidence_interval + ' (Z=' + m2.model_parameters.z_score + ')',
+        '- Base yield: ' + m2.model_parameters.base_yield_pct + '%',
+        '',
+        '## Aggregate Results',
+        '',
+        '| Line | Value |',
+        '|---|---|',
+        '| Total trapped | $' + m2.aggregate_results.total_trapped_usd_m + 'M |',
+        '| Total freed | $' + m2.aggregate_results.total_freed_usd_m + 'M |',
+        '| Haircut | ' + m2.aggregate_results.haircut_pct + '% |',
+        '| Deployable | $' + m2.aggregate_results.deployable_usd_m + 'M |',
+        '| Projected annual yield | $' + m2.aggregate_results.projected_annual_yield_usd_m + 'M |',
+        '',
+        '## Per Corridor',
+        '',
+        '| Key | Name | Trapped | Freed | Vol | Haircut | Deployable | Annual Yield |',
+        '|---|---|---|---|---|---|---|---|'
+      ];
+      m2.per_corridor.forEach(function(c){
+        lines.push('| ' + c.corridor + ' | ' + c.name + ' | $' + c.trapped_usd_m + 'M | $' + c.freed_usd_m + 'M | ' + c.annual_vol_pct + '% | ' + c.haircut_pct + '% | $' + c.deployable_usd_m + 'M | $' + c.annualized_yield_usd_m + 'M |');
+      });
+      lines.push('', '## Agent Instructions', '');
+      m2.agent_instructions.forEach(function(s){ lines.push('- ' + s); });
+      lines.push('', '---', 'Post Oak Labs · LATAM Corridor Liquidity Migration · postoaklabs.com/demos/latam-liquidity-migration-tool.html · CC BY 4.0 · Client-side, zero PII.');
+      downloadFile('latam-liquidity-mandate-' + m2.mandate_id + '.md', lines.join('\n'), 'text/markdown');
+    } else if (e.target.id === 'copyShareUrl') {
+      var sigmaPct = parseFloat(document.getElementById('fxv').value);
+      var activeKeys = [];
+      active.forEach(function(k){ activeKeys.push(k); });
+      var hash = '#sigma=' + sigmaPct + '&corridors=' + activeKeys.join(',');
+      var url = window.location.origin + window.location.pathname + hash;
+      try {
+        // Use writable navigator.clipboard if available; fallback to text selection
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).catch(function(){});
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = url;
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch(_) {}
+          document.body.removeChild(ta);
+        }
+        // Update the visible URL so users can bookmark it directly
+        try { history.replaceState(null, '', hash); } catch(_) {}
+        var fb = document.getElementById('shareFeedback');
+        fb.classList.add('visible');
+        clearTimeout(fb._t);
+        fb._t = setTimeout(function(){ fb.classList.remove('visible'); }, 1800);
+      } catch(_) {}
+    }
+  });
+
+  // ── Restore from URL hash on load (shareable deep-link) ──
+  (function restore(){
+    var h = (window.location.hash || '').replace(/^#/, '');
+    if (!h) return;
+    var params = {};
+    h.split('&').forEach(function(kv){
+      var p = kv.split('=');
+      if (p.length === 2) params[p[0]] = decodeURIComponent(p[1]);
+    });
+    // sigma
+    if (params.sigma) {
+      var v = parseFloat(params.sigma);
+      if (!isNaN(v) && v >= 0 && v <= 100) {
+        var s = document.getElementById('fxv');
+        if (s) { s.value = String(v); s.dispatchEvent(new Event('input')); }
+      }
+    }
+    // corridors
+    if (params.corridors) {
+      var keys = params.corridors.split(',').filter(Boolean);
+      var allowed = new Set(Object.keys(CORRIDORS));
+      var newActive = new Set();
+      keys.forEach(function(k){ if (allowed.has(k)) newActive.add(k); });
+      if (newActive.size > 0) {
+        active.clear();
+        newActive.forEach(function(k){ active.add(k); });
+        try { recompute(); } catch(_) {}
+        // Update any checkbox / toggle UI for corridor selection (look for data-corridor= or class .cor-)
+        document.querySelectorAll('[data-corridor]').forEach(function(el){
+          var k = el.getAttribute('data-corridor');
+          el.classList.toggle('active', active.has(k));
+          el.classList.toggle('inactive', !active.has(k));
+        });
+      }
+    }
+  })();
+})();
+</script>
+
+
+
+</body></html>        

@@ -1,0 +1,8 @@
+# Paths rsync must NOT publish to DreamHost — repository machinery only.
+# Everything else in the repo is part of the live website and gets deployed.
+.git/
+.github/
+.gitignore
+.deployignore
+.htmlvalidate.json
+README.md

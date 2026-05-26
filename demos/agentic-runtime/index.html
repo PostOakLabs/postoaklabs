@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Runtime Hub — Post Oak Labs Fintech Intelligence Showcase</title>
+
+<!-- Per-page meta (spec Part 14) -->
+<meta name="description" content="A deterministic, schema-stable policy layer for AP2 / MCP agent runtimes. 6 browser demos and 259 AINumbers tools export to AP2 v1.0 with MCP-native discovery. Built for Anthropic, Google AP2, OpenAI, Vellum, LangChain.">
+<meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://postoaklabs.com/demos/agentic-runtime/">
+<meta property="og:title" content="Agentic Runtime Hub — Post Oak Labs">
+<meta property="og:description" content="A deterministic, schema-stable policy layer for AP2 / MCP agent runtimes. AP2 v1.0 stable. MCP-native discovery. 6 demos, 259 tools, one schema.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/agentic-runtime/">
+<meta property="og:image" content="https://postoaklabs.com/demos/og/agentic-runtime.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<!-- POL canonical font stack -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<!-- JSON-LD (CollectionPage scoped to the agentic-runtime archetype) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Agentic Runtime Hub — Post Oak Labs",
+  "url": "https://postoaklabs.com/demos/agentic-runtime/",
+  "description": "Six browser demos curated for agent-runtime builders (AP2 / MCP). All AP2-exportable, all client-side, all linked to underlying AINumbers tools.",
+  "isPartOf": { "@type": "CollectionPage", "name": "Post Oak Labs Fintech Intelligence Showcase", "url": "https://postoaklabs.com/demos/" },
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "dateModified": "2026-05-13",
+  "audience": { "@type": "Audience", "audienceType": "Agent runtime engineering — Anthropic, Google AP2, OpenAI function-calling, Vellum, LangChain" },
+  "hasPart": [
+    { "@type": "SoftwareApplication", "name": "AP2 Agentic Payment Policy Guardrail", "url": "https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html" }
+  ]
+}
+</script>
+
+<style>
+/* ═══ POL palette (matches live site) ═══ */
+:root {
+  --ink: #050c15;
+  --deep: #0a1628;
+  --navy: #0e1e35;
+  --panel: #142540;
+  --edge: #1e3454;
+  --rim: #2a4a70;
+  --body: #7090b0;
+  --text: #d8e4f0;
+  --muted: #5a7a95;
+  --bright: #ffffff;
+  --white: #ffffff;
+  --accent: #2a7fc0;
+  --accent-lt: #4a9fdf;
+  --gold: #c09040;
+  --gold-lt: #d0a050;
+  --success: #10b981;
+  --warn: #f59e0b;
+  --error: #dc2626;
+}
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--body);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.18; color: var(--bright); }
+a { color: var(--accent-lt); }
+button { cursor: pointer; font-family: inherit; background: none; border: none; color: inherit; }
+
+/* ═══ POL NAV (spec Part 2.4) ═══ */
+nav.pol-nav {
+  background: var(--ink);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.9rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+nav.pol-nav .nav-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+}
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
+nav.pol-nav .nav-logo span { color: var(--gold); }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-links a {
+  color: var(--body); text-decoration: none;
+  font-size: 0.86rem; font-weight: 400;
+  transition: color 0.15s;
+}
+nav.pol-nav .nav-links a:hover { color: #fff; }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
+nav.pol-nav .nav-links a.nav-cta {
+  background: var(--accent);
+  color: #fff !important;
+  padding: 0.4rem 0.95rem;
+  border-radius: 4px;
+}
+nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+
+/* ═══ HUB-LEVEL BREADCRUMB ═══ */
+.hub-breadcrumb {
+  background: var(--deep);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.7rem 0;
+}
+.hub-breadcrumb-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.hub-breadcrumb-inner a {
+  color: var(--body);
+  text-decoration: none;
+  margin-right: 0.45rem;
+}
+.hub-breadcrumb-inner a:hover { color: var(--accent-lt); }
+.hub-breadcrumb-inner .crumb-sep { margin-right: 0.45rem; color: var(--edge); }
+.hub-breadcrumb-inner .crumb-current { color: var(--text); }
+
+/* ═══ HUB HERO ═══ */
+.hub-hero {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--edge);
+  background:
+    radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.08) 0%, transparent 70%),
+    radial-gradient(45% 65% at 88% 30%, rgba(192,144,64,0.06) 0%, transparent 65%),
+    var(--ink);
+}
+.hub-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hub-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--gold);
+}
+.hub-hero h1 {
+  font-size: clamp(2rem, 4vw, 3.05rem);
+  color: #fff;
+  margin-bottom: 1.1rem;
+  max-width: 900px;
+  letter-spacing: -0.01em;
+}
+.hub-hero h1 em { font-style: italic; color: var(--gold); }
+.hub-sub {
+  font-size: 1.04rem;
+  color: var(--body);
+  max-width: 780px;
+  line-height: 1.75;
+  margin-bottom: 2.25rem;
+}
+.hub-sub strong { color: var(--text); font-weight: 500; }
+.hub-buyers {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed var(--edge);
+  max-width: 780px;
+}
+.hub-buyers strong { color: var(--accent-lt); font-weight: 500; letter-spacing: 0.1em; }
+
+/* hub stats: 3-up grid, JetBrains numerics, DM Sans labels */
+.hub-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  background: rgba(14, 30, 53, 0.35);
+  max-width: 780px;
+}
+.hub-stats > div {
+  padding: 1.25rem 1.4rem;
+  border-right: 1px solid var(--edge);
+}
+.hub-stats > div:last-child { border-right: none; }
+.hub-stats strong {
+  display: block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.7rem;
+  color: var(--bright);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+.hub-stats .stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ═══ HUB DEMOS (workflow-ordered cards) ═══ */
+.hub-demos {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--edge);
+}
+.hub-demos-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.hub-section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  color: var(--bright);
+  margin-bottom: 0.6rem;
+  max-width: 760px;
+  line-height: 1.3;
+}
+.hub-section-intro {
+  font-size: 0.95rem;
+  color: var(--body);
+  max-width: 700px;
+  margin-bottom: 2.1rem;
+  line-height: 1.7;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+.demo-card {
+  background: var(--deep);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  padding: 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  position: relative;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  color: var(--body);
+}
+.demo-card[href]:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+.demo-card.placeholder {
+  opacity: 0.78;
+  cursor: default;
+  border-style: dashed;
+  border-color: var(--rim);
+}
+.demo-card.placeholder:hover { transform: none; box-shadow: none; }
+.demo-card.cross-link {
+  background: linear-gradient(180deg, rgba(192,144,64,0.04) 0%, var(--deep) 100%);
+}
+.card-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 0.8rem;
+}
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+.card-num strong { color: var(--gold); font-weight: 500; }
+.card-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  color: var(--accent-lt);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.card-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.45rem;
+  border-radius: 2px;
+  font-weight: 500;
+}
+.card-status.live {
+  color: var(--success);
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.3);
+}
+.card-status.coming {
+  color: var(--gold);
+  background: rgba(192,144,64,0.06);
+  border: 1px solid rgba(192,144,64,0.3);
+}
+.card-status.cross {
+  color: var(--accent-lt);
+  background: rgba(42,127,192,0.06);
+  border: 1px solid rgba(42,127,192,0.3);
+}
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--body);
+  line-height: 1.6;
+  flex: 1;
+}
+.card-meta {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 0.4rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--edge);
+}
+.card-meta .chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.2rem 0.45rem;
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+}
+
+/* ═══ HUB CALLOUT ═══ */
+.hub-callout {
+  padding: 3rem 0;
+  background:
+    radial-gradient(60% 90% at 50% 0%, rgba(42,127,192,0.05) 0%, transparent 70%),
+    var(--ink);
+  border-bottom: 1px solid var(--edge);
+}
+.hub-callout-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.hub-callout-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+}
+.hub-callout h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  color: var(--bright);
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+.hub-callout p {
+  color: var(--body);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  max-width: 720px;
+}
+.hub-callout p strong { color: var(--text); font-weight: 500; }
+.hub-callout-aside {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  line-height: 1.7;
+}
+.hub-callout-aside strong {
+  color: var(--gold);
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 760px) {
+  .hub-callout-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .hub-callout-aside { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 1rem; }
+}
+
+/* ═══ HUB DEEP DIVE ═══ */
+.hub-deep-dive {
+  padding: 3rem 0 3.5rem;
+  border-bottom: 1px solid var(--edge);
+}
+.hub-deep-dive-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.deep-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.deep-list li {
+  background: var(--deep);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  padding: 1.1rem 1.25rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+.deep-list li:hover {
+  border-color: var(--accent);
+  background: rgba(20, 37, 64, 0.6);
+}
+.deep-list a {
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+.deep-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+.deep-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--bright);
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.deep-blurb {
+  font-size: 0.78rem;
+  color: var(--body);
+  line-height: 1.55;
+}
+
+/* ═══ HUB CTA ROW ═══ */
+.hub-cta-row {
+  padding: 3rem 0;
+  background:
+    radial-gradient(50% 80% at 50% 0%, rgba(192,144,64,0.04) 0%, transparent 65%),
+    var(--ink);
+  border-bottom: 1px solid var(--edge);
+}
+.hub-cta-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; flex-wrap: wrap; gap: 2rem;
+  align-items: center; justify-content: space-between;
+}
+.hub-cta-text { max-width: 600px; }
+.hub-cta-text h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--bright);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.hub-cta-text p { color: var(--body); font-size: 0.9rem; line-height: 1.65; }
+.hub-cta-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.hub-cta-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.4rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.hub-cta-btn.primary { color: #fff; background: var(--accent); }
+.hub-cta-btn.primary:hover { background: var(--accent-lt); }
+.hub-cta-btn.ghost { color: var(--text); border: 1px solid var(--rim); background: transparent; }
+.hub-cta-btn.ghost:hover { border-color: var(--accent-lt); color: var(--accent-lt); }
+
+/* ═══ POL FOOTER (matches landing) ═══ */
+footer.pol-footer {
+  background: var(--ink);
+  border-top: 1px solid var(--edge);
+  padding: 2.25rem 0 2.5rem;
+}
+footer.pol-footer .footer-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+footer.pol-footer .footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: #fff;
+}
+footer.pol-footer .footer-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--body);
+  line-height: 1.65;
+  margin-top: 0.35rem;
+}
+footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
+footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links {
+  display: flex; flex-direction: column;
+  gap: 0.45rem; font-size: 0.85rem;
+}
+footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
+footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 760px) {
+  .hub-stats { grid-template-columns: 1fr; }
+  .hub-stats > div { border-right: none; border-bottom: 1px solid var(--edge); }
+  .hub-stats > div:last-child { border-bottom: none; }
+  .hub-hero { padding: 2.5rem 0 2rem; }
+  .hub-demos { padding: 2.25rem 0 1.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ POL DARK NAV ═══════════════ -->
+<nav class="pol-nav" role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
+      Post Oak <span>Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="/a2a-payments.html">A2A Payments</a>
+      <a href="/a2a-workflow.html">How It Works</a>
+      <a href="/a2a-comparison.html">Comparison</a>
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/demos/" class="active-page">Demos</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
+      <a href="/contact.html" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ BREADCRUMB ═══════════════ -->
+<div class="hub-breadcrumb" aria-label="Breadcrumb">
+  <div class="hub-breadcrumb-inner">
+    <a href="/">Post Oak Labs</a><span class="crumb-sep">/</span>
+    <a href="/demos/">Showcase</a><span class="crumb-sep">/</span>
+    <span class="crumb-current">Agentic Runtime hub</span>
+  </div>
+</div>
+
+<!-- ═══════════════ HUB HERO ═══════════════ -->
+<header class="hub-hero">
+  <div class="hub-inner">
+    <span class="hub-eyebrow">For agentic runtime builders</span>
+    <h1>The <em>deterministic</em> policy layer for AP2 / MCP agent runtimes.</h1>
+    <p class="hub-sub">
+      A schema-stable substrate that <strong>27 browser demos and 259 AINumbers tools</strong>
+      already export to. Every tool emits <strong>AP2 v1.0 mandates</strong> and ships an
+      <strong>MCP tool definition</strong> — drop them into a runtime and the policy boundary
+      is mostly done. The agent reads the mandate, the runtime enforces it, the audit log
+      writes itself.
+    </p>
+    <p class="hub-buyers">
+      Built for <strong>Anthropic · Google AP2 · OpenAI function-calling · Vellum · LangChain</strong>
+      &nbsp;·&nbsp; reviewable by anyone shipping an agent that touches payments
+    </p>
+    <div class="hub-stats" aria-label="Hub at a glance">
+      <div>
+        <strong>6</strong>
+        <span class="stat-label">demos in this stack</span>
+      </div>
+      <div>
+        <strong>AP2 v1.0</strong>
+        <span class="stat-label">stable schema · all demos</span>
+      </div>
+      <div>
+        <strong>MCP-native</strong>
+        <span class="stat-label">discovery on every tool</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ HUB DEMOS ═══════════════ -->
+<section class="hub-demos" aria-label="Demos in workflow order">
+  <div class="hub-demos-inner">
+    <div class="hub-section-label">Workflow · design → test → apply</div>
+    <h2 class="hub-section-title">Six demos, sequenced the way an agent runtime team would actually adopt them.</h2>
+    <p class="hub-section-intro">
+      Cards are workflow-ordered, not alphabetical. The four core demos build a complete
+      runtime policy stack; the two cross-links anchor it to the regulatory and asset
+      surface the agent will eventually touch.
+    </p>
+
+    <div class="demo-grid">
+
+      <!-- STEP 1 — Build / visualize policy -->
+      <a class="demo-card" href="/demos/ap2-agentic-payment-policy-guardrail.html">
+        <div class="card-head">
+          <span class="card-step">Step 1 · Design</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-num"><strong>Demo #07</strong> · AP2 · MCP</span>
+        <h3 class="card-title">AP2 Agentic Payment Policy Guardrail</h3>
+        <p class="card-desc">
+          Visualise any AP2 v1.0 policy mandate, surface its intent envelope, compile to
+          runtime guards, emit MCP tool definitions — entirely client-side. This is the
+          design surface for the runtime team that owns the policy boundary.
+        </p>
+        <div class="card-meta">
+          <span class="chip">AP2 v1.0</span><span class="chip">MCP Tool Def</span><span class="chip">Policy JSON</span>
+        </div>
+      </a>
+
+      <!-- STEP 2 — Test in sandbox -->
+      <a class="demo-card live" href="/demos/agentic-mandate-sandbox.html" style="text-decoration:none;">
+        <div class="card-head">
+          <span class="card-step">Step 2 · Test</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-num"><strong>Demo #27</strong> · Agentic Runtime</span>
+        <h3 class="card-title">Agentic Mandate Sandbox</h3>
+        <p class="card-desc">
+          Load any AP2 mandate the showcase emits (AML / BaaS / DORA / Fraud / Stablecoin),
+          queue a candidate agent action, see the per-step execution trace with decision and
+          reasoning. Trace exports as <code>@ainumbers.co/sandbox-trace-v1</code> — the audit
+          artifact the pre-production EU-AI-Act / DORA Art. 25–26 testing record needs.
+        </p>
+        <div class="card-meta">
+          <span class="chip">AP2 Sandbox</span><span class="chip">5 schemas</span><span class="chip">Trace + decision</span>
+        </div>
+      </a>
+
+      <!-- STEP 3 — Apply: AML -->
+      <a class="demo-card live" href="/demos/ap2-aml-mandate-builder.html" style="text-decoration:none;">
+        <div class="card-head">
+          <span class="card-step">Step 3 · Apply (AML)</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-num"><strong>Demo #23</strong> · AP2 × AML</span>
+        <h3 class="card-title">AP2 AML Mandate Builder</h3>
+        <p class="card-desc">
+          Compose AP2 mandates for agentic AML — customer risk tiers, TM rule parameters,
+          sanctions cadence, SAR triggers, FATF R.16 travel rule. Validates against
+          <code>@ainumbers.co/aml-mandate-v1</code> and emits an MCP tool definition the
+          runtime can bind to.
+        </p>
+        <div class="card-meta">
+          <span class="chip">AP2</span><span class="chip">AML</span><span class="chip">Agentic AML</span>
+        </div>
+      </a>
+
+      <!-- STEP 4 — Apply: BaaS -->
+      <a class="demo-card live" href="/demos/ap2-baas-infrastructure-mandate-builder.html" style="text-decoration:none;">
+        <div class="card-head">
+          <span class="card-step">Step 4 · Apply (BaaS)</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-num"><strong>Demo #24</strong> · AP2 × BaaS</span>
+        <h3 class="card-title">AP2 BaaS Infrastructure Mandate Builder</h3>
+        <p class="card-desc">
+          Programme-policy slots, sponsor-bank approval gates, BIN-tier issuance ceilings,
+          transaction-rail per-tx caps and handoff workflows — composed into a machine-readable
+          AP2 mandate the runtime enforces and the sponsor bank can audit. OCC Bull. 2023-17 aligned.
+        </p>
+        <div class="card-meta">
+          <span class="chip">AP2</span><span class="chip">BaaS</span><span class="chip">Programme Policy</span>
+        </div>
+      </a>
+
+      <!-- CROSS-LINK · regulatory context -->
+      <div class="demo-card placeholder cross-link">
+        <div class="card-head">
+          <span class="card-step">Cross-link · Regulatory</span>
+          <span class="card-status cross">Cross</span>
+        </div>
+        <span class="card-num"><strong>Demo #10</strong> · EU AI Act Art. 6</span>
+        <h3 class="card-title">EU AI Act Article 6 Risk-Class Mapper for FS</h3>
+        <p class="card-desc">
+          Maps financial-services AI use cases (most agent runtime products) to the EU AI
+          Act Annex III risk classes. €35M / 7% turnover exposure — the regulatory boundary
+          the runtime sits inside.
+        </p>
+        <div class="card-meta">
+          <span class="chip">EU AI Act</span><span class="chip">Art. 6 · Annex III</span><span class="chip">€35M / 7%</span>
+        </div>
+      </div>
+
+      <!-- CROSS-LINK · tokenized assets -->
+      <a class="demo-card live cross-link" href="/demos/tokenized-rwa-compliance-pre-checker.html" style="text-decoration:none;">
+        <div class="card-head">
+          <span class="card-step">Cross-link · Tokenized</span>
+          <span class="card-status live">Live · Cross</span>
+        </div>
+        <span class="card-num"><strong>Demo #21</strong> · Tokenized RWA</span>
+        <h3 class="card-title">Tokenized RWA Compliance Pre-Checker</h3>
+        <p class="card-desc">
+          Agents that route tokenised real-world-asset payments need MiCA + Howey classification,
+          pathway verdict, and custody-disclosure visibility before they sign the mandate. This is
+          that check — 8 asset classes × 7 jurisdictions.
+        </p>
+        <div class="card-meta">
+          <span class="chip">Tokenized RWA</span><span class="chip">MiCA + Howey</span><span class="chip">$1T+ proj.</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HUB CALLOUT ═══════════════ -->
+<section class="hub-callout" aria-label="Why this hub exists">
+  <div class="hub-callout-inner">
+    <div class="hub-callout-grid">
+      <div>
+        <div class="hub-section-label">Why this exists</div>
+      </div>
+      <div>
+        <h3>An agent runtime needs a policy layer that audit can read.</h3>
+        <p>
+          Heuristic guardrails fail audit. Bespoke per-tenant policy doesn't scale. An
+          off-the-shelf compliance vendor adds a service call to every agent action — and
+          its output isn't schema-stable enough for the runtime to enforce deterministically.
+        </p>
+        <p>
+          <strong>The AINumbers + Post Oak Labs surface ships ~259 stateless, browser-side
+          tools that already emit AP2 v1.0 mandates, with an MCP tool definition on each.</strong>
+          The runtime imports the manifest, the agent reads the mandate, the runtime
+          enforces it. The audit log is the same JSON the agent received. No vendor call.
+          No serialization gap. No bespoke policy DSL.
+        </p>
+        <p>
+          The six demos in this hub walk an agent team through that adoption: design the
+          policy surface, sandbox the mandate, then apply it across the two most-litigated
+          fintech use cases (AML and BaaS). The cross-links pin the policy boundary
+          to its actual regulatory and asset context.
+        </p>
+        <div class="hub-callout-aside" role="note">
+          <strong>For the acquirer reader</strong>
+          A deterministic, schema-stable policy substrate is a strict prerequisite for
+          agentic-payments scale. The catalog is the IP — the demos are the proof
+          that it composes.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HUB DEEP DIVE ═══════════════ -->
+<section class="hub-deep-dive" aria-label="Deep links into AINumbers">
+  <div class="hub-deep-dive-inner">
+    <div class="hub-section-label">Deep links · AINumbers catalog</div>
+    <h2 class="hub-section-title">Six tools underneath the demos.</h2>
+    <p class="hub-section-intro">
+      Each demo is a packaged surface; the underlying AINumbers tools are where the
+      runtime team will go to dig in. AP2 schemas and MCP manifests are exposed per-tool.
+    </p>
+    <ul class="deep-list">
+
+      <li>
+        <a href="https://ainumbers.co/tools/102-ap2-payments-checker.html" target="_blank" rel="noopener">
+          <div class="deep-id">T102 ↗</div>
+          <div class="deep-name">AP2 Payments Checker</div>
+          <div class="deep-blurb">Validates an AP2 v1.0 mandate against the canonical schema; surfaces missing intent and constraint fields before the runtime enforces.</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html" target="_blank" rel="noopener">
+          <div class="deep-id">T131 ↗</div>
+          <div class="deep-name">AP2 AML Mandate Builder</div>
+          <div class="deep-blurb">Builds AP2 mandates with the AML-specific constraint set — beneficial-owner gates, sanctions guards, TM referrals. The tool underneath Demo #23.</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html" target="_blank" rel="noopener">
+          <div class="deep-id">T164 ↗</div>
+          <div class="deep-name">AP2 BaaS Mandate Builder</div>
+          <div class="deep-blurb">BaaS-specific mandate composition — sponsor-bank approval gates, programme-policy slots, BIN-tier ceilings. The tool underneath Demo #24.</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://ainumbers.co/tools/rbe-04-agent-guardrail-builder.html" target="_blank" rel="noopener">
+          <div class="deep-id">RBE-04 ↗</div>
+          <div class="deep-name">Agent Guardrail Builder</div>
+          <div class="deep-blurb">Guardrail composer for any agentic surface — declarative limits compiled to AP2 mandate JSON the runtime can enforce without code change.</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://ainumbers.co/tools/rbe-06-agentic-mandate-sandbox.html" target="_blank" rel="noopener">
+          <div class="deep-id">RBE-06 ↗</div>
+          <div class="deep-name">Agentic Mandate Sandbox</div>
+          <div class="deep-blurb">Sandbox a mandate against simulated MCP discovery and agent execution — pre-deploy sanity check before the mandate touches production traffic.</div>
+        </a>
+      </li>
+
+      <li>
+        <a href="https://ainumbers.co/tools/rbe-07-signal-auditor.html" target="_blank" rel="noopener">
+          <div class="deep-id">RBE-07 ↗</div>
+          <div class="deep-name">Signal Auditor</div>
+          <div class="deep-blurb">Replay-and-trace tool for agent decisions — inspects the signal chain that led to a runtime guard firing. Useful for incident review and audit prep.</div>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ HUB CTA ═══════════════ -->
+<section class="hub-cta-row" aria-label="Continue">
+  <div class="hub-cta-inner">
+    <div class="hub-cta-text">
+      <h3>See where these six demos sit in the full 259-tool chain.</h3>
+      <p>The Tool Chain Composer renders the AINumbers catalog as a DAG with the 33 showcase demos highlighted. The agentic-runtime cluster is one connected sub-graph inside it.</p>
+    </div>
+    <div class="hub-cta-buttons">
+      <a href="/demos/composer.html" class="hub-cta-btn primary">View the composer →</a>
+      <a href="/demos/" class="hub-cta-btn ghost">← All 27 demos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ POL DARK FOOTER ═══════════════ -->
+<footer class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <p class="footer-copy">
+        &copy; 2026 Post Oak Labs &nbsp;·&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>
+      </p>
+      <p class="footer-copy">
+        Built by Post Oak Labs &nbsp;·&nbsp;
+        <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — Full tool catalog ↗</a>
+      <a href="/demos/">Fintech Intelligence Showcase</a>
+      <a href="/demos/composer.html">Tool Chain Composer</a>
+      <a href="/demos/agentic-runtime/" class="this-hub">Agentic Runtime hub</a>
+      <a href="/demos/regtech/">RegTech hub</a>
+      <a href="/demos/baas/">BaaS hub</a>
+      <a href="/demos/processors/">Processors hub</a>
+      <a href="/demos/stablecoin-issuer/">Stablecoin Issuer hub</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-copy" style="text-align:right;">
+      <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
+      <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

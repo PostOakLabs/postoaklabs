@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture | Post Oak Labs</title>
+<meta name="description" content="A practitioner-authored technical deep-dive into how Digital Asset's Canton Network and the Daml smart contract language enable tokenized account-to-account settlement across four major financial market infrastructures: Deutsche Börse / Clearstream D7, DTCC ComposerX, Broadridge DLR, and Euroclear D-FMI. Synchronizer topology, Daml templates, sub-transaction privacy, atomic DvP, and EU/US/UK regulatory framework.">
+<meta name="author" content="Post Oak Labs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:       #050c15;
+  --deep:      #0a1628;
+  --navy:      #0e1e35;
+  --panel:     #142540;
+  --edge:      #1e3454;
+  --rim:       #2a4a70;
+  --muted:     #4a6a8a;
+  --body:      #7090b0;
+  --text:      #a8c0d8;
+  --bright:    #d0e4f4;
+  --white:     #ecf4fc;
+  --gold:      #c09040;
+  --gold-lt:   #d8b060;
+  --gold-dim:  #6a4818;
+  --accent:    #2a7fc0;
+  --accent-lt: #4a9fd8;
+  --accent-dim:#0e2840;
+  --amber:     #b07020;
+  --amber-lt:  #d09030;
+  --red:       #b03040;
+  --red-lt:    #d04858;
+  --green:     #2a9060;
+  --green-lt:  #3ab878;
+  /* aliases so internal var() refs keep working */
+  --bg:        #050c15;
+  --surface:   #0a1628;
+  --border:    #1e3454;
+  --teal:      #2a7fc0;
+  --teal-lt:   #4a9fd8;
+  --teal-dim:  #0e2840;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+}
+h1,h2,h3,h4,h5 {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--white);
+}
+a { color: var(--accent-lt); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  padding: 0.08em 0.4em;
+  border-radius: 2px;
+  color: var(--accent-lt);
+}
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.77em;
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  line-height: 1.6;
+  color: var(--bright);
+  margin: 1.25rem 0;
+}
+pre .cm  { color: var(--muted); }
+pre .kw  { color: var(--gold-lt); }
+pre .ty  { color: var(--accent-lt); }
+pre .st  { color: var(--green-lt); }
+pre .nr  { color: var(--amber-lt); }
+pre .fn  { color: var(--bright); }
+.container { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.top-banner {
+  background: var(--accent-dim);
+  border-bottom: 1px solid var(--accent);
+  padding: 0.5rem 0;
+}
+.top-banner-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; gap: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-lt);
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(5,12,21,0.96);
+  border-bottom: 1px solid var(--edge);
+  backdrop-filter: blur(10px);
+  padding: 0 2rem; height: 54px;
+}
+.nav-inner {
+  max-width: 1040px; margin: 0 auto; height: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem; color: var(--bright); font-weight: 400;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--muted); transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); text-decoration: none; }
+.nav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); background: var(--accent);
+  border: 1px solid var(--accent); padding: 0.28rem 0.8rem;
+  transition: all 0.2s;
+}
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); text-decoration: none; }
+
+.hero {
+  padding: 5.5rem 0 5rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-lt), var(--gold-lt), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; top: -200px; right: -300px;
+  width: 900px; height: 900px;
+  background: radial-gradient(ellipse, rgba(26,122,136,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--accent);
+}
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  max-width: 820px; margin-bottom: 1.5rem;
+  letter-spacing: -0.02em; line-height: 1.12;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 1rem; color: var(--body);
+  max-width: 720px; line-height: 1.85; margin-bottom: 2.5rem;
+}
+.hero-badges {
+  display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.28rem 0.7rem; border: 1px solid var(--edge);
+  color: var(--muted);
+}
+.badge.tech  { border-color: var(--accent);   color: var(--accent-lt); }
+.badge.reg   { border-color: var(--gold-dim); color: var(--gold-lt); }
+.badge.live  { border-color: var(--green);  color: var(--green-lt); }
+
+.overview-box {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin-top: 3.5rem;
+}
+.overview-cell {
+  background: var(--deep); padding: 1.5rem 1.75rem;
+}
+.overview-cell-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.4rem;
+}
+.overview-cell h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.overview-cell p { font-size: 0.8rem; color: var(--body); line-height: 1.7; }
+
+.toc-wrapper {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--gold);
+  padding: 2rem 2.5rem; margin: 4rem 0;
+}
+.toc-wrapper h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 1.25rem; font-weight: 400;
+}
+.toc-list {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 3rem; list-style: none;
+}
+.toc-list li {
+  font-size: 0.82rem; color: var(--body);
+  padding: 0.2rem 0; border-bottom: 1px solid rgba(28,34,53,0.5);
+}
+.toc-list a {
+  color: var(--body); display: flex; gap: 0.75rem; align-items: baseline;
+}
+.toc-list a:hover { color: var(--accent-lt); text-decoration: none; }
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem; color: var(--muted); flex-shrink: 0;
+}
+
+section { padding: 5rem 0; border-bottom: 1px solid var(--edge); }
+section:last-of-type { border-bottom: none; }
+.sec-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-lt); margin-bottom: 0.6rem;
+}
+.sec-title {
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  margin-bottom: 0.75rem; max-width: 760px;
+}
+.sec-lead {
+  font-size: 0.93rem; color: var(--body);
+  max-width: 740px; line-height: 1.85;
+  margin-bottom: 2.5rem; padding-bottom: 2rem;
+  border-bottom: 1px solid var(--edge);
+}
+p + p { margin-top: 0.9rem; }
+p { font-size: 0.9rem; color: var(--body); line-height: 1.85; }
+strong { color: var(--text); font-weight: 500; }
+
+.callout {
+  border: 1px solid var(--edge);
+  padding: 1.4rem 1.75rem; margin: 1.75rem 0;
+}
+.callout.gold  { border-left: 3px solid var(--gold); background: rgba(184,146,42,0.04); }
+.callout.teal  { border-left: 3px solid var(--accent); background: rgba(26,122,136,0.04); }
+.callout.amber { border-left: 3px solid var(--amber); background: rgba(160,96,32,0.05); }
+.callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.callout.gold  .callout-label { color: var(--gold-lt); }
+.callout.teal  .callout-label { color: var(--accent-lt); }
+.callout.amber .callout-label { color: var(--amber-lt); }
+.callout p { font-size: 0.85rem; }
+
+.diagram-wrap {
+  border: 1px solid var(--edge);
+  background: var(--deep);
+  padding: 2rem; overflow-x: auto;
+  margin: 2rem 0;
+}
+.diagram-wrap svg { display: block; margin: 0 auto; }
+.diagram-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-align: center; margin-top: 1rem;
+}
+
+.step-list {
+  display: flex; flex-direction: column;
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.step-item {
+  background: var(--deep); padding: 1.4rem 1.75rem;
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 1.5rem; align-items: start;
+  transition: background 0.18s;
+}
+.step-item:hover { background: var(--panel); }
+.step-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem; color: var(--edge);
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.18s;
+}
+.step-item:hover .step-num { color: var(--accent-lt); }
+.step-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 0.25rem;
+}
+.step-body h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--bright); margin-bottom: 0.35rem;
+}
+.step-body p { font-size: 0.82rem; line-height: 1.8; }
+.step-timing {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.35rem;
+}
+.step-timing span { color: var(--accent-lt); }
+
+.detail-table-wrap { overflow-x: auto; margin: 1.75rem 0; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.detail-table th {
+  background: var(--panel); padding: 0.7rem 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--accent-lt); border: 1px solid var(--edge);
+  text-align: left; font-weight: 400;
+}
+.detail-table td {
+  padding: 0.75rem 1.1rem; border: 1px solid var(--edge);
+  color: var(--body); line-height: 1.65; vertical-align: top;
+}
+.detail-table td.lbl {
+  font-weight: 500; color: var(--bright);
+  border-right: 1px solid var(--rim);
+  white-space: nowrap; background: rgba(13,16,24,0.5);
+}
+.detail-table tr:hover td { background: var(--panel); }
+
+.node-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.node-card { padding: 1.5rem 1.75rem; }
+.node-card.dbg  { background: color-mix(in srgb, var(--dbg) 30%, var(--deep));  border-top: 3px solid #3a6ac0; }
+.node-card.dtcc { background: color-mix(in srgb, var(--dtcc) 30%, var(--deep)); border-top: 3px solid #6a3aaa; }
+.node-card.brd  { background: color-mix(in srgb, var(--brd) 30%, var(--deep));  border-top: 3px solid #c47030; }
+.node-card.euc  { background: color-mix(in srgb, var(--euc) 30%, var(--deep));  border-top: 3px solid #3aaa60; }
+.node-card.synch{ background: color-mix(in srgb, var(--synch) 50%, var(--deep)); border-top: 3px solid var(--gold-lt); grid-column: span 2; }
+.node-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+.node-card.dbg  .node-type { color: #6a9ae0; }
+.node-card.dtcc .node-type { color: #9a6ad0; }
+.node-card.brd  .node-type { color: #e09060; }
+.node-card.euc  .node-type { color: #6ad090; }
+.node-card.synch .node-type { color: var(--gold-lt); }
+.node-card h3 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.97rem; font-weight: 500; color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.node-card p { font-size: 0.79rem; line-height: 1.75; color: var(--body); }
+.node-card ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.2rem; }
+.node-card ul li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; color: var(--muted); padding: 0.15rem 0;
+  border-bottom: 1px solid rgba(28,34,53,0.4);
+}
+.node-card ul li::before { content: '→ '; color: var(--accent); }
+
+.reg-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin: 1.75rem 0;
+}
+.reg-cell { background: var(--deep); padding: 1.5rem 1.75rem; }
+.reg-cell h4 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.95rem; font-weight: 500; color: var(--white);
+  margin-bottom: 0.6rem;
+}
+.reg-cell p { font-size: 0.81rem; line-height: 1.78; }
+.reg-list { list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.reg-list li {
+  font-size: 0.8rem; color: var(--body); padding: 0.4rem 0;
+  border-bottom: 1px solid var(--edge); line-height: 1.6;
+}
+.reg-list li strong { color: var(--text); }
+
+.footnotes {
+  border-top: 1px solid var(--edge);
+  padding: 3rem 0 2rem;
+}
+.footnotes h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1.25rem; font-weight: 400;
+}
+.footnotes ol {
+  padding-left: 1.4rem; display: flex; flex-direction: column; gap: 0.7rem;
+}
+.footnotes li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem; color: var(--muted);
+  line-height: 1.65; letter-spacing: 0.02em;
+}
+.footnotes a { color: var(--accent-lt); }
+
+footer {
+  padding: 2.5rem 0; border-top: 1px solid var(--edge);
+  background: var(--deep);
+}
+.footer-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 1rem;
+}
+.footer-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem; color: var(--bright); margin-bottom: 0.4rem;
+}
+.footer-brand span { color: var(--gold-lt); }
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7;
+}
+.footer-copy a { color: var(--accent-lt); }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent-lt); }
+
+@media (max-width: 800px) {
+  .overview-box { grid-template-columns: 1fr; }
+  .toc-list { grid-template-columns: 1fr; }
+  .node-grid { grid-template-columns: 1fr; }
+  .node-card.synch { grid-column: span 1; }
+  .reg-grid { grid-template-columns: 1fr; }
+  .step-item { grid-template-columns: 1fr; gap: 0.25rem; }
+  .step-num { display: none; }
+  .nav-links { display: none; }
+}
+
+[id] { scroll-margin-top: 70px; }
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-bar {
+  background: var(--deep);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.45rem 0;
+}
+.lang-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: flex-end; gap: 0.25rem;
+}
+.lang-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--edge);
+  color: var(--muted);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="me" href="https://ainumbers.co">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<link rel="canonical" href="https://postoaklabs.com/example-canton-a2a.html">
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture | Post Oak Labs">
+<meta property="og:description" content="A practitioner-authored technical deep-dive into how Digital Asset's Canton Network and the Daml smart contract language enable tokenized account-to-account settlement across four major financial market infrastructures: Deutsche Börse / Clearstream D7, DTCC ComposerX, Broadridge DLR, and Euroclear D">
+<meta property="og:url" content="https://postoaklabs.com/example-canton-a2a.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture | Post Oak Labs">
+<meta name="twitter:description" content="A practitioner-authored technical deep-dive into how Digital Asset's Canton Network and the Daml smart contract language enable tokenized account-to-account settlement across four major financial market infrastructures: Deutsche Börse / Clearstream D7, DTCC ComposerX, Broadridge DLR, and Euroclear D">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture",
+  "datePublished": "2026-05-07",
+  "dateModified": "2026-05-11",
+  "author": {
+    "@type": "Organization",
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "publisher": {
+    "@id": "https://postoaklabs.com/#organization"
+  },
+  "mainEntityOfPage": "https://postoaklabs.com/example-canton-a2a.html",
+  "image": "https://postoaklabs.com/og-image.png",
+  "about": "Canton Network and Daml for tokenized A2A settlement",
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Commercial banks, central banks, large corporates"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Enterprise Blockchain",
+      "item": "https://postoaklabs.com/enterprise-blockchain.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Canton",
+      "item": "https://postoaklabs.com/example-canton-a2a.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow">Technical Deep-Dive · Canton Network · Daml · Four-FMI Settlement</p>
+    <h1 data-i18n="hero-h1">A2A tokenization on Canton: <em>four FMIs, one synchronized ledger</em></h1>
+    <p class="hero-sub" data-i18n="hero-sub">
+      A minute-detail walkthrough of how Digital Asset's Canton Network and the Daml smart contract language enable tokenized account-to-account settlement across four of the world's largest financial market infrastructures: Deutsche Börse Group's Clearstream D7, the Depository Trust & Clearing Corporation (DTCC) ComposerX, Broadridge's Distributed Ledger Repo (DLR), and Euroclear's D-FMI. Every layer covered: Canton's participant-and-synchronizer topology, Daml templates and choices, sub-transaction privacy, atomic delivery-versus-payment across applications, and the regulatory frameworks (EU CSDR/MiCA/DORA, US SEC/CFTC, UK FMI rules, Belgian NBB) that govern each FMI.
+    </p>
+
+    <div class="hero-badges">
+      <span class="badge tech">Canton Network</span>
+      <span class="badge tech">Daml 3.x</span>
+      <span class="badge tech">Sub-transaction Privacy</span>
+      <span class="badge tech">Atomic DvP / PvP</span>
+      <span class="badge tech">ISO 20022 / ISO 11179</span>
+      <span class="badge reg">EU CSDR / MiCA / DORA</span>
+      <span class="badge reg">SEC Rule 17Ad-22</span>
+      <span class="badge reg">UK FMI Rules</span>
+      <span class="badge reg">NBB / FSMA (BE)</span>
+      <span class="badge live">Production Patterns 2026</span>
+    </div>
+
+    <div class="overview-box">
+      <div class="overview-cell">
+        <p class="overview-cell-label">Scenario</p>
+        <h3>Four-FMI tokenized collateral and DvP corridor</h3>
+        <p>A US asset manager pledges DTCC-custodied tokenized US Treasuries through Broadridge DLR as intraday repo collateral against tokenized euro commercial paper held at Clearstream D7, with end-of-day mobilization into Euroclear's D-FMI for cross-border collateral redeployment.</p>
+      </div>
+      <div class="overview-cell">
+        <p class="overview-cell-label">Technology</p>
+        <h3>Canton Network · Daml 3.x</h3>
+        <p>Each FMI operates its own Canton participant node and bespoke Daml application. Privacy-preserving atomic composability via the Global Synchronizer. Sub-transaction privacy means each party sees only what they need. Daml templates encode legal contracts as smart contracts.</p>
+      </div>
+      <div class="overview-cell">
+        <p class="overview-cell-label">Settlement</p>
+        <h3>Atomic DvP across four applications</h3>
+        <p>Tokenized US Treasuries, EUR commercial paper, gilts, and Eurobonds settle atomically in a single Daml transaction spanning all four FMI applications. No bilateral reconciliation. Cash legs settle into TARGET2 (EUR) and Fedwire (USD) at end-of-cycle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TOC ═══════════ -->
+<div class="container">
+  <div class="toc-wrapper">
+    <h3>Contents</h3>
+    <ul class="toc-list">
+      <li><a href="#background"><span class="toc-num">01</span>Why four FMIs, why Canton</a></li>
+      <li><a href="#architecture"><span class="toc-num">02</span>Network topology and participant architecture</a></li>
+      <li><a href="#daml"><span class="toc-num">03</span>Daml templates, choices, and parties</a></li>
+      <li><a href="#privacy"><span class="toc-num">04</span>Sub-transaction privacy and the Global Synchronizer</a></li>
+      <li><a href="#lifecycle"><span class="toc-num">05</span>Full transaction lifecycle (18 steps)</a></li>
+      <li><a href="#interop"><span class="toc-num">06</span>Cross-application atomic composability</a></li>
+      <li><a href="#cash"><span class="toc-num">07</span>Cash leg and the Canton Coin model</a></li>
+      <li><a href="#iso20022"><span class="toc-num">08</span>ISO 20022 payloads inside Daml contracts</a></li>
+      <li><a href="#kyc"><span class="toc-num">09</span>KYC, AML, and Travel Rule compliance</a></li>
+      <li><a href="#regulatory"><span class="toc-num">10</span>Regulatory framework: EU, US, UK, Belgium</a></li>
+      <li><a href="#governance"><span class="toc-num">11</span>Governance, super-validators, and fees</a></li>
+      <li><a href="#risks"><span class="toc-num">12</span>Operational risks and recovery design</a></li>
+      <li><a href="#references"><span class="toc-num">—</span>References and source notes</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 1 ═══════════ -->
+<section id="background">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_01">Section 01</p>
+    <h2 class="sec-title" data-i18n="t-why_these_four_fmis__and_w">Why these four FMIs, and why Canton is the right substrate</h2>
+    <p class="sec-lead">
+      The four institutions in this network — Deutsche Börse's Clearstream, DTCC, Broadridge, and Euroclear — collectively touch the overwhelming majority of the world's settled securities flow. Clearstream and Euroclear together hold roughly EUR 80 trillion of assets under custody. DTCC clears and settles approximately USD 2.5 quadrillion of US securities transactions annually. Broadridge's Distributed Ledger Repo (DLR) platform, live in production on Canton since 2021, has cumulatively processed more than USD 1.5 trillion in intraday repurchase agreements. They are not pilot participants. They are the post-trade backbone of global capital markets, and each has independently committed production infrastructure to the Canton Network.<sup><a href="#fn1">[1]</a></sup>
+    </p>
+
+    <p>The case for using Canton as the connective substrate rests on a property no other enterprise ledger offers at this scale: <strong>privacy-preserving atomic composability</strong>. Canton allows transactions to span multiple independently operated applications, each running its own Daml smart-contract logic on its own participant node, while guaranteeing two things simultaneously: (i) all sub-transactions either commit together or none commit, giving genuine atomicity across application and trust domains, and (ii) each party sees only the sub-transactions and contract data they are explicitly authorized to see. A bond settlement at Clearstream and a treasury delivery at DTCC can settle as a single atomic event without DTCC ever seeing the bond contract, and without Clearstream ever seeing the treasury contract. The Global Synchronizer orders and confirms the transaction; it never sees any payload.<sup><a href="#fn2">[2]</a></sup></p>
+
+    <p>This property is structural, not architectural decoration. Every other enterprise ledger forces a trade-off: either share a global ledger (Ethereum, Besu, Quorum) and accept that all participants see all data — solved partially by zero-knowledge proofs but at significant complexity and cost — or partition the ledger into bilateral subnets (Corda) and lose the ability to compose transactions atomically across more than the parties to a single transaction. Canton's sub-transaction privacy resolves the trade-off, which is precisely why four institutions whose competitive position depends on data confidentiality have all chosen it.</p>
+
+    <p>The four FMIs in this scenario also map onto four distinct asset classes and four distinct regulatory regimes. Clearstream's D7 DLT platform, launched in production in November 2025, issues and settles EUR-denominated debt securities under the German eWpG (Electronic Securities Act) and the EU CSDR.<sup><a href="#fn3">[3]</a></sup> DTCC's ComposerX platform, with a Q2 2026 production target, tokenizes DTC-custodied US Treasuries under SEC Rule 17Ad-22 and CFTC clearing rules.<sup><a href="#fn4">[4]</a></sup> Broadridge DLR has been operating intraday repo flows on Canton since 2021, regulated as a US transfer agent and broker-dealer service.<sup><a href="#fn5">[5]</a></sup> Euroclear, as a Canton Foundation member and Super Validator, has tokenized gilts, Eurobonds, and gold for collateral mobility, operating its D-FMI under Belgian NBB supervision and the Luxembourg DLT Pilot Regime where applicable.<sup><a href="#fn6">[6]</a></sup></p>
+
+    <div class="callout teal">
+      <p class="callout-label">Why this matters operationally</p>
+      <p>Today, mobilizing US Treasury collateral against a euro-denominated obligation typically requires triparty agents, multiple correspondent legs, and a settlement window measured in hours or days. With these four FMIs on Canton, the same flow can settle as a single atomic Daml transaction in seconds, with each FMI retaining authoritative control over its own asset register and seeing only the parts of the transaction relevant to it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 2: ARCHITECTURE ═══════════ -->
+<section id="architecture">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_02">Section 02</p>
+    <h2 class="sec-title" data-i18n="t-network_topology_and_parti">Network topology and participant architecture</h2>
+    <p class="sec-lead">
+      A Canton network is not a single ledger. It is a federation of independently operated <em>participant nodes</em>, each owned by a legal entity, communicating through one or more <em>synchronizer</em> domains. Each participant maintains its own private contract store containing only the contracts to which its hosted parties are stakeholders. The synchronizer orders messages and provides finality but never sees contract content — only opaque, encrypted payloads addressed to the relevant participants.
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 1000 540" width="100%" style="max-width:1000px">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#3d5070"/>
+          </marker>
+        </defs>
+        <!-- Synchronizer at top -->
+        <rect x="280" y="30" width="440" height="80" fill="#3a2a08" stroke="#d4aa44" stroke-width="1.5"/>
+        <text x="500" y="58" text-anchor="middle" fill="#d4aa44" font-family="JetBrains Mono" font-size="10" letter-spacing="2">GLOBAL SYNCHRONIZER</text>
+        <text x="500" y="80" text-anchor="middle" fill="#cde0f2" font-family="Source Serif 4" font-size="13">Sequencer · Mediator · Topology Manager</text>
+        <text x="500" y="98" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="9">13 Super Validators · BFT consensus · sees no contract data</text>
+
+        <!-- Four FMI participants -->
+        <rect x="40" y="200" width="200" height="140" fill="#1a3a6a" stroke="#3a6ac0" stroke-width="1.5"/>
+        <text x="140" y="222" text-anchor="middle" fill="#6a9ae0" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5">PARTICIPANT · CLEARSTREAM</text>
+        <text x="140" y="246" text-anchor="middle" fill="#e8f2fc" font-family="DM Serif Display" font-size="14">Deutsche Börse</text>
+        <text x="140" y="264" text-anchor="middle" fill="#cde0f2" font-family="Source Serif 4" font-size="11">Clearstream D7 DLT</text>
+        <text x="140" y="290" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">EUR debt · eWpG · CSDR</text>
+        <text x="140" y="306" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Frankfurt / Luxembourg</text>
+        <text x="140" y="322" text-anchor="middle" fill="#6a9ae0" font-family="JetBrains Mono" font-size="8">D7-DLT Daml app</text>
+
+        <rect x="265" y="200" width="200" height="140" fill="#2a1a5a" stroke="#9a6ad0" stroke-width="1.5"/>
+        <text x="365" y="222" text-anchor="middle" fill="#9a6ad0" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5">PARTICIPANT · DTCC</text>
+        <text x="365" y="246" text-anchor="middle" fill="#e8f2fc" font-family="DM Serif Display" font-size="14">DTCC</text>
+        <text x="365" y="264" text-anchor="middle" fill="#cde0f2" font-family="Source Serif 4" font-size="11">ComposerX</text>
+        <text x="365" y="290" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">US Treasuries · 17Ad-22</text>
+        <text x="365" y="306" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Jersey City / Tampa</text>
+        <text x="365" y="322" text-anchor="middle" fill="#9a6ad0" font-family="JetBrains Mono" font-size="8">ComposerX Daml app</text>
+
+        <rect x="490" y="200" width="200" height="140" fill="#5a2a1a" stroke="#c47030" stroke-width="1.5"/>
+        <text x="590" y="222" text-anchor="middle" fill="#e09060" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5">PARTICIPANT · BROADRIDGE</text>
+        <text x="590" y="246" text-anchor="middle" fill="#e8f2fc" font-family="DM Serif Display" font-size="14">Broadridge</text>
+        <text x="590" y="264" text-anchor="middle" fill="#cde0f2" font-family="Source Serif 4" font-size="11">DLR (Distributed Ledger Repo)</text>
+        <text x="590" y="290" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Intraday repo · transfer agent</text>
+        <text x="590" y="306" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">New York · live since 2021</text>
+        <text x="590" y="322" text-anchor="middle" fill="#e09060" font-family="JetBrains Mono" font-size="8">DLR Daml app</text>
+
+        <rect x="715" y="200" width="200" height="140" fill="#1a4a2a" stroke="#3aaa60" stroke-width="1.5"/>
+        <text x="815" y="222" text-anchor="middle" fill="#6ad090" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5">PARTICIPANT · EUROCLEAR</text>
+        <text x="815" y="246" text-anchor="middle" fill="#e8f2fc" font-family="DM Serif Display" font-size="14">Euroclear</text>
+        <text x="815" y="264" text-anchor="middle" fill="#cde0f2" font-family="Source Serif 4" font-size="11">D-FMI · Collateral</text>
+        <text x="815" y="290" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Gilts · Eurobonds · Gold</text>
+        <text x="815" y="306" text-anchor="middle" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Brussels · NBB / FSMA</text>
+        <text x="815" y="322" text-anchor="middle" fill="#3aaa60" font-family="JetBrains Mono" font-size="8">D-FMI Daml app</text>
+
+        <!-- Lines from synchronizer to each -->
+        <line x1="380" y1="110" x2="140" y2="200" stroke="#3d5070" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="450" y1="110" x2="365" y2="200" stroke="#3d5070" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="550" y1="110" x2="590" y2="200" stroke="#3d5070" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="620" y1="110" x2="815" y2="200" stroke="#3d5070" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- Lower panel: counterparties -->
+        <rect x="40" y="400" width="430" height="100" fill="#0d1018" stroke="#1c2235"/>
+        <text x="60" y="425" fill="#24a8ba" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5">CASH-LEG INFRASTRUCTURE</text>
+        <text x="60" y="450" fill="#cde0f2" font-family="Source Serif 4" font-size="11">TARGET2 · T2S · Fedwire · CHAPS</text>
+        <text x="60" y="470" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Net cash settlement of fiat legs at end-of-cycle</text>
+        <text x="60" y="486" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Optional wholesale CBDC integration (digital euro pilot, FedNow)</text>
+
+        <rect x="510" y="400" width="430" height="100" fill="#0d1018" stroke="#1c2235"/>
+        <text x="530" y="425" fill="#d4aa44" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5">REGULATORY OBSERVERS</text>
+        <text x="530" y="450" fill="#cde0f2" font-family="Source Serif 4" font-size="11">BaFin · SEC · FCA · NBB · ESMA</text>
+        <text x="530" y="470" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">Read-only Daml party rights granted to relevant authorities</text>
+        <text x="530" y="486" fill="#9fb8d4" font-family="JetBrains Mono" font-size="8">DORA-compliant audit trail · GDPR-compliant data minimization</text>
+      </svg>
+      <p class="diagram-caption">Figure 2.1 — Canton Network topology: four FMI participant nodes connected through the Global Synchronizer</p>
+    </div>
+
+    <h3 style="font-size:1.1rem;margin:1.5rem 0 0.75rem;color:var(--bright);">2.1 — Roles in this network</h3>
+
+    <div class="node-grid">
+      <div class="node-card dbg">
+        <p class="node-type">Participant 1 · EUR Debt CSD</p>
+        <h3>Deutsche Börse · Clearstream D7</h3>
+        <p>German central securities depository, supervised by BaFin and the Bundesbank, ICSD operations under Luxembourg's CSSF. Operates the D7 platform with a DLT extension launched in production November 2025, issuing electronic securities under the German Electronic Securities Act (eWpG). In this network, Clearstream provides tokenized EUR commercial paper and short-term debt as collateral and as settlement medium. Daml application: <code>ClearstreamD7</code>.</p>
+        <ul>
+          <li>Party identity: clearstream-d7::1220a8f...</li>
+          <li>Asset classes: EUR commercial paper, structured notes</li>
+          <li>Regulator: BaFin, Deutsche Bundesbank, CSSF (LU)</li>
+          <li>Cash leg: TARGET2 / T2S settlement bank</li>
+          <li>Canton role: Participant + observer of cross-app DvP</li>
+        </ul>
+      </div>
+      <div class="node-card dtcc">
+        <p class="node-type">Participant 2 · US Securities CSD</p>
+        <h3>DTCC · ComposerX</h3>
+        <p>The Depository Trust & Clearing Corporation, the central post-trade FMI for US securities markets. Subsidiary DTC is the US national CSD, NSCC the central counterparty for equities, FICC the CCP for fixed income. ComposerX is DTCC's Canton-based tokenization platform for DTC-custodied US Treasuries, with announced production target Q2 2026 in partnership with Digital Asset. In this network, ComposerX provides tokenized US Treasury securities as high-quality collateral. Daml application: <code>DtccComposerX</code>.</p>
+        <ul>
+          <li>Party identity: dtcc-composerx::1220c4b...</li>
+          <li>Asset classes: US Treasuries (notes, bonds, bills)</li>
+          <li>Regulator: SEC (Rule 17Ad-22), CFTC, FRBNY</li>
+          <li>Cash leg: Fedwire / NSS settlement bank</li>
+          <li>Canton role: Participant + Super Validator candidate</li>
+        </ul>
+      </div>
+      <div class="node-card brd">
+        <p class="node-type">Participant 3 · Repo Platform</p>
+        <h3>Broadridge · Distributed Ledger Repo</h3>
+        <p>Broadridge Financial Solutions is a US-listed (NYSE: BR) post-trade processing firm. Its Distributed Ledger Repo (DLR) platform has been live in production on Canton since June 2021 and has processed cumulatively over USD 1.5 trillion in intraday repurchase agreements, with peak single-day volumes exceeding USD 50 billion. In this network, Broadridge orchestrates the repo trade itself: the agreement template, the term, the haircut, the collateral substitution rights, and the unwind. Daml application: <code>BroadridgeDLR</code>.</p>
+        <ul>
+          <li>Party identity: broadridge-dlr::1220e7f...</li>
+          <li>Function: Repo agreement, collateral mgmt, settlement</li>
+          <li>Regulator: SEC (transfer agent), FINRA</li>
+          <li>Counterparties: Goldman Sachs, JPMorgan, BNY, Citi, etc.</li>
+          <li>Canton role: Participant + asset registry for repo terms</li>
+        </ul>
+      </div>
+      <div class="node-card euc">
+        <p class="node-type">Participant 4 · EU/UK Collateral CSD</p>
+        <h3>Euroclear · D-FMI</h3>
+        <p>Euroclear Bank (Brussels) is the world's largest ICSD by AUC, supervised by the National Bank of Belgium (NBB) and the FSMA; Euroclear UK & International (formerly CREST) operates as the UK CSD under FCA and Bank of England oversight. The D-FMI (Digital Financial Market Infrastructure) initiative tokenizes gilts, Eurobonds, and gold for use as cross-border collateral. Euroclear is a Canton Foundation member and operates a Super Validator. Daml application: <code>EuroclearDFMI</code>.</p>
+        <ul>
+          <li>Party identity: euroclear-dfmi::12203a2...</li>
+          <li>Asset classes: Gilts, Eurobonds, allocated gold</li>
+          <li>Regulator: NBB, FSMA, FCA, BoE</li>
+          <li>Cash leg: TARGET2, T2S, CHAPS settlement bank</li>
+          <li>Canton role: Participant + Super Validator + Foundation</li>
+        </ul>
+      </div>
+      <div class="node-card synch">
+        <p class="node-type">Global Synchronizer · Consensus &amp; Ordering</p>
+        <h3>13 Super Validators · BFT-ordered, content-blind</h3>
+        <p>The Global Synchronizer is the message-ordering and finality layer for the Canton Network. It is operated by 13 Super Validators (as of 2026) including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, SBI Digital Markets, Tradeweb, Cumberland Labs and others, governed by the Global Synchronizer Foundation (a non-profit independent of any single participant). The synchronizer's job is precise and deliberately narrow: it orders encrypted messages between participants, runs a BFT consensus over message commitment, and produces a global timestamp that gives transactions deterministic finality. It never sees contract content — every message is encrypted end-to-end between the participants party to it. Sub-transactions in a multi-FMI atomic transaction either all commit or none commit; the synchronizer enforces this through a two-phase commit protocol with the participants involved, but participates in commitment <em>without ever seeing what is being committed</em>. Validator selection, rotation, and slashing are governed on-chain through the Canton Coin governance module.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">2.2 — Counterparties on the network</h3>
+    <p>In addition to the four FMIs, this scenario assumes two trading counterparties whose Daml parties are hosted on dedicated bank participant nodes:</p>
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead><tr><th>Counterparty</th><th>Role</th><th>Hosted on</th><th>Function in flow</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="lbl">AssetMgrUS LLC</td>
+            <td>US asset manager</td>
+            <td>Goldman Sachs DAP participant</td>
+            <td>Repo cash provider; pledges nothing, receives EUR commercial paper as cash equivalent.</td>
+          </tr>
+          <tr>
+            <td class="lbl">EuroDealer SA</td>
+            <td>European broker-dealer</td>
+            <td>BNP Paribas participant</td>
+            <td>Repo collateral provider; pledges US Treasuries (held at DTCC) and gilts (held at Euroclear), borrows EUR commercial paper from AssetMgrUS for intraday liquidity.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 3: DAML ═══════════ -->
+<section id="daml">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_03">Section 03</p>
+    <h2 class="sec-title" data-i18n="t-daml_templates__choices__a">Daml templates, choices, and the party model</h2>
+    <p class="sec-lead">
+      Daml is the smart contract language created by Digital Asset and the lingua franca of the Canton Network. Where Solidity describes computation on a globally replicated state machine, and Corda's Kotlin contracts describe verification of state transitions, Daml describes the <em>rights and obligations</em> of named parties. Every Daml template names its <code>signatory</code> parties (whose authority is required to create the contract), <code>observer</code> parties (who can see it but not act), and <code>controller</code> parties (who can exercise specific choices on it). This party-and-authority model maps directly onto the legal structure of an FMI agreement — each clause becomes a choice, each signature requirement becomes a signatory, each information right becomes an observer disclosure.
+    </p>
+
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1 — Tokenized US Treasury at DTCC</h3>
+    <p>The DTCC <code>ComposerX</code> Daml application defines a <code>UsTreasuryToken</code> template representing a digital twin of a DTC-custodied US Treasury security. The security itself remains in DTC custody under the existing legal framework; the Daml contract is a registered representation that conveys the same beneficial interest, governed by the DTCC tokenization rulebook.</p>
+
+    <pre><code><span class="cm">-- Daml 3.x: UsTreasuryToken.daml</span>
+<span class="kw">module</span> <span class="ty">DtccComposerX.UsTreasuryToken</span> <span class="kw">where</span>
+
+<span class="kw">template</span> <span class="ty">UsTreasuryToken</span>
+  <span class="kw">with</span>
+    issuer        : <span class="ty">Party</span>           <span class="cm">-- DTCC</span>
+    holder        : <span class="ty">Party</span>           <span class="cm">-- current beneficial owner</span>
+    cusip         : <span class="ty">Text</span>            <span class="cm">-- CUSIP identifier</span>
+    faceAmount    : <span class="ty">Decimal</span>         <span class="cm">-- USD face value</span>
+    maturity      : <span class="ty">Date</span>            <span class="cm">-- maturity date</span>
+    couponRate    : <span class="ty">Decimal</span>         <span class="cm">-- annualized coupon</span>
+    custodian     : <span class="ty">Party</span>           <span class="cm">-- always DTC</span>
+    rulebookHash  : <span class="ty">Text</span>            <span class="cm">-- SHA-256 of governing rulebook</span>
+    regulators    : [<span class="ty">Party</span>]         <span class="cm">-- SEC, FRBNY observers</span>
+  <span class="kw">where</span>
+    <span class="kw">signatory</span> issuer, holder
+    <span class="kw">observer</span>  custodian, regulators
+
+    <span class="kw">key</span> (issuer, cusip, holder) : (<span class="ty">Party</span>, <span class="ty">Text</span>, <span class="ty">Party</span>)
+    <span class="kw">maintainer</span> key._1
+
+    <span class="cm">-- Transfer of beneficial ownership; new holder must authorize</span>
+    <span class="kw">choice</span> <span class="ty">Transfer</span> : <span class="ty">ContractId UsTreasuryToken</span>
+      <span class="kw">with</span> newHolder : <span class="ty">Party</span>
+      <span class="kw">controller</span> holder, newHolder
+      <span class="kw">do</span> create <span class="kw">this with</span> holder = newHolder
+
+    <span class="cm">-- Pledge to a Broadridge DLR repo contract; non-consuming so the</span>
+    <span class="cm">-- token continues to exist but is encumbered by the pledge ref.</span>
+    <span class="kw">nonconsuming choice</span> <span class="ty">PledgeToRepo</span> : <span class="ty">ContractId Pledge</span>
+      <span class="kw">with</span>
+        repoCid : <span class="ty">ContractId BroadridgeDLR.RepoAgreement</span>
+        pledgee : <span class="ty">Party</span>
+      <span class="kw">controller</span> holder
+      <span class="kw">do</span> create <span class="ty">Pledge</span> <span class="kw">with</span>
+           collateral = self
+           pledgor    = holder
+           pledgee    = pledgee
+           repoRef    = repoCid
+           released   = <span class="ty">False</span></code></pre>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.2 — Tokenized EUR commercial paper at Clearstream</h3>
+    <p>Clearstream's D7 application defines a parallel template for EUR-denominated debt securities. The legal basis is German eWpG; the Daml template encodes both the security and the issuance/transfer rules under that statute.</p>
+
+    <pre><code><span class="cm">-- ClearstreamD7.EurCommercialPaper.daml</span>
+<span class="kw">template</span> <span class="ty">EurCommercialPaper</span>
+  <span class="kw">with</span>
+    issuer        : <span class="ty">Party</span>           <span class="cm">-- corporate issuer</span>
+    csd           : <span class="ty">Party</span>           <span class="cm">-- Clearstream Banking AG</span>
+    holder        : <span class="ty">Party</span>
+    isin          : <span class="ty">Text</span>            <span class="cm">-- ISIN under eWpG registry</span>
+    faceAmount    : <span class="ty">Decimal</span>         <span class="cm">-- EUR face value</span>
+    maturity      : <span class="ty">Date</span>
+    eWpGRegistry  : <span class="ty">Text</span>            <span class="cm">-- crypto-securities registry ref</span>
+    payloadHash   : <span class="ty">Text</span>            <span class="cm">-- ISO 20022 seev.031 hash</span>
+    regulators    : [<span class="ty">Party</span>]
+  <span class="kw">where</span>
+    <span class="kw">signatory</span> issuer, csd, holder
+    <span class="kw">observer</span>  regulators
+
+    <span class="kw">key</span> (csd, isin, holder) : (<span class="ty">Party</span>, <span class="ty">Text</span>, <span class="ty">Party</span>)
+    <span class="kw">maintainer</span> key._1
+
+    <span class="kw">choice</span> <span class="ty">Transfer</span> : <span class="ty">ContractId EurCommercialPaper</span>
+      <span class="kw">with</span> newHolder : <span class="ty">Party</span>
+      <span class="kw">controller</span> holder, csd, newHolder
+      <span class="kw">do</span> create <span class="kw">this with</span> holder = newHolder
+
+    <span class="cm">-- Atomic DvP: deliver this CP against a UsTreasuryToken pledge</span>
+    <span class="cm">-- spans Clearstream + DTCC + Broadridge in a single Daml tx</span>
+    <span class="kw">choice</span> <span class="ty">DeliverAgainstTreasuryPledge</span> : <span class="ty">ContractId EurCommercialPaper</span>
+      <span class="kw">with</span>
+        newHolder      : <span class="ty">Party</span>
+        treasuryPledge : <span class="ty">ContractId DtccComposerX.Pledge</span>
+        repoAgreement  : <span class="ty">ContractId BroadridgeDLR.RepoAgreement</span>
+      <span class="kw">controller</span> holder, newHolder
+      <span class="kw">do</span>
+        <span class="cm">-- exercise verifies the pledge exists and matches the repo</span>
+        pledge &lt;- fetch treasuryPledge
+        repo   &lt;- fetch repoAgreement
+        <span class="kw">assertMsg</span> <span class="st">"pledge must back this repo"</span>
+          (pledge.repoRef == repoAgreement)
+        create <span class="kw">this with</span> holder = newHolder</code></pre>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.3 — Repo agreement at Broadridge DLR</h3>
+    <p>Broadridge DLR holds the repo contract itself: the agreement, term, haircut, repurchase price, and the substitution and unwind logic. The repo references the collateral contracts on Clearstream, DTCC, and Euroclear by <code>ContractId</code>, but does not duplicate their state.</p>
+
+    <pre><code><span class="cm">-- BroadridgeDLR.RepoAgreement.daml</span>
+<span class="kw">template</span> <span class="ty">RepoAgreement</span>
+  <span class="kw">with</span>
+    cashProvider    : <span class="ty">Party</span>         <span class="cm">-- AssetMgrUS</span>
+    collProvider    : <span class="ty">Party</span>         <span class="cm">-- EuroDealer SA</span>
+    operator        : <span class="ty">Party</span>         <span class="cm">-- Broadridge</span>
+    cashAmount      : <span class="ty">Decimal</span>       <span class="cm">-- USD cash leg</span>
+    cashCurrency    : <span class="ty">Text</span>          <span class="cm">-- "USD"</span>
+    haircut         : <span class="ty">Decimal</span>       <span class="cm">-- e.g. 0.02 = 2%</span>
+    repoRate        : <span class="ty">Decimal</span>       <span class="cm">-- annualized %</span>
+    openTime        : <span class="ty">Time</span>
+    closeTime       : <span class="ty">Time</span>          <span class="cm">-- intraday close</span>
+    collateralRefs  : [<span class="ty">AnyContractId</span>] <span class="cm">-- pledged tokens (DTCC, EUC)</span>
+    masterAgreement : <span class="ty">Text</span>          <span class="cm">-- GMRA 2011 reference + hash</span>
+    regulators      : [<span class="ty">Party</span>]
+  <span class="kw">where</span>
+    <span class="kw">signatory</span> cashProvider, collProvider, operator
+    <span class="kw">observer</span>  regulators
+
+    <span class="cm">-- Substitute one collateral piece for another, mid-term</span>
+    <span class="kw">choice</span> <span class="ty">Substitute</span> : <span class="ty">ContractId RepoAgreement</span>
+      <span class="kw">with</span>
+        oldRef : <span class="ty">AnyContractId</span>
+        newRef : <span class="ty">AnyContractId</span>
+      <span class="kw">controller</span> collProvider, operator
+      <span class="kw">do</span> create <span class="kw">this with</span>
+           collateralRefs =
+             newRef :: filter (/= oldRef) collateralRefs
+
+    <span class="cm">-- Unwind: release collateral, return cash + interest</span>
+    <span class="kw">choice</span> <span class="ty">Unwind</span> : ()
+      <span class="kw">controller</span> cashProvider, collProvider, operator
+      <span class="kw">do</span> <span class="kw">return</span> ()</code></pre>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.4 — Collateral mobility at Euroclear D-FMI</h3>
+    <p>Euroclear's D-FMI Daml application provides the cross-border mobility layer: it can take a tokenized gilt or Eurobond and re-pledge it across legal jurisdictions while the original asset record stays on Euroclear's authoritative ledger. The choice <code>MobiliseToTriparty</code> is the workhorse.</p>
+
+    <pre><code><span class="cm">-- EuroclearDFMI.CollateralMobility.daml</span>
+<span class="kw">template</span> <span class="ty">TokenizedGilt</span>
+  <span class="kw">with</span>
+    csd           : <span class="ty">Party</span>           <span class="cm">-- Euroclear UK & International</span>
+    holder        : <span class="ty">Party</span>
+    isin          : <span class="ty">Text</span>
+    faceAmount    : <span class="ty">Decimal</span>         <span class="cm">-- GBP face value</span>
+    maturity      : <span class="ty">Date</span>
+    regulators    : [<span class="ty">Party</span>]         <span class="cm">-- FCA, BoE, NBB</span>
+  <span class="kw">where</span>
+    <span class="kw">signatory</span> csd, holder
+    <span class="kw">observer</span>  regulators
+
+    <span class="kw">choice</span> <span class="ty">MobiliseToTriparty</span> : <span class="ty">ContractId TripartyAllocation</span>
+      <span class="kw">with</span>
+        triparty   : <span class="ty">Party</span>         <span class="cm">-- Euroclear acting as triparty agent</span>
+        receiver   : <span class="ty">Party</span>         <span class="cm">-- collateral receiver</span>
+        repoRef    : <span class="ty">ContractId BroadridgeDLR.RepoAgreement</span>
+      <span class="kw">controller</span> holder, triparty
+      <span class="kw">do</span> create <span class="ty">TripartyAllocation</span> <span class="kw">with</span>
+           gilt = self
+           giver    = holder
+           receiver = receiver
+           agent    = triparty
+           repoRef  = repoRef
+           releasedAt = <span class="ty">None</span></code></pre>
+
+    <div class="callout gold">
+      <p class="callout-label">Why Daml's authority model matters</p>
+      <p>Notice that <code>DeliverAgainstTreasuryPledge</code> on Clearstream's CP fetches a contract whose template lives in the DTCC <code>ComposerX</code> package. Daml's authority model means that <em>fetching</em> a contract requires the fetcher to be an observer or stakeholder; the fetched contract's signatories are not transitively granted authority. The cross-FMI atomicity is enforced by Canton's two-phase commit at the synchronizer level, not by ambient permission. Each FMI's application code remains independently auditable and remains controlled by that FMI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 4: PRIVACY ═══════════ -->
+<section id="privacy">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_04">Section 04</p>
+    <h2 class="sec-title" data-i18n="t-sub_transaction_privacy_an">Sub-transaction privacy and the Global Synchronizer</h2>
+    <p class="sec-lead">
+      The single most important property of Canton for an FMI network is sub-transaction privacy. In a single atomic transaction that touches three FMIs and two counterparties, each party sees only the projection of the transaction relevant to it. The synchronizer orders the encrypted views and confirms commit, but cannot read any of them. This is what makes it possible for DTCC, Clearstream, and Euroclear to settle a single atomic operation without ever seeing each other's books.
+    </p>
+
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">4.1 — Projections, views, and informees</h3>
+    <p>When a Daml transaction is submitted, the participant's runtime decomposes it into a tree of <em>sub-transactions</em>, each with its own set of <em>informees</em> — the parties who must see that sub-transaction to validate or be informed of it. The runtime then constructs a per-participant <em>view</em> containing only the sub-transactions whose informees include parties hosted on that participant. Each view is encrypted under the receiving participant's key. The synchronizer's sequencer orders the encrypted blobs; the synchronizer's mediator coordinates a two-phase commit confirmation across the involved participants without ever decrypting them.</p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead><tr><th>Sub-transaction</th><th>Informees</th><th>Visible to participants</th><th>Hidden from</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="lbl">UsTreasuryToken.PledgeToRepo</td>
+            <td>EuroDealer SA, Broadridge, DTCC, SEC observer</td>
+            <td>BNP Paribas, Broadridge, DTCC participant nodes</td>
+            <td>Clearstream, Euroclear, AssetMgrUS</td>
+          </tr>
+          <tr>
+            <td class="lbl">RepoAgreement (create)</td>
+            <td>AssetMgrUS, EuroDealer, Broadridge, SEC, FCA</td>
+            <td>Goldman Sachs DAP, BNP Paribas, Broadridge participants</td>
+            <td>DTCC, Clearstream, Euroclear (only see linked refs)</td>
+          </tr>
+          <tr>
+            <td class="lbl">EurCommercialPaper.DeliverAgainstTreasuryPledge</td>
+            <td>AssetMgrUS, EuroDealer, Clearstream, BaFin observer</td>
+            <td>Goldman Sachs DAP, BNP Paribas, Clearstream participants</td>
+            <td>DTCC, Broadridge, Euroclear (only see opaque commit)</td>
+          </tr>
+          <tr>
+            <td class="lbl">TokenizedGilt.MobiliseToTriparty</td>
+            <td>EuroDealer, Euroclear, FCA, BoE, NBB observers</td>
+            <td>BNP Paribas, Euroclear participants</td>
+            <td>DTCC, Clearstream, Broadridge, AssetMgrUS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">4.2 — The Global Synchronizer</h3>
+    <p>The Global Synchronizer is the canonical synchronizer domain on the Canton Network. It comprises three logical components — a <em>sequencer</em> (orders encrypted messages), a <em>mediator</em> (coordinates two-phase commit), and a <em>topology manager</em> (publishes party-to-participant mapping) — operated together by 13 Super Validators. Consensus among the Super Validators uses a Tendermint-style BFT algorithm with deterministic finality at the sequencer level. The synchronizer fee model is paid in Canton Coin (CC) to incentivize honest validation; fee burn and minting are governed by on-chain rules.<sup><a href="#fn7">[7]</a></sup></p>
+
+    <div class="callout teal">
+      <p class="callout-label">Multiple synchronizers, one network</p>
+      <p>A Canton network can include multiple synchronizers. An FMI may run a <em>local synchronizer</em> for purely intra-application transactions (e.g. internal Clearstream D7 settlement) and connect to the Global Synchronizer only for cross-FMI atomic transactions. This gives each FMI control over latency, fees, and operational governance for its own flows while preserving cross-application composability when needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 5: LIFECYCLE ═══════════ -->
+<section id="lifecycle">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_05">Section 05</p>
+    <h2 class="sec-title" data-i18n="t-full_transaction_lifecycle">Full transaction lifecycle: 18 steps from negotiation to atomic settlement</h2>
+    <p class="sec-lead">
+      The end-to-end flow involves an intraday repo opened in the morning between AssetMgrUS (cash provider) and EuroDealer SA (collateral provider), with USD 250 million face of US Treasuries pledged through DTCC, an additional GBP 50 million of gilts mobilized through Euroclear, against EUR 230 million of commercial paper delivered from Clearstream — all settled atomically across the four FMIs. The repo unwinds at end-of-day with substitution rights exercised mid-cycle.
+    </p>
+
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">01</div><div class="step-body"><p class="step-phase">Phase 1 · Negotiation</p><h4>Trade negotiated bilaterally on Tradeweb</h4><p>EuroDealer SA and AssetMgrUS negotiate intraday repo terms on Tradeweb's institutional fixed-income platform. Terms: USD 250M cash, 2% haircut, repo rate 5.32% annualized, open 09:30 ET, close 15:30 ET, collateral basket = US Treasuries + UK gilts. Trade is matched and confirmed by both parties.</p><p class="step-timing"><span>T+0s</span> · Tradeweb match</p></div></div>
+      <div class="step-item"><div class="step-num">02</div><div class="step-body"><p class="step-phase">Phase 1 · Negotiation</p><h4>Tradeweb publishes trade message to Broadridge DLR</h4><p>Tradeweb posts an ISO 20022 trea.001 trade confirmation through its Canton API connector to Broadridge's DLR participant node. The message contains the GMRA 2011 master agreement reference, the trade economics, and the counterparty Daml party identifiers.</p><p class="step-timing"><span>T+1s</span> · Tradeweb → Broadridge</p></div></div>
+      <div class="step-item"><div class="step-num">03</div><div class="step-body"><p class="step-phase">Phase 2 · Pre-settlement</p><h4>Broadridge proposes RepoAgreement Daml contract</h4><p>The Broadridge DLR application submits a <code>RepoAgreement</code> creation proposal to the Global Synchronizer with signatories AssetMgrUS, EuroDealer, and Broadridge. Both counterparties' participant nodes (Goldman DAP for AssetMgrUS, BNP for EuroDealer) automatically authorize per their pre-configured trading limits.</p><p class="step-timing"><span>T+2s</span> · Daml propose</p></div></div>
+      <div class="step-item"><div class="step-num">04</div><div class="step-body"><p class="step-phase">Phase 2 · Pre-settlement</p><h4>Collateral eligibility check at Broadridge</h4><p>Broadridge's DLR application runs an eligibility check Daml choice that fetches read-only projections of the candidate <code>UsTreasuryToken</code> (held at DTCC) and <code>TokenizedGilt</code> (held at Euroclear) contracts. Eligibility rules: rating ≥ AA, maturity ≤ 30 years, daily price within 0.5% of indicative price.</p><p class="step-timing"><span>T+3s</span> · Cross-app fetch</p></div></div>
+      <div class="step-item"><div class="step-num">05</div><div class="step-body"><p class="step-phase">Phase 2 · Pre-settlement</p><h4>KYC and Travel Rule attestations bound</h4><p>Verifiable Credentials issued by each counterparty's KYC provider (LSEG Risk Intelligence for the US side, Fenergo for the European side) are attached to the transaction as opaque payload hashes. The full VCs travel off-ledger via the Canton-native Operator API; only their content hashes appear on-ledger.</p><p class="step-timing"><span>T+3s</span> · KYC bind</p></div></div>
+      <div class="step-item"><div class="step-num">06</div><div class="step-body"><p class="step-phase">Phase 3 · Atomic settlement</p><h4>EuroDealer authors the multi-FMI atomic transaction</h4><p>BNP Paribas's participant node, on EuroDealer's behalf, constructs a single Daml command that exercises four choices in sequence: <code>UsTreasuryToken.PledgeToRepo</code> (DTCC), <code>TokenizedGilt.MobiliseToTriparty</code> (Euroclear), <code>EurCommercialPaper.DeliverAgainstTreasuryPledge</code> (Clearstream), and <code>RepoAgreement.Activate</code> (Broadridge).</p><p class="step-timing"><span>T+4s</span> · Tx authored</p></div></div>
+      <div class="step-item"><div class="step-num">07</div><div class="step-body"><p class="step-phase">Phase 3 · Atomic settlement</p><h4>Sub-transaction projection and encryption</h4><p>The submitting participant (BNP) decomposes the transaction into per-informee views, encrypts each view under the receiving participant's TLS-pinned public key, and packages them into a single signed transaction message addressed to the Global Synchronizer's sequencer.</p><p class="step-timing"><span>T+4.1s</span> · Local projection</p></div></div>
+      <div class="step-item"><div class="step-num">08</div><div class="step-body"><p class="step-phase">Phase 3 · Atomic settlement</p><h4>Sequencer orders the encrypted message</h4><p>The Global Synchronizer's sequencer assigns a deterministic global sequence number to the encrypted message and broadcasts it to all addressed participants. BFT ordering finality is reached at the sequencer level in &lt;500 ms.</p><p class="step-timing"><span>T+4.5s</span> · Sequencer commit</p></div></div>
+      <div class="step-item"><div class="step-num">09</div><div class="step-body"><p class="step-phase">Phase 3 · Atomic settlement</p><h4>Participants validate their projections in parallel</h4><p>DTCC, Clearstream, Broadridge, and Euroclear each receive their respective views, decrypt locally, and run Daml validation: contract authorization is checked, integrity constraints are enforced (haircut math, eligibility, signatures), and per-application business rules execute.</p><p class="step-timing"><span>T+5s</span> · Local Daml validate</p></div></div>
+      <div class="step-item"><div class="step-num">10</div><div class="step-body"><p class="step-phase">Phase 3 · Atomic settlement</p><h4>Two-phase commit at the mediator</h4><p>Each participant returns a signed confirmation (or rejection) to the synchronizer's mediator. The mediator collects all required confirmations within the configured timeout (default 30s; this network: 5s). When all confirmations are positive, the mediator publishes a <code>Result</code> message: commit. If any participant rejects or times out, the entire transaction rolls back atomically.</p><p class="step-timing"><span>T+5.5s</span> · Mediator confirms</p></div></div>
+      <div class="step-item"><div class="step-num">11</div><div class="step-body"><p class="step-phase">Phase 3 · Atomic settlement</p><h4>Each participant updates its private contract store</h4><p>On commit, each participant atomically applies its view to its own contract store. DTCC's ledger now records the Treasury pledge, Clearstream's ledger records the CP transfer, Euroclear's ledger records the gilt mobilization, Broadridge's ledger records the active repo. No reconciliation is needed; the four ledgers are consistent by construction.</p><p class="step-timing"><span>T+6s</span> · Local commit</p></div></div>
+      <div class="step-item"><div class="step-num">12</div><div class="step-body"><p class="step-phase">Phase 4 · Cash leg</p><h4>USD cash leg flows via Fedwire</h4><p>Once the atomic Daml settlement commits, AssetMgrUS's cash custodian (BNY Mellon) receives a settlement instruction through Broadridge's existing US payment gateway and triggers a Fedwire transfer of USD 250M to EuroDealer's USD nostro at JPMorgan Chase. This is a conventional RTGS cash leg; the on-ledger DvP guarantees that the securities movement is irrevocable before the cash is sent.</p><p class="step-timing"><span>T+30s</span> · Fedwire CHIPS</p></div></div>
+      <div class="step-item"><div class="step-num">13</div><div class="step-body"><p class="step-phase">Phase 5 · Mid-term substitution</p><h4>EuroDealer substitutes one Treasury position</h4><p>At 12:15 ET, EuroDealer's trading desk needs the original USD 100M of the 4.25% 2034 note for a separate trade. It exercises <code>RepoAgreement.Substitute</code> on Broadridge DLR, swapping the original Treasury for an equivalent USD 102M of the 4.50% 2032 note (post-haircut). This is again a single atomic Daml transaction touching DTCC and Broadridge.</p><p class="step-timing"><span>T+2h45m</span> · Substitution</p></div></div>
+      <div class="step-item"><div class="step-num">14</div><div class="step-body"><p class="step-phase">Phase 6 · Unwind</p><h4>Unwind triggered at intraday close</h4><p>At 15:30 ET, the repo's <code>closeTime</code> is reached. The Broadridge DLR application emits an unwind proposal. The unwind transaction reverses the four sub-transactions atomically: returns CP to AssetMgrUS, releases Treasury and gilt pledges back to EuroDealer, marks the <code>RepoAgreement</code> closed.</p><p class="step-timing"><span>T+6h</span> · Unwind propose</p></div></div>
+      <div class="step-item"><div class="step-num">15</div><div class="step-body"><p class="step-phase">Phase 6 · Unwind</p><h4>Atomic unwind across four FMIs</h4><p>The unwind transaction follows the same projection-and-confirm flow as the opening transaction. Approximately 1.5 seconds end-to-end. All four FMI ledgers update in parallel; no reconciliation breaks possible.</p><p class="step-timing"><span>T+6h+1.5s</span> · Unwind commit</p></div></div>
+      <div class="step-item"><div class="step-num">16</div><div class="step-body"><p class="step-phase">Phase 7 · Cash settle</p><h4>Repurchase price returned via Fedwire</h4><p>EuroDealer wires USD 250M plus accrued repo interest (USD 250M × 5.32% × 6/24/365 ≈ USD 9,110) back to AssetMgrUS via Fedwire. Securities and cash are now both unwound; the GMRA repo is operationally and legally closed.</p><p class="step-timing"><span>T+6h+30s</span> · Repurchase</p></div></div>
+      <div class="step-item"><div class="step-num">17</div><div class="step-body"><p class="step-phase">Phase 8 · Reporting</p><h4>SFTR and SEC trade reporting</h4><p>Each participant emits regulatory reports automatically derived from the on-ledger Daml events: ESMA SFTR (Securities Financing Transactions Regulation) for the European leg via DTCC's GTR, and SEC Rule 10c-1a for the US leg. Reports are derived deterministically from the same on-ledger state, eliminating reconciliation between trade and reporting systems.</p><p class="step-timing"><span>T+6h+5m</span> · SFTR / 10c-1a</p></div></div>
+      <div class="step-item"><div class="step-num">18</div><div class="step-body"><p class="step-phase">Phase 8 · Reporting</p><h4>End-of-day reconciliation: zero breaks</h4><p>At end-of-day, each FMI's existing reconciliation system runs against the legacy DTC, Clearstream, Euroclear, and Broadridge books. Because every state change was atomic and signed by all stakeholders, no breaks are possible by construction; reconciliation reports zero exceptions.</p><p class="step-timing"><span>T+EOD</span> · Recon zero-break</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 6: INTEROP ═══════════ -->
+<section id="interop">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_06">Section 06</p>
+    <h2 class="sec-title" data-i18n="t-cross_application_atomic_c">Cross-application atomic composability</h2>
+    <p class="sec-lead">
+      The single Daml command authored by EuroDealer in step 06 is the technical heart of this architecture. It composes four choices on contracts owned by four different FMI applications into one atomic transaction. This section describes how Daml's package-by-package authorization model and Canton's two-phase commit make that possible without any FMI surrendering control over its own application.
+    </p>
+
+    <pre><code><span class="cm">-- Authored on BNP's participant on behalf of EuroDealer.</span>
+<span class="cm">-- Single Daml command, four choices, four FMIs, one atomic commit.</span>
+<span class="kw">submitMulti</span> [eurodealer, assetMgr] [<span class="cm">-- read-as: Broadridge regulators</span>] <span class="kw">do</span>
+
+  <span class="cm">-- (1) Pledge USD 250M Treasury at DTCC</span>
+  pledgeCid &lt;- exerciseCmd treasuryCid <span class="ty">PledgeToRepo</span> <span class="kw">with</span>
+                  repoCid = repoProposalCid
+                  pledgee = broadridgeParty
+
+  <span class="cm">-- (2) Mobilise GBP 50M gilts at Euroclear</span>
+  tripCid   &lt;- exerciseCmd giltCid    <span class="ty">MobiliseToTriparty</span> <span class="kw">with</span>
+                  triparty = euroclearTripartyParty
+                  receiver = broadridgeParty
+                  repoRef  = repoProposalCid
+
+  <span class="cm">-- (3) Deliver EUR 230M CP at Clearstream against the Treasury pledge</span>
+  newCpCid  &lt;- exerciseCmd cpCid      <span class="ty">DeliverAgainstTreasuryPledge</span> <span class="kw">with</span>
+                  newHolder      = eurodealer
+                  treasuryPledge = pledgeCid
+                  repoAgreement  = repoProposalCid
+
+  <span class="cm">-- (4) Activate the repo at Broadridge — only signs if 1-3 succeed</span>
+  activeRepoCid &lt;- exerciseCmd repoProposalCid <span class="ty">Activate</span> <span class="kw">with</span>
+                      treasuryPledgeRef = pledgeCid
+                      giltAllocationRef = tripCid
+                      cpDeliveryRef     = newCpCid
+
+  <span class="kw">return</span> activeRepoCid</code></pre>
+
+    <p>Daml semantics ensure that either all four choices commit, or none do. The transaction is a single tree; rollback is at the tree level. There is no two-out-of-four state, no half-settled trade, and crucially no need for any FMI to trust any other FMI's middleware. Each FMI's Daml package is independently signed and version-pinned in the topology manager. Cross-package <code>fetch</code> calls are explicit and require the fetcher to be an observer of the fetched contract.</p>
+
+    <div class="callout amber">
+      <p class="callout-label">What this replaces</p>
+      <p>In today's market, the same flow requires: a tri-party agent (BNY Mellon or JPMorgan), bilateral SWIFT confirmations between four institutions, multiple end-of-day reconciliations, and settlement windows of several hours minimum. Failed substitutions and reconciliation breaks add operational risk and capital cost. The Canton architecture compresses all of this into one ~6 second atomic operation while preserving each FMI's regulatory authority over its own asset register.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 7: CASH LEG / CANTON COIN ═══════════ -->
+<section id="cash">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_07">Section 07</p>
+    <h2 class="sec-title" data-i18n="t-cash_leg__canton_coin__and">Cash leg, Canton Coin, and on-ledger fees</h2>
+    <p class="sec-lead">
+      Canton handles the securities leg atomically on-ledger. The cash leg in this scenario uses conventional RTGS rails (Fedwire for USD, TARGET2 for EUR) because deposit-token CBDC infrastructure remains in pilot phase in both jurisdictions. The Canton Coin (CC) is used only for synchronizer fees, not as a settlement medium. As wholesale CBDC rolls out, the cash leg can migrate on-ledger by introducing a dedicated <code>CashToken</code> Daml application running on the same network — at which point the entire DvP becomes truly intra-ledger atomic.
+    </p>
+
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">7.1 — Canton Coin and synchronizer fees</h3>
+    <p>Canton Coin (CC) is the native asset of the Global Synchronizer. Its sole purpose is to meter and pay for synchronizer services: sequencing, mediation, and storage. Fees are computed deterministically from transaction size and complexity and are paid by the submitting participant. Super Validators receive CC rewards for honest validation. CC supply is governed by the Global Synchronizer Foundation under transparent on-chain rules: minting tied to network usage growth, burning of unused balances, and capped issuance.<sup><a href="#fn8">[8]</a></sup></p>
+
+    <p>Critically, Canton Coin is not a settlement asset and is not intended to be one. The four FMIs in this network do not hold CC as inventory; they hold operating reserves (similar to a SWIFT membership pre-fund) used solely to pay synchronizer fees on behalf of their applications.</p>
+
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">7.2 — Path to on-ledger cash</h3>
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead><tr><th>Currency</th><th>Today</th><th>2026 path</th><th>2027+ path</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">USD</td><td>Fedwire RTGS bridge</td><td>FedNow API integration for sub-RTGS values</td><td>Wholesale CBDC pilot or tokenized commercial bank deposits as Daml CashToken</td></tr>
+          <tr><td class="lbl">EUR</td><td>TARGET2 RTGS bridge</td><td>ECB digital euro wholesale pilot (Eurosystem TIPS extension)</td><td>Tokenized euro (commercial bank deposit token under MiCA Title III) or wholesale CBDC</td></tr>
+          <tr><td class="lbl">GBP</td><td>CHAPS RTGS bridge</td><td>BoE RTGS Renewal Programme ISO 20022 link</td><td>Tokenized sterling (BoE wholesale CBDC pilot, Project Rosalind)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 8: ISO 20022 ═══════════ -->
+<section id="iso20022">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_08">Section 08</p>
+    <h2 class="sec-title" data-i18n="t-iso_20022_payloads_inside">ISO 20022 payloads inside Daml contracts</h2>
+    <p class="sec-lead">
+      Every Daml contract in this network carries a content-addressed reference to an ISO 20022 XML payload. The full XML lives off-ledger (in each FMI's existing message store) but the SHA-256 hash of the canonicalized payload is stored on-ledger as an immutable binding. This satisfies T+1 SFTR, MIFIR, and CSDR reporting obligations from the same authoritative source as the settlement record itself, eliminating the trade-vs-reporting reconciliation that consumes substantial back-office cost today.
+    </p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead><tr><th>Daml field</th><th>ISO 20022 message</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">RepoAgreement.payloadHash</td><td>trea.001 — Trade Confirmation</td><td>Canonical trade economics for SFTR reporting</td></tr>
+          <tr><td class="lbl">UsTreasuryToken.payloadHash</td><td>seev.031 — Securities Settlement</td><td>Settlement instruction binding for DTC books</td></tr>
+          <tr><td class="lbl">EurCommercialPaper.payloadHash</td><td>seev.031 + seev.039</td><td>Settlement + corporate action notification</td></tr>
+          <tr><td class="lbl">TripartyAllocation.payloadHash</td><td>colr.016 — Triparty Collateral</td><td>Collateral allocation under triparty agreement</td></tr>
+          <tr><td class="lbl">CashLeg.payloadHash</td><td>pacs.009 — FI to FI Customer Credit Transfer</td><td>RTGS cash settlement instruction</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 9: KYC ═══════════ -->
+<section id="kyc">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_09">Section 09</p>
+    <h2 class="sec-title" data-i18n="t-kyc__aml__and_travel_rule">KYC, AML, and Travel Rule compliance</h2>
+    <p class="sec-lead">
+      AML obligations attach to each participant FMI under its own jurisdiction's framework — DTCC under FinCEN Bank Secrecy Act rules, Clearstream under Germany's GwG and the EU AMLR (in force July 2027), Euroclear under Belgium's anti-money-laundering law and EU AMLR, Broadridge under FinCEN's transfer-agent rules. The Canton architecture lets each FMI continue to run its own onboarding stack while sharing only the cryptographic attestation needed to prove a counterparty has been verified.
+    </p>
+
+    <p>Each FMI maintains a <code>KycAttestation</code> Daml template signed jointly by the FMI's compliance party and the counterparty. The attestation is held privately on the FMI's participant; only the attestation's hash is referenced from settlement contracts. When a cross-FMI transaction is proposed, a non-consuming choice <code>VerifyAttestation</code> is exercised on each FMI's attestation contract, returning a boolean to the proposing transaction. The attestation content itself is never disclosed; only the verification result.</p>
+
+    <p>The FATF Travel Rule (recommendation 16) requires originator and beneficiary information to travel with the value transfer. In this network, the originator/beneficiary VC is exchanged off-ledger via the Canton Operator API using a TRP (Travel Rule Protocol) compliant envelope (e.g. TRISA, OpenVASP), and the SHA-256 hash of the TRP envelope is bound on-ledger to the settlement transaction. Regulators (SEC, FCA, BaFin, NBB) holding observer party rights can request the off-ledger envelope through the standard supervision channel and verify it against the on-ledger hash.</p>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 10: REGULATORY ═══════════ -->
+<section id="regulatory">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_10">Section 10</p>
+    <h2 class="sec-title" data-i18n="t-regulatory_framework__eu">Regulatory framework: EU, US, UK, and Belgium</h2>
+    <p class="sec-lead">
+      Each of the four FMIs operates under a distinct supervisory framework. The Canton architecture is compatible with all four because it gives each FMI authoritative control over its own asset register while enabling cross-FMI atomic settlement. No FMI cedes supervisory authority to another, and no party sees data outside its lawful basis.
+    </p>
+
+    <div class="reg-grid">
+      <div class="reg-cell">
+        <h4>European Union — Clearstream &amp; Euroclear</h4>
+        <p>Clearstream Banking AG is a CSD under CSDR (Regulation 909/2014), supervised by BaFin and Bundesbank, with crypto-securities issuance under the German eWpG (Electronic Securities Act, June 2021). The D7 DLT extension launched in production November 2025 operates within the eWpG crypto-securities registry framework.</p>
+        <ul class="reg-list">
+          <li><strong>CSDR / RTS 2017/389</strong> — settlement discipline, reconciliation, finality</li>
+          <li><strong>eWpG (DE)</strong> — legal basis for crypto-securities, registry obligations</li>
+          <li><strong>MiCA (EU 2023/1114)</strong> — only insofar as ARTs/EMTs are touched; pure securities are out of scope</li>
+          <li><strong>DORA (EU 2022/2554)</strong> — ICT risk management, in force January 2025</li>
+          <li><strong>EU AMLR (2024/1624)</strong> — harmonized AML, in force July 2027</li>
+          <li><strong>DLT Pilot Regime</strong> — sandbox for DLT market infrastructures (LU)</li>
+        </ul>
+      </div>
+      <div class="reg-cell">
+        <h4>United States — DTCC &amp; Broadridge</h4>
+        <p>DTC is a registered clearing agency under SEC Rule 17Ad-22 and Section 17A of the Securities Exchange Act; FICC is the CCP for US Treasury and MBS clearing under the SEC's expanded Treasury clearing mandate (Rule 17ad-22(e)(18), final rule December 2023, phased compliance through 2026). Broadridge operates as an SEC-registered transfer agent and processes flows through SEC- and FINRA-supervised broker-dealer channels.</p>
+        <ul class="reg-list">
+          <li><strong>SEC Rule 17Ad-22</strong> — clearing agency standards, including segregation</li>
+          <li><strong>SEC Rule 10c-1a</strong> — securities loan reporting (compliance Jan 2026)</li>
+          <li><strong>Treasury Clearing Mandate</strong> — mandatory FICC clearing of cash &amp; repo Treasuries</li>
+          <li><strong>Bank Secrecy Act / FinCEN</strong> — AML/CTF, SAR filings</li>
+          <li><strong>OFAC sanctions screening</strong> — counterparty checks at issuance and transfer</li>
+          <li><strong>Reg SHO</strong> — short-sale and locate requirements (where applicable)</li>
+        </ul>
+      </div>
+      <div class="reg-cell">
+        <h4>Belgium — Euroclear Bank (ICSD)</h4>
+        <p>Euroclear Bank operates under Belgian law as a credit institution and CSD, supervised by the National Bank of Belgium (prudential) and the FSMA (conduct), within the EU CSDR framework. Euroclear UK &amp; International (formerly CREST) operates the UK CSD under FCA and Bank of England oversight.</p>
+        <ul class="reg-list">
+          <li><strong>NBB / FSMA supervision</strong> — credit institution and CSD prudential rules</li>
+          <li><strong>CSDR</strong> — settlement discipline, T+1 from October 2027</li>
+          <li><strong>BE AML Law (2017)</strong> — to be replaced by EU AMLR July 2027</li>
+          <li><strong>Banking Act (BE 2014)</strong> — recovery and resolution planning</li>
+          <li><strong>DORA</strong> — operational resilience for ICT</li>
+        </ul>
+      </div>
+      <div class="reg-cell">
+        <h4>United Kingdom — gilt leg via Euroclear UK</h4>
+        <p>UK leg is governed by the Bank of England's FMI rules and the FCA's CSDR-equivalent framework following retention of CSDR in UK law post-Brexit. Gilts settle under the UK Uncertificated Securities Regulations 2001 as amended for digital securities under the FMI sandbox.</p>
+        <ul class="reg-list">
+          <li><strong>BoE FMI Rules</strong> — supervisory expectations for systemic FMIs</li>
+          <li><strong>FCA SAR / CSDR-equivalent</strong> — settlement discipline, allocation rules</li>
+          <li><strong>FMI Digital Securities Sandbox</strong> — DLT settlement permissions</li>
+          <li><strong>UK MLR 2017 (as amended)</strong> — AML/CTF</li>
+          <li><strong>Project Rosalind</strong> — wholesale CBDC API design (BoE / BIS)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout gold">
+      <p class="callout-label">Cross-jurisdictional supervisory access</p>
+      <p>Each regulator (BaFin, SEC, FCA, NBB) is granted Daml <em>observer</em> party rights on the contracts within its supervisory perimeter. Observer rights confer read-only visibility — the regulator sees the same contract state as the supervised entity, in real time, with cryptographic guarantee of integrity. This is materially stronger than today's T+1 regulatory reporting feeds and resolves a long-standing ESMA and SEC concern about post-trade data integrity.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 11: GOVERNANCE ═══════════ -->
+<section id="governance">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_11">Section 11</p>
+    <h2 class="sec-title" data-i18n="t-governance__super_validato">Governance, super-validators, and the Canton Foundation</h2>
+    <p class="sec-lead">
+      The Canton Network operates under a deliberately decentralized governance model. The Global Synchronizer Foundation, a Switzerland-domiciled non-profit, governs the synchronizer rules. The Canton Foundation, with founding members including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, and Digital Asset, governs network-wide standards and the Canton Coin economic parameters. Super Validator selection, on-chain parameter changes, and protocol upgrades are voted on through transparent on-chain governance contracts written in Daml.
+    </p>
+
+    <div class="detail-table-wrap">
+      <table class="detail-table">
+        <thead><tr><th>Governance body</th><th>Domicile</th><th>Scope</th><th>Members (selected)</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Global Synchronizer Foundation</td><td>Switzerland</td><td>Synchronizer protocol, fees, validator slashing</td><td>13 Super Validators incl. Goldman, DTCC, Broadridge, Euroclear, BNP, SBI, Tradeweb, Cumberland</td></tr>
+          <tr><td class="lbl">Canton Foundation</td><td>Switzerland</td><td>Network standards, Daml package signing, interop</td><td>Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, Deutsche Börse, Digital Asset</td></tr>
+          <tr><td class="lbl">Per-application governance</td><td>Each FMI's home</td><td>Application-specific rulebook, asset registries</td><td>The FMI itself (Clearstream, DTCC, Broadridge, Euroclear)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SECTION 12: RISKS ═══════════ -->
+<section id="risks">
+  <div class="container">
+    <p class="sec-kicker" data-i18n="kicker-section_12">Section 12</p>
+    <h2 class="sec-title" data-i18n="t-operational_risks_and_reco">Operational risks and recovery design</h2>
+    <p class="sec-lead">
+      No infrastructure is risk-free. The Canton design has explicit failure modes that must be governed at the network and per-FMI level. The four most important are: synchronizer outage, participant compromise, Daml package version skew, and cross-application transaction stuck-in-flight.
+    </p>
+
+    <div class="reg-grid">
+      <div class="reg-cell">
+        <h4>Synchronizer outage</h4>
+        <p>If the Global Synchronizer's BFT quorum is lost (more than f Byzantine failures among the 13 SVs), no new transactions can commit until quorum is restored. Mitigation: each FMI runs a local synchronizer for intra-application traffic, so internal flows continue. Cross-FMI flows pause but cannot half-settle. SLA target for the GSF: 99.95% per quarter.</p>
+      </div>
+      <div class="reg-cell">
+        <h4>Participant compromise</h4>
+        <p>If an FMI's participant key is compromised, the topology manager is used to rotate and revoke the key with multi-signature approval from the FMI's governance and the Canton Foundation. Compromised contracts can be quarantined via a Daml choice that requires the regulator observer's signature.</p>
+      </div>
+      <div class="reg-cell">
+        <h4>Daml package version skew</h4>
+        <p>Cross-application transactions require all involved participants to have compatible package versions. Daml's package-id system pins transactions to specific package hashes; an upgrade requires all affected participants to install the new package before old contracts can be retired. The Canton Foundation manages the upgrade ceremony.</p>
+      </div>
+      <div class="reg-cell">
+        <h4>Stuck-in-flight transactions</h4>
+        <p>If the mediator times out without all confirmations, the transaction is rolled back. Stuck contracts (e.g. pending pledges) can be released via a time-bounded <code>Cancel</code> choice with a 24-hour expiry, requiring no counterparty action after the timeout window.</p>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <p class="callout-label">Recovery and Resolution</p>
+      <p>Each FMI remains individually subject to its home jurisdiction's recovery and resolution regime — DTCC under Title VIII of Dodd-Frank, Clearstream and Euroclear under the EU CCPR / CSDR resolution framework, Broadridge as a critical service provider under SEC Reg SCI. The Canton ledger accelerates resolution by providing a cryptographically authoritative real-time book of positions to the resolution authority through observer party rights.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTNOTES ═══════════ -->
+<section id="references" style="border-bottom:none;padding-bottom:0;">
+  <div class="container">
+    <div class="footnotes">
+      <h3>References and source notes</h3>
+      <ol>
+        <li id="fn1">Canton Network institutional partner registry (canton.wiki/learn/canton-institutional-partners) and Canton Network Foundation member list (canton.network), retrieved April 2026. Cumulative repo volume cited from Broadridge DLR public statements.</li>
+        <li id="fn2">Digital Asset, "Canton Network Architecture Whitepaper," 2024, and Daml documentation on sub-transaction privacy (docs.digitalasset.com/build/3.5).</li>
+        <li id="fn3">Clearstream press release, "D7 DLT: Clearstream Launches Tokenized Securities Platform," 4 November 2025 (clearstream.com/clearstream-en/newsroom/251104-4757900). German Electronic Securities Act (eWpG), 10 June 2021.</li>
+        <li id="fn4">Canton Network press release, "DTCC and Digital Asset Partner to Tokenize DTC-Custodied U.S. Treasury Securities on the Canton Network," 17 December 2025. SEC Rule 17Ad-22 and Treasury clearing mandate (Final Rule, 13 December 2023).</li>
+        <li id="fn5">Broadridge DLR public information (canton.wiki/learn/broadridge-canton-network-dlr) and Broadridge Q4 2025 earnings disclosures regarding cumulative DLR processing volumes.</li>
+        <li id="fn6">Digital Asset and Euroclear, "Unlocking Collateral Mobility through Tokenization: Gilts, Eurobonds and Gold," 2024 pilot whitepaper (canton.network/hubfs/Canton%20Network%20Files/Canton%20Network%20Pilot%20Program/Unlocking-new-collateral-pools-and-24x7-mobility.pdf). PR Newswire, "Digital Asset and Euroclear Start First Project Phase," 25 February 2025.</li>
+        <li id="fn7">Global Synchronizer Foundation governance documentation, 2025-2026. Super Validator list as of Q1 2026.</li>
+        <li id="fn8">Canton Coin economic specification, Global Synchronizer Foundation, version 1.x (2024-2026).</li>
+        <li>This article is a practitioner-authored technical reference. Implementation specifics for any actual production deployment will differ based on each FMI's bespoke application architecture, contractual rulebook, and home-jurisdiction supervisory expectations. Daml code shown is illustrative and simplified for clarity; production Daml includes substantially more business-rule validation, error handling, and upgrade scaffolding.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {"hero-h1": "A2A tokenization on Canton: four FMIs, one synchronized ledger", "hero-sub": "A minute-detail walkthrough of how Digital Asset's Canton Network and the Daml smart contract language enable tokenized account-to-account settlement across four of the world's largest financial marke", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "t-why_these_four_fmis__and_w": "Why these four FMIs, and why Canton is the right substrate", "t-network_topology_and_parti": "Network topology and participant architecture", "t-daml_templates__choices__a": "Daml templates, choices, and the party model", "t-sub_transaction_privacy_an": "Sub-transaction privacy and the Global Synchronizer", "t-full_transaction_lifecycle": "Full transaction lifecycle: 18 steps from negotiation to atomic settlement", "t-cross_application_atomic_c": "Cross-application atomic composability", "t-cash_leg__canton_coin__and": "Cash leg, Canton Coin, and on-ledger fees", "t-iso_20022_payloads_inside": "ISO 20022 payloads inside Daml contracts", "t-kyc__aml__and_travel_rule": "KYC, AML, and Travel Rule compliance", "t-regulatory_framework__eu": "Regulatory framework: EU, US, UK, and Belgium", "t-governance__super_validato": "Governance, super-validators, and the Canton Foundation", "t-operational_risks_and_reco": "Operational risks and recovery design"},
+  es: {"hero-h1": "Tokenización A2A en Canton: cuatro IFM, un libro mayor sincronizado", "hero-sub": "Guía técnica detallada de Canton Network y Daml para liquidación A2A tokenizada entre cuatro de las IFM más grandes del mundo.", "kicker-section_01": "Sección 01", "kicker-section_02": "Sección 02", "kicker-section_03": "Sección 03", "kicker-section_04": "Sección 04", "kicker-section_05": "Sección 05", "kicker-section_06": "Sección 06", "kicker-section_07": "Sección 07", "kicker-section_08": "Sección 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "t-why_these_four_fmis__and_w": "Why these four FMIs, and why Canton is the right substrate", "t-network_topology_and_parti": "Network topology and participant architecture", "t-daml_templates__choices__a": "Daml templates, choices, and the party model", "t-sub_transaction_privacy_an": "Sub-transaction privacy and the Global Synchronizer", "t-full_transaction_lifecycle": "Full transaction lifecycle: 18 steps from negotiation to atomic settlement", "t-cross_application_atomic_c": "Cross-application atomic composability", "t-cash_leg__canton_coin__and": "Cash leg, Canton Coin, and on-ledger fees", "t-iso_20022_payloads_inside": "ISO 20022 payloads inside Daml contracts", "t-kyc__aml__and_travel_rule": "KYC, AML, and Travel Rule compliance", "t-regulatory_framework__eu": "Regulatory framework: EU, US, UK, and Belgium", "t-governance__super_validato": "Governance, super-validators, and the Canton Foundation", "t-operational_risks_and_reco": "Operational risks and recovery design"},
+  fr: {"hero-h1": "Tokenisation A2A sur Canton : quatre IFM, un registre synchronisé", "hero-sub": "Présentation technique détaillée de Canton Network et Daml pour la liquidation A2A tokenisée entre quatre grandes IFM mondiales.", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "t-why_these_four_fmis__and_w": "Why these four FMIs, and why Canton is the right substrate", "t-network_topology_and_parti": "Network topology and participant architecture", "t-daml_templates__choices__a": "Daml templates, choices, and the party model", "t-sub_transaction_privacy_an": "Sub-transaction privacy and the Global Synchronizer", "t-full_transaction_lifecycle": "Full transaction lifecycle: 18 steps from negotiation to atomic settlement", "t-cross_application_atomic_c": "Cross-application atomic composability", "t-cash_leg__canton_coin__and": "Cash leg, Canton Coin, and on-ledger fees", "t-iso_20022_payloads_inside": "ISO 20022 payloads inside Daml contracts", "t-kyc__aml__and_travel_rule": "KYC, AML, and Travel Rule compliance", "t-regulatory_framework__eu": "Regulatory framework: EU, US, UK, and Belgium", "t-governance__super_validato": "Governance, super-validators, and the Canton Foundation", "t-operational_risks_and_reco": "Operational risks and recovery design"},
+  ar: {"hero-h1": "التوكينزيشن A2A على Canton: أربع مؤسسات بنية تحتية مالية، دفتر أستاذ واحد متزامن", "hero-sub": "جولة تقنية تفصيلية حول Canton Network و Daml لتسوية A2A المرمّزة بين أربع من أكبر المؤسسات المالية عالمياً.", "kicker-section_01": "القسم 01", "kicker-section_02": "القسم 02", "kicker-section_03": "القسم 03", "kicker-section_04": "القسم 04", "kicker-section_05": "القسم 05", "kicker-section_06": "القسم 06", "kicker-section_07": "القسم 07", "kicker-section_08": "القسم 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "t-why_these_four_fmis__and_w": "Why these four FMIs, and why Canton is the right substrate", "t-network_topology_and_parti": "Network topology and participant architecture", "t-daml_templates__choices__a": "Daml templates, choices, and the party model", "t-sub_transaction_privacy_an": "Sub-transaction privacy and the Global Synchronizer", "t-full_transaction_lifecycle": "Full transaction lifecycle: 18 steps from negotiation to atomic settlement", "t-cross_application_atomic_c": "Cross-application atomic composability", "t-cash_leg__canton_coin__and": "Cash leg, Canton Coin, and on-ledger fees", "t-iso_20022_payloads_inside": "ISO 20022 payloads inside Daml contracts", "t-kyc__aml__and_travel_rule": "KYC, AML, and Travel Rule compliance", "t-regulatory_framework__eu": "Regulatory framework: EU, US, UK, and Belgium", "t-governance__super_validato": "Governance, super-validators, and the Canton Foundation", "t-operational_risks_and_reco": "Operational risks and recovery design"},
+  pt: {"hero-h1": "Tokenização A2A no Canton: quatro IFMs, um livro-razão sincronizado", "hero-sub": "Apresentação técnica detalhada do Canton Network e Daml para liquidação A2A tokenizada entre quatro das maiores IFMs do mundo.", "kicker-section_01": "Seção 01", "kicker-section_02": "Seção 02", "kicker-section_03": "Seção 03", "kicker-section_04": "Seção 04", "kicker-section_05": "Seção 05", "kicker-section_06": "Seção 06", "kicker-section_07": "Seção 07", "kicker-section_08": "Seção 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "t-why_these_four_fmis__and_w": "Why these four FMIs, and why Canton is the right substrate", "t-network_topology_and_parti": "Network topology and participant architecture", "t-daml_templates__choices__a": "Daml templates, choices, and the party model", "t-sub_transaction_privacy_an": "Sub-transaction privacy and the Global Synchronizer", "t-full_transaction_lifecycle": "Full transaction lifecycle: 18 steps from negotiation to atomic settlement", "t-cross_application_atomic_c": "Cross-application atomic composability", "t-cash_leg__canton_coin__and": "Cash leg, Canton Coin, and on-ledger fees", "t-iso_20022_payloads_inside": "ISO 20022 payloads inside Daml contracts", "t-kyc__aml__and_travel_rule": "KYC, AML, and Travel Rule compliance", "t-regulatory_framework__eu": "Regulatory framework: EU, US, UK, and Belgium", "t-governance__super_validato": "Governance, super-validators, and the Canton Foundation", "t-operational_risks_and_reco": "Operational risks and recovery design"},
+  zh: {"hero-h1": "基于Canton的A2A代币化：四家金融市场基础设施，一个同步账本", "hero-sub": "关于Canton Network和Daml实现全球四大金融市场基础设施间代币化A2A结算的详细技术演练。", "kicker-section_01": "第01节", "kicker-section_02": "第02节", "kicker-section_03": "第03节", "kicker-section_04": "第04节", "kicker-section_05": "第05节", "kicker-section_06": "第06节", "kicker-section_07": "第07节", "kicker-section_08": "第08节", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "kicker-section_12": "Section 12", "t-why_these_four_fmis__and_w": "Why these four FMIs, and why Canton is the right substrate", "t-network_topology_and_parti": "Network topology and participant architecture", "t-daml_templates__choices__a": "Daml templates, choices, and the party model", "t-sub_transaction_privacy_an": "Sub-transaction privacy and the Global Synchronizer", "t-full_transaction_lifecycle": "Full transaction lifecycle: 18 steps from negotiation to atomic settlement", "t-cross_application_atomic_c": "Cross-application atomic composability", "t-cash_leg__canton_coin__and": "Cash leg, Canton Coin, and on-ledger fees", "t-iso_20022_payloads_inside": "ISO 20022 payloads inside Daml contracts", "t-kyc__aml__and_travel_rule": "KYC, AML, and Travel Rule compliance", "t-regulatory_framework__eu": "Regulatory framework: EU, US, UK, and Belgium", "t-governance__super_validato": "Governance, super-validators, and the Canton Foundation", "t-operational_risks_and_reco": "Operational risks and recovery design"}
+};
+
+function setLang(lang) {
+  document.querySelectorAll(".lang-btn").forEach(b => {
+    b.classList.remove("active");
+    const oc = b.getAttribute("onclick") || "";
+    if (oc.includes("'" + lang + "'") || oc.includes('"' + lang + '"')) {
+      b.classList.add("active");
+    }
+  });
+  document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+}
+</script>
+</body>
+</html>
+        

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Oak Labs | Tokenized Payments, Stablecoin & CBDC Advisory | Global South</title>
+<meta name="description" content="Post Oak Labs advises commercial banks, central banks, and large corporates on tokenized payment infrastructure, stablecoin integration, and CBDC strategy. Production deployments in the Caribbean and South Asia. Focused on Latin America, Africa, and emerging markets.">
+<meta name="keywords" content="stablecoin consulting, tokenized payments, CBDC advisory, tokenized money market fund, cross-border payments, remittance infrastructure, blockchain consulting, A2A payments, fintech global south, Latin America fintech, Africa blockchain, institutional blockchain advisory">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/">
+<link rel="alternate" hreflang="x-default" href="https://postoaklabs.com/">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Post Oak Labs | Tokenized Payments & Stablecoin Advisory">
+<meta property="og:description" content="Specialist advisory in tokenized A2A payments, stablecoin integration, and CBDC strategy for banks and large corporates in the Global South.">
+<meta property="og:url" content="https://postoaklabs.com/">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="Post Oak Labs | Tokenized Payments & Stablecoin Advisory">
+<meta name="twitter:description" content="Specialist advisory in tokenized A2A payments, stablecoin integration, and CBDC strategy for banks and large corporates in the Global South.">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<!-- Schema.org structured data -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:     #050c15;
+  --deep:    #0a1628;
+  --navy:    #0e1e35;
+  --panel:   #142540;
+  --edge:    #1e3454;
+  --rim:     #2a4a70;
+  --muted:   #4a6a8a;
+  --body:    #7090b0;
+  --text:    #a8c0d8;
+  --bright:  #d0e4f4;
+  --white:   #ecf4fc;
+  --gold:    #c09040;
+  --gold-lt: #d8b060;
+  --accent:  #2a7fc0;
+  --accent-lt:#4a9fd8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 16px;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-bar {
+  background: var(--deep);
+  border-bottom: 1px solid var(--edge);
+  padding: 0.45rem 0;
+}
+.lang-inner {
+  max-width: 980px; margin: 0 auto; padding: 0 2rem;
+  display: flex; justify-content: flex-end; gap: 0.25rem;
+}
+.lang-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--edge);
+  color: var(--muted);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+.hero {
+  padding: 5rem 0 4rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(42,127,192,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.25rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  color: var(--white); max-width: 700px; margin-bottom: 1.25rem;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 0.95rem; color: var(--body);
+  max-width: 560px; line-height: 1.85; margin-bottom: 2.5rem;
+}
+.hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--accent); color: var(--white);
+  border: 1px solid var(--accent); transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.btn-outline {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--edge); color: var(--muted);
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+/* ── STAT ROW ── */
+.stat-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin-top: 3rem;
+}
+.stat-cell { background: var(--deep); padding: 1.35rem 1.5rem; text-align: center; }
+.stat-num {
+  font-family: 'DM Serif Display', serif; font-size: 1.9rem;
+  color: var(--accent-lt); display: block; line-height: 1; margin-bottom: 0.3rem;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); line-height: 1.5;
+}
+
+/* ── SECTIONS ── */
+section { padding: 4rem 0; }
+.sec-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.sec-title { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bright); margin-bottom: 0.75rem; }
+.sec-intro { font-size: 0.88rem; color: var(--body); max-width: 580px; line-height: 1.85; margin-bottom: 2rem; }
+hr.rule { border: none; border-top: 1px solid var(--edge); }
+
+/* ── SERVICE LIST ── */
+.svc-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); }
+.svc-item {
+  background: var(--deep); padding: 1.5rem 2rem;
+  display: grid; grid-template-columns: 180px 1fr;
+  gap: 1.5rem; align-items: start; transition: background 0.2s;
+}
+.svc-item:hover { background: var(--navy); }
+.svc-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-lt); padding-top: 0.2rem;
+}
+.svc-item h3 { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.svc-item p { font-size: 0.82rem; color: var(--body); line-height: 1.8; }
+
+/* ── REGIONS ── */
+.region-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+}
+.region-cell { background: var(--navy); padding: 1.5rem 1.75rem; }
+.region-cell .r-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-lt);
+  margin-bottom: 0.4rem;
+}
+.region-cell h4 { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.region-cell p { font-size: 0.8rem; color: var(--body); line-height: 1.75; }
+
+/* ── TRACK RECORD ── */
+.track-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  border-left: 3px solid var(--gold); padding: 1.75rem 2rem; margin-top: 2rem;
+}
+.track-block p { font-size: 0.85rem; color: var(--body); line-height: 1.85; }
+
+/* ── PARTNERS ── */
+.partner-list {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--edge); border: 1px solid var(--edge); margin-top: 1.5rem;
+}
+.partner-item {
+  background: var(--deep); padding: 1.25rem 1.75rem;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 1.25rem; align-items: center; transition: background 0.2s;
+}
+.partner-item:hover { background: var(--navy); }
+.partner-name { font-size: 0.9rem; font-weight: 500; color: var(--bright); }
+.partner-desc { font-size: 0.8rem; color: var(--body); line-height: 1.7; }
+.partner-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); white-space: nowrap;
+  border: 1px solid var(--edge); padding: 0.35rem 0.75rem;
+  transition: all 0.2s;
+}
+.partner-item:hover .partner-link { border-color: var(--accent); }
+
+/* ── CTA ── */
+.cta-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  padding: 3rem; text-align: center; margin-top: 3rem;
+}
+.cta-block h3 { font-size: 1.7rem; color: var(--white); margin-bottom: 0.5rem; }
+.cta-block p { font-size: 0.88rem; color: var(--body); max-width: 440px; margin: 0 auto 1.75rem; line-height: 1.85; }
+
+/* ── FOOTER ── */
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+
+/* ── RTL (Arabic) ── */
+html[lang="ar"] body { direction: rtl; text-align: right; }
+html[lang="ar"] .lang-inner { justify-content: flex-start; }
+html[lang="ar"] .nav-inner { flex-direction: row-reverse; }
+html[lang="ar"] .footer-inner { flex-direction: row-reverse; }
+
+/* ── I18N HIDDEN ── */
+[data-lang]:not(.lang-btn) { display: none; }
+[data-lang]:not(.lang-btn).active { display: block; }
+.hero h1[data-lang], .hero-sub[data-lang] { display: none; }
+.hero h1[data-lang].active, .hero-sub[data-lang].active { display: block; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .stat-row { grid-template-columns: repeat(2,1fr); }
+  .svc-item { grid-template-columns: 1fr; gap: 0.3rem; }
+  .region-grid { grid-template-columns: 1fr; }
+  .partner-item { grid-template-columns: 1fr; }
+  .cta-block { padding: 2rem 1.25rem; }
+  .nav-links { display: none; }
+}
+
+/* ═══ DEMOS DROPDOWN (added May 2026) ═══ */
+.nav-dropdown { position: relative; }
+.nav-dropdown-trigger { display: flex; align-items: center; gap: 0.25em; cursor: pointer; }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute; top: calc(100% + 10px); left: 50%;
+  transform: translateX(-50%);
+  background: rgba(5,12,21,0.97); border: 1px solid var(--edge);
+  border-radius: 4px; min-width: 200px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  z-index: 200; padding: 0.4rem 0;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.nav-dropdown-menu::before {
+  content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top: none;
+  border-bottom-color: var(--edge);
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 0.45rem 1rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; transition: color 0.15s;
+  white-space: nowrap;
+}
+.nav-dropdown-menu a:hover { color: var(--accent-lt); background: rgba(42,127,192,0.06); }
+.nav-dropdown-menu .dm-sep {
+  border: none; border-top: 1px solid var(--edge); margin: 0.3rem 0;
+}
+/* hide dropdown list on mobile alongside nav-links */
+@media (max-width: 700px) { .nav-dropdown-menu { display: none !important; } }
+
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+/* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+/* ══════════════════════════════════════════════════ */
+</style>
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+</head>
+<body>
+
+<!-- Language bar -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <div class="nav-dropdown">
+        <a href="demos/" class="nav-dropdown-trigger" data-i18n="nav-demos">Demos&nbsp;↓</a>
+        <div class="nav-dropdown-menu">
+          <a href="demos/">Showcase</a>
+          <hr class="dm-sep">
+          <a href="demos/agentic-runtime/">Agentic Runtime</a>
+          <a href="demos/regtech/">RegTech</a>
+          <a href="demos/baas/">BaaS</a>
+          <a href="demos/processors/">Processors</a>
+          <a href="demos/stablecoin-issuer/">Stablecoin Issuer</a>
+        </div>
+      </div>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <p class="hero-tag" data-i18n="hero-tag">Tokenized Payments · Stablecoin Strategy · CBDC Advisory</p>
+
+    <h1 data-i18n="hero-h1">Payment infrastructure for institutions that operate <em>where it matters most</em></h1>
+
+    <p class="hero-sub" data-i18n="hero-sub">Post Oak Labs advises commercial banks, central banks, and large corporates on tokenized payment infrastructure, stablecoin integration, and CBDC strategy — with production deployments across the Caribbean and South Asia, and primary focus on Latin America and Africa.</p>
+
+    <div class="hero-cta-row">
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="hero-cta-primary">Get in touch</a>
+      <a href="#services" class="btn-outline" data-i18n="hero-cta-secondary">What we do</a>
+      <a href="a2a-workflow.html" class="btn-outline">A2A Tokenization Explained →</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-cell">
+        <span class="stat-num">4+</span>
+        <span class="stat-label" data-i18n="stat-1">Regions · active deployments</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">Prod</span>
+        <span class="stat-label" data-i18n="stat-2">Systems live · Caribbean & South Asia</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">B2B/C</span>
+        <span class="stat-label" data-i18n="stat-3">Cross-border tokenized transfers</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">A2A</span>
+        <span class="stat-label" data-i18n="stat-4">Account-to-account tokenized rails</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <p class="sec-tag" data-i18n="svc-tag">Core Services</p>
+    <h2 class="sec-title" data-i18n="svc-title">What Post Oak Labs builds and advises on</h2>
+    <p class="sec-intro" data-i18n="svc-intro">We build things and we advise on things, and we know the difference between the two. Most engagements start with an institution that needs one and discovers they need both.</p>
+
+    <div class="svc-list">
+      <div class="svc-item">
+        <span class="svc-tag" data-i18n="svc1-tag">Tokenized Payments</span>
+        <div>
+          <h3 data-i18n="svc1-h">Tokenized A2A Cross-Border Payments</h3>
+          <p data-i18n="svc1-p">End-to-end design and integration of tokenized account-to-account payment rails supporting B2B and B2C cross-border transactions and remittances. We have built and integrated production systems in the Caribbean and South Asia. This is infrastructure work, not just advisory. <a href="a2a-payments.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">Market coverage and client profile →</a></p>
+        </div>
+      </div>
+      <div class="svc-item">
+        <span class="svc-tag" data-i18n="svc2-tag">Stablecoin</span>
+        <div>
+          <h3 data-i18n="svc2-h">Stablecoin Strategy & Integration</h3>
+          <p data-i18n="svc2-p">Design and integration of stablecoin rails for commercial and central banks, including issuance architecture, reserve management structure, and regulatory positioning. We advise on fit-for-purpose stablecoin approaches based on institutional context and jurisdiction.</p>
+        </div>
+      </div>
+      <div class="svc-item">
+        <span class="svc-tag" data-i18n="svc3-tag">CBDC</span>
+        <div>
+          <h3 data-i18n="svc3-h">CBDC Integration & Architecture</h3>
+          <p data-i18n="svc3-p">Advisory on central bank digital currency design and deployment, covering interoperability with existing payment systems, integration with private sector infrastructure, and the structural questions that matter most to central bank teams evaluating CBDC.</p>
+        </div>
+      </div>
+      <div class="svc-item">
+        <span class="svc-tag" data-i18n="svc4-tag">Tokenized MMF</span>
+        <div>
+          <h3 data-i18n="svc4-h">Tokenized Money Market Funds</h3>
+          <p data-i18n="svc4-p">Architecture and advisory for tokenized money market fund products. We can help commercial banks and corporates build and deploy standardized tokenized MMFs denominated in local currency, not just USD. Tokenized USD MMFs already exist; the gap is in local-currency equivalents for non-dollarized economies, where commercial banks can offer this access to corporate clients as a differentiated product.</p>
+        </div>
+      </div>
+      <div class="svc-item">
+        <span class="svc-tag" data-i18n="svc5-tag">Advisory</span>
+        <div>
+          <h3 data-i18n="svc5-h">Institutional Blockchain Advisory</h3>
+          <p data-i18n="svc5-p">Advisory across DeFi protocols, layer-1 blockchains, NFT infrastructure, AMMs, onchain derivatives, forecast markets, enterprise blockchain, and the integration of traditional finance with digital asset infrastructure. Team members have worked across 20+ institutional blockchain projects and have authored widely cited research and presentations on these topics. <a href="blockchain-advisory.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">See our project history.</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="regions">
+  <div class="container">
+    <p class="sec-tag" data-i18n="reg-tag">Target Markets</p>
+    <h2 class="sec-title" data-i18n="reg-title">Where we focus</h2>
+    <p class="sec-intro" data-i18n="reg-intro">We concentrate on markets where tokenized payment infrastructure is immature or absent, institutional demand is present, and the regulatory environment is moving in the right direction.</p>
+
+    <div class="region-grid">
+      <div class="region-cell">
+        <p class="r-label" data-i18n="reg1-lbl">Primary · Highest Near-Term Opportunity</p>
+        <h4 data-i18n="reg1-h">Latin America</h4>
+        <p data-i18n="reg1-p">Central and South America present the clearest near-term opportunity — high remittance volumes, regulatory openness in key markets, and commercial banking sectors looking to modernize cross-border payment infrastructure.</p>
+      </div>
+      <div class="region-cell">
+        <p class="r-label" data-i18n="reg2-lbl">High Growth · Regulatory Momentum</p>
+        <h4 data-i18n="reg2-h">Africa</h4>
+        <p data-i18n="reg2-p">Africa's mobile money penetration and regulatory experimentation with CBDC make it a significant opportunity for tokenized payment infrastructure, particularly for corridors that are currently expensive and slow.</p>
+      </div>
+      <div class="region-cell">
+        <p class="r-label" data-i18n="reg3-lbl">Active · Production Deployments</p>
+        <h4 data-i18n="reg3-h">Caribbean</h4>
+        <p data-i18n="reg3-p">We have active production deployments in the Caribbean region. Our familiarity with the regulatory landscape, correspondent banking constraints, and the specific remittance dynamics of this region is direct.</p>
+      </div>
+      <div class="region-cell">
+        <p class="r-label" data-i18n="reg4-lbl">Active · Production Deployments</p>
+        <h4 data-i18n="reg4-h">South Asia</h4>
+        <p data-i18n="reg4-p">Production tokenized payment systems deployed in South Asia. The remittance volumes, regulatory structure, and commercial banking landscape in this region present ongoing opportunity as tokenized infrastructure matures.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="track">
+  <div class="container">
+    <p class="sec-tag" data-i18n="track-tag">Track Record</p>
+    <h2 class="sec-title" data-i18n="track-title">What we have actually done</h2>
+    <p class="sec-intro" data-i18n="track-intro">The difference between advisory and implementation experience is significant in this space. Our team has done both.</p>
+
+    <div class="track-block">
+      <p data-i18n="track-p">Team members have built and deployed production tokenized payment systems in the Caribbean and South Asia — live systems, not pilots. The team has worked alongside or within some of the most significant names in institutional blockchain and tokenized finance globally, including major central banks, global banking groups, and first-generation enterprise blockchain consortia.</p>
+      <p data-i18n="track-p2" style="font-size:0.85rem;color:var(--body);line-height:1.85;margin-top:1rem;">Our consultants have authored books, research papers, op-eds, and presentations that are widely cited across the field. Team members have appeared at over 200 panels and keynotes globally and have been quoted in Wired, Reuters, Bloomberg, The Wall Street Journal, The Financial Times, The New York Times, and MIT Technology Review, among others. <a href="blockchain-advisory.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">Full advisory history →</a></p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="showcase">
+  <div class="container">
+    <p class="sec-tag">Fintech Intelligence Showcase</p>
+    <h2 class="sec-title">33 working browser demos</h2>
+    <p class="sec-intro">Client-side fintech tools drawn from the AINumbers.co catalog — zero PII, AP2-exportable, MCP-proven. Built as a public demonstration of capability across five buyer archetypes: Agentic Runtime, RegTech, BaaS, Processors, and Stablecoin Issuers.</p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:0.65rem; margin:1.75rem 0 2rem;">
+      <a href="demos/agentic-runtime/" style="display:inline-block; padding:0.45rem 1rem; border:1px solid var(--rim); border-radius:4px; color:var(--text); font-size:0.83rem; text-decoration:none; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em; transition:border-color 0.15s,color 0.15s;" onmouseover="this.style.borderColor='var(--accent-lt)';this.style.color='var(--accent-lt)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text)'">Agentic Runtime →</a>
+      <a href="demos/regtech/" style="display:inline-block; padding:0.45rem 1rem; border:1px solid var(--rim); border-radius:4px; color:var(--text); font-size:0.83rem; text-decoration:none; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em; transition:border-color 0.15s,color 0.15s;" onmouseover="this.style.borderColor='var(--accent-lt)';this.style.color='var(--accent-lt)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text)'">RegTech →</a>
+      <a href="demos/baas/" style="display:inline-block; padding:0.45rem 1rem; border:1px solid var(--rim); border-radius:4px; color:var(--text); font-size:0.83rem; text-decoration:none; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em; transition:border-color 0.15s,color 0.15s;" onmouseover="this.style.borderColor='var(--accent-lt)';this.style.color='var(--accent-lt)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text)'">BaaS →</a>
+      <a href="demos/processors/" style="display:inline-block; padding:0.45rem 1rem; border:1px solid var(--rim); border-radius:4px; color:var(--text); font-size:0.83rem; text-decoration:none; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em; transition:border-color 0.15s,color 0.15s;" onmouseover="this.style.borderColor='var(--accent-lt)';this.style.color='var(--accent-lt)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text)'">Processors →</a>
+      <a href="demos/stablecoin-issuer/" style="display:inline-block; padding:0.45rem 1rem; border:1px solid var(--rim); border-radius:4px; color:var(--text); font-size:0.83rem; text-decoration:none; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em; transition:border-color 0.15s,color 0.15s;" onmouseover="this.style.borderColor='var(--accent-lt)';this.style.color='var(--accent-lt)'" onmouseout="this.style.borderColor='var(--rim)';this.style.color='var(--text)'">Stablecoin Issuer →</a>
+    </div>
+
+    <a href="demos/" class="btn-primary">View all 33 demos →</a>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="container">
+    <div class="cta-block">
+      <h3 data-i18n="cta-h">Talk to us</h3>
+      <p data-i18n="cta-p">We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, we are happy to have a direct conversation about whether and how we can help.</p>
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="cta-btn">contact@postoaklabs.com</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+// ── Translations ──
+const i18n = {
+  en: {
+    "nav-services":"Services","nav-a2a":"A2A Payments","nav-regions":"Regions","nav-track":"Track Record",
+    "nav-partners":"Partners","nav-glossary":"Glossary","nav-demos":"Demos ↓","nav-contact":"Contact","nav-advisory":"Advisory","nav-comparison":"Comparison","nav-enterprise":"Enterprise Blockchain","nav-tools":"Tools ↗","nav-workflow":"How It Works",
+    "hero-tag":"Tokenized Payments · Stablecoin Strategy · CBDC Advisory",
+    "hero-h1":'Payment infrastructure for institutions that operate <em>where it matters most</em>',
+    "hero-sub":"Post Oak Labs advises commercial banks, central banks, and large corporates on tokenized payment infrastructure, stablecoin integration, and CBDC strategy — with production deployments across the Caribbean and South Asia, and primary focus on Latin America and Africa.",
+    "hero-cta-primary":"Get in touch","hero-cta-secondary":"What we do",
+    "stat-1":"Regions · active deployments","stat-2":"Systems live · Caribbean & South Asia",
+    "stat-3":"Cross-border tokenized transfers","stat-4":"Account-to-account tokenized rails",
+    "svc-tag":"Core Services","svc-title":"What Post Oak Labs builds and advises on",
+    "svc-intro":"Our work spans architecture, integration, and strategy — from greenfield stablecoin deployments to helping established institutions understand what tokenized infrastructure means for their balance sheet and operations.",
+    "svc1-tag":"Tokenized Payments","svc1-h":"Tokenized A2A Cross-Border Payments",
+    "svc1-p":"End-to-end design and integration of tokenized account-to-account payment rails supporting B2B and B2C cross-border transactions and remittances. We have built and integrated production systems in the Caribbean and South Asia. This is infrastructure work, not just advisory.",
+    "svc2-tag":"Stablecoin","svc2-h":"Stablecoin Strategy & Integration",
+    "svc2-p":"Design and integration of stablecoin rails for commercial and central banks — including issuance architecture, reserve management structure, and regulatory positioning. We advise on fit-for-purpose stablecoin approaches based on institutional context and jurisdiction.",
+    "svc3-tag":"CBDC","svc3-h":"CBDC Integration & Architecture",
+    "svc3-p":"Advisory on central bank digital currency design and deployment  -  covering interoperability with existing payment systems, integration with private sector infrastructure, and the structural questions that matter most to central bank teams evaluating CBDC.",
+    "svc4-tag":"Tokenized MMF","svc4-h":"Tokenized Money Market Funds",
+    "svc4-p":"Architecture and advisory for tokenized money market fund products. We see particular opportunity for non-dollarized economies where USD-denominated tokenized MMFs already exist but local-currency equivalents do not  -  and where commercial banks could benefit from offering tokenized MMF access to corporate clients.",
+    "svc5-tag":"Advisory","svc5-h":"Institutional Blockchain Advisory",
+    "svc5-p":"Deep advisory across enterprise blockchain platforms (Corda, Hyperledger), DeFi protocols, layer-1 infrastructure, and the integration of traditional finance with digital asset infrastructure. Team members have advised and built products across a broad range of institutional blockchain projects and have authored widely cited research and presentations on these topics.",
+    "reg-tag":"Target Markets","reg-title":"Where we focus",
+    "reg-intro":"We concentrate on markets where tokenized payment infrastructure is immature or absent, institutional demand is present, and the regulatory environment is moving in the right direction.",
+    "reg1-lbl":"Primary · Highest Near-Term Opportunity","reg1-h":"Latin America",
+    "reg1-p":"Central and South America present the clearest near-term opportunity  -  a combination of high remittance volumes, regulatory openness in key markets, and commercial banking sectors looking to modernize cross-border payment infrastructure.",
+    "reg2-lbl":"High Growth · Regulatory Momentum","reg2-h":"Africa",
+    "reg2-p":"Africa's mobile money penetration and regulatory experimentation with CBDC make it a significant opportunity for tokenized payment infrastructure — particularly for corridors that are currently expensive and slow.",
+    "reg3-lbl":"Active · Production Deployments","reg3-h":"Caribbean",
+    "reg3-p":"We have active production deployments in the Caribbean region. Our familiarity with the regulatory landscape, correspondent banking constraints, and the specific remittance dynamics of this region is direct.",
+    "reg4-lbl":"Active · Production Deployments","reg4-h":"South Asia",
+    "reg4-p":"Production tokenized payment systems deployed in South Asia. The remittance volumes, regulatory structure, and commercial banking landscape in this region present ongoing opportunity as tokenized infrastructure matures.",
+    "track-tag":"Track Record","track-title":"What we have actually done",
+    "track-intro":"The difference between advisory and implementation experience is significant in this space. Our team has done both.",
+    "track-p":"Team members have built and deployed production tokenized payment systems in the Caribbean and South Asia. Beyond deployment, Post Oak Labs consultants have contributed to and advised on a wide range of institutional blockchain projects spanning enterprise blockchain platforms, central bank initiatives, and DeFi infrastructure — working with some of the most significant names in institutional blockchain and tokenized finance. Our consultants have authored research papers, op-eds, and industry presentations widely cited in major publications and at leading events globally, covering blockchain analytics, stablecoin policy, consensus design, CBDC, and tokenized finance. The team is experienced in generative AI as it applies to financial services and payments infrastructure.",
+    "part-tag":"Partner Network","part-title":"Specialist partners",
+    "part-intro":"Post Oak Labs works with a small number of specialist partners who extend our capabilities in adjacent areas relevant to institutional clients.",
+    "part1-desc":"Liquidity management, capital optimization, and regulatory reporting (LCR, NSFR, Basel III/IV, ILAAP/ICAAP). Advisory at the intersection of traditional bank treasury and tokenized financial infrastructure. Senior experience inside major global financial institutions.",
+    "part2-desc":"MBA admissions consulting backed by direct personal experience gaining admission to approximately nine of the top 25 programs globally, including full and partial scholarships. Alongside that, structured online tutoring in economics, history, business, and finance  -  as well as TOEFL preparation and TEFL coaching, with institutional teaching backgrounds across East Asia.",
+    "part-view":"View →",
+    "cta-h":"Talk to us",
+    "cta-p":"We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, we are happy to have a direct conversation about whether and how we can help.",
+    "cta-btn":"contact@postoaklabs.com"
+  },
+  es: {
+    "nav-services":"Servicios","nav-a2a":"Pagos A2A","nav-regions":"Regiones","nav-track":"Trayectoria",
+    "nav-partners":"Socios","nav-glossary":"Glosario","nav-demos":"Demos ↓","nav-contact":"Contacto","nav-advisory":"Consultoría","nav-comparison":"Comparación","nav-enterprise":"Blockchain Empresarial","nav-tools":"Herramientas ↗","nav-workflow":"Cómo Funciona",
+    "hero-tag":"Pagos Tokenizados · Estrategia de Stablecoin · Asesoría CBDC",
+    "hero-h1":'Infraestructura de pagos para instituciones que operan <em>donde más importa</em>',
+    "hero-sub":"Post Oak Labs asesora a bancos comerciales, bancos centrales y grandes corporativos en infraestructura de pagos tokenizados, integración de stablecoins y estrategia CBDC  -  con despliegues en producción en el Caribe y Asia del Sur, y enfoque principal en América Latina y África.",
+    "hero-cta-primary":"Contáctenos","hero-cta-secondary":"Qué hacemos",
+    "stat-1":"Regiones · despliegues activos","stat-2":"Sistemas en producción · Caribe y Asia del Sur",
+    "stat-3":"Transferencias tokenizadas transfronterizas","stat-4":"Rieles tokenizados cuenta a cuenta",
+    "svc-tag":"Servicios Principales","svc-title":"En qué trabaja y asesora Post Oak Labs",
+    "svc-intro":"Nuestro trabajo abarca arquitectura, integración y estrategia  -  desde despliegues de stablecoin en nuevo terreno hasta ayudar a instituciones establecidas a entender qué significa la infraestructura tokenizada para su balance y operaciones.",
+    "svc1-tag":"Pagos Tokenizados","svc1-h":"Pagos Transfronterizos A2A Tokenizados",
+    "svc1-p":"Diseño e integración completos de rieles de pago tokenizados cuenta a cuenta que soportan transacciones transfronterizas B2B y B2C y remesas. Hemos construido e integrado sistemas en producción en el Caribe y Asia del Sur. Esto es trabajo de infraestructura, no solo asesoría.",
+    "svc2-tag":"Stablecoin","svc2-h":"Estrategia e Integración de Stablecoin",
+    "svc2-p":"Diseño e integración de rieles de stablecoin para bancos comerciales y centrales  -  incluyendo arquitectura de emisión, estructura de gestión de reservas y posicionamiento regulatorio.",
+    "svc3-tag":"CBDC","svc3-h":"Integración y Arquitectura CBDC",
+    "svc3-p":"Asesoría en diseño y despliegue de monedas digitales de bancos centrales  -  cubriendo interoperabilidad con sistemas de pago existentes, integración con infraestructura del sector privado y las preguntas estructurales más relevantes para equipos de bancos centrales que evalúan CBDC.",
+    "svc4-tag":"Fondos Tokenizados","svc4-h":"Fondos del Mercado Monetario Tokenizados",
+    "svc4-p":"Arquitectura y asesoría para productos de fondos del mercado monetario tokenizados. Vemos oportunidad particular en economías no dolarizadas donde ya existen fondos tokenizados denominados en USD pero no equivalentes en moneda local.",
+    "svc5-tag":"Asesoría","svc5-h":"Asesoría Institucional en Blockchain",
+    "svc5-p":"Asesoría profunda en plataformas blockchain empresariales (Corda, Hyperledger), protocolos DeFi, infraestructura de capa 1 e integración de finanzas tradicionales con infraestructura de activos digitales.",
+    "reg-tag":"Mercados Objetivo","reg-title":"Dónde nos enfocamos",
+    "reg-intro":"Nos concentramos en mercados donde la infraestructura de pagos tokenizados es inmadura o inexistente, la demanda institucional está presente y el entorno regulatorio avanza en la dirección correcta.",
+    "reg1-lbl":"Principal · Mayor Oportunidad a Corto Plazo","reg1-h":"América Latina",
+    "reg1-p":"América Central y del Sur presentan la oportunidad más clara a corto plazo  -  una combinación de altos volúmenes de remesas, apertura regulatoria en mercados clave y sectores bancarios comerciales que buscan modernizar su infraestructura de pagos transfronterizos.",
+    "reg2-lbl":"Alto Crecimiento · Impulso Regulatorio","reg2-h":"África",
+    "reg2-p":"La penetración del dinero móvil en África y la experimentación regulatoria con CBDC la convierten en una oportunidad significativa para infraestructura de pagos tokenizados.",
+    "reg3-lbl":"Activo · Despliegues en Producción","reg3-h":"Caribe",
+    "reg3-p":"Tenemos despliegues activos en producción en la región del Caribe. Nuestro conocimiento del entorno regulatorio, las restricciones de banca corresponsal y la dinámica de remesas de esta región es directo.",
+    "reg4-lbl":"Activo · Despliegues en Producción","reg4-h":"Asia del Sur",
+    "reg4-p":"Sistemas de pago tokenizados en producción desplegados en Asia del Sur. Los volúmenes de remesas, la estructura regulatoria y el panorama bancario comercial en esta región presentan oportunidad continua.",
+    "track-tag":"Trayectoria","track-title":"Lo que hemos hecho realmente",
+    "track-intro":"La diferencia entre experiencia en asesoría e implementación es significativa en este espacio. Nuestro equipo ha hecho ambas.",
+    "track-p":"Miembros del equipo han construido y desplegado sistemas de pago tokenizados en producción en el Caribe y Asia del Sur. Más allá del despliegue, los consultores de Post Oak Labs han contribuido y asesorado en una amplia gama de proyectos institucionales de blockchain  -  abarcando plataformas blockchain empresariales, pilotos de moneda digital de bancos centrales, diseño de protocolos DeFi, infraestructura de stablecoins, analítica de blockchain, marcos de identidad digital, ecosistemas de juegos y derivados en cadena. El equipo ha trabajado junto o dentro de algunos de los nombres más significativos en blockchain institucional y finanzas tokenizadas a nivel mundial. Nuestros consultores han publicado libros, artículos de investigación, artículos de opinión y presentaciones ampliamente citados en publicaciones de primer nivel y en los principales eventos de la industria a nivel global. Los miembros del equipo han aparecido en más de 200 paneles y conferencias magistrales a nivel mundial y han sido citados en Wired, Reuters, Bloomberg, The Wall Street Journal, The Financial Times, The New York Times y MIT Technology Review, entre otros.",
+    "part-tag":"Red de Socios","part-title":"Socios especializados",
+    "part-intro":"Post Oak Labs trabaja con un pequeño número de socios especializados que amplían nuestras capacidades en áreas adyacentes relevantes para clientes institucionales.",
+    "part1-desc":"Gestión de liquidez, optimización de capital e informes regulatorios (LCR, NSFR, Basilea III/IV, ILAAP/ICAAP). Asesoría en la intersección de la tesorería bancaria tradicional y la infraestructura financiera tokenizada.",
+    "part2-desc":"Consultoría de admisiones MBA respaldada por experiencia personal directa de admisión en aproximadamente nueve de los 25 mejores programas del mundo, con becas completas y parciales. Además, tutoría en economía, historia, negocios y finanzas, preparación TOEFL y formación TEFL con experiencia docente en Asia Oriental.",
+    "part-view":"Ver →",
+    "cta-h":"Hablemos","cta-p":"Trabajamos con un número limitado de instituciones a la vez. Si está evaluando infraestructura de pagos tokenizados, integración de stablecoins o estrategia CBDC, nos complace tener una conversación directa sobre cómo podemos ayudar.",
+    "cta-btn":"contact@postoaklabs.com"
+  },
+  fr: {
+    "nav-services":"Services","nav-a2a":"Paiements A2A","nav-regions":"Régions","nav-track":"Bilan",
+    "nav-partners":"Partenaires","nav-glossary":"Glossaire","nav-demos":"Démos ↓","nav-contact":"Contact","nav-advisory":"Conseil","nav-comparison":"Comparaison","nav-enterprise":"Blockchain d'Entreprise","nav-tools":"Outils ↗","nav-workflow":"Comment Ça Marche",
+    "hero-tag":"Paiements Tokenisés · Stratégie Stablecoin · Conseil CBDC",
+    "hero-h1":'Infrastructure de paiement pour les institutions qui opèrent <em>là où cela compte</em>',
+    "hero-sub":"Post Oak Labs conseille les banques commerciales, les banques centrales et les grandes entreprises sur l'infrastructure de paiements tokenisés, l'intégration des stablecoins et la stratégie CBDC  -  avec des déploiements en production dans les Caraïbes et en Asie du Sud, et un focus principal sur l'Amérique latine et l'Afrique.",
+    "hero-cta-primary":"Nous contacter","hero-cta-secondary":"Ce que nous faisons",
+    "stat-1":"Régions · déploiements actifs","stat-2":"Systèmes en production · Caraïbes & Asie du Sud",
+    "stat-3":"Transferts transfrontaliers tokenisés","stat-4":"Rails tokenisés compte à compte",
+    "svc-tag":"Services Principaux","svc-title":"Ce que Post Oak Labs construit et conseille",
+    "svc-intro":"Notre travail couvre l'architecture, l'intégration et la stratégie  -  des déploiements de stablecoins sur terrain vierge jusqu'à aider les institutions établies à comprendre ce que signifie l'infrastructure tokenisée pour leur bilan et leurs opérations.",
+    "svc1-tag":"Paiements Tokenisés","svc1-h":"Paiements Transfrontaliers A2A Tokenisés",
+    "svc1-p":"Conception et intégration de bout en bout de rails de paiement tokenisés compte à compte supportant les transactions transfrontalières B2B et B2C et les envois de fonds. Nous avons construit et intégré des systèmes en production dans les Caraïbes et en Asie du Sud.",
+    "svc2-tag":"Stablecoin","svc2-h":"Stratégie et Intégration Stablecoin",
+    "svc2-p":"Conception et intégration de rails stablecoin pour les banques commerciales et centrales  -  incluant l'architecture d'émission, la structure de gestion des réserves et le positionnement réglementaire.",
+    "svc3-tag":"CBDC","svc3-h":"Intégration et Architecture CBDC",
+    "svc3-p":"Conseil sur la conception et le déploiement des monnaies numériques de banques centrales  -  couvrant l'interopérabilité avec les systèmes de paiement existants et l'intégration avec l'infrastructure du secteur privé.",
+    "svc4-tag":"Fonds Tokenisés","svc4-h":"Fonds Monétaires Tokenisés",
+    "svc4-p":"Architecture et conseil pour les produits de fonds monétaires tokenisés. Nous voyons une opportunité particulière pour les économies non dollarisées où les équivalents en monnaie locale n'existent pas encore.",
+    "svc5-tag":"Conseil","svc5-h":"Conseil Institutionnel en Blockchain",
+    "svc5-p":"Conseil approfondi sur les plateformes blockchain d'entreprise (Corda, Hyperledger), les protocoles DeFi, l'infrastructure de couche 1 et l'intégration de la finance traditionnelle avec l'infrastructure d'actifs numériques.",
+    "reg-tag":"Marchés Cibles","reg-title":"Où nous nous concentrons",
+    "reg-intro":"Nous nous concentrons sur les marchés où l'infrastructure de paiements tokenisés est immature ou absente, où la demande institutionnelle est présente et où l'environnement réglementaire évolue dans la bonne direction.",
+    "reg1-lbl":"Principal · Opportunité à Court Terme","reg1-h":"Amérique Latine",
+    "reg1-p":"L'Amérique centrale et du Sud présentent l'opportunité la plus claire à court terme  -  une combinaison de volumes élevés d'envois de fonds, d'ouverture réglementaire dans les marchés clés et de secteurs bancaires cherchant à moderniser leur infrastructure.",
+    "reg2-lbl":"Forte Croissance · Dynamique Réglementaire","reg2-h":"Afrique",
+    "reg2-p":"La pénétration de la monnaie mobile en Afrique et l'expérimentation réglementaire avec les CBDC en font une opportunité significative pour l'infrastructure de paiements tokenisés.",
+    "reg3-lbl":"Actif · Déploiements en Production","reg3-h":"Caraïbes",
+    "reg3-p":"Nous avons des déploiements actifs en production dans la région des Caraïbes. Notre familiarité avec le paysage réglementaire, les contraintes de banque correspondante et les dynamiques de remises de cette région est directe.",
+    "reg4-lbl":"Actif · Déploiements en Production","reg4-h":"Asie du Sud",
+    "reg4-p":"Systèmes de paiement tokenisés en production déployés en Asie du Sud. Les volumes d'envois de fonds, la structure réglementaire et le paysage bancaire commercial de cette région présentent des opportunités continues.",
+    "track-tag":"Bilan","track-title":"Ce que nous avons réellement accompli",
+    "track-intro":"La différence entre l'expérience en conseil et en mise en œuvre est significative dans ce domaine. Notre équipe a fait les deux.",
+    "track-p":"Des membres de l'équipe ont construit et déployé des systèmes de paiement tokenisés en production dans les Caraïbes et en Asie du Sud. Au-delà du déploiement, les consultants de Post Oak Labs ont contribué à et conseillé sur un large éventail de projets blockchain institutionnels  -  couvrant les plateformes blockchain d'entreprise, les pilotes de monnaie numérique de banques centrales, la conception de protocoles DeFi, l'infrastructure stablecoin, l'analytique blockchain, les cadres d'identité numérique, les écosystèmes de jeux et les dérivés on-chain. L'équipe a travaillé aux côtés ou au sein de certains des noms les plus importants de la blockchain institutionnelle et de la finance tokenisée. Nos consultants ont rédigé des livres, articles de recherche, tribunes et présentations largement cités dans des publications majeures et lors d'événements de premier plan à l'échelle mondiale. Les membres de l'équipe ont participé à plus de 200 panels et conférences internationaux et ont été cités dans Wired, Reuters, Bloomberg, The Wall Street Journal, The Financial Times, The New York Times et MIT Technology Review, entre autres.",
+    "part-tag":"Réseau de Partenaires","part-title":"Partenaires spécialisés",
+    "part-intro":"Post Oak Labs travaille avec un petit nombre de partenaires spécialisés qui étendent nos capacités dans des domaines adjacents pertinents pour les clients institutionnels.",
+    "part1-desc":"Gestion de la liquidité, optimisation du capital et reporting réglementaire (LCR, NSFR, Bâle III/IV, ILAAP/ICAAP). Conseil à l'intersection de la trésorerie bancaire traditionnelle et de l'infrastructure financière tokenisée.",
+    "part2-desc":"Conseil en admissions MBA soutenu par une expérience personnelle directe d'admission dans environ neuf des 25 meilleurs programmes mondiaux, avec des bourses complètes et partielles. Tutorat en ligne en économie, histoire, commerce et finance, préparation au TOEFL et formation TEFL avec des expériences d'enseignement en Asie orientale.",
+    "part-view":"Voir →",
+    "cta-h":"Parlons-en","cta-p":"Nous travaillons avec un nombre limité d'institutions à la fois. Si vous évaluez une infrastructure de paiements tokenisés, une intégration de stablecoins ou une stratégie CBDC, nous sommes heureux d'avoir une conversation directe sur la façon dont nous pouvons vous aider.",
+    "cta-btn":"contact@postoaklabs.com"
+  },
+  ar: {
+    "nav-services":"الخدمات","nav-a2a":"مدفوعات A2A","nav-regions":"المناطق","nav-track":"السجل",
+    "nav-partners":"الشركاء","nav-glossary":"المسرد","nav-demos":"عروض ↓","nav-contact":"تواصل معنا","nav-advisory":"الاستشارات","nav-comparison":"المقارنة","nav-enterprise":"بلوكتشين المؤسسات","nav-tools":"الأدوات ↗","nav-workflow":"كيف يعمل",
+    "hero-tag":"المدفوعات المرمّزة · استراتيجية العملة المستقرة · استشارات CBDC",
+    "hero-h1":'بنية تحتية للمدفوعات للمؤسسات التي تعمل <em>حيث يهم الأمر</em>',
+    "hero-sub":"تقدم Post Oak Labs المشورة للبنوك التجارية والبنوك المركزية والشركات الكبرى في مجال البنية التحتية للمدفوعات المرمّزة وتكامل العملات المستقرة واستراتيجية CBDC — مع أنظمة منتجة مُنشرة في منطقة البحر الكاريبي وجنوب آسيا، وتركيز رئيسي على أمريكا اللاتينية وأفريقيا.",
+    "hero-cta-primary":"تواصل معنا","hero-cta-secondary":"ما نقدمه",
+    "stat-1":"مناطق · عمليات نشر نشطة","stat-2":"أنظمة حية · الكاريبي وجنوب آسيا",
+    "stat-3":"تحويلات مرمّزة عابرة للحدود","stat-4":"قضبان مرمّزة من حساب إلى حساب",
+    "svc-tag":"الخدمات الأساسية","svc-title":"ما تبني Post Oak Labs وتقدم المشورة فيه",
+    "svc-intro":"يشمل عملنا الهندسة المعمارية والتكامل والاستراتيجية — من نشر العملات المستقرة على أرض بكر حتى مساعدة المؤسسات الراسخة على فهم ما تعنيه البنية التحتية المرمّزة لميزانياتها وعملياتها.",
+    "svc1-tag":"المدفوعات المرمّزة","svc1-h":"مدفوعات A2A المرمّزة عبر الحدود",
+    "svc1-p":"تصميم وتكامل شامل لقضبان دفع مرمّزة من حساب إلى حساب تدعم المعاملات التجارية والتجزئة عبر الحدود والتحويلات المالية. لقد بنينا وكاملنا أنظمة إنتاجية في الكاريبي وجنوب آسيا. هذا عمل بنية تحتية، وليس مجرد استشارات.",
+    "svc2-tag":"عملة مستقرة","svc2-h":"استراتيجية وتكامل العملة المستقرة",
+    "svc2-p":"تصميم وتكامل قضبان العملة المستقرة للبنوك التجارية والمركزية — بما يشمل هندسة الإصدار وهيكل إدارة الاحتياطيات والتموضع التنظيمي.",
+    "svc3-tag":"CBDC","svc3-h":"تكامل وهندسة CBDC",
+    "svc3-p":"استشارات في تصميم ونشر العملات الرقمية للبنوك المركزية — تشمل التشغيل البيني مع أنظمة الدفع القائمة والتكامل مع بنية القطاع الخاص.",
+    "svc4-tag":"صناديق مرمّزة","svc4-h":"صناديق سوق المال المرمّزة",
+    "svc4-p":"هندسة واستشارات لمنتجات صناديق سوق المال المرمّزة. نرى فرصة خاصة في الاقتصادات غير المدولرة حيث لا توجد بعد صناديق مكافئة بالعملة المحلية.",
+    "svc5-tag":"استشارات","svc5-h":"استشارات المؤسسات في تقنية البلوكشين",
+    "svc5-p":"استشارات متعمقة في منصات البلوكشين المؤسسية (Corda، Hyperledger) وبروتوكولات DeFi وبنية الطبقة الأولى وتكامل التمويل التقليدي مع بنية الأصول الرقمية.",
+    "reg-tag":"الأسواق المستهدفة","reg-title":"أين نركز",
+    "reg-intro":"نركز على الأسواق التي تعاني من عدم نضج البنية التحتية للمدفوعات المرمّزة أو غيابها، مع وجود طلب مؤسسي وبيئة تنظيمية تسير في الاتجاه الصحيح.",
+    "reg1-lbl":"أساسي · أعلى فرصة قريبة المدى","reg1-h":"أمريكا اللاتينية",
+    "reg1-p":"تقدم وسط وجنوب أمريكا أوضح الفرص قريبة المدى — مزيج من ارتفاع أحجام التحويلات والانفتاح التنظيمي في الأسواق الرئيسية وقطاعات مصرفية تسعى لتحديث بنيتها التحتية.",
+    "reg2-lbl":"نمو مرتفع · زخم تنظيمي","reg2-h":"أفريقيا",
+    "reg2-p":"انتشار المال المحمول في أفريقيا والتجريب التنظيمي مع CBDC يجعلانها فرصة كبيرة للبنية التحتية للمدفوعات المرمّزة.",
+    "reg3-lbl":"نشط · عمليات نشر إنتاجية","reg3-h":"الكاريبي",
+    "reg3-p":"لدينا عمليات نشر إنتاجية نشطة في منطقة الكاريبي. معرفتنا بالمشهد التنظيمي وقيود البنوك المراسلة وديناميكيات التحويلات في هذه المنطقة مباشرة وحالية.",
+    "reg4-lbl":"نشط · عمليات نشر إنتاجية","reg4-h":"جنوب آسيا",
+    "reg4-p":"أنظمة دفع مرمّزة إنتاجية منشورة في جنوب آسيا. أحجام التحويلات والهيكل التنظيمي والمشهد المصرفي التجاري في هذه المنطقة تقدم فرصة مستمرة.",
+    "track-tag":"السجل","track-title":"ما أنجزناه فعلياً",
+    "track-intro":"الفرق بين خبرة الاستشارات وخبرة التنفيذ كبير في هذا المجال. فريقنا خبر كليهما.",
+    "track-p":"بنى أعضاء الفريق ونشروا أنظمة دفع مرمّزة إنتاجية في الكاريبي وجنوب آسيا. علاوة على ذلك، ساهم مستشارو Post Oak Labs في مجموعة واسعة من مشاريع البلوكشين المؤسسية وقدموا المشورة فيها. نشر مستشارونا أبحاثاً وتقارير ومقالات رأي وعروضاً تقديمية استُشهد بها على نطاق واسع في كبرى المطبوعات والفعاليات الدولية. ظهر أعضاء الفريق في أكثر من 200 لوحة حوار ومحاضرة رئيسية عالمياً، واستُشهد بهم في Wired وReuters وBloomberg وThe Wall Street Journal وThe Financial Times وThe New York Times وMIT Technology Review وغيرها.",
+    "part-tag":"شبكة الشركاء","part-title":"شركاء متخصصون",
+    "part-intro":"تعمل Post Oak Labs مع عدد محدود من الشركاء المتخصصين الذين يوسعون قدراتنا في المجالات المجاورة ذات الصلة بالعملاء المؤسسيين.",
+    "part1-desc":"إدارة السيولة وتحسين رأس المال وإعداد التقارير التنظيمية (LCR، NSFR، بازل III/IV، ILAAP/ICAAP). استشارات عند تقاطع خزينة البنوك التقليدية والبنية التحتية المالية المرمّزة.",
+    "part2-desc":"استشارات قبول MBA مدعومة بتجربة شخصية مباشرة في القبول في ما يقارب تسعة من أفضل 25 برنامجاً عالمياً، شاملة منحاً دراسية كاملة وجزئية. تدريس إلكتروني في الاقتصاد والتاريخ والأعمال والمالية، وإعداد لاختبار TOEFL وتدريب TEFL.",
+    "part-view":"عرض →",
+    "cta-h":"لنتحدث","cta-p":"نعمل مع عدد محدود من المؤسسات في آنٍ واحد. إذا كنتم تقيّمون البنية التحتية للمدفوعات المرمّزة أو تكامل العملات المستقرة أو استراتيجية CBDC، يسعدنا إجراء محادثة مباشرة حول كيفية مساعدتكم.",
+    "cta-btn":"contact@postoaklabs.com"
+  },
+  pt: {
+    "nav-services":"Serviços","nav-a2a":"Pagamentos A2A","nav-regions":"Regiões","nav-track":"Histórico",
+    "nav-partners":"Parceiros","nav-glossary":"Glossário","nav-demos":"Demos ↓","nav-contact":"Contato","nav-advisory":"Consultoria","nav-comparison":"Comparação","nav-enterprise":"Blockchain Empresarial","nav-tools":"Ferramentas ↗","nav-workflow":"Como Funciona",
+    "hero-tag":"Pagamentos Tokenizados · Estratégia de Stablecoin · Consultoria CBDC",
+    "hero-h1":'Infraestrutura de pagamentos para instituições que operam <em>onde mais importa</em>',
+    "hero-sub":"A Post Oak Labs assessora bancos comerciais, bancos centrais e grandes corporações em infraestrutura de pagamentos tokenizados, integração de stablecoins e estratégia CBDC — com sistemas em produção no Caribe e no Sul da Ásia, e foco principal na América Latina e África.",
+    "hero-cta-primary":"Entre em contato","hero-cta-secondary":"O que fazemos",
+    "stat-1":"Regiões · implantações ativas","stat-2":"Sistemas em produção · Caribe e Sul da Ásia",
+    "stat-3":"Transferências tokenizadas transfronteiriças","stat-4":"Rails tokenizados conta a conta",
+    "svc-tag":"Serviços Principais","svc-title":"O que a Post Oak Labs constrói e assessora",
+    "svc-intro":"Nosso trabalho abrange arquitetura, integração e estratégia — desde implantações greenfield de stablecoins até ajudar instituições estabelecidas a entender o que a infraestrutura tokenizada significa para seu balanço e operações.",
+    "svc1-tag":"Pagamentos Tokenizados","svc1-h":"Pagamentos Transfronteiriços A2A Tokenizados",
+    "svc1-p":"Design e integração completos de rails de pagamento tokenizados conta a conta que suportam transações B2B e B2C transfronteiriças e remessas. Construímos e integramos sistemas em produção no Caribe e no Sul da Ásia. Este é trabalho de infraestrutura, não apenas consultoria.",
+    "svc2-tag":"Stablecoin","svc2-h":"Estratégia e Integração de Stablecoin",
+    "svc2-p":"Design e integração de rails de stablecoin para bancos comerciais e centrais — incluindo arquitetura de emissão, estrutura de gestão de reservas e posicionamento regulatório.",
+    "svc3-tag":"CBDC","svc3-h":"Integração e Arquitetura CBDC",
+    "svc3-p":"Assessoria em design e implantação de moedas digitais de bancos centrais — cobrindo interoperabilidade com sistemas de pagamento existentes e integração com infraestrutura do setor privado.",
+    "svc4-tag":"Fundos Tokenizados","svc4-h":"Fundos do Mercado Monetário Tokenizados",
+    "svc4-p":"Arquitetura e assessoria para produtos de fundos do mercado monetário tokenizados. Vemos oportunidade particular em economias não dolarizadas onde equivalentes em moeda local ainda não existem.",
+    "svc5-tag":"Consultoria","svc5-h":"Consultoria Institucional em Blockchain",
+    "svc5-p":"Assessoria aprofundada em plataformas blockchain empresariais (Corda, Hyperledger), protocolos DeFi, infraestrutura de camada 1 e integração das finanças tradicionais com infraestrutura de ativos digitais.",
+    "reg-tag":"Mercados-Alvo","reg-title":"Onde nos concentramos",
+    "reg-intro":"Concentramo-nos em mercados onde a infraestrutura de pagamentos tokenizados é imatura ou ausente, onde há demanda institucional e onde o ambiente regulatório está se movendo na direção certa.",
+    "reg1-lbl":"Principal · Maior Oportunidade de Curto Prazo","reg1-h":"América Latina",
+    "reg1-p":"A América Central e do Sul apresentam a oportunidade mais clara de curto prazo — uma combinação de altos volumes de remessas, abertura regulatória em mercados-chave e setores bancários buscando modernizar sua infraestrutura.",
+    "reg2-lbl":"Alto Crescimento · Momentum Regulatório","reg2-h":"África",
+    "reg2-p":"A penetração do dinheiro móvel na África e a experimentação regulatória com CBDC fazem dela uma oportunidade significativa para infraestrutura de pagamentos tokenizados.",
+    "reg3-lbl":"Ativo · Implantações em Produção","reg3-h":"Caribe",
+    "reg3-p":"Temos implantações em produção ativas na região do Caribe. Nossa familiaridade com o ambiente regulatório, restrições de bancos correspondentes e dinâmicas de remessas desta região é direta.",
+    "reg4-lbl":"Ativo · Implantações em Produção","reg4-h":"Sul da Ásia",
+    "reg4-p":"Sistemas de pagamento tokenizados em produção implantados no Sul da Ásia. Os volumes de remessas, a estrutura regulatória e o cenário bancário comercial nesta região apresentam oportunidade contínua.",
+    "track-tag":"Histórico","track-title":"O que realmente fizemos",
+    "track-intro":"A diferença entre experiência consultiva e de implementação é significativa neste espaço. Nossa equipe fez ambas.",
+    "track-p":"Membros da equipe construíram e implantaram sistemas de pagamento tokenizados em produção no Caribe e no Sul da Ásia. Além disso, os consultores da Post Oak Labs contribuíram e assessoraram em uma ampla gama de projetos institucionais de blockchain. Nossos consultores publicaram pesquisas, artigos de opinião e apresentações amplamente citados em publicações de destaque e eventos líderes globalmente. Membros da equipe participaram de mais de 200 painéis e conferências internacionais e foram citados na Wired, Reuters, Bloomberg, The Wall Street Journal, The Financial Times, The New York Times e MIT Technology Review, entre outros.",
+    "part-tag":"Rede de Parceiros","part-title":"Parceiros especializados",
+    "part-intro":"A Post Oak Labs trabalha com um pequeno número de parceiros especializados que ampliam nossas capacidades em áreas adjacentes relevantes para clientes institucionais.",
+    "part1-desc":"Gestão de liquidez, otimização de capital e relatórios regulatórios (LCR, NSFR, Basileia III/IV, ILAAP/ICAAP). Assessoria na interseção da tesouraria bancária tradicional e da infraestrutura financeira tokenizada.",
+    "part2-desc":"Consultoria de admissões MBA respaldada por experiência pessoal direta de admissão em aproximadamente nove dos 25 melhores programas globais, incluindo bolsas completas e parciais. Tutoria online em economia, história, negócios e finanças; preparação para o TOEFL e treinamento TEFL.",
+    "part-view":"Ver →",
+    "cta-h":"Vamos conversar","cta-p":"Trabalhamos com um número limitado de instituições por vez. Se você está avaliando infraestrutura de pagamentos tokenizados, integração de stablecoins ou estratégia CBDC, teremos prazer em ter uma conversa direta sobre como podemos ajudar.",
+    "cta-btn":"contact@postoaklabs.com"
+  },
+  zh: {
+    "nav-services":"服务","nav-a2a":"A2A支付","nav-regions":"地区","nav-track":"业绩",
+    "nav-partners":"合作伙伴","nav-glossary":"术语表","nav-demos":"演示 ↓","nav-contact":"联系我们","nav-advisory":"咨询","nav-comparison":"比较","nav-enterprise":"企业区块链","nav-tools":"工具 ↗","nav-workflow":"工作原理",
+    "hero-tag":"代币化支付 · 稳定币战略 · 央行数字货币咨询",
+    "hero-h1":"为在<em>最重要的地方</em>开展业务的机构提供支付基础设施",
+    "hero-sub":"Post Oak Labs为商业银行、中央银行及大型企业提供代币化支付基础设施、稳定币整合及央行数字货币战略咨询——在加勒比海地区和南亚拥有生产级部署，重点聚焦拉丁美洲和非洲市场。",
+    "hero-cta-primary":"立即联系","hero-cta-secondary":"我们的服务",
+    "stat-1":"地区 · 活跃部署","stat-2":"生产系统 · 加勒比海与南亚",
+    "stat-3":"跨境代币化转账","stat-4":"代币化账户间支付轨道",
+    "svc-tag":"核心服务","svc-title":"Post Oak Labs 的构建与咨询范围",
+    "svc-intro":"我们的工作涵盖架构设计、系统整合与战略规划——从稳定币的绿地部署，到帮助成熟机构理解代币化基础设施对其资产负债表和运营的深远影响。",
+    "svc1-tag":"代币化支付","svc1-h":"代币化A2A跨境支付",
+    "svc1-p":"端到端设计与整合支持B2B和B2C跨境交易及汇款的代币化账户间支付轨道。我们已在加勒比海地区和南亚构建并整合了生产级系统。这是基础设施建设工作，而非单纯咨询。",
+    "svc2-tag":"稳定币","svc2-h":"稳定币战略与整合",
+    "svc2-p":"为商业银行和中央银行设计并整合稳定币轨道，涵盖发行架构、储备管理结构及监管定位。",
+    "svc3-tag":"央行数字货币","svc3-h":"央行数字货币整合与架构",
+    "svc3-p":"就央行数字货币的设计与部署提供咨询，涵盖与现有支付系统的互操作性及与私营部门基础设施的整合。",
+    "svc4-tag":"代币化基金","svc4-h":"代币化货币市场基金",
+    "svc4-p":"为代币化货币市场基金产品提供架构设计与咨询。我们在非美元化经济体中看到特殊机遇——当地货币计价的同类产品尚属空白。",
+    "svc5-tag":"咨询","svc5-h":"机构区块链咨询",
+    "svc5-p":"深度咨询涵盖企业级区块链平台（Corda、Hyperledger）、DeFi协议、第一层基础设施，以及传统金融与数字资产基础设施的整合。",
+    "reg-tag":"目标市场","reg-title":"我们的聚焦领域",
+    "reg-intro":"我们专注于代币化支付基础设施尚不成熟或缺失、具备机构需求且监管环境正朝正确方向演进的市场。",
+    "reg1-lbl":"核心市场 · 近期最大机遇","reg1-h":"拉丁美洲",
+    "reg1-p":"中南美洲呈现出最清晰的近期机遇——高汇款量、主要市场的监管开放态度，以及寻求升级跨境支付基础设施的商业银行业。",
+    "reg2-lbl":"高增长 · 监管动力","reg2-h":"非洲",
+    "reg2-p":"非洲移动支付的高渗透率和央行数字货币的监管实验，使其成为代币化支付基础设施的重要机遇市场。",
+    "reg3-lbl":"活跃 · 生产级部署","reg3-h":"加勒比海地区",
+    "reg3-p":"我们在加勒比海地区拥有活跃的生产级部署，对该地区监管环境、代理行限制及汇款动态有直接且深入的了解。",
+    "reg4-lbl":"活跃 · 生产级部署","reg4-h":"南亚",
+    "reg4-p":"生产级代币化支付系统已在南亚部署。该地区的汇款规模、监管框架和商业银行格局提供了持续的市场机遇。",
+    "track-tag":"业绩记录","track-title":"我们的实际成果",
+    "track-intro":"咨询经验与实施经验之间的差距，在这一领域尤为显著。我们的团队两者兼备。",
+    "track-p":"团队成员已在加勒比海地区和南亚构建并部署了生产级代币化支付系统。此外，Post Oak Labs的顾问还参与并主导了广泛的机构区块链项目。我们的顾问在全球顶级刊物和行业会议上发表了被广泛引用的研究成果、观点文章和演讲报告。团队成员曾出席全球逾200场专题论坛和主旨演讲，并被《连线》《路透社》《彭博社》《华尔街日报》《金融时报》《纽约时报》及《MIT技术评论》等权威媒体引用。",
+    "part-tag":"合作伙伴网络","part-title":"专业合作伙伴",
+    "part-intro":"Post Oak Labs与少数专业合作伙伴协作，在与机构客户相关的毗邻领域拓展我们的能力边界。",
+    "part1-desc":"流动性管理、资本优化及监管报告（LCR、NSFR、巴塞尔III/IV、ILAAP/ICAAP）。在传统银行资金管理与代币化金融基础设施的交汇处提供咨询。",
+    "part2-desc":"MBA申请咨询，具备直接录取约九所全球前25名项目的亲身经验，含全额及部分奖学金。提供经济学、历史、商业与金融在线辅导，以及TOEFL备考与TEFL培训。",
+    "part-view":"查看 →",
+    "cta-h":"欢迎洽谈",
+    "cta-p":"我们同时服务的机构数量有限。如果您正在评估代币化支付基础设施、稳定币整合或央行数字货币战略，欢迎就我们如何为您提供帮助进行直接沟通。",
+    "cta-btn":"contact@postoaklabs.com",
+    "track-p2": "我们的顾问撰写了在该领域被广泛引用的著作、研究报告、观点文章和演讲报告。团队成员曾在全球200余个专题论坛和主旨演讲中亮相，并被《连线》《路透社》《彭博社》《华尔街日报》《金融时报》《纽约时报》及《MIT技术评论》等权威媒体引用。"
+  }
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Oak Labs | A2A Tokenization, Stablecoin & Blockchain Payments Advisory</title>
+<meta name="description" content="Post Oak Labs advises commercial banks, central banks, and large corporates on account-to-account tokenization, stablecoin integration, and blockchain payment infrastructure across Latin America, Africa, the Caribbean, and Southeast Europe.">
+<meta name="keywords" content="A2A tokenization, stablecoin payments, blockchain payments advisory, tokenized account-to-account transfer, institutional blockchain, CBDC integration, cross-border B2B payments, tokenized money market fund, fintech advisory global south">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/a2a-payments.html">
+<link rel="alternate" hreflang="x-default" href="https://postoaklabs.com/a2a-payments.html">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Post Oak Labs | Tokenized A2A Payments Advisory, Market Coverage & Ideal Client">
+<meta property="og:description" content="Post Oak Labs works with commercial banks, central banks, and large corporates to design and deploy tokenized account-to-account payment infrastructure. Active deployments in the Caribbean and South Asia.">
+<meta property="og:url" content="https://postoaklabs.com/a2a-payments.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+<meta name="twitter:title" content="Post Oak Labs | A2A Tokenization Advisory, Market Coverage & Ideal Client">
+<meta name="twitter:description" content="Post Oak Labs works with commercial banks, central banks, and large corporates to design and deploy tokenized A2A payment infrastructure. Active deployments in the Caribbean and South Asia.">
+<meta name="twitter:image" content="https://postoaklabs.com/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is tokenized A2A payment infrastructure?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Tokenized A2A (account-to-account) payment infrastructure is the institutional settlement layer that sits above consumer fast-payment systems (like Pix, FedNow, or UPI) and below traditional correspondent banking. It enables direct bank-to-bank tokenized settlement for B2B cross-border payments, interbank transfers, and corporate treasury flows, with near-instant finality, minimal pre-funding requirements, and fees approximately 70–80% lower than correspondent banking rails in selected B2B corridors where Post Oak Labs has deployed production systems."}
+    },
+    {
+      "@type": "Question",
+      "name": "Which markets does Post Oak Labs focus on for A2A payment advisory?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Post Oak Labs focuses on Latin America (Colombia, Peru, Argentina, Ecuador, Venezuela), Central America (Guatemala, Costa Rica, Honduras, El Salvador), the Caribbean (Jamaica, Dominican Republic, Trinidad and Tobago, Eastern Caribbean), Africa (Nigeria, South Africa, Kenya, Egypt), and South Asia, markets where tokenized payment infrastructure is immature or absent, institutional demand is present, and the regulatory environment is moving in the right direction."}
+    },
+    {
+      "@type": "Question",
+      "name": "What types of institutions does Post Oak Labs work with on A2A payments?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Post Oak Labs works with commercial banks with digital transformation mandates, banks with existing fund management arms, central banks evaluating CBDC or digital infrastructure, large corporates with high cross-border payment volumes, pan-regional banks and financial groups, and institutions at regulatory inflection points such as ISO 20022 migration, SEPA accession, or open banking mandates."}
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:      #050c15;
+  --deep:     #0a1628;
+  --navy:     #0e1e35;
+  --panel:    #142540;
+  --edge:     #1e3454;
+  --rim:      #2a4a70;
+  --muted:    #4a6a8a;
+  --body:     #7090b0;
+  --text:     #a8c0d8;
+  --bright:   #d0e4f4;
+  --white:    #ecf4fc;
+  --gold:     #c09040;
+  --gold-lt:  #d8b060;
+  --accent:   #2a7fc0;
+  --accent-lt:#4a9fd8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 16px;
+}
+h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── HERO ── */
+.hero {
+  padding: 5rem 0 4rem;
+  border-bottom: 1px solid var(--edge);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(42,127,192,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.breadcrumb {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 1rem;
+}
+.breadcrumb a { color: var(--accent); }
+.breadcrumb a:hover { color: var(--accent-lt); }
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent-lt); margin-bottom: 1.25rem;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  color: var(--white); max-width: 740px; margin-bottom: 1.25rem;
+}
+.hero h1 em { color: var(--gold-lt); font-style: normal; }
+.hero-sub {
+  font-size: 0.95rem; color: var(--body);
+  max-width: 580px; line-height: 1.85; margin-bottom: 2.5rem;
+}
+.hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--accent); color: var(--white);
+  border: 1px solid var(--accent); transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.btn-outline {
+  display: inline-block; padding: 0.7rem 1.75rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--edge); color: var(--muted);
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent-lt); }
+
+/* ── STAT ROW ── */
+.stat-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--edge);
+  border: 1px solid var(--edge); margin-top: 3rem;
+}
+.stat-cell { background: var(--deep); padding: 1.35rem 1.5rem; text-align: center; }
+.stat-num {
+  font-family: 'DM Serif Display', serif; font-size: 1.9rem;
+  color: var(--accent-lt); display: block; line-height: 1; margin-bottom: 0.3rem;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); line-height: 1.5;
+}
+
+/* ── SECTIONS ── */
+section { padding: 4rem 0; }
+.sec-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.sec-title { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bright); margin-bottom: 0.75rem; }
+.sec-intro { font-size: 0.88rem; color: var(--body); max-width: 600px; line-height: 1.85; margin-bottom: 2rem; }
+hr.rule { border: none; border-top: 1px solid var(--edge); }
+
+/* ── SERVICE LIST ── */
+.svc-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); }
+.svc-item {
+  background: var(--deep); padding: 1.5rem 2rem;
+  display: grid; grid-template-columns: 190px 1fr;
+  gap: 1.5rem; align-items: start; transition: background 0.2s;
+}
+.svc-item:hover { background: var(--navy); }
+.svc-tag-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-lt); padding-top: 0.2rem;
+}
+.svc-item h3 { font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.svc-item p { font-size: 0.82rem; color: var(--body); line-height: 1.8; }
+
+/* ── SIGNAL GRID (what we look for) ── */
+.signal-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge);
+}
+.signal-cell {
+  background: var(--navy); padding: 1.5rem 1.75rem;
+}
+.signal-icon {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.5rem;
+}
+.signal-cell h4 { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--bright); margin-bottom: 0.35rem; }
+.signal-cell p { font-size: 0.78rem; color: var(--body); line-height: 1.75; }
+
+/* ── MARKET STRIPS ── */
+.market-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); }
+.market-item {
+  background: var(--deep); padding: 1.25rem 2rem;
+  display: grid; grid-template-columns: 160px 1fr;
+  gap: 1.5rem; align-items: start; transition: background 0.2s;
+}
+.market-item:hover { background: var(--navy); }
+.market-region {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-lt);
+  padding-top: 0.2rem; line-height: 1.6;
+}
+.market-region .region-badge {
+  display: inline-block; margin-top: 0.4rem;
+  font-size: 0.48rem; letter-spacing: 0.1em;
+  border: 1px solid var(--edge); color: var(--muted);
+  padding: 0.15rem 0.5rem;
+}
+.market-item h4 { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.market-item p { font-size: 0.8rem; color: var(--body); line-height: 1.78; }
+
+/* ── INLINE HIGHLIGHT BLOCK ── */
+.highlight-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  border-left: 3px solid var(--gold); padding: 1.75rem 2rem; margin-top: 2rem;
+}
+.highlight-block p { font-size: 0.85rem; color: var(--body); line-height: 1.85; }
+.highlight-block strong { color: var(--bright); font-weight: 500; }
+
+/* ── CLIENT CRITERIA ── */
+.criteria-row {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-top: 2rem;
+}
+.criteria-cell { background: var(--deep); padding: 1.35rem 1.75rem; }
+.criteria-num {
+  font-family: 'DM Serif Display', serif; font-size: 1.4rem;
+  color: var(--gold-lt); margin-bottom: 0.35rem;
+}
+.criteria-cell h4 { font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--bright); margin-bottom: 0.3rem; }
+.criteria-cell p { font-size: 0.78rem; color: var(--body); line-height: 1.75; }
+
+/* ── CTA ── */
+.cta-block {
+  background: var(--panel); border: 1px solid var(--edge);
+  padding: 3rem; text-align: center; margin-top: 3rem;
+}
+.cta-block h3 { font-size: 1.7rem; color: var(--white); margin-bottom: 0.5rem; }
+.cta-block p { font-size: 0.88rem; color: var(--body); max-width: 480px; margin: 0 auto 1.75rem; line-height: 1.85; }
+
+/* ── FOOTER ── */
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .svc-item { grid-template-columns: 1fr; gap: 0.3rem; }
+  .signal-grid { grid-template-columns: 1fr; }
+  .market-item { grid-template-columns: 1fr; gap: 0.3rem; }
+  .criteria-row { grid-template-columns: 1fr; }
+  .cta-block { padding: 2rem 1.25rem; }
+  .nav-links { display: none; }
+}
+
+/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
+.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+/* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
+.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
+.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
+.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
+.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
+nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
+.nav-logo span { color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
+.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
+.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
+.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
+.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
+.footer-brand span { color: var(--gold); }
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-lt); }
+/* ══════════════════════════════════════════════════ */
+</style>
+
+
+
+
+
+
+<link rel="me" href="https://ainumbers.co">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://postoaklabs.com/#organization",
+  "name": "Post Oak Labs",
+  "url": "https://postoaklabs.com",
+  "logo": "https://postoaklabs.com/favicon-64.png",
+  "description": "Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory.",
+  "sameAs": ["https://x.com/PostOakLabs"],
+  "areaServed": ["Latin America","Africa","Caribbean","South Asia"],
+  "knowsAbout": ["Tokenized payments","Stablecoin strategy","CBDC advisory","Cross-border payments","Tokenized money market funds","Institutional blockchain advisory","Enterprise blockchain","ISO 20022"],
+  "contactPoint": {"@type":"ContactPoint","email":"contact@postoaklabs.com","contactType":"Sales / Advisory inquiries","availableLanguage":["en","es","pt","fr","ar","zh"]}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://postoaklabs.com/#website",
+  "url": "https://postoaklabs.com",
+  "name": "Post Oak Labs",
+  "publisher": {"@id":"https://postoaklabs.com/#organization"},
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://postoaklabs.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "A2A Payments",
+      "item": "https://postoaklabs.com/a2a-payments.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- Language bar -->
+<div class="lang-bar">
+  <div class="lang-inner">
+    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
+    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
+    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
+  </div>
+</div>
+
+<nav role="navigation" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <div class="nav-links">
+      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
+      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
+      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
+      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
+      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
+      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
+      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Post Oak Labs</a> &nbsp;/&nbsp; A2A Tokenization &amp; Blockchain Payments</p>
+
+    <h1 data-i18n="hero-h1">Institutional infrastructure for the next layer of global payments</h1>
+
+    <p class="hero-sub" data-i18n="hero-sub">Post Oak Labs works with commercial banks, central banks, and large corporates to design, evaluate, and deploy tokenized account-to-account payment rails, the bank-grade settlement layer that operates above consumer fast-payment systems and below traditional correspondent banking. Our team has built production systems in this space, led blockchain payment programs at the senior level inside major global institutions, and advised central banks directly on digital currency infrastructure. The advisory practice comes out of that operational experience directly.</p>
+
+    <div class="hero-cta-row">
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="hero-cta-primary">Start a conversation</a>
+      <a href="a2a-workflow.html" class="btn-outline">A2A Explained →</a>
+      <a href="#market-signals" class="btn-outline">Market signals</a>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-cell">
+        <span class="stat-num">70-80%</span>
+        <span class="stat-label">Fee reduction in selected B2B corridors vs. correspondent banking (Post Oak Labs production benchmark)<sup><a href="#fn1" style="color:var(--accent);font-size:0.7em;">[1]</a></sup></span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">$50B+</span>
+        <span class="stat-label">Projected savings for business customers from tokenized payment infrastructure by 2030<sup><a href="#fn2" style="color:var(--accent);font-size:0.7em;">[2]</a></sup></span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">$280B</span>
+        <span class="stat-label">Cross-border payment revenues by 2030 (total market, all rails; not tokenization-specific); new tokenized rails capturing growing share<sup><a href="#fn3" style="color:var(--accent);font-size:0.7em;">[3]</a></sup></span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">$27T</span>
+        <span class="stat-label">Estimated nostro/vostro pre-funding trapped correspondent banking globally<sup><a href="#fn4" style="color:var(--accent);font-size:0.7em;">[4]</a></sup></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET SIGNALS WE LOOK FOR -->
+<section id="market-signals">
+  <div class="container">
+    <p class="sec-tag">Market Signals</p>
+    <h2 class="sec-title" data-i18n="s1-title">The conditions that create opportunity</h2>
+    <p class="sec-intro">We focus on markets where specific structural conditions make tokenized B2B payment infrastructure the right solution at the right time: not markets with entrenched incumbent fast-payment systems, not saturated fintech markets.</p>
+
+    <div class="signal-grid">
+      <div class="signal-cell">
+        <div class="signal-icon">Signal 01</div>
+        <h4>Nascent or absent instant payment infrastructure</h4>
+        <p>Markets where domestic fast-payment schemes are early-stage, fragmented, or not yet interoperable at an institutional level. The B2B tokenized layer is most valuable where it does not compete with a mature incumbent, it complements or precedes one.</p>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-icon">Signal 02</div>
+        <h4>Active CBDC programs or digital currency sandboxes</h4>
+        <p>Jurisdictions with live CBDCs or regulatory sandbox environments create a base infrastructure layer on top of which institutional A2A tokenization operates naturally. We track CBDC deployment status across all target regions.</p>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-icon">Signal 03</div>
+        <h4>Documented fintech partnership appetite</h4>
+        <p>Institutions with public MoUs, sandbox participation, executive statements, or recent digital asset product launches signal genuine institutional readiness, not just regulatory tolerance. We distinguish between banks exploring and banks deploying.</p>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-icon">Signal 04</div>
+        <h4>Institutional money market fund operations</h4>
+        <p>Banks with active fund platforms already have the institutional liquidity management muscle that tokenized A2A requires. That dual qualification is the strongest single predictor of near-term deployment fit we have seen across engagements.</p>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-icon">Signal 05</div>
+        <h4>High cross-border payment volume and friction</h4>
+        <p>Remittance-heavy economies, high trade corridor intensity, and deep correspondent banking dependency all generate demand for faster, cheaper institutional settlement. That is the core use case.</p>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-icon">Signal 06</div>
+        <h4>Regulatory modernization inflection points</h4>
+        <p>Payment system launches, SEPA accession, and AML upgrades open specific windows. An institution building for those mandates is already in motion. The question is whether tokenized A2A is part of that build or gets deferred to a second project. We engage at those windows.</p>
+      </div>
+    </div>
+
+    <div class="highlight-block" style="border-left-color:var(--gold);margin-top:1rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+      <p style="margin:0;flex:1;min-width:260px;">Want to understand exactly how tokenized A2A infrastructure works, the architecture, cost structure, transaction lifecycle, and revenue model before engaging? We've published a detailed technical explainer. If you are also evaluating which permissioned blockchain platform sits beneath the payment rail, the <a href="enterprise-blockchain.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">Enterprise Blockchain Market Briefing</a> covers R3 Corda, Hyperledger Fabric, Besu, and Canton with deployment data and a due diligence checklist.</p>
+      <a href="a2a-workflow.html" style="display:inline-block;padding:0.65rem 1.4rem;font-family:'JetBrains Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold-lt);white-space:nowrap;" onmouseover="this.style.background='rgba(192,144,64,0.1)'" onmouseout="this.style.background='transparent'">A2A Tokenization Explained →</a>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- REGIONS -->
+<section id="regions">
+  <div class="container">
+    <p class="sec-tag">Target Geographies</p>
+    <h2 class="sec-title" data-i18n="s2-title">Where we focus, and why</h2>
+    <p class="sec-intro">We believe in educating the marketplace. That's why we publish market research to the public covering regions where the B2B tokenized layer is open whitespace.</p>
+
+    <div class="market-list">
+      <div class="market-item">
+        <div class="market-region">
+          Latin America
+          <div class="region-badge">Primary · Near-Term</div>
+        </div>
+        <div>
+          <h4>Colombia, Peru, Argentina, Venezuela, Ecuador</h4>
+          <p>Colombia's nascent national instant-payment system (launched mid-2025) is in early phases, with major banks actively seeking fintech partners for B2B capabilities. Peru's regulated mutual fund platforms and active blockchain programs create strong institutional anchors. Argentina's QR-based payment infrastructure and regulatory digital payment support generate demand for a more sophisticated tokenized settlement layer. Venezuela's largest private banks, accessible through their international subsidiaries, offer a cross-border B2B rails entry point with minimal incumbent competition. Ecuador, fully dollarized, presents greenfield opportunity for cross-border tokenized rails to neighboring non-dollarized markets.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-region">
+          Central America
+          <div class="region-badge">High Priority</div>
+        </div>
+        <div>
+          <h4>Guatemala, Costa Rica, Honduras, El Salvador, Nicaragua</h4>
+          <p>Central America is one of the most underserved fintech regions globally. Guatemala has no formal open-banking regulation. Honduras and El Salvador have minimal fast-payment competition. Costa Rica's national instant payment system is expanding regionally, and El Salvador's Bitcoin legal tender framework signals strong regulatory openness to digital asset infrastructure. The region's largest multi-country commercial bank group, present across five non-dollarized Central American markets, represents the single highest-leverage regional entry point: one partnership providing simultaneous institutional access across multiple countries. Costa Rica stands out for its documented investment fund distribution infrastructure aligning directly with the tokenized A2A institutional pitch.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-region">
+          Caribbean
+          <div class="region-badge">Active · Production</div>
+        </div>
+        <div>
+          <h4>Jamaica, Dominican Republic, Trinidad &amp; Tobago, Bahamas, Eastern Caribbean</h4>
+          <p>We have active production deployments in the Caribbean. The region has the highest concentration of live retail CBDCs globally, three jurisdictions with deployed digital currencies, and is launching a regional payment settlement system to reduce US correspondent bank dependency, a structural shift creating immediate demand for alternative institutional settlement infrastructure. Trinidad &amp; Tobago's central bank is explicitly welcoming fintech partnerships. The Eastern Caribbean Currency Union represents a unique multi-jurisdictional opportunity: a single currency across eleven countries with a live CBDC and no unified commercial bank tokenized A2A infrastructure on top of it. Our familiarity with Caribbean regulatory environments, correspondent banking constraints, and remittance dynamics is direct and current.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-region">
+          Africa
+          <div class="region-badge">High Growth</div>
+        </div>
+        <div>
+          <h4>Nigeria, South Africa, Kenya, Egypt, Pan-African networks</h4>
+          <p>Africa is the world's fastest-growing fintech region by revenue trajectory, but the B2B institutional layer remains almost entirely undeveloped. Tokenized bank account-to-account transfers between commercial banks, central banks, and large corporates is open whitespace. Mobile money dominates consumer payments; the B2B bank layer is open whitespace. The Pan-African Payment and Settlement System (PAPSS) under AfCFTA is enabling cross-border local-currency settlement at the infrastructure level. Post Oak Labs' A2A advisory operates above this layer, not in competition with it. Nigeria is particularly active: several major banks operate nodes on a regulated blockchain payment network enabling real-time on-chain interbank settlement, and multiple institutions simultaneously operate large money market mutual funds, a uniquely dual-qualified prospect set. Africa is also the most active CBDC continent globally, with 25 countries exploring or deploying digital currencies.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-region">
+          Southeast Europe
+          <div class="region-badge">Inflection Point</div>
+        </div>
+        <div>
+          <h4>Serbia, Romania, Bulgaria, Greece, Western Balkans</h4>
+          <p>Southeast Europe is at a payment modernization inflection point. Serbia is joining SEPA in May 2026, driving urgent demand for ISO 20022 compliance and instant payment infrastructure across the Western Balkans. Romania's instant payment system already covers the majority of the market, with major banks leading EU Digital Wallet adoption and digital commerce growing at 30–40% annually. Romania and Bulgaria have among the lowest digital banking penetration rates in the EU (Eurostat), a classic leapfrog dynamic where tokenized A2A can bypass legacy card infrastructure entirely. Greece and Bulgaria have active institutional money market fund operations distributed through major commercial banks, and the region's largest bank groups operate asset management arms across multiple Southeast European markets simultaneously.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <div class="market-region">
+          South Asia
+          <div class="region-badge">Active · Production</div>
+        </div>
+        <div>
+          <h4>Production deployments active</h4>
+          <p>Tokenized payment systems are live in production in South Asia. Remittance volumes, the regulatory structure, and the commercial banking landscape in this region present ongoing opportunity. Our direct operational experience with South Asian payment infrastructure and regulatory environments informs how we approach comparable markets elsewhere.</p>
+        </div>
+      </div>
+    </div>
+    <div class="highlight-block" style="margin-top:1.5rem;">
+      <p>The most compelling targets combine more than one signal. A bank with an active blockchain program <strong>and</strong> an existing money market fund platform, or a central bank deploying a CBDC in a market with no incumbent fast-payment scheme. These dual qualifications are the primary filter in our market engagement approach.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- IDEAL CLIENT -->
+<section id="ideal-client">
+  <div class="container">
+    <p class="sec-tag">Who We Work With</p>
+    <h2 class="sec-title" data-i18n="s3-title">The institutions we are looking for</h2>
+    <p class="sec-intro">We work with a limited number of clients at any one time. The institutions best suited to engage with Post Oak Labs share a specific profile, not by size alone. Readiness, positioning, and strategic intent matter more.</p>
+
+    <div class="criteria-row">
+      <div class="criteria-cell">
+        <div class="criteria-num">01</div>
+        <h4>Commercial Banks with Digital Transformation Mandates</h4>
+        <p>Tier-1 and Tier-2 commercial banks in our target regions that have public fintech partnership programs, sandbox participation, or documented blockchain initiatives, and are seeking external expertise to move from exploration to deployment on tokenized payment infrastructure.</p>
+      </div>
+      <div class="criteria-cell">
+        <div class="criteria-num">02</div>
+        <h4>Banks with Existing Fund Management Arms</h4>
+        <p>Financial institutions that operate regulated money market or collective investment fund platforms alongside active digital or blockchain programs. That combination (active liquidity management infrastructure plus tokenization readiness) is the strongest predictor of near-term deployment fit.</p>
+      </div>
+      <div class="criteria-cell">
+        <div class="criteria-num">03</div>
+        <h4>Central Banks Evaluating CBDC or Digital Infrastructure</h4>
+        <p>Central banks with live CBDCs, active digital currency pilots, or in-progress evaluation of tokenized settlement infrastructure. We advise on both the central bank architecture layer and the commercial bank overlay products that sit on top of it, and have worked with institutions at both levels.</p>
+      </div>
+      <div class="criteria-cell">
+        <div class="criteria-num">04</div>
+        <h4>Large Corporates with High Cross-Border Payment Volumes</h4>
+        <p>Multinational and regional corporates with significant B2B cross-border payment flows, particularly in trade corridors where correspondent banking costs are high, settlement times are long, or FX conversion friction is material. Tokenized A2A addresses these frictions directly at the B2B layer.</p>
+      </div>
+      <div class="criteria-cell">
+        <div class="criteria-num">05</div>
+        <h4>Pan-Regional Banks and Financial Groups</h4>
+        <p>Banks and financial groups with multi-country footprints across our target regions, where a single tokenized A2A infrastructure deployment can serve multiple markets simultaneously, and where the network effects of cross-border tokenized rails compound quickly across a captive franchise.</p>
+      </div>
+      <div class="criteria-cell">
+        <div class="criteria-num">06</div>
+        <h4>Institutions at Regulatory Inflection Points</h4>
+        <p>Banks facing near-term compliance requirements, SEPA accession, ISO 20022 migration, open banking mandates, AML system upgrades, where the modernization work creates a natural window to architect for tokenized payment infrastructure rather than simply patch legacy systems.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- CONSULTANT CREDENTIALS + CTA -->
+<section>
+  <div class="container">
+    <div class="highlight-block" style="border-left-color:var(--accent);margin-top:0;">
+      <p>Post Oak Labs consultants have built production tokenized payment infrastructure, led blockchain payment programs at the senior level inside major global banking and technology institutions, and advised central banks on CBDC design and deployment. The A2A advisory practice comes directly out of that. <a href="blockchain-advisory.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">See the full advisory track record →</a></p>
+    </div>
+    <div class="cta-block" style="margin-top:1.5rem;">
+      <h3 data-i18n="cta-h">Let's talk</h3>
+      <p>If your institution is evaluating tokenized A2A infrastructure, stablecoin integration, or blockchain payment strategy, and you recognize your market in the signals above, we are glad to have a direct conversation about fit.</p>
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary">contact@postoaklabs.com</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.footnotes-section { border-top: 1px solid var(--edge); padding: 2.5rem 0 2rem; }
+.footnotes-section h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; font-weight: 400; }
+.footnotes-section ol { padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.65rem; }
+.footnotes-section li { font-size: 0.68rem; color: var(--muted); line-height: 1.65; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+.footnotes-section a { color: var(--accent); text-decoration: none; }
+.footnotes-section a:hover { color: var(--accent-lt); }
+</style>
+
+<div class="footnotes-section">
+  <div class="container">
+    <h3>References and Notes</h3>
+    <ol>
+      <li id="fn1">
+        <strong>70-80% cross-border fee reduction:</strong> Independent industry reporting notes that blockchain-enabled cross-border transaction fees in 2025 are 70–80% lower than traditional correspondent-banking fees in selected corridors (SQ Magazine, "Blockchain in Financial Services Statistics 2026," Nov. 2025). The same analysis also notes that cost reductions depend heavily on corridor and use-case; other blockchain-based models are reported with fees as low as 0.5%, and one study cites up to ~78% reduction in cross-border processing time. This range also finds support in McKinsey Global Payments Report 2023, which documents correspondent banking fees of 2–5% of transaction value versus direct tokenized settlement costs in the range of 0.1–0.3%. The range reflects variation by corridor: high-volume corridors (US-Mexico, UK-India) show compression toward the lower end; low-volume or de-risked corridors (sub-Saharan Africa, Pacific islands) show larger gross reductions. The baseline is total corridor cost inclusive of correspondent bank fees, FX spread, and compliance overhead. For context on legacy costs: World Bank Remittance Prices Worldwide (Q3 2025) puts the global average remittance cost at ~6.4%; BIS (2024) notes a ~6% average cost for $200 remittances. The 70–80% figure is directional evidence for what is achievable in some wholesale corridors, not a universal guarantee. Actual realized savings depend on transaction size, corridor, and implementation architecture.
+      </li>
+      <li id="fn2">
+        <strong>$50B+ projected business savings by 2030:</strong> Cited from Deloitte's "Tokenization of Real-World Assets" report (2025). Deloitte's methodology estimates savings from elimination of nostro pre-funding costs, reduction in correspondent banking fees, and reduced reconciliation overhead across B2B cross-border payment flows globally. This figure covers business-to-business payment flows only and does not include consumer remittance savings. The projection assumes meaningful institutional adoption of tokenized rails in major trade corridors by 2030, an assumption that carries implementation and regulatory risk. Figures of this horizon and scope should be treated as scenario estimates, not forecasts.
+      </li>
+      <li id="fn3">
+        <strong>$280B cross-border payment revenues by 2030:</strong> Convera Global Payments Report (2024). This figure represents total cross-border payment revenue across all rails (correspondent banking, card networks, and emerging tokenized infrastructure), not revenue attributable to tokenized rails specifically. The relevance of this figure is that it defines the market being disrupted: tokenized A2A infrastructure is positioned to capture a growing share of this pool as institutional adoption matures, not to replace it entirely. McKinsey's 2023 Global Payments Report projects a similar range ($250-300B by 2027 using an earlier baseline), with cross-border flows growing at approximately 5% CAGR.
+      </li>
+      <li id="fn4">
+        <strong>$27T in nostro/vostro pre-funding:</strong> This figure is an industry estimate cited across multiple practitioner and vendor sources, including OpenDue (2025), Keyrock (2025), and The GCC Edge (March 2026). It is not an official BIS, IMF, or central bank statistic. For historical context, a 2016 McKinsey study reported nostro balances worldwide exceeding $27 trillion at end-2015; recent industry estimates continue to use the same order-of-magnitude figure in policy discussions, with some 2025 sources citing figures closer to $28 trillion. The figure represents peak intraday and pre-funded liquidity tied up in correspondent banking globally. Its cost depends heavily on the prevailing interest rate environment. At current rates (Federal Funds Rate 3.50–3.75% as of March 2026), the annual carry cost of $27T in pre-funded balances is approximately $945B–$1.01 trillion globally, though that cost is distributed across thousands of institutions and many positions earn partial yield. At a 3.625% midpoint rate, holding $1B in a nostro account costs approximately $36M/year in foregone yield (opendue.com).
+      </li>
+    </ol>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
+      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
+      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+      <p class="footer-copy" style="margin-top:0.3rem;">
+        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="a2a-payments.html">Market coverage</a>
+      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-comparison.html">Comparison framework</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="enterprise-blockchain.html">Market briefing</a>
+      <a href="example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="example-canton-a2a.html">Canton / Daml</a>
+      <a href="example-corda-a2a.html">R3 Corda</a>
+      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="contact.html">Contact</a>
+      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="demos/">Demos</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="faq.html">FAQ</a>
+      <a href="sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <p class="footer-copy" style="opacity:0.7;">
+      Last revised May 2026.
+      Content licensed CC BY 4.0 unless otherwise noted.
+      &nbsp;&middot;&nbsp;
+      <a href="llms.txt">llms.txt</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+const i18n = {
+  en: {"hero-h1": "Institutional infrastructure for the next layer of global payments", "hero-sub": "Post Oak Labs works with commercial banks, central banks, and large corporates to design, evaluate, and deploy tokenized account-to-account payment rails, the bank-grade settlement layer that operates above consumer fast-payment systems and below traditional correspondent banking. Our team has built production systems in this space, led blockchain payment programs at the senior level inside major global institutions, and advised central banks directly on digital currency infrastructure. The advisory practice comes out of that operational experience directly.", "hero-cta-primary": "Start a conversation", "s1-title": "The conditions that create opportunity", "s2-title": "Where we focus, and why", "s3-title": "The institutions we are looking for", "cta-h": "Let's talk"},
+  es: {"hero-h1": "Infraestructura institucional para la próxima capa de pagos globales", "hero-sub": "Post Oak Labs trabaja con bancos comerciales, bancos centrales y grandes corporativos para diseñar, evaluar y desplegar rieles de pago tokenizados de cuenta a cuenta, la capa de liquidación bancaria que opera por encima de los sistemas de pago rápido para consumidores y por debajo de la banca corresponsal tradicional.", "hero-cta-primary": "Iniciar una conversación", "s1-title": "Las condiciones que crean la oportunidad", "s2-title": "Dónde nos enfocamos y por qué", "s3-title": "Las instituciones que buscamos", "cta-h": "Hablemos"},
+  fr: {"hero-h1": "Infrastructure institutionnelle pour la prochaine couche des paiements mondiaux", "hero-sub": "Post Oak Labs travaille avec des banques commerciales, des banques centrales et de grandes entreprises pour concevoir, évaluer et déployer des rails de paiement tokenisés de compte à compte, la couche de règlement bancaire qui opère au-dessus des systèmes de paiement rapide et en dessous de la banque correspondante traditionnelle.", "hero-cta-primary": "Démarrer une conversation", "s1-title": "Les conditions qui créent l'opportunité", "s2-title": "Notre focus et pourquoi", "s3-title": "Les institutions que nous recherchons", "cta-h": "Parlons-en"},
+  ar: {"hero-h1": "بنية تحتية مؤسسية للطبقة التالية من المدفوعات العالمية", "hero-sub": "تعمل Post Oak Labs مع البنوك التجارية والبنوك المركزية والشركات الكبرى لتصميم وتقييم ونشر قضبان الدفع المرمّزة من حساب إلى حساب، وهي طبقة التسوية المصرفية التي تعمل فوق أنظمة الدفع السريع للمستهلكين وأسفل المصرفية المراسلة التقليدية.", "hero-cta-primary": "ابدأ محادثة", "s1-title": "الظروف التي تُولّد الفرصة", "s2-title": "أين نُركّز ولماذا", "s3-title": "المؤسسات التي نبحث عنها", "cta-h": "لنتحدث"},
+  pt: {"hero-h1": "Infraestrutura institucional para a próxima camada dos pagamentos globais", "hero-sub": "O Post Oak Labs trabalha com bancos comerciais, bancos centrais e grandes corporativos para projetar, avaliar e implantar trilhos de pagamento tokenizados de conta a conta, a camada de liquidação bancária que opera acima dos sistemas de pagamento rápido ao consumidor e abaixo do banco correspondente tradicional.", "hero-cta-primary": "Iniciar uma conversa", "s1-title": "As condições que criam oportunidade", "s2-title": "Onde focamos e por quê", "s3-title": "As instituições que procuramos", "cta-h": "Vamos conversar"},
+  zh: {"hero-h1": "面向全球支付下一层级的机构基础设施", "hero-sub": "Post Oak Labs与商业银行、中央银行及大型企业合作，设计、评估和部署代币化账户间支付轨道——这一银行级结算层位于消费者即时支付系统（如Pix、FedNow、UPI）之上，传统代理行银行业务之下，专为高价值B2B跨境支付而设计。", "hero-cta-primary": "开始对话", "s1-title": "创造机会的条件", "s2-title": "我们的聚焦方向及原因", "s3-title": "我们寻求合作的机构", "cta-h": "欢迎洽谈"}
+};
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>
