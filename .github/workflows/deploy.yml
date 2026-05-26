@@ -114,7 +114,24 @@ jobs:
               -o BatchMode=yes \
               "${DH_SSH_USER}@${DH_SSH_HOST}" "echo 'SSH OK'"
 
-      # ── 4. Dry-run rsync (always runs; shows what would change) ───────────
+      # ── 4. Diagnose remote environment before rsync ───────────────────────
+      - name: Diagnose remote (rsync path + web root)
+        env:
+          DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
+          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
+          DH_WEB_ROOT: ${{ secrets.DH_WEB_ROOT }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key \
+              -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=no \
+              -o LogLevel=ERROR \
+              "${DH_SSH_USER}@${DH_SSH_HOST}" \
+              "echo '=== rsync location ===' && which rsync || echo 'rsync not in PATH' && \
+               echo '=== rsync version ===' && rsync --version 2>&1 | head -1 || true && \
+               echo '=== web root check ===' && ls -la \"${DH_WEB_ROOT}\" | head -5 || echo 'web root not found or not listable'"
+
+      # ── 5. Dry-run rsync (always runs; shows what would change) ───────────
       - name: rsync dry run
         env:
           DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
