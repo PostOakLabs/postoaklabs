@@ -2,15 +2,45 @@
 
 [![Deploy postoaklabs.com](https://github.com/PostOakLabs/postoaklabs/actions/workflows/deploy.yml/badge.svg)](https://github.com/PostOakLabs/postoaklabs/actions/workflows/deploy.yml)
 
-Source for **[postoaklabs.com](https://postoaklabs.com)** — the website for Post Oak Labs, a specialist advisory firm in tokenized payment infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain.
+Source for **[postoaklabs.com](https://postoaklabs.com)** — institutional advisory and interactive intelligence tools for payments engineers, treasury teams, and compliance professionals.
 
-Hand-authored static HTML. No build step, no framework, no JavaScript dependencies.
+`🏛️ Institutional Advisory` &nbsp;`⛓️ Blockchain & DLT` &nbsp;`💳 A2A Payments` &nbsp;`📡 Zero APIs` &nbsp;`💻 Static HTML`
 
 ---
 
-## Deployment
+## What's on the site
 
-Every push to `main` validates and deploys automatically via GitHub Actions.
+- **A2A payment infrastructure** — strategy, workflow, rail comparison, ISO 20022 integration, and TMMF settlement modeling
+- **Enterprise blockchain advisory** — architecture guidance and worked examples across Besu, Canton, Corda, and Hyperledger Fabric
+- **Stablecoin & CBDC strategy** — MiCA / GENIUS Act issuer readiness, tokenized RWA compliance, cross-border settlement
+- **Regulatory intelligence** — DORA, Basel IV, FAPI, CFPB 1033, EU AI Act, FATF sanctions, KYB/AML, VASP Travel Rule
+- **Agentic payment policy (AP2)** — mandate builder, guardrail designer, BaaS infrastructure policy, AML rule builder
+- **Interactive demos** — 35+ browser-based tools covering FX netting, fraud risk, nostro optimization, embedded lending, VRP sweep logic, and more
+
+---
+
+## Repository layout
+
+```
+postoaklabs/
+├── index.html              ← Homepage
+├── *.html                  ← Site pages (A2A, blockchain, advisory, glossary, …)
+├── demos/                  ← 35+ self-contained interactive tools
+├── sitemap.xml             ← XML sitemap
+├── robots.txt              ← Crawler directives
+├── llms.txt                ← LLM-readable site summary
+├── manifest.json           ← PWA manifest
+├── .htaccess               ← HTTPS, 301 redirects, security headers
+├── .github/                ← CI workflow + link-checker script
+├── .htmlvalidate.json      ← HTML validation ruleset
+└── .deployignore           ← Paths excluded from DreamHost upload
+```
+
+---
+
+## Deploy pipeline
+
+Every push to `main` validates and deploys automatically.
 
 | Trigger | Result |
 |---|---|
@@ -18,31 +48,46 @@ Every push to `main` validates and deploys automatically via GitHub Actions.
 | Pull request to `main` | Validate only |
 | Manual run (Actions → *Run workflow*) | Validate → deploy |
 
-The deploy step is additive only (`rsync` without `--delete`) — files on the server but not in this repo are left untouched.
+Steps: secrets check → SSH key install → connectivity test → rsync dry run → rsync live deploy → smoke test.
+
+The deploy is additive only (`rsync` without `--delete`) — files on the server but absent from this repo are left untouched.
 
 ---
 
-## Repository layout
+## Editing the site
 
+```bash
+# Edit files, then:
+git add -A
+git commit -m "describe the change"
+git push origin main
 ```
-*.html                 Site pages
-demos/                 Interactive demo pages
-sitemap.xml            XML sitemap
-sitemap.html           Human-readable sitemap
-robots.txt             Crawler directives
-llms.txt               LLM-readable site summary
-manifest.json          PWA manifest
-.htaccess              Apache config — HTTPS, redirects, security headers
-.github/               CI workflow + link-checker script
-.htmlvalidate.json     HTML validation ruleset
-.deployignore          Paths excluded from the DreamHost upload
+
+Preview locally: open `.html` files in a browser, or `python3 -m http.server`.
+
+---
+
+## Validation
+
+Both checks run before every deploy and must pass.
+
+**HTML** — [`html-validate`](https://html-validate.org/) with the ruleset in [`.htmlvalidate.json`](.htmlvalidate.json). Errors on broken markup only; not a style or accessibility linter.
+
+**Internal links** — [`.github/scripts/check-links.py`](.github/scripts/check-links.py) verifies every internal `href`/`src` resolves to a real file. External links are listed but never fail the build.
+
+Run locally:
+
+```bash
+npx --yes html-validate@9 "**/*.html"
+python3 .github/scripts/check-links.py
 ```
 
 ---
 
 ## One-time deployment setup
 
-The pipeline authenticates to DreamHost with an SSH key. Do this once per repo.
+<details>
+<summary>Expand for SSH key + DreamHost secret configuration</summary>
 
 ### 1. Enable shell access on the DreamHost user
 
@@ -55,11 +100,9 @@ rsync requires SSH/shell access — SFTP-only will not work.
 ssh-keygen -t ed25519 -f dreamhost_deploy -C "github-actions-deploy" -N ""
 ```
 
-This produces `dreamhost_deploy` (private key) and `dreamhost_deploy.pub` (public key).
-
 ### 3. Add the public key to DreamHost
 
-Append `dreamhost_deploy.pub` to `~/.ssh/authorized_keys` on the DreamHost server, or paste it into the SSH-key field in the panel.
+Append `dreamhost_deploy.pub` to `~/.ssh/authorized_keys` on the server, or paste it into the SSH-key field in the panel.
 
 ### 4. Add five repository secrets
 
@@ -73,43 +116,21 @@ Append `dreamhost_deploy.pub` to `~/.ssh/authorized_keys` on the DreamHost serve
 | `DH_WEB_ROOT` | Absolute path to the web root, e.g. `/home/USERNAME/postoaklabs.com` |
 | `DH_SITE_URL` | Full site URL, e.g. `https://postoaklabs.com` |
 
-Once secrets exist, the next push to `main` deploys automatically. If a secret is missing the deploy job fails early with a clear error message.
+Once secrets exist, the next push to `main` deploys automatically.
+
+### Manual deploy fallback
+
+If GitHub Actions is unavailable, upload everything except paths in [`.deployignore`](.deployignore) to the DreamHost web root via any SFTP client.
+
+</details>
 
 ---
 
-## Editing the site
+## Links
 
-```bash
-# Edit HTML files, then:
-git add -A
-git commit -m "describe the change"
-git push origin main
-```
-
-To preview locally: open `.html` files directly in a browser, or `python3 -m http.server`.
-
----
-
-## Validation
-
-Both checks run before every deploy and must pass.
-
-**HTML validation** — [`html-validate`](https://html-validate.org/) with the ruleset in [`.htmlvalidate.json`](.htmlvalidate.json). Errors on broken markup only (mismatched tags, duplicate IDs); not a style or accessibility linter.
-
-**Internal links** — [`.github/scripts/check-links.py`](.github/scripts/check-links.py) verifies every internal `href`/`src` resolves to a real file. External links are listed but never fail the build.
-
-Run locally before pushing:
-
-```bash
-npx --yes html-validate@9 "**/*.html"
-python3 .github/scripts/check-links.py
-```
-
----
-
-## Manual deploy fallback
-
-If GitHub Actions is unavailable, upload everything except paths listed in [`.deployignore`](.deployignore) to the DreamHost web root via the file manager or any SFTP client.
+- [postoaklabs.com](https://postoaklabs.com) — live site
+- [Post Oak Labs](https://postoaklabs.com) — institutional advisory
+- [AINumbers.co](https://ainumbers.co) — fintech intelligence suite (sister property)
 
 ---
 
