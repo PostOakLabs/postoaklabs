@@ -140,12 +140,12 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== DRY RUN — no files will be transferred ==="
-          # --rsync-path: bypass .bashrc/.bash_profile output that can corrupt rsync protocol
-          # LogLevel=ERROR: suppress SSH banners/warnings that also corrupt rsync protocol
-          rsync -avz --dry-run --omit-dir-times --timeout=120 \
+          # BatchMode=yes: abort on any interactive prompt (never stall the pipe)
+          # LogLevel=ERROR: suppress SSH banners that can corrupt rsync protocol
+          # No --rsync-path: let remote $PATH resolve rsync (avoids wrong-path stalls)
+          rsync -av --dry-run --omit-dir-times --timeout=60 \
             --exclude-from=.deployignore \
-            --rsync-path=/usr/bin/rsync \
-            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o LogLevel=ERROR" \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o BatchMode=yes -o LogLevel=ERROR" \
             ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
       # ── 5. Live deploy (skipped when dry_run input is "true") ─────────────
@@ -160,10 +160,9 @@ jobs:
           echo "=== LIVE DEPLOY ==="
           # No --delete: additive only — never removes files already on the server
           #   (handles assets that aren't committed to the repo)
-          rsync -avz --omit-dir-times --timeout=120 \
+          rsync -av --omit-dir-times --timeout=60 \
             --exclude-from=.deployignore \
-            --rsync-path=/usr/bin/rsync \
-            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o LogLevel=ERROR" \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o BatchMode=yes -o LogLevel=ERROR" \
             ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
       # ── 6. Smoke test: verify the site is reachable after deploy ──────────
