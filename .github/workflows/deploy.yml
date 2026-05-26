@@ -131,8 +131,8 @@ jobs:
                echo '=== rsync version ===' && rsync --version 2>&1 | head -1 || true && \
                echo '=== web root check ===' && ls -la \"${DH_WEB_ROOT}\" | head -5 || echo 'web root not found or not listable'"
 
-      # ── 5. Dry-run deploy via lftp/SFTP (always runs; shows what would change)
-      - name: Deploy dry run (lftp/SFTP)
+      # ── 5. Dry-run rsync (always runs; shows what would change) ───────────
+      - name: rsync dry run
         env:
           DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
           DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
@@ -140,18 +140,19 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== DRY RUN — no files will be transferred ==="
-          # lftp is pre-installed on ubuntu-latest; no apt-get needed.
-          # sftp:connect-program delegates auth to our already-installed SSH key.
-          # mirror --reverse uploads local→remote; --dry-run shows what would change.
-          lftp << LFTP_SCRIPT
-          set sftp:connect-program "ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o BatchMode=yes -o LogLevel=ERROR"
-          open -u ${DH_SSH_USER}, sftp://${DH_SSH_HOST}
-          mirror --reverse --dry-run --verbose --no-perms --parallel=4 --exclude-glob .git --exclude-glob .github --exclude-glob .gitignore --exclude-glob .deployignore --exclude-glob .htmlvalidate.json --exclude-glob .htmlvalidateignore --exclude-glob README.md ./ ${DH_WEB_ROOT}/
-          bye
-          LFTP_SCRIPT
+          rsync -avz --dry-run --omit-dir-times \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no" \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.gitignore' \
+            --exclude='.deployignore' \
+            --exclude='.htmlvalidate.json' \
+            --exclude='.htmlvalidateignore' \
+            --exclude='README.md' \
+            ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
-      # ── 6. Live deploy via lftp/SFTP (skipped when dry_run input is "true") ─
-      - name: Deploy (lftp/SFTP live)
+      # ── 6. Live deploy (skipped when dry_run input is "true") ─────────────
+      - name: Deploy (rsync live)
         if: ${{ github.event.inputs.dry_run != 'true' }}
         env:
           DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
@@ -160,14 +161,18 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== LIVE DEPLOY ==="
-          # Additive only — no --delete equivalent, so files removed from the repo
-          # are not removed from the server (preserves any server-side assets).
-          lftp << LFTP_SCRIPT
-          set sftp:connect-program "ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o BatchMode=yes -o LogLevel=ERROR"
-          open -u ${DH_SSH_USER}, sftp://${DH_SSH_HOST}
-          mirror --reverse --verbose --no-perms --parallel=4 --exclude-glob .git --exclude-glob .github --exclude-glob .gitignore --exclude-glob .deployignore --exclude-glob .htmlvalidate.json --exclude-glob .htmlvalidateignore --exclude-glob README.md ./ ${DH_WEB_ROOT}/
-          bye
-          LFTP_SCRIPT
+          # Additive only (no --delete) — preserves any server-side assets
+          # not tracked in the repo.
+          rsync -avz --omit-dir-times \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no" \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.gitignore' \
+            --exclude='.deployignore' \
+            --exclude='.htmlvalidate.json' \
+            --exclude='.htmlvalidateignore' \
+            --exclude='README.md' \
+            ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
       # ── 6. Smoke test: verify the site is reachable after deploy ──────────
       - name: Smoke test (HTTP 200 check)
