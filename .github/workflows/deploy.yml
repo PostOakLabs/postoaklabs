@@ -123,9 +123,12 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== DRY RUN — no files will be transferred ==="
+          # --rsync-path: bypass .bashrc/.bash_profile output that can corrupt rsync protocol
+          # LogLevel=ERROR: suppress SSH banners/warnings that also corrupt rsync protocol
           rsync -avz --dry-run --omit-dir-times --timeout=120 \
             --exclude-from=.deployignore \
-            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no" \
+            --rsync-path=/usr/bin/rsync \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o LogLevel=ERROR" \
             ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
       # ── 5. Live deploy (skipped when dry_run input is "true") ─────────────
@@ -138,15 +141,12 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== LIVE DEPLOY ==="
-          # -r recursive  -l preserve symlinks  -t preserve times
-          # -z compress   -v verbose
-          # --checksum: compare by content hash, not mtime
-          #   (git checkouts have fresh mtimes; mtime comparison is unreliable)
           # No --delete: additive only — never removes files already on the server
           #   (handles assets that aren't committed to the repo)
           rsync -avz --omit-dir-times --timeout=120 \
             --exclude-from=.deployignore \
-            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no" \
+            --rsync-path=/usr/bin/rsync \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o LogLevel=ERROR" \
             ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
       # ── 6. Smoke test: verify the site is reachable after deploy ──────────
