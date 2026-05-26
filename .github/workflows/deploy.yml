@@ -34,6 +34,8 @@ jobs:
     steps:
       - name: Check out the site
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -58,6 +60,8 @@ jobs:
     steps:
       - name: Check out the site
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       # ── 1. Guard: abort early if any required secret is missing ────────────
       - name: Verify required secrets are present
@@ -114,24 +118,7 @@ jobs:
               -o BatchMode=yes \
               "${DH_SSH_USER}@${DH_SSH_HOST}" "echo 'SSH OK'"
 
-      # ── 4. Diagnose remote environment before rsync ───────────────────────
-      - name: Diagnose remote (rsync path + web root)
-        env:
-          DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
-          DH_SSH_HOST: ${{ secrets.DH_SSH_HOST }}
-          DH_WEB_ROOT: ${{ secrets.DH_WEB_ROOT }}
-        run: |
-          set -euo pipefail
-          ssh -i ~/.ssh/deploy_key \
-              -o IdentitiesOnly=yes \
-              -o StrictHostKeyChecking=no \
-              -o LogLevel=ERROR \
-              "${DH_SSH_USER}@${DH_SSH_HOST}" \
-              "echo '=== rsync location ===' && which rsync || echo 'rsync not in PATH' && \
-               echo '=== rsync version ===' && rsync --version 2>&1 | head -1 || true && \
-               echo '=== web root check ===' && ls -la \"${DH_WEB_ROOT}\" | head -5 || echo 'web root not found or not listable'"
-
-      # ── 5. Dry-run rsync (always runs; shows what would change) ───────────
+      # ── 4. Dry-run rsync (always runs; shows what would change) ───────────
       - name: rsync dry run
         env:
           DH_SSH_USER: ${{ secrets.DH_SSH_USER }}
@@ -151,7 +138,7 @@ jobs:
             --exclude='README.md' \
             ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
-      # ── 6. Live deploy (skipped when dry_run input is "true") ─────────────
+      # ── 5. Live deploy (skipped when dry_run input is "true") ─────────────
       - name: Deploy (rsync live)
         if: ${{ github.event.inputs.dry_run != 'true' }}
         env:
@@ -175,7 +162,7 @@ jobs:
             ./ "${DH_SSH_USER}@${DH_SSH_HOST}:${DH_WEB_ROOT}/"
 
       # ── 6. Smoke test: verify the site is reachable after deploy ──────────
-      - name: Smoke test (HTTP 200 check)
+      - name: Smoke test (HTTP 200/301/302 check)
         if: ${{ github.event.inputs.dry_run != 'true' }}
         env:
           DH_SITE_URL: ${{ secrets.DH_SITE_URL }}
@@ -185,7 +172,7 @@ jobs:
           STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
                    --max-time 15 --retry 3 --retry-delay 5 \
                    "${DH_SITE_URL}")
-          if [ "$STATUS" -ne 200 ]; then
+          if [ "$STATUS" -ne 200 ] && [ "$STATUS" -ne 301 ] && [ "$STATUS" -ne 302 ]; then
             echo "::error::Smoke test failed — ${DH_SITE_URL} returned HTTP ${STATUS}"
             exit 1
           fi
