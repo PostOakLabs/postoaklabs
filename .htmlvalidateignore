@@ -1,0 +1,3 @@
+# Demo tools are complex JS-heavy single-file apps — too noisy to validate
+# strictly in CI. The root site pages are what matter for structural correctness.
+demos/

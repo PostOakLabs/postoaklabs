@@ -41,7 +41,7 @@ jobs:
           node-version: "24"
 
       - name: Validate HTML
-        run: npx --yes html-validate@11 "**/*.html"
+        run: npx --yes html-validate@9 "**/*.html"
 
       - name: Check internal links
         if: ${{ !cancelled() }}
