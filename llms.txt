@@ -1,6 +1,6 @@
 # Post Oak Labs — llms.txt
 # Plain-text site summary for LLM and AI crawler consumption.
-# Last updated: 2026-05-25
+# Last updated: 2026-05-28
 # Canonical site: https://postoaklabs.com
 # X / Twitter: https://x.com/PostOakLabs
 # Contact: contact@postoaklabs.com
@@ -71,12 +71,12 @@ Advisory across DeFi protocols, layer-1 blockchains, enterprise blockchain (Cord
 
 ## Fintech Intelligence Showcase (browser demos)
 
-The showcase at https://postoaklabs.com/demos/ is a curated catalog of 33 browser-based fintech demos drawn from the AINumbers.co tool library. Every demo is client-side, zero PII, AP2-exportable, and MCP-discoverable. All 33 are live as of May 2026.
+The showcase at https://postoaklabs.com/demos/ is a curated catalog of 34 browser-based fintech demos drawn from the AINumbers.co tool library. Every demo is client-side, zero PII, AP2-exportable, and MCP-discoverable. All 34 are live as of May 2026.
 
 Five buyer-archetype hubs filter and sequence the demos for distinct audiences. All five hubs are public, indexed, and crawlable.
 
-- Showcase landing — all 33 demos, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
-- Tool Chain Composer — the full 260-tool AINumbers catalog as a clustered atlas, with the 33 showcase demos highlighted. 15 categories, AP2 schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
+- Showcase landing — all 34 demos, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
+- Tool Chain Composer — the full 260-tool AINumbers catalog as a clustered atlas, with the 34 showcase demos highlighted. 15 categories, AP2 schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
 - Agentic Runtime hub — deterministic AP2/MCP policy layer for agent runtime builders (Anthropic, Google AP2, OpenAI, Vellum, LangChain): https://postoaklabs.com/demos/agentic-runtime/
 - RegTech hub — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating (ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay): https://postoaklabs.com/demos/regtech/
 - BaaS hub — provider economics, embedded-lending unit economics, SME credit passport, wallet float yield, VRP mandates, AP2 BaaS infrastructure mandates (Unit, Synctera, Treasury Prime, Marqeta, Galileo): https://postoaklabs.com/demos/baas/
@@ -106,6 +106,7 @@ Five buyer-archetype hubs filter and sequence the demos for distinct audiences. 
 - Demo #25 — Cross-Border FX Netting Simulator (editable 4-subsidiary × 3-currency payable matrix; gross / bilateral / multilateral modes; settlement compression, FX-spread savings, nostro freed, Herstatt-risk reduction; AP2 treasury mandate against @ainumbers.co/fx-netting-v1): https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html
 - Demo #18 — VRP Mandate & Sweep Logic Designer (sweep window + amount caps + idempotency + beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA; live 24h permitted-window timeline; AP2 mandate against @ainumbers.co/vrp-mandate-v1): https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html
 - Demo #21 — Tokenized RWA Compliance Pre-Checker (8 asset classes × 7 jurisdictions × offering structure → MiCA + Howey classification, pathway verdict viable/remediate/not-viable, per-line findings; AP2 mandate against @ainumbers.co/rwa-readiness-v1): https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html
+- Demo #34 — AML End-to-End Workflow (four-stage AML ops chain: customer risk rating → transaction-monitoring rule calibration → SAR narrative generation → AP2 AML Policy Mandate export; presets for VASP, trade finance, and retail; FATF R.10 aligned): https://postoaklabs.com/demos/aml-end-to-end-workflow.html
 
 ---
 
