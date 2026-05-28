@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AML End-to-End Workflow — CRR · TM Rules · SAR · Policy Mandate · Post Oak Labs</title>
+
+<meta name="description" content="Four-stage AML operations chain: customer risk rating, transaction monitoring rule design, SAR narrative generation, and AP2 Policy Mandate export — in a single deterministic browser flow. Zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/aml-end-to-end-workflow.html">
+<meta property="og:title" content="AML End-to-End Workflow — Post Oak Labs">
+<meta property="og:description" content="CRR scoring → TM rule design → SAR narrative → AP2 AML mandate. The complete financial-crime ops chain in one flow.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/aml-end-to-end-workflow.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "AML End-to-End Workflow",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/aml-end-to-end-workflow.html",
+  "description": "Four-stage AML operations chain: customer risk rating (T110) → transaction monitoring rule design (T116) → SAR narrative generation (T121) → AP2 AML Policy Mandate export (T131). Deterministic, client-side, zero PII.",
+  "featureList": [
+    "8-dimension customer risk rating with CRR tier assignment (Low / Medium / High / Prohibited)",
+    "TM rule configuration auto-calibrated to CRR tier: velocity, amount, volume, geography, layering",
+    "Precision / recall modelling against synthetic 100K-transaction population",
+    "SAR narrative generation: subject, activity, facts, timing, regulatory hooks",
+    "AP2 v1.0 AML Policy Mandate export: @postoaklabs.com/aml-end-to-end-v1",
+    "Markdown report export covering all four workflow stages"
+  ],
+  "keywords": "AML, customer risk rating, transaction monitoring, SAR, suspicious activity report, KYC, CRR, AML policy mandate, financial crime, RegTech, FATF R.10, AP2",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-28",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+:root{--ink:#050c15;--deep:#0a1628;--navy:#0e1e35;--edge:#1e3454;--body:#7090b0;--muted:#4a6280;--accent:#2a7fc0;--accent-lt:#4a9fdf;--gold:#c09040;--showcase-bg:#fff;--showcase-bg-soft:#fafbfc;--showcase-bg-deep:#f4f6f9;--showcase-text:#0a1828;--showcase-text-muted:#6a7a8a;--showcase-border:#e6e8eb;--showcase-border-dark:#d4d8de;--showcase-accent:#2a7fc0;--showcase-gold:#c09040;--showcase-success:#10b981;--showcase-warn:#f59e0b;--showcase-error:#dc2626;--showcase-purple:#8b5cf6;--showcase-heading-font:'DM Serif Display',serif;--showcase-body-font:'DM Sans',sans-serif;--showcase-mono-font:'JetBrains Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--body);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.2}
+a{color:var(--accent)} button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit}
+
+nav[role="navigation"]{background:var(--ink);border-bottom:1px solid var(--edge);padding:.9rem 0;position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:1.15rem;color:#fff;text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-bc{font-family:var(--showcase-mono-font);font-size:.6rem;color:var(--muted);letter-spacing:.06em;display:flex;align-items:center;gap:.4rem}
+.nav-bc a{color:var(--body);text-decoration:none} .nav-bc a:hover{color:var(--accent-lt)} .nav-bc span[aria-current]{color:var(--accent-lt)}
+.nav-links{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
+.nav-links a{color:var(--body);text-decoration:none;font-size:.86rem} .nav-links a:hover{color:#fff}
+.nav-links a.nav-cta{background:var(--accent);color:#fff !important;padding:.4rem .95rem;border-radius:4px}
+.nav-links a.nav-cta:hover{background:var(--accent-lt)}
+
+.showcase-header-strip{background:var(--deep);border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);padding:.85rem 0}
+.strip-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.strip-left{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.strip-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.7rem;color:var(--gold);font-weight:500}
+.strip-title{font-weight:500;color:#fff;font-size:.875rem}
+.strip-actions{display:flex;flex-wrap:wrap;gap:.25rem 1rem}
+.strip-actions a{color:var(--accent-lt);text-decoration:none;font-size:.78rem;white-space:nowrap}
+.strip-actions a:hover{color:#fff}
+
+.demo-canvas{background:var(--showcase-bg);color:var(--showcase-text);font-family:var(--showcase-body-font);max-width:1240px;margin:2rem auto;padding:0;border-radius:8px;box-shadow:0 1px 0 rgba(255,255,255,.04),0 0 40px rgba(0,0,0,.25);overflow:hidden}
+.canvas-inner{padding:2.5rem 2.5rem 3rem}
+@media(max-width:760px){.canvas-inner{padding:1.5rem 1.25rem 2rem}}
+.demo-canvas h1,.demo-canvas h2,.demo-canvas h3,.demo-canvas h4{color:var(--showcase-text)}
+
+.hero{padding-bottom:2rem;border-bottom:1px solid var(--showcase-border);margin-bottom:2.5rem}
+.eyebrow-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:1.25rem}
+.eyebrow-badge{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border-radius:3px;border:1px solid var(--showcase-border);color:var(--showcase-text-muted)}
+.eyebrow-badge.accent{border-color:rgba(42,127,192,.35);color:var(--showcase-accent)}
+.eyebrow-badge.gold{border-color:rgba(192,144,64,.35);color:var(--showcase-gold)}
+.eyebrow-badge.error{border-color:rgba(220,38,38,.35);color:var(--showcase-error)}
+.eyebrow-badge.warn{border-color:rgba(245,158,11,.35);color:var(--showcase-warn)}
+.hero h1{font-size:clamp(1.6rem,2.8vw,2.2rem);margin-bottom:.85rem}
+.hero h1 em{font-style:italic;color:var(--showcase-error)}
+.hero-sub{color:var(--showcase-text-muted);font-size:.95rem;line-height:1.7;max-width:820px;margin-bottom:1.5rem}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:4px;overflow:hidden}
+.hstat{background:var(--showcase-bg-soft);padding:.85rem 1.1rem}
+.hstat-l{font-family:var(--showcase-mono-font);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.3rem}
+.hstat-v{font-family:var(--showcase-heading-font);font-size:1.3rem;line-height:1.1}
+.hstat-v.accent{color:var(--showcase-accent)}.hstat-v.gold{color:var(--showcase-gold)}.hstat-v.success{color:var(--showcase-success)}.hstat-v.error{color:var(--showcase-error)}.hstat-v.warn{color:var(--showcase-warn)}
+.hstat-note{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.2rem}
+
+.pii-banner{display:flex;align-items:flex-start;gap:.75rem;background:#f0f9f4;border:1px solid #a7f3d0;border-radius:4px;padding:.75rem 1rem;margin-bottom:2rem;font-size:.83rem;color:#065f46}
+.pii-banner svg{flex-shrink:0;margin-top:1px}
+
+/* WORKFLOW FLOW BAR */
+.flow-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:2.5rem;padding:1.25rem 1rem;background:var(--showcase-bg-soft);border:1px solid var(--showcase-border);border-radius:6px;flex-wrap:wrap}
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:.35rem;min-width:120px;padding:.4rem .5rem}
+.flow-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--showcase-mono-font);font-size:.72rem;font-weight:700;flex-shrink:0}
+.flow-num.crr{background:rgba(220,38,38,.1);color:var(--showcase-error);border:1px solid rgba(220,38,38,.25)}
+.flow-num.tm{background:rgba(245,158,11,.1);color:var(--showcase-warn);border:1px solid rgba(245,158,11,.25)}
+.flow-num.sar{background:rgba(139,92,246,.1);color:var(--showcase-purple);border:1px solid rgba(139,92,246,.25)}
+.flow-num.ap2{background:rgba(16,185,129,.1);color:var(--showcase-success);border:1px solid rgba(16,185,129,.25)}
+.flow-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--showcase-text-muted);text-align:center}
+.flow-tool{font-size:.7rem;color:var(--showcase-text-muted);text-align:center}
+.flow-arrow{color:var(--showcase-border-dark);font-size:1.1rem;padding:0 .25rem;align-self:center;flex-shrink:0}
+
+/* TOOL LAYOUT */
+.tool-layout{display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:start}
+@media(max-width:960px){.tool-layout{grid-template-columns:1fr}}
+.var-sidebar{background:var(--ink);border-radius:6px;padding:1.5rem;border-left:3px solid var(--showcase-error);position:sticky;top:100px}
+.var-sidebar-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--showcase-error);margin-bottom:.75rem}
+.var-sidebar h3{font-family:var(--showcase-heading-font);color:#fff !important;font-size:1.1rem;line-height:1.3;margin-bottom:.5rem}
+.var-sidebar p{font-size:.82rem;color:var(--body);line-height:1.6;margin-bottom:.9rem}
+.var-sidebar p:last-child{margin-bottom:0}
+.var-stat{font-family:var(--showcase-mono-font);font-size:.76rem;color:var(--accent-lt);margin-top:.5rem}
+.var-sidebar .cite{font-size:.7rem;color:var(--muted);margin-top:.75rem}
+
+.section-hd{font-family:var(--showcase-mono-font);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--showcase-text-muted);border-bottom:1px solid var(--showcase-border);padding-bottom:.5rem;margin-bottom:1.1rem}
+.scenario-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+.scenario-btn{font-family:var(--showcase-mono-font);font-size:.7rem;letter-spacing:.06em;padding:.45rem 1rem;border-radius:4px;border:1px solid var(--showcase-border);color:var(--showcase-text-muted);background:var(--showcase-bg-soft);transition:all .15s}
+.scenario-btn:hover,.scenario-btn.active{background:var(--showcase-error);border-color:var(--showcase-error);color:#fff}
+
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label{font-family:var(--showcase-mono-font);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted)}
+.field select,.field input[type=number]{font-family:var(--showcase-mono-font);font-size:.88rem;padding:.55rem .75rem;border:1px solid var(--showcase-border);border-radius:4px;background:var(--showcase-bg);color:var(--showcase-text);width:100%}
+.field select:focus,.field input:focus{outline:none;border-color:var(--showcase-accent)}
+.field .hint{font-size:.7rem;color:var(--showcase-text-muted)}
+
+/* PANEL */
+.panel{margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--showcase-border)}
+.panel:last-of-type{border-bottom:none}
+.panel-hd{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--showcase-border);padding-bottom:.65rem;margin-bottom:1.25rem}
+.panel-num{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase}
+.panel-num.crr{color:var(--showcase-error)}
+.panel-num.tm{color:var(--showcase-warn)}
+.panel-num.sar{color:var(--showcase-purple)}
+.panel-num.ap2{color:var(--showcase-success)}
+.panel-hd h2{font-size:1.2rem;color:var(--showcase-text)}
+
+/* DIAG GRID */
+.diag-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--showcase-border);border:1px solid var(--showcase-border);border-radius:6px;overflow:hidden;margin-bottom:1.25rem}
+.diag-cell{background:var(--showcase-bg-soft);padding:.9rem 1rem}
+.diag-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.35rem}
+.diag-val{font-family:var(--showcase-heading-font);font-size:1.25rem;line-height:1.1}
+.diag-val.success{color:var(--showcase-success)}.diag-val.warn{color:var(--showcase-warn)}.diag-val.error{color:var(--showcase-error)}.diag-val.accent{color:var(--showcase-accent)}.diag-val.purple{color:var(--showcase-purple)}
+.diag-sub{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.2rem}
+
+/* RISK TIER BADGE */
+.tier-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1.1rem;border-radius:4px;font-family:var(--showcase-mono-font);font-size:.78rem;font-weight:700;letter-spacing:.06em;margin-bottom:1.25rem}
+.tier-badge.low{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--showcase-success)}
+.tier-badge.medium{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--showcase-warn)}
+.tier-badge.high{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);color:var(--showcase-error)}
+.tier-badge.prohibited{background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:var(--showcase-purple)}
+
+/* RISK DIM BARS */
+.dim-list{margin-bottom:1.25rem}
+.dim-row{display:grid;grid-template-columns:200px 1fr 60px 80px;gap:.75rem;align-items:center;margin-bottom:.45rem;font-size:.82rem}
+@media(max-width:640px){.dim-row{grid-template-columns:1fr 60px}}
+.dim-label{font-family:var(--showcase-mono-font);font-size:.73rem;color:var(--showcase-text)}
+.dim-bar-wrap{height:12px;background:var(--showcase-bg-deep);border-radius:3px;overflow:hidden;border:1px solid var(--showcase-border)}
+.dim-bar{height:100%;transition:width .4s}
+.dim-bar.low{background:linear-gradient(90deg,var(--showcase-success),var(--showcase-success))}
+.dim-bar.medium{background:linear-gradient(90deg,var(--showcase-warn),var(--showcase-warn))}
+.dim-bar.high{background:linear-gradient(90deg,var(--showcase-error),var(--showcase-error))}
+.dim-score{font-family:var(--showcase-mono-font);font-size:.73rem;text-align:right;color:var(--showcase-text)}
+.dim-weight{font-family:var(--showcase-mono-font);font-size:.63rem;color:var(--showcase-text-muted);text-align:right}
+
+/* TM RULES TABLE */
+.rules-table-wrap{overflow-x:auto;margin-bottom:1.25rem}
+table.rules-table{width:100%;border-collapse:collapse;font-size:.82rem;font-family:var(--showcase-mono-font)}
+table.rules-table th{padding:.55rem .75rem;border-bottom:2px solid var(--showcase-border);text-align:left;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);background:var(--showcase-bg-soft);white-space:nowrap}
+table.rules-table td{padding:.6rem .75rem;border-bottom:1px solid var(--showcase-border);font-size:.8rem}
+table.rules-table td.enabled{color:var(--showcase-success)}.rules-table td.trigger{color:var(--showcase-warn)}
+.precision-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.25rem}
+.precision-card{background:var(--showcase-bg-soft);border:1px solid var(--showcase-border);border-radius:4px;padding:.85rem 1rem}
+.precision-card .pc-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:.3rem}
+.precision-card .pc-val{font-family:var(--showcase-heading-font);font-size:1.3rem;color:var(--showcase-text)}
+.precision-card .pc-note{font-size:.7rem;color:var(--showcase-text-muted);margin-top:.15rem}
+
+/* SAR BLOCK */
+.sar-block{background:var(--showcase-bg-soft);border:1px solid var(--showcase-border);border-radius:6px;padding:1.25rem;margin-bottom:1rem;font-size:.85rem;line-height:1.7}
+.sar-block-label{font-family:var(--showcase-mono-font);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--showcase-purple);margin-bottom:.5rem}
+.sar-text{color:var(--showcase-text)}
+.alert-box{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.3);border-radius:4px;padding:.85rem 1rem;margin-bottom:1.25rem;font-size:.83rem}
+.alert-box-title{font-family:var(--showcase-mono-font);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--showcase-warn);margin-bottom:.45rem;display:flex;align-items:center;gap:.5rem}
+.alert-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.35rem .75rem;font-size:.78rem;font-family:var(--showcase-mono-font)}
+.alert-detail .ak{color:var(--showcase-text-muted)}.alert-detail .av{color:var(--showcase-text)}
+
+/* MANDATE PREVIEW */
+.mandate-preview{background:var(--ink);border-radius:6px;padding:1.25rem;margin-bottom:1.25rem;font-family:var(--showcase-mono-font);font-size:.76rem;color:#7090b0;line-height:1.65;max-height:320px;overflow-y:auto}
+.mandate-preview .mk{color:#4a9fdf}.mandate-preview .ms{color:#10b981}.mandate-preview .mn{color:#c09040}
+
+.run-row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin:1.5rem 0 .5rem}
+.run-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--showcase-error);color:#fff;padding:.75rem 2rem;border-radius:5px;font-size:.9rem;font-weight:500;letter-spacing:.02em;border:none}
+.run-btn:hover{background:#c41e1e}
+.run-note{font-size:.78rem;color:var(--showcase-text-muted)}
+
+.results-section{margin-top:1rem;display:none}.results-section.visible{display:block}
+.results-export-row{display:flex;flex-wrap:wrap;gap:.75rem;padding-top:1.5rem;border-top:1px solid var(--showcase-border);margin-top:2rem}
+.export-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border-radius:4px;font-size:.83rem;font-weight:500;border:1px solid var(--showcase-border);color:var(--showcase-text);background:var(--showcase-bg-soft);cursor:pointer;transition:all .15s}
+.export-btn:hover{border-color:var(--showcase-accent);color:var(--showcase-accent)}
+.export-btn.primary{background:var(--showcase-success);border-color:var(--showcase-success);color:#fff}
+.export-btn.primary:hover{background:#059669;border-color:#059669}
+
+footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2rem}
+.footer-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:1.05rem;color:#fff;margin-bottom:.35rem}
+.footer-brand span{color:var(--gold)}
+.footer-copy{font-size:.78rem;color:var(--muted)}
+.footer-badges{font-family:var(--showcase-mono-font);font-size:.65rem;color:var(--muted);margin-top:.4rem;letter-spacing:.04em}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-size:.82rem;color:var(--body);text-decoration:none}
+.footer-links a:hover{color:var(--accent-lt)}
+</style>
+</head>
+<body>
+
+<nav role="navigation" aria-label="Post Oak Labs navigation" class="pol-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">Post Oak <span>Labs</span></a>
+    <div class="nav-bc" aria-label="Breadcrumb">
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href="/demos/">Showcase</a><span aria-hidden="true">›</span>
+      <a href="/demos/regtech/">RegTech</a><span aria-hidden="true">›</span>
+      <span aria-current="page">AML End-to-End</span>
+    </div>
+    <nav class="nav-links" aria-label="Site links">
+      <a href="/demos/">← All Demos</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html" class="nav-cta">Talk to us</a>
+    </nav>
+  </div>
+</nav>
+
+<div class="showcase-header-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-eyebrow">Fintech Intelligence Showcase</span>
+      <span class="strip-title">Demo #34 — AML End-to-End Workflow</span>
+    </div>
+    <div class="strip-actions">
+      <a href="https://ainumbers.co/tools/110-customer-risk-rating.html" target="_blank" rel="noopener">T110 CRR ↗</a>
+      <a href="https://ainumbers.co/tools/116-tm-rule-builder.html" target="_blank" rel="noopener">T116 TM Rules ↗</a>
+      <a href="https://ainumbers.co/tools/121-sar-narrative-generator.html" target="_blank" rel="noopener">T121 SAR ↗</a>
+      <a href="https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html" target="_blank" rel="noopener">T131 AP2 AML ↗</a>
+    </div>
+  </div>
+</div>
+
+<main class="demo-canvas" role="main">
+  <div class="canvas-inner">
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow-badges">
+        <span class="eyebrow-badge error">AML · Financial Crime</span>
+        <span class="eyebrow-badge gold">T110 · T116 · T121 · T131</span>
+        <span class="eyebrow-badge warn">CRR → TM Rules → SAR → Mandate</span>
+        <span class="eyebrow-badge">FATF R.10 · 4AMLD / 6AMLD</span>
+        <span class="eyebrow-badge">Zero PII</span>
+      </div>
+      <h1 id="hero-title">AML <em>End-to-End Workflow</em></h1>
+      <p class="hero-sub">Select a customer profile. The workflow scores risk across eight CRR dimensions, auto-calibrates transaction monitoring thresholds to the assigned tier, simulates a triggered alert and generates a SAR narrative, then exports the complete financial-crime compliance posture as an AP2 Policy Mandate — the same chain a RegTech platform operationalises across its customer base.</p>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-l">CRR Dimensions</div><div class="hstat-v error">8</div><div class="hstat-note">FATF R.10 risk factors</div></div>
+        <div class="hstat"><div class="hstat-l">TM Rule Families</div><div class="hstat-v warn">5</div><div class="hstat-note">Velocity · Amount · Volume · Geo · Layer</div></div>
+        <div class="hstat"><div class="hstat-l">SAR Sections</div><div class="hstat-v purple" style="color:var(--showcase-purple)">5</div><div class="hstat-note">FinCEN / FINTRAC / NCA structure</div></div>
+        <div class="hstat"><div class="hstat-l">Risk Tiers</div><div class="hstat-v accent">4</div><div class="hstat-note">Low · Medium · High · Prohibited</div></div>
+        <div class="hstat"><div class="hstat-l">Mandate Schema</div><div class="hstat-v success">AP2 v1.0</div><div class="hstat-note">@postoaklabs.com/aml-end-to-end-v1</div></div>
+      </div>
+    </section>
+
+    <div class="pii-banner" role="note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+    </div>
+
+    <!-- WORKFLOW FLOW BAR -->
+    <div class="flow-bar" role="presentation" aria-label="Workflow stages">
+      <div class="flow-step">
+        <div class="flow-num crr">01</div>
+        <div class="flow-label">Customer Risk Rating</div>
+        <div class="flow-tool">T110</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-num tm">02</div>
+        <div class="flow-label">TM Rule Config</div>
+        <div class="flow-tool">T116</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-num sar">03</div>
+        <div class="flow-label">SAR Narrative</div>
+        <div class="flow-tool">T121</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-num ap2">04</div>
+        <div class="flow-label">AP2 Mandate Export</div>
+        <div class="flow-tool">T131</div>
+      </div>
+    </div>
+
+    <div class="tool-layout">
+      <div class="tool-main">
+
+        <div class="section-hd">Customer Profiles (Preset)</div>
+        <div class="scenario-row" role="group" aria-label="Customer profile preset">
+          <button class="scenario-btn" data-scenario="vasp">🔐 Crypto Exchange VASP</button>
+          <button class="scenario-btn" data-scenario="trade">🚢 Trade Finance Importer</button>
+          <button class="scenario-btn" data-scenario="retail">👤 Digital Wallet Retail</button>
+        </div>
+
+        <div class="section-hd">CRR Inputs — Risk Dimension Scores (0 = Low Risk · 100 = High Risk)</div>
+        <div class="inputs-grid">
+          <div class="field">
+            <label for="dim-geography">Geography / Jurisdiction</label>
+            <select id="dim-geography">
+              <option value="5">FATF Green · EU / US / UK / AU (5)</option>
+              <option value="30">FATF Enhanced monitoring (30)</option>
+              <option value="65">FATF Grey list jurisdiction (65)</option>
+              <option value="90">FATF Black list / sanctioned (90)</option>
+            </select>
+            <span class="hint">Customer's country of domicile</span>
+          </div>
+          <div class="field">
+            <label for="dim-pep">PEP / Sanctions Proximity</label>
+            <select id="dim-pep">
+              <option value="0">No PEP connection (0)</option>
+              <option value="40">Family member of PEP (40)</option>
+              <option value="70">PEP — domestic (70)</option>
+              <option value="90">PEP — foreign / senior (90)</option>
+            </select>
+            <span class="hint">Politically exposed person status</span>
+          </div>
+          <div class="field">
+            <label for="dim-industry">Industry / Business Type</label>
+            <select id="dim-industry">
+              <option value="10">Retail / consumer (10)</option>
+              <option value="25">SME — general trade (25)</option>
+              <option value="55">Import / export trading (55)</option>
+              <option value="70">VASP / crypto exchange (70)</option>
+              <option value="80">Cash-intensive (MSB, pawnshop) (80)</option>
+            </select>
+            <span class="hint">FATF sectoral risk typology</span>
+          </div>
+          <div class="field">
+            <label for="dim-channel">Onboarding Channel</label>
+            <select id="dim-channel">
+              <option value="5">In-person · full ID verified (5)</option>
+              <option value="20">Digital · liveness check (20)</option>
+              <option value="45">Digital · no liveness (45)</option>
+              <option value="70">Third-party introduced (70)</option>
+            </select>
+            <span class="hint">CDD capture method</span>
+          </div>
+          <div class="field">
+            <label for="dim-volume">Expected Transaction Volume</label>
+            <select id="dim-volume">
+              <option value="5">Low — &lt;$10K/mo (5)</option>
+              <option value="25">Medium — $10K–$100K/mo (25)</option>
+              <option value="55">High — $100K–$1M/mo (55)</option>
+              <option value="80">Very high — &gt;$1M/mo (80)</option>
+            </select>
+            <span class="hint">Monthly expected throughput</span>
+          </div>
+          <div class="field">
+            <label for="dim-ownership">Ownership Complexity</label>
+            <select id="dim-ownership">
+              <option value="5">Individual / simple structure (5)</option>
+              <option value="25">Single-layer corporate (25)</option>
+              <option value="55">Multi-layer with nominee (55)</option>
+              <option value="80">Complex offshore / bearer shares (80)</option>
+            </select>
+            <span class="hint">UBO chain depth</span>
+          </div>
+          <div class="field">
+            <label for="dim-adverse">Adverse Media Score (0–100)</label>
+            <input type="number" id="dim-adverse" value="0" min="0" max="100" step="5">
+            <span class="hint">0 = clean · 100 = confirmed adverse</span>
+          </div>
+          <div class="field">
+            <label for="dim-product">Product Type</label>
+            <select id="dim-product">
+              <option value="5">Current / savings account (5)</option>
+              <option value="20">Payment / e-money wallet (20)</option>
+              <option value="45">FX / cross-border transfers (45)</option>
+              <option value="65">Crypto / digital assets (65)</option>
+              <option value="80">Trade finance / LC (80)</option>
+            </select>
+            <span class="hint">Product risk classification</span>
+          </div>
+        </div>
+
+        <div class="run-row">
+          <button class="run-btn" id="runBtn">Run AML Workflow →</button>
+          <span class="run-note">Deterministic · client-side · all four stages</span>
+        </div>
+
+        <section class="results-section" id="results">
+
+          <!-- PANEL 1: CRR -->
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-num crr">Panel 01 · T110 Customer Risk Rating</div>
+              <h2>CRR Score &amp; Tier Assignment</h2>
+            </div>
+            <div id="tierBadge"></div>
+            <div class="diag-grid" id="crrGrid"></div>
+            <div class="section-hd" style="margin-top:1.25rem">Risk Dimension Breakdown</div>
+            <div class="dim-list" id="dimList"></div>
+            <div id="eddFlags"></div>
+          </div>
+
+          <!-- PANEL 2: TM RULES -->
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-num tm">Panel 02 · T116 Transaction Monitoring Rules</div>
+              <h2>Rule Set Calibrated to CRR Tier</h2>
+            </div>
+            <div class="rules-table-wrap">
+              <table class="rules-table" id="rulesTable">
+                <thead><tr><th>Rule Family</th><th>Threshold</th><th>Lookback</th><th>Alert Count (100K tx)</th><th>Est. Precision</th><th>Status</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="precision-row" id="precisionRow"></div>
+          </div>
+
+          <!-- PANEL 3: SAR -->
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-num sar">Panel 03 · T121 SAR Narrative Generation</div>
+              <h2>Triggered Alert &amp; SAR Draft</h2>
+            </div>
+            <div class="alert-box" id="alertBox"></div>
+            <div id="sarBlocks"></div>
+          </div>
+
+          <!-- PANEL 4: AP2 MANDATE -->
+          <div class="panel">
+            <div class="panel-hd">
+              <div class="panel-num ap2">Panel 04 · T131 AP2 AML Policy Mandate</div>
+              <h2>Mandate Preview &amp; Export</h2>
+            </div>
+            <div class="mandate-preview" id="mandatePreview"></div>
+            <div class="results-export-row">
+              <button class="export-btn primary" id="ap2ExportBtn" type="button">📋 Export AP2 Policy Mandate (JSON)</button>
+              <button class="export-btn" id="mdExportBtn" type="button">📝 Export Markdown Report</button>
+            </div>
+          </div>
+
+        </section>
+      </div>
+
+      <aside class="var-sidebar" aria-labelledby="var-title">
+        <div class="var-sidebar-label">Value at Risk</div>
+        <h3 id="var-title">The four AML tools that every RegTech buyer evaluates together</h3>
+        <p>A CRR score without TM calibration produces wrong alert volumes. TM rules without a SAR workflow leave alerts unresolved. And none of it compounds into a defensible compliance posture without a structured mandate the audit team can replay.</p>
+        <p>This chain — CRR → TM → SAR → Mandate — is the operational backbone every AML platform acquirer stress-tests: does the target's tooling produce a coherent, auditable, evidence-grade output across the whole chain?</p>
+        <div class="var-stat">FATF mutual eval failure rate: ~60%</div>
+        <div class="var-stat">Avg SAR-to-investigation lag: 47 days</div>
+        <div class="var-stat">False-positive alert rate (industry): 95–98%</div>
+        <div class="cite">Refs: FATF Mutual Evaluation Procedures 2023, FinCEN SAR Activity Review 2024, KPMG AML Benchmarking Survey 2024.</div>
+      </aside>
+    </div>
+
+  </div>
+</main>
+
+<footer role="contentinfo" class="pol-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Post Oak <span>Labs</span></div>
+      <div class="footer-copy">© 2026 Post Oak Labs · CC BY 4.0 · Houston, TX</div>
+      <div class="footer-badges">🔒 No data leaves your browser · 💻 Client-side only · CC BY 4.0</div>
+    </div>
+    <div class="footer-links">
+      <a href="/">Home</a><a href="/demos/">Showcase</a>
+      <a href="/demos/regtech/">RegTech Hub</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+/* ── DIMENSION METADATA ── */
+const DIMS = [
+  { id:'geography', label:'Geography',        weight:0.20 },
+  { id:'pep',       label:'PEP / Sanctions',  weight:0.18 },
+  { id:'industry',  label:'Industry Type',    weight:0.15 },
+  { id:'channel',   label:'Onboarding Channel',weight:0.10 },
+  { id:'volume',    label:'Transaction Volume',weight:0.14 },
+  { id:'ownership', label:'Ownership Complexity',weight:0.12 },
+  { id:'adverse',   label:'Adverse Media',    weight:0.06 },
+  { id:'product',   label:'Product Type',     weight:0.05 }
+];
+
+const SCENARIOS = {
+  vasp: { geography:30, pep:0, industry:70, channel:20, volume:80, ownership:55, adverse:15, product:65,
+    label:'Crypto Exchange VASP', city:'Singapore', counterparty:'Unknown offshore wallet', amount:485000 },
+  trade: { geography:55, pep:0, industry:55, channel:45, volume:55, ownership:55, adverse:5, product:80,
+    label:'Trade Finance Importer', city:'Dubai', counterparty:'Offshore trading company', amount:320000 },
+  retail: { geography:5, pep:0, industry:10, channel:20, volume:5, ownership:5, adverse:0, product:20,
+    label:'Digital Wallet Retail', city:'London', counterparty:'Retail payee', amount:1200 }
+};
+
+const uuid4 = () => { const b = new Uint8Array(16); crypto.getRandomValues(b); b[6]=(b[6]&0x0f)|0x40; b[8]=(b[8]&0x3f)|0x80; const h = Array.from(b,x=>x.toString(16).padStart(2,'0')).join(''); return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`; };
+const hashStub = (s) => { let h=0n; for(const c of s) h=(h*1315423911n+BigInt(c.charCodeAt(0)))&0xffffffffffffffffn; const x=h.toString(16).padStart(16,'0'); return (x+x+x+x).slice(0,64); };
+
+let lastResult = null;
+
+function readInputs() {
+  const vals = {};
+  for (const d of DIMS) {
+    const el = document.getElementById('dim-' + d.id);
+    vals[d.id] = Number(el.value) || 0;
+  }
+  const scKey = document.querySelector('.scenario-btn.active')?.dataset?.scenario || null;
+  const scData = scKey ? SCENARIOS[scKey] : null;
+  return { vals, scKey, scData };
+}
+
+function computeCRR(vals) {
+  let composite = 0;
+  const details = [];
+  for (const d of DIMS) {
+    const score = vals[d.id];
+    const weighted = score * d.weight;
+    composite += weighted;
+    const cls = score < 35 ? 'low' : score < 65 ? 'medium' : 'high';
+    details.push({ ...d, score, weighted, cls });
+  }
+  composite = Math.round(composite);
+  const tier = composite < 30 ? 'low' : composite < 55 ? 'medium' : composite < 80 ? 'high' : 'prohibited';
+  const tierLabel = { low:'Low Risk', medium:'Medium Risk', high:'High Risk', prohibited:'Prohibited' };
+  const reviewCadence = { low:'Annual', medium:'6-monthly', high:'Quarterly', prohibited:'Immediate exit' };
+  const eddRequired = composite >= 55;
+  const eddTriggers = details.filter(d => d.score >= 65).map(d => d.label);
+  return { composite, tier, tierLabel: tierLabel[tier], reviewCadence: reviewCadence[tier], eddRequired, eddTriggers, details };
+}
+
+function computeTM(crr) {
+  /* Auto-calibrate TM rules to CRR tier */
+  const multiplier = { low:3.0, medium:1.8, high:1.0, prohibited:0.5 }[crr.tier];
+  const rules = [
+    { family:'Velocity', desc:'Transactions per day',
+      base:{ low:20, medium:10, high:5, prohibited:2 }[crr.tier],
+      unit:'tx/day', lookback:'1 day',
+      alertRate:{ low:0.8, medium:1.5, high:2.8, prohibited:5.0 }[crr.tier],
+      precision:{ low:12, medium:18, high:24, prohibited:30 }[crr.tier] },
+    { family:'Single Amount', desc:'Single transaction ceiling',
+      base:{ low:50000, medium:15000, high:5000, prohibited:1000 }[crr.tier],
+      unit:'USD', lookback:'per tx',
+      alertRate:{ low:0.3, medium:0.9, high:2.1, prohibited:4.5 }[crr.tier],
+      precision:{ low:35, medium:28, high:20, prohibited:15 }[crr.tier] },
+    { family:'Monthly Volume', desc:'Total monthly throughput',
+      base:{ low:500000, medium:150000, high:50000, prohibited:10000 }[crr.tier],
+      unit:'USD/month', lookback:'30 days',
+      alertRate:{ low:0.2, medium:0.7, high:1.8, prohibited:3.5 }[crr.tier],
+      precision:{ low:40, medium:30, high:22, prohibited:18 }[crr.tier] },
+    { family:'Geography', desc:'Transactions to/from high-risk corridors',
+      base:{ low:5, medium:2, high:1, prohibited:0 }[crr.tier],
+      unit:'per 30 days', lookback:'30 days',
+      alertRate:{ low:0.1, medium:0.4, high:1.2, prohibited:3.0 }[crr.tier],
+      precision:{ low:55, medium:45, high:38, prohibited:30 }[crr.tier] },
+    { family:'Layering', desc:'Round-trip / structuring patterns',
+      base:{ low:3, medium:2, high:1, prohibited:1 }[crr.tier],
+      unit:'pattern hits', lookback:'7 days',
+      alertRate:{ low:0.15, medium:0.5, high:1.4, prohibited:2.8 }[crr.tier],
+      precision:{ low:60, medium:50, high:40, prohibited:32 }[crr.tier] }
+  ];
+  const totalAlertRate = rules.reduce((s, r) => s + r.alertRate, 0);
+  const alertsPerHundredK = Math.round(totalAlertRate * 1000);
+  const avgPrecision = Math.round(rules.reduce((s, r) => s + r.precision, 0) / rules.length);
+  const fteDaysPerAlert = 0.4;
+  const annualAlerts = Math.round(alertsPerHundredK * 12);
+  const fteDays = Math.round(annualAlerts * fteDaysPerAlert);
+  return { rules, totalAlertRate, alertsPerHundredK, avgPrecision, fteDays, annualAlerts };
+}
+
+function generateSAR(crr, tm, inp) {
+  const sc = inp.scData || { label:'Unknown Customer', city:'Unknown', counterparty:'Unknown Entity', amount:99999 };
+  const fmtAmt = (n) => '$' + Number(n).toLocaleString('en-US');
+  const triggerRule = tm.rules.find(r => r.family === (crr.tier === 'high' || crr.tier === 'prohibited' ? 'Layering' : 'Single Amount'));
+  const triggerDesc = triggerRule ? triggerRule.family + ' rule breach' : 'Velocity anomaly';
+  const today = new Date();
+  const dateStr = today.toISOString().split('T')[0];
+  const suspiciousPeriodStart = new Date(today - 30*24*3600*1000).toISOString().split('T')[0];
+
+  const narrative = {
+    subject: `Subject is a ${crr.tierLabel.toLowerCase()} customer (CRR composite: ${crr.composite}/100) domiciled in ${sc.city}, operating in the ${document.getElementById('dim-industry')?.selectedOptions[0]?.text?.split('(')[0]?.trim() || 'financial services'} sector. Customer was onboarded via ${document.getElementById('dim-channel')?.selectedOptions[0]?.text?.split('(')[0]?.trim() || 'digital channel'} and assigned a ${crr.tierLabel} risk tier at onboarding. ${crr.eddRequired ? 'Enhanced due diligence was conducted at origination.' : 'Standard CDD was applied at origination.'}`,
+
+    activity: `Between ${suspiciousPeriodStart} and ${dateStr}, the account recorded unusual transaction patterns inconsistent with the customer's stated business purpose. A ${triggerDesc} was flagged by the automated TM system: a single transfer of ${fmtAmt(sc.amount)} to ${sc.counterparty}. ${crr.tier === 'high' || crr.tier === 'prohibited' ? 'Multiple structuring indicators were detected within the lookback window, including round-trip transfers and rapid account turnover inconsistent with the declared operating profile.' : 'Transaction volume exceeded the expected monthly threshold for the assigned risk tier.'}`,
+
+    knownFacts: `Customer jurisdiction risk score: ${inp.vals.geography}/100. PEP/sanctions proximity: ${inp.vals.pep}/100. Adverse media score: ${inp.vals.adverse}/100. Ownership complexity: ${inp.vals.ownership}/100. Monthly expected volume: ${document.getElementById('dim-volume')?.selectedOptions[0]?.text?.split('(')[0]?.trim() || 'medium'}. No prior SARs on record for this customer ID. ${crr.eddTriggers.length > 0 ? 'EDD triggers identified: ' + crr.eddTriggers.join(', ') + '.' : 'No additional EDD triggers identified.'}`,
+
+    timing: `Alert generated: ${dateStr}. Suspicious activity period: ${suspiciousPeriodStart} to ${dateStr} (30-day window). Review deadline under applicable regulation: ${new Date(today.getTime() + 30*24*3600*1000).toISOString().split('T')[0]} (30-day filing window). Analyst escalation initiated: ${dateStr}.`,
+
+    regulatoryHooks: `Applicable frameworks: FinCEN 31 CFR § 1020.320 (US), POCA 2002 / TACT 2000 (UK), 6AMLD Art. 3 (EU), FATF Recommendation 10 (CDD), FATF Recommendation 20 (STR reporting). Risk-based approach rationale: ${crr.tierLabel} CRR tier with composite score ${crr.composite}/100 justifies enhanced scrutiny. ${crr.tier === 'prohibited' ? 'Relationship exit initiated per policy.' : 'Relationship review scheduled per ' + crr.reviewCadence + ' cadence.'}`
+  };
+  return { narrative, triggerDesc, triggerRule, dateStr, suspiciousPeriodStart, sc };
+}
+
+function buildMandate(crr, tm, sar, inp) {
+  return {
+    mandate_schema: '@postoaklabs.com/aml-end-to-end-v1',
+    mandate_id: uuid4(),
+    schema_version: '1.0.0',
+    issued_at: new Date().toISOString(),
+    issued_by: 'Post Oak Labs · AML End-to-End Workflow',
+    workflow_stages: ['crr-scoring', 'tm-rule-calibration', 'sar-narrative', 'mandate-export'],
+    customer_risk_rating: {
+      composite_score: crr.composite,
+      tier: crr.tier,
+      tier_label: crr.tierLabel,
+      review_cadence: crr.reviewCadence,
+      edd_required: crr.eddRequired,
+      edd_triggers: crr.eddTriggers,
+      dimension_scores: Object.fromEntries(DIMS.map(d => [d.id, inp.vals[d.id]]))
+    },
+    transaction_monitoring: {
+      tier_calibration: crr.tier,
+      rules: tm.rules.map(r => ({ family: r.family, threshold: r.base, unit: r.unit, lookback: r.lookback,
+        estimated_alerts_per_100k_tx: Math.round(r.alertRate * 1000),
+        estimated_precision_pct: r.precision })),
+      aggregate: { total_alert_rate_per_100k: tm.alertsPerHundredK, avg_precision_pct: tm.avgPrecision,
+        estimated_annual_alerts: tm.annualAlerts, estimated_fte_days_pa: tm.fteDays }
+    },
+    sar_trigger: {
+      triggered: true,
+      trigger_rule: sar.triggerRule?.family || 'Manual review',
+      trigger_description: sar.triggerDesc,
+      alert_date: sar.dateStr,
+      suspicious_period: { start: sar.suspiciousPeriodStart, end: sar.dateStr },
+      narrative_sections: {
+        subject: sar.narrative.subject,
+        suspicious_activity: sar.narrative.activity,
+        known_facts: sar.narrative.knownFacts,
+        timing: sar.narrative.timing,
+        regulatory_hooks: sar.narrative.regulatoryHooks
+      }
+    },
+    obligations: [
+      `Review customer CRR at ${crr.reviewCadence.toLowerCase()} cadence or upon material change in risk profile.`,
+      `Apply ${crr.tier === 'low' ? 'standard' : 'enhanced'} CDD procedures at next review.`,
+      `Maintain TM alert log for minimum 5 years per record-keeping requirements.`,
+      crr.tier === 'prohibited' ? 'Initiate relationship exit per policy — do not process further transactions.' :
+        `File SAR within 30 days of alert date if suspicion is not resolved through review.`,
+      'Re-score CRR if adverse media score increases by ≥20 points or new PEP connection is identified.',
+      'Escalate to MLRO if three or more EDD triggers are active simultaneously.'
+    ],
+    audit_signature: { client_side_executed: true, deterministic_run: true, no_pii_transmitted: true,
+      input_hash: hashStub(JSON.stringify(inp.vals)) }
+  };
+}
+
+/* ── RENDER FUNCTIONS ── */
+
+function renderCRR(crr) {
+  const tierCls = crr.tier;
+  const tierIcons = { low:'✓', medium:'⚠', high:'⚠', prohibited:'✗' };
+  document.getElementById('tierBadge').innerHTML =
+    `<div class="tier-badge ${tierCls}">${tierIcons[tierCls]} ${crr.tierLabel} — CRR Composite: ${crr.composite}/100</div>`;
+
+  const grid = document.getElementById('crrGrid');
+  grid.innerHTML = '';
+  const cells = [
+    { l:'Composite Score', v: crr.composite + '/100', s: crr.tierLabel, cls: tierCls === 'low' ? 'success' : tierCls === 'medium' ? 'warn' : 'error' },
+    { l:'Risk Tier', v: crr.tierLabel, s: 'Assigned tier', cls: tierCls === 'low' ? 'success' : tierCls === 'medium' ? 'warn' : tierCls === 'high' ? 'error' : 'purple' },
+    { l:'Review Cadence', v: crr.reviewCadence, s: 'Next scheduled review', cls: 'accent' },
+    { l:'EDD Required', v: crr.eddRequired ? 'Yes' : 'No', s: crr.eddRequired ? crr.eddTriggers.length + ' trigger(s)' : 'Standard CDD sufficient', cls: crr.eddRequired ? 'warn' : 'success' }
+  ];
+  for (const c of cells) {
+    const el = document.createElement('div'); el.className = 'diag-cell';
+    el.innerHTML = `<div class="diag-label">${c.l}</div><div class="diag-val ${c.cls}">${c.v}</div><div class="diag-sub">${c.s}</div>`;
+    grid.appendChild(el);
+  }
+
+  const dl = document.getElementById('dimList');
+  dl.innerHTML = '';
+  for (const d of crr.details) {
+    const row = document.createElement('div'); row.className = 'dim-row';
+    row.innerHTML = `<div class="dim-label">${d.label}</div>
+      <div class="dim-bar-wrap"><div class="dim-bar ${d.cls}" style="width:${d.score}%"></div></div>
+      <div class="dim-score">${d.score}</div>
+      <div class="dim-weight">×${(d.weight*100).toFixed(0)}% wt</div>`;
+    dl.appendChild(row);
+  }
+
+  const edd = document.getElementById('eddFlags');
+  if (crr.eddRequired && crr.eddTriggers.length > 0) {
+    edd.innerHTML = `<div class="alert-box" style="border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.04)">
+      <div class="alert-box-title"><span>⚠</span> EDD Triggers Identified</div>
+      <div class="alert-detail">${crr.eddTriggers.map(t => `<span class="ak">${t}</span><span class="av">Elevated</span>`).join('')}</div>
+    </div>`;
+  } else {
+    edd.innerHTML = '';
+  }
+}
+
+function renderTM(tm, crr) {
+  const tbody = document.querySelector('#rulesTable tbody');
+  tbody.innerHTML = '';
+  for (const r of tm.rules) {
+    const tr = document.createElement('tr');
+    const threshold = typeof r.base === 'number' && r.base >= 1000 ? '$' + r.base.toLocaleString() : r.base;
+    tr.innerHTML = `<td><strong>${r.family}</strong><br><span style="color:var(--showcase-text-muted);font-size:.72rem">${r.desc}</span></td>
+      <td>${threshold} ${r.unit}</td>
+      <td>${r.lookback}</td>
+      <td class="trigger">${Math.round(r.alertRate * 1000)} / 100K</td>
+      <td>${r.precision}%</td>
+      <td class="enabled">● Active</td>`;
+    tbody.appendChild(tr);
+  }
+
+  const pr = document.getElementById('precisionRow');
+  pr.innerHTML = '';
+  const stats = [
+    { l:'Total Alerts / 100K tx', v: tm.alertsPerHundredK, note: 'Across all 5 rule families', cls: tm.alertsPerHundredK > 200 ? 'error' : 'warn' },
+    { l:'Avg Rule Precision', v: tm.avgPrecision + '%', note: 'True-positive rate', cls: tm.avgPrecision >= 40 ? 'success' : 'warn' },
+    { l:'Est. Annual Alerts', v: tm.annualAlerts.toLocaleString(), note: '12-month projection', cls: 'accent' },
+    { l:'Est. FTE-Days p.a.', v: tm.fteDays.toLocaleString(), note: 'At 0.4 d/alert', cls: 'accent' }
+  ];
+  for (const s of stats) {
+    const c = document.createElement('div'); c.className = 'precision-card';
+    c.innerHTML = `<div class="pc-label">${s.l}</div><div class="pc-val" style="color:var(--showcase-${s.cls === 'error' ? 'error' : s.cls === 'warn' ? 'warn' : s.cls === 'success' ? 'success' : 'accent'})">${s.v}</div><div class="pc-note">${s.note}</div>`;
+    pr.appendChild(c);
+  }
+}
+
+function renderSAR(sar) {
+  const ab = document.getElementById('alertBox');
+  const fmtAmt = (n) => '$' + Number(n).toLocaleString('en-US');
+  ab.innerHTML = `<div class="alert-box-title"><span>⚡</span> Alert Triggered — ${sar.triggerDesc}</div>
+    <div class="alert-detail">
+      <span class="ak">Amount</span><span class="av">${fmtAmt(sar.sc.amount)}</span>
+      <span class="ak">Counterparty</span><span class="av">${sar.sc.counterparty}</span>
+      <span class="ak">Date</span><span class="av">${sar.dateStr}</span>
+      <span class="ak">Lookback</span><span class="av">${sar.suspiciousPeriodStart} → ${sar.dateStr}</span>
+    </div>`;
+
+  const sarSections = [
+    { label:'Section 1 · Subject Description', text: sar.narrative.subject },
+    { label:'Section 2 · Suspicious Activity', text: sar.narrative.activity },
+    { label:'Section 3 · Known Facts', text: sar.narrative.knownFacts },
+    { label:'Section 4 · Timing', text: sar.narrative.timing },
+    { label:'Section 5 · Regulatory Hooks', text: sar.narrative.regulatoryHooks }
+  ];
+  const sb = document.getElementById('sarBlocks');
+  sb.innerHTML = '';
+  for (const s of sarSections) {
+    const el = document.createElement('div'); el.className = 'sar-block';
+    el.innerHTML = `<div class="sar-block-label">${s.label}</div><div class="sar-text">${s.text}</div>`;
+    sb.appendChild(el);
+  }
+}
+
+function renderMandate(mandate) {
+  const preview = document.getElementById('mandatePreview');
+  const j = JSON.stringify(mandate, null, 2);
+  // Syntax-highlight key tokens for readability
+  const highlighted = j
+    .replace(/"([^"]+)":/g, '<span class="mk">"$1"</span>:')
+    .replace(/: "([^"]+)"/g, ': <span class="ms">"$1"</span>')
+    .replace(/: (true|false|null)/g, ': <span class="mn">$1</span>')
+    .replace(/: (\d+\.?\d*)/g, ': <span class="mn">$1</span>');
+  preview.innerHTML = highlighted;
+}
+
+function run() {
+  const inp = readInputs();
+  const crr = computeCRR(inp.vals);
+  const tm = computeTM(crr);
+  const sar = generateSAR(crr, tm, inp);
+  const mandate = buildMandate(crr, tm, sar, inp);
+
+  renderCRR(crr);
+  renderTM(tm, crr);
+  renderSAR(sar);
+  renderMandate(mandate);
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+  lastResult = { inp, crr, tm, sar, mandate };
+}
+
+function applyScenario(name) {
+  const s = SCENARIOS[name];
+  if (!s) return;
+  for (const d of DIMS) {
+    const el = document.getElementById('dim-' + d.id);
+    if (el && s[d.id] !== undefined) el.value = s[d.id];
+  }
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b.dataset.scenario === name));
+  run();
+}
+
+function exportPolicyMandate() {
+  if (!lastResult) { alert('Run the workflow first.'); return; }
+  const blob = new Blob([JSON.stringify(lastResult.mandate, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `aml-mandate-${Date.now()}.policy.json`; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function exportMarkdown() {
+  if (!lastResult) { alert('Run the workflow first.'); return; }
+  const { crr, tm, sar, mandate } = lastResult;
+  const md = [
+    `# AML End-to-End Workflow Report`, ``,
+    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
+    `**Tool:** Post Oak Labs · AML End-to-End Workflow  `,
+    `**Schema:** \`@postoaklabs.com/aml-end-to-end-v1\``, ``,
+    `## Panel 01 · Customer Risk Rating`, ``,
+    `- Composite Score: **${crr.composite}/100**`,
+    `- Risk Tier: **${crr.tierLabel}**`,
+    `- Review Cadence: **${crr.reviewCadence}**`,
+    `- EDD Required: **${crr.eddRequired ? 'Yes' : 'No'}**`,
+    crr.eddTriggers.length > 0 ? `- EDD Triggers: ${crr.eddTriggers.join(', ')}` : ``, ``,
+    `## Panel 02 · Transaction Monitoring Rules`, ``,
+    `| Rule Family | Threshold | Lookback | Alerts/100K | Precision |`,
+    `|---|---|---|---|---|`,
+    ...tm.rules.map(r => `| ${r.family} | ${r.base} ${r.unit} | ${r.lookback} | ${Math.round(r.alertRate*1000)} | ${r.precision}% |`),
+    ``, `- Total alerts/100K tx: **${tm.alertsPerHundredK}**`,
+    `- Avg precision: **${tm.avgPrecision}%**`,
+    `- Est. annual FTE-days: **${tm.fteDays}**`, ``,
+    `## Panel 03 · SAR Narrative`, ``,
+    `**Alert:** ${sar.triggerDesc} — ${new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(sar.sc.amount)}`, ``,
+    `### Section 1 · Subject`, sar.narrative.subject, ``,
+    `### Section 2 · Suspicious Activity`, sar.narrative.activity, ``,
+    `### Section 3 · Known Facts`, sar.narrative.knownFacts, ``,
+    `### Section 4 · Timing`, sar.narrative.timing, ``,
+    `### Section 5 · Regulatory Hooks`, sar.narrative.regulatoryHooks, ``,
+    `## Panel 04 · Obligations`, ``,
+    ...mandate.obligations.map(o => `- ${o}`), ``,
+    `---`, `*© Post Oak Labs · postoaklabs.com · CC BY 4.0*`
+  ].join('\n');
+  const blob = new Blob([md], { type:'text/markdown' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `aml-report-${Date.now()}.md`; a.click(); URL.revokeObjectURL(a.href);
+}
+
+document.getElementById('runBtn').addEventListener('click', run);
+document.getElementById('ap2ExportBtn').addEventListener('click', exportPolicyMandate);
+document.getElementById('mdExportBtn').addEventListener('click', exportMarkdown);
+document.querySelectorAll('.scenario-btn').forEach(b => b.addEventListener('click', () => applyScenario(b.dataset.scenario)));
+setTimeout(() => applyScenario('vasp'), 60);
+</script>
+</body>
+</html>
