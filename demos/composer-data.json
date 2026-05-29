@@ -4,7 +4,7 @@
     "source": "AINumbers/TOOLS_INDEX.md + AINumbers/tools/*.html",
     "tool_count": 262,
     "category_count": 15,
-    "demo_count": 38
+    "demo_count": 40
   },
   "tools": [
     {
@@ -411,7 +411,7 @@
       "category": "AML/KYC & Financial Crime",
       "url": "https://ainumbers.co/tools/123-aml-program-gap-auditor.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/amla-supervisory-readiness-gap-analyser.html",
       "personas": [
         "Compliance"
       ]
@@ -466,7 +466,7 @@
       "category": "AML/KYC & Financial Crime",
       "url": "https://ainumbers.co/tools/128-stablecoin-vasp-aml-mapper.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/genius-act-issuer-readiness-lab.html",
       "personas": [
         "Compliance"
       ]
@@ -3037,6 +3037,19 @@
       "personas": [
         "Consumer",
         "Advisor"
+      ]
+    },
+    {
+      "id": "T328",
+      "name": "GENIUS Act Reserve Composition Optimizer",
+      "category": "Compliance & Consent",
+      "url": "https://ainumbers.co/tools/328-genius-act-reserve-optimizer.html",
+      "ap2_schema": "@ainumbers.co/genius-act-reserve-v1",
+      "demo": "/demos/genius-act-issuer-readiness-lab.html",
+      "personas": [
+        "Compliance",
+        "Treasury",
+        "Product"
       ]
     }
   ],

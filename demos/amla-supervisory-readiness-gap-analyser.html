@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMLA Supervisory Readiness Gap Analyser · Post Oak Labs</title>
+<meta name="description" content="Assess your institution's readiness for EU Anti-Money Laundering Authority (AMLA) supervision — effective 10 July 2027. CDD/KYC gaps, TM rule calibration, SAR standards, €10k cash ban, eIDAS CDD, and AP2 mandate export. Browser-based, zero PII.">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/demos/amla-supervisory-readiness-gap-analyser.html">
+<meta property="og:title" content="AMLA Supervisory Readiness Gap Analyser — Post Oak Labs">
+<meta property="og:description" content="Score your AML programme against AMLA requirements (applicable 10 July 2027). CDD, TM, SAR, sanctions — one gap assessment, one Policy Mandate.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://postoaklabs.com/demos/amla-supervisory-readiness-gap-analyser.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["SoftwareApplication", "FinancialService"],
+  "name": "AMLA Supervisory Readiness Gap Analyser",
+  "applicationCategory": "FinancialApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://postoaklabs.com/demos/amla-supervisory-readiness-gap-analyser.html",
+  "description": "Score your AML programme against EU Anti-Money Laundering Authority (AMLA) requirements — effective 10 July 2027. Covers CDD/EDD, KYC ongoing monitoring, transaction monitoring, SAR standards, sanctions, cash ban thresholds, and eIDAS-compliant verification. Policy Mandate export.",
+  "featureList": [
+    "Institution profiler: credit institution, payment institution, crypto-asset service provider, investment firm",
+    "Five-pillar AMLA gap assessment: CDD/EDD, KYC monitoring, TM rules, SAR/STR, sanctions",
+    "AMLA enforcement clock: days to 10 July 2027, direct supervision from 2028 for 40 high-risk institutions",
+    "New thresholds: €10k cash ban EU-wide, €3k identity check requirement",
+    "Policy Mandate export: @postoaklabs.com/amla-gap-v1"
+  ],
+  "keywords": "AMLA, EU AML authority, AML gap, AMLR 2027, CDD, KYC, transaction monitoring, SAR, sanctions, Frankfurt, RegTech",
+  "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
+  "dateModified": "2026-05-29",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+:root{
+  --ink:#050c15;--ink-2:#0a1628;--ink-3:#0f1e38;--ink-b:#1a2e4a;
+  --purple:#9B72F5;--purple-lt:#B794F4;--purple-dim:rgba(155,114,245,.12);
+  --gold:#D4A847;--gold-lt:#f0bc48;
+  --green:#22C55E;--green-dim:rgba(34,197,94,.1);
+  --red:#EF4444;--red-dim:rgba(239,68,68,.1);
+  --warn:#F59E0B;--warn-dim:rgba(245,158,11,.1);
+  --teal:#14B8A6;--teal-lt:#2DD4BF;
+  --canvas:#ffffff;--canvas-2:#f5f7fa;--canvas-3:#edf0f5;
+  --ct:#1a2a3e;--ct-2:#3a5270;--ct-3:#6b7a8d;--cb:#d0d8e4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:#a8c4de;font-family:'Sora',sans-serif;font-weight:300;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.15}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+
+.pol-nav{background:var(--ink-2);border-bottom:1px solid var(--ink-b);padding:0 2rem;height:54px;display:flex;align-items:center;position:sticky;top:0;z-index:300;backdrop-filter:blur(10px)}
+.pol-nav-inner{max-width:1100px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.pol-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.pol-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--purple),#7c3aed);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.pol-logo-text{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;color:#d4e8f8}
+.pol-logo-sub{font-size:.58rem;color:#3a5270}
+.pol-nav-links{display:flex;gap:1.5rem;align-items:center}
+.pol-nav-links a{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:#3a5270;transition:color .2s}
+.pol-nav-links a:hover{color:var(--purple-lt)}
+.pol-nav-cta{background:var(--purple)!important;color:#fff!important;padding:.28rem .85rem!important;border-radius:4px!important;font-weight:500!important}
+
+.tool-strip{background:var(--ink-3);border-bottom:1px solid var(--ink-b);padding:.55rem 2rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.tool-strip-label{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:#3a5270;white-space:nowrap}
+.tool-chip{display:inline-flex;align-items:center;gap:.35rem;font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:#6888a8;border:1px solid var(--ink-b);padding:.22rem .6rem;border-radius:3px;text-decoration:none;transition:all .18s}
+.tool-chip:hover{border-color:var(--purple);color:var(--purple-lt)}
+.tool-chip-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);opacity:.7}
+
+.pol-hero{padding:3.5rem 0 3rem;position:relative;overflow:hidden}
+.pol-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(155,114,245,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(155,114,245,.015) 1px,transparent 1px);background-size:52px 52px;pointer-events:none}
+.pol-hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--purple),transparent)}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--purple-lt);margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--purple)}
+.pol-hero h1{font-size:clamp(1.9rem,3.5vw,3rem);color:#eef6fd;max-width:760px;margin-bottom:.85rem}
+.pol-hero h1 em{font-style:italic;color:var(--purple-lt)}
+.pol-hero p{font-size:.92rem;color:#6888a8;max-width:620px;line-height:1.85;margin-bottom:1.5rem}
+.hero-badges{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.hbadge{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .65rem;border:1px solid;border-radius:2px}
+.hbadge-purple{color:var(--purple-lt);border-color:rgba(155,114,245,.3)}
+.hbadge-red{color:var(--red);border-color:rgba(239,68,68,.3)}
+.hbadge-muted{color:#3a5270;border-color:var(--ink-b)}
+
+.deadline-bar{background:var(--ink-3);border:1px solid var(--ink-b);border-left:3px solid var(--red);border-radius:4px;padding:.75rem 1.25rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.5rem 2rem;margin-bottom:0}
+.dl-date{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--red);font-weight:500;letter-spacing:.05em}
+.dl-label{font-size:.75rem;color:#a8c4de}
+.dl-sub{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#3a5270;text-transform:uppercase;letter-spacing:.1em}
+
+.demo-canvas{background:var(--canvas);color:var(--ct)}
+.demo-canvas-inner{max-width:1100px;margin:0 auto;padding:2rem 2rem 4rem}
+
+.step-nav{display:flex;border-bottom:2px solid var(--canvas-3);margin-bottom:2.5rem;overflow-x:auto}
+.step-tab{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);padding:1.1rem 1.3rem;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s;cursor:pointer}
+.step-tab:hover{color:var(--ct-2)}
+.step-tab.active{color:#6d28d9;border-bottom-color:var(--purple)}
+.step-tab.done .step-num{background:var(--purple)!important;color:#fff!important}
+.step-num{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--canvas-3);color:var(--ct-3);font-size:.48rem;text-align:center;line-height:18px;margin-right:.4rem;transition:all .2s}
+.step-tab.active .step-num{background:var(--purple);color:#fff}
+.step-panel{display:none}.step-panel.active{display:block}
+.step-h{padding:1.5rem 0 1.25rem;border-bottom:1px solid var(--canvas-3);margin-bottom:2rem}
+.step-h h2{font-size:1.45rem;color:var(--ct);margin-bottom:.35rem}
+.step-h p{font-size:.87rem;color:var(--ct-3);line-height:1.65}
+
+.field-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+@media(max-width:640px){.field-grid-2{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);font-weight:500}
+.field select,.field input{border:1px solid var(--cb);border-radius:4px;padding:.6rem .85rem;font-family:'Sora',sans-serif;font-size:.88rem;color:var(--ct);background:#fff;transition:border-color .18s;outline:none;-webkit-appearance:none}
+.field select:focus,.field input:focus{border-color:var(--purple)}
+.field-note{font-size:.72rem;color:var(--ct-3);margin-top:.15rem}
+
+/* Pillar assessment cards */
+.pillar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:1.5rem}
+.pillar-card{background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1.1rem 1.25rem}
+.pillar-name{font-weight:500;color:var(--ct);font-size:.9rem;margin-bottom:.65rem;display:flex;align-items:center;gap:.5rem}
+.pillar-tag{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .45rem;border-radius:2px;background:rgba(155,114,245,.1);color:var(--purple);border:1px solid rgba(155,114,245,.3)}
+
+.btn{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:4px;border:none;cursor:pointer;font-weight:500;transition:all .18s}
+.btn-purple{background:var(--purple);color:#fff}.btn-purple:hover{background:var(--purple-lt);color:#fff}
+.btn-ghost{background:transparent;color:var(--ct-2);border:1px solid var(--cb)}.btn-ghost:hover{border-color:var(--ct-2);color:var(--ct)}
+.btn-row{display:flex;gap:.75rem;margin-top:2rem;flex-wrap:wrap;align-items:center}
+
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1rem;margin-bottom:2rem}
+.score-card{background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1rem 1.1rem}
+.score-label{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);margin-bottom:.35rem}
+.score-val{font-size:1.45rem;font-family:'DM Serif Display',serif;color:var(--ct);line-height:1.1}
+.score-val.good{color:#15803d}.score-val.warn{color:var(--warn)}.score-val.bad{color:var(--red)}
+.score-sub{font-size:.7rem;color:var(--ct-3);margin-top:.15rem}
+
+.gap-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
+.gap-item{display:flex;gap:.75rem;align-items:flex-start;padding:.6rem .85rem;background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px}
+.gap-icon{font-size:.9rem;flex-shrink:0;line-height:1.5}
+.gap-pillar{font-family:'JetBrains Mono',monospace;font-size:.48rem;text-transform:uppercase;letter-spacing:.08em;color:var(--purple);width:80px;flex-shrink:0;padding-top:3px}
+.gap-title{font-size:.8rem;color:var(--ct);font-weight:500;margin-bottom:.18rem}
+.gap-desc{font-size:.72rem;color:var(--ct-3);line-height:1.55}
+
+.data-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:1.5rem}
+.data-table th{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);border-bottom:2px solid var(--canvas-3);padding:.6rem 1rem;text-align:left;background:var(--canvas-2)}
+.data-table td{padding:.65rem 1rem;border-bottom:1px solid var(--canvas-3);color:var(--ct);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.td-pass{color:#15803d;font-weight:500}.td-fail{color:var(--red);font-weight:500}.td-warn{color:var(--warn);font-weight:500}.td-strong{font-weight:600;color:var(--ct)}
+
+.verdict-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:.35rem .9rem;border-radius:3px;font-weight:600;border:1px solid}
+.verdict-badge.ready{background:rgba(34,197,94,.1);color:#15803d;border-color:rgba(34,197,94,.4)}
+.verdict-badge.remediate{background:rgba(245,158,11,.08);color:#b45309;border-color:rgba(245,158,11,.3)}
+.verdict-badge.critical{background:rgba(239,68,68,.08);color:#b91c1c;border-color:rgba(239,68,68,.3)}
+
+.mandate-box{background:var(--canvas-2);border:1px solid var(--canvas-3);border-left:3px solid var(--purple);border-radius:6px;padding:1.5rem 1.75rem;margin-bottom:1.5rem}
+.mandate-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#6d28d9;margin-bottom:.6rem;font-weight:500}
+.mandate-preview{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--ct-2);line-height:1.7;background:var(--canvas);border:1px solid var(--canvas-3);border-radius:4px;padding:1rem 1.25rem;margin-bottom:1rem;overflow:auto;max-height:240px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="pol-nav">
+  <div class="pol-nav-inner">
+    <a href="/" class="pol-logo">
+      <div class="pol-logo-mark">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><div class="pol-logo-text">Post Oak Labs</div><div class="pol-logo-sub">Tokenised Payment Infrastructure</div></div>
+    </a>
+    <div class="pol-nav-links">
+      <a href="/blockchain-advisory.html">Advisory</a>
+      <a href="/demos/">Demos</a>
+      <a href="https://ainumbers.co" class="pol-nav-cta">AINumbers.co ↗</a>
+    </div>
+  </div>
+</nav>
+
+<!-- TOOL STRIP -->
+<div class="tool-strip">
+  <span class="tool-strip-label">AINumbers tools:</span>
+  <a href="https://ainumbers.co/tools/123-aml-program-gap-auditor.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T123 · AML Programme Gap Auditor</a>
+  <a href="https://ainumbers.co/tools/124-fatf-readiness-scorer.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T124 · FATF Readiness Scorer</a>
+  <a href="https://ainumbers.co/tools/116-tm-rule-builder.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T116 · TM Rule Builder</a>
+</div>
+
+<!-- HERO -->
+<section class="pol-hero">
+  <div class="container">
+    <div class="hero-eyebrow">Demo #40 · AMLA · EU AML Authority · 10 July 2027</div>
+    <h1>AMLA <em>Supervisory Readiness</em> Gap Analyser.</h1>
+    <p>AMLA became operational 1 July 2025 (Frankfurt). The full package applies across the EU from 10 July 2027 — and from 2028, AMLA directly supervises ~40 high-risk institutions. Score your AML programme against AMLA's five supervisory pillars, identify gaps, and export a Policy Mandate.</p>
+    <div class="hero-badges">
+      <span class="hbadge hbadge-purple">AMLA · Frankfurt · July 2027</span>
+      <span class="hbadge hbadge-red">Direct supervision from 2028</span>
+      <span class="hbadge hbadge-purple">€10k cash ban · €3k ID threshold</span>
+      <span class="hbadge hbadge-muted">eIDAS · 6AMLD · AMLR · Client-side</span>
+    </div>
+    <div class="deadline-bar">
+      <div><div class="dl-date">1 July 2025</div><div class="dl-label">AMLA operational (Frankfurt)</div><div class="dl-sub">✓ Live</div></div>
+      <div><div class="dl-date">10 July 2027</div><div class="dl-label">AMLR applies EU-wide</div><div class="dl-sub">● Countdown</div></div>
+      <div><div class="dl-date">From 2028</div><div class="dl-label">AMLA direct supervision (~40 FIs)</div><div class="dl-sub">● High risk</div></div>
+      <div><div class="dl-date">EU-wide now</div><div class="dl-label">€10k cash ban · €3k ID check</div><div class="dl-sub">● Immediate</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO CANVAS -->
+<div class="demo-canvas">
+  <div class="demo-canvas-inner">
+
+    <div class="step-nav" role="tablist">
+      <button class="step-tab active" onclick="goStep(1)" id="tab-1"><span class="step-num" id="sn-1">1</span>Institution Profile</button>
+      <button class="step-tab" onclick="goStep(2)" id="tab-2"><span class="step-num" id="sn-2">2</span>Five-Pillar Assessment</button>
+      <button class="step-tab" onclick="goStep(3)" id="tab-3"><span class="step-num" id="sn-3">3</span>Gap Report</button>
+      <button class="step-tab" onclick="goStep(4)" id="tab-4"><span class="step-num" id="sn-4">4</span>Policy Mandate</button>
+    </div>
+
+    <!-- STEP 1: Institution Profile -->
+    <div class="step-panel active" id="panel-1">
+      <div class="step-h">
+        <h2>Institution Profile</h2>
+        <p>AMLA's scope covers credit institutions, payment institutions, electronic money institutions, crypto-asset service providers (CASPs), investment firms, insurance undertakings, real estate agents, and high-value goods dealers. AMLA will directly supervise the 40 highest-risk obliged entities from 2028.</p>
+      </div>
+      <div class="field-grid-2">
+        <div class="field">
+          <label>Institution type</label>
+          <select id="inst-type">
+            <option value="credit">Credit institution (bank)</option>
+            <option value="payment">Payment institution / EMI</option>
+            <option value="casp">Crypto-asset service provider (CASP)</option>
+            <option value="investment">Investment firm / fund manager</option>
+            <option value="insurance">Insurance undertaking</option>
+            <option value="other">Other obliged entity</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Primary EU jurisdiction</label>
+          <select id="jurisdiction">
+            <option value="de">Germany (BaFin)</option>
+            <option value="fr">France (ACPR)</option>
+            <option value="nl">Netherlands (DNB)</option>
+            <option value="ie">Ireland (CBI)</option>
+            <option value="lu">Luxembourg (CSSF)</option>
+            <option value="es">Spain (Banco de España)</option>
+            <option value="it">Italy (Banca d'Italia)</option>
+            <option value="other">Other EU member state</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Total assets / annual revenue (EUR)</label>
+          <select id="size">
+            <option value="large">Large (&gt;€30B assets or &gt;€1B revenue)</option>
+            <option value="medium">Medium (€5B–€30B / €200M–€1B)</option>
+            <option value="small">Small (&lt;€5B / &lt;€200M)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Cross-border / multi-jurisdictional exposure</label>
+          <select id="cross-border">
+            <option value="high">High — operations across 3+ EU states</option>
+            <option value="medium">Medium — 2 EU states</option>
+            <option value="low">Low — single EU state only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Estimated high-risk customer ratio</label>
+          <select id="hrisk">
+            <option value="high">&gt;15% high-risk customer base</option>
+            <option value="medium">5–15% high-risk</option>
+            <option value="low">&lt;5% high-risk</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>AMLA direct supervision exposure?</label>
+          <select id="direct-sup">
+            <option value="possible">Possible — large cross-border institution</option>
+            <option value="unlikely">Unlikely — below direct supervision threshold</option>
+            <option value="yes">Yes — expect to be in top 40</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-purple" onclick="runStep1()">Five-pillar assessment →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Five-Pillar Assessment -->
+    <div class="step-panel" id="panel-2">
+      <div class="step-h">
+        <h2>Five-Pillar AMLA Gap Assessment</h2>
+        <p>AMLA's supervisory framework covers five core pillars: Customer Due Diligence (CDD/EDD), KYC ongoing monitoring, transaction monitoring, suspicious activity reporting, and sanctions screening. Rate your current programme maturity for each.</p>
+      </div>
+
+      <div style="font-size:.78rem;color:var(--ct-3);background:var(--canvas-2);border:1px solid var(--canvas-3);border-left:3px solid var(--purple);border-radius:4px;padding:.75rem 1rem;margin-bottom:1.5rem">
+        🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+      </div>
+
+      <div class="pillar-grid">
+
+        <!-- Pillar 1: CDD/EDD -->
+        <div class="pillar-card">
+          <div class="pillar-name"><span class="pillar-tag">Pillar 1</span>Customer Due Diligence (CDD/EDD)</div>
+          <div class="field">
+            <label>CDD verification method</label>
+            <select id="p1-cdd">
+              <option value="eid">eIDAS-compliant digital identity verification</option>
+              <option value="manual">Manual document verification (non-eIDAS)</option>
+              <option value="partial">Partial — some eIDAS, some manual</option>
+              <option value="none">No formal CDD process</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>EDD trigger threshold calibration</label>
+            <select id="p1-edd">
+              <option value="aligned">Aligned with AMLA RTS draft (PEP, high-risk country, unusual patterns)</option>
+              <option value="partial">Partially aligned — gaps in PEP or high-risk country coverage</option>
+              <option value="old">Legacy thresholds — not updated for AMLR 2027</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>€3k identity check for cash/high-value?</label>
+            <select id="p1-3k">
+              <option value="yes">Yes — €3k threshold implemented</option>
+              <option value="no">No — threshold not implemented</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pillar 2: KYC Monitoring -->
+        <div class="pillar-card">
+          <div class="pillar-name"><span class="pillar-tag">Pillar 2</span>KYC Ongoing Monitoring</div>
+          <div class="field">
+            <label>Customer re-verification cadence</label>
+            <select id="p2-reverif">
+              <option value="risk">Risk-based (high-risk annually, standard 3-yr)</option>
+              <option value="periodic">Periodic but not risk-differentiated</option>
+              <option value="trigger">Trigger-only (no scheduled re-verification)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Beneficial ownership refresh</label>
+            <select id="p2-ubo">
+              <option value="continuous">Continuous — automated UBO change detection</option>
+              <option value="annual">Annual manual refresh</option>
+              <option value="ad_hoc">Ad hoc only</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Transaction behaviour baseline (ML/AI)?</label>
+            <select id="p2-ml">
+              <option value="yes">Yes — behaviour baseline modelling in place</option>
+              <option value="rules">Rules-only — no ML baseline</option>
+              <option value="no">No behavioural monitoring</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pillar 3: Transaction Monitoring -->
+        <div class="pillar-card">
+          <div class="pillar-name"><span class="pillar-tag">Pillar 3</span>Transaction Monitoring</div>
+          <div class="field">
+            <label>TM rule calibration methodology</label>
+            <select id="p3-tm">
+              <option value="statistical">Statistical — backtested against typology data</option>
+              <option value="expert">Expert-only — no quantitative validation</option>
+              <option value="none">No formal TM system</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>€10k cash ban monitoring (EU-wide)?</label>
+            <select id="p3-10k">
+              <option value="yes">Yes — €10k cash payment detection implemented</option>
+              <option value="partial">Partial — gaps in monitoring scope</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>False positive rate (estimated)</label>
+            <select id="p3-fp">
+              <option value="low">&lt;90% false-positive rate (mature calibration)</option>
+              <option value="medium">90–97% false-positive rate</option>
+              <option value="high">&gt;97% false-positive rate (uncalibrated)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pillar 4: SAR/STR -->
+        <div class="pillar-card">
+          <div class="pillar-name"><span class="pillar-tag">Pillar 4</span>Suspicious Activity Reporting (SAR/STR)</div>
+          <div class="field">
+            <label>SAR narrative quality</label>
+            <select id="p4-sar">
+              <option value="structured">Structured — AMLA STR template-aligned narratives</option>
+              <option value="partial">Partially structured — mixed quality</option>
+              <option value="unstructured">Unstructured free-text only</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>SAR-to-FIU submission timeline</label>
+            <select id="p4-time">
+              <option value="fast">Within 24h of decision</option>
+              <option value="medium">1–5 business days</option>
+              <option value="slow">&gt;5 business days</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Tipping-off controls in place?</label>
+            <select id="p4-tip">
+              <option value="yes">Yes — formal tipping-off prohibition enforced</option>
+              <option value="partial">Partial — policy exists but training gaps</option>
+              <option value="no">No formal controls</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pillar 5: Sanctions -->
+        <div class="pillar-card">
+          <div class="pillar-name"><span class="pillar-tag">Pillar 5</span>Sanctions Screening</div>
+          <div class="field">
+            <label>Sanctions list coverage</label>
+            <select id="p5-lists">
+              <option value="full">Full — EU, UN, OFAC, OFSI, national lists</option>
+              <option value="eu_un">EU + UN only</option>
+              <option value="eu_only">EU only</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Real-time payment screening?</label>
+            <select id="p5-rt">
+              <option value="yes">Yes — real-time screening before execution</option>
+              <option value="batch">Batch overnight — gaps in real-time</option>
+              <option value="no">No real-time screening</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Asset freeze capability (AMLA Art. 17)?</label>
+            <select id="p5-freeze">
+              <option value="yes">Yes — immediate freeze capability</option>
+              <option value="partial">Partial — delays in execution</option>
+              <option value="no">No formal freeze mechanism</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+        <button class="btn btn-purple" onclick="runAnalysis()">Score gaps →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Gap Report -->
+    <div class="step-panel" id="panel-3">
+      <div class="step-h">
+        <h2>AMLA Gap Report</h2>
+        <p>Pillar-by-pillar readiness scores and prioritised remediation items. Gaps are classified by severity: Critical (must fix before July 2027), Remediate (address within 12 months), and Monitor (low-risk, track).</p>
+      </div>
+
+      <div id="verdict-row" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--canvas-3)">
+        <div>
+          <h3 style="font-size:1.2rem;color:var(--ct);margin-bottom:.25rem">AMLA Supervisory Readiness</h3>
+          <div style="font-size:.8rem;color:var(--ct-3)" id="verdict-sub"></div>
+        </div>
+        <span class="verdict-badge" id="verdict-badge">—</span>
+      </div>
+
+      <div class="score-grid">
+        <div class="score-card"><div class="score-label">CDD / EDD</div><div class="score-val" id="s-cdd">—</div><div class="score-sub">Pillar 1</div></div>
+        <div class="score-card"><div class="score-label">KYC Monitoring</div><div class="score-val" id="s-kyc">—</div><div class="score-sub">Pillar 2</div></div>
+        <div class="score-card"><div class="score-label">Transaction Monitoring</div><div class="score-val" id="s-tm">—</div><div class="score-sub">Pillar 3</div></div>
+        <div class="score-card"><div class="score-label">SAR / STR</div><div class="score-val" id="s-sar">—</div><div class="score-sub">Pillar 4</div></div>
+        <div class="score-card"><div class="score-label">Sanctions</div><div class="score-val" id="s-sanc">—</div><div class="score-sub">Pillar 5</div></div>
+        <div class="score-card" style="border-color:var(--purple)"><div class="score-label">Overall readiness</div><div class="score-val" id="s-overall">—</div><div class="score-sub">Out of 100</div></div>
+      </div>
+
+      <h3 style="font-size:1.05rem;color:var(--ct);margin-bottom:1rem">Prioritised Gap Register</h3>
+      <div class="gap-list" id="gap-list"></div>
+
+      <h3 style="font-size:1.05rem;color:var(--ct);margin-bottom:1rem">AMLA Threshold Requirements</h3>
+      <table class="data-table">
+        <thead><tr><th>Requirement</th><th>AMLA Standard</th><th>Your status</th><th>Verdict</th></tr></thead>
+        <tbody id="threshold-tbody"></tbody>
+      </table>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+        <button class="btn btn-purple" onclick="buildMandate()">Build Policy Mandate →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Policy Mandate -->
+    <div class="step-panel" id="panel-4">
+      <div class="step-h">
+        <h2>Policy Mandate</h2>
+        <p>AMLA supervisory readiness mandate for your compliance team, board risk committee, or NCA submission.</p>
+      </div>
+
+      <div class="mandate-box">
+        <div class="mandate-title">Policy Mandate — AMLA Supervisory Readiness Gap Analyser</div>
+        <div class="mandate-preview" id="mandate-preview">{ Run gap analysis to generate mandate }</div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <button class="btn btn-purple" onclick="dlMandate('json')">↓ Policy Mandate (.policy.json)</button>
+          <button class="btn btn-ghost" onclick="dlMandate('md')">↓ Markdown Export</button>
+        </div>
+      </div>
+
+      <div style="font-size:.78rem;color:var(--ct-3);padding:.75rem 1rem;background:var(--canvas-2);border-radius:4px;border-left:2px solid var(--canvas-3);margin-bottom:1.5rem">
+        🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+      </div>
+
+      <div style="font-size:.72rem;color:var(--ct-3);margin-top:.75rem">
+        Powered by: <a href="https://ainumbers.co/tools/123-aml-program-gap-auditor.html" target="_blank" rel="noopener" style="color:var(--purple)">T123 · AML Programme Gap Auditor</a> · <a href="https://ainumbers.co/tools/124-fatf-readiness-scorer.html" target="_blank" rel="noopener" style="color:var(--purple)">T124 · FATF Readiness Scorer</a> · <a href="https://ainumbers.co/tools/116-tm-rule-builder.html" target="_blank" rel="noopener" style="color:var(--purple)">T116 · TM Rule Builder</a> · <a href="https://ainumbers.co" style="color:var(--purple)" target="_blank" rel="noopener">AINumbers.co</a> — CC BY 4.0
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+        <button class="btn btn-purple" onclick="goStep(1)">New assessment →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONVERT CTA -->
+<section aria-label="Talk to Post Oak Labs" style="background:#0a1628;border-top:1px solid #1a2e4a;padding:3.25rem 1.5rem;">
+  <div style="max-width:780px;margin:0 auto;border:1px solid #1a2e4a;border-left:3px solid #9B72F5;border-radius:8px;background:linear-gradient(180deg,rgba(20,37,64,0.5),rgba(10,22,40,0.5));padding:2rem 1.95rem;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#9B72F5;margin-bottom:0.7rem;font-weight:500;">AMLA · EU AML Authority</div>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">July 2027 is the compliance floor. The supervisory ceiling resets in 2028.</h2>
+    <p style="font-family:'Sora',sans-serif;font-size:0.92rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">AMLA's first direct supervision cohort (~40 institutions) will be selected based on cross-border risk exposure and programme quality assessed well before the 2028 effective date. The gap-closing work needs to start now. Let's review your AML programme architecture.</p>
+    <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#9B72F5;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#050c15;border-top:1px solid #1a2e4a;padding:2.25rem 2rem;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;align-items:flex-start">
+    <div>
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:#fff;">Post Oak <span style="color:#D4A847">Labs</span></div>
+      <p style="font-size:.78rem;color:#7090b0;margin-top:.35rem">&copy; 2026 Post Oak Labs · <a href="https://creativecommons.org/licenses/by/4.0/" style="color:#7090b0" rel="noopener">CC BY 4.0</a></p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.4rem;font-size:.84rem">
+      <a href="/demos/" style="color:#7090b0">← All demos</a>
+      <a href="/demos/dora-ict-risk-gap-analyser.html" style="color:#7090b0">DORA ICT Risk Gap Analyser</a>
+      <a href="/demos/aml-end-to-end-workflow.html" style="color:#7090b0">AML End-to-End Workflow</a>
+      <a href="/demos/genius-act-issuer-readiness-lab.html" style="color:#7090b0">GENIUS Act Issuer Readiness Lab</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+var _st = {};
+
+function goStep(n) {
+  [1,2,3,4].forEach(function(i){
+    document.getElementById('panel-'+i).classList.toggle('active', i===n);
+    var tab=document.getElementById('tab-'+i);
+    tab.classList.toggle('active', i===n);
+    if(i<n) tab.classList.add('done'); else if(i!==n) tab.classList.remove('done');
+  });
+}
+
+function sel(id){ return document.getElementById(id).value; }
+
+function runStep1() {
+  _st.inst=sel('inst-type'); _st.jur=sel('jurisdiction'); _st.size=sel('size');
+  _st.cb=sel('cross-border'); _st.hrisk=sel('hrisk'); _st.dsup=sel('direct-sup');
+  goStep(2);
+}
+
+function score(val, map){ return map[val]||0; }
+
+function runAnalysis() {
+  // Pillar 1: CDD/EDD (max 100)
+  var p1 = score(sel('p1-cdd'),{eid:40,manual:15,partial:25,none:0}) + score(sel('p1-edd'),{aligned:35,partial:20,old:5}) + score(sel('p1-3k'),{yes:25,no:0});
+  // Pillar 2: KYC Monitoring
+  var p2 = score(sel('p2-reverif'),{risk:40,periodic:25,trigger:5}) + score(sel('p2-ubo'),{continuous:35,annual:20,ad_hoc:5}) + score(sel('p2-ml'),{yes:25,rules:15,no:0});
+  // Pillar 3: TM
+  var p3 = score(sel('p3-tm'),{statistical:45,expert:20,none:0}) + score(sel('p3-10k'),{yes:30,partial:15,no:0}) + score(sel('p3-fp'),{low:25,medium:15,high:0});
+  // Pillar 4: SAR
+  var p4 = score(sel('p4-sar'),{structured:45,partial:25,unstructured:5}) + score(sel('p4-time'),{fast:35,medium:20,slow:5}) + score(sel('p4-tip'),{yes:20,partial:10,no:0});
+  // Pillar 5: Sanctions
+  var p5 = score(sel('p5-lists'),{full:40,eu_un:25,eu_only:10}) + score(sel('p5-rt'),{yes:35,batch:15,no:0}) + score(sel('p5-freeze'),{yes:25,partial:12,no:0});
+
+  var overall = Math.round((p1+p2+p3+p4+p5)/5);
+  var verdict = overall>=80?'ready':overall>=55?'remediate':'critical';
+
+  _st.scores={p1,p2,p3,p4,p5,overall}; _st.verdict=verdict;
+  _st.inputs={cdd:sel('p1-cdd'),edd:sel('p1-edd'),k3:sel('p1-3k'),reverif:sel('p2-reverif'),ubo:sel('p2-ubo'),ml:sel('p2-ml'),tm:sel('p3-tm'),k10:sel('p3-10k'),fp:sel('p3-fp'),sar:sel('p4-sar'),sarTime:sel('p4-time'),tip:sel('p4-tip'),lists:sel('p5-lists'),rt:sel('p5-rt'),freeze:sel('p5-freeze')};
+
+  function setS(id,val){
+    var el=document.getElementById(id); el.textContent=val+'%';
+    el.className='score-val '+(val>=80?'good':val>=55?'warn':'bad');
+  }
+  setS('s-cdd',p1); setS('s-kyc',p2); setS('s-tm',p3); setS('s-sar',p4); setS('s-sanc',p5);
+  var ovEl=document.getElementById('s-overall');
+  ovEl.textContent=overall+'/100';
+  ovEl.className='score-val '+(overall>=80?'good':overall>=55?'warn':'bad');
+
+  var vb=document.getElementById('verdict-badge');
+  vb.textContent=verdict==='ready'?'READY':verdict==='remediate'?'REMEDIATE':'CRITICAL GAPS';
+  vb.className='verdict-badge '+verdict;
+  document.getElementById('verdict-sub').textContent=(_st.inst||'—').replace(/_/g,' ')+' · '+(_st.jur||'—').toUpperCase()+' · '+overall+'/100 overall';
+
+  // Gaps
+  var gaps=[];
+  if(sel('p1-cdd')!=='eid') gaps.push({sev:'critical',pillar:'CDD/EDD',title:'eIDAS-compliant digital identity verification required',desc:'AMLA RTS requires eIDAS-compliant CDD methods. Manual document verification is no longer sufficient for standard-risk customers from July 2027.'});
+  if(sel('p1-3k')==='no') gaps.push({sev:'critical',pillar:'CDD',title:'€3k identity check threshold not implemented',desc:'AMLR requires identity verification for cash transactions and high-value purchases at €3,000. This is mandatory from application date.'});
+  if(sel('p1-edd')!=='aligned') gaps.push({sev:'remediate',pillar:'EDD',title:'EDD triggers not aligned with AMLA RTS draft',desc:'AMLA Regulatory Technical Standards specify PEP, high-risk country, and unusual pattern triggers. Legacy thresholds must be updated.'});
+  if(sel('p2-reverif')!=='risk') gaps.push({sev:'remediate',pillar:'KYC',title:'Risk-differentiated re-verification cadence required',desc:'AMLA requires risk-based periodic re-verification — high-risk customers annually, standard-risk on 3-year cycle as minimum.'});
+  if(sel('p2-ubo')!=='continuous') gaps.push({sev:'remediate',pillar:'KYC',title:'Automated beneficial ownership change detection required',desc:'AMLR mandates continuous UBO monitoring. Annual manual refresh creates gaps; automated detection recommended for AMLA compliance.'});
+  if(sel('p3-tm')==='none') gaps.push({sev:'critical',pillar:'TM',title:'No transaction monitoring system in place',desc:'A calibrated TM system is mandatory for all obliged entities under AMLR. Absence constitutes a critical AMLA supervisory gap.'});
+  if(sel('p3-10k')!=='yes') gaps.push({sev:'critical',pillar:'TM',title:'€10k cash payment ban monitoring not implemented',desc:'EU-wide ban on cash payments exceeding €10,000 requires active monitoring capability. Gaps here are direct regulatory violations.'});
+  if(sel('p3-fp')==='high') gaps.push({sev:'remediate',pillar:'TM',title:'High false-positive rate — TM rule calibration required',desc:'AMLA supervisors assess TM quality including false-positive rates. Rates above 97% indicate uncalibrated rules that waste investigator capacity.'});
+  if(sel('p4-sar')==='unstructured') gaps.push({sev:'remediate',pillar:'SAR',title:'SAR narratives not aligned with AMLA STR template',desc:'AMLA is developing standardised STR templates for EU-wide consistency. Structured narratives now reduce revision requests from FIUs.'});
+  if(sel('p4-tip')==='no') gaps.push({sev:'remediate',pillar:'SAR',title:'Tipping-off controls absent',desc:'AMLR prohibits disclosure of STR filing to subjects. Formal controls and staff training are required to avoid criminal liability.'});
+  if(sel('p5-lists')!=='full') gaps.push({sev:'remediate',pillar:'Sanctions',title:'Incomplete sanctions list coverage',desc:'AMLA expects screening against EU, UN, OFAC (where relevant), OFSI, and applicable national designations. Gaps increase exposure.'});
+  if(sel('p5-rt')!=='yes') gaps.push({sev:'critical',pillar:'Sanctions',title:'Real-time sanctions screening not implemented',desc:'AMLA Art. 17 requires immediate freeze capability. Batch-only screening creates windows where prohibited transactions may execute.'});
+  if(sel('p5-freeze')!=='yes') gaps.push({sev:'critical',pillar:'Sanctions',title:'No immediate asset freeze capability',desc:'Asset freeze capability upon designation is mandatory. Delays of any kind in freeze execution constitute a serious compliance failure.'});
+
+  if(gaps.length===0) gaps.push({sev:'monitor',pillar:'All',title:'No critical gaps identified',desc:'Programme appears well-aligned with AMLA requirements. Continue monitoring AMLA RTS publications and update controls as final standards emerge.'});
+
+  var sevIcon={critical:'❌',remediate:'⚡',monitor:'✅'};
+  document.getElementById('gap-list').innerHTML = gaps.map(function(g){
+    return '<div class="gap-item"><span class="gap-icon">'+sevIcon[g.sev]+'</span><span class="gap-pillar">'+g.pillar+'</span><div><div class="gap-title">'+g.title+'</div><div class="gap-desc">'+g.desc+'</div></div></div>';
+  }).join('');
+
+  // Threshold table
+  var thresh=[
+    ['€10,000 cash payment ban','Mandatory monitoring EU-wide',sel('p3-10k')==='yes'?'Implemented':'Not implemented',sel('p3-10k')==='yes'?'td-pass':'td-fail'],
+    ['€3,000 identity verification','Cash + high-value purchases',sel('p1-3k')==='yes'?'Implemented':'Not implemented',sel('p1-3k')==='yes'?'td-pass':'td-fail'],
+    ['eIDAS-compliant CDD','Standard from AMLR application',sel('p1-cdd')==='eid'?'Compliant':sel('p1-cdd')==='partial'?'Partial':'Non-compliant',sel('p1-cdd')==='eid'?'td-pass':sel('p1-cdd')==='partial'?'td-warn':'td-fail'],
+    ['AMLA STR template','Standardised SAR format',sel('p4-sar')==='structured'?'Aligned':'Not aligned',sel('p4-sar')==='structured'?'td-pass':'td-warn'],
+    ['Asset freeze capability','Immediate — AMLA Art. 17',sel('p5-freeze')==='yes'?'Immediate':'Delayed/absent',sel('p5-freeze')==='yes'?'td-pass':sel('p5-freeze')==='partial'?'td-warn':'td-fail'],
+    ['Real-time sanctions screening','Pre-execution screening required',sel('p5-rt')==='yes'?'Real-time':'Batch/absent',sel('p5-rt')==='yes'?'td-pass':'td-fail'],
+  ];
+  document.getElementById('threshold-tbody').innerHTML = thresh.map(function(r){
+    return '<tr><td class="td-strong">'+r[0]+'</td><td style="font-size:.78rem;color:var(--ct-3)">'+r[1]+'</td><td class="'+r[3]+'">'+r[2]+'</td><td class="'+r[3]+'">'+(r[3]==='td-pass'?'✓ Met':'✗ Gap')+'</td></tr>';
+  }).join('');
+
+  goStep(3);
+}
+
+function buildMandate() {
+  var s=_st; var now=new Date().toISOString();
+  var mandate={
+    schema:'@postoaklabs.com/amla-gap-v1',
+    generated:now,
+    powered_by:'postoaklabs.com/demos/amla-supervisory-readiness-gap-analyser.html',
+    license:'CC BY 4.0',
+    verdict:(s.verdict||'unknown').toUpperCase(),
+    overall_score:(s.scores||{}).overall||0,
+    institution:{type:s.inst||'—',jurisdiction:s.jur||'—',size:s.size||'—',cross_border_exposure:s.cb||'—',direct_supervision_risk:s.dsup||'—'},
+    pillar_scores:{cdd_edd:(s.scores||{}).p1||0,kyc_monitoring:(s.scores||{}).p2||0,transaction_monitoring:(s.scores||{}).p3||0,sar_str:(s.scores||{}).p4||0,sanctions:(s.scores||{}).p5||0},
+    key_thresholds:{cash_ban_eur:10000,id_check_eur:3000,direct_supervision_institutions:40,direct_supervision_from:'2028-01-01'},
+    key_deadlines:{amlr_applicable:'2027-07-10',amla_operational:'2025-07-01',direct_supervision_from:'2028-01-01'},
+    constraints:[
+      'AMLA became operational 1 July 2025 (Frankfurt); full AMLR package applies 10 July 2027.',
+      'AMLA will directly supervise ~40 highest-risk EU financial institutions from 2028.',
+      '€10,000 cash payment ban is EU-wide and mandatory — monitoring capability must be implemented.',
+      '€3,000 identity verification threshold applies to cash and high-value purchase transactions.',
+      'eIDAS-compliant digital identity verification is the expected standard for CDD from AMLR application.',
+      'AMLA is developing harmonised STR templates — align SAR narratives to AMLA draft now.',
+      'Asset freeze capability must be immediate — any delay constitutes a critical compliance failure per AMLA Art. 17.',
+      'Crypto-asset service providers (CASPs) are fully in scope of AMLR — same obligations as credit institutions.',
+    ],
+  };
+  _st.mandate=mandate;
+  document.getElementById('mandate-preview').textContent=JSON.stringify(mandate,null,2);
+  goStep(4);
+}
+
+function dlMandate(fmt){
+  if(!_st.mandate){alert('Run analysis first.');return;}
+  var m=_st.mandate;
+  var content,mime,ext;
+  if(fmt==='json'){content=JSON.stringify(m,null,2);mime='application/json';ext='.policy.json';}
+  else{
+    content='# AMLA Supervisory Readiness — Policy Mandate\nGenerated: '+m.generated+'\nPowered by: '+m.powered_by+'\n\n## Verdict: '+m.verdict+' ('+m.overall_score+'/100)\n\n## Institution\n- Type: '+m.institution.type+'\n- Jurisdiction: '+m.institution.jurisdiction+'\n- Size: '+m.institution.size+'\n- Cross-border: '+m.institution.cross_border_exposure+'\n- Direct supervision risk: '+m.institution.direct_supervision_risk+'\n\n## Pillar Scores\n- CDD/EDD: '+m.pillar_scores.cdd_edd+'%\n- KYC Monitoring: '+m.pillar_scores.kyc_monitoring+'%\n- Transaction Monitoring: '+m.pillar_scores.transaction_monitoring+'%\n- SAR/STR: '+m.pillar_scores.sar_str+'%\n- Sanctions: '+m.pillar_scores.sanctions+'%\n\n## Key Thresholds\n- Cash ban: €'+m.key_thresholds.cash_ban_eur.toLocaleString()+'\n- ID check: €'+m.key_thresholds.id_check_eur.toLocaleString()+'\n\n## Key Deadlines\n- AMLR applicable: 10 July 2027\n- AMLA direct supervision: from 2028\n\n## Constraints\n'+(m.constraints.map(function(c){return '- '+c;}).join('\n'))+'\n\n---\n*CC BY 4.0 · Post Oak Labs · postoaklabs.com*';
+    mime='text/markdown';ext='.md';
+  }
+  var blob=new Blob([content],{type:mime});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='amla-supervisory-readiness'+ext;a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
