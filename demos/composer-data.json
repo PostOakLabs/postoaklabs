@@ -4,7 +4,7 @@
     "source": "AINumbers/TOOLS_INDEX.md + AINumbers/tools/*.html",
     "tool_count": 262,
     "category_count": 15,
-    "demo_count": 36
+    "demo_count": 38
   },
   "tools": [
     {
@@ -2318,7 +2318,7 @@
       "category": "DLT & Tokenization",
       "url": "https://ainumbers.co/tools/65-settlement-finality-auditor.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/mbridge-multicbdc-corridor-modeler.html",
       "personas": [
         "Engineer",
         "Compliance"
