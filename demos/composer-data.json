@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generated": "2026-05-16",
+    "generated": "2026-05-29",
     "source": "AINumbers/TOOLS_INDEX.md + AINumbers/tools/*.html",
-    "tool_count": 260,
+    "tool_count": 262,
     "category_count": 15,
-    "demo_count": 33
+    "demo_count": 36
   },
   "tools": [
     {
@@ -212,7 +212,7 @@
       "category": "Personal Finance",
       "url": "https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/personal-finance-retirement-simulator.html",
       "personas": [
         "Analyst"
       ]
@@ -2052,7 +2052,7 @@
     },
     {
       "id": "T327",
-      "name": "EU AI Act Article 6 Risk-Class Mapper — Financial Services",
+      "name": "EU AI Act Article 6 Risk-Class Mapper \u2014 Financial Services",
       "category": "Compliance & Regulatory",
       "url": "https://ainumbers.co/tools/327-eu-ai-act-risk-class-mapper.html",
       "ap2_schema": "@ainumbers.co/eu-ai-act-risk-class-v1",
@@ -2210,7 +2210,7 @@
       "category": "DLT & Tokenization",
       "url": "https://ainumbers.co/tools/53-cbdc-architecture-comparator.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/cbdc-dlt-architecture-studio.html",
       "personas": [
         "Engineer",
         "Compliance"
@@ -2254,11 +2254,11 @@
     },
     {
       "id": "T57",
-      "name": "ISO 20022 ↔ DLT Flow Mapper",
+      "name": "ISO 20022 \u2194 DLT Flow Mapper",
       "category": "DLT & Tokenization",
       "url": "https://ainumbers.co/tools/57-iso20022-dlt-mapper.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/cbdc-dlt-architecture-studio.html",
       "personas": [
         "Engineer",
         "Compliance"
@@ -2354,7 +2354,7 @@
       "category": "DLT & Tokenization",
       "url": "https://ainumbers.co/tools/68-dlt-platform-comparator.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/cbdc-dlt-architecture-studio.html",
       "personas": [
         "Engineer",
         "Compliance"
@@ -2414,7 +2414,7 @@
       "category": "DLT & Tokenization",
       "url": "https://ainumbers.co/tools/73-dlt-decision-lab.html",
       "ap2_schema": null,
-      "demo": null,
+      "demo": "/demos/cbdc-dlt-architecture-studio.html",
       "personas": [
         "Engineer",
         "Compliance"
@@ -2469,7 +2469,7 @@
     },
     {
       "id": "T78",
-      "name": "Smart Routing Advisor — Payment Rail Decision Engine",
+      "name": "Smart Routing Advisor \u2014 Payment Rail Decision Engine",
       "category": "Ops & Monitoring",
       "url": "https://ainumbers.co/tools/78-smart-routing-advisor.html",
       "ap2_schema": "mandate-v1",
@@ -2563,7 +2563,7 @@
     },
     {
       "id": "T87",
-      "name": "Startup Survival — Runway & Trajectory Simulator",
+      "name": "Startup Survival \u2014 Runway & Trajectory Simulator",
       "category": "Personal Finance",
       "url": "https://ainumbers.co/tools/87-runway-simulator.html",
       "ap2_schema": "mandate-v1",
@@ -2693,7 +2693,7 @@
     },
     {
       "id": "X-A2A-LIQUIDITY-SIMULATOR",
-      "name": "A2A Liquidity Simulator — Single & Multi-Rail",
+      "name": "A2A Liquidity Simulator \u2014 Single & Multi-Rail",
       "category": "Treasury, Strategy & Revenue",
       "url": "https://ainumbers.co/tools/a2a-liquidity-simulator.html",
       "ap2_schema": null,
@@ -2752,7 +2752,7 @@
     },
     {
       "id": "X-PAYCODE-DECODER",
-      "name": "PayCode Decoder — ISO 20022, SWIFT MT, ACH, FedNow",
+      "name": "PayCode Decoder \u2014 ISO 20022, SWIFT MT, ACH, FedNow",
       "category": "Reference & Decoder",
       "url": "https://ainumbers.co/tools/paycode-decoder.html",
       "ap2_schema": null,
@@ -2934,7 +2934,7 @@
     },
     {
       "id": "RBE-07",
-      "name": "AI·07 Agent Signal Integrity Auditor",
+      "name": "AI\u00b707 Agent Signal Integrity Auditor",
       "category": "Rule-Based Suite",
       "url": "https://ainumbers.co/tools/rbe-07-signal-auditor.html",
       "ap2_schema": null,
@@ -2946,7 +2946,7 @@
     },
     {
       "id": "RBE-08",
-      "name": "Payment Fee Schedule Authoring Engine · RBE·08",
+      "name": "Payment Fee Schedule Authoring Engine \u00b7 RBE\u00b708",
       "category": "Rule-Based Suite",
       "url": "https://ainumbers.co/tools/rbe-08-fee-schedule-engine.html",
       "ap2_schema": null,
@@ -2958,7 +2958,7 @@
     },
     {
       "id": "RBE-09",
-      "name": "Credit Policy Decision Table Builder · RBE·09",
+      "name": "Credit Policy Decision Table Builder \u00b7 RBE\u00b709",
       "category": "Treasury, Strategy & Revenue",
       "url": "https://ainumbers.co/tools/rbe-09-credit-policy-decision-table.html",
       "ap2_schema": null,
@@ -2970,7 +2970,7 @@
     },
     {
       "id": "RBE-10",
-      "name": "Transaction Velocity Rule Simulator · RBE·10",
+      "name": "Transaction Velocity Rule Simulator \u00b7 RBE\u00b710",
       "category": "B2B Payments & Platform Operations",
       "url": "https://ainumbers.co/tools/rbe-10-velocity-rule-simulator.html",
       "ap2_schema": null,
@@ -2982,7 +2982,7 @@
     },
     {
       "id": "RBE-11",
-      "name": "DORA ICT Incident Classification & Reporting Engine · RBE·11",
+      "name": "DORA ICT Incident Classification & Reporting Engine \u00b7 RBE\u00b711",
       "category": "Compliance & Consent",
       "url": "https://ainumbers.co/tools/rbe-11-dora-incident-classifier.html",
       "ap2_schema": null,
@@ -2993,7 +2993,7 @@
     },
     {
       "id": "RBE-12",
-      "name": "Network Scheme Compliance Simulator · Visa VAMP · Mastercard DIMP · RBE·12",
+      "name": "Network Scheme Compliance Simulator \u00b7 Visa VAMP \u00b7 Mastercard DIMP \u00b7 RBE\u00b712",
       "category": "Rule-Based Suite",
       "url": "https://ainumbers.co/tools/rbe-12-scheme-compliance-simulator.html",
       "ap2_schema": null,
@@ -3005,7 +3005,7 @@
     },
     {
       "id": "RBE-13",
-      "name": "Interchange Qualification & LCR Rule Builder · RBE·13",
+      "name": "Interchange Qualification & LCR Rule Builder \u00b7 RBE\u00b713",
       "category": "Card Economics",
       "url": "https://ainumbers.co/tools/rbe-13-interchange-qualification-engine.html",
       "ap2_schema": null,
@@ -3013,6 +3013,30 @@
       "personas": [
         "Product",
         "Analyst"
+      ]
+    },
+    {
+      "id": "T169",
+      "name": "Roth vs. Traditional Conversion Estimator",
+      "category": "Personal Finance",
+      "url": "https://ainumbers.co/tools/169-roth-traditional-conversion-estimator.html",
+      "ap2_schema": "mandate-v1",
+      "demo": "/demos/personal-finance-retirement-simulator.html",
+      "personas": [
+        "Consumer",
+        "Advisor"
+      ]
+    },
+    {
+      "id": "T170",
+      "name": "4% Rule Safe Withdrawal Rate Calculator",
+      "category": "Personal Finance",
+      "url": "https://ainumbers.co/tools/170-safe-withdrawal-rate-calculator.html",
+      "ap2_schema": "mandate-v1",
+      "demo": "/demos/personal-finance-retirement-simulator.html",
+      "personas": [
+        "Consumer",
+        "Advisor"
       ]
     }
   ],

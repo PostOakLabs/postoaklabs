@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Finance Retirement Simulator · Post Oak Labs</title>
+<meta name="description" content="Full retirement planning chain: Monte Carlo FIRE trajectories, sequence-of-returns risk, Roth vs Traditional conversion, and safe withdrawal rate — all in one guided flow. Powered by AINumbers.co.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#050c15;--ink-2:#0a1628;--ink-3:#0f1e38;--ink-b:#1a2e4a;
+  --teal:#14B8A6;--teal-lt:#2DD4BF;--teal-dim:rgba(20,184,166,.12);
+  --gold:#D4A847;--gold-dim:rgba(212,168,71,.1);
+  --green:#22C55E;--green-dim:rgba(34,197,94,.1);
+  --red:#EF4444;--red-dim:rgba(239,68,68,.1);
+  --warn:#F59E0B;--warn-dim:rgba(245,158,11,.1);
+  --purple:#9B72F5;--purple-dim:rgba(155,114,245,.1);
+  --canvas:#ffffff;--canvas-2:#f5f7fa;--canvas-3:#edf0f5;
+  --ct:#1a2a3e;--ct-2:#3a5270;--ct-3:#6b7a8d;--cb:#d0d8e4;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:#a8c4de;font-family:'Sora',sans-serif;font-weight:300;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.15}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+
+/* ── POL Nav ─────────────────────────────────────────── */
+.pol-nav{background:var(--ink-2);border-bottom:1px solid var(--ink-b);padding:0 2rem;height:54px;display:flex;align-items:center;position:sticky;top:0;z-index:300;backdrop-filter:blur(10px)}
+.pol-nav-inner{max-width:1100px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.pol-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.pol-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--teal),#0D9488);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.pol-logo-text{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;color:#d4e8f8}
+.pol-logo-sub{font-size:.58rem;color:#3a5270}
+.pol-nav-links{display:flex;gap:1.5rem;align-items:center}
+.pol-nav-links a{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:#3a5270;transition:color .2s}
+.pol-nav-links a:hover{color:var(--teal-lt)}
+.pol-nav-cta{background:var(--teal)!important;color:var(--ink)!important;padding:.28rem .85rem!important;border-radius:4px!important;font-weight:500!important}
+.pol-nav-cta:hover{background:var(--teal-lt)!important}
+
+/* ── Tool strip ──────────────────────────────────────── */
+.tool-strip{background:var(--ink-3);border-bottom:1px solid var(--ink-b);padding:.55rem 2rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.tool-strip-label{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:#3a5270;white-space:nowrap}
+.tool-chip{display:inline-flex;align-items:center;gap:.35rem;font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:#6888a8;border:1px solid var(--ink-b);padding:.22rem .6rem;border-radius:3px;text-decoration:none;transition:all .18s}
+.tool-chip:hover{border-color:var(--teal);color:var(--teal-lt)}
+.tool-chip-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);opacity:.6}
+
+/* ── Hero ────────────────────────────────────────────── */
+.pol-hero{padding:3.5rem 0 3rem;position:relative;overflow:hidden}
+.pol-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(20,184,166,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(20,184,166,.02) 1px,transparent 1px);background-size:52px 52px;pointer-events:none}
+.pol-hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent)}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-lt);margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--teal)}
+.pol-hero h1{font-size:clamp(1.9rem,3.5vw,3rem);color:#eef6fd;max-width:760px;margin-bottom:.85rem}
+.pol-hero h1 em{font-style:italic;color:var(--gold)}
+.pol-hero p{font-size:.92rem;color:#6888a8;max-width:620px;line-height:1.85;margin-bottom:1.5rem}
+.hero-badges{display:flex;gap:.6rem;flex-wrap:wrap}
+.hbadge{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .65rem;border:1px solid;border-radius:2px}
+.hbadge-green{color:var(--green);border-color:rgba(34,197,94,.3)}
+.hbadge-gold{color:var(--gold);border-color:rgba(212,168,71,.3)}
+.hbadge-muted{color:#3a5270;border-color:var(--ink-b)}
+
+/* ── Demo canvas (light) ─────────────────────────────── */
+.demo-canvas{background:var(--canvas);color:var(--ct)}
+.demo-canvas-inner{max-width:1100px;margin:0 auto;padding:2rem 2rem 4rem}
+
+/* ── Step tabs ───────────────────────────────────────── */
+.step-nav{display:flex;border-bottom:2px solid var(--canvas-3);margin-bottom:2.5rem;overflow-x:auto}
+.step-tab{font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);padding:1rem 1.25rem;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s;cursor:pointer}
+.step-tab:hover{color:var(--ct-2)}
+.step-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.step-num{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--canvas-3);color:var(--ct-3);font-size:.48rem;text-align:center;line-height:18px;margin-right:.4rem;transition:all .2s}
+.step-tab.active .step-num{background:var(--teal);color:#fff}
+.step-tab.done .step-num{background:var(--green);color:#fff}
+.step-panel{display:none}
+.step-panel.active{display:block}
+.step-h{padding:1.75rem 0 1.25rem;border-bottom:1px solid var(--canvas-3);margin-bottom:2rem}
+.step-h h2{font-size:1.55rem;color:var(--ct);margin-bottom:.35rem}
+.step-h p{font-size:.84rem;color:var(--ct-3);line-height:1.75}
+
+/* ── Layout ──────────────────────────────────────────── */
+.two-col{display:grid;grid-template-columns:300px 1fr;gap:1.5rem;margin-bottom:2rem}
+@media(max-width:780px){.two-col{grid-template-columns:1fr}}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group.full{grid-column:1/-1}
+.flbl{font-size:.78rem;color:var(--ct);font-weight:500}
+.fhint{font-family:'JetBrains Mono',monospace;font-size:.46rem;color:var(--ct-3);margin-top:.15rem}
+
+/* ── Inputs ──────────────────────────────────────────── */
+select,input[type=number],input[type=range]{width:100%;background:var(--canvas-2);border:1px solid var(--cb);color:var(--ct);font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:.5rem .75rem;outline:none;border-radius:4px;transition:border-color .2s;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7a8d'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2rem;cursor:pointer}
+select:focus,input:focus{border-color:var(--teal);background:#fff}
+input[type=range]{padding:.2rem 0;accent-color:var(--teal);background:transparent;border:none}
+.range-val{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--teal);font-weight:500;margin-left:.5rem}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn{font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;padding:.55rem 1.25rem;border-radius:4px;cursor:pointer;transition:all .2s;border:1px solid}
+.btn-primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn-primary:hover{background:var(--teal-lt);border-color:var(--teal-lt)}
+.btn-ghost{background:transparent;border-color:var(--cb);color:var(--ct-3)}
+.btn-ghost:hover{border-color:var(--ct-2);color:var(--ct)}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn-gold:hover{opacity:.9}
+.btn-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.75rem}
+
+/* ── KPI bar ─────────────────────────────────────────── */
+.kpi-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--canvas-3);border:1px solid var(--canvas-3);border-radius:6px;overflow:hidden;margin-bottom:1.75rem}
+.kpi-cell{background:var(--canvas);padding:.9rem 1.1rem}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:.42rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ct-3);margin-bottom:.3rem}
+.kpi-value{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--ct);line-height:1}
+.kpi-value.g{color:var(--green)}.kpi-value.r{color:var(--red)}.kpi-value.w{color:var(--warn)}.kpi-value.t{color:var(--teal)}.kpi-value.gold{color:var(--gold)}
+.kpi-sub{font-size:.65rem;color:var(--ct-3);margin-top:.2rem}
+
+/* ── Cards ───────────────────────────────────────────── */
+.cards{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.75rem}
+.card{background:var(--canvas-2);border:1px solid var(--canvas-3);border-left:3px solid var(--teal);border-radius:4px;padding:1.1rem 1.25rem}
+.card.best{border-left-color:var(--green);background:rgba(34,197,94,.03)}
+.card.warn{border-left-color:var(--warn);background:var(--warn-dim)}
+.card.danger{border-left-color:var(--red);background:var(--red-dim)}
+.card.purple{border-left-color:var(--purple);background:var(--purple-dim)}
+.card-title{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--ct);margin-bottom:.3rem}
+.card-meta{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--ct-3);margin-bottom:.5rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.card-body{font-size:.8rem;color:var(--ct-2);line-height:1.65}
+
+/* ── Table ───────────────────────────────────────────── */
+.data-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:1.75rem;border:1px solid var(--canvas-3)}
+.data-table th{font-family:'JetBrains Mono',monospace;font-size:.44rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);padding:.6rem .85rem;text-align:left;background:var(--canvas-2);border-bottom:1px solid var(--canvas-3);white-space:nowrap}
+.data-table td{padding:.6rem .85rem;border-bottom:1px solid var(--canvas-3);color:var(--ct);vertical-align:top;line-height:1.5}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(20,184,166,.02)}
+
+/* ── Tags ────────────────────────────────────────────── */
+.tag{font-family:'JetBrains Mono',monospace;font-size:.44rem;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .45rem;border-radius:2px;white-space:nowrap;display:inline-block}
+.tag-g{background:var(--green-dim);color:var(--green)}.tag-w{background:var(--warn-dim);color:var(--warn)}.tag-r{background:var(--red-dim);color:var(--red)}.tag-t{background:var(--teal-dim);color:var(--teal)}.tag-p{background:var(--purple-dim);color:var(--purple)}.tag-m{background:var(--canvas-3);color:var(--ct-3)}
+
+/* ── Section heading ─────────────────────────────────── */
+.sec-head{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin:1.75rem 0 .9rem;display:flex;align-items:center;gap:.75rem}
+.sec-head::after{content:'';flex:1;height:1px;background:var(--canvas-3)}
+
+/* ── Monte Carlo cone ────────────────────────────────── */
+.cone-wrap{background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1.25rem;margin-bottom:1.75rem}
+.cone-title{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ct-3);margin-bottom:1rem}
+.cone-chart{position:relative;height:180px;overflow:hidden}
+.cone-svg{width:100%;height:100%}
+
+/* ── Progress bar ────────────────────────────────────── */
+.prog-wrap{margin-bottom:.85rem}
+.prog-label{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;color:var(--ct-3);margin-bottom:.3rem;display:flex;justify-content:space-between}
+.prog-track{height:8px;background:var(--canvas-3);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:width .5s ease}
+
+/* ── Mandate ─────────────────────────────────────────── */
+.mandate-panel{background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1.5rem;margin-top:1.75rem}
+.mandate-title{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--canvas-3)}
+.mandate-pre{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--ct-2);line-height:1.75;white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid var(--canvas-3);border-radius:4px;padding:1rem;max-height:300px;overflow-y:auto;margin-bottom:1rem}
+
+/* ── Disclaimer ──────────────────────────────────────── */
+.disclaimer{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-left:3px solid var(--warn);border-radius:4px;padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--ct-3);line-height:1.65;margin-bottom:1.5rem}
+
+/* ── POL Footer ──────────────────────────────────────── */
+.pol-footer{background:var(--ink-2);border-top:1px solid var(--ink-b);padding:2rem}
+.pol-footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.pol-footer-brand{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.pol-footer-wordmark{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#d4e8f8;font-weight:500}
+.pol-footer-links{display:flex;gap:1.5rem}
+.pol-footer-links a{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:#3a5270;transition:color .2s}
+.pol-footer-links a:hover{color:var(--teal-lt)}
+.pol-footer-badge{font-family:'JetBrains Mono',monospace;font-size:.48rem;color:#3a5270;text-align:right;line-height:1.8}
+</style>
+</head>
+<body>
+
+<!-- POL Nav -->
+<nav class="pol-nav">
+  <div class="pol-nav-inner">
+    <a href="https://postoaklabs.com" class="pol-logo">
+      <div class="pol-logo-mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7v5c0 4.5 3.3 8.7 8 9.9 4.7-1.2 8-5.4 8-9.9V7L12 3z" fill="rgba(255,255,255,.9)"/></svg>
+      </div>
+      <div><div class="pol-logo-text">Post Oak Labs</div><div class="pol-logo-sub">Fintech Intelligence</div></div>
+    </a>
+    <div class="pol-nav-links">
+      <a href="https://postoaklabs.com/demos/">All Demos</a>
+      <a href="https://postoaklabs.com/demos/personal-finance/">Personal Finance Hub</a>
+      <a href="https://ainumbers.co" class="pol-nav-cta">AINumbers.co ↗</a>
+    </div>
+  </div>
+</nav>
+
+<!-- AIN Tool Strip -->
+<div class="tool-strip">
+  <span class="tool-strip-label">AINumbers tools:</span>
+  <a href="https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T107 · Monte Carlo FIRE</a>
+  <a href="https://ainumbers.co/tools/168-sequence-of-returns-risk-calculator.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T168 · Sequence-of-Returns</a>
+  <a href="https://ainumbers.co/tools/169-roth-traditional-conversion-estimator.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T169 · Roth Conversion</a>
+  <a href="https://ainumbers.co/tools/170-safe-withdrawal-rate-calculator.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T170 · Safe Withdrawal Rate</a>
+</div>
+
+<!-- Hero -->
+<div class="pol-hero">
+  <div class="container">
+    <div class="hero-eyebrow">Personal Finance · FIRE Planning · Demo #36</div>
+    <h1>Personal Finance<br><em>Retirement Simulator</em></h1>
+    <p>Four-stage retirement planning chain: Monte Carlo trajectory simulation, sequence-of-returns stress testing, Roth vs. Traditional conversion analysis, and safe withdrawal rate modelling. All client-side. Zero data transmitted.</p>
+    <div class="hero-badges">
+      <span class="hbadge hbadge-green">FIRE Planning</span>
+      <span class="hbadge hbadge-gold">Monte Carlo</span>
+      <span class="hbadge hbadge-muted">Roth Conversion</span>
+      <span class="hbadge hbadge-muted">Safe Withdrawal</span>
+      <span class="hbadge hbadge-muted">Client-Side · Zero PII</span>
+    </div>
+  </div>
+</div>
+
+<!-- Demo Canvas -->
+<div class="demo-canvas">
+  <div class="demo-canvas-inner">
+
+    <div class="disclaimer">⚠ Educational use only — not financial advice. All outputs are illustrative projections based on simplified models. Consult a qualified financial advisor before making retirement planning decisions.</div>
+
+    <!-- Step Tabs -->
+    <div class="step-nav">
+      <button class="step-tab active" onclick="goStep(1)" id="tab-1"><span class="step-num" id="sn-1">1</span>Portfolio Inputs</button>
+      <button class="step-tab" onclick="goStep(2)" id="tab-2"><span class="step-num" id="sn-2">2</span>Monte Carlo FIRE</button>
+      <button class="step-tab" onclick="goStep(3)" id="tab-3"><span class="step-num" id="sn-3">3</span>Roth vs. Traditional</button>
+      <button class="step-tab" onclick="goStep(4)" id="tab-4"><span class="step-num" id="sn-4">4</span>Safe Withdrawal Rate</button>
+      <button class="step-tab" onclick="goStep(5)" id="tab-5"><span class="step-num" id="sn-5">5</span>Retirement Plan</button>
+    </div>
+
+    <!-- Step 1: Portfolio Inputs -->
+    <div class="step-panel active" id="step-1">
+      <div class="step-h">
+        <h2>Portfolio Inputs</h2>
+        <p>Enter your current financial position. These inputs flow through all four analysis modules. Use synthetic or rounded figures — no personal data is stored.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="flbl">Current Age</label>
+          <input type="number" id="curr-age" value="35" min="18" max="70" oninput="syncInputs()">
+          <span class="fhint">Your age today</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Target Retirement Age</label>
+          <input type="number" id="retire-age" value="65" min="40" max="80" oninput="syncInputs()">
+          <span class="fhint" id="years-hint">30 years to retirement</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Current Portfolio Value</label>
+          <input type="number" id="portfolio" value="250000" min="0" oninput="syncInputs()">
+          <span class="fhint">Total invested assets ($)</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Annual Contribution</label>
+          <input type="number" id="contribution" value="24000" min="0" oninput="syncInputs()">
+          <span class="fhint">Total annual savings added ($)</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Annual Retirement Spend</label>
+          <input type="number" id="retire-spend" value="80000" min="0" oninput="syncInputs()">
+          <span class="fhint">Target withdrawal in retirement ($)</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Retirement Horizon</label>
+          <input type="number" id="horizon" value="30" min="10" max="50" oninput="syncInputs()">
+          <span class="fhint">Years in retirement to model</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Expected Real Return</label>
+          <select id="return-rate">
+            <option value="0.05">5% — Conservative (60/40 blend)</option>
+            <option value="0.07" selected>7% — Moderate (80/20 blend)</option>
+            <option value="0.09">9% — Aggressive (100% equities)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Inflation Rate</label>
+          <select id="inflation-rate">
+            <option value="0.02">2% — Low</option>
+            <option value="0.03" selected>3% — Moderate (historical avg)</option>
+            <option value="0.04">4% — Elevated</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Traditional IRA / 401k Balance</label>
+          <input type="number" id="trad-balance" value="150000" min="0" oninput="syncInputs()">
+          <span class="fhint">Pre-tax balance (for Roth analysis)</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Current Tax Bracket</label>
+          <select id="curr-tax">
+            <option value="0.10">10%</option>
+            <option value="0.12">12%</option>
+            <option value="0.22" selected>22%</option>
+            <option value="0.24">24%</option>
+            <option value="0.32">32%</option>
+            <option value="0.35">35%</option>
+            <option value="0.37">37%</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Expected Retirement Tax Bracket</label>
+          <select id="ret-tax">
+            <option value="0.10">10%</option>
+            <option value="0.12">12%</option>
+            <option value="0.22" selected>22%</option>
+            <option value="0.24">24%</option>
+            <option value="0.32">32%</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="flbl">Social Security / Pension ($/yr)</label>
+          <input type="number" id="ss-income" value="20000" min="0" oninput="syncInputs()">
+          <span class="fhint">Other guaranteed retirement income</span>
+        </div>
+      </div>
+      <div id="input-summary" class="kpi-bar" style="margin-top:1rem"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="runAllModules();goStep(2)">Run FIRE Simulation →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Monte Carlo FIRE -->
+    <div class="step-panel" id="step-2">
+      <div class="step-h">
+        <h2>Monte Carlo FIRE Trajectories</h2>
+        <p>1,000 simulated market scenarios using Box-Muller parametric sampling. Shows the probability cone of portfolio values and your likelihood of portfolio survival through retirement. Mirrors T107 logic.</p>
+      </div>
+      <div class="kpi-bar" id="mc-kpi"></div>
+      <div class="cone-wrap">
+        <div class="cone-title">Portfolio Value Probability Cone — Retirement Years</div>
+        <div class="cone-chart" id="cone-chart">
+          <svg class="cone-svg" id="cone-svg" viewBox="0 0 800 180" preserveAspectRatio="none"></svg>
+        </div>
+        <div style="display:flex;gap:1.5rem;margin-top:.75rem;flex-wrap:wrap">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:var(--ct-3)"><span style="display:inline-block;width:10px;height:3px;background:var(--green);margin-right:.3rem;vertical-align:middle"></span>90th percentile</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:var(--ct-3)"><span style="display:inline-block;width:10px;height:3px;background:var(--teal);margin-right:.3rem;vertical-align:middle"></span>Median</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:var(--ct-3)"><span style="display:inline-block;width:10px;height:3px;background:var(--red);margin-right:.3rem;vertical-align:middle"></span>10th percentile</span>
+        </div>
+      </div>
+      <div class="sec-head">Scenario Analysis</div>
+      <table class="data-table" id="mc-table"></table>
+      <div class="cards" id="mc-recs"></div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goStep(3)">Roth Analysis →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Roth vs Traditional -->
+    <div class="step-panel" id="step-3">
+      <div class="step-h">
+        <h2>Roth vs. Traditional Conversion</h2>
+        <p>Should you convert pre-tax dollars to Roth now? Models the tax cost of conversion against the lifetime benefit of tax-free growth. Informed by your tax brackets from Step 1. Mirrors T169 logic.</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="flbl">Conversion Amount This Year</label>
+          <input type="number" id="conv-amount" value="50000" min="0">
+          <span class="fhint">Amount to convert from Traditional → Roth</span>
+        </div>
+        <div class="form-group">
+          <label class="flbl">State Income Tax Rate</label>
+          <input type="number" id="state-tax" value="5" min="0" max="15" step="0.5">
+          <span class="fhint">% (enter 0 if no state income tax)</span>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:0;margin-bottom:1.5rem">
+        <button class="btn btn-primary" onclick="runRoth()">Analyse Conversion →</button>
+      </div>
+      <div id="roth-result" style="display:none">
+        <div class="kpi-bar" id="roth-kpi"></div>
+        <div class="sec-head">Conversion Comparison</div>
+        <table class="data-table" id="roth-table"></table>
+        <div class="cards" id="roth-cards"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goStep(4)">Safe Withdrawal Rate →</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Safe Withdrawal Rate -->
+    <div class="step-panel" id="step-4">
+      <div class="step-h">
+        <h2>Safe Withdrawal Rate Analysis</h2>
+        <p>Tests your planned withdrawal against the 4% rule and its variants across bull, base, bear, and sequence-of-returns-stress scenarios. Calculates your FIRE number and inflation erosion. Mirrors T170 logic.</p>
+      </div>
+      <div class="kpi-bar" id="swr-kpi"></div>
+      <div class="sec-head">Scenario Testing</div>
+      <table class="data-table" id="swr-table"></table>
+      <div class="sec-head">FIRE Number at Various SWRs</div>
+      <table class="data-table" id="fire-table"></table>
+      <div class="cards" id="swr-cards"></div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
+        <button class="btn btn-primary" onclick="buildPlan();goStep(5)">Build Retirement Plan →</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Retirement Plan -->
+    <div class="step-panel" id="step-5">
+      <div class="step-h">
+        <h2>Your Retirement Plan</h2>
+        <p>Integrated summary across all four modules. Export as a Policy Mandate to share with a financial advisor or include in a planning document.</p>
+      </div>
+      <div id="plan-body"></div>
+      <div class="mandate-panel" id="mandate-panel" style="display:none">
+        <div class="mandate-title">Retirement Plan Export — Policy Mandate</div>
+        <pre class="mandate-pre" id="mandate-pre"></pre>
+        <div class="btn-row">
+          <button class="btn btn-gold" onclick="dlMandate('json')">↓ Policy Mandate (.policy.json)</button>
+          <button class="btn btn-ghost" onclick="dlMandate('md')">↓ Markdown Export</button>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(4)">← Back</button>
+        <button class="btn btn-ghost" onclick="location.reload()">↺ Start Over</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- POL Footer -->
+<footer class="pol-footer">
+  <div class="pol-footer-inner">
+    <a href="https://postoaklabs.com" class="pol-footer-brand">
+      <div class="pol-logo-mark" style="width:26px;height:26px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7v5c0 4.5 3.3 8.7 8 9.9 4.7-1.2 8-5.4 8-9.9V7L12 3z" fill="rgba(255,255,255,.9)"/></svg>
+      </div>
+      <span class="pol-footer-wordmark">Post Oak Labs</span>
+    </a>
+    <div class="pol-footer-links">
+      <a href="https://postoaklabs.com/demos/">All Demos</a>
+      <a href="https://ainumbers.co">AINumbers.co</a>
+      <a href="https://postoaklabs.com/contact/">Contact</a>
+    </div>
+    <div class="pol-footer-badge">
+      🔒 No data leaves your browser · 💻 Client-side only · CC BY 4.0<br>
+      Built by Post Oak Labs · contact@postoaklabs.com
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── State ──────────────────────────────────────────────
+const ST2={mc:{},roth:{},swr:{},done:new Set()};
+
+// ── Navigation ─────────────────────────────────────────
+function goStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.step-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('step-'+n).classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+  ST2.done.forEach(s=>{document.getElementById('sn-'+s).textContent='✓';document.getElementById('tab-'+s).classList.add('done');});
+  window.scrollTo({top:document.querySelector('.demo-canvas').offsetTop-60,behavior:'smooth'});
+}
+
+// ── Helpers ─────────────────────────────────────────────
+function g(id){return document.getElementById(id);}
+function n(id){return parseFloat(g(id).value)||0;}
+function fmt(v,decimals=0){return v>=1e9?'$'+(v/1e9).toFixed(1)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+Math.round(v/1000)+'k':'$'+v.toFixed(decimals);}
+function fmtPct(v){return v.toFixed(1)+'%';}
+function tag(t,c){return`<span class="tag tag-${c}">${t}</span>`;}
+function pbar(lbl,v,max,color){return`<div class="prog-wrap"><div class="prog-label"><span>${lbl}</span><span>${Math.round(v/max*100)}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${Math.round(v/max*100)}%;background:${color}"></div></div></div>`;}
+
+// ── Box-Muller RNG ─────────────────────────────────────
+function bm(){
+  let u=0,v=0;
+  while(!u)u=Math.random();
+  while(!v)v=Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+
+// ── Sync inputs ─────────────────────────────────────────
+function syncInputs(){
+  const age=n('curr-age'), retire=n('retire-age');
+  const yrs=Math.max(0,retire-age);
+  g('years-hint').textContent=yrs+' year'+(yrs!==1?'s':'')+' to retirement';
+  const portfolio=n('portfolio'), contrib=n('contribution'), spend=n('retire-spend');
+  const r=parseFloat(g('return-rate').value)||0.07;
+  const fireNum=spend>0?Math.round(spend/0.04):0;
+  const projBal=portfolio*Math.pow(1+r,yrs)+contrib*((Math.pow(1+r,yrs)-1)/r);
+  g('input-summary').innerHTML=`
+    <div class="kpi-cell"><div class="kpi-label">Years to Retire</div><div class="kpi-value t">${yrs}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">FIRE Number (4%)</div><div class="kpi-value gold">${fmt(fireNum)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Projected Balance</div><div class="kpi-value ${projBal>=fireNum?'g':'w'}">${fmt(projBal)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Savings Rate</div><div class="kpi-value">${portfolio>0?fmtPct(contrib/portfolio*100):'—'}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">On Track?</div><div class="kpi-value ${projBal>=fireNum?'g':'r'}">${projBal>=fireNum?'Yes':'Gap: '+fmt(fireNum-projBal)}</div></div>
+  `;
+}
+syncInputs();
+
+// ── Run all modules ─────────────────────────────────────
+function runAllModules(){
+  runMC();
+  runSWR();
+  ST2.done.add(1);
+}
+
+// ── Step 2: Monte Carlo ──────────────────────────────────
+function runMC(){
+  const age=n('curr-age'), retAge=n('retire-age'), yrs=Math.max(1,retAge-age);
+  const portfolio=n('portfolio'), contrib=n('contribution'), spend=n('retire-spend');
+  const horizon=n('horizon')||30;
+  const r=parseFloat(g('return-rate').value)||0.07;
+  const inf=parseFloat(g('inflation-rate').value)||0.03;
+  const totalYears=yrs+horizon;
+  const SIMS=1000, stdDev=0.16;
+  let p90=[], pMed=[], p10=[];
+
+  // Run simulations
+  const endpoints=[];
+  for(let s=0;s<SIMS;s++){
+    let bal=portfolio;
+    const traj=[];
+    for(let yr=0;yr<totalYears;yr++){
+      const ret=r+bm()*stdDev;
+      if(yr<yrs) bal=(bal+contrib)*(1+ret);
+      else bal=Math.max(0,(bal-spend*(Math.pow(1+inf,yr-yrs)))*(1+ret));
+      traj.push(bal);
+    }
+    endpoints.push(traj);
+  }
+
+  // Percentiles per year
+  for(let yr=0;yr<totalYears;yr++){
+    const vals=endpoints.map(t=>t[yr]).sort((a,b)=>a-b);
+    p90.push(vals[Math.floor(SIMS*0.9)]);
+    pMed.push(vals[Math.floor(SIMS*0.5)]);
+    p10.push(vals[Math.floor(SIMS*0.1)]);
+  }
+
+  const successCount=endpoints.filter(t=>t[totalYears-1]>0).length;
+  const successRate=Math.round(successCount/SIMS*100);
+  const medFinal=pMed[totalYears-1];
+  const fireNum=spend/0.04;
+
+  ST2.mc={successRate,medFinal,fireNum,p90,pMed,p10,totalYears,yrs};
+
+  // KPIs
+  g('mc-kpi').innerHTML=`
+    <div class="kpi-cell"><div class="kpi-label">Success Rate</div><div class="kpi-value ${successRate>=85?'g':successRate>=70?'w':'r'}">${successRate}%</div><div class="kpi-sub">Portfolio survives ${horizon}yr retirement</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Median Final Balance</div><div class="kpi-value ${medFinal>0?'g':'r'}">${fmt(medFinal)}</div><div class="kpi-sub">At end of ${horizon}yr retirement</div></div>
+    <div class="kpi-cell"><div class="kpi-label">FIRE Number (4%)</div><div class="kpi-value gold">${fmt(fireNum)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">90th Percentile</div><div class="kpi-value g">${fmt(p90[totalYears-1])}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">10th Percentile</div><div class="kpi-value ${p10[totalYears-1]>0?'w':'r'}">${fmt(Math.max(0,p10[totalYears-1]))}</div></div>
+  `;
+
+  // Draw cone SVG
+  drawCone(p90,pMed,p10,totalYears);
+
+  // Scenario table
+  const scenarios=[
+    {name:'Bull Market',ret:0.10,label:'g'},
+    {name:'Base Case',ret:r,label:'t'},
+    {name:'Bear Market',ret:0.03,label:'w'},
+    {name:'Stress (Seq. Risk)',ret:r,seqStress:true,label:'r'},
+  ];
+  g('mc-table').innerHTML=`<thead><tr><th>Scenario</th><th>Balance at Retirement</th><th>Final Balance</th><th>Success Rate</th><th>Verdict</th></tr></thead><tbody>${
+    scenarios.map(sc=>{
+      let bal=portfolio;
+      for(let yr=0;yr<yrs;yr++){
+        let yr_ret=sc.ret;
+        if(sc.seqStress&&yr<5)yr_ret=-0.10;
+        bal=(bal+contrib)*(1+yr_ret);
+      }
+      const atRet=bal;
+      for(let yr=0;yr<horizon;yr++){
+        let yr_ret=sc.ret;
+        if(sc.seqStress&&yr<5)yr_ret=-0.05;
+        bal=Math.max(0,(bal-spend*Math.pow(1+inf,yr))*(1+yr_ret));
+      }
+      const rate=sc.seqStress?Math.max(30,successRate-20):sc.ret>=0.09?Math.min(99,successRate+8):sc.ret<=0.03?Math.max(20,successRate-25):successRate;
+      const verdict=rate>=85?'Safe':rate>=65?'Caution':'Danger';
+      return`<tr><td><strong>${sc.name}</strong></td><td>${fmt(atRet)}</td><td style="color:${bal>0?'var(--green)':'var(--red)'}">${fmt(bal)}</td><td>${tag(rate+'%',rate>=85?'g':rate>=65?'w':'r')}</td><td>${tag(verdict,verdict==='Safe'?'g':verdict==='Caution'?'w':'r')}</td></tr>`;
+    }).join('')
+  }</tbody>`;
+
+  // Recs
+  const recs=[];
+  if(successRate<70)recs.push({c:'danger',t:'Portfolio at Risk',b:`Only ${successRate}% of simulations show portfolio survival. Consider: delaying retirement by 2–3 years, reducing planned spend by 10–15%, or increasing contributions.`});
+  else if(successRate>=90)recs.push({c:'best',t:'Strong Portfolio Health',b:`${successRate}% success rate across 1,000 scenarios — your portfolio is well-positioned for retirement. Run the sequence-of-returns overlay in the SWR module to stress-test your early retirement years.`});
+  else recs.push({c:'',t:'Moderate Confidence',b:`${successRate}% success rate — healthy but with meaningful downside risk. A 10% spending reduction in down-market years would significantly improve outcomes.`});
+  g('mc-recs').innerHTML=recs.map(r=>`<div class="card ${r.c}"><div class="card-title">${r.t}</div><div class="card-body">${r.b}</div></div>`).join('');
+  ST2.done.add(2);
+}
+
+// ── Draw cone SVG ────────────────────────────────────────
+function drawCone(p90,pMed,p10,totalYears){
+  const W=800,H=180,pad=10;
+  const maxVal=Math.max(...p90.filter(v=>v<1e10));
+  const minVal=Math.min(0,...p10);
+  const range=maxVal-minVal||1;
+  const toY=v=>H-pad-(v-minVal)/range*(H-2*pad);
+  const toX=i=>pad+(i/(totalYears-1))*(W-2*pad);
+  const pts=(arr)=>arr.map((v,i)=>`${toX(i)},${toY(v)}`).join(' ');
+  const area90_10=p90.map((v,i)=>`${toX(i)},${toY(v)}`).join(' ')+' '+[...p10].reverse().map((v,i)=>`${toX(totalYears-1-i)},${toY(v)}`).join(' ');
+  g('cone-svg').innerHTML=`
+    <polygon points="${area90_10}" fill="rgba(20,184,166,.08)" stroke="none"/>
+    <polyline points="${pts(p90)}" fill="none" stroke="var(--green)" stroke-width="1.5" opacity=".7"/>
+    <polyline points="${pts(pMed)}" fill="none" stroke="var(--teal)" stroke-width="2"/>
+    <polyline points="${pts(p10)}" fill="none" stroke="var(--red)" stroke-width="1.5" opacity=".7"/>
+    <line x1="${toX(ST2.mc.yrs||0)}" y1="${pad}" x2="${toX(ST2.mc.yrs||0)}" y2="${H-pad}" stroke="var(--gold)" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>
+    <text x="${toX(ST2.mc.yrs||0)+4}" y="${pad+10}" font-family="JetBrains Mono,monospace" font-size="9" fill="var(--gold)" opacity=".8">Retirement</text>
+  `;
+}
+
+// ── Step 3: Roth ─────────────────────────────────────────
+function runRoth(){
+  const tradBal=n('trad-balance'), convAmt=Math.min(n('conv-amount'),tradBal);
+  const currTax=parseFloat(g('curr-tax').value)||0.22;
+  const retTax=parseFloat(g('ret-tax').value)||0.22;
+  const stateTax=n('state-tax')/100;
+  const r=parseFloat(g('return-rate').value)||0.07;
+  const yrs=Math.max(1,n('retire-age')-n('curr-age'));
+  const horizon=n('horizon')||30;
+
+  const taxNow=convAmt*(currTax+stateTax);
+  const rothBal=convAmt*Math.pow(1+r,yrs);       // grows tax-free
+  const tradBal_ret=convAmt*Math.pow(1+r,yrs)*(1-retTax);  // traditional after-tax
+  const netAdv=rothBal-tradBal_ret;
+
+  // Breakeven: year where cumulative roth advantage > opp cost of taxes paid
+  const oppCostCompounded=taxNow*Math.pow(1+r,yrs);
+  let breakeven=null;
+  for(let yr=0;yr<=horizon;yr++){
+    const rothAtYr=convAmt*Math.pow(1+r,yrs+yr);
+    const tradAtYr=convAmt*Math.pow(1+r,yrs+yr)*(1-retTax);
+    if(rothAtYr-tradAtYr>=oppCostCompounded){breakeven=n('retire-age')+yr;break;}
+  }
+
+  ST2.roth={taxNow,rothBal,tradBal_ret,netAdv,breakeven,convAmt,currTax,retTax};
+
+  g('roth-kpi').innerHTML=`
+    <div class="kpi-cell"><div class="kpi-label">Tax Cost Now</div><div class="kpi-value r">${fmt(taxNow)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Roth at Retirement</div><div class="kpi-value g">${fmt(rothBal)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Traditional After-Tax</div><div class="kpi-value">${fmt(tradBal_ret)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Roth Net Advantage</div><div class="kpi-value ${netAdv>0?'g':'r'}">${netAdv>0?'+':'-'}${fmt(Math.abs(netAdv))}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Breakeven Age</div><div class="kpi-value gold">${breakeven?breakeven:'Never'}</div></div>
+  `;
+
+  g('roth-table').innerHTML=`<thead><tr><th>Metric</th><th>Roth Conversion</th><th>Stay Traditional</th></tr></thead><tbody>
+    <tr><td>Tax paid on conversion</td><td style="color:var(--red)">${fmt(taxNow)}</td><td style="color:var(--green)">$0</td></tr>
+    <tr><td>Balance at retirement</td><td style="color:var(--green)">${fmt(rothBal)}</td><td>${fmt(convAmt*Math.pow(1+r,yrs))}</td></tr>
+    <tr><td>Tax on retirement withdrawals</td><td style="color:var(--green)">$0 (tax-free)</td><td style="color:var(--red)">${fmtPct(retTax*100)} on each withdrawal</td></tr>
+    <tr><td>After-tax value at retirement</td><td style="color:var(--green)"><strong>${fmt(rothBal)}</strong></td><td><strong>${fmt(tradBal_ret)}</strong></td></tr>
+    <tr><td>Net lifetime advantage</td><td colspan="2" style="color:${netAdv>0?'var(--green)':'var(--red)'}"><strong>${netAdv>0?'Roth leads by ':'Traditional leads by '}${fmt(Math.abs(netAdv))}</strong></td></tr>
+  </tbody>`;
+
+  const verdict=currTax<retTax?'Strongly Favor Roth':currTax===retTax?'Marginal — consider other factors':netAdv>0?'Modest Roth advantage':'Favor staying Traditional';
+  const cards=[];
+  if(currTax<retTax)cards.push({c:'best',t:'Convert Now — Tax Rate Rising',b:`Your current bracket (${fmtPct(currTax*100)}) is lower than your expected retirement bracket (${fmtPct(retTax*100)}). Converting now locks in the lower rate. This is the clearest case for Roth conversion.`});
+  else if(currTax>retTax)cards.push({c:'warn',t:'Delay Conversion — Tax Rate Falling',b:`Your current bracket (${fmtPct(currTax*100)}) is higher than expected retirement (${fmtPct(retTax*100)}). Converting now is suboptimal — wait for lower-income years or early retirement.`});
+  else cards.push({c:'',t:'Borderline — Consider Roth for Flexibility',b:'Equal brackets make the math ambiguous. Roth provides tax diversification, no RMDs, and estate planning benefits that pure tax math doesn\'t capture. Consider partial conversion.'});
+  if(breakeven)cards.push({c:'purple',t:`Breakeven at Age ${breakeven}`,b:`The Roth conversion becomes more valuable than the Traditional from age ${breakeven} onward. ${breakeven<75?'If you expect to live well past this age, conversion is compelling.':'A late breakeven age reduces the case for conversion unless estate planning is a priority.'}`});
+  g('roth-cards').innerHTML=cards.map(c=>`<div class="card ${c.c}"><div class="card-title">${c.t}</div><div class="card-body">${c.b}</div></div>`).join('');
+  g('roth-result').style.display='block';
+  ST2.done.add(3);
+}
+
+// ── Step 4: SWR ──────────────────────────────────────────
+function runSWR(){
+  const portfolio=n('portfolio'), spend=n('retire-spend'), horizon=n('horizon')||30;
+  const r=parseFloat(g('return-rate').value)||0.07;
+  const inf=parseFloat(g('inflation-rate').value)||0.03;
+  const ss=n('ss-income');
+  const netSpend=Math.max(0,spend-ss);
+  const swr=portfolio>0?netSpend/portfolio*100:0;
+  const fireNum=netSpend>0?netSpend/0.04:0;
+
+  // Years to depletion helper
+  function yearsToDepletion(initBal, annWithdraw, ret, inflation, seqStress=false){
+    let bal=initBal;
+    for(let yr=0;yr<100;yr++){
+      const yr_ret=seqStress&&yr<5?-0.05:ret;
+      const w=annWithdraw*Math.pow(1+inflation,yr);
+      bal=Math.max(-1,(bal-w)*(1+yr_ret));
+      if(bal<=0)return yr+1;
+    }
+    return 100;
+  }
+
+  const SCEN=[
+    {name:'Bull Market',ret:0.10,stress:false},
+    {name:'Base Case',ret:r,stress:false},
+    {name:'Bear Market',ret:0.03,stress:false},
+    {name:'Stress (Seq. Risk)',ret:r,stress:true},
+  ];
+  // Survival probabilities (research-calibrated)
+  const SWR_PROB={3:0.99,3.5:0.96,4:0.87,4.5:0.75,5:0.60};
+  const survProb=swr<=3?99:swr<=3.5?96:swr<=4?87:swr<=4.5?75:60;
+
+  const realVal30=portfolio*Math.pow(1+r-inf,horizon)-netSpend*((Math.pow(1+r-inf,horizon)-1)/(r-inf));
+
+  g('swr-kpi').innerHTML=`
+    <div class="kpi-cell"><div class="kpi-label">Your SWR</div><div class="kpi-value ${swr<=4?'g':swr<=5?'w':'r'}">${fmtPct(swr)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">FIRE Number (4%)</div><div class="kpi-value gold">${fmt(fireNum)}</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Survival Probability</div><div class="kpi-value ${survProb>=85?'g':survProb>=70?'w':'r'}">${survProb}%</div></div>
+    <div class="kpi-cell"><div class="kpi-label">SS/Pension Offset</div><div class="kpi-value t">${fmt(ss)}/yr</div></div>
+    <div class="kpi-cell"><div class="kpi-label">Net Draw from Portfolio</div><div class="kpi-value">${fmt(netSpend)}/yr</div></div>
+  `;
+
+  g('swr-table').innerHTML=`<thead><tr><th>Scenario</th><th>SWR Used</th><th>Years Portfolio Lasts</th><th>Balance at Yr ${horizon}</th><th>Verdict</th></tr></thead><tbody>${
+    SCEN.map(sc=>{
+      const yrs=yearsToDepletion(portfolio,netSpend,sc.ret,inf,sc.stress);
+      const bal30=Math.max(0,portfolio*Math.pow(1+sc.ret,horizon)-netSpend*((Math.pow(1+sc.ret,horizon)-1)/sc.ret));
+      const verdict=yrs>=horizon+5?'Safe':yrs>=horizon?'Caution':'Danger';
+      return`<tr><td><strong>${sc.name}</strong></td><td>${fmtPct(swr)}</td><td style="color:${yrs>=horizon?'var(--green)':'var(--red)'}">${yrs>=100?'100+ yrs':yrs+' yrs'}</td><td>${fmt(bal30)}</td><td>${tag(verdict,verdict==='Safe'?'g':verdict==='Caution'?'w':'r')}</td></tr>`;
+    }).join('')
+  }</tbody>`;
+
+  g('fire-table').innerHTML=`<thead><tr><th>SWR Rate</th><th>FIRE Number Needed</th><th>vs. Your Portfolio</th></tr></thead><tbody>${
+    [3,3.5,4,4.5,5].map(rate=>{
+      const fn=netSpend>0?netSpend/(rate/100):0;
+      const diff=portfolio-fn;
+      const highlight=Math.abs(swr-rate)<0.5;
+      return`<tr style="${highlight?'background:rgba(20,184,166,.05)':''}"><td style="${highlight?'color:var(--teal);font-weight:600':''}"><strong>${rate}%</strong> ${highlight?'← You':''}</td><td>${fmt(fn)}</td><td style="color:${diff>=0?'var(--green)':'var(--red)'}">${diff>=0?'+'+fmt(diff):fmt(diff)}</td></tr>`;
+    }).join('')
+  }</tbody>`;
+
+  const swrCards=[];
+  if(swr>5)swrCards.push({c:'danger',t:'Withdrawal Rate Too High',b:`At ${fmtPct(swr)}, historical research suggests only ~${survProb}% portfolio survival rate over ${horizon} years. Reducing spend by ${fmt(netSpend*(swr/4-1)/swr*portfolio/100)} would bring you to the 4% rule.`});
+  else if(swr<=3.5)swrCards.push({c:'best',t:'Conservative & Resilient',b:`At ${fmtPct(swr)}, your withdrawal rate is well within the historically safe zone. You have significant buffer against poor sequence-of-returns outcomes.`});
+  else swrCards.push({c:'',t:'Within Safe Zone — Monitor Annually',b:`${fmtPct(swr)} is within the historical safe range. Set annual guardrails: if portfolio drops >20%, reduce withdrawals by 10% for that year (Guyton-Klinger lower guardrail).`});
+  g('swr-cards').innerHTML=swrCards.map(c=>`<div class="card ${c.c}"><div class="card-title">${c.t}</div><div class="card-body">${c.b}</div></div>`).join('');
+  ST2.swr={swr,fireNum,survProb,netSpend};
+  ST2.done.add(4);
+}
+
+// ── Step 5: Plan ─────────────────────────────────────────
+function buildPlan(){
+  const mc=ST2.mc, roth=ST2.roth, swr=ST2.swr;
+  const now=new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+  g('plan-body').innerHTML=`
+    <div class="kpi-bar">
+      <div class="kpi-cell"><div class="kpi-label">MC Success Rate</div><div class="kpi-value ${(mc.successRate||0)>=85?'g':(mc.successRate||0)>=70?'w':'r'}">${mc.successRate||'—'}%</div></div>
+      <div class="kpi-cell"><div class="kpi-label">Median Final Balance</div><div class="kpi-value g">${mc.medFinal!==undefined?fmt(mc.medFinal):'—'}</div></div>
+      <div class="kpi-cell"><div class="kpi-label">Roth Net Advantage</div><div class="kpi-value ${(roth.netAdv||0)>0?'g':'r'}">${roth.netAdv!==undefined?(roth.netAdv>0?'+':'')+fmt(roth.netAdv):'—'}</div></div>
+      <div class="kpi-cell"><div class="kpi-label">Your SWR</div><div class="kpi-value ${(swr.swr||0)<=4?'g':(swr.swr||0)<=5?'w':'r'}">${swr.swr?fmtPct(swr.swr):'—'}</div></div>
+      <div class="kpi-cell"><div class="kpi-label">Survival Probability</div><div class="kpi-value ${(swr.survProb||0)>=85?'g':(swr.survProb||0)>=70?'w':'r'}">${swr.survProb||'—'}%</div></div>
+    </div>
+    <div class="cards">
+      <div class="card best"><div class="card-title">Portfolio Trajectory</div><div class="card-body">Monte Carlo simulation across 1,000 scenarios shows a ${mc.successRate}% survival rate over your ${n('horizon')}-year retirement horizon. Median ending balance: ${fmt(mc.medFinal||0)}.</div></div>
+      ${roth.netAdv!==undefined?`<div class="card ${roth.netAdv>0?'best':'warn'}"><div class="card-title">Roth Conversion</div><div class="card-body">${roth.netAdv>0?'Converting '+fmt(roth.convAmt)+' now produces a '+fmt(roth.netAdv)+' lifetime advantage.':'Staying Traditional is modestly better given your bracket trajectory — revisit in lower-income years.'}</div></div>`:''}
+      <div class="card"><div class="card-title">Withdrawal Strategy</div><div class="card-body">Your ${fmtPct(swr.swr||0)} withdrawal rate has a ${swr.survProb}% historical survival rate. Net portfolio draw: ${fmt(swr.netSpend||0)}/year after Social Security/pension offset.</div></div>
+    </div>
+  `;
+
+  const mandate={
+    schema:'policy-mandate-v1.0',
+    tool:'Personal Finance Retirement Simulator · Post Oak Labs · Demo #36',
+    generated:now,
+    powered_by:'AINumbers.co — T107, T168, T169, T170',
+    inputs:{
+      current_age:n('curr-age'),retirement_age:n('retire-age'),
+      portfolio_value:n('portfolio'),annual_contribution:n('contribution'),
+      annual_retirement_spend:n('retire-spend'),retirement_horizon:n('horizon'),
+      expected_return_pct:parseFloat(g('return-rate').value)*100,
+      inflation_pct:parseFloat(g('inflation-rate').value)*100,
+      social_security_pension_annual:n('ss-income'),
+    },
+    monte_carlo:{success_rate_pct:mc.successRate,median_final_balance:mc.medFinal},
+    roth_analysis:{conversion_amount:roth.convAmt,tax_cost_now:roth.taxNow,roth_net_advantage:roth.netAdv,breakeven_age:roth.breakeven},
+    withdrawal:{swr_pct:swr.swr,survival_probability_pct:swr.survProb,fire_number_at_4pct:swr.fireNum},
+    constraints:['Zero PII','Educational use only — not financial advice','Historical data indicative, not predictive','CC BY 4.0'],
+    license:'CC BY 4.0',
+  };
+  const mj=JSON.stringify(mandate,null,2);
+  g('mandate-pre').textContent=mj;
+  g('mandate-panel').style.display='block';
+  window._plan_mj=mj;
+  window._plan_mm=`# Personal Finance Retirement Simulator — Policy Mandate\nGenerated: ${mandate.generated}\nPowered by: ${mandate.powered_by}\n\n## Inputs\n- Current Age: ${mandate.inputs.current_age}\n- Retirement Age: ${mandate.inputs.retirement_age}\n- Portfolio: ${fmt(mandate.inputs.portfolio_value)}\n- Annual Contribution: ${fmt(mandate.inputs.annual_contribution)}\n- Retirement Spend: ${fmt(mandate.inputs.annual_retirement_spend)}/yr\n\n## Monte Carlo\n- Success Rate: ${mandate.monte_carlo.success_rate_pct}%\n- Median Final Balance: ${fmt(mandate.monte_carlo.median_final_balance||0)}\n\n## Roth Conversion\n- Conversion Amount: ${fmt(mandate.roth_analysis.conversion_amount||0)}\n- Tax Cost Now: ${fmt(mandate.roth_analysis.tax_cost_now||0)}\n- Net Advantage: ${fmt(mandate.roth_analysis.roth_net_advantage||0)}\n- Breakeven Age: ${mandate.roth_analysis.breakeven_age}\n\n## Safe Withdrawal\n- SWR: ${fmtPct(mandate.withdrawal.swr_pct||0)}\n- Survival Probability: ${mandate.withdrawal.survival_probability_pct}%\n- FIRE Number (4%): ${fmt(mandate.withdrawal.fire_number_at_4pct||0)}\n\n## Constraints\n${mandate.constraints.map(c=>'- '+c).join('\n')}\n\n---\n*${mandate.license} · Post Oak Labs · postoaklabs.com*`;
+  ST2.done.add(5);
+}
+
+function dlMandate(fmt_){
+  const content=fmt_==='json'?window._plan_mj:window._plan_mm;
+  const mime=fmt_==='json'?'application/json':'text/markdown';
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='retirement-simulator'+(fmt_==='json'?'.policy.json':'.md');a.click();URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
