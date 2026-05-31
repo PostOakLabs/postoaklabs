@@ -34,11 +34,8 @@ KNOWN_PENDING = {
     # repo. Confirm they exist on the live server, add them here, then remove.
     "favicon.svg", "favicon.ico", "favicon-32.png", "favicon-64.png",
     # /showcase → /demos/, /about → /, /contact → /contact.html — all fixed 2026-05-25
-    # a2a-engagement-roadmap.html links a PDF that does not exist yet.
-    "pilot-framework.pdf",
-    # glossary.html links the old partner page; it 301-redirects via
-    # .htaccess. Better: link straight to https://meridiancapital.me/.
-    "meridian-capital-advisory.html",
+    # pilot-framework.pdf buttons removed 2026-05-31 (file never produced).
+    # glossary.html Meridian link now points straight to https://meridiancapital.me/ (2026-05-31).
 }
 
 LINK_RE = re.compile(r"""(?:href|src)\s*=\s*["']([^"']+)["']""", re.IGNORECASE)

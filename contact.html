@@ -527,4 +527,25 @@ const i18n = {
   en: {"hero-h1": "Let's talk", "hero-sub": "We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, use the form below to start a direct conversation.", "label-institution_name": "Institution name", "label-institution_type": "Institution type", "label-jurisdiction___region": "Jurisdiction / region", "label-subject": "Subject", "label-your_email": "Your email", "label-message__(optional)": "Message  (optional)", "submit-btn": "Send inquiry →"},
   es: {"hero-h1": "Hablemos", "hero-sub": "Trabajamos con un número limitado de instituciones a la vez. Si está evaluando infraestructura de pagos tokenizados, integración de stablecoins o estrategia de CBDC, use el formulario a continuación para iniciar una conversación directa.", "label-institution_name": "Nombre de la institución", "label-institution_type": "Tipo de institución", "label-jurisdiction___region": "Jurisdicción / región", "label-subject": "Asunto", "label-your_email": "Su correo electrónico", "label-message__(optional)": "Mensaje (opcional)", "submit-btn": "Enviar consulta →"},
   fr: {"hero-h1": "Parlons-en", "hero-sub": "Nous travaillons avec un nombre limité d'institutions à la fois. Si vous évaluez une infrastructure de paiement tokenisée, une intégration stablecoin ou une stratégie CBDC, utilisez le formulaire ci-dessous pour démarrer une conversation directe.", "label-institution_name": "Nom de l'institution", "label-institution_type": "Type d'institution", "label-jurisdiction___region": "Juridiction / région", "label-subject": "Sujet", "label-your_email": "Votre e-mail", "label-message__(optional)": "Message (facultatif)", "submit-btn": "Envoyer la demande →"},
-  ar: {"hero-h1": "لنتحدث", "hero-sub": "نعمل مع عدد محدود من المؤسسات في كل مرة. إذا كنت تقيّم بن
+  ar: {"hero-h1": "لنتحدث", "hero-sub": "نعمل مع عدد محدود من المؤسسات في كل مرة. إذا كنت تقيّم بنية تحتية للمدفوعات المرمزة أو دمج العملات المستقرة أو استراتيجية العملات الرقمية للبنوك المركزية، فاستخدم النموذج أدناه لبدء محادثة مباشرة.", "label-institution_name": "اسم المؤسسة", "label-institution_type": "نوع المؤسسة", "label-jurisdiction___region": "الولاية القضائية / المنطقة", "label-subject": "الموضوع", "label-your_email": "بريدك الإلكتروني", "label-message__(optional)": "رسالة (اختياري)", "submit-btn": "إرسال الاستفسار ←"},
+  pt: {"hero-h1": "Vamos conversar", "hero-sub": "Trabalhamos com um número limitado de instituições de cada vez. Se você está avaliando infraestrutura de pagamentos tokenizados, integração de stablecoin ou estratégia de CBDC, use o formulário abaixo para iniciar uma conversa direta.", "label-institution_name": "Nome da instituição", "label-institution_type": "Tipo de instituição", "label-jurisdiction___region": "Jurisdição / região", "label-subject": "Assunto", "label-your_email": "Seu e-mail", "label-message__(optional)": "Mensagem (opcional)", "submit-btn": "Enviar consulta →"},
+  zh: {"hero-h1": "联系我们", "hero-sub": "我们每次仅与有限数量的机构合作。如果您正在评估代币化支付基础设施、稳定币集成或央行数字货币战略，请使用下方表单开始直接对话。", "label-institution_name": "机构名称", "label-institution_type": "机构类型", "label-jurisdiction___region": "司法管辖区 / 地区", "label-subject": "主题", "label-your_email": "您的电子邮箱", "label-message__(optional)": "留言（可选）", "submit-btn": "发送咨询 →"}
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+  if (btn) btn.classList.add('active');
+  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+  }
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+}
+</script>
+</body>
+</html>
