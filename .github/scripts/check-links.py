@@ -30,12 +30,10 @@ SKIP_DIRS = {
 # green. Each is a real issue with a pending content decision - resolve it,
 # then delete the entry. See README.md -> "Known pending links".
 KNOWN_PENDING = {
-    # Favicon assets are referenced by every root page but are not in the
-    # repo. Confirm they exist on the live server, add them here, then remove.
-    "favicon.svg", "favicon.ico", "favicon-32.png", "favicon-64.png",
     # /showcase → /demos/, /about → /, /contact → /contact.html — all fixed 2026-05-25
     # pilot-framework.pdf buttons removed 2026-05-31 (file never produced).
     # glossary.html Meridian link now points straight to https://meridiancapital.me/ (2026-05-31).
+    # favicon assets added to repo 2026-05-31 — no longer pending.
 }
 
 LINK_RE = re.compile(r"""(?:href|src)\s*=\s*["']([^"']+)["']""", re.IGNORECASE)
