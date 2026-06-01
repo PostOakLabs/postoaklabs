@@ -369,7 +369,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     <p class="sec-intro">Most compliance and technology teams working on ISO 20022 migration understand it as a mandatory standard change. Fewer understand why the data richness it creates is the same data layer that makes tokenized A2A infrastructure economically viable.</p>
 
     <div class="highlight-block">
-      <p><strong>The short version:</strong> ISO 20022 replaces the free-text, data-poor MT format with richly structured XML messages. Those messages carry legal entity names, LEIs, structured addresses, and purpose codes — the data layer that makes automated compliance and A2A infrastructure possible.</p>
+      <p><strong>The short version:</strong> ISO 20022 replaces the free-text, data-poor MT format with richly structured XML messages. Those messages carry legal entity names, LEIs, structured addresses, and purpose codes: the data layer that makes automated compliance and A2A infrastructure possible.</p>
     </div>
 
     <div class="two-col">
@@ -400,7 +400,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
             <td class="lbl">Beneficiary Name</td>
             <td>35-character free text, often truncated</td>
             <td>Full legal name, up to 140 characters, structured</td>
-            <td>Identical to MX — no conversion needed</td>
+            <td>Identical to MX; no conversion needed</td>
           </tr>
           <tr>
             <td class="lbl">Beneficiary Address</td>
@@ -458,11 +458,11 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       </div>
       <div class="step-item">
         <span class="step-tag">November 2025</span>
-        <p class="step-body"><strong>SWIFT coexistence period ends.</strong> The MT/MX coexistence period for cross-border payments closed November 2025. Institutions not yet on MX format face processing degradation and may rely on SWIFT translation services as a stopgap — at additional cost and with data quality loss.<sup><a href="#fn4">[4]</a></sup></p>
+        <p class="step-body"><strong>SWIFT coexistence period ends.</strong> The MT/MX coexistence period for cross-border payments closed November 2025. Institutions not yet on MX format face processing degradation and may rely on SWIFT translation services as a stopgap, at additional cost and with data quality loss.<sup><a href="#fn4">[4]</a></sup></p>
       </div>
       <div class="step-item">
         <span class="step-tag">2023 - 2026</span>
-        <p class="step-body"><strong>Fedwire Funds Service (US) migration.</strong> The US Federal Reserve migrated Fedwire Funds Service to ISO 20022 on July 14, 2025. This affects all US dollar RTGS transactions — critical for any institution with US dollar correspondent relationships or cross-border dollar flows.<sup><a href="#fn5">[5]</a></sup></p>
+        <p class="step-body"><strong>Fedwire Funds Service (US) migration.</strong> The US Federal Reserve migrated Fedwire Funds Service to ISO 20022 on July 14, 2025, affecting all US dollar RTGS transactions. Any institution with US dollar correspondent relationships or cross-border dollar flows is directly in scope.<sup><a href="#fn5">[5]</a></sup></p>
       </div>
       <div class="step-item">
         <span class="step-tag">2023 - 2025</span>
@@ -476,7 +476,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
     <div class="caution-box">
       <p class="caution-label">Where exposure concentrates</p>
-      <p>The institutions at highest risk are mid-tier correspondent banks in emerging markets — particularly in Latin America, the Caribbean, and sub-Saharan Africa — that have not yet built internal ISO 20022 processing capability and are relying on SWIFT's translation layer or correspondent-provided workarounds. This is exactly the institutional profile that Post Oak Labs works with. The compliance pressure and the A2A opportunity are the same conversation.</p>
+      <p>The institutions at highest risk are mid-tier correspondent banks in emerging markets, particularly in Latin America, the Caribbean, and sub-Saharan Africa, that have not yet built internal ISO 20022 processing capability and are relying on SWIFT's translation layer or correspondent-provided workarounds. That is exactly the institutional profile Post Oak Labs works with. The compliance pressure and the A2A opportunity are the same conversation.</p>
     </div>
   </div>
 </section>
@@ -486,7 +486,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="container">
     <p class="sec-tag">Architectural Alignment</p>
     <h2 class="sec-title" data-i18n="t-why_iso_20022_compliance_a">Why ISO 20022 compliance and A2A readiness are the same infrastructure project</h2>
-    <p class="sec-intro">Tokenized A2A payment rails natively use ISO 20022 MX message structures as their data layer. A bank that correctly architects its ISO 20022 migration — building structured data handling, LEI resolution, and automated reconciliation into its payment processing pipeline — has simultaneously built most of the data infrastructure required to participate in tokenized A2A networks.</p>
+    <p class="sec-intro">Tokenized A2A payment rails natively use ISO 20022 MX message structures as their data layer. A bank that correctly architects its ISO 20022 migration, building structured data handling, LEI resolution, and automated reconciliation into its payment processing pipeline, has simultaneously built most of the data infrastructure required to participate in tokenized A2A networks.</p>
 
     <div class="two-col">
       <div class="col-cell">
@@ -497,12 +497,12 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="col-cell">
         <p class="col-head">Correct approach: unified architecture</p>
         <h4>One infrastructure build that satisfies both requirements</h4>
-        <p>A bank that architects its ISO 20022 migration with A2A readiness in mind builds: a structured data handling layer that works natively with MX payloads; an API gateway that can accept and emit ISO 20022 messages for both legacy SWIFT and tokenized rail participants; an identity and LEI resolution layer that satisfies both compliance and token identity requirements; and a reconciliation engine that works with 200+ field structured messages (where counterparties populate optional fields — an adoption quality issue distinct from mere compliance). This is the on-ramp to A2A — at zero incremental infrastructure cost.</p>
+        <p>A bank that architects its ISO 20022 migration with A2A readiness in mind builds: a structured data handling layer that works natively with MX payloads; an API gateway that can accept and emit ISO 20022 messages for both legacy SWIFT and tokenized rail participants; an identity and LEI resolution layer that satisfies both compliance and token identity requirements; and a reconciliation engine that works with 200+ field structured messages (where counterparties populate optional fields, an adoption quality issue distinct from mere compliance). This is the on-ramp to A2A, at zero incremental infrastructure cost.</p>
       </div>
     </div>
 
     <div class="highlight-block">
-      <p><strong>The practical implication:</strong> If your institution is currently planning or mid-way through an ISO 20022 migration, the architecture decisions being made right now will either create or foreclose the A2A on-ramp. The window to make the right choices is during the migration build, not after it is finished. Post Oak Labs advises institutions on both the migration architecture and the A2A layer simultaneously — because treating them separately is the most common and most costly mistake in this space.</p>
+      <p><strong>The practical implication:</strong> If your institution is currently planning or mid-way through an ISO 20022 migration, the architecture decisions being made right now will either create or foreclose the A2A on-ramp. The window to make the right choices is during the migration build, not after it is finished. Post Oak Labs advises institutions on both the migration architecture and the A2A layer simultaneously, because treating them separately is the most common and most costly mistake in this space.</p>
     </div>
   </div>
 </section>
@@ -512,7 +512,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="container">
     <p class="sec-tag">Migration Strategy</p>
     <h2 class="sec-title" data-i18n="t-how_to_structure_iso_20022">How to structure ISO 20022 migration to avoid A2A technical debt</h2>
-    <p class="sec-intro">The following are architecture and procurement decisions that determine whether ISO 20022 migration creates or forecloses A2A readiness. Each represents a fork in the road where the right choice costs no more than the wrong one — but the consequences diverge significantly over time.</p>
+    <p class="sec-intro">The following are architecture and procurement decisions that determine whether ISO 20022 migration creates or forecloses A2A readiness. Each represents a fork in the road where the right choice costs no more than the wrong one; the consequences diverge significantly over time.</p>
 
     <div class="step-list">
       <div class="step-item">
@@ -521,13 +521,13 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       </div>
       <div class="step-item">
         <span class="step-tag">Decision 02</span>
-        <p class="step-body"><strong>Build an API gateway designed for future participants, not just current counterparties.</strong> ISO 20022 migration often triggers API modernization. Banks that build their API gateway only to the specification of their current SWIFT correspondent relationships will need to rebuild it when adding tokenized A2A rail participants. Designing the API layer for extensible participant onboarding — including the ability to add permissioned ledger endpoints — costs marginally more upfront and avoids a rebuild later.</p>
+        <p class="step-body"><strong>Build an API gateway designed for future participants, not just current counterparties.</strong> ISO 20022 migration often triggers API modernization. Banks that build their API gateway only to the specification of their current SWIFT correspondent relationships will need to rebuild it when adding tokenized A2A rail participants. Designing the API layer for extensible participant onboarding (including the ability to add permissioned ledger endpoints) costs marginally more upfront and avoids a rebuild later.</p>
         <span class="step-tag">Decision 03</span>
         <p class="step-body"><strong>Implement LEI resolution as a shared service, not a point solution.</strong> Legal Entity Identifier (LEI) resolution is required for ISO 20022 compliance and is also the identity layer for institutional participants on tokenized A2A networks. Banks that implement LEI as a point solution embedded in their SWIFT processing pipeline will need to reimplement it when connecting to A2A networks.</p>
       </div>
       <div class="step-item">
         <span class="step-tag">Decision 04</span>
-        <p class="step-body"><strong>Build reconciliation around structured fields, not around message content reconstruction.</strong> ISO 20022 rich data enables automated reconciliation that legacy MT messages do not support. Banks that build reconciliation logic around the structured fields — invoice references, remittance information, purpose codes — create a reconciliation engine that works identically on tokenized A2A transactions, because the token carries the same ISO 20022 payload.</p>
+        <p class="step-body"><strong>Build reconciliation around structured fields, not around message content reconstruction.</strong> ISO 20022 rich data enables automated reconciliation that legacy MT messages do not support. Banks that build reconciliation logic around the structured fields (invoice references, remittance information, purpose codes) create a reconciliation engine that works identically on tokenized A2A transactions, because the token carries the same ISO 20022 payload.</p>
       </div>
       <div class="step-item">
         <span class="step-tag">Decision 05</span>
@@ -551,11 +551,11 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       </div>
       <div class="step-item">
         <span class="step-tag">Reconciliation</span>
-        <p class="step-body"><strong>Structured remittance information eliminates manual matching.</strong> The single largest driver of payment operations cost in correspondent banking is manual reconciliation: payments that arrive without sufficient information to match against outstanding invoices or receivables. ISO 20022 structured remittance information — invoice number, line-item breakdown, creditor reference — enables straight-through reconciliation at the receiving institution's accounts payable system without human intervention. On tokenized A2A rails, this data travels with the token and is available to the receiving bank before the token is even redeemed, enabling pre-crediting and same-day accounts payable closure.</p>
+        <p class="step-body"><strong>Structured remittance information eliminates manual matching.</strong> The single largest driver of payment operations cost in correspondent banking is manual reconciliation: payments that arrive without sufficient information to match against outstanding invoices or receivables. ISO 20022 structured remittance information (invoice number, line-item breakdown, creditor reference) enables straight-through reconciliation at the receiving institution's accounts payable system without human intervention. On tokenized A2A rails, this data travels with the token and is available to the receiving bank before the token is even redeemed, enabling pre-crediting and same-day accounts payable closure.</p>
       </div>
       <div class="step-item">
         <span class="step-tag">Regulatory Reporting</span>
-        <p class="step-body"><strong>Purpose codes and structured fields enable automated regulatory filing.</strong> Many jurisdictions require reporting of cross-border payments by category — salary payments, trade flows, investment flows, remittances — for balance of payments, capital flow monitoring, and tax reporting purposes. Legacy MT messages often require manual classification. ISO 20022 purpose codes provide machine-readable classification that can feed directly into regulatory reporting systems. In a tokenized A2A deployment, the immutable on-ledger record of each transaction, with its full ISO 20022 payload, serves as the audit trail for regulatory reporting without requiring reconstruction from multiple source systems.</p>
+        <p class="step-body"><strong>Purpose codes and structured fields enable automated regulatory filing.</strong> Many jurisdictions require reporting of cross-border payments by category (salary payments, trade flows, investment flows, remittances) for balance of payments, capital flow monitoring, and tax reporting purposes. Legacy MT messages often require manual classification. ISO 20022 purpose codes provide machine-readable classification that can feed directly into regulatory reporting systems. In a tokenized A2A deployment, the immutable on-ledger record of each transaction, with its full ISO 20022 payload, serves as the audit trail for regulatory reporting without requiring reconstruction from multiple source systems.</p>
       </div>
       <div class="step-item">
         <span class="step-tag">FATF Compliance</span>
@@ -576,7 +576,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="col-cell">
         <p class="col-head">Scenario A</p>
         <h4>Caribbean commercial bank, mid-ISO 20022 migration</h4>
-        <p>A mid-tier commercial bank in Jamaica is 12 months into a SWIFT MX migration project. The project team has built a translation gateway that converts MX to MT for internal systems — satisfying the compliance deadline but not building native structured data handling. Post Oak Labs engagement: architecture review identifies that the translation approach forecloses A2A readiness. Revised scope: replace the translation gateway with a native MX processing layer with API gateway extensibility. Incremental cost modest; the alternative was a full rebuild in 24-36 months when A2A deployment was required. The bank now has a compliant migration that also creates the on-ramp to the BOJ JAM-DEX-compatible A2A layer the central bank is developing.</p>
+        <p>A mid-tier commercial bank in Jamaica is 12 months into a SWIFT MX migration project. The project team has built a translation gateway that converts MX to MT for internal systems, satisfying the compliance deadline but not building native structured data handling. Post Oak Labs engagement: architecture review identifies that the translation approach forecloses A2A readiness. Revised scope: replace the translation gateway with a native MX processing layer with API gateway extensibility. Incremental cost modest; the alternative was a full rebuild in 24-36 months when A2A deployment was required. The bank now has a compliant migration that also creates the on-ramp to the BOJ JAM-DEX-compatible A2A layer the central bank is developing.</p>
       </div>
       <div class="col-cell">
         <p class="col-head">Scenario B</p>
@@ -586,7 +586,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     </div>
 
     <div class="highlight-block" style="border-left-color:var(--gold);">
-      <p><strong>The pattern that repeats:</strong> In every engagement where we review an ISO 20022 migration in progress, the same gap appears. The migration team is solving for SWIFT compliance. Nobody in that team has been asked to solve for A2A readiness. The decisions that foreclose A2A are not deliberate — they are the default choices when the compliance brief is the only brief. The fix is not expensive. It requires the two conversations to happen in the same room.</p>
+      <p><strong>The pattern that repeats:</strong> In every engagement where we review an ISO 20022 migration in progress, the same gap appears. The migration team is solving for SWIFT compliance. Nobody in that team has been asked to solve for A2A readiness. The decisions that foreclose A2A are not deliberate; they are the default choices when the compliance brief is the only brief. The fix is not expensive. It requires the two conversations to happen in the same room.</p>
     </div>
   </div>
 </section>

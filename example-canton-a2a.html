@@ -686,12 +686,12 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_01">Section 01</p>
     <h2 class="sec-title" data-i18n="t-why_these_four_fmis__and_w">Why these four FMIs, and why Canton is the right substrate</h2>
     <p class="sec-lead">
-      The four institutions in this network — Deutsche Börse's Clearstream, DTCC, Broadridge, and Euroclear — collectively touch the overwhelming majority of the world's settled securities flow. Clearstream and Euroclear together hold roughly EUR 80 trillion of assets under custody. DTCC clears and settles approximately USD 2.5 quadrillion of US securities transactions annually. Broadridge's Distributed Ledger Repo (DLR) platform, live in production on Canton since 2021, has cumulatively processed more than USD 1.5 trillion in intraday repurchase agreements. They are not pilot participants. They are the post-trade backbone of global capital markets, and each has independently committed production infrastructure to the Canton Network.<sup><a href="#fn1">[1]</a></sup>
+      The four institutions in this network (Deutsche Börse's Clearstream, DTCC, Broadridge, and Euroclear) collectively touch the overwhelming majority of the world's settled securities flow. Clearstream and Euroclear together hold roughly EUR 80 trillion of assets under custody. DTCC clears and settles approximately USD 2.5 quadrillion of US securities transactions annually. Broadridge's Distributed Ledger Repo (DLR) platform, live in production on Canton since 2021, has cumulatively processed more than USD 1.5 trillion in intraday repurchase agreements. They are not pilot participants. They are the post-trade backbone of global capital markets, and each has independently committed production infrastructure to the Canton Network.<sup><a href="#fn1">[1]</a></sup>
     </p>
 
     <p>The case for using Canton as the connective substrate rests on a property no other enterprise ledger offers at this scale: <strong>privacy-preserving atomic composability</strong>. Canton allows transactions to span multiple independently operated applications, each running its own Daml smart-contract logic on its own participant node, while guaranteeing two things simultaneously: (i) all sub-transactions either commit together or none commit, giving genuine atomicity across application and trust domains, and (ii) each party sees only the sub-transactions and contract data they are explicitly authorized to see. A bond settlement at Clearstream and a treasury delivery at DTCC can settle as a single atomic event without DTCC ever seeing the bond contract, and without Clearstream ever seeing the treasury contract. The Global Synchronizer orders and confirms the transaction; it never sees any payload.<sup><a href="#fn2">[2]</a></sup></p>
 
-    <p>This property is structural, not architectural decoration. Every other enterprise ledger forces a trade-off: either share a global ledger (Ethereum, Besu, Quorum) and accept that all participants see all data — solved partially by zero-knowledge proofs but at significant complexity and cost — or partition the ledger into bilateral subnets (Corda) and lose the ability to compose transactions atomically across more than the parties to a single transaction. Canton's sub-transaction privacy resolves the trade-off, which is precisely why four institutions whose competitive position depends on data confidentiality have all chosen it.</p>
+    <p>The property is structural, not architectural decoration. Every other enterprise ledger forces a trade-off: either share a global ledger (Ethereum, Besu, Quorum) and accept that all participants see all data (solved partially by zero-knowledge proofs but at significant complexity and cost), or partition the ledger into bilateral subnets (Corda) and lose the ability to compose transactions atomically across more than the parties to a single transaction. Canton's sub-transaction privacy resolves the trade-off, which is precisely why four institutions whose competitive position depends on data confidentiality have all chosen it.</p>
 
     <p>The four FMIs in this scenario also map onto four distinct asset classes and four distinct regulatory regimes. Clearstream's D7 DLT platform, launched in production in November 2025, issues and settles EUR-denominated debt securities under the German eWpG (Electronic Securities Act) and the EU CSDR.<sup><a href="#fn3">[3]</a></sup> DTCC's ComposerX platform, with a Q2 2026 production target, tokenizes DTC-custodied US Treasuries under SEC Rule 17Ad-22 and CFTC clearing rules.<sup><a href="#fn4">[4]</a></sup> Broadridge DLR has been operating intraday repo flows on Canton since 2021, regulated as a US transfer agent and broker-dealer service.<sup><a href="#fn5">[5]</a></sup> Euroclear, as a Canton Foundation member and Super Validator, has tokenized gilts, Eurobonds, and gold for collateral mobility, operating its D-FMI under Belgian NBB supervision and the Luxembourg DLT Pilot Regime where applicable.<sup><a href="#fn6">[6]</a></sup></p>
 
@@ -708,7 +708,7 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_02">Section 02</p>
     <h2 class="sec-title" data-i18n="t-network_topology_and_parti">Network topology and participant architecture</h2>
     <p class="sec-lead">
-      A Canton network is not a single ledger. It is a federation of independently operated <em>participant nodes</em>, each owned by a legal entity, communicating through one or more <em>synchronizer</em> domains. Each participant maintains its own private contract store containing only the contracts to which its hosted parties are stakeholders. The synchronizer orders messages and provides finality but never sees contract content — only opaque, encrypted payloads addressed to the relevant participants.
+      A Canton network is not a single ledger. It is a federation of independently operated <em>participant nodes</em>, each owned by a legal entity, communicating through one or more <em>synchronizer</em> domains. Each participant maintains its own private contract store containing only the contracts to which its hosted parties are stakeholders. The synchronizer orders messages and provides finality but never sees contract content: only opaque, encrypted payloads addressed to the relevant participants.
     </p>
 
     <div class="diagram-wrap">
@@ -779,7 +779,7 @@ footer {
       <p class="diagram-caption">Figure 2.1 — Canton Network topology: four FMI participant nodes connected through the Global Synchronizer</p>
     </div>
 
-    <h3 style="font-size:1.1rem;margin:1.5rem 0 0.75rem;color:var(--bright);">2.1 — Roles in this network</h3>
+    <h3 style="font-size:1.1rem;margin:1.5rem 0 0.75rem;color:var(--bright);">2.1: Roles in this network</h3>
 
     <div class="node-grid">
       <div class="node-card dbg">
@@ -833,11 +833,11 @@ footer {
       <div class="node-card synch">
         <p class="node-type">Global Synchronizer · Consensus &amp; Ordering</p>
         <h3>13 Super Validators · BFT-ordered, content-blind</h3>
-        <p>The Global Synchronizer is the message-ordering and finality layer for the Canton Network. It is operated by 13 Super Validators (as of 2026) including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, SBI Digital Markets, Tradeweb, Cumberland Labs and others, governed by the Global Synchronizer Foundation (a non-profit independent of any single participant). The synchronizer's job is precise and deliberately narrow: it orders encrypted messages between participants, runs a BFT consensus over message commitment, and produces a global timestamp that gives transactions deterministic finality. It never sees contract content — every message is encrypted end-to-end between the participants party to it. Sub-transactions in a multi-FMI atomic transaction either all commit or none commit; the synchronizer enforces this through a two-phase commit protocol with the participants involved, but participates in commitment <em>without ever seeing what is being committed</em>. Validator selection, rotation, and slashing are governed on-chain through the Canton Coin governance module.</p>
+        <p>The Global Synchronizer is the message-ordering and finality layer for the Canton Network. It is operated by 13 Super Validators (as of 2026) including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, SBI Digital Markets, Tradeweb, Cumberland Labs and others, governed by the Global Synchronizer Foundation (a non-profit independent of any single participant). The synchronizer's job is precise and deliberately narrow: it orders encrypted messages between participants, runs a BFT consensus over message commitment, and produces a global timestamp that gives transactions deterministic finality. It never sees contract content: every message is encrypted end-to-end between the participants party to it. Sub-transactions in a multi-FMI atomic transaction either all commit or none commit; the synchronizer enforces this through a two-phase commit protocol with the participants involved, but participates in commitment <em>without ever seeing what is being committed</em>. Validator selection, rotation, and slashing are governed on-chain through the Canton Coin governance module.</p>
       </div>
     </div>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">2.2 — Counterparties on the network</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">2.2: Counterparties on the network</h3>
     <p>In addition to the four FMIs, this scenario assumes two trading counterparties whose Daml parties are hosted on dedicated bank participant nodes:</p>
     <div class="detail-table-wrap">
       <table class="detail-table">
@@ -867,11 +867,11 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_03">Section 03</p>
     <h2 class="sec-title" data-i18n="t-daml_templates__choices__a">Daml templates, choices, and the party model</h2>
     <p class="sec-lead">
-      Daml is the smart contract language created by Digital Asset and the lingua franca of the Canton Network. Where Solidity describes computation on a globally replicated state machine, and Corda's Kotlin contracts describe verification of state transitions, Daml describes the <em>rights and obligations</em> of named parties. Every Daml template names its <code>signatory</code> parties (whose authority is required to create the contract), <code>observer</code> parties (who can see it but not act), and <code>controller</code> parties (who can exercise specific choices on it). This party-and-authority model maps directly onto the legal structure of an FMI agreement — each clause becomes a choice, each signature requirement becomes a signatory, each information right becomes an observer disclosure.
+      Daml is the smart contract language created by Digital Asset and the lingua franca of the Canton Network. Where Solidity describes computation on a globally replicated state machine, and Corda's Kotlin contracts describe verification of state transitions, Daml describes the <em>rights and obligations</em> of named parties. Every Daml template names its <code>signatory</code> parties (whose authority is required to create the contract), <code>observer</code> parties (who can see it but not act), and <code>controller</code> parties (who can exercise specific choices on it). This party-and-authority model maps directly onto the legal structure of an FMI agreement; each clause becomes a choice, each signature requirement becomes a signatory, each information right becomes an observer disclosure.
     </p>
 
-    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1 — Tokenized US Treasury at DTCC</h3>
-    <p>The DTCC <code>ComposerX</code> Daml application defines a <code>UsTreasuryToken</code> template representing a digital twin of a DTC-custodied US Treasury security. The security itself remains in DTC custody under the existing legal framework; the Daml contract is a registered representation that conveys the same beneficial interest, governed by the DTCC tokenization rulebook.</p>
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1: Tokenized US Treasury at DTCC</h3>
+    <p>The DTCC <code>ComposerX</code> Daml application defines a <code>UsTreasuryToken</code> template representing a digital twin of a DTC-custodied US Treasury security. The security itself remains in DTC custody under the existing legal structure; the Daml contract is a registered representation that conveys the same beneficial interest, governed by the DTCC tokenization rulebook.</p>
 
     <pre><code><span class="cm">-- Daml 3.x: UsTreasuryToken.daml</span>
 <span class="kw">module</span> <span class="ty">DtccComposerX.UsTreasuryToken</span> <span class="kw">where</span>
@@ -914,7 +914,7 @@ footer {
            repoRef    = repoCid
            released   = <span class="ty">False</span></code></pre>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.2 — Tokenized EUR commercial paper at Clearstream</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.2: Tokenized EUR commercial paper at Clearstream</h3>
     <p>Clearstream's D7 application defines a parallel template for EUR-denominated debt securities. The legal basis is German eWpG; the Daml template encodes both the security and the issuance/transfer rules under that statute.</p>
 
     <pre><code><span class="cm">-- ClearstreamD7.EurCommercialPaper.daml</span>
@@ -957,7 +957,7 @@ footer {
           (pledge.repoRef == repoAgreement)
         create <span class="kw">this with</span> holder = newHolder</code></pre>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.3 — Repo agreement at Broadridge DLR</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.3: Repo agreement at Broadridge DLR</h3>
     <p>Broadridge DLR holds the repo contract itself: the agreement, term, haircut, repurchase price, and the substitution and unwind logic. The repo references the collateral contracts on Clearstream, DTCC, and Euroclear by <code>ContractId</code>, but does not duplicate their state.</p>
 
     <pre><code><span class="cm">-- BroadridgeDLR.RepoAgreement.daml</span>
@@ -994,7 +994,7 @@ footer {
       <span class="kw">controller</span> cashProvider, collProvider, operator
       <span class="kw">do</span> <span class="kw">return</span> ()</code></pre>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.4 — Collateral mobility at Euroclear D-FMI</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.4: Collateral mobility at Euroclear D-FMI</h3>
     <p>Euroclear's D-FMI Daml application provides the cross-border mobility layer: it can take a tokenized gilt or Eurobond and re-pledge it across legal jurisdictions while the original asset record stays on Euroclear's authoritative ledger. The choice <code>MobiliseToTriparty</code> is the workhorse.</p>
 
     <pre><code><span class="cm">-- EuroclearDFMI.CollateralMobility.daml</span>
@@ -1040,8 +1040,8 @@ footer {
       The single most important property of Canton for an FMI network is sub-transaction privacy. In a single atomic transaction that touches three FMIs and two counterparties, each party sees only the projection of the transaction relevant to it. The synchronizer orders the encrypted views and confirms commit, but cannot read any of them. This is what makes it possible for DTCC, Clearstream, and Euroclear to settle a single atomic operation without ever seeing each other's books.
     </p>
 
-    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">4.1 — Projections, views, and informees</h3>
-    <p>When a Daml transaction is submitted, the participant's runtime decomposes it into a tree of <em>sub-transactions</em>, each with its own set of <em>informees</em> — the parties who must see that sub-transaction to validate or be informed of it. The runtime then constructs a per-participant <em>view</em> containing only the sub-transactions whose informees include parties hosted on that participant. Each view is encrypted under the receiving participant's key. The synchronizer's sequencer orders the encrypted blobs; the synchronizer's mediator coordinates a two-phase commit confirmation across the involved participants without ever decrypting them.</p>
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">4.1: Projections, views, and informees</h3>
+    <p>When a Daml transaction is submitted, the participant's runtime decomposes it into a tree of <em>sub-transactions</em>, each with its own set of <em>informees</em> (the parties who must see that sub-transaction to validate or be informed of it). The runtime then constructs a per-participant <em>view</em> containing only the sub-transactions whose informees include parties hosted on that participant. Each view is encrypted under the receiving participant's key. The synchronizer's sequencer orders the encrypted blobs; the synchronizer's mediator coordinates a two-phase commit confirmation across the involved participants without ever decrypting them.</p>
 
     <div class="detail-table-wrap">
       <table class="detail-table">
@@ -1075,8 +1075,8 @@ footer {
       </table>
     </div>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">4.2 — The Global Synchronizer</h3>
-    <p>The Global Synchronizer is the canonical synchronizer domain on the Canton Network. It comprises three logical components — a <em>sequencer</em> (orders encrypted messages), a <em>mediator</em> (coordinates two-phase commit), and a <em>topology manager</em> (publishes party-to-participant mapping) — operated together by 13 Super Validators. Consensus among the Super Validators uses a Tendermint-style BFT algorithm with deterministic finality at the sequencer level. The synchronizer fee model is paid in Canton Coin (CC) to incentivize honest validation; fee burn and minting are governed by on-chain rules.<sup><a href="#fn7">[7]</a></sup></p>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">4.2: The Global Synchronizer</h3>
+    <p>The Global Synchronizer is the canonical synchronizer domain on the Canton Network. It comprises three logical components: a <em>sequencer</em> (orders encrypted messages), a <em>mediator</em> (coordinates two-phase commit), and a <em>topology manager</em> (publishes party-to-participant mapping), operated together by 13 Super Validators. Consensus among the Super Validators uses a Tendermint-style BFT algorithm with deterministic finality at the sequencer level. The synchronizer fee model is paid in Canton Coin (CC) to incentivize honest validation; fee burn and minting are governed by on-chain rules.<sup><a href="#fn7">[7]</a></sup></p>
 
     <div class="callout teal">
       <p class="callout-label">Multiple synchronizers, one network</p>
@@ -1091,7 +1091,7 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_05">Section 05</p>
     <h2 class="sec-title" data-i18n="t-full_transaction_lifecycle">Full transaction lifecycle: 18 steps from negotiation to atomic settlement</h2>
     <p class="sec-lead">
-      The end-to-end flow involves an intraday repo opened in the morning between AssetMgrUS (cash provider) and EuroDealer SA (collateral provider), with USD 250 million face of US Treasuries pledged through DTCC, an additional GBP 50 million of gilts mobilized through Euroclear, against EUR 230 million of commercial paper delivered from Clearstream — all settled atomically across the four FMIs. The repo unwinds at end-of-day with substitution rights exercised mid-cycle.
+      The end-to-end flow involves an intraday repo opened in the morning between AssetMgrUS (cash provider) and EuroDealer SA (collateral provider), with USD 250 million face of US Treasuries pledged through DTCC, an additional GBP 50 million of gilts mobilized through Euroclear, against EUR 230 million of commercial paper delivered from Clearstream, all settled atomically across the four FMIs. The repo unwinds at end-of-day with substitution rights exercised mid-cycle.
     </p>
 
     <div class="step-list">
@@ -1170,15 +1170,15 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_07">Section 07</p>
     <h2 class="sec-title" data-i18n="t-cash_leg__canton_coin__and">Cash leg, Canton Coin, and on-ledger fees</h2>
     <p class="sec-lead">
-      Canton handles the securities leg atomically on-ledger. The cash leg in this scenario uses conventional RTGS rails (Fedwire for USD, TARGET2 for EUR) because deposit-token CBDC infrastructure remains in pilot phase in both jurisdictions. The Canton Coin (CC) is used only for synchronizer fees, not as a settlement medium. As wholesale CBDC rolls out, the cash leg can migrate on-ledger by introducing a dedicated <code>CashToken</code> Daml application running on the same network — at which point the entire DvP becomes truly intra-ledger atomic.
+      Canton handles the securities leg atomically on-ledger. The cash leg in this scenario uses conventional RTGS rails (Fedwire for USD, TARGET2 for EUR) because deposit-token CBDC infrastructure remains in pilot phase in both jurisdictions. The Canton Coin (CC) is used only for synchronizer fees, not as a settlement medium. As wholesale CBDC rolls out, the cash leg can migrate on-ledger by introducing a dedicated <code>CashToken</code> Daml application running on the same network, at which point the entire DvP becomes truly intra-ledger atomic.
     </p>
 
-    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">7.1 — Canton Coin and synchronizer fees</h3>
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">7.1: Canton Coin and synchronizer fees</h3>
     <p>Canton Coin (CC) is the native asset of the Global Synchronizer. Its sole purpose is to meter and pay for synchronizer services: sequencing, mediation, and storage. Fees are computed deterministically from transaction size and complexity and are paid by the submitting participant. Super Validators receive CC rewards for honest validation. CC supply is governed by the Global Synchronizer Foundation under transparent on-chain rules: minting tied to network usage growth, burning of unused balances, and capped issuance.<sup><a href="#fn8">[8]</a></sup></p>
 
     <p>Critically, Canton Coin is not a settlement asset and is not intended to be one. The four FMIs in this network do not hold CC as inventory; they hold operating reserves (similar to a SWIFT membership pre-fund) used solely to pay synchronizer fees on behalf of their applications.</p>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">7.2 — Path to on-ledger cash</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">7.2: Path to on-ledger cash</h3>
     <div class="detail-table-wrap">
       <table class="detail-table">
         <thead><tr><th>Currency</th><th>Today</th><th>2026 path</th><th>2027+ path</th></tr></thead>
@@ -1222,7 +1222,7 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_09">Section 09</p>
     <h2 class="sec-title" data-i18n="t-kyc__aml__and_travel_rule">KYC, AML, and Travel Rule compliance</h2>
     <p class="sec-lead">
-      AML obligations attach to each participant FMI under its own jurisdiction's framework — DTCC under FinCEN Bank Secrecy Act rules, Clearstream under Germany's GwG and the EU AMLR (in force July 2027), Euroclear under Belgium's anti-money-laundering law and EU AMLR, Broadridge under FinCEN's transfer-agent rules. The Canton architecture lets each FMI continue to run its own onboarding stack while sharing only the cryptographic attestation needed to prove a counterparty has been verified.
+      AML obligations attach to each participant FMI under its own jurisdiction's rules: DTCC under FinCEN Bank Secrecy Act rules, Clearstream under Germany's GwG and the EU AMLR (in force July 2027), Euroclear under Belgium's anti-money-laundering law and EU AMLR, Broadridge under FinCEN's transfer-agent rules. The Canton architecture lets each FMI continue to run its own onboarding stack while sharing only the cryptographic attestation needed to prove a counterparty has been verified.
     </p>
 
     <p>Each FMI maintains a <code>KycAttestation</code> Daml template signed jointly by the FMI's compliance party and the counterparty. The attestation is held privately on the FMI's participant; only the attestation's hash is referenced from settlement contracts. When a cross-FMI transaction is proposed, a non-consuming choice <code>VerifyAttestation</code> is exercised on each FMI's attestation contract, returning a boolean to the proposing transaction. The attestation content itself is never disclosed; only the verification result.</p>
@@ -1237,61 +1237,61 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_10">Section 10</p>
     <h2 class="sec-title" data-i18n="t-regulatory_framework__eu">Regulatory framework: EU, US, UK, and Belgium</h2>
     <p class="sec-lead">
-      Each of the four FMIs operates under a distinct supervisory framework. The Canton architecture is compatible with all four because it gives each FMI authoritative control over its own asset register while enabling cross-FMI atomic settlement. No FMI cedes supervisory authority to another, and no party sees data outside its lawful basis.
+      Each of the four FMIs operates under a distinct supervisory regime. The Canton architecture is compatible with all four because it gives each FMI authoritative control over its own asset register while enabling cross-FMI atomic settlement. No FMI cedes supervisory authority to another, and no party sees data outside its lawful basis.
     </p>
 
     <div class="reg-grid">
       <div class="reg-cell">
         <h4>European Union — Clearstream &amp; Euroclear</h4>
-        <p>Clearstream Banking AG is a CSD under CSDR (Regulation 909/2014), supervised by BaFin and Bundesbank, with crypto-securities issuance under the German eWpG (Electronic Securities Act, June 2021). The D7 DLT extension launched in production November 2025 operates within the eWpG crypto-securities registry framework.</p>
+        <p>Clearstream Banking AG is a CSD under CSDR (Regulation 909/2014), supervised by BaFin and Bundesbank, with crypto-securities issuance under the German eWpG (Electronic Securities Act, June 2021). The D7 DLT extension launched in production November 2025 operates within the eWpG crypto-securities registry.</p>
         <ul class="reg-list">
-          <li><strong>CSDR / RTS 2017/389</strong> — settlement discipline, reconciliation, finality</li>
-          <li><strong>eWpG (DE)</strong> — legal basis for crypto-securities, registry obligations</li>
-          <li><strong>MiCA (EU 2023/1114)</strong> — only insofar as ARTs/EMTs are touched; pure securities are out of scope</li>
-          <li><strong>DORA (EU 2022/2554)</strong> — ICT risk management, in force January 2025</li>
-          <li><strong>EU AMLR (2024/1624)</strong> — harmonized AML, in force July 2027</li>
-          <li><strong>DLT Pilot Regime</strong> — sandbox for DLT market infrastructures (LU)</li>
+          <li><strong>CSDR / RTS 2017/389</strong>: settlement discipline, reconciliation, finality</li>
+          <li><strong>eWpG (DE)</strong>: legal basis for crypto-securities, registry obligations</li>
+          <li><strong>MiCA (EU 2023/1114)</strong>: only insofar as ARTs/EMTs are touched; pure securities are out of scope</li>
+          <li><strong>DORA (EU 2022/2554)</strong>: ICT risk management, in force January 2025</li>
+          <li><strong>EU AMLR (2024/1624)</strong>: harmonized AML, in force July 2027</li>
+          <li><strong>DLT Pilot Regime</strong>: sandbox for DLT market infrastructures (LU)</li>
         </ul>
       </div>
       <div class="reg-cell">
         <h4>United States — DTCC &amp; Broadridge</h4>
         <p>DTC is a registered clearing agency under SEC Rule 17Ad-22 and Section 17A of the Securities Exchange Act; FICC is the CCP for US Treasury and MBS clearing under the SEC's expanded Treasury clearing mandate (Rule 17ad-22(e)(18), final rule December 2023, phased compliance through 2026). Broadridge operates as an SEC-registered transfer agent and processes flows through SEC- and FINRA-supervised broker-dealer channels.</p>
         <ul class="reg-list">
-          <li><strong>SEC Rule 17Ad-22</strong> — clearing agency standards, including segregation</li>
-          <li><strong>SEC Rule 10c-1a</strong> — securities loan reporting (compliance Jan 2026)</li>
-          <li><strong>Treasury Clearing Mandate</strong> — mandatory FICC clearing of cash &amp; repo Treasuries</li>
-          <li><strong>Bank Secrecy Act / FinCEN</strong> — AML/CTF, SAR filings</li>
-          <li><strong>OFAC sanctions screening</strong> — counterparty checks at issuance and transfer</li>
-          <li><strong>Reg SHO</strong> — short-sale and locate requirements (where applicable)</li>
+          <li><strong>SEC Rule 17Ad-22</strong>: clearing agency standards, including segregation</li>
+          <li><strong>SEC Rule 10c-1a</strong>: securities loan reporting (compliance Jan 2026)</li>
+          <li><strong>Treasury Clearing Mandate</strong>: mandatory FICC clearing of cash &amp; repo Treasuries</li>
+          <li><strong>Bank Secrecy Act / FinCEN</strong>: AML/CTF, SAR filings</li>
+          <li><strong>OFAC sanctions screening</strong>: counterparty checks at issuance and transfer</li>
+          <li><strong>Reg SHO</strong>: short-sale and locate requirements (where applicable)</li>
         </ul>
       </div>
       <div class="reg-cell">
         <h4>Belgium — Euroclear Bank (ICSD)</h4>
-        <p>Euroclear Bank operates under Belgian law as a credit institution and CSD, supervised by the National Bank of Belgium (prudential) and the FSMA (conduct), within the EU CSDR framework. Euroclear UK &amp; International (formerly CREST) operates the UK CSD under FCA and Bank of England oversight.</p>
+        <p>Euroclear Bank operates under Belgian law as a credit institution and CSD, supervised by the National Bank of Belgium (prudential) and the FSMA (conduct), within the EU CSDR. Euroclear UK &amp; International (formerly CREST) operates the UK CSD under FCA and Bank of England oversight.</p>
         <ul class="reg-list">
-          <li><strong>NBB / FSMA supervision</strong> — credit institution and CSD prudential rules</li>
-          <li><strong>CSDR</strong> — settlement discipline, T+1 from October 2027</li>
-          <li><strong>BE AML Law (2017)</strong> — to be replaced by EU AMLR July 2027</li>
-          <li><strong>Banking Act (BE 2014)</strong> — recovery and resolution planning</li>
-          <li><strong>DORA</strong> — operational resilience for ICT</li>
+          <li><strong>NBB / FSMA supervision</strong>: credit institution and CSD prudential rules</li>
+          <li><strong>CSDR</strong>: settlement discipline, T+1 from October 2027</li>
+          <li><strong>BE AML Law (2017)</strong>: to be replaced by EU AMLR July 2027</li>
+          <li><strong>Banking Act (BE 2014)</strong>: recovery and resolution planning</li>
+          <li><strong>DORA</strong>: operational resilience for ICT</li>
         </ul>
       </div>
       <div class="reg-cell">
         <h4>United Kingdom — gilt leg via Euroclear UK</h4>
-        <p>UK leg is governed by the Bank of England's FMI rules and the FCA's CSDR-equivalent framework following retention of CSDR in UK law post-Brexit. Gilts settle under the UK Uncertificated Securities Regulations 2001 as amended for digital securities under the FMI sandbox.</p>
+        <p>UK leg is governed by the Bank of England's FMI rules and the FCA's CSDR-equivalent rules following retention of CSDR in UK law post-Brexit. Gilts settle under the UK Uncertificated Securities Regulations 2001 as amended for digital securities under the FMI sandbox.</p>
         <ul class="reg-list">
-          <li><strong>BoE FMI Rules</strong> — supervisory expectations for systemic FMIs</li>
-          <li><strong>FCA SAR / CSDR-equivalent</strong> — settlement discipline, allocation rules</li>
-          <li><strong>FMI Digital Securities Sandbox</strong> — DLT settlement permissions</li>
-          <li><strong>UK MLR 2017 (as amended)</strong> — AML/CTF</li>
-          <li><strong>Project Rosalind</strong> — wholesale CBDC API design (BoE / BIS)</li>
+          <li><strong>BoE FMI Rules</strong>: supervisory expectations for systemic FMIs</li>
+          <li><strong>FCA SAR / CSDR-equivalent</strong>: settlement discipline, allocation rules</li>
+          <li><strong>FMI Digital Securities Sandbox</strong>: DLT settlement permissions</li>
+          <li><strong>UK MLR 2017 (as amended)</strong>: AML/CTF</li>
+          <li><strong>Project Rosalind</strong>: wholesale CBDC API design (BoE / BIS)</li>
         </ul>
       </div>
     </div>
 
     <div class="callout gold">
       <p class="callout-label">Cross-jurisdictional supervisory access</p>
-      <p>Each regulator (BaFin, SEC, FCA, NBB) is granted Daml <em>observer</em> party rights on the contracts within its supervisory perimeter. Observer rights confer read-only visibility — the regulator sees the same contract state as the supervised entity, in real time, with cryptographic guarantee of integrity. This is materially stronger than today's T+1 regulatory reporting feeds and resolves a long-standing ESMA and SEC concern about post-trade data integrity.</p>
+      <p>Each regulator (BaFin, SEC, FCA, NBB) is granted Daml <em>observer</em> party rights on the contracts within its supervisory perimeter. Observer rights confer read-only visibility; the regulator sees the same contract state as the supervised entity, in real time, with cryptographic guarantee of integrity. This is materially stronger than today's T+1 regulatory reporting feeds and resolves a long-standing ESMA and SEC concern about post-trade data integrity.</p>
     </div>
   </div>
 </section>
@@ -1348,7 +1348,7 @@ footer {
 
     <div class="callout amber">
       <p class="callout-label">Recovery and Resolution</p>
-      <p>Each FMI remains individually subject to its home jurisdiction's recovery and resolution regime — DTCC under Title VIII of Dodd-Frank, Clearstream and Euroclear under the EU CCPR / CSDR resolution framework, Broadridge as a critical service provider under SEC Reg SCI. The Canton ledger accelerates resolution by providing a cryptographically authoritative real-time book of positions to the resolution authority through observer party rights.</p>
+      <p>Each FMI remains individually subject to its home jurisdiction's recovery and resolution regime: DTCC under Title VIII of Dodd-Frank, Clearstream and Euroclear under the EU CCPR / CSDR resolution regime, Broadridge as a critical service provider under SEC Reg SCI. The Canton ledger accelerates resolution by providing a cryptographically authoritative real-time book of positions to the resolution authority through observer party rights.</p>
     </div>
   </div>
 </section>
