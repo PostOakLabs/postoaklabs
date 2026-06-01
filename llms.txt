@@ -81,12 +81,12 @@ Five buyer-archetype hubs filter and sequence the demos for distinct audiences. 
 - RegTech hub — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating (ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay): https://postoaklabs.com/demos/regtech/
 - BaaS hub — provider economics, embedded-lending unit economics, SME credit passport, wallet float yield, VRP mandates, AP2 BaaS infrastructure mandates (Unit, Synctera, Treasury Prime, Marqeta, Galileo): https://postoaklabs.com/demos/baas/
 - Processors hub — merchant rails blending, ISO 20022 CBPR+ cutover, LATAM corridor liquidity, nostro capital unlock, FedNow fraud, FX netting, VRP (Stripe Compliance, Adyen, Worldpay, Checkout.com): https://postoaklabs.com/demos/processors/
-- Stablecoin Issuer hub — MiCA Phase 2 / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA, AML transaction monitoring (Paxos, Circle, Bridge, Anchorage): https://postoaklabs.com/demos/stablecoin-issuer/
+- Stablecoin Issuer hub — MiCA Title III / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA, AML transaction monitoring (Paxos, Circle, Bridge, Anchorage): https://postoaklabs.com/demos/stablecoin-issuer/
 
 ### Live demos (direct URLs)
 
 - Demo #1 — Merchant Payment Rails Blender (Adyen / Stripe / Worldpay take-rate blender, AP2 export): https://postoaklabs.com/demos/merchant-payment-rails-blender.html
-- Demo #2 — ISO 20022 / CBPR+ Message Truncation Auditor (14 Nov 2026 SWIFT cutover): https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html
+- Demo #2 — ISO 20022 / CBPR+ Message Truncation Auditor (14 Nov 2026 CBPR+ structured-address mandate): https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html
 - Demo #3 — DORA / NIS2 Dual-Compliance Deduplicator (EU operational resilience): https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html
 - Demo #4 — LATAM Treasury Rails Migration Lab: https://postoaklabs.com/demos/latam-liquidity-migration-tool.html
 - Demo #5 — Nostro Capital Unlock Simulator: https://postoaklabs.com/demos/nostro-capital-optimization.html
@@ -101,7 +101,7 @@ Five buyer-archetype hubs filter and sequence the demos for distinct audiences. 
 - Demo #13 — FedNow / Instant-Payment Fraud Risk Lab (six-signal real-time fraud score model with sub-200ms latency budget, live confusion matrix, expected $-loss; AP2 fraud-policy mandate against @ainumbers.co/instant-pay-fraud-v1): https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html
 - Demo #27 — Agentic Mandate Sandbox (load any AP2 mandate the showcase emits, queue a candidate agent action, see the per-step execution trace and decision; trace exports against @ainumbers.co/sandbox-trace-v1): https://postoaklabs.com/demos/agentic-mandate-sandbox.html
 - Demo #15 — VASP Travel Rule (FATF R.16) Compliance Checker (originator + beneficiary data sufficiency across FATF / EU TFR 2024/1624 / FinCEN / UK MLR / MAS; AP2 mandate against @ainumbers.co/vasp-travel-rule-v1): https://postoaklabs.com/demos/vasp-travel-rule-compliance-checker.html
-- Demo #22 — ISO 20022 Migration Readiness Scorer (six-message-family coverage matrix × gateway × structured-address × hybrid plan → composite score, T-minus countdown to 14 Nov 2026 SWIFT cutover; AP2 mandate against @ainumbers.co/iso20022-readiness-v1): https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html
+- Demo #22 — ISO 20022 Migration Readiness Scorer (six-message-family coverage matrix × gateway × structured-address × hybrid plan → composite score, T-minus countdown to 14 Nov 2026 CBPR+ structured-address mandate; AP2 mandate against @ainumbers.co/iso20022-readiness-v1): https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html
 - Demo #16 — KYB Beneficial Ownership Network Mapper (interactive SVG ownership-chain graph with UBO identification across FinCEN CTA / EU 6AMLD / UK PSC / MAS; sanctioned-proximity hop counter, circular-ownership detection; AP2 mandate against @ainumbers.co/kyb-ubo-v1): https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html
 - Demo #25 — Cross-Border FX Netting Simulator (editable 4-subsidiary × 3-currency payable matrix; gross / bilateral / multilateral modes; settlement compression, FX-spread savings, nostro freed, Herstatt-risk reduction; AP2 treasury mandate against @ainumbers.co/fx-netting-v1): https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html
 - Demo #18 — VRP Mandate & Sweep Logic Designer (sweep window + amount caps + idempotency + beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA; live 24h permitted-window timeline; AP2 mandate against @ainumbers.co/vrp-mandate-v1): https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html
