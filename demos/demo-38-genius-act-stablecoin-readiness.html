@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+<title>GENIUS Act Stablecoin Issuer Readiness Assessment · Post Oak Labs Demo #38</title>
+<meta name="description" content="Post Oak Labs showcase demo: GENIUS Act Stablecoin Issuer Readiness Assessment. Complete GENIUS Act compliance pathway — effective January 18, 2027. Powered by AINumbers.co">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080E1A;--bg-2:#0D1627;--bg-3:#111E35;
+  --border:#1E2F4A;--border-2:#263855;
+  --muted:#3A5270;--body:#6888A8;--text:#A8C4DE;--bright:#D4E8F8;--white:#EEF6FD;
+  --teal:#14B8A6;--teal-lt:#2DD4BF;--teal-dim:rgba(20,184,166,.12);
+  --gold:#D4A847;--gold-lt:#F0BC48;--gold-dim:rgba(212,168,71,.12);
+  --green:#22C55E;--green-dim:rgba(34,197,94,.12);
+  --red:#EF4444;--red-dim:rgba(239,68,68,.12);
+  --warn:#F59E0B;--warn-dim:rgba(245,158,11,.12);
+  --blue:#3B82F6;--blue-dim:rgba(59,130,246,.12);
+  --radius:6px;--radius-lg:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;font-weight:300;font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.2}
+a{color:var(--teal);text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+.container{max-width:960px;margin:0 auto;padding:0 1.5rem}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(212,168,71,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(212,168,71,.012) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+
+nav{padding:0 1.5rem;height:54px;border-bottom:1px solid var(--border);background:rgba(8,14,26,.95);position:sticky;top:0;z-index:200;backdrop-filter:blur(8px)}
+.nav-inner{max-width:960px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between}
+.pol-logo{display:flex;flex-direction:column;gap:.05rem}
+.pol-name{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:500;color:var(--white)}
+.pol-sub{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.nav-tag{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ain-attr{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid var(--gold);color:var(--gold);border-radius:var(--radius);transition:all .2s}
+.ain-attr:hover{background:var(--gold);color:#000}
+
+.hero{padding:3rem 0 2rem;border-bottom:1px solid var(--border);position:relative;z-index:1}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.6rem}
+.hero-tag::before{content:'';display:block;width:22px;height:1px;background:var(--gold)}
+.hero h1{font-size:clamp(1.6rem,3vw,2.4rem);color:var(--white);margin-bottom:.5rem}
+.hero h1 em{font-style:italic;color:var(--gold-lt)}
+.hero-sub{font-size:.82rem;color:var(--body);max-width:600px;line-height:1.8;margin-bottom:1.25rem}
+.hero-meta{display:flex;gap:.5rem;flex-wrap:wrap}
+.hbadge{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .6rem;border:1px solid;border-radius:3px}
+.hb-gold{color:var(--gold);border-color:rgba(212,168,71,.3)}
+.hb-teal{color:var(--teal);border-color:rgba(20,184,166,.3)}
+.hb-warn{color:var(--warn);border-color:rgba(245,158,11,.3)}
+.hb-red{color:var(--red);border-color:rgba(239,68,68,.3)}
+
+.progress-bar{display:flex;align-items:center;gap:0;margin:2rem 0 0;padding:.5rem 0}
+.prog-step{display:flex;align-items:center;gap:0;flex:1;position:relative}
+.prog-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:600;flex-shrink:0;transition:all .3s;border:2px solid var(--border);background:var(--bg-2);color:var(--muted)}
+.prog-dot.active{background:var(--gold);border-color:var(--gold);color:#000}
+.prog-dot.done{background:var(--green);border-color:var(--green);color:#000}
+.prog-connector{flex:1;height:1px;background:var(--border);margin:0 .25rem}
+.prog-connector.done{background:var(--green)}
+.prog-label{position:absolute;top:38px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:.42rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.prog-label.active{color:var(--gold)}
+.prog-label.done{color:var(--green)}
+
+.wizard{padding:2.5rem 0 4rem;position:relative;z-index:1}
+.step-panel{display:none}
+.step-panel.visible{display:block}
+.step-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.25rem}
+.step-header{padding:.85rem 1.25rem;border-bottom:1px solid var(--border);background:var(--bg-3);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,168,71,.3);padding:.16rem .5rem;border-radius:3px}
+.step-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
+.step-ref{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;color:var(--muted)}
+.step-body{padding:1.25rem}
+
+.field{margin-bottom:1rem}
+.field label{display:block;font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.field select,.field input{width:100%;background:var(--bg-3);border:1px solid var(--border);color:var(--bright);font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.45rem .7rem;border-radius:var(--radius);outline:none;transition:border-color .2s;-webkit-appearance:none}
+.field select:focus,.field input:focus{border-color:var(--gold)}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:600px){.field-grid{grid-template-columns:1fr}}
+
+.result-card{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;margin-bottom:.75rem}
+.result-label{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.rrow{display:flex;gap:.75rem;font-size:.76rem;margin-bottom:.35rem}
+.rrow:last-child{margin-bottom:0}
+.rrow-key{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);width:160px;flex-shrink:0;padding-top:2px}
+.rrow-val{color:var(--text);line-height:1.5}
+.rrow-val strong{color:var(--bright);font-weight:500}
+.gauge-bar{height:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:.35rem}
+.gauge-fill{height:100%;border-radius:4px;transition:width .6s ease}
+
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.chk-item{display:flex;align-items:flex-start;gap:.5rem;font-size:.74rem;padding:.45rem .6rem;background:var(--bg);border-radius:3px}
+.chk-icon{font-family:'JetBrains Mono',monospace;font-size:.55rem;flex-shrink:0;width:16px;padding-top:1px}
+.chk-ok{color:var(--green)}
+.chk-req{color:var(--warn)}
+.chk-crit{color:var(--red)}
+.chk-text{color:var(--body);line-height:1.4}
+
+.nav-btns{display:flex;gap:.75rem;margin-top:1.5rem}
+.btn-next{background:var(--gold);color:#000;border:none;padding:.6rem 1.75rem;border-radius:var(--radius);font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:opacity .2s}
+.btn-next:hover{opacity:.85}
+.btn-back{background:transparent;color:var(--muted);border:1px solid var(--border);padding:.6rem 1.25rem;border-radius:var(--radius);font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;transition:all .2s}
+.btn-back:hover{border-color:var(--gold);color:var(--gold)}
+.btn-export{background:var(--teal);color:#000;border:none;padding:.6rem 1.75rem;border-radius:var(--radius);font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:opacity .2s}
+.btn-export:hover{opacity:.85}
+
+.powered-by{background:var(--bg-2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius);padding:.6rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;color:var(--muted);margin-bottom:1.5rem}
+.powered-by a{color:var(--gold)}
+
+footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;position:relative;z-index:1}
+.footer-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="pol-logo">
+      <span class="pol-name">Post Oak Labs</span>
+      <span class="pol-sub">Powered by AINumbers.co</span>
+    </div>
+    <span class="nav-tag">Demo #38</span>
+    <a href="https://ainumbers.co" target="_blank" rel="noopener" class="ain-attr">AINumbers.co ↗</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Post Oak Labs · Showcase Demo #38</div>
+    <h1>GENIUS Act <em>Stablecoin Issuer</em><br>Readiness Assessment</h1>
+    <p class="hero-sub">Complete GENIUS Act compliance pathway — effective January 18, 2027. Five-step assessment covering licensing, reserves, attestation, and AML/sanctions. Powered by AINumbers.co. Zero PII.</p>
+    <div class="hero-meta">
+      <span class="hbadge hb-gold">Effective Jan 18, 2027</span>
+      <span class="hbadge hb-warn">$10B PPSI Threshold</span>
+      <span class="hbadge hb-teal">1:1 Reserve Coverage</span>
+      <span class="hbadge hb-red">BSA / FinCEN</span>
+    </div>
+
+    <div class="progress-bar" id="progressBar">
+      <div class="prog-step">
+        <div class="prog-dot active" id="pdot-1">1</div>
+        <span class="prog-label active" id="plbl-1">Profile</span>
+        <div class="prog-connector" id="pcon-1"></div>
+      </div>
+      <div class="prog-step">
+        <div class="prog-dot" id="pdot-2">2</div>
+        <span class="prog-label" id="plbl-2">Licensing</span>
+        <div class="prog-connector" id="pcon-2"></div>
+      </div>
+      <div class="prog-step">
+        <div class="prog-dot" id="pdot-3">3</div>
+        <span class="prog-label" id="plbl-3">Reserves</span>
+        <div class="prog-connector" id="pcon-3"></div>
+      </div>
+      <div class="prog-step">
+        <div class="prog-dot" id="pdot-4">4</div>
+        <span class="prog-label" id="plbl-4">AML</span>
+        <div class="prog-connector" id="pcon-4"></div>
+      </div>
+      <div class="prog-step">
+        <div class="prog-dot" id="pdot-5">5</div>
+        <span class="prog-label" id="plbl-5">Export</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wizard">
+  <div class="container">
+    <div class="powered-by">
+      Powered by <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers.co</a> T336, T328, T337, T338 · GENIUS Act Stablecoin Compliance Suite · Zero PII · Client-side only
+    </div>
+
+    <!-- STEP 1: ISSUER PROFILE -->
+    <div class="step-panel visible" id="step1">
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">STEP 01</span>
+          <span class="step-title">Issuer Profile</span>
+        </div>
+        <div class="step-body">
+          <div class="field-grid">
+            <div class="field">
+              <label>Entity Type</label>
+              <select id="entityType">
+                <option value="insured_depository">Insured Depository Institution (bank/thrift)</option>
+                <option value="non_bank_federal">Non-Bank — Federal PMSA Charter</option>
+                <option value="non_bank_state">Non-Bank — State PMSA Charter</option>
+                <option value="foreign">Foreign Stablecoin Issuer (US nexus)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Total Assets (USD)</label>
+              <select id="totalAssets">
+                <option value="under1b">&lt; $1B</option>
+                <option value="1b_10b">$1B – $10B</option>
+                <option value="over10b">&gt; $10B (PPSI threshold)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Stablecoins Outstanding (USD)</label>
+              <select id="coinsOutstanding">
+                <option value="under100m">&lt; $100M</option>
+                <option value="100m_1b">$100M – $1B</option>
+                <option value="1b_10b">$1B – $10B</option>
+                <option value="over10b">&gt; $10B</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Primary Jurisdiction</label>
+              <select id="jurisdiction">
+                <option value="us">United States</option>
+                <option value="eu">European Union</option>
+                <option value="uk">United Kingdom</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Issuer / Platform Name (optional)</label>
+            <input type="text" id="issuerName" placeholder="e.g. Acme Stablecoin Corp" maxlength="80">
+          </div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-next" onclick="goStep(2)">Next: Licensing Pathway →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: LICENSING -->
+    <div class="step-panel" id="step2">
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">STEP 02</span>
+          <span class="step-title">Licensing Pathway</span>
+          <span class="step-ref">AINumbers T336</span>
+        </div>
+        <div class="step-body" id="licensingBody"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="goStep(1)">← Back</button>
+        <button class="btn-next" onclick="goStep(3)">Next: Reserve &amp; Attestation →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: RESERVES -->
+    <div class="step-panel" id="step3">
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">STEP 03</span>
+          <span class="step-title">Reserve &amp; Attestation Requirements</span>
+          <span class="step-ref">AINumbers T328 · T337</span>
+        </div>
+        <div class="step-body" id="reserveBody"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="goStep(2)">← Back</button>
+        <button class="btn-next" onclick="goStep(4)">Next: AML / Sanctions →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: AML -->
+    <div class="step-panel" id="step4">
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">STEP 04</span>
+          <span class="step-title">AML / Sanctions Program</span>
+          <span class="step-ref">AINumbers T338</span>
+        </div>
+        <div class="step-body" id="amlBody"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="goStep(3)">← Back</button>
+        <button class="btn-next" onclick="goStep(5)">Next: Compliance Mandate Export →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: EXPORT -->
+    <div class="step-panel" id="step5">
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-num">STEP 05</span>
+          <span class="step-title">GENIUS Act Compliance Mandate Summary</span>
+        </div>
+        <div class="step-body" id="summaryBody"></div>
+      </div>
+      <div class="nav-btns">
+        <button class="btn-back" onclick="goStep(4)">← Back</button>
+        <button class="btn-export" onclick="exportMandate()">⬇ Export Compliance Mandate (JSON)</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">Post Oak Labs Demo #38 · GENIUS Act Stablecoin Issuer Readiness · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
+    <span class="footer-copy">Indicative guidance only — not legal advice. Consult qualified US financial regulatory counsel.</span>
+  </div>
+</footer>
+
+<script>
+let S = {};
+
+function daysUntil(d){ return Math.ceil((new Date(d)-new Date())/86400000); }
+
+function goStep(n) {
+  if(n===2) buildLicensing();
+  if(n===3) buildReserve();
+  if(n===4) buildAml();
+  if(n===5) buildSummary();
+  [1,2,3,4,5].forEach(i=>{
+    document.getElementById('step'+i).classList.toggle('visible',i===n);
+    const dot=document.getElementById('pdot-'+i);
+    const lbl=document.getElementById('plbl-'+i);
+    if(i<n){dot.classList.add('done');dot.classList.remove('active');lbl&&lbl.classList.add('done');lbl&&lbl.classList.remove('active');}
+    else if(i===n){dot.classList.add('active');dot.classList.remove('done');lbl&&lbl.classList.add('active');lbl&&lbl.classList.remove('done');}
+    else{dot.classList.remove('active','done');lbl&&lbl.classList.remove('active','done');}
+    const con=document.getElementById('pcon-'+i);
+    if(con) con.classList.toggle('done',i<n);
+  });
+}
+
+function buildLicensing(){
+  const entityType = document.getElementById('entityType').value;
+  const totalAssets = document.getElementById('totalAssets').value;
+  const coinsOutstanding = document.getElementById('coinsOutstanding').value;
+  S.entityType=entityType; S.totalAssets=totalAssets; S.coinsOutstanding=coinsOutstanding;
+  S.jurisdiction=document.getElementById('jurisdiction').value;
+  S.issuerName=document.getElementById('issuerName').value.trim()||'Issuer';
+
+  const isPPSI = totalAssets==='over10b' || coinsOutstanding==='over10b';
+  S.isPPSI=isPPSI;
+
+  const regulatorMap = {
+    insured_depository:'OCC / Federal Reserve / FDIC (primary federal banking regulator)',
+    non_bank_federal:'OCC — Office of the Comptroller of the Currency (Federal PMSA)',
+    non_bank_state:'State banking regulator + Federal Reserve oversight',
+    foreign:'Federal Reserve Board (QFPSA determination required)',
+  };
+  const primaryRegulator = regulatorMap[entityType];
+
+  const days = daysUntil('2027-01-18');
+
+  document.getElementById('licensingBody').innerHTML=`
+    <div class="result-card">
+      <div class="result-label">Licensing Pathway — ${S.issuerName}</div>
+      <div class="rrow"><span class="rrow-key">Entity Type</span><span class="rrow-val"><strong>${entityType.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</strong></span></div>
+      <div class="rrow"><span class="rrow-key">Primary Regulator</span><span class="rrow-val">${primaryRegulator}</span></div>
+      <div class="rrow"><span class="rrow-key">GENIUS Act Effective</span><span class="rrow-val"><strong style="color:var(--warn)">January 18, 2027</strong> — ${days} days remaining</span></div>
+      <div class="rrow"><span class="rrow-key">PPSI Status</span><span class="rrow-val"><span style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;padding:.18rem .5rem;border-radius:3px;${isPPSI?'background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3)':'background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3)'}">${isPPSI?'PPSI — LARGE ISSUER REQUIREMENTS':'Non-PPSI — Standard requirements'}</span></span></div>
+    </div>
+    <div class="result-card">
+      <div class="result-label">PPSI Qualification Analysis ($10B Threshold)</div>
+      <ul class="checklist">
+        <li class="chk-item"><span class="chk-icon ${isPPSI?'chk-crit':'chk-ok'}">${isPPSI?'!':'✓'}</span><span class="chk-text">${isPPSI?'PPSI threshold met — enhanced requirements apply: Federal Reserve Board oversight, enhanced capital standards, enhanced liquidity requirements':'Below $10B threshold — standard GENIUS Act requirements apply'}</span></li>
+        ${isPPSI?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">PPSI issuers must obtain approval from primary federal regulator before issuance</span></li>`:''}
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">All permitted stablecoin issuers must obtain written approval from primary federal payment stablecoin regulator</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">GENIUS Act compliance required: 18-month transition period post-enactment for existing issuers</span></li>
+        ${entityType==='foreign'?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">Foreign issuer: Federal Reserve Board must determine Qualifying Foreign Payment Stablecoin (QFPSA) — requires comparable regulatory treatment in home jurisdiction</span></li>`:''}
+      </ul>
+    </div>`;
+}
+
+function buildReserve(){
+  const coins = S.coinsOutstanding;
+  const coinValueMap = {'under100m':50,'100m_1b':500,'1b_10b':5000,'over10b':50000};
+  const coinValue = coinValueMap[coins];
+  const ratio = 1.0;
+
+  S.reserveRatio=ratio;
+  S.coinValue=coinValue;
+
+  const eligibleAssets = [
+    {asset:'US Dollar (physical / Fed reserve accounts)', eligible:true, pct:'Up to 100%'},
+    {asset:'Insured deposits at US FDIC-insured institution', eligible:true, pct:'Up to 100%'},
+    {asset:'US Treasury Bills (≤ 93 days maturity)', eligible:true, pct:'Up to 100%'},
+    {asset:'Overnight repos backed by US Treasuries', eligible:true, pct:'Up to 100%'},
+    {asset:'Reverse repos backed by US Treasuries', eligible:true, pct:'Permitted'},
+    {asset:'Fed Reserve MMMFs (government securities only)', eligible:true, pct:'Permitted'},
+    {asset:'Corporate bonds / equities', eligible:false, pct:'Not permitted'},
+    {asset:'Other stablecoins', eligible:false, pct:'Not permitted'},
+    {asset:'Commodities (gold, etc.)', eligible:false, pct:'Not permitted'},
+  ];
+
+  document.getElementById('reserveBody').innerHTML=`
+    <div class="result-card">
+      <div class="result-label">1:1 Reserve Coverage Requirement (T328)</div>
+      <div class="rrow"><span class="rrow-key">Coverage Ratio</span><span class="rrow-val"><strong style="color:var(--green)">1:1 — Exact backing required at all times</strong></span></div>
+      <div class="rrow"><span class="rrow-key">Estimated Coins</span><span class="rrow-val">~$${coinValue.toLocaleString()}M outstanding → requires ~$${coinValue.toLocaleString()}M in eligible reserve assets</span></div>
+      <div class="rrow"><span class="rrow-key">Segregation Required</span><span class="rrow-val">Reserve assets must be held separate from issuer operating funds — bankruptcy remote structure required</span></div>
+    </div>
+    <div class="result-card">
+      <div class="result-label">Eligible Reserve Assets — GENIUS Act Schedule (T337)</div>
+      <ul class="checklist">
+        ${eligibleAssets.map(a=>`<li class="chk-item"><span class="chk-icon ${a.eligible?'chk-ok':'chk-crit'}">${a.eligible?'✓':'✗'}</span><span class="chk-text"><strong style="color:var(--bright)">${a.asset}</strong> — ${a.pct}</span></li>`).join('')}
+      </ul>
+    </div>
+    <div class="result-card">
+      <div class="result-label">Monthly Disclosure &amp; Attestation Checklist (T337)</div>
+      <ul class="checklist">
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Monthly public disclosure of reserve composition and amounts — required within 10 business days of month-end</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Attestation from registered public accounting firm — annual audit or semi-annual review depending on PPSI status</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">${S.isPPSI?'PPSI: Annual examination by primary federal regulator (OCC / Federal Reserve)':'Annual examination or supervisory review by primary regulator'}</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Redemption policy: must redeem at par within 1 business day of redemption request</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Liquidity stress testing: demonstrate ability to handle 30-day outflow scenario</span></li>
+      </ul>
+    </div>`;
+}
+
+function buildAml(){
+  const isPPSI = S.isPPSI;
+  const coins = S.coinsOutstanding;
+  const travelRuleRequired = coins !== 'under100m';
+
+  S.travelRuleRequired=travelRuleRequired;
+
+  document.getElementById('amlBody').innerHTML=`
+    <div class="result-card">
+      <div class="result-label">BSA Registration &amp; FinCEN Filing (T338)</div>
+      <ul class="checklist">
+        <li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">BSA registration as Money Services Business (MSB) required — register with FinCEN at bsaefiling.fincen.treas.gov</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">GENIUS Act: all permitted stablecoin issuers treated as financial institutions under BSA — full AML program obligation</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Written AML compliance program covering: internal controls, designated compliance officer, employee training, independent audit</span></li>
+      </ul>
+    </div>
+    <div class="result-card">
+      <div class="result-label">Customer Identification Program (CIP)</div>
+      <ul class="checklist">
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">CIP required for all customers: name, date of birth, address, and identification number (SSN / EIN / passport number)</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Identity verification within reasonable time of account opening — documentary or non-documentary methods</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">OFAC SDN and blocked persons screening at onboarding and ongoing — daily SDN list refresh recommended</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Beneficial ownership identification for legal entity customers (FinCEN CDD Rule) — 25% threshold</span></li>
+      </ul>
+    </div>
+    <div class="result-card">
+      <div class="result-label">Travel Rule &amp; SAR Filing (T338)</div>
+      <ul class="checklist">
+        <li class="chk-item"><span class="chk-icon ${travelRuleRequired?'chk-crit':'chk-ok'}">${travelRuleRequired?'!':'✓'}</span><span class="chk-text">Travel Rule (FinCEN Rule 31 CFR §103.33): ${travelRuleRequired?'REQUIRED — transmittal orders of $3,000+ must include transmittor and recipient information':'Low volume — monitor $3,000 threshold triggers carefully'}</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">SAR filing obligation: within 30 days of detecting suspicious activity; 60 days if no suspect identified — threshold $5,000 (MSB: $2,000)</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">CTR filing: cash transactions exceeding $10,000 — report within 15 days</span></li>
+        ${isPPSI?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">PPSI: enhanced transaction monitoring program required — real-time velocity monitoring, geographic risk scoring, and blockchain analytics integration</span></li>`:''}
+      </ul>
+    </div>`;
+}
+
+function buildSummary(){
+  const readinessItems = [
+    {area:'Licensing & Charter', status: S.entityType==='foreign'?'action':'pending', note: S.entityType==='foreign'?'QFPSA determination required from Federal Reserve Board':'Submit permit application to primary federal payment stablecoin regulator before Jan 18, 2027'},
+    {area:'Reserve Structure', status:'pending', note:'Establish bankruptcy-remote reserve account with eligible assets; engage Big-4 accounting firm for attestation engagement'},
+    {area:'Monthly Disclosure', status:'pending', note:'Implement reserve reporting workflow; target first disclosure within 10 business days of month-end following enactment'},
+    {area:'BSA / AML Program', status:'action', note:'Register with FinCEN as MSB; document written AML program with designated compliance officer'},
+    {area:'CIP & KYC', status:'pending', note:'Implement GENIUS Act-compliant CIP; ensure OFAC screening at onboarding and daily refresh'},
+    {area:'Travel Rule', status: S.travelRuleRequired?'action':'ok', note: S.travelRuleRequired?'Implement Travel Rule data transmission for $3,000+ transfers — evaluate VASP messaging solution':'Monitor threshold — implement before volume growth crosses $3,000 trigger'},
+    {area:'SAR / CTR Filing', status:'pending', note:'Configure SAR/CTR workflow with 30-day filing obligation; ensure FinCEN BSA E-Filing access'},
+    {area:'Redemption Policy', status:'pending', note:'Publish redemption policy: 1 business day par redemption; implement liquidity buffer for 30-day stress scenario'},
+  ];
+
+  S.readinessItems=readinessItems;
+  const days=daysUntil('2027-01-18');
+
+  const statusIcon = {action:'!', pending:'→', ok:'✓'};
+  const statusClass = {action:'chk-crit', pending:'chk-req', ok:'chk-ok'};
+
+  document.getElementById('summaryBody').innerHTML=`
+    <div class="result-card">
+      <div class="result-label">GENIUS Act Readiness Summary — ${S.issuerName}</div>
+      <div class="rrow"><span class="rrow-key">Effective Date</span><span class="rrow-val"><strong style="color:var(--warn)">January 18, 2027</strong> — ${days} days remaining</span></div>
+      <div class="rrow"><span class="rrow-key">PPSI Status</span><span class="rrow-val">${S.isPPSI?'<strong style="color:var(--red)">PPSI — Large Issuer (>$10B)</strong>':'Standard issuer (below $10B PPSI threshold)'}</span></div>
+      <div class="rrow"><span class="rrow-key">Primary Regulator</span><span class="rrow-val">${{insured_depository:'OCC / Fed / FDIC',non_bank_federal:'OCC',non_bank_state:'State + Federal Reserve',foreign:'Federal Reserve Board'}[S.entityType]||'TBD'}</span></div>
+    </div>
+    <div class="result-card">
+      <div class="result-label">Compliance Checklist — 8 Areas</div>
+      <ul class="checklist">
+        ${readinessItems.map(item=>`<li class="chk-item"><span class="chk-icon ${statusClass[item.status]}">${statusIcon[item.status]}</span><span class="chk-text"><strong style="color:var(--bright)">${item.area}</strong> — ${item.note}</span></li>`).join('')}
+      </ul>
+    </div>`;
+}
+
+function exportMandate(){
+  const payload={
+    ap2_version:'1.0',
+    generated:new Date().toISOString(),
+    tool:'AINumbers.co T336/T328/T337/T338 · Post Oak Labs Demo #38',
+    regulation:'GENIUS Act (Guiding and Establishing National Innovation for US Stablecoins Act)',
+    effective_date:'2027-01-18',
+    days_remaining:daysUntil('2027-01-18'),
+    issuer:{
+      name:S.issuerName,
+      entity_type:S.entityType,
+      total_assets:S.totalAssets,
+      coins_outstanding:S.coinsOutstanding,
+      jurisdiction:S.jurisdiction,
+      ppsi:S.isPPSI,
+    },
+    licensing:{
+      primary_regulator:{insured_depository:'OCC/Fed/FDIC',non_bank_federal:'OCC',non_bank_state:'State+FederalReserve',foreign:'FederalReserveBoard'}[S.entityType],
+      ppsi_qualified:S.isPPSI,
+      foreign_qfpsa_required:S.entityType==='foreign',
+    },
+    reserves:{
+      coverage_ratio:'1:1',
+      eligible_assets:['USD/Fed reserves','FDIC-insured deposits','T-Bills ≤93 days','Overnight repos (UST)','Reverse repos (UST)','Government MMFs'],
+      monthly_disclosure_required:true,
+      attestation_required:true,
+      redemption_window_days:1,
+    },
+    aml:{
+      bsa_registration_required:true,
+      finra_msbregistration:true,
+      travel_rule_required:S.travelRuleRequired,
+      travel_rule_threshold_usd:3000,
+      sar_threshold_usd:5000,
+      ctr_threshold_usd:10000,
+      cip_required:true,
+      ofac_screening_required:true,
+    },
+    readiness_checklist:S.readinessItems||[],
+    disclaimer:'Indicative guidance only — not legal advice. Consult qualified US financial regulatory counsel. GENIUS Act provisions subject to regulatory implementation guidance.',
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`genius-act-stablecoin-mandate-${(S.issuerName||'issuer').toLowerCase().replace(/\s+/g,'-')}-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
