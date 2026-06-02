@@ -69,44 +69,44 @@ Advisory across DeFi protocols, layer-1 blockchains, enterprise blockchain (Cord
 
 ---
 
-## Fintech Intelligence Showcase (browser demos)
+## Fintech Intelligence Showcase (browser scenarios)
 
-The showcase at https://postoaklabs.com/demos/ is a curated catalog of 34 browser-based fintech demos drawn from the AINumbers.co tool library. Every demo is client-side, zero PII, AP2-exportable, and MCP-discoverable. All 34 are live as of May 2026.
+The showcase at https://postoaklabs.com/demos/ is a curated catalog of 34 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario is client-side, zero PII, AP2-exportable, and MCP-discoverable. All 34 are live as of May 2026.
 
-Five buyer-archetype hubs filter and sequence the demos for distinct audiences. All five hubs are public, indexed, and crawlable.
+Five buyer-archetype hubs filter and sequence the scenarios for distinct audiences. All five hubs are public, indexed, and crawlable.
 
-- Showcase landing — all 34 demos, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
-- Tool Chain Composer — the full 260-tool AINumbers catalog as a clustered atlas, with the 34 showcase demos highlighted. 15 categories, AP2 schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
+- Showcase landing — all 34 scenarios, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
+- Tool Chain Composer — the full 260-tool AINumbers catalog as a clustered atlas, with the 34 showcase scenarios highlighted. 15 categories, AP2 schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
 - Agentic Runtime hub — deterministic AP2/MCP policy layer for agent runtime builders (Anthropic, Google AP2, OpenAI, Vellum, LangChain): https://postoaklabs.com/demos/agentic-runtime/
 - RegTech hub — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating (ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay): https://postoaklabs.com/demos/regtech/
 - BaaS hub — provider economics, embedded-lending unit economics, SME credit passport, wallet float yield, VRP mandates, AP2 BaaS infrastructure mandates (Unit, Synctera, Treasury Prime, Marqeta, Galileo): https://postoaklabs.com/demos/baas/
 - Processors hub — merchant rails blending, ISO 20022 CBPR+ cutover, LATAM corridor liquidity, nostro capital unlock, FedNow fraud, FX netting, VRP (Stripe Compliance, Adyen, Worldpay, Checkout.com): https://postoaklabs.com/demos/processors/
 - Stablecoin Issuer hub — MiCA Title III / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA, AML transaction monitoring (Paxos, Circle, Bridge, Anchorage): https://postoaklabs.com/demos/stablecoin-issuer/
 
-### Live demos (direct URLs)
+### Live scenarios (direct URLs)
 
-- Demo #1 — Merchant Payment Rails Blender (Adyen / Stripe / Worldpay take-rate blender, AP2 export): https://postoaklabs.com/demos/merchant-payment-rails-blender.html
-- Demo #2 — ISO 20022 / CBPR+ Message Truncation Auditor (14 Nov 2026 CBPR+ structured-address mandate): https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html
-- Demo #3 — DORA / NIS2 Dual-Compliance Deduplicator (EU operational resilience): https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html
-- Demo #4 — LATAM Treasury Rails Migration Lab: https://postoaklabs.com/demos/latam-liquidity-migration-tool.html
-- Demo #5 — Nostro Capital Unlock Simulator: https://postoaklabs.com/demos/nostro-capital-optimization.html
-- Demo #6 — SME Credit Passport (Brazil + Nigeria, AP2 credit mandate): https://postoaklabs.com/demos/sme-credit-passport-global-south.html
-- Demo #7 — AP2 Agentic Payment Policy Guardrail: https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html
-- Demo #11 — AML Transaction Monitoring Rule Builder (FP/TP modeled, AP2 ruleset export, MCP tool def): https://postoaklabs.com/demos/aml-transaction-monitoring-rule-builder.html
-- Demo #23 — AP2 AML Mandate Builder (multi-domain agentic AML mandates against @ainumbers.co/aml-mandate-v1): https://postoaklabs.com/demos/ap2-aml-mandate-builder.html
-- Demo #26 — DORA ICT Risk Gap Analyser (five-pillar DORA maturity + Article 28 third-party concentration depth, AP2 against @ainumbers.co/dora-gap-v1): https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html
-- Demo #17 — Wallet Float Yield Estimator (BaaS treasury revenue model — allocation × rate × cost stack → net bps + annual $; AP2 treasury mandate against @ainumbers.co/wallet-float-v1): https://postoaklabs.com/demos/wallet-float-yield-estimator.html
-- Demo #24 — AP2 BaaS Infrastructure Mandate Builder (programme policy + sponsor-bank gates + BIN-tier ceilings + transaction-rail caps → AP2 mandate against @ainumbers.co/baas-mandate-v1): https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html
-- Demo #8 — Stablecoin Issuer Readiness Lab (MiCA Title III + GENIUS Act issuer readiness — reserve composition × redemption × operational safeguards → composite score + AP2 mandate against @ainumbers.co/stablecoin-readiness-v1): https://postoaklabs.com/demos/stablecoin-issuer-readiness-mica-genius.html
-- Demo #13 — FedNow / Instant-Payment Fraud Risk Lab (six-signal real-time fraud score model with sub-200ms latency budget, live confusion matrix, expected $-loss; AP2 fraud-policy mandate against @ainumbers.co/instant-pay-fraud-v1): https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html
-- Demo #27 — Agentic Mandate Sandbox (load any AP2 mandate the showcase emits, queue a candidate agent action, see the per-step execution trace and decision; trace exports against @ainumbers.co/sandbox-trace-v1): https://postoaklabs.com/demos/agentic-mandate-sandbox.html
-- Demo #15 — VASP Travel Rule (FATF R.16) Compliance Checker (originator + beneficiary data sufficiency across FATF / EU TFR 2024/1624 / FinCEN / UK MLR / MAS; AP2 mandate against @ainumbers.co/vasp-travel-rule-v1): https://postoaklabs.com/demos/vasp-travel-rule-compliance-checker.html
-- Demo #22 — ISO 20022 Migration Readiness Scorer (six-message-family coverage matrix × gateway × structured-address × hybrid plan → composite score, T-minus countdown to 14 Nov 2026 CBPR+ structured-address mandate; AP2 mandate against @ainumbers.co/iso20022-readiness-v1): https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html
-- Demo #16 — KYB Beneficial Ownership Network Mapper (interactive SVG ownership-chain graph with UBO identification across FinCEN CTA / EU 6AMLD / UK PSC / MAS; sanctioned-proximity hop counter, circular-ownership detection; AP2 mandate against @ainumbers.co/kyb-ubo-v1): https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html
-- Demo #25 — Cross-Border FX Netting Simulator (editable 4-subsidiary × 3-currency payable matrix; gross / bilateral / multilateral modes; settlement compression, FX-spread savings, nostro freed, Herstatt-risk reduction; AP2 treasury mandate against @ainumbers.co/fx-netting-v1): https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html
-- Demo #18 — VRP Mandate & Sweep Logic Designer (sweep window + amount caps + idempotency + beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA; live 24h permitted-window timeline; AP2 mandate against @ainumbers.co/vrp-mandate-v1): https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html
-- Demo #21 — Tokenized RWA Compliance Pre-Checker (8 asset classes × 7 jurisdictions × offering structure → MiCA + Howey classification, pathway verdict viable/remediate/not-viable, per-line findings; AP2 mandate against @ainumbers.co/rwa-readiness-v1): https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html
-- Demo #34 — AML End-to-End Workflow (four-stage AML ops chain: customer risk rating → transaction-monitoring rule calibration → SAR narrative generation → AP2 AML Policy Mandate export; presets for VASP, trade finance, and retail; FATF R.10 aligned): https://postoaklabs.com/demos/aml-end-to-end-workflow.html
+- Scenario #1 — Merchant Payment Rails Blender (Adyen / Stripe / Worldpay take-rate blender, AP2 export): https://postoaklabs.com/demos/merchant-payment-rails-blender.html
+- Scenario #2 — ISO 20022 / CBPR+ Message Truncation Auditor (14 Nov 2026 CBPR+ structured-address mandate): https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html
+- Scenario #3 — DORA / NIS2 Dual-Compliance Deduplicator (EU operational resilience): https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html
+- Scenario #4 — LATAM Treasury Rails Migration Lab: https://postoaklabs.com/demos/latam-liquidity-migration-tool.html
+- Scenario #5 — Nostro Capital Unlock Simulator: https://postoaklabs.com/demos/nostro-capital-optimization.html
+- Scenario #6 — SME Credit Passport (Brazil + Nigeria, AP2 credit mandate): https://postoaklabs.com/demos/sme-credit-passport-global-south.html
+- Scenario #7 — AP2 Agentic Payment Policy Guardrail: https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html
+- Scenario #11 — AML Transaction Monitoring Rule Builder (FP/TP modeled, AP2 ruleset export, MCP tool def): https://postoaklabs.com/demos/aml-transaction-monitoring-rule-builder.html
+- Scenario #23 — AP2 AML Mandate Builder (multi-domain agentic AML mandates against @ainumbers.co/aml-mandate-v1): https://postoaklabs.com/demos/ap2-aml-mandate-builder.html
+- Scenario #26 — DORA ICT Risk Gap Analyser (five-pillar DORA maturity + Article 28 third-party concentration depth, AP2 against @ainumbers.co/dora-gap-v1): https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html
+- Scenario #17 — Wallet Float Yield Estimator (BaaS treasury revenue model — allocation × rate × cost stack → net bps + annual $; AP2 treasury mandate against @ainumbers.co/wallet-float-v1): https://postoaklabs.com/demos/wallet-float-yield-estimator.html
+- Scenario #24 — AP2 BaaS Infrastructure Mandate Builder (programme policy + sponsor-bank gates + BIN-tier ceilings + transaction-rail caps → AP2 mandate against @ainumbers.co/baas-mandate-v1): https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html
+- Scenario #8 — Stablecoin Issuer Readiness Lab (MiCA Title III + GENIUS Act issuer readiness — reserve composition × redemption × operational safeguards → composite score + AP2 mandate against @ainumbers.co/stablecoin-readiness-v1): https://postoaklabs.com/demos/stablecoin-issuer-readiness-mica-genius.html
+- Scenario #13 — FedNow / Instant-Payment Fraud Risk Lab (six-signal real-time fraud score model with sub-200ms latency budget, live confusion matrix, expected $-loss; AP2 fraud-policy mandate against @ainumbers.co/instant-pay-fraud-v1): https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html
+- Scenario #27 — Agentic Mandate Sandbox (load any AP2 mandate the showcase emits, queue a candidate agent action, see the per-step execution trace and decision; trace exports against @ainumbers.co/sandbox-trace-v1): https://postoaklabs.com/demos/agentic-mandate-sandbox.html
+- Scenario #15 — VASP Travel Rule (FATF R.16) Compliance Checker (originator + beneficiary data sufficiency across FATF / EU TFR 2024/1624 / FinCEN / UK MLR / MAS; AP2 mandate against @ainumbers.co/vasp-travel-rule-v1): https://postoaklabs.com/demos/vasp-travel-rule-compliance-checker.html
+- Scenario #22 — ISO 20022 Migration Readiness Scorer (six-message-family coverage matrix × gateway × structured-address × hybrid plan → composite score, T-minus countdown to 14 Nov 2026 CBPR+ structured-address mandate; AP2 mandate against @ainumbers.co/iso20022-readiness-v1): https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html
+- Scenario #16 — KYB Beneficial Ownership Network Mapper (interactive SVG ownership-chain graph with UBO identification across FinCEN CTA / EU 6AMLD / UK PSC / MAS; sanctioned-proximity hop counter, circular-ownership detection; AP2 mandate against @ainumbers.co/kyb-ubo-v1): https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html
+- Scenario #25 — Cross-Border FX Netting Simulator (editable 4-subsidiary × 3-currency payable matrix; gross / bilateral / multilateral modes; settlement compression, FX-spread savings, nostro freed, Herstatt-risk reduction; AP2 treasury mandate against @ainumbers.co/fx-netting-v1): https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html
+- Scenario #18 — VRP Mandate & Sweep Logic Designer (sweep window + amount caps + idempotency + beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA; live 24h permitted-window timeline; AP2 mandate against @ainumbers.co/vrp-mandate-v1): https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html
+- Scenario #21 — Tokenized RWA Compliance Pre-Checker (8 asset classes × 7 jurisdictions × offering structure → MiCA + Howey classification, pathway verdict viable/remediate/not-viable, per-line findings; AP2 mandate against @ainumbers.co/rwa-readiness-v1): https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html
+- Scenario #34 — AML End-to-End Workflow (four-stage AML ops chain: customer risk rating → transaction-monitoring rule calibration → SAR narrative generation → AP2 AML Policy Mandate export; presets for VASP, trade finance, and retail; FATF R.10 aligned): https://postoaklabs.com/demos/aml-end-to-end-workflow.html
 
 ---
 
