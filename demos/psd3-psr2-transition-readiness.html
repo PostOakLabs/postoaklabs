@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>PSD3 / PSR2 EU Payments Transition Readiness · Post Oak Labs Demo #41</title>
+<title>PSD3 / PSR2 EU Payments Transition Readiness · Post Oak Labs Scenario #45</title>
 <meta name="description" content="Post Oak Labs showcase demo: PSD3/PSR2 EU Payments Transition Readiness Assessment. From PSD2 to PSD3 — know your gaps. Powered by AINumbers.co">
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,14 +123,14 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
       <span class="pol-name">Post Oak Labs</span>
       <span class="pol-sub">Powered by AINumbers.co</span>
     </div>
-    <span class="nav-tag">Demo #41</span>
+    <span class="nav-tag">Scenario #45</span>
     <a href="https://ainumbers.co" target="_blank" rel="noopener" class="ain-attr">AINumbers.co ↗</a>
   </div>
 </nav>
 
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Post Oak Labs · Showcase Demo #41</div>
+    <div class="hero-tag">Post Oak Labs · Showcase Scenario #45</div>
     <h1>PSD3 / PSR2 EU Payments<br><em>Transition Readiness</em> Assessment</h1>
     <p class="hero-sub">From PSD2 to PSD3 — know your gaps before the transposition clock starts. Five-step assessment covering licensing reclassification, VoP extension, ISO 20022, SCA, and open banking API performance. Powered by AINumbers.co. Zero PII.</p>
     <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:1.25rem">
@@ -246,7 +246,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-copy">Post Oak Labs Demo #41 · PSD3/PSR2 EU Payments Transition Readiness · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
+    <span class="footer-copy">Post Oak Labs Scenario #45 · PSD3/PSR2 EU Payments Transition Readiness · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
     <span class="footer-copy">Indicative guidance only — not legal advice. PSD3/PSR2 final texts and transposition timelines subject to change.</span>
   </div>
 </footer>
@@ -458,7 +458,7 @@ function exportMandate(){
   const payload={
     ap2_version:'1.0',
     generated:new Date().toISOString(),
-    tool:'AINumbers.co T343/T342/T92/T93 · Post Oak Labs Demo #41',
+    tool:'AINumbers.co T343/T342/T92/T93 · Post Oak Labs Scenario #45',
     regulation:'PSD3 / PSR2 EU Payments Transition',
     institution:{name:S.instName,type:S.instType,psd2_licence:S.psd2Licence,eu_countries:S.euCountries,iso_status:S.isoStatus},
     gap_analysis:{licence_change:S.licenceChange,passport_re_notification:S.passportChange,vop_required:S.vopRequired,gaps:(S.gaps||[]).map(g=>({area:g.area,severity:g.severity}))},

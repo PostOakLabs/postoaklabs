@@ -1,3149 +1,3149 @@
 {
-  "meta": {
-    "generated": "2026-05-29",
-    "source": "AINumbers/TOOLS_INDEX.md + AINumbers/tools/*.html",
-    "tool_count": 262,
-    "category_count": 15,
-    "demo_count": 40
+ "meta": {
+  "generated": "2026-05-29",
+  "source": "AINumbers/TOOLS_INDEX.md + AINumbers/tools/*.html",
+  "tool_count": 262,
+  "category_count": 15,
+  "demo_count": 45
+ },
+ "tools": [
+  {
+   "id": "T01",
+   "name": "A2A Fee Calculator + Route Optimizer",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/01-a2a-fee-route-optimizer.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
   },
-  "tools": [
-    {
-      "id": "T01",
-      "name": "A2A Fee Calculator + Route Optimizer",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/01-a2a-fee-route-optimizer.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T02",
-      "name": "ISO 20022 Message Builder + Pilot Brief",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/02-iso20022-builder.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T03",
-      "name": "Consent Simulator + Compliance Auditor",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/03-consent-compliance-auditor.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T04",
-      "name": "Fraud Score Simulator + Explainability Panel",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/04-fraud-score-simulator.html",
-      "ap2_schema": "instant-pay-fraud-v1",
-      "demo": "/demos/instant-payment-fraud-risk-lab.html",
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T05",
-      "name": "Invoice-to-A2A Tooling Suite",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/05-invoice-a2a-suite.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T06",
-      "name": "FedNow Participant Lookup + Coverage Stats",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/06-fednow-lookup.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T07",
-      "name": "ACH / NACHA File Validator + Return Code Decoder",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/07-ach-nacha-validator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T08",
-      "name": "Pay-by-Bank Checkout Prototyper",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/08-pay-by-bank-prototyper.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T09",
-      "name": "A2A Reconciliation Workbench",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/09-a2a-reconciliation-workbench.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T10",
-      "name": "Open Banking API Explorer + Rate Limit Simulator",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/10-open-banking-api-explorer.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T100",
-      "name": "DORA Operational Resilience Auditor",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/100-dora-resilience-auditor.html",
-      "ap2_schema": "mandate-v1",
-      "demo": "/demos/dora-compliance-deduplication-tool.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T101",
-      "name": "ISO 20022 Migration Readiness Scorer",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/101-iso20022-migration-scorer.html",
-      "ap2_schema": "iso20022-readiness-v1",
-      "demo": "/demos/iso20022-migration-readiness-scorer.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T102",
-      "name": "AP2 Agentic Payments Compatibility Checker",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/102-ap2-payments-checker.html",
-      "ap2_schema": "mandate-v1",
-      "demo": "/demos/ap2-agentic-payment-policy-guardrail.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T103",
-      "name": "Payment Method Mix Optimizer",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/103-payment-method-optimizer.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T104",
-      "name": "Receivables DSO & Collections Optimizer",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/104-receivables-dso-optimizer.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T105",
-      "name": "Cross-Border FX Netting Simulator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/105-fx-netting-simulator.html",
-      "ap2_schema": "fx-netting-v1",
-      "demo": "/demos/cross-border-fx-netting-simulator.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T106",
-      "name": "Treasury Float & Liquidity Forecasting Workbench",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/106-treasury-float-workbench.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T107",
-      "name": "Monte Carlo FIRE Trajectory Simulator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html",
-      "ap2_schema": null,
-      "demo": "/demos/personal-finance-retirement-simulator.html",
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T108",
-      "name": "DLT Consensus Partition & Recovery Simulator",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/108-dlt-partition-recovery-sim.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T109",
-      "name": "CDD/EDD Checklist Generator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/109-cdd-edd-checklist.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T11",
-      "name": "VRP Mandate Builder + SEPA Validator",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/11-vrp-mandate-sepa-validator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T110",
-      "name": "Customer Risk Rating Engine",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/110-customer-risk-rating.html",
-      "ap2_schema": "@ainumbers.co/customer-risk-rating-v1",
-      "demo": "/demos/customer-risk-rating-engine.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T111",
-      "name": "KYB Beneficial Ownership Mapper",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/111-kyb-ubo-mapper.html",
-      "ap2_schema": "kyb-ubo-v1",
-      "demo": "/demos/kyb-beneficial-ownership-network-mapper.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T112",
-      "name": "PEP & Sanctions Exposure Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/112-pep-sanctions-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T113",
-      "name": "Adverse Media & Negative News Profiler",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/113-adverse-media-profiler.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T114",
-      "name": "KYC Document Verification Checklist",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/114-kyc-document-checklist.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T115",
-      "name": "Correspondent Banking Due Diligence Matrix",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/115-correspondent-banking-matrix.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T116",
-      "name": "Transaction Monitoring Rule Builder",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/116-tm-rule-builder.html",
-      "ap2_schema": null,
-      "demo": "/demos/aml-transaction-monitoring-rule-builder.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T117",
-      "name": "Structuring Pattern Detector",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/117-structuring-pattern-detector.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T118",
-      "name": "Cross-Border Wire Transfer Analyzer",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/118-cross-border-wire-analyzer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T119",
-      "name": "CTR/SAR Threshold Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/119-ctr-sar-threshold-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T12",
-      "name": "A2A Fee Benchmarking Report Builder",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/12-fee-benchmark-report.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T120",
-      "name": "FATF ML/TF Typology Library & Layering Identifier",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/120-layering-typology-identifier.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T121",
-      "name": "SAR Narrative Generator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/121-sar-narrative-generator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T122",
-      "name": "Regulatory Reporting Calendar",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/122-regulatory-reporting-calendar.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T123",
-      "name": "AML Programme Gap Auditor",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/123-aml-program-gap-auditor.html",
-      "ap2_schema": null,
-      "demo": "/demos/amla-supervisory-readiness-gap-analyser.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T124",
-      "name": "FATF Readiness Scorer",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/124-fatf-readiness-scorer.html",
-      "ap2_schema": "@ainumbers.co/fatf-sanctions-v1",
-      "demo": "/demos/fatf-sanctions-programme-readiness.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T125",
-      "name": "Sanctions Programme Builder",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/125-sanctions-program-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T126",
-      "name": "VASP Travel Rule Checker",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/126-vasp-travel-rule-checker.html",
-      "ap2_schema": "vasp-travel-rule-v1",
-      "demo": "/demos/vasp-travel-rule-compliance-checker.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T127",
-      "name": "Crypto Transaction Risk Profiler",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/127-crypto-transaction-risk-profiler.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T128",
-      "name": "Stablecoin VASP AML Mapper",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/128-stablecoin-vasp-aml-mapper.html",
-      "ap2_schema": null,
-      "demo": "/demos/genius-act-issuer-readiness-lab.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T129",
-      "name": "DeFi/NFT Risk Assessment",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/129-defi-nft-risk-assessment.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T13",
-      "name": "Payment Journey Mapper + Failure Points Overlay",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/13-payment-journey-mapper.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T130",
-      "name": "AML Scenario Training Lab",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/130-aml-scenario-training-lab.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T131",
-      "name": "AP2 AML Mandate Builder",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html",
-      "ap2_schema": null,
-      "demo": "/demos/ap2-aml-mandate-builder.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T132",
-      "name": "Invoice-to-Payment Orchestrator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/132-invoice-to-payment-orchestrator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T133",
-      "name": "Virtual Card Program Cost Modeller",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/133-virtual-card-program-cost-modeller.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T134",
-      "name": "AP Automation Savings Calculator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/134-ap-automation-savings-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T135",
-      "name": "Supplier Payment Terms Optimiser",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/135-supplier-payment-terms-optimiser.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T136",
-      "name": "Embedded Payments Margin Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/136-embedded-payments-margin-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T139",
-      "name": "ERP Payment Integration Readiness Scorer",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/139-erp-payment-integration-scorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T14",
-      "name": "Real-Time Ops Dashboard Template",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/14-realtime-ops-dashboard.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T140",
-      "name": "B2B Payment Fraud Detection Heuristics Builder",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/140-b2b-payment-fraud-detector.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T141",
-      "name": "Cross-Border B2B Fee Transparency Calculator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/141-cross-border-b2b-fee-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T144",
-      "name": "ISO 20022 Remittance Data Enrichment Validator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/144-iso20022-remittance-validator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T145",
-      "name": "Supply Chain Finance Modeller",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/145-supply-chain-finance-modeller.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T146",
-      "name": "Virtual Account Structure Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/146-virtual-account-structure-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T147",
-      "name": "Payout Rail Cost & Finality Modeller",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/147-payout-rail-cost-finality-modeller.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T148",
-      "name": "DAC7 / 1099-K Withholding Threshold Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/148-dac7-1099k-withholding-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T149",
-      "name": "Seller Onboarding Jurisdiction Classifier",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/149-seller-onboarding-classifier.html",
-      "ap2_schema": null,
-      "demo": "/demos/embedded-finance-licensing-navigator.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T15",
-      "name": "Synthetic A2A Test Data Generator",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/15-synthetic-test-data-gen.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T150",
-      "name": "Platform Money Transmission Licensing Risk Mapper",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/150-mtl-licensing-risk-mapper.html",
-      "ap2_schema": null,
-      "demo": "/demos/embedded-finance-licensing-navigator.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T151",
-      "name": "Split Payment Escrow Timing Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/151-split-payment-escrow-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T152",
-      "name": "BaaS Provider Comparator",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/152-baas-provider-comparator.html",
-      "ap2_schema": "@ainumbers.co/baas-economics-v1",
-      "demo": "/demos/baas-provider-economics-comparator.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T153",
-      "name": "FBO Account Structure Simulator",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/153-fbo-account-structure-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T154",
-      "name": "Ledger Architecture Builder",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/154-ledger-architecture-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T155",
-      "name": "BIN Sponsorship Economics Simulator",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/155-bin-sponsorship-economics.html",
-      "ap2_schema": "@ainumbers.co/baas-economics-v1",
-      "demo": "/demos/baas-provider-economics-comparator.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T156",
-      "name": "Wallet Float Yield Estimator",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/156-wallet-float-yield-estimator.html",
-      "ap2_schema": "wallet-float-v1",
-      "demo": "/demos/wallet-float-yield-estimator.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T157",
-      "name": "Settlement Orchestration Simulator",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/157-settlement-orchestration-simulator.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T158",
-      "name": "Fintech Compliance Control Mapper",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/158-fintech-compliance-control-mapper.html",
-      "ap2_schema": null,
-      "demo": "/demos/embedded-finance-licensing-navigator.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T159",
-      "name": "Marketplace Payout Flow Designer",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/159-marketplace-payout-flow-designer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T16",
-      "name": "IBAN Validator + BIC Lookup + SEPA Reachability",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/16-iban-bic-validator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T160",
-      "name": "Embedded Lending Unit Economics Tool",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/160-embedded-lending-unit-economics.html",
-      "ap2_schema": null,
-      "demo": "/demos/embedded-lending-unit-economics-lab.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T161",
-      "name": "Programme Agreement Economics Model",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/161-programme-agreement-economics.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T162",
-      "name": "Sponsor Bank Readiness Scorer",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/162-sponsor-bank-readiness-scorer.html",
-      "ap2_schema": null,
-      "demo": "/demos/embedded-finance-licensing-navigator.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T163",
-      "name": "Card Programme Launch Readiness Checker",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/163-card-programme-launch-readiness-checker.html",
-      "ap2_schema": null,
-      "demo": "/demos/card-programme-design-studio.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T164",
-      "name": "AP2 BaaS Infrastructure Mandate Builder",
-      "category": "Embedded Finance & BaaS Infrastructure",
-      "url": "https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html",
-      "ap2_schema": "baas-mandate-v1",
-      "demo": "/demos/ap2-baas-infrastructure-mandate-builder.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T17",
-      "name": "Instant Payment Limits Reference + Rail Comparator",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/17-instant-payment-limits.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T174",
-      "name": "Peppol BIS Billing 3.0 / KSeF XML Auditor",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/174-peppol-xml-auditor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T175",
-      "name": "Cross-Border VAT Treaty Lookup Engine",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/175-cross-border-vat-treaty-lookup.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T176",
-      "name": "Peppol Access Point & Corner-5 Simulator",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/176-peppol-access-point-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T177",
-      "name": "VAT Rate & Regime Lookup Engine",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/177-vat-rate-regime-lookup.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T178",
-      "name": "Invoice-to-ISO 20022 Bridge (pain.001 Generator)",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/178-invoice-to-iso20022-bridge.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T179",
-      "name": "ViDA Digital Reporting Requirements (DRR) Scorer",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/179-vida-drr-readiness-scorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T18",
-      "name": "A2A Compliance Checklist Generator",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/18-a2a-compliance-checklist.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T180",
-      "name": "B2B E-Invoice Compliance Readiness Scorer",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/180-b2b-einvoice-compliance-scorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T181",
-      "name": "E-Invoice Archiving & Retention Obligation Mapper",
-      "category": "B2B Payments & Platform Operations",
-      "url": "https://ainumbers.co/tools/181-einvoice-archiving-retention-mapper.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T182",
-      "name": "Cross-Border VAT Recovery Eligibility Checker",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/182-cross-border-vat-recovery-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T183",
-      "name": "Digital Services Tax (DST) Exposure Calculator",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/183-digital-services-tax-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T187",
-      "name": "FCA BNPL / DPC Readiness Checker",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/187-bnpl-fca-readiness-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T188",
-      "name": "Merchant BNPL Integration Compliance Mapper",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/188-merchant-bnpl-compliance-mapper.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T189",
-      "name": "BNPL Late Fee & Penalty Compliance Calculator",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/189-bnpl-late-fee-compliance-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T19",
-      "name": "Nostro/Vostro A2A ROI Memo Generator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/19-nostro-roi-memo.html",
-      "ap2_schema": "mandate-v1",
-      "demo": "/demos/nostro-capital-optimization.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T190",
-      "name": "BNPL Affordability Assessment Modeller",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/190-bnpl-affordability-assessment-modeller.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T191",
-      "name": "BNPL Disclosure Template Generator",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/191-bnpl-disclosure-template-generator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T192",
-      "name": "BNPL Arrears & Collections Compliance Checker",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/192-bnpl-arrears-collections-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T193",
-      "name": "BNPL APR Calculator (EU CCD2 & US TILA)",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/193-bnpl-apr-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T194",
-      "name": "B2B BNPL Underwriting Sandbox",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/194-b2b-bnpl-underwriting-sandbox.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T197",
-      "name": "Credit Risk Rating Calculator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/197-credit-risk-rating-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T198",
-      "name": "PD / LGD / EAD Modeller",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/198-pd-lgd-ead-modeller.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T199",
-      "name": "Financial Covenant Compliance Checker",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/199-financial-covenant-compliance-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T20",
-      "name": "A2A Payment Failure Analyser + RCA Generator",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/20-failure-analyser.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T200",
-      "name": "CVA Calculator (SA-CCR)",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/200-cva-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T201",
-      "name": "Basel III/IV RWA Credit Risk Calculator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/201-basel-rwa-calculator.html",
-      "ap2_schema": null,
-      "demo": "/demos/basel-iv-capital-stress-lab.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T202",
-      "name": "Credit Stress Testing Workbench",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/202-credit-stress-testing-workbench.html",
-      "ap2_schema": null,
-      "demo": "/demos/basel-iv-capital-stress-lab.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T203",
-      "name": "RAROC Loan Pricing Model",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/203-raroc-loan-pricing-model.html",
-      "ap2_schema": null,
-      "demo": "/demos/basel-iv-capital-stress-lab.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T204",
-      "name": "IFRS 9 Credit Migration Matrix Generator",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/204-ifrs9-credit-migration-matrix.html",
-      "ap2_schema": null,
-      "demo": "/demos/basel-iv-capital-stress-lab.html",
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T209",
-      "name": "FX Margin & Cost Transparency Calculator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/209-fx-margin-cost-transparency.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T21",
-      "name": "Emerging Market A2A Corridor Cheat Sheet",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/21-emerging-corridor-sheet.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T210",
-      "name": "Cross-Border Payment Failure Probability Model",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/210-cross-border-payment-failure-model.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T211",
-      "name": "FX Hedging Instrument Comparison",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/211-fx-hedging-instrument-comparison.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T212",
-      "name": "SWIFT gpi / SEPA Instant / FedNow / PIX Rail Comparator",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/212-swift-gpi-rail-comparator.html",
-      "ap2_schema": null,
-      "demo": "/demos/global-real-time-rails-comparator.html",
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T213",
-      "name": "Currency Risk Exposure Heatmap",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/213-currency-risk-exposure-heatmap.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T214",
-      "name": "IBOR Transition Reference Checker",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/214-ibor-transition-reference-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T215",
-      "name": "FX Settlement Fails Risk Assessor",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/215-fx-settlement-fails-assessor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T216",
-      "name": "Cross-Border B2B Corridor Cost Ranker",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/216-corridor-cost-ranker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T217",
-      "name": "Emerging Market FX Risk Classifier",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/217-em-fx-risk-classifier.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T218",
-      "name": "PvP Settlement Synchronisation Model",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/218-pvp-settlement-sync-model.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T219",
-      "name": "pacs.008 Cross-Border Payload Generator & UETR Simulator",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/219-pacs008-cross-border-generator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T22",
-      "name": "Payment Decline Code Decoder & Recovery Guide",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/22-decline-code-decoder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T220",
-      "name": "Correspondent Banking De-Risking Impact Modeler",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/220-correspondent-derisking-modeler.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T221",
-      "name": "Cross-Border Payment Transparency & D+0 Finality Comparator",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/221-cross-border-finality-comparator.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T222",
-      "name": "FATF Travel Rule Cross-Border Threshold Checker",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/222-fatf-travel-rule-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T224",
-      "name": "NACHA ACH Rule Compliance Checker",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/224-nacha-ach-rule-compliance-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T225",
-      "name": "Visa/MC Interchange Qualification Tester",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/225-visa-mc-interchange-qualification-tester.html",
-      "ap2_schema": null,
-      "demo": "/demos/card-programme-design-studio.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T226",
-      "name": "PCI DSS v4.0 Scope Assessment Wizard",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/226-pci-dss-v4-scope-wizard.html",
-      "ap2_schema": null,
-      "demo": "/demos/card-programme-design-studio.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T227",
-      "name": "Card Dispute & Chargeback Reason Code Mapper",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/227-card-dispute-reason-code-mapper.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T228",
-      "name": "3DS 2.x / EMV 3D Secure Compliance Checker",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/228-3ds-emv-compliance-checker.html",
-      "ap2_schema": null,
-      "demo": "/demos/card-programme-design-studio.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T229",
-      "name": "RTP Network Participation Checker",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/229-rtp-network-participation-checker.html",
-      "ap2_schema": null,
-      "demo": "/demos/global-real-time-rails-comparator.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T23",
-      "name": "Cross-Border Corridor Savings Calculator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/23-corridor-savings-calc.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T230",
-      "name": "Network Rule Change Impact Assessor",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/230-network-rule-change-impact-assessor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T233",
-      "name": "Card Scheme Fee Benchmarking Tool",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/233-card-scheme-fee-benchmarking.html",
-      "ap2_schema": null,
-      "demo": "/demos/card-programme-design-studio.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T239",
-      "name": "SME Credit Risk Scoring Engine",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/239-sme-credit-risk-scoring.html",
-      "ap2_schema": null,
-      "demo": "/demos/sme-credit-intelligence-platform.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T24",
-      "name": "Subscription Churn Analyzer: Card vs. A2A/VRP",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/24-churn-analyzer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T240",
-      "name": "Working Capital Gap Calculator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/240-working-capital-gap-calculator.html",
-      "ap2_schema": null,
-      "demo": "/demos/sme-credit-intelligence-platform.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T241",
-      "name": "Business Loan Readiness Checker",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/241-business-loan-readiness-checker.html",
-      "ap2_schema": null,
-      "demo": "/demos/sme-credit-intelligence-platform.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T242",
-      "name": "Invoice Finance Eligibility Assessor",
-      "category": "B2B Payments & Platform Operations",
-      "url": "https://ainumbers.co/tools/242-invoice-finance-eligibility.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T243",
-      "name": "Open Finance Credit Signal Mapper",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/243-open-finance-credit-signal-mapper.html",
-      "ap2_schema": null,
-      "demo": "/demos/sme-credit-intelligence-platform.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T244",
-      "name": "Revenue-Based Finance Calculator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/244-revenue-based-finance-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T245",
-      "name": "Government Funding & Grant Eligibility Mapper",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/245-government-funding-grant-mapper.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T246",
-      "name": "Cash Flow Stress Test for SMEs",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/246-sme-cashflow-stress-test.html",
-      "ap2_schema": null,
-      "demo": "/demos/sme-credit-intelligence-platform.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T247",
-      "name": "Lending Covenant & Facility Monitoring Dashboard",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/247-lending-covenant-monitoring.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T25",
-      "name": "ISO 20022 Payment Reference Generator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/25-payment-reference-gen.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T254",
-      "name": "ISO 20022 Cross-Rail Message Compatibility Checker",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/254-iso20022-cross-rail-compatibility.html",
-      "ap2_schema": null,
-      "demo": "/demos/global-real-time-rails-comparator.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T255",
-      "name": "FedNow Participation Readiness Scorer",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/255-fednow-participation-readiness-scorer.html",
-      "ap2_schema": null,
-      "demo": "/demos/global-real-time-rails-comparator.html",
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T256",
-      "name": "Real-Time Payment Fraud Velocity Rule Builder",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/256-rtp-fraud-velocity-rule-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T257",
-      "name": "PSR APP Fraud Reimbursement Workflow Builder",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/257-psr-reimbursement-workflow-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T258",
-      "name": "Intraday Credit Facility Sizing Model",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/258-intraday-credit-facility-sizer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T259",
-      "name": "AP2 Real-Time Payments Policy Builder",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/259-ap2-rtp-policy-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T26",
-      "name": "APP Fraud Liability Decision Matrix",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/26-app-fraud-matrix.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T27",
-      "name": "A2A Settlement Finality Comparator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/27-settlement-finality.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T300",
-      "name": "DORA ICT Risk Management Gap Analyser",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/300-dora-ict-risk-gap-analyser.html",
-      "ap2_schema": "dora-gap-v1",
-      "demo": "/demos/dora-ict-risk-gap-analyser.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T301",
-      "name": "DORA Register of Information Structure Builder",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/301-dora-roi-structure-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T302",
-      "name": "DORA CIF Function Identifier & Classifier",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/302-dora-cif-identifier.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T303",
-      "name": "DORA Incident Classification & Reporting Timeline Engine",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/303-dora-incident-classification-engine.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T304",
-      "name": "DORA Resilience Testing Programme Designer",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/304-dora-resilience-testing-designer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T305",
-      "name": "ICT Third-Party Contract Clause Checker",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/305-dora-third-party-contract-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T306",
-      "name": "ICT Concentration Risk Modeller",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/306-dora-ict-concentration-risk-modeller.html",
-      "ap2_schema": null,
-      "demo": "/demos/dora-ict-risk-gap-analyser.html",
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T307",
-      "name": "DORA Proportionality Assessment Tool",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/307-dora-proportionality-assessment.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T308",
-      "name": "DORA NCA Submission Deadline Tracker",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/308-dora-nca-submission-tracker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T309",
-      "name": "NIS2 / DORA Overlap & Dual-Compliance Mapper",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/309-nis2-dora-overlap-mapper.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T310",
-      "name": "AP2 DORA Policy Mandate Builder",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/310-ap2-dora-policy-mandate-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T311",
-      "name": "GDPR / UK GDPR Data Subject Rights Workflow Generator",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/311-gdpr-dsr-workflow-generator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T312",
-      "name": "BCBS 239 / SR 11-7 Model Risk & Data Governance Readiness Scorer",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/312-bcbs239-model-risk-readiness-scorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T313",
-      "name": "MiFID II / MiFIR Transaction Reporting Readiness Checker",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/313-mifid2-transaction-reporting-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T314",
-      "name": "Operational Resilience Self-Assessment Tool",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/314-operational-resilience-self-assessment.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T315",
-      "name": "FCA Consumer Duty Outcome Testing Dashboard",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/315-fca-consumer-duty-outcome-dashboard.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T316",
-      "name": "Institutional Sanctions Programme Health Checker",
-      "category": "AML/KYC & Financial Crime",
-      "url": "https://ainumbers.co/tools/316-sanctions-programme-health-checker.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T317",
-      "name": "LEI Lifecycle & GLEIF Validation Tool",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/317-lei-lifecycle-gleif-validator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T318",
-      "name": "Regulatory Change Impact Assessor",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/318-regulatory-change-impact-assessor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T319",
-      "name": "ISO 20022 Status & Rejection Decoder",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/319-iso20022-status-rejection-decoder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T320",
-      "name": "AP2 MCP Policy Validator & Bridge",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/320-ap2-mcp-policy-validator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T321",
-      "name": "Synthetic Identity Fraud Risk Scorer",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/321-synthetic-identity-fraud-scorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T322",
-      "name": "APP Scam Pre-Payment Risk Assessor",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/322-app-scam-risk-assessor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T323",
-      "name": "AP2 Fraud & Risk Policy Mandate Builder",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/323-ap2-fraud-risk-policy-mandate-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T324",
-      "name": "Real-Time Rail Prefunding Scheduler",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/324-realtime-rail-prefunding-scheduler.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T325",
-      "name": "Global Payment Cutoff & Settlement Atlas",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/325-payment-cutoff-settlement-atlas.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T326",
-      "name": "AP2 Payment Ops Policy Mandate Builder",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/326-ap2-payment-ops-policy-mandate-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T327",
-      "name": "EU AI Act Article 6 Risk-Class Mapper \u2014 Financial Services",
-      "category": "Compliance & Regulatory",
-      "url": "https://ainumbers.co/tools/327-eu-ai-act-risk-class-mapper.html",
-      "ap2_schema": "@ainumbers.co/eu-ai-act-risk-class-v1",
-      "demo": "/demos/eu-ai-act-financial-services-risk-mapper.html",
-      "personas": [
-        "Compliance",
-        "Product"
-      ]
-    },
-    {
-      "id": "T37",
-      "name": "BIN / IIN Intelligence Workbench",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/37-bin-iin-intelligence-workbench.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T41",
-      "name": "Chargeback Representment Builder + Evidence Optimizer",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/41-chargeback-representment-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T42",
-      "name": "Cash Flow Forecaster & Liquidity Stress Lab",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/42-cashflow-forecaster-stress-lab.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T43",
-      "name": "Batch Payment File Validator + Sanctions Screening",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/43-batch-sanctions-screening.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T45",
-      "name": "Subscription Dunning & Recovery Simulator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/45-subscription-dunning-optimizer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T46",
-      "name": "Payment Investment ROI & Business Case Builder",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/46-payment-roi-business-case.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T47",
-      "name": "Options P&L Analyzer",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/47-options-pnl-analyzer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T48",
-      "name": "Personal Finance Life Simulator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/48-personal-finance-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T49",
-      "name": "Portfolio Financed Emissions Calculator (PCAF)",
-      "category": "ESG & Sustainable Finance",
-      "url": "https://ainumbers.co/tools/49-portfolio-financed-emissions-pcaf.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T50",
-      "name": "Trade Finance Document & Letter of Credit Analyser",
-      "category": "ESG & Sustainable Finance",
-      "url": "https://ainumbers.co/tools/50-trade-finance-lc-analyser.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T51",
-      "name": "VDCAP Payload Auditor & Card Fee Optimizer",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/51-vdcap-payload-auditor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T52",
-      "name": "Interchange Fee Optimizer",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/52-interchange-optimizer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T53",
-      "name": "CBDC Architecture Comparator",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/53-cbdc-architecture-comparator.html",
-      "ap2_schema": null,
-      "demo": "/demos/cbdc-dlt-architecture-studio.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T54",
-      "name": "Smart Contract Parameter Validator",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/54-smart-contract-validator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T55",
-      "name": "DvP Reconciliation Engine",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/55-dvp-reconciliation.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T56",
-      "name": "Permissioned Chain Config Auditor",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/56-chain-config-auditor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T57",
-      "name": "ISO 20022 \u2194 DLT Flow Mapper",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/57-iso20022-dlt-mapper.html",
-      "ap2_schema": null,
-      "demo": "/demos/cbdc-dlt-architecture-studio.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T58",
-      "name": "CBDC Interop Scenario Modeler",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/58-cbdc-interop-modeler.html",
-      "ap2_schema": null,
-      "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T59",
-      "name": "Fabric Ops Console",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/59-fabric-ops-console.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T63",
-      "name": "Tokenized Asset Compliance Pre-Checker",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/63-tokenized-asset-compliance.html",
-      "ap2_schema": "rwa-readiness-v1",
-      "demo": "/demos/tokenized-rwa-compliance-pre-checker.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T64",
-      "name": "Chain Privacy Topology Visualizer",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/64-chain-privacy-topology.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T65",
-      "name": "Cross-Rail Settlement Finality Auditor",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/65-settlement-finality-auditor.html",
-      "ap2_schema": null,
-      "demo": "/demos/mbridge-multicbdc-corridor-modeler.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T66",
-      "name": "RWA Tokenization Cost Model",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/66-rwa-tokenization-cost-model.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T67",
-      "name": "DLT Platform TCO Calculator",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/67-dlt-tco-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T68",
-      "name": "Enterprise DLT Platform Comparator",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/68-dlt-platform-comparator.html",
-      "ap2_schema": null,
-      "demo": "/demos/cbdc-dlt-architecture-studio.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T69",
-      "name": "DLT Privacy Model Selector",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/69-dlt-privacy-selector.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T70",
-      "name": "Node Role & Trust Boundary Modeler",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/70-node-topology-modeler.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T71",
-      "name": "DLT Smart Contract Guardrail Builder",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/71-dlt-guardrail-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T72",
-      "name": "Governance, Finality & Operational Readiness Checklist",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/72-dlt-readiness-checklist.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T73",
-      "name": "Enterprise DLT Decision Lab",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/73-dlt-decision-lab.html",
-      "ap2_schema": null,
-      "demo": "/demos/cbdc-dlt-architecture-studio.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T74",
-      "name": "DLT Settlement Verifier",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/74-dlt-settlement-verifier.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T75",
-      "name": "Stablecoin Reserve & Peg Health Auditor",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/75-stablecoin-reserve-auditor.html",
-      "ap2_schema": "stablecoin-readiness-v1",
-      "demo": "/demos/stablecoin-issuer-readiness-mica-genius.html",
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T76",
-      "name": "Cross-Border FX Hedge Optimizer & All-in Cost Simulator",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/76-fx-hedge-optimizer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T77",
-      "name": "ISO 20022 Data Truncation & Address Auditor",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/77-iso-truncation-auditor.html",
-      "ap2_schema": null,
-      "demo": "/demos/iso20022-message-truncation-auditor.html",
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T78",
-      "name": "Smart Routing Advisor \u2014 Payment Rail Decision Engine",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/78-smart-routing-advisor.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T79",
-      "name": "Dynamic Discounting & Working Capital Optimizer",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/79-dynamic-discounting.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T80",
-      "name": "Payment Fraud Investigation Decision Lab",
-      "category": "Fraud & Risk",
-      "url": "https://ainumbers.co/tools/80-fraud-investigation-lab.html",
-      "ap2_schema": "mandate-v1",
-      "demo": "/demos/instant-payment-fraud-risk-lab.html",
-      "personas": [
-        "Compliance",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T81",
-      "name": "ISO 20022 Migration Navigator",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/81-iso20022-migration-navigator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T82",
-      "name": "A2A Rail Optimization Command Center",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/82-a2a-rail-command-center.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "T83",
-      "name": "Treasury Operations Decision Lab",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/83-treasury-decision-lab.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T84",
-      "name": "A2A Real-Time Migration Lab",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/84-a2a-migration-lab.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "T85",
-      "name": "Merchant Card Economics Optimizer",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/85-card-economics-optimizer.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T87",
-      "name": "Startup Survival \u2014 Runway & Trajectory Simulator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/87-runway-simulator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T88",
-      "name": "Compliance Readiness Assessment",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/88-compliance-readiness.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "T89",
-      "name": "Working Capital Cycle Optimizer & CCC Stress Lab",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/89-working-capital-optimizer.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T91",
-      "name": "Open Banking Consent & Permission Dashboard Builder",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/91-consent-dashboard-builder.html",
-      "ap2_schema": "@ainumbers.co/cfpb-1033-v1",
-      "demo": "/demos/cfpb-1033-financial-data-rights-mapper.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T92",
-      "name": "SCA Exemption & Consent Scope Mapper",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/92-sca-exemption-mapper.html",
-      "ap2_schema": "@ainumbers.co/cfpb-1033-v1",
-      "demo": "/demos/cfpb-1033-financial-data-rights-mapper.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T93",
-      "name": "VRP Mandate & Sweep Logic Builder",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/93-vrp-mandate-builder.html",
-      "ap2_schema": "vrp-mandate-v1",
-      "demo": "/demos/vrp-mandate-sweep-logic-designer.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T94",
-      "name": "Open Banking Transaction Visualizer & Ledger",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/94-ob-transaction-visualizer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T95",
-      "name": "Open Banking Payment Corridor Optimizer",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/95-payment-corridor-optimizer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T96",
-      "name": "Open Banking Consent Receipt Generator + Validator",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/96-consent-receipt-generator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T97",
-      "name": "FAPI Security Header & Compliance Validator",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/97-fapi-security-validator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "T98",
-      "name": "ISO 20022 Message Validator + Field Explorer",
-      "category": "Open Banking & APIs",
-      "url": "https://ainumbers.co/tools/98-iso20022-validator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "X-A2A-LIQUIDITY-SIMULATOR",
-      "name": "A2A Liquidity Simulator \u2014 Single & Multi-Rail",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/a2a-liquidity-simulator.html",
-      "ap2_schema": null,
-      "demo": "/demos/latam-liquidity-migration-tool.html",
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "X-BATCH-PAYMENT-FILE-VALIDATOR",
-      "name": "Batch Payment File Validator + Sanctions Screening",
-      "category": "Core Infrastructure",
-      "url": "https://ainumbers.co/tools/batch-payment-file-validator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "X-CLEARCOST-CARD-A2A-ANALYZER",
-      "name": "ClearCost Card & A2A Payment Cost Analyzer",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/clearcost-card-a2a-analyzer.html",
-      "ap2_schema": null,
-      "demo": "/demos/merchant-payment-rails-blender.html",
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "X-INCIDENT-RESPONSE-RUNBOOK-BUILDER",
-      "name": "Payment Operations Incident Response Runbook Builder",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/incident-response-runbook-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "X-MCC-CODE-EXPLORER",
-      "name": "MCC Code Explorer & Risk Profiler",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/mcc-code-explorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "X-PAYCODE-DECODER",
-      "name": "PayCode Decoder \u2014 ISO 20022, SWIFT MT, ACH, FedNow",
-      "category": "Reference & Decoder",
-      "url": "https://ainumbers.co/tools/paycode-decoder.html",
-      "ap2_schema": null,
-      "demo": "/demos/iso20022-message-truncation-auditor.html",
-      "personas": [
-        "Engineer"
-      ]
-    },
-    {
-      "id": "PF-132",
-      "name": "Compound Interest Explorer",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-132-compound-interest-explorer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-133",
-      "name": "Asset Allocation Heatmapper",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/pf-133-asset-allocation-heatmapper.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-134",
-      "name": "3-Fund Portfolio Builder",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-134-three-fund-portfolio-builder.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-135",
-      "name": "Sequence of Returns Risk Calculator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-135-sequence-of-returns-risk.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-136",
-      "name": "Roth vs. Traditional Conversion Estimator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-136-roth-vs-traditional-estimator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-137",
-      "name": "4% Rule Safe Withdrawal Calculator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-137-safe-withdrawal-calculator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-138",
-      "name": "Inflation \"Creep\" Destroyer",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-138-inflation-creep-destroyer.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-139",
-      "name": "Social Security Bridge Calculator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-139-social-security-bridge.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "PF-140",
-      "name": "Dividend Drag vs. Growth Simulator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/pf-140-dividend-drag-vs-growth-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Analyst"
-      ]
-    },
-    {
-      "id": "RBE-01",
-      "name": "SMB Treasury Tax Assistant",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/rbe-01-smb-treasury-tax.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "RBE-02",
-      "name": "A2A Exception Triage Console",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/rbe-02-a2a-exception-triage.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "RBE-03",
-      "name": "Tokenized M&A Due Diligence Lens",
-      "category": "DLT & Tokenization",
-      "url": "https://ainumbers.co/tools/rbe-03-tokenized-ma-lens.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Compliance"
-      ]
-    },
-    {
-      "id": "RBE-04",
-      "name": "Agent Policy Guardrail Builder",
-      "category": "Rule-Based Suite",
-      "url": "https://ainumbers.co/tools/rbe-04-agent-guardrail-builder.html",
-      "ap2_schema": null,
-      "demo": "/demos/ap2-agentic-payment-policy-guardrail.html",
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "RBE-05",
-      "name": "Regulatory Doc Intelligence",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/rbe-05-regulatory-doc-intel.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "RBE-06",
-      "name": "Agentic Mandate Sandbox",
-      "category": "Ops & Monitoring",
-      "url": "https://ainumbers.co/tools/rbe-06-agentic-mandate-sandbox.html",
-      "ap2_schema": "sandbox-trace-v1",
-      "demo": "/demos/agentic-mandate-sandbox.html",
-      "personas": [
-        "Engineer",
-        "Treasury"
-      ]
-    },
-    {
-      "id": "RBE-07",
-      "name": "AI\u00b707 Agent Signal Integrity Auditor",
-      "category": "Rule-Based Suite",
-      "url": "https://ainumbers.co/tools/rbe-07-signal-auditor.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "RBE-08",
-      "name": "Payment Fee Schedule Authoring Engine \u00b7 RBE\u00b708",
-      "category": "Rule-Based Suite",
-      "url": "https://ainumbers.co/tools/rbe-08-fee-schedule-engine.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "RBE-09",
-      "name": "Credit Policy Decision Table Builder \u00b7 RBE\u00b709",
-      "category": "Treasury, Strategy & Revenue",
-      "url": "https://ainumbers.co/tools/rbe-09-credit-policy-decision-table.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Treasury",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "RBE-10",
-      "name": "Transaction Velocity Rule Simulator \u00b7 RBE\u00b710",
-      "category": "B2B Payments & Platform Operations",
-      "url": "https://ainumbers.co/tools/rbe-10-velocity-rule-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Engineer"
-      ]
-    },
-    {
-      "id": "RBE-11",
-      "name": "DORA ICT Incident Classification & Reporting Engine \u00b7 RBE\u00b711",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/rbe-11-dora-incident-classifier.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Compliance"
-      ]
-    },
-    {
-      "id": "RBE-12",
-      "name": "Network Scheme Compliance Simulator \u00b7 Visa VAMP \u00b7 Mastercard DIMP \u00b7 RBE\u00b712",
-      "category": "Rule-Based Suite",
-      "url": "https://ainumbers.co/tools/rbe-12-scheme-compliance-simulator.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Engineer",
-        "Product"
-      ]
-    },
-    {
-      "id": "RBE-13",
-      "name": "Interchange Qualification & LCR Rule Builder \u00b7 RBE\u00b713",
-      "category": "Card Economics",
-      "url": "https://ainumbers.co/tools/rbe-13-interchange-qualification-engine.html",
-      "ap2_schema": null,
-      "demo": null,
-      "personas": [
-        "Product",
-        "Analyst"
-      ]
-    },
-    {
-      "id": "T169",
-      "name": "Roth vs. Traditional Conversion Estimator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/169-roth-traditional-conversion-estimator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": "/demos/personal-finance-retirement-simulator.html",
-      "personas": [
-        "Consumer",
-        "Advisor"
-      ]
-    },
-    {
-      "id": "T170",
-      "name": "4% Rule Safe Withdrawal Rate Calculator",
-      "category": "Personal Finance",
-      "url": "https://ainumbers.co/tools/170-safe-withdrawal-rate-calculator.html",
-      "ap2_schema": "mandate-v1",
-      "demo": "/demos/personal-finance-retirement-simulator.html",
-      "personas": [
-        "Consumer",
-        "Advisor"
-      ]
-    },
-    {
-      "id": "T328",
-      "name": "GENIUS Act Reserve Composition Optimizer",
-      "category": "Compliance & Consent",
-      "url": "https://ainumbers.co/tools/328-genius-act-reserve-optimizer.html",
-      "ap2_schema": "@ainumbers.co/genius-act-reserve-v1",
-      "demo": "/demos/genius-act-issuer-readiness-lab.html",
-      "personas": [
-        "Compliance",
-        "Treasury",
-        "Product"
-      ]
-    }
-  ],
-  "edges": [],
-  "categories": [
-    {
-      "id": "Rule-Based Suite",
-      "name": "Rule-Based Suite",
-      "color": "#c09040",
-      "count": 4
-    },
-    {
-      "id": "Core Infrastructure",
-      "name": "Core Infrastructure",
-      "color": "#2a7fc0",
-      "count": 20
-    },
-    {
-      "id": "Compliance & Consent",
-      "name": "Compliance & Consent",
-      "color": "#4a9fdf",
-      "count": 37
-    },
-    {
-      "id": "Fraud & Risk",
-      "name": "Fraud & Risk",
-      "color": "#dc2626",
-      "count": 13
-    },
-    {
-      "id": "Ops & Monitoring",
-      "name": "Ops & Monitoring",
-      "color": "#10b981",
-      "count": 14
-    },
-    {
-      "id": "Open Banking & APIs",
-      "name": "Open Banking & APIs",
-      "color": "#7090b0",
-      "count": 16
-    },
-    {
-      "id": "Treasury, Strategy & Revenue",
-      "name": "Treasury, Strategy & Revenue",
-      "color": "#d0a050",
-      "count": 44
-    },
-    {
-      "id": "ESG & Sustainable Finance",
-      "name": "ESG & Sustainable Finance",
-      "color": "#34d399",
-      "count": 2
-    },
-    {
-      "id": "Reference & Decoder",
-      "name": "Reference & Decoder",
-      "color": "#5a7a95",
-      "count": 1
-    },
-    {
-      "id": "Card Economics",
-      "name": "Card Economics",
-      "color": "#f59e0b",
-      "count": 16
-    },
-    {
-      "id": "Personal Finance",
-      "name": "Personal Finance",
-      "color": "#a78bfa",
-      "count": 11
-    },
-    {
-      "id": "DLT & Tokenization",
-      "name": "DLT & Tokenization",
-      "color": "#8b5cf6",
-      "count": 22
-    },
-    {
-      "id": "AML/KYC & Financial Crime",
-      "name": "AML/KYC & Financial Crime",
-      "color": "#ef4444",
-      "count": 43
-    },
-    {
-      "id": "B2B Payments & Platform Operations",
-      "name": "B2B Payments & Platform Operations",
-      "color": "#0ea5e9",
-      "count": 3
-    },
-    {
-      "id": "Embedded Finance & BaaS Infrastructure",
-      "name": "Embedded Finance & BaaS Infrastructure",
-      "color": "#06b6d4",
-      "count": 13
-    }
-  ]
+  {
+   "id": "T02",
+   "name": "ISO 20022 Message Builder + Pilot Brief",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/02-iso20022-builder.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T03",
+   "name": "Consent Simulator + Compliance Auditor",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/03-consent-compliance-auditor.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T04",
+   "name": "Fraud Score Simulator + Explainability Panel",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/04-fraud-score-simulator.html",
+   "ap2_schema": "instant-pay-fraud-v1",
+   "demo": "/demos/instant-payment-fraud-risk-lab.html",
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T05",
+   "name": "Invoice-to-A2A Tooling Suite",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/05-invoice-a2a-suite.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T06",
+   "name": "FedNow Participant Lookup + Coverage Stats",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/06-fednow-lookup.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T07",
+   "name": "ACH / NACHA File Validator + Return Code Decoder",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/07-ach-nacha-validator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T08",
+   "name": "Pay-by-Bank Checkout Prototyper",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/08-pay-by-bank-prototyper.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T09",
+   "name": "A2A Reconciliation Workbench",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/09-a2a-reconciliation-workbench.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T10",
+   "name": "Open Banking API Explorer + Rate Limit Simulator",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/10-open-banking-api-explorer.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T100",
+   "name": "DORA Operational Resilience Auditor",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/100-dora-resilience-auditor.html",
+   "ap2_schema": "mandate-v1",
+   "demo": "/demos/dora-compliance-deduplication-tool.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T101",
+   "name": "ISO 20022 Migration Readiness Scorer",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/101-iso20022-migration-scorer.html",
+   "ap2_schema": "iso20022-readiness-v1",
+   "demo": "/demos/iso20022-migration-readiness-scorer.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T102",
+   "name": "AP2 Agentic Payments Compatibility Checker",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/102-ap2-payments-checker.html",
+   "ap2_schema": "mandate-v1",
+   "demo": "/demos/ap2-agentic-payment-policy-guardrail.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T103",
+   "name": "Payment Method Mix Optimizer",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/103-payment-method-optimizer.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T104",
+   "name": "Receivables DSO & Collections Optimizer",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/104-receivables-dso-optimizer.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T105",
+   "name": "Cross-Border FX Netting Simulator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/105-fx-netting-simulator.html",
+   "ap2_schema": "fx-netting-v1",
+   "demo": "/demos/cross-border-fx-netting-simulator.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T106",
+   "name": "Treasury Float & Liquidity Forecasting Workbench",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/106-treasury-float-workbench.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T107",
+   "name": "Monte Carlo FIRE Trajectory Simulator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html",
+   "ap2_schema": null,
+   "demo": "/demos/personal-finance-retirement-simulator.html",
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T108",
+   "name": "DLT Consensus Partition & Recovery Simulator",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/108-dlt-partition-recovery-sim.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T109",
+   "name": "CDD/EDD Checklist Generator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/109-cdd-edd-checklist.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T11",
+   "name": "VRP Mandate Builder + SEPA Validator",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/11-vrp-mandate-sepa-validator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T110",
+   "name": "Customer Risk Rating Engine",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/110-customer-risk-rating.html",
+   "ap2_schema": "@ainumbers.co/customer-risk-rating-v1",
+   "demo": "/demos/customer-risk-rating-engine.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T111",
+   "name": "KYB Beneficial Ownership Mapper",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/111-kyb-ubo-mapper.html",
+   "ap2_schema": "kyb-ubo-v1",
+   "demo": "/demos/kyb-beneficial-ownership-network-mapper.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T112",
+   "name": "PEP & Sanctions Exposure Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/112-pep-sanctions-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T113",
+   "name": "Adverse Media & Negative News Profiler",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/113-adverse-media-profiler.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T114",
+   "name": "KYC Document Verification Checklist",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/114-kyc-document-checklist.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T115",
+   "name": "Correspondent Banking Due Diligence Matrix",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/115-correspondent-banking-matrix.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T116",
+   "name": "Transaction Monitoring Rule Builder",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/116-tm-rule-builder.html",
+   "ap2_schema": null,
+   "demo": "/demos/aml-transaction-monitoring-rule-builder.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T117",
+   "name": "Structuring Pattern Detector",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/117-structuring-pattern-detector.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T118",
+   "name": "Cross-Border Wire Transfer Analyzer",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/118-cross-border-wire-analyzer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T119",
+   "name": "CTR/SAR Threshold Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/119-ctr-sar-threshold-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T12",
+   "name": "A2A Fee Benchmarking Report Builder",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/12-fee-benchmark-report.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T120",
+   "name": "FATF ML/TF Typology Library & Layering Identifier",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/120-layering-typology-identifier.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T121",
+   "name": "SAR Narrative Generator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/121-sar-narrative-generator.html",
+   "ap2_schema": null,
+   "demo": "/demos/aml-end-to-end-workflow.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T122",
+   "name": "Regulatory Reporting Calendar",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/122-regulatory-reporting-calendar.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T123",
+   "name": "AML Programme Gap Auditor",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/123-aml-program-gap-auditor.html",
+   "ap2_schema": null,
+   "demo": "/demos/amla-supervisory-readiness-gap-analyser.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T124",
+   "name": "FATF Readiness Scorer",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/124-fatf-readiness-scorer.html",
+   "ap2_schema": "@ainumbers.co/fatf-sanctions-v1",
+   "demo": "/demos/fatf-sanctions-programme-readiness.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T125",
+   "name": "Sanctions Programme Builder",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/125-sanctions-program-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T126",
+   "name": "VASP Travel Rule Checker",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/126-vasp-travel-rule-checker.html",
+   "ap2_schema": "vasp-travel-rule-v1",
+   "demo": "/demos/vasp-travel-rule-compliance-checker.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T127",
+   "name": "Crypto Transaction Risk Profiler",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/127-crypto-transaction-risk-profiler.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T128",
+   "name": "Stablecoin VASP AML Mapper",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/128-stablecoin-vasp-aml-mapper.html",
+   "ap2_schema": null,
+   "demo": "/demos/genius-act-issuer-readiness-lab.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T129",
+   "name": "DeFi/NFT Risk Assessment",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/129-defi-nft-risk-assessment.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T13",
+   "name": "Payment Journey Mapper + Failure Points Overlay",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/13-payment-journey-mapper.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T130",
+   "name": "AML Scenario Training Lab",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/130-aml-scenario-training-lab.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T131",
+   "name": "AP2 AML Mandate Builder",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html",
+   "ap2_schema": null,
+   "demo": "/demos/ap2-aml-mandate-builder.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T132",
+   "name": "Invoice-to-Payment Orchestrator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/132-invoice-to-payment-orchestrator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T133",
+   "name": "Virtual Card Program Cost Modeller",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/133-virtual-card-program-cost-modeller.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T134",
+   "name": "AP Automation Savings Calculator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/134-ap-automation-savings-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T135",
+   "name": "Supplier Payment Terms Optimiser",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/135-supplier-payment-terms-optimiser.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T136",
+   "name": "Embedded Payments Margin Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/136-embedded-payments-margin-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T139",
+   "name": "ERP Payment Integration Readiness Scorer",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/139-erp-payment-integration-scorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T14",
+   "name": "Real-Time Ops Dashboard Template",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/14-realtime-ops-dashboard.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T140",
+   "name": "B2B Payment Fraud Detection Heuristics Builder",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/140-b2b-payment-fraud-detector.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T141",
+   "name": "Cross-Border B2B Fee Transparency Calculator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/141-cross-border-b2b-fee-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T144",
+   "name": "ISO 20022 Remittance Data Enrichment Validator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/144-iso20022-remittance-validator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T145",
+   "name": "Supply Chain Finance Modeller",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/145-supply-chain-finance-modeller.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T146",
+   "name": "Virtual Account Structure Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/146-virtual-account-structure-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T147",
+   "name": "Payout Rail Cost & Finality Modeller",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/147-payout-rail-cost-finality-modeller.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T148",
+   "name": "DAC7 / 1099-K Withholding Threshold Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/148-dac7-1099k-withholding-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T149",
+   "name": "Seller Onboarding Jurisdiction Classifier",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/149-seller-onboarding-classifier.html",
+   "ap2_schema": null,
+   "demo": "/demos/embedded-finance-licensing-navigator.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T15",
+   "name": "Synthetic A2A Test Data Generator",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/15-synthetic-test-data-gen.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T150",
+   "name": "Platform Money Transmission Licensing Risk Mapper",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/150-mtl-licensing-risk-mapper.html",
+   "ap2_schema": null,
+   "demo": "/demos/embedded-finance-licensing-navigator.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T151",
+   "name": "Split Payment Escrow Timing Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/151-split-payment-escrow-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T152",
+   "name": "BaaS Provider Comparator",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/152-baas-provider-comparator.html",
+   "ap2_schema": "@ainumbers.co/baas-economics-v1",
+   "demo": "/demos/baas-provider-economics-comparator.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T153",
+   "name": "FBO Account Structure Simulator",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/153-fbo-account-structure-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T154",
+   "name": "Ledger Architecture Builder",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/154-ledger-architecture-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T155",
+   "name": "BIN Sponsorship Economics Simulator",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/155-bin-sponsorship-economics.html",
+   "ap2_schema": "@ainumbers.co/baas-economics-v1",
+   "demo": "/demos/baas-provider-economics-comparator.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T156",
+   "name": "Wallet Float Yield Estimator",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/156-wallet-float-yield-estimator.html",
+   "ap2_schema": "wallet-float-v1",
+   "demo": "/demos/wallet-float-yield-estimator.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T157",
+   "name": "Settlement Orchestration Simulator",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/157-settlement-orchestration-simulator.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T158",
+   "name": "Fintech Compliance Control Mapper",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/158-fintech-compliance-control-mapper.html",
+   "ap2_schema": null,
+   "demo": "/demos/embedded-finance-licensing-navigator.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T159",
+   "name": "Marketplace Payout Flow Designer",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/159-marketplace-payout-flow-designer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T16",
+   "name": "IBAN Validator + BIC Lookup + SEPA Reachability",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/16-iban-bic-validator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T160",
+   "name": "Embedded Lending Unit Economics Tool",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/160-embedded-lending-unit-economics.html",
+   "ap2_schema": null,
+   "demo": "/demos/embedded-lending-unit-economics-lab.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T161",
+   "name": "Programme Agreement Economics Model",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/161-programme-agreement-economics.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T162",
+   "name": "Sponsor Bank Readiness Scorer",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/162-sponsor-bank-readiness-scorer.html",
+   "ap2_schema": null,
+   "demo": "/demos/embedded-finance-licensing-navigator.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T163",
+   "name": "Card Programme Launch Readiness Checker",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/163-card-programme-launch-readiness-checker.html",
+   "ap2_schema": null,
+   "demo": "/demos/card-programme-design-studio.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T164",
+   "name": "AP2 BaaS Infrastructure Mandate Builder",
+   "category": "Embedded Finance & BaaS Infrastructure",
+   "url": "https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html",
+   "ap2_schema": "baas-mandate-v1",
+   "demo": "/demos/ap2-baas-infrastructure-mandate-builder.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T17",
+   "name": "Instant Payment Limits Reference + Rail Comparator",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/17-instant-payment-limits.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T174",
+   "name": "Peppol BIS Billing 3.0 / KSeF XML Auditor",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/174-peppol-xml-auditor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T175",
+   "name": "Cross-Border VAT Treaty Lookup Engine",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/175-cross-border-vat-treaty-lookup.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T176",
+   "name": "Peppol Access Point & Corner-5 Simulator",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/176-peppol-access-point-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T177",
+   "name": "VAT Rate & Regime Lookup Engine",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/177-vat-rate-regime-lookup.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T178",
+   "name": "Invoice-to-ISO 20022 Bridge (pain.001 Generator)",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/178-invoice-to-iso20022-bridge.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T179",
+   "name": "ViDA Digital Reporting Requirements (DRR) Scorer",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/179-vida-drr-readiness-scorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T18",
+   "name": "A2A Compliance Checklist Generator",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/18-a2a-compliance-checklist.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T180",
+   "name": "B2B E-Invoice Compliance Readiness Scorer",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/180-b2b-einvoice-compliance-scorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T181",
+   "name": "E-Invoice Archiving & Retention Obligation Mapper",
+   "category": "B2B Payments & Platform Operations",
+   "url": "https://ainumbers.co/tools/181-einvoice-archiving-retention-mapper.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T182",
+   "name": "Cross-Border VAT Recovery Eligibility Checker",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/182-cross-border-vat-recovery-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T183",
+   "name": "Digital Services Tax (DST) Exposure Calculator",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/183-digital-services-tax-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T187",
+   "name": "FCA BNPL / DPC Readiness Checker",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/187-bnpl-fca-readiness-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T188",
+   "name": "Merchant BNPL Integration Compliance Mapper",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/188-merchant-bnpl-compliance-mapper.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T189",
+   "name": "BNPL Late Fee & Penalty Compliance Calculator",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/189-bnpl-late-fee-compliance-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T19",
+   "name": "Nostro/Vostro A2A ROI Memo Generator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/19-nostro-roi-memo.html",
+   "ap2_schema": "mandate-v1",
+   "demo": "/demos/nostro-capital-optimization.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T190",
+   "name": "BNPL Affordability Assessment Modeller",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/190-bnpl-affordability-assessment-modeller.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T191",
+   "name": "BNPL Disclosure Template Generator",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/191-bnpl-disclosure-template-generator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T192",
+   "name": "BNPL Arrears & Collections Compliance Checker",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/192-bnpl-arrears-collections-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T193",
+   "name": "BNPL APR Calculator (EU CCD2 & US TILA)",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/193-bnpl-apr-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T194",
+   "name": "B2B BNPL Underwriting Sandbox",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/194-b2b-bnpl-underwriting-sandbox.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T197",
+   "name": "Credit Risk Rating Calculator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/197-credit-risk-rating-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T198",
+   "name": "PD / LGD / EAD Modeller",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/198-pd-lgd-ead-modeller.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T199",
+   "name": "Financial Covenant Compliance Checker",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/199-financial-covenant-compliance-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T20",
+   "name": "A2A Payment Failure Analyser + RCA Generator",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/20-failure-analyser.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T200",
+   "name": "CVA Calculator (SA-CCR)",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/200-cva-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T201",
+   "name": "Basel III/IV RWA Credit Risk Calculator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/201-basel-rwa-calculator.html",
+   "ap2_schema": null,
+   "demo": "/demos/basel-iv-capital-stress-lab.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T202",
+   "name": "Credit Stress Testing Workbench",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/202-credit-stress-testing-workbench.html",
+   "ap2_schema": null,
+   "demo": "/demos/basel-iv-capital-stress-lab.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T203",
+   "name": "RAROC Loan Pricing Model",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/203-raroc-loan-pricing-model.html",
+   "ap2_schema": null,
+   "demo": "/demos/basel-iv-capital-stress-lab.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T204",
+   "name": "IFRS 9 Credit Migration Matrix Generator",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/204-ifrs9-credit-migration-matrix.html",
+   "ap2_schema": null,
+   "demo": "/demos/basel-iv-capital-stress-lab.html",
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T209",
+   "name": "FX Margin & Cost Transparency Calculator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/209-fx-margin-cost-transparency.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T21",
+   "name": "Emerging Market A2A Corridor Cheat Sheet",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/21-emerging-corridor-sheet.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T210",
+   "name": "Cross-Border Payment Failure Probability Model",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/210-cross-border-payment-failure-model.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T211",
+   "name": "FX Hedging Instrument Comparison",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/211-fx-hedging-instrument-comparison.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T212",
+   "name": "SWIFT gpi / SEPA Instant / FedNow / PIX Rail Comparator",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/212-swift-gpi-rail-comparator.html",
+   "ap2_schema": null,
+   "demo": "/demos/global-real-time-rails-comparator.html",
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T213",
+   "name": "Currency Risk Exposure Heatmap",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/213-currency-risk-exposure-heatmap.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T214",
+   "name": "IBOR Transition Reference Checker",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/214-ibor-transition-reference-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T215",
+   "name": "FX Settlement Fails Risk Assessor",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/215-fx-settlement-fails-assessor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T216",
+   "name": "Cross-Border B2B Corridor Cost Ranker",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/216-corridor-cost-ranker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T217",
+   "name": "Emerging Market FX Risk Classifier",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/217-em-fx-risk-classifier.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T218",
+   "name": "PvP Settlement Synchronisation Model",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/218-pvp-settlement-sync-model.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T219",
+   "name": "pacs.008 Cross-Border Payload Generator & UETR Simulator",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/219-pacs008-cross-border-generator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T22",
+   "name": "Payment Decline Code Decoder & Recovery Guide",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/22-decline-code-decoder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T220",
+   "name": "Correspondent Banking De-Risking Impact Modeler",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/220-correspondent-derisking-modeler.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T221",
+   "name": "Cross-Border Payment Transparency & D+0 Finality Comparator",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/221-cross-border-finality-comparator.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T222",
+   "name": "FATF Travel Rule Cross-Border Threshold Checker",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/222-fatf-travel-rule-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T224",
+   "name": "NACHA ACH Rule Compliance Checker",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/224-nacha-ach-rule-compliance-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T225",
+   "name": "Visa/MC Interchange Qualification Tester",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/225-visa-mc-interchange-qualification-tester.html",
+   "ap2_schema": null,
+   "demo": "/demos/card-programme-design-studio.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T226",
+   "name": "PCI DSS v4.0 Scope Assessment Wizard",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/226-pci-dss-v4-scope-wizard.html",
+   "ap2_schema": null,
+   "demo": "/demos/card-programme-design-studio.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T227",
+   "name": "Card Dispute & Chargeback Reason Code Mapper",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/227-card-dispute-reason-code-mapper.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T228",
+   "name": "3DS 2.x / EMV 3D Secure Compliance Checker",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/228-3ds-emv-compliance-checker.html",
+   "ap2_schema": null,
+   "demo": "/demos/card-programme-design-studio.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T229",
+   "name": "RTP Network Participation Checker",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/229-rtp-network-participation-checker.html",
+   "ap2_schema": null,
+   "demo": "/demos/global-real-time-rails-comparator.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T23",
+   "name": "Cross-Border Corridor Savings Calculator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/23-corridor-savings-calc.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T230",
+   "name": "Network Rule Change Impact Assessor",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/230-network-rule-change-impact-assessor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T233",
+   "name": "Card Scheme Fee Benchmarking Tool",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/233-card-scheme-fee-benchmarking.html",
+   "ap2_schema": null,
+   "demo": "/demos/card-programme-design-studio.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T239",
+   "name": "SME Credit Risk Scoring Engine",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/239-sme-credit-risk-scoring.html",
+   "ap2_schema": null,
+   "demo": "/demos/sme-credit-intelligence-platform.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T24",
+   "name": "Subscription Churn Analyzer: Card vs. A2A/VRP",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/24-churn-analyzer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T240",
+   "name": "Working Capital Gap Calculator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/240-working-capital-gap-calculator.html",
+   "ap2_schema": null,
+   "demo": "/demos/sme-credit-intelligence-platform.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T241",
+   "name": "Business Loan Readiness Checker",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/241-business-loan-readiness-checker.html",
+   "ap2_schema": null,
+   "demo": "/demos/sme-credit-intelligence-platform.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T242",
+   "name": "Invoice Finance Eligibility Assessor",
+   "category": "B2B Payments & Platform Operations",
+   "url": "https://ainumbers.co/tools/242-invoice-finance-eligibility.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T243",
+   "name": "Open Finance Credit Signal Mapper",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/243-open-finance-credit-signal-mapper.html",
+   "ap2_schema": null,
+   "demo": "/demos/sme-credit-intelligence-platform.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T244",
+   "name": "Revenue-Based Finance Calculator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/244-revenue-based-finance-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T245",
+   "name": "Government Funding & Grant Eligibility Mapper",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/245-government-funding-grant-mapper.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T246",
+   "name": "Cash Flow Stress Test for SMEs",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/246-sme-cashflow-stress-test.html",
+   "ap2_schema": null,
+   "demo": "/demos/sme-credit-intelligence-platform.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T247",
+   "name": "Lending Covenant & Facility Monitoring Dashboard",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/247-lending-covenant-monitoring.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T25",
+   "name": "ISO 20022 Payment Reference Generator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/25-payment-reference-gen.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T254",
+   "name": "ISO 20022 Cross-Rail Message Compatibility Checker",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/254-iso20022-cross-rail-compatibility.html",
+   "ap2_schema": null,
+   "demo": "/demos/global-real-time-rails-comparator.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T255",
+   "name": "FedNow Participation Readiness Scorer",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/255-fednow-participation-readiness-scorer.html",
+   "ap2_schema": null,
+   "demo": "/demos/global-real-time-rails-comparator.html",
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T256",
+   "name": "Real-Time Payment Fraud Velocity Rule Builder",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/256-rtp-fraud-velocity-rule-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T257",
+   "name": "PSR APP Fraud Reimbursement Workflow Builder",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/257-psr-reimbursement-workflow-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T258",
+   "name": "Intraday Credit Facility Sizing Model",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/258-intraday-credit-facility-sizer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T259",
+   "name": "AP2 Real-Time Payments Policy Builder",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/259-ap2-rtp-policy-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T26",
+   "name": "APP Fraud Liability Decision Matrix",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/26-app-fraud-matrix.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T27",
+   "name": "A2A Settlement Finality Comparator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/27-settlement-finality.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T300",
+   "name": "DORA ICT Risk Management Gap Analyser",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/300-dora-ict-risk-gap-analyser.html",
+   "ap2_schema": "dora-gap-v1",
+   "demo": "/demos/dora-ict-risk-gap-analyser.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T301",
+   "name": "DORA Register of Information Structure Builder",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/301-dora-roi-structure-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T302",
+   "name": "DORA CIF Function Identifier & Classifier",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/302-dora-cif-identifier.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T303",
+   "name": "DORA Incident Classification & Reporting Timeline Engine",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/303-dora-incident-classification-engine.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T304",
+   "name": "DORA Resilience Testing Programme Designer",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/304-dora-resilience-testing-designer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T305",
+   "name": "ICT Third-Party Contract Clause Checker",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/305-dora-third-party-contract-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T306",
+   "name": "ICT Concentration Risk Modeller",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/306-dora-ict-concentration-risk-modeller.html",
+   "ap2_schema": null,
+   "demo": "/demos/dora-ict-risk-gap-analyser.html",
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T307",
+   "name": "DORA Proportionality Assessment Tool",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/307-dora-proportionality-assessment.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T308",
+   "name": "DORA NCA Submission Deadline Tracker",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/308-dora-nca-submission-tracker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T309",
+   "name": "NIS2 / DORA Overlap & Dual-Compliance Mapper",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/309-nis2-dora-overlap-mapper.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T310",
+   "name": "AP2 DORA Policy Mandate Builder",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/310-ap2-dora-policy-mandate-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T311",
+   "name": "GDPR / UK GDPR Data Subject Rights Workflow Generator",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/311-gdpr-dsr-workflow-generator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T312",
+   "name": "BCBS 239 / SR 11-7 Model Risk & Data Governance Readiness Scorer",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/312-bcbs239-model-risk-readiness-scorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T313",
+   "name": "MiFID II / MiFIR Transaction Reporting Readiness Checker",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/313-mifid2-transaction-reporting-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T314",
+   "name": "Operational Resilience Self-Assessment Tool",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/314-operational-resilience-self-assessment.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T315",
+   "name": "FCA Consumer Duty Outcome Testing Dashboard",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/315-fca-consumer-duty-outcome-dashboard.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T316",
+   "name": "Institutional Sanctions Programme Health Checker",
+   "category": "AML/KYC & Financial Crime",
+   "url": "https://ainumbers.co/tools/316-sanctions-programme-health-checker.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T317",
+   "name": "LEI Lifecycle & GLEIF Validation Tool",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/317-lei-lifecycle-gleif-validator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T318",
+   "name": "Regulatory Change Impact Assessor",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/318-regulatory-change-impact-assessor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T319",
+   "name": "ISO 20022 Status & Rejection Decoder",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/319-iso20022-status-rejection-decoder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T320",
+   "name": "AP2 MCP Policy Validator & Bridge",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/320-ap2-mcp-policy-validator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T321",
+   "name": "Synthetic Identity Fraud Risk Scorer",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/321-synthetic-identity-fraud-scorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T322",
+   "name": "APP Scam Pre-Payment Risk Assessor",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/322-app-scam-risk-assessor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T323",
+   "name": "AP2 Fraud & Risk Policy Mandate Builder",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/323-ap2-fraud-risk-policy-mandate-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T324",
+   "name": "Real-Time Rail Prefunding Scheduler",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/324-realtime-rail-prefunding-scheduler.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T325",
+   "name": "Global Payment Cutoff & Settlement Atlas",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/325-payment-cutoff-settlement-atlas.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T326",
+   "name": "AP2 Payment Ops Policy Mandate Builder",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/326-ap2-payment-ops-policy-mandate-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T327",
+   "name": "EU AI Act Article 6 Risk-Class Mapper — Financial Services",
+   "category": "Compliance & Regulatory",
+   "url": "https://ainumbers.co/tools/327-eu-ai-act-risk-class-mapper.html",
+   "ap2_schema": "@ainumbers.co/eu-ai-act-risk-class-v1",
+   "demo": "/demos/eu-ai-act-financial-services-risk-mapper.html",
+   "personas": [
+    "Compliance",
+    "Product"
+   ]
+  },
+  {
+   "id": "T37",
+   "name": "BIN / IIN Intelligence Workbench",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/37-bin-iin-intelligence-workbench.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T41",
+   "name": "Chargeback Representment Builder + Evidence Optimizer",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/41-chargeback-representment-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T42",
+   "name": "Cash Flow Forecaster & Liquidity Stress Lab",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/42-cashflow-forecaster-stress-lab.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T43",
+   "name": "Batch Payment File Validator + Sanctions Screening",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/43-batch-sanctions-screening.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T45",
+   "name": "Subscription Dunning & Recovery Simulator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/45-subscription-dunning-optimizer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T46",
+   "name": "Payment Investment ROI & Business Case Builder",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/46-payment-roi-business-case.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T47",
+   "name": "Options P&L Analyzer",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/47-options-pnl-analyzer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T48",
+   "name": "Personal Finance Life Simulator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/48-personal-finance-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T49",
+   "name": "Portfolio Financed Emissions Calculator (PCAF)",
+   "category": "ESG & Sustainable Finance",
+   "url": "https://ainumbers.co/tools/49-portfolio-financed-emissions-pcaf.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T50",
+   "name": "Trade Finance Document & Letter of Credit Analyser",
+   "category": "ESG & Sustainable Finance",
+   "url": "https://ainumbers.co/tools/50-trade-finance-lc-analyser.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T51",
+   "name": "VDCAP Payload Auditor & Card Fee Optimizer",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/51-vdcap-payload-auditor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T52",
+   "name": "Interchange Fee Optimizer",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/52-interchange-optimizer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T53",
+   "name": "CBDC Architecture Comparator",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/53-cbdc-architecture-comparator.html",
+   "ap2_schema": null,
+   "demo": "/demos/cbdc-dlt-architecture-studio.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T54",
+   "name": "Smart Contract Parameter Validator",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/54-smart-contract-validator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T55",
+   "name": "DvP Reconciliation Engine",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/55-dvp-reconciliation.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T56",
+   "name": "Permissioned Chain Config Auditor",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/56-chain-config-auditor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T57",
+   "name": "ISO 20022 ↔ DLT Flow Mapper",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/57-iso20022-dlt-mapper.html",
+   "ap2_schema": null,
+   "demo": "/demos/cbdc-dlt-architecture-studio.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T58",
+   "name": "CBDC Interop Scenario Modeler",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/58-cbdc-interop-modeler.html",
+   "ap2_schema": null,
+   "demo": "/demos/timor-leste-bangladesh-stablecoin-settlement.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T59",
+   "name": "Fabric Ops Console",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/59-fabric-ops-console.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T63",
+   "name": "Tokenized Asset Compliance Pre-Checker",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/63-tokenized-asset-compliance.html",
+   "ap2_schema": "rwa-readiness-v1",
+   "demo": "/demos/tokenized-rwa-compliance-pre-checker.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T64",
+   "name": "Chain Privacy Topology Visualizer",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/64-chain-privacy-topology.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T65",
+   "name": "Cross-Rail Settlement Finality Auditor",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/65-settlement-finality-auditor.html",
+   "ap2_schema": null,
+   "demo": "/demos/mbridge-multicbdc-corridor-modeler.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T66",
+   "name": "RWA Tokenization Cost Model",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/66-rwa-tokenization-cost-model.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T67",
+   "name": "DLT Platform TCO Calculator",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/67-dlt-tco-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T68",
+   "name": "Enterprise DLT Platform Comparator",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/68-dlt-platform-comparator.html",
+   "ap2_schema": null,
+   "demo": "/demos/cbdc-dlt-architecture-studio.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T69",
+   "name": "DLT Privacy Model Selector",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/69-dlt-privacy-selector.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T70",
+   "name": "Node Role & Trust Boundary Modeler",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/70-node-topology-modeler.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T71",
+   "name": "DLT Smart Contract Guardrail Builder",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/71-dlt-guardrail-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T72",
+   "name": "Governance, Finality & Operational Readiness Checklist",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/72-dlt-readiness-checklist.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T73",
+   "name": "Enterprise DLT Decision Lab",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/73-dlt-decision-lab.html",
+   "ap2_schema": null,
+   "demo": "/demos/cbdc-dlt-architecture-studio.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T74",
+   "name": "DLT Settlement Verifier",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/74-dlt-settlement-verifier.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T75",
+   "name": "Stablecoin Reserve & Peg Health Auditor",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/75-stablecoin-reserve-auditor.html",
+   "ap2_schema": "stablecoin-readiness-v1",
+   "demo": "/demos/stablecoin-issuer-readiness-mica-genius.html",
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T76",
+   "name": "Cross-Border FX Hedge Optimizer & All-in Cost Simulator",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/76-fx-hedge-optimizer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T77",
+   "name": "ISO 20022 Data Truncation & Address Auditor",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/77-iso-truncation-auditor.html",
+   "ap2_schema": null,
+   "demo": "/demos/iso20022-message-truncation-auditor.html",
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T78",
+   "name": "Smart Routing Advisor — Payment Rail Decision Engine",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/78-smart-routing-advisor.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T79",
+   "name": "Dynamic Discounting & Working Capital Optimizer",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/79-dynamic-discounting.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T80",
+   "name": "Payment Fraud Investigation Decision Lab",
+   "category": "Fraud & Risk",
+   "url": "https://ainumbers.co/tools/80-fraud-investigation-lab.html",
+   "ap2_schema": "mandate-v1",
+   "demo": "/demos/instant-payment-fraud-risk-lab.html",
+   "personas": [
+    "Compliance",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T81",
+   "name": "ISO 20022 Migration Navigator",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/81-iso20022-migration-navigator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T82",
+   "name": "A2A Rail Optimization Command Center",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/82-a2a-rail-command-center.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "T83",
+   "name": "Treasury Operations Decision Lab",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/83-treasury-decision-lab.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T84",
+   "name": "A2A Real-Time Migration Lab",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/84-a2a-migration-lab.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "T85",
+   "name": "Merchant Card Economics Optimizer",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/85-card-economics-optimizer.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T87",
+   "name": "Startup Survival — Runway & Trajectory Simulator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/87-runway-simulator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T88",
+   "name": "Compliance Readiness Assessment",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/88-compliance-readiness.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "T89",
+   "name": "Working Capital Cycle Optimizer & CCC Stress Lab",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/89-working-capital-optimizer.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T91",
+   "name": "Open Banking Consent & Permission Dashboard Builder",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/91-consent-dashboard-builder.html",
+   "ap2_schema": "@ainumbers.co/cfpb-1033-v1",
+   "demo": "/demos/cfpb-1033-financial-data-rights-mapper.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T92",
+   "name": "SCA Exemption & Consent Scope Mapper",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/92-sca-exemption-mapper.html",
+   "ap2_schema": "@ainumbers.co/cfpb-1033-v1",
+   "demo": "/demos/cfpb-1033-financial-data-rights-mapper.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T93",
+   "name": "VRP Mandate & Sweep Logic Builder",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/93-vrp-mandate-builder.html",
+   "ap2_schema": "vrp-mandate-v1",
+   "demo": "/demos/vrp-mandate-sweep-logic-designer.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T94",
+   "name": "Open Banking Transaction Visualizer & Ledger",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/94-ob-transaction-visualizer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T95",
+   "name": "Open Banking Payment Corridor Optimizer",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/95-payment-corridor-optimizer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T96",
+   "name": "Open Banking Consent Receipt Generator + Validator",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/96-consent-receipt-generator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T97",
+   "name": "FAPI Security Header & Compliance Validator",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/97-fapi-security-validator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "T98",
+   "name": "ISO 20022 Message Validator + Field Explorer",
+   "category": "Open Banking & APIs",
+   "url": "https://ainumbers.co/tools/98-iso20022-validator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "X-A2A-LIQUIDITY-SIMULATOR",
+   "name": "A2A Liquidity Simulator — Single & Multi-Rail",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/a2a-liquidity-simulator.html",
+   "ap2_schema": null,
+   "demo": "/demos/latam-liquidity-migration-tool.html",
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "X-BATCH-PAYMENT-FILE-VALIDATOR",
+   "name": "Batch Payment File Validator + Sanctions Screening",
+   "category": "Core Infrastructure",
+   "url": "https://ainumbers.co/tools/batch-payment-file-validator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "X-CLEARCOST-CARD-A2A-ANALYZER",
+   "name": "ClearCost Card & A2A Payment Cost Analyzer",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/clearcost-card-a2a-analyzer.html",
+   "ap2_schema": null,
+   "demo": "/demos/merchant-payment-rails-blender.html",
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "X-INCIDENT-RESPONSE-RUNBOOK-BUILDER",
+   "name": "Payment Operations Incident Response Runbook Builder",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/incident-response-runbook-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "X-MCC-CODE-EXPLORER",
+   "name": "MCC Code Explorer & Risk Profiler",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/mcc-code-explorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "X-PAYCODE-DECODER",
+   "name": "PayCode Decoder — ISO 20022, SWIFT MT, ACH, FedNow",
+   "category": "Reference & Decoder",
+   "url": "https://ainumbers.co/tools/paycode-decoder.html",
+   "ap2_schema": null,
+   "demo": "/demos/iso20022-message-truncation-auditor.html",
+   "personas": [
+    "Engineer"
+   ]
+  },
+  {
+   "id": "PF-132",
+   "name": "Compound Interest Explorer",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-132-compound-interest-explorer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-133",
+   "name": "Asset Allocation Heatmapper",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/pf-133-asset-allocation-heatmapper.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-134",
+   "name": "3-Fund Portfolio Builder",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-134-three-fund-portfolio-builder.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-135",
+   "name": "Sequence of Returns Risk Calculator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-135-sequence-of-returns-risk.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-136",
+   "name": "Roth vs. Traditional Conversion Estimator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-136-roth-vs-traditional-estimator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-137",
+   "name": "4% Rule Safe Withdrawal Calculator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-137-safe-withdrawal-calculator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-138",
+   "name": "Inflation \"Creep\" Destroyer",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-138-inflation-creep-destroyer.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-139",
+   "name": "Social Security Bridge Calculator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-139-social-security-bridge.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "PF-140",
+   "name": "Dividend Drag vs. Growth Simulator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/pf-140-dividend-drag-vs-growth-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Analyst"
+   ]
+  },
+  {
+   "id": "RBE-01",
+   "name": "SMB Treasury Tax Assistant",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/rbe-01-smb-treasury-tax.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "RBE-02",
+   "name": "A2A Exception Triage Console",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/rbe-02-a2a-exception-triage.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "RBE-03",
+   "name": "Tokenized M&A Due Diligence Lens",
+   "category": "DLT & Tokenization",
+   "url": "https://ainumbers.co/tools/rbe-03-tokenized-ma-lens.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Compliance"
+   ]
+  },
+  {
+   "id": "RBE-04",
+   "name": "Agent Policy Guardrail Builder",
+   "category": "Rule-Based Suite",
+   "url": "https://ainumbers.co/tools/rbe-04-agent-guardrail-builder.html",
+   "ap2_schema": null,
+   "demo": "/demos/ap2-agentic-payment-policy-guardrail.html",
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "RBE-05",
+   "name": "Regulatory Doc Intelligence",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/rbe-05-regulatory-doc-intel.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "RBE-06",
+   "name": "Agentic Mandate Sandbox",
+   "category": "Ops & Monitoring",
+   "url": "https://ainumbers.co/tools/rbe-06-agentic-mandate-sandbox.html",
+   "ap2_schema": "sandbox-trace-v1",
+   "demo": "/demos/agentic-mandate-sandbox.html",
+   "personas": [
+    "Engineer",
+    "Treasury"
+   ]
+  },
+  {
+   "id": "RBE-07",
+   "name": "AI·07 Agent Signal Integrity Auditor",
+   "category": "Rule-Based Suite",
+   "url": "https://ainumbers.co/tools/rbe-07-signal-auditor.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "RBE-08",
+   "name": "Payment Fee Schedule Authoring Engine · RBE·08",
+   "category": "Rule-Based Suite",
+   "url": "https://ainumbers.co/tools/rbe-08-fee-schedule-engine.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "RBE-09",
+   "name": "Credit Policy Decision Table Builder · RBE·09",
+   "category": "Treasury, Strategy & Revenue",
+   "url": "https://ainumbers.co/tools/rbe-09-credit-policy-decision-table.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Treasury",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "RBE-10",
+   "name": "Transaction Velocity Rule Simulator · RBE·10",
+   "category": "B2B Payments & Platform Operations",
+   "url": "https://ainumbers.co/tools/rbe-10-velocity-rule-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Engineer"
+   ]
+  },
+  {
+   "id": "RBE-11",
+   "name": "DORA ICT Incident Classification & Reporting Engine · RBE·11",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/rbe-11-dora-incident-classifier.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Compliance"
+   ]
+  },
+  {
+   "id": "RBE-12",
+   "name": "Network Scheme Compliance Simulator · Visa VAMP · Mastercard DIMP · RBE·12",
+   "category": "Rule-Based Suite",
+   "url": "https://ainumbers.co/tools/rbe-12-scheme-compliance-simulator.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Engineer",
+    "Product"
+   ]
+  },
+  {
+   "id": "RBE-13",
+   "name": "Interchange Qualification & LCR Rule Builder · RBE·13",
+   "category": "Card Economics",
+   "url": "https://ainumbers.co/tools/rbe-13-interchange-qualification-engine.html",
+   "ap2_schema": null,
+   "demo": null,
+   "personas": [
+    "Product",
+    "Analyst"
+   ]
+  },
+  {
+   "id": "T169",
+   "name": "Roth vs. Traditional Conversion Estimator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/169-roth-traditional-conversion-estimator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": "/demos/personal-finance-retirement-simulator.html",
+   "personas": [
+    "Consumer",
+    "Advisor"
+   ]
+  },
+  {
+   "id": "T170",
+   "name": "4% Rule Safe Withdrawal Rate Calculator",
+   "category": "Personal Finance",
+   "url": "https://ainumbers.co/tools/170-safe-withdrawal-rate-calculator.html",
+   "ap2_schema": "mandate-v1",
+   "demo": "/demos/personal-finance-retirement-simulator.html",
+   "personas": [
+    "Consumer",
+    "Advisor"
+   ]
+  },
+  {
+   "id": "T328",
+   "name": "GENIUS Act Reserve Composition Optimizer",
+   "category": "Compliance & Consent",
+   "url": "https://ainumbers.co/tools/328-genius-act-reserve-optimizer.html",
+   "ap2_schema": "@ainumbers.co/genius-act-reserve-v1",
+   "demo": "/demos/genius-act-issuer-readiness-lab.html",
+   "personas": [
+    "Compliance",
+    "Treasury",
+    "Product"
+   ]
+  }
+ ],
+ "edges": [],
+ "categories": [
+  {
+   "id": "Rule-Based Suite",
+   "name": "Rule-Based Suite",
+   "color": "#c09040",
+   "count": 4
+  },
+  {
+   "id": "Core Infrastructure",
+   "name": "Core Infrastructure",
+   "color": "#2a7fc0",
+   "count": 20
+  },
+  {
+   "id": "Compliance & Consent",
+   "name": "Compliance & Consent",
+   "color": "#4a9fdf",
+   "count": 37
+  },
+  {
+   "id": "Fraud & Risk",
+   "name": "Fraud & Risk",
+   "color": "#dc2626",
+   "count": 13
+  },
+  {
+   "id": "Ops & Monitoring",
+   "name": "Ops & Monitoring",
+   "color": "#10b981",
+   "count": 14
+  },
+  {
+   "id": "Open Banking & APIs",
+   "name": "Open Banking & APIs",
+   "color": "#7090b0",
+   "count": 16
+  },
+  {
+   "id": "Treasury, Strategy & Revenue",
+   "name": "Treasury, Strategy & Revenue",
+   "color": "#d0a050",
+   "count": 44
+  },
+  {
+   "id": "ESG & Sustainable Finance",
+   "name": "ESG & Sustainable Finance",
+   "color": "#34d399",
+   "count": 2
+  },
+  {
+   "id": "Reference & Decoder",
+   "name": "Reference & Decoder",
+   "color": "#5a7a95",
+   "count": 1
+  },
+  {
+   "id": "Card Economics",
+   "name": "Card Economics",
+   "color": "#f59e0b",
+   "count": 16
+  },
+  {
+   "id": "Personal Finance",
+   "name": "Personal Finance",
+   "color": "#a78bfa",
+   "count": 11
+  },
+  {
+   "id": "DLT & Tokenization",
+   "name": "DLT & Tokenization",
+   "color": "#8b5cf6",
+   "count": 22
+  },
+  {
+   "id": "AML/KYC & Financial Crime",
+   "name": "AML/KYC & Financial Crime",
+   "color": "#ef4444",
+   "count": 43
+  },
+  {
+   "id": "B2B Payments & Platform Operations",
+   "name": "B2B Payments & Platform Operations",
+   "color": "#0ea5e9",
+   "count": 3
+  },
+  {
+   "id": "Embedded Finance & BaaS Infrastructure",
+   "name": "Embedded Finance & BaaS Infrastructure",
+   "color": "#06b6d4",
+   "count": 13
+  }
+ ]
 }

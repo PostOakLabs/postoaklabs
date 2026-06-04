@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>Basel III Endgame Capital Impact Laboratory · Post Oak Labs Demo #40</title>
+<title>Basel III Endgame Capital Impact Laboratory · Post Oak Labs Scenario #44</title>
 <meta name="description" content="Post Oak Labs showcase demo: Basel III Endgame Capital Impact Laboratory. Model US proposal and EU FRTB binding rules. Powered by AINumbers.co">
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -117,14 +117,14 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
       <span class="pol-name">Post Oak Labs</span>
       <span class="pol-sub">Powered by AINumbers.co</span>
     </div>
-    <span class="nav-tag">Demo #40</span>
+    <span class="nav-tag">Scenario #44</span>
     <a href="https://ainumbers.co" target="_blank" rel="noopener" class="ain-attr">AINumbers.co ↗</a>
   </div>
 </nav>
 
 <section class="hero">
   <div class="container">
-    <div class="hero-tag">Post Oak Labs · Showcase Demo #40</div>
+    <div class="hero-tag">Post Oak Labs · Showcase Scenario #44</div>
     <h1>Basel III Endgame <em>Capital Impact</em><br>Laboratory</h1>
     <p class="hero-sub">Model the March 2026 US proposal and EU FRTB binding rules (Jan 2027). Five-step capital impact analysis covering FRTB eligibility, US ERA impact, and model risk governance. Zero PII — all calculations in-browser.</p>
     <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:1.25rem">
@@ -239,7 +239,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-copy">Post Oak Labs Demo #40 · Basel III Endgame Capital Impact Laboratory · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
+    <span class="footer-copy">Post Oak Labs Scenario #44 · Basel III Endgame Capital Impact Laboratory · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
     <span class="footer-copy">Indicative modelling only — not investment or regulatory capital advice. Verify against current regulatory text.</span>
   </div>
 </footer>
@@ -401,7 +401,7 @@ function exportMandate(){
   const payload={
     ap2_version:'1.0',
     generated:new Date().toISOString(),
-    tool:'AINumbers.co T340/T341/T339 · Post Oak Labs Demo #40',
+    tool:'AINumbers.co T340/T341/T339 · Post Oak Labs Scenario #44',
     bank:{name:S.bankName,total_assets:S.totalAssets,cet1_current:S.currentCet1,trading_book:S.tradingBook,loan_mix:S.loanMix},
     frtb:{ima_eligible:S.imaEligible,plat_result:S.platResult,backtesting_score:S.backtestScore,desk_approach:S.deskApproach,eu_deadline:'2027-01-01'},
     us_era:{rwa_multiplier:S.rwaMultiplier,operational_risk_charge_pct:S.opRiskCharge,net_cet1_impact_pp:S.netCet1Impact,projected_cet1_pct:S.projectedCet1,output_floor_pct:72.5},

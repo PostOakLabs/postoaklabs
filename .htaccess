@@ -60,6 +60,13 @@ RedirectMatch 301 ^/tools/(.+)$ https://ainumbers.co/$1
 Redirect 301 /meridian-capital-advisory.html  https://meridiancapital.me/
 Redirect 301 /apex-advisory-education.html    https://apexadvisory.site/
 
+# Renamed showcase scenarios (2026-06-03) — internal demo-NN numbering removed from public URLs
+Redirect 301 /demos/demo-37-eu-ai-act-compliance-studio.html      /demos/eu-ai-act-compliance-studio.html
+Redirect 301 /demos/demo-38-genius-act-stablecoin-readiness.html  /demos/genius-act-stablecoin-readiness.html
+Redirect 301 /demos/demo-39-fca-bnpl-dpc-navigator.html           /demos/fca-bnpl-dpc-navigator.html
+Redirect 301 /demos/demo-40-basel-iii-endgame-capital-lab.html    /demos/basel-iii-endgame-capital-lab.html
+Redirect 301 /demos/demo-41-psd3-psr2-transition-readiness.html   /demos/psd3-psr2-transition-readiness.html
+
 # ─────────────────────────────────────────────────────────────────
 # Security headers
 # ─────────────────────────────────────────────────────────────────

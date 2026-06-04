@@ -1,6 +1,6 @@
 # Post Oak Labs — llms.txt
 # Plain-text site summary for LLM and AI crawler consumption.
-# Last updated: 2026-05-28
+# Last updated: 2026-06-03
 # Canonical site: https://postoaklabs.com
 # X / Twitter: https://x.com/PostOakLabs
 # Contact: contact@postoaklabs.com
@@ -71,11 +71,11 @@ Advisory across DeFi protocols, layer-1 blockchains, enterprise blockchain (Cord
 
 ## Fintech Intelligence Showcase (browser scenarios)
 
-The showcase at https://postoaklabs.com/demos/ is a curated catalog of 34 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario is client-side, zero PII, AP2-exportable, and MCP-discoverable. All 34 are live as of May 2026.
+The showcase at https://postoaklabs.com/demos/ is a curated catalog of 45 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario is client-side, zero PII, AP2-exportable, and MCP-discoverable. All 45 are live as of June 2026.
 
 Five buyer-archetype hubs filter and sequence the scenarios for distinct audiences. All five hubs are public, indexed, and crawlable.
 
-- Showcase landing — all 34 scenarios, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
+- Showcase landing — all 45 scenarios, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
 - Tool Chain Composer — the full 260-tool AINumbers catalog as a clustered atlas, with the 34 showcase scenarios highlighted. 15 categories, AP2 schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
 - Agentic Runtime hub — deterministic AP2/MCP policy layer for agent runtime builders (Anthropic, Google AP2, OpenAI, Vellum, LangChain): https://postoaklabs.com/demos/agentic-runtime/
 - RegTech hub — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating (ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay): https://postoaklabs.com/demos/regtech/
@@ -107,6 +107,17 @@ Five buyer-archetype hubs filter and sequence the scenarios for distinct audienc
 - Scenario #18 — VRP Mandate & Sweep Logic Designer (sweep window + amount caps + idempotency + beneficiary scope across UK CMA9 / EU PSD3 / SEPA VRP / US OBA; live 24h permitted-window timeline; AP2 mandate against @ainumbers.co/vrp-mandate-v1): https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html
 - Scenario #21 — Tokenized RWA Compliance Pre-Checker (8 asset classes × 7 jurisdictions × offering structure → MiCA + Howey classification, pathway verdict viable/remediate/not-viable, per-line findings; AP2 mandate against @ainumbers.co/rwa-readiness-v1): https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html
 - Scenario #34 — AML End-to-End Workflow (four-stage AML ops chain: customer risk rating → transaction-monitoring rule calibration → SAR narrative generation → AP2 AML Policy Mandate export; presets for VASP, trade finance, and retail; FATF R.10 aligned): https://postoaklabs.com/demos/aml-end-to-end-workflow.html
+- Scenario #35 — CBDC / DLT Architecture Studio (wholesale vs. retail CBDC design, platform selection, interoperability scenario modelling; Policy Mandate export): https://postoaklabs.com/demos/cbdc-dlt-architecture-studio.html
+- Scenario #36 — Personal Finance Retirement Simulator (Monte Carlo FIRE trajectories, sequence-of-returns risk, Roth vs. Traditional conversion, safe withdrawal rate — one guided flow): https://postoaklabs.com/demos/personal-finance-retirement-simulator.html
+- Scenario #37 — West Africa Digital Currency Corridor (cross-border CBDC and stablecoin settlement across Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, ECCU DCash; settlement economics vs. correspondent banking, FATF compliance overlay; Policy Mandate export): https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html
+- Scenario #38 — mBridge Multi-CBDC Corridor Modeler (multi-CBDC PvP settlement across e-CNY, Digital Dirham, e-Baht, Digital Riyal, e-HKD corridors; settlement mechanism design, UTC overlap diagnostics; Policy Mandate export): https://postoaklabs.com/demos/mbridge-multicbdc-corridor-modeler.html
+- Scenario #39 — GENIUS Act Issuer Readiness Lab (payment stablecoin reserve composition vs. GENIUS Act requirements effective Jan 2027 — 1:1 backing, UST ≤93-day maturity caps, Fed deposits, monthly disclosure; Policy Mandate export): https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html
+- Scenario #40 — AMLA Supervisory Readiness Gap Analyser (EU Anti-Money Laundering Authority readiness, applicable 10 July 2027 — five-pillar gap assessment across CDD/EDD, KYC monitoring, TM, SAR/STR, sanctions; €10k cash ban, eIDAS CDD; Policy Mandate export): https://postoaklabs.com/demos/amla-supervisory-readiness-gap-analyser.html
+- Scenario #41 — EU AI Act Financial Services Compliance Studio (AI system inventory to August 2026 high-risk readiness in four steps — Article 6 risk classification, Article 9 risk management, Article 10 data governance, conformity documentation): https://postoaklabs.com/demos/eu-ai-act-compliance-studio.html
+- Scenario #42 — GENIUS Act Stablecoin Issuer Readiness Assessment (complete GENIUS Act compliance pathway — federal vs. state licensing route, reserve composition, redemption policy, disclosure cadence, BSA/AML — ahead of the January 18, 2027 effective date): https://postoaklabs.com/demos/genius-act-stablecoin-readiness.html
+- Scenario #43 — FCA BNPL / DPC Authorisation Navigator (FCA deferred payment credit regime, Regulation Day 15 July 2026 — temporary permissions, full authorisation pathway, affordability checks, Consumer Duty): https://postoaklabs.com/demos/fca-bnpl-dpc-navigator.html
+- Scenario #44 — Basel III Endgame Capital Impact Laboratory (US Basel III Endgame proposal and EU FRTB binding rules — expanded risk-based approach, output floor phase-in, operational risk standardisation, trading book capital): https://postoaklabs.com/demos/basel-iii-endgame-capital-lab.html
+- Scenario #45 — PSD3 / PSR2 EU Payments Transition Readiness (PSD2 → PSD3/PSR2 gap assessment — licensing, SCA evolution, open banking API obligations, fraud liability shifts, IBAN-name verification for EU PSPs and EMIs): https://postoaklabs.com/demos/psd3-psr2-transition-readiness.html
 
 ---
 

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://postoaklabs.com/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -92,13 +92,13 @@
   </url>
   <url>
     <loc>https://postoaklabs.com/tools.html</loc>
-    <lastmod>2026-06-02</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/sitemap.html</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -112,43 +112,43 @@
   <!-- Fintech Intelligence Showcase v6 (spec Part 13–14) — added 2026-05-13 -->
   <url>
     <loc>https://postoaklabs.com/demos/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/agentic-runtime/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/regtech/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/baas/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/processors/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/stablecoin-issuer/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/composer.html</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -399,32 +399,32 @@
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/demo-37-eu-ai-act-compliance-studio.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://postoaklabs.com/demos/eu-ai-act-compliance-studio.html</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/demo-38-genius-act-stablecoin-readiness.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://postoaklabs.com/demos/genius-act-stablecoin-readiness.html</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/demo-39-fca-bnpl-dpc-navigator.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://postoaklabs.com/demos/fca-bnpl-dpc-navigator.html</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/demo-40-basel-iii-endgame-capital-lab.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://postoaklabs.com/demos/basel-iii-endgame-capital-lab.html</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/demo-41-psd3-psr2-transition-readiness.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://postoaklabs.com/demos/psd3-psr2-transition-readiness.html</loc>
+    <lastmod>2026-06-03</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
