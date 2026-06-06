@@ -372,7 +372,7 @@ function buildCapitalPlan(){
   document.getElementById('capitalPlanBody').innerHTML=`
     <div class="result-card">
       <div class="result-label">Integrated Basel III Endgame Capital Plan — ${S.bankName}</div>
-      <div class="rrow"><span class="rrow-key">Bank Size</span><span class="rrow-val">${{under100b:'&lt;$100B',\'100b_250b\':\'$100B–$250B\',\'250b_700b\':\'$250B–$700B\',over700b:\'>$700B (G-SIB)'}[S.totalAssets]||S.totalAssets}</span></div>
+      <div class="rrow"><span class="rrow-key">Bank Size</span><span class="rrow-val">${{under100b:'&lt;$100B','100b_250b':'$100B–$250B','250b_700b':'$250B–$700B',over700b:'>$700B (G-SIB)'}[S.totalAssets]||S.totalAssets}</span></div>
       <div class="rrow"><span class="rrow-key">FRTB Approach</span><span class="rrow-val">${S.imaEligible?'IMA (conditional) + SA for excluded desks':'Standardised Approach (SA) — all desks'}</span></div>
       <div class="rrow"><span class="rrow-key">RWA Impact</span><span class="rrow-val"><strong style="color:var(--warn)">${S.rwaMultiplier?.toFixed(2)||'1.12'}x</strong> estimated RWA increase</span></div>
       <div class="rrow"><span class="rrow-key">CET1 Projected</span><span class="rrow-val"><strong style="color:${(S.projectedCet1||11)<10.5?'var(--red)':'var(--green)'}">${(S.projectedCet1||11).toFixed(1)}%</strong> post-endgame (from ${(S.currentCet1||11).toFixed(1)}%)</span></div>
