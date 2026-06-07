@@ -118,6 +118,7 @@ Five buyer-archetype hubs filter and sequence the scenarios for distinct audienc
 - Scenario #43 — FCA BNPL / DPC Authorisation Navigator (FCA deferred payment credit regime, Regulation Day 15 July 2026 — temporary permissions, full authorisation pathway, affordability checks, Consumer Duty): https://postoaklabs.com/demos/fca-bnpl-dpc-navigator.html
 - Scenario #44 — Basel III Endgame Capital Impact Laboratory (US Basel III Endgame proposal and EU FRTB binding rules — expanded risk-based approach, output floor phase-in, operational risk standardisation, trading book capital): https://postoaklabs.com/demos/basel-iii-endgame-capital-lab.html
 - Scenario #45 — PSD3 / PSR2 EU Payments Transition Readiness (PSD2 → PSD3/PSR2 gap assessment — licensing, SCA evolution, open banking API obligations, fraud liability shifts, IBAN-name verification for EU PSPs and EMIs): https://postoaklabs.com/demos/psd3-psr2-transition-readiness.html
+- Scenario #46 — Agentic Checkout, End-to-End (A2A agent-card discovery → Google AP2 checkout/payment mandates with spending-cap guardrail → x402 or Visa TAP settlement trace → RFC 9421-signed hash-chained audit trail; chains AINumbers T283·T285·T277·T286): https://postoaklabs.com/demos/agentic-checkout-end-to-end.html
 
 ---
 

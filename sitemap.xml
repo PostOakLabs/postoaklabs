@@ -428,4 +428,10 @@
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://postoaklabs.com/demos/agentic-checkout-end-to-end.html</loc>
+    <lastmod>2026-06-07</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>
