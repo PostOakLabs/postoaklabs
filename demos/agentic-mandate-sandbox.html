@@ -29,14 +29,14 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/agentic-mandate-sandbox.html",
-  "description": "Sandbox for testing AP2 v1.0 mandates against candidate agent actions. Bundled mandate templates: AML (@ainumbers.co/aml-mandate-v1), BaaS (@ainumbers.co/baas-mandate-v1), DORA (@ainumbers.co/dora-gap-v1), Fraud (@ainumbers.co/instant-pay-fraud-v1), Stablecoin (@ainumbers.co/stablecoin-readiness-v1). Per-step execution trace with decision and reasoning. Exports trace as @ainumbers.co/sandbox-trace-v1.",
+  "description": "Sandbox for testing Policy Mandate v1 mandates against candidate agent actions. Bundled mandate templates: AML (@ainumbers.co/aml-mandate-v1), BaaS (@ainumbers.co/baas-mandate-v1), DORA (@ainumbers.co/dora-gap-v1), Fraud (@ainumbers.co/instant-pay-fraud-v1), Stablecoin (@ainumbers.co/stablecoin-readiness-v1). Per-step execution trace with decision and reasoning. Exports trace as @ainumbers.co/sandbox-trace-v1.",
   "featureList": [
     "Five bundled mandate templates spanning every AP2 schema the showcase emits",
     "Paste custom mandate JSON (validated client-side)",
     "Candidate-action library scoped to the loaded mandate type",
     "Per-step execution trace with decision, reasoning, latency",
     "Final outcome: allow / step-up / refer / refuse",
-    "AP2 v1.0 sandbox-trace export against @ainumbers.co/sandbox-trace-v1",
+    "Policy Mandate v1 sandbox-trace export against @ainumbers.co/sandbox-trace-v1",
     "Markdown trace report and MCP tool definition export"
   ],
   "keywords": "AP2, mandate sandbox, agentic, MCP, agent runtime, policy testing, EU AI Act Article 14, DORA Article 25, AP2 trace, sandbox-trace-v1",
@@ -313,7 +313,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
       <span class="hero-badge warn">Sandbox model is illustrative — production runtimes parse the same mandate structure</span>
-      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+      <span class="hero-badge">Last Reviewed · 2026-06-10</span>
     </div>
   </div>
 
@@ -394,7 +394,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
           <div class="preview-body"><pre id="preview-out">— run sandbox to populate —</pre></div>
 
-          <div class="validation ok" id="validation">AP2 v1.0 · idle</div>
+          <div class="validation ok" id="validation">Policy Mandate v1 · idle</div>
 
           <div class="results-export-row">
             <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 trace</button>
@@ -416,7 +416,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       (visualise the same mandate as agent-traversal guardrails) and
       <a href="/demos/ap2-aml-mandate-builder.html">#23</a> /
       <a href="/demos/ap2-baas-infrastructure-mandate-builder.html">#24</a>
-      (compose the mandates this sandbox tests). Position in the 259-tool atlas:
+      (compose the mandates this sandbox tests). Position in the 400+ tool atlas:
       <a href="/demos/composer.html">Tool Chain Composer</a>, RBE-06 + T102 in the Agentic Runtime cluster.
     </p>
   </div>
@@ -431,7 +431,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Building agentic payment infrastructure?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">We design the deterministic AP2 / MCP policy layer that runtimes like this one depend on. If you're putting agents anywhere near money, let's pressure-test your mandate architecture.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -988,7 +988,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
     const v = document.getElementById('validation');
     v.className = 'validation ok';
-    v.textContent = 'AP2 v1.0 · valid · @ainumbers.co/sandbox-trace-v1';
+    v.textContent = 'Policy Mandate v1 · valid · @ainumbers.co/sandbox-trace-v1';
   }
 
   function buildMd(trace){
@@ -1064,7 +1064,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       document.getElementById('preview-out').textContent = body;
       const v = document.getElementById('validation');
       v.className = 'validation ok';
-      v.textContent = 'AP2 v1.0 · idle';
+      v.textContent = 'Policy Mandate v1 · idle';
       return;
     }
     if (state.activeTab === 'trace') body = JSON.stringify(t, null, 2);

@@ -29,7 +29,7 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html",
-  "description": "Score a bank or processor's CBPR+ compliance readiness — the MT→MX migration (coexistence period ended 22 November 2025) and the 14 November 2026 SWIFT structured-address mandate. Per-message-family coverage (pacs.008, pacs.009, pacs.002, camt.053, camt.054, pain.001), gateway capability tier, structured-address (CBPR+) readiness, exception handling. Composite readiness score /100 with banded recommendations and AP2 v1.0 mandate export against @ainumbers.co/iso20022-readiness-v1.",
+  "description": "Score a bank or processor's CBPR+ compliance readiness — the MT→MX migration (coexistence period ended 22 November 2025) and the 14 November 2026 SWIFT structured-address mandate. Per-message-family coverage (pacs.008, pacs.009, pacs.002, camt.053, camt.054, pain.001), gateway capability tier, structured-address (CBPR+) readiness, exception handling. Composite readiness score /100 with banded recommendations and Policy Mandate v1 mandate export against @ainumbers.co/iso20022-readiness-v1.",
   "featureList": [
     "Per-message-family coverage matrix (pacs / camt / pain)",
     "Gateway capability tier selector",
@@ -37,7 +37,7 @@
     "Exception-handling maturity",
     "Hybrid-period coexistence plan",
     "Live composite score /100 with days-to-deadline countdown",
-    "AP2 v1.0 mandate export against @ainumbers.co/iso20022-readiness-v1",
+    "Policy Mandate v1 mandate export against @ainumbers.co/iso20022-readiness-v1",
     "Markdown migration plan and MCP tool definition export"
   ],
   "keywords": "ISO 20022, SWIFT CBPR+, 14 November 2026, pacs.008, pacs.009, camt.053, pain.001, structured address, MT to MX, payment market practice, migration readiness, AP2 mandate, MCP",
@@ -298,7 +298,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
       <span class="hero-badge warn">Pair with <a href="/demos/iso20022-message-truncation-auditor.html" style="color:inherit;text-decoration:underline;">#2 Truncation Auditor</a> for the field-level depth</span>
-      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+      <span class="hero-badge">Last Reviewed · 2026-06-10</span>
     </div>
   </div>
 
@@ -318,7 +318,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       fully structured is preferred. The 2024 Eurosystem T2 migration completed the EU TARGET2 → T2
       transition on ISO 20022.
     </p>
-    <div class="swift-cite">Sources: SWIFT CBPR+ Market Practice Guidelines · ISO 20022 Programme · Eurosystem T2 launch (Mar 2023) · Fed FedWire ISO 20022 migration (Mar 2025)</div>
+    <div class="swift-cite">Sources: SWIFT CBPR+ Market Practice Guidelines · ISO 20022 Programme · Eurosystem T2 launch (Mar 2023) · Fed FedWire ISO 20022 migration (Jul 2025)</div>
   </div>
 
   <aside class="value-at-risk" aria-label="Value at risk — ISO 20022 cutover non-readiness">
@@ -438,7 +438,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
           <div class="preview-body"><pre id="preview-out"></pre></div>
 
-          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/iso20022-readiness-v1</div>
+          <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/iso20022-readiness-v1</div>
 
           <div class="results-export-row">
             <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
@@ -472,7 +472,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Migrating rails or unlocking trapped capital?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">ISO 20022 cutover, A2A migration, FX netting, nostro optimization and real-time fraud — built in production, not slideware. Let's map your move.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -796,7 +796,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const v = document.getElementById('validation');
     if (errs.length === 0) {
       v.className = 'validation ok';
-      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+      v.textContent = 'Policy Mandate v1 · valid · ' + m['$schema'];
     } else {
       v.className = 'validation err';
       v.textContent = 'Schema errors: ' + errs.join('; ');

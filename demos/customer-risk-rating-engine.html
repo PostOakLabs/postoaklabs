@@ -28,14 +28,14 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/customer-risk-rating-engine.html",
-  "description": "Multi-factor AML/KYC customer risk scoring engine. Weights 8 risk dimensions to assign Low, Medium, High, or Prohibited risk tiers. Outputs a radar visualization, dimension-by-dimension breakdown, enhanced due diligence triggers, review cadence, and an AP2 v1.0 CRR mandate.",
+  "description": "Multi-factor AML/KYC customer risk scoring engine. Weights 8 risk dimensions to assign Low, Medium, High, or Prohibited risk tiers. Outputs a radar visualization, dimension-by-dimension breakdown, enhanced due diligence triggers, review cadence, and an Policy Mandate v1 CRR mandate.",
   "featureList": [
     "8 weighted risk dimensions: geography, PEP, industry, channel, volume, ownership, adverse media, product",
     "Configurable dimension weights for institution-specific risk appetite",
     "Composite risk score → tier assignment (Low / Medium / High / Prohibited)",
     "SVG radar chart visualization of risk profile",
     "EDD trigger identification and review cadence recommendation",
-    "AP2 v1.0 mandate export: @ainumbers.co/customer-risk-rating-v1"
+    "Policy Mandate v1 mandate export: @ainumbers.co/customer-risk-rating-v1"
   ],
   "keywords": "customer risk rating, AML, KYC, CRR, risk scoring, EDD, PEP screening, FATF R.10, risk-based approach, financial crime, RegTech, compliance",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
@@ -488,7 +488,7 @@ footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); p
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Turning a compliance clock into an operating plan?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">We help institutions operationalize obligations like DORA, MiCA, the EU AI Act, CFPB §1033 and AML — past the checklist and into production. Tell us what's on your enforcement calendar.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -694,7 +694,7 @@ function renderOutput(r) {
     <div class="results-export-row">
       <button class="export-btn primary" onclick="exportAP2()">↓ AP2 Mandate JSON</button>
       <button class="export-btn secondary" onclick="exportMarkdown()">↓ CRR Report</button>
-      <span class="export-lbl">Schema: @ainumbers.co/customer-risk-rating-v1 · AP2 v1.0</span>
+      <span class="export-lbl">Schema: @ainumbers.co/customer-risk-rating-v1 · Policy Mandate v1</span>
     </div>
   `;
 }

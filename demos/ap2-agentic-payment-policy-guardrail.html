@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>AP2 Visual Policy Guardrail · Post Oak Labs</title>
 <!-- Per-demo meta (spec Part 5.1) -->
-<meta name="description" content="Paste an AP2 mandate JSON to visualize its policy envelope, compile to runtime form, and emit MCP tool definitions. Browser-based, zero PII, AP2 v1.0 policy-JSON tooling.">
+<meta name="description" content="Paste an AP2 mandate JSON to visualize its policy envelope, compile to runtime form, and emit MCP tool definitions. Browser-based, zero PII, Policy Mandate v1 policy-JSON tooling.">
 <meta name="author" content="Post Oak Labs">
 <link rel="canonical" href="https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html">
 <meta property="og:title" content="AP2 Agentic Payment Policy Guardrail — Post Oak Labs">
@@ -29,9 +29,9 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html",
-  "description": "Visualizes an AP2 v1.0 payment-policy mandate: principal, agent, scope, expiry, intent envelope and constraints. Compiles the mandate into runtime guards and emits MCP tool definitions for direct agent consumption.",
+  "description": "Visualizes an Policy Mandate v1 payment-policy mandate: principal, agent, scope, expiry, intent envelope and constraints. Compiles the mandate into runtime guards and emits MCP tool definitions for direct agent consumption.",
   "featureList": [
-    "Paste / parse / visualize any AP2 v1.0 policy JSON",
+    "Paste / parse / visualize any Policy Mandate v1 policy JSON",
     "Constraint surfacing: amount caps, merchant scopes, time windows, currency, allow / deny / review",
     "Runtime guard compilation + agent-instruction emission",
     "MCP tool-definition generation for direct agent ingestion"
@@ -617,7 +617,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
 <header class="hero">
   <div class="hero-eyebrow">
     <span class="tool-eyebrow">T412 · AGENTIC POLICY TOOLING</span>
-    <span class="eyebrow-tag teal">AP2 v1.0 PARSER</span>
+    <span class="eyebrow-tag teal">Policy Mandate v1 PARSER</span>
     <span class="eyebrow-tag gold">MCP RUNTIME EXPORT</span>
   </div>
   
@@ -634,8 +634,8 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
 <aside class="value-at-risk" aria-label="Value at risk — unscoped agent transactions">
   <h4 class="var-eyebrow">Value at risk · unscoped agent transactions</h4>
   <p class="var-figure">Full transaction loss + unauthorized-debit liability per breach</p>
-  <p class="var-body">Autonomous agents executing payments without a client-side policy guard can fall outside the principal's intent envelope — wrong merchant, wrong amount cap, or an expired window. AP2 v1.0 policy JSON enforces the envelope before the MCP tool call resolves, so the agent cannot emit a payment that the principal did not authorize. Visualizing the mandate before deployment is the cheapest path to catching scope-drift.</p>
-  <p class="var-cite"><small>AP2 v1.0 mandate specification · Anthropic / Google AP2 working draft · ISO 20022 intent envelope · FATF Recommendation 16 (Travel Rule) for agent-initiated transfers</small></p>
+  <p class="var-body">Autonomous agents executing payments without a client-side policy guard can fall outside the principal's intent envelope — wrong merchant, wrong amount cap, or an expired window. Policy Mandate v1 policy JSON enforces the envelope before the MCP tool call resolves, so the agent cannot emit a payment that the principal did not authorize. Visualizing the mandate before deployment is the cheapest path to catching scope-drift.</p>
+  <p class="var-cite"><small>Policy Mandate v1 mandate specification · Google AP2 working draft (v0.2 · FIDO Alliance) · ISO 20022 intent envelope · FATF Recommendation 16 (Travel Rule) for agent-initiated transfers</small></p>
 </aside>
 
 
@@ -653,7 +653,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
       <textarea class="json-input" id="jsonInput" spellcheck="false" autocomplete="off"></textarea>
       <div class="parse-status ok" id="parseStatus">
         <span class="blob"></span>
-        <span>VALID · AP2 v1.0 · awaiting parse</span>
+        <span>VALID · Policy Mandate v1 · awaiting parse</span>
       </div>
       <div class="input-toolbar">
         <button class="btn primary" id="parseBtn">▶ PARSE &amp; VISUALIZE</button>
@@ -810,13 +810,13 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Building agentic payment infrastructure?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">We design the deterministic AP2 / MCP policy layer that runtimes like this one depend on. If you're putting agents anywhere near money, let's pressure-test your mandate architecture.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
 <footer class="footer-strip">
   <div>POST OAK LABS · <span>AGENTIC PAYMENT POLICY TOOLING</span></div>
-  <div>AP2 v1.0 · MCP 0.4 · <span>CLIENT-SIDE · ZERO PII</span></div>
+  <div>Policy Mandate v1 · MCP 0.4 · <span>CLIENT-SIDE · ZERO PII</span></div>
 </footer>
 
 <!-- Export Modal -->

@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AP2 BaaS Infrastructure Mandate Builder · Sponsor-Bank-Audit-Ready Programme Policy · Post Oak Labs</title>
 
-<meta name="description" content="Compose AP2 v1.0 BaaS infrastructure mandates — programme-policy slots, sponsor-bank approval gates, BIN-tier ceilings, transaction limits, handoff workflows. The runtime enforces; the sponsor bank audits. Client-side, zero PII.">
+<meta name="description" content="Compose Policy Mandate v1 BaaS infrastructure mandates — programme-policy slots, sponsor-bank approval gates, BIN-tier ceilings, transaction limits, handoff workflows. The runtime enforces; the sponsor bank audits. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html">
 <meta property="og:title" content="AP2 BaaS Infrastructure Mandate Builder — Post Oak Labs">
-<meta property="og:description" content="Programme-policy + sponsor-bank gates + BIN ceilings + transaction limits → machine-readable BaaS mandate. AP2 v1.0 stable. Browser-based. Zero PII.">
+<meta property="og:description" content="Programme-policy + sponsor-bank gates + BIN ceilings + transaction limits → machine-readable BaaS mandate. Policy Mandate v1. Browser-based. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/ap2-baas-infrastructure-mandate-builder.png">
@@ -29,14 +29,14 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html",
-  "description": "Compose AP2 v1.0 BaaS infrastructure mandates an agentic runtime can read, follow and audit against. Configures programme-policy slots, sponsor-bank approval gates, BIN-tier ceilings, transaction-limit caps and handoff workflows. Exports a validated mandate against @ainumbers.co/baas-mandate-v1.",
+  "description": "Compose Policy Mandate v1 BaaS infrastructure mandates an agentic runtime can read, follow and audit against. Configures programme-policy slots, sponsor-bank approval gates, BIN-tier ceilings, transaction-limit caps and handoff workflows. Exports a validated mandate against @ainumbers.co/baas-mandate-v1.",
   "featureList": [
     "Programme-policy slots: account ceiling, KYC tier, daily / monthly limits, customer-type allowlist",
     "Sponsor-bank approval gates: auto-approve threshold, manual-review threshold, hard-stop ceiling",
     "BIN-tier ceilings (commercial / consumer / prepaid) with issuance limits",
     "Transaction-rail caps (ACH, wire, card, RTP) with per-rail thresholds",
     "Handoff workflows: sponsor-bank reconciliation cadence, escalation matrix",
-    "AP2 v1.0 mandate export against @ainumbers.co/baas-mandate-v1",
+    "Policy Mandate v1 mandate export against @ainumbers.co/baas-mandate-v1",
     "Markdown programme policy brief and MCP tool definition export"
   ],
   "keywords": "AP2, BaaS, sponsor bank, programme policy, BIN tier, ACH, wire, card, RTP, OCC interagency guidance, third-party risk, agentic infrastructure, MCP",
@@ -271,7 +271,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   <div class="hero">
     <div class="tool-eyebrow">Demo #24 · Cat-12 · AP2 × BaaS Infrastructure · Agentic + BaaS Hubs</div>
     <div class="eyebrow-badges">
-      <span class="eyebrow-badge eb-accent">AP2 v1.0 stable</span>
+      <span class="eyebrow-badge eb-accent">Policy Mandate v1</span>
       <span class="eyebrow-badge eb-success">OCC 2023 interagency aligned</span>
       <span class="eyebrow-badge eb-gold">Programme policy + MCP def</span>
     </div>
@@ -279,14 +279,14 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <p class="hero-desc">
       Translate <b>BaaS programme policy</b> — account ceilings, KYC tiers, sponsor-bank approval gates,
       BIN-tier issuance ceilings, transaction-rail caps and handoff workflows — into a structured
-      <b>AP2 v1.0</b> mandate the agentic runtime enforces and the sponsor bank can audit. Same shape
+      <b>Policy Mandate v1</b> mandate the agentic runtime enforces and the sponsor bank can audit. Same shape
       as <a href="/demos/ap2-aml-mandate-builder.html">#23 AP2 AML Mandate</a>; different domain. Schema:
       <code style="font-family:var(--mono);font-size:.78rem;background:var(--bg-soft);padding:.1rem .35rem;border-radius:3px;">@ainumbers.co/baas-mandate-v1</code>.
     </p>
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
       <span class="hero-badge warn">Programme policy is a contract — model it once, enforce it everywhere</span>
-      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+      <span class="hero-badge">Last Reviewed · 2026-06-10</span>
     </div>
   </div>
 
@@ -396,7 +396,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       <section class="panel">
         <div class="panel-label">§4 · Transaction-Rail Caps <span class="panel-label-r">ACH · Wire · Card · RTP</span></div>
         <h2 class="sec-h">Per-rail per-transaction maxima</h2>
-        <p class="sec-sub">Per-rail thresholds the runtime enforces on every transaction. ACH has NACHA same-day caps; wires per Fed/CHIPS thresholds; RTP per The Clearing House $1M limit (raised Feb 2024).</p>
+        <p class="sec-sub">Per-rail thresholds the runtime enforces on every transaction. ACH has NACHA same-day caps; wires per Fed/CHIPS thresholds; RTP per The Clearing House $10M limit (raised February 2025).</p>
 
         <div id="rails"></div>
       </section>
@@ -447,7 +447,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div class="preview-body"><pre id="preview-out"></pre></div>
 
-        <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/baas-mandate-v1</div>
+        <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/baas-mandate-v1</div>
 
         <div class="results-export-row">
           <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
@@ -465,7 +465,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       Pair with <a href="/demos/ap2-aml-mandate-builder.html">#23 — AP2 AML Mandate Builder</a> to bind
       AML policy to the same programme. Use <a href="/demos/wallet-float-yield-estimator.html">#17 — Wallet Float Yield Estimator</a>
       to model the programme economics; this demo emits the policy that constrains where #17's allocation can live.
-      Position in the 259-tool atlas: <a href="/demos/composer.html">Tool Chain Composer</a>, T164 node.
+      Position in the 400+ tool atlas: <a href="/demos/composer.html">Tool Chain Composer</a>, T164 node.
     </p>
   </div>
 </div>
@@ -479,7 +479,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Building agentic payment infrastructure?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">We design the deterministic AP2 / MCP policy layer that runtimes like this one depend on. If you're putting agents anywhere near money, let's pressure-test your mandate architecture.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -530,7 +530,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       { id:'r-ach',  label:'ACH',  desc:'NACHA same-day cap $1M (2024)',                         per_tx_cap_usd: 100000, enabled: true },
       { id:'r-wire', label:'WIRE', desc:'Fedwire / CHIPS — institution-set ceiling',             per_tx_cap_usd: 250000, enabled: true },
       { id:'r-card', label:'CARD', desc:'Card-network purchase / withdrawal',                    per_tx_cap_usd: 5000,   enabled: true },
-      { id:'r-rtp',  label:'RTP',  desc:'TCH Real-Time Payments — $1M cap since Feb 2024',       per_tx_cap_usd: 100000, enabled: true }
+      { id:'r-rtp',  label:'RTP',  desc:'TCH Real-Time Payments — $10M cap since February 2025',       per_tx_cap_usd: 100000, enabled: true }
     ],
     recon: 'daily',
     escalate: '15min',
@@ -757,7 +757,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const v = document.getElementById('validation');
     if (errs.length === 0) {
       v.className = 'validation ok';
-      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+      v.textContent = 'Policy Mandate v1 · valid · ' + m['$schema'];
     } else {
       v.className = 'validation err';
       v.textContent = 'Schema errors: ' + errs.join('; ');

@@ -85,7 +85,7 @@
       "name": "AP2 Agentic Payment Policy Guardrail",
       "url": "https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html",
       "applicationCategory": "Agentic Payments",
-      "description": "Visualize any AP2 v1.0 policy mandate, surface its intent envelope, compile to runtime guards and emit MCP tool definitions — all client-side."
+      "description": "Visualize any Policy Mandate v1 policy mandate, surface its intent envelope, compile to runtime guards and emit MCP tool definitions — all client-side."
     },
     {
       "@type": "SoftwareApplication",
@@ -141,7 +141,7 @@
       "name": "VASP Travel Rule (FATF R.16) Compliance Checker",
       "url": "https://postoaklabs.com/demos/vasp-travel-rule-compliance-checker.html",
       "applicationCategory": "RegTech",
-      "description": "Originator + beneficiary data sufficiency across FATF baseline, EU TFR (2024/1624), FinCEN, UK MLR and MAS. Field-by-field requirement matrix, sunrise-issue awareness, AP2 mandate."
+      "description": "Originator + beneficiary data sufficiency across FATF baseline, EU TFR (2023/1113), FinCEN, UK MLR and MAS. Field-by-field requirement matrix, sunrise-issue awareness, AP2 mandate."
     },
     {
       "@type": "SoftwareApplication",
@@ -374,7 +374,7 @@
       "name": "What is the Post Oak Labs Fintech Intelligence Showcase?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The Fintech Intelligence Showcase is a free, public catalog of 46 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario runs entirely client-side, stores zero PII, exports AP2 v1.0 mandates, and is discoverable over MCP. All 46 are live as of June 2026."
+        "text": "The Fintech Intelligence Showcase is a free, public catalog of 46 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario runs entirely client-side, stores zero PII, exports Policy Mandate v1 mandates, and is discoverable over MCP. All 46 are live as of June 2026."
       }
     },
     {
@@ -390,7 +390,7 @@
       "name": "What is AP2 and why do the scenarios export it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AP2 (Agent Payments Protocol) v1.0 is a schema for expressing payment and policy mandates that AI agents can execute deterministically. Each scenario can export its result as an AP2 v1.0 mandate, so the output can be replayed by an agent runtime or reviewed by an audit team."
+        "text": "AP2 (Agent Payments Protocol) v1.0 is a schema for expressing payment and policy mandates that AI agents can execute deterministically. Each scenario can export its result as an Policy Mandate v1 mandate, so the output can be replayed by an agent runtime or reviewed by an audit team."
       }
     },
     {
@@ -398,7 +398,7 @@
       "name": "What is MCP and how do these tools use it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "MCP (Model Context Protocol) is an open standard for exposing tools to large language models. The underlying 260-tool AINumbers catalog is MCP-native, so models such as Claude can call the tools directly and receive AP2 mandates in response."
+        "text": "MCP (Model Context Protocol) is an open standard for exposing tools to large language models. The underlying 400+ tool AINumbers catalog is MCP-native, so models such as Claude can call the tools directly and receive AP2 mandates in response."
       }
     },
     {
@@ -414,7 +414,7 @@
       "name": "Who builds these scenarios and how do I go deeper?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with production deployments in the Caribbean and South Asia. Explore the full 260-tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs."
+        "text": "They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with production deployments in the Caribbean and South Asia. Explore the full 400+ tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs."
       }
     }
   ]
@@ -1111,7 +1111,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     <div class="hero-trust-row" aria-label="Trust signals">
       <span class="hero-trust-pill">🔒 Zero PII</span>
       <span class="hero-trust-pill">💻 Client-side</span>
-      <span class="hero-trust-pill accent">AP2 v1.0</span>
+      <span class="hero-trust-pill accent">Policy Mandate v1</span>
       <span class="hero-trust-pill accent">MCP-native</span>
       <span class="hero-trust-pill gold">CC BY 4.0</span>
     </div>
@@ -1159,7 +1159,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
         </div>
         <div class="term-body" id="mcpTermBody"></div>
       </div>
-      <p class="hero-rec-caption">Live: Claude invoking AINumbers tools via MCP, receiving AP2 v1.0 mandates. — <a href="/demos/composer.html">View all 46 scenarios in the Tool Chain Composer →</a></p>
+      <p class="hero-rec-caption">Live: Claude invoking AINumbers tools via MCP, receiving Policy Mandate v1 mandates. — <a href="/demos/composer.html">View all 46 scenarios in the Tool Chain Composer →</a></p>
     </div>
     <script>
     (function(){
@@ -1168,7 +1168,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
       var CYAN='#4a9fdf', GREEN='#28c840', GOLD='#c09040', BLUE='#7a9ab8', DIM='#3d6070', YELLOW='#febc2e';
       var SCRIPT = [
         ['$ claude mcp connect --server ainumbers', CYAN, 'type'],
-        ['→ Connected \xb7 ainumbers MCP (268 tools \xb7 AP2 v1.0)', GREEN, 'fast'],
+        ['→ Connected \xb7 ainumbers MCP (400+ tools \xb7 Policy Mandate v1)', GREEN, 'fast'],
         ['', '', 'blank'],
         ['$ claude mcp call ainumbers:cfpb_1033_institution_classifier', CYAN, 'type'],
         ['    --assets 28.4 --type depository_bank', DIM, 'type'],
@@ -1246,7 +1246,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
       <a class="hub-card" href="/demos/agentic-runtime/" data-cat="agentic">
         <span class="hub-card-arch">Agentic Runtime</span>
         <span class="hub-card-name">Deterministic policy layer for AP2 / MCP runtimes</span>
-        <p class="hub-card-claim">A schema-stable substrate 46 scenarios and 400+ tools already export to. AP2 v1.0 stable, MCP-native discovery.</p>
+        <p class="hub-card-claim">A schema-stable substrate 46 scenarios and 400+ tools already export to. Policy Mandate v1, MCP-native discovery.</p>
         <div class="hub-card-meta"><span><strong>6</strong> scenarios</span><span>Anthropic · Google · OpenAI</span></div>
         <span class="hub-card-cta">Explore hub →</span>
       </a>
@@ -1464,9 +1464,9 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
         <span class="card-status live">Live</span>
       </div>
       <h3 class="card-title">AP2 Agentic Payment Policy Guardrail</h3>
-      <p class="card-desc">Visualize any AP2 v1.0 policy mandate, surface its intent envelope, compile to runtime guards and emit MCP tool definitions — all client-side.</p>
+      <p class="card-desc">Visualize any Policy Mandate v1 policy mandate, surface its intent envelope, compile to runtime guards and emit MCP tool definitions — all client-side.</p>
       <div class="card-meta">
-        <span class="chip">AP2 v1.0</span><span class="chip">MCP Tool Def</span><span class="chip">Policy JSON</span>
+        <span class="chip">Policy Mandate v1</span><span class="chip">MCP Tool Def</span><span class="chip">Policy JSON</span>
       </div>
     </a>
 
@@ -1569,7 +1569,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
         <span class="card-status live">Live</span>
       </div>
       <h3 class="card-title">VASP Travel Rule (FATF R.16) Compliance Checker</h3>
-      <p class="card-desc">Originator + beneficiary data sufficiency across FATF baseline, EU TFR (2024/1624), FinCEN, UK MLR and MAS. Field-by-field requirement matrix, sunrise-issue awareness, AP2 mandate.</p>
+      <p class="card-desc">Originator + beneficiary data sufficiency across FATF baseline, EU TFR (2023/1113), FinCEN, UK MLR and MAS. Field-by-field requirement matrix, sunrise-issue awareness, AP2 mandate.</p>
       <div class="card-meta">
         <span class="chip">FATF R.16</span><span class="chip">EU TFR live</span><span class="chip">5 regimes</span>
       </div>
@@ -1995,7 +1995,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     <h2>Frequently asked questions</h2>
     <div class="faq-item">
       <h3>What is the Post Oak Labs Fintech Intelligence Showcase?</h3>
-      <p>The Fintech Intelligence Showcase is a free, public catalog of 45 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario runs entirely client-side, stores zero PII, exports AP2 v1.0 mandates, and is discoverable over MCP. All 45 are live as of June 2026.</p>
+      <p>The Fintech Intelligence Showcase is a free, public catalog of 45 browser-based fintech scenarios drawn from the AINumbers.co tool library. Every scenario runs entirely client-side, stores zero PII, exports Policy Mandate v1 mandates, and is discoverable over MCP. All 45 are live as of June 2026.</p>
     </div>
     <div class="faq-item">
       <h3>Are the scenarios free, and do they store my data?</h3>
@@ -2003,11 +2003,11 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     </div>
     <div class="faq-item">
       <h3>What is AP2 and why do the scenarios export it?</h3>
-      <p>AP2 (Agent Payments Protocol) v1.0 is a schema for expressing payment and policy mandates that AI agents can execute deterministically. Each scenario can export its result as an AP2 v1.0 mandate, so the output can be replayed by an agent runtime or reviewed by an audit team.</p>
+      <p>AP2 (Agent Payments Protocol) v1.0 is a schema for expressing payment and policy mandates that AI agents can execute deterministically. Each scenario can export its result as an Policy Mandate v1 mandate, so the output can be replayed by an agent runtime or reviewed by an audit team.</p>
     </div>
     <div class="faq-item">
       <h3>What is MCP and how do these tools use it?</h3>
-      <p>MCP (Model Context Protocol) is an open standard for exposing tools to large language models. The underlying 260-tool AINumbers catalog is MCP-native, so models such as Claude can call the tools directly and receive AP2 mandates in response.</p>
+      <p>MCP (Model Context Protocol) is an open standard for exposing tools to large language models. The underlying 400+ tool AINumbers catalog is MCP-native, so models such as Claude can call the tools directly and receive AP2 mandates in response.</p>
     </div>
     <div class="faq-item">
       <h3>Which regulatory regimes do the scenarios cover?</h3>
@@ -2015,7 +2015,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     </div>
     <div class="faq-item">
       <h3>Who builds these scenarios and how do I go deeper?</h3>
-      <p>They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with production deployments in the Caribbean and South Asia. Explore the full 260-tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs.</p>
+      <p>They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with production deployments in the Caribbean and South Asia. Explore the full 400+ tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs.</p>
     </div>
   </div>
 </section>
@@ -2025,8 +2025,8 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
   <div class="composer-link-inner">
     <div class="composer-eyebrow">Tool Chain Composer · 260 nodes</div>
     <h2>The catalog isn't 260 calculators. It's one composable platform with 260 nodes.</h2>
-    <p>View all 40 scenarios in context of the full 260-tool AINumbers chain — AP2 schemas, MCP discovery edges, and persona / category filters at a single URL.</p>
-    <a href="/demos/composer.html" class="composer-cta">View all 40 scenarios in the 260-tool chain →</a>
+    <p>View all 40 scenarios in context of the full 400+ tool AINumbers chain — AP2 schemas, MCP discovery edges, and persona / category filters at a single URL.</p>
+    <a href="/demos/composer.html" class="composer-cta">View all 40 scenarios in the 400+ tool chain →</a>
     <small class="composer-cta-note">Live · 260 nodes · 15 categories · filterable by capability and persona</small>
   </div>
 </section>
@@ -2040,7 +2040,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">This scenario is a demonstration of capability.</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">Behind every tool is a team that has built and integrated production tokenized payment systems. If one maps to a problem you're facing, let's talk.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->

@@ -29,7 +29,7 @@
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html",
-  "description": "Simulate multilateral FX netting across multinational subsidiaries. Editable bilateral payable matrix in four subsidiaries × three currencies. Switchable settlement modes (gross / bilateral / multilateral) with live settlement-volume reduction, FX-spread savings at adjustable bps, nostro-capital freed, currency-pair compression and Herstatt-style settlement-risk reduction. AP2 v1.0 treasury-policy mandate export against @ainumbers.co/fx-netting-v1.",
+  "description": "Simulate multilateral FX netting across multinational subsidiaries. Editable bilateral payable matrix in four subsidiaries × three currencies. Switchable settlement modes (gross / bilateral / multilateral) with live settlement-volume reduction, FX-spread savings at adjustable bps, nostro-capital freed, currency-pair compression and Herstatt-style settlement-risk reduction. Policy Mandate v1 treasury-policy mandate export against @ainumbers.co/fx-netting-v1.",
   "featureList": [
     "Editable subsidiary × currency payable matrix",
     "Three settlement modes: gross / bilateral / multilateral",
@@ -37,7 +37,7 @@
     "Live settlement reduction %, $-saved, currency-pair compression",
     "Nostro capital freed estimate",
     "Herstatt-style settlement-risk reduction",
-    "AP2 v1.0 treasury-policy mandate export against @ainumbers.co/fx-netting-v1",
+    "Policy Mandate v1 treasury-policy mandate export against @ainumbers.co/fx-netting-v1",
     "Markdown treasury memo and MCP tool definition export"
   ],
   "keywords": "FX netting, multilateral netting, bilateral netting, CLS Bank, Herstatt risk, treasury operations, nostro, payment-versus-payment, BIS Triennial, FX settlement risk, AP2 mandate, MCP",
@@ -304,7 +304,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
       <span class="hero-badge warn">Synthetic — illustrative. Real book economics depend on counterparty mix and FX desk arrangements.</span>
-      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+      <span class="hero-badge">Last Reviewed · 2026-06-10</span>
     </div>
   </div>
 
@@ -433,7 +433,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
           <div class="preview-body"><pre id="preview-out"></pre></div>
 
-          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/fx-netting-v1</div>
+          <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/fx-netting-v1</div>
 
           <div class="results-export-row">
             <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
@@ -452,7 +452,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       Pair with <a href="/demos/nostro-capital-optimization.html">#5 — Nostro Capital Unlock Simulator</a>
       for the freed-capital downstream story, <a href="/demos/wallet-float-yield-estimator.html">#17 — Wallet Float Yield Estimator</a>
       for the BaaS-revenue framing on freed capital, or <a href="/demos/latam-liquidity-migration-tool.html">#4 — LATAM Treasury Rails</a>
-      for the corridor-migration angle. Position in the 259-tool atlas:
+      for the corridor-migration angle. Position in the 400+ tool atlas:
       <a href="/demos/composer.html">Tool Chain Composer</a>, T105 / T76 in the FX &amp; Treasury cluster.
     </p>
   </div>
@@ -467,7 +467,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Migrating rails or unlocking trapped capital?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">ISO 20022 cutover, A2A migration, FX netting, nostro optimization and real-time fraud — built in production, not slideware. Let's map your move.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -857,7 +857,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const v = document.getElementById('validation');
     if (errs.length === 0) {
       v.className = 'validation ok';
-      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+      v.textContent = 'Policy Mandate v1 · valid · ' + m['$schema'];
     } else {
       v.className = 'validation err';
       v.textContent = 'Schema errors: ' + errs.join('; ');

@@ -309,14 +309,14 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
           <button type="submit" class="submit-btn"><span data-i18n="submit-btn">Send inquiry →</span></button>
 
           <p class="form-note">
-            We respond to all institutional inquiries directly, typically within one business day.<br>
+            We respond to all institutional inquiries directly.<br>
             Or email us directly: <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
           </p>
         </form>
 
         <div class="form-success" id="form-success">
           <h3>Message received</h3>
-          <p>Thank you. We will follow up directly at the email address you provided, typically within one business day.</p>
+          <p>Thank you. We will follow up directly at the email address you provided.</p>
         </div>
       </div>
 
@@ -426,12 +426,9 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
 </footer>
 
 <script>
-// ── FORM ENDPOINT ────────────────────────────────────────────────────────────
-// TODO: Create a free account at https://formspree.io, add a form pointed at
-// contact@postoaklabs.com, and replace 'YOUR_FORM_ID' below with the form ID
-// (e.g. 'xbjnarwk'). Until that ID is set, submissions fall back to mailto:.
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
-
+// ── FORM HANDLING ────────────────────────────────────────────────────────────
+// The form composes a structured mailto: to contact@postoaklabs.com — no
+// third-party form service, nothing transmitted to any server from this page.
 async function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('contact-form');
@@ -457,46 +454,7 @@ async function handleSubmit(e) {
   const jurisdiction = document.getElementById('jurisdiction').value.trim();
   const message      = document.getElementById('message').value.trim();
 
-  // ── Path 1: Formspree (configured) ──────────────────────────────────────
-  if (!FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')) {
-    const origText = btn.textContent;
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
-
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          institution,
-          institution_type: instType,
-          jurisdiction: jurisdiction || '—',
-          subject,
-          email,
-          message: message || ''
-        })
-      });
-
-      if (res.ok) {
-        form.style.display = 'none';
-        success.style.display = 'block';
-      } else {
-        const data = await res.json().catch(() => ({}));
-        btn.textContent = data.error || 'Send failed — please email us directly';
-        btn.style.background = '#8b3020';
-        btn.style.borderColor = '#8b3020';
-        btn.disabled = false;
-      }
-    } catch (_) {
-      btn.textContent = 'Network error — please email us directly';
-      btn.style.background = '#8b3020';
-      btn.style.borderColor = '#8b3020';
-      btn.disabled = false;
-    }
-    return;
-  }
-
-  // ── Path 2: mailto fallback (Formspree not yet configured) ──────────────
+  // ── Compose mailto ───────────────────────────────────────────────────────
   const body = [
     'Institution: ' + institution,
     'Type: ' + instType,
@@ -519,7 +477,7 @@ async function handleSubmit(e) {
     '<p>If it did not open, email us directly at ' +
     '<a href="mailto:contact@postoaklabs.com" style="color:var(--accent-lt)">' +
     'contact@postoaklabs.com</a> — we respond to all institutional inquiries ' +
-    'within one business day.</p>';
+    'directly.</p>';
   success.style.display = 'block';
 }
 

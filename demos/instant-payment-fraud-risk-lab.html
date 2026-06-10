@@ -36,7 +36,7 @@
     "Intervention budget (% of tx allowed at-step-up auth)",
     "Sub-200ms latency budget tracking",
     "Confusion matrix visualisation with expected $-loss",
-    "AP2 v1.0 fraud-policy mandate export against @ainumbers.co/instant-pay-fraud-v1",
+    "Policy Mandate v1 fraud-policy mandate export against @ainumbers.co/instant-pay-fraud-v1",
     "Markdown fraud-policy memo and MCP tool definition export"
   ],
   "keywords": "FedNow, RTP, instant payments, fraud, real-time decisioning, score model, FedNow risk, APP fraud, irreversibility, AP2 mandate, MCP",
@@ -299,7 +299,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
       <span class="hero-badge warn">Synthetic 100K-tx population · illustrative, not predictive</span>
-      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+      <span class="hero-badge">Last Reviewed · 2026-06-10</span>
     </div>
   </div>
 
@@ -307,7 +307,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <div class="fed-eyebrow">FedNow · RTP · SEPA Instant — irreversibility means real-time matters</div>
     <p>
       <strong>FedNow</strong> (Federal Reserve, July 2023) and <strong>TCH RTP</strong> (Real-Time
-      Payments, 2017; $1M cap from February 2024) are <strong>credit-push, irrevocable</strong> rails.
+      Payments, 2017; $10M cap since February 2025) are <strong>credit-push, irrevocable</strong> rails.
       Once accepted by the receiving institution, recall is at the receiver's discretion. <strong>SEPA
       Instant</strong> (EU; SCT Inst mandatory for euro-area banks from Jan 2025 under Regulation (EU)
       2024/886) is the European equivalent. <strong>Reg E protections</strong> for unauthorised
@@ -389,7 +389,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div class="slider-row">
           <div class="slider-label">Average fraud loss per missed tx (USD)
-            <span class="sl-sub">RTP cap $1M; consumer-fraud avg ~$1,500; BEC avg ~$30K.</span>
+            <span class="sl-sub">RTP cap $10M; consumer-fraud avg ~$1,500; BEC avg ~$30K.</span>
           </div>
           <span class="slider-val" id="v-avgloss">$1,800</span>
         </div>
@@ -464,7 +464,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
           <div class="preview-body"><pre id="preview-out"></pre></div>
 
-          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/instant-pay-fraud-v1</div>
+          <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/instant-pay-fraud-v1</div>
 
           <div class="results-export-row">
             <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
@@ -483,7 +483,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       Different from <a href="/demos/aml-transaction-monitoring-rule-builder.html">#11 — AML TM Rule Builder</a> (BSA/AML, post-hoc detection, SAR-focused);
       this demo is real-time fraud-loss prevention with a hard latency budget. Pair with
       <a href="/demos/ap2-aml-mandate-builder.html">#23 — AP2 AML Mandate Builder</a> to bind both fraud and AML
-      policy into the same runtime. Position in the 259-tool atlas:
+      policy into the same runtime. Position in the 400+ tool atlas:
       <a href="/demos/composer.html">Tool Chain Composer</a>, T04 + T26 in the Fraud &amp; Risk cluster.
     </p>
   </div>
@@ -498,7 +498,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Migrating rails or unlocking trapped capital?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">ISO 20022 cutover, A2A migration, FX netting, nostro optimization and real-time fraud — built in production, not slideware. Let's map your move.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -896,7 +896,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const v = document.getElementById('validation');
     if (errs.length === 0) {
       v.className = 'validation ok';
-      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+      v.textContent = 'Policy Mandate v1 · valid · ' + m['$schema'];
     } else {
       v.className = 'validation err';
       v.textContent = 'Schema errors: ' + errs.join('; ');

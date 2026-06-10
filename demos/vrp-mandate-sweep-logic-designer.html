@@ -37,7 +37,7 @@
     "Allowed-beneficiary set posture (closed-loop / open-with-limits)",
     "SCA exemption thresholds (PSD3 / SEPA VRP)",
     "Live sweep-window timeline visualisation",
-    "AP2 v1.0 mandate export against @ainumbers.co/vrp-mandate-v1",
+    "Policy Mandate v1 mandate export against @ainumbers.co/vrp-mandate-v1",
     "Markdown mandate brief and MCP tool definition export"
   ],
   "keywords": "VRP, variable recurring payment, sweep window, UK CMA9, OBIE, EU PSD3, SEPA VRP rulebook, idempotency, SCA exemption, AP2 mandate, MCP",
@@ -300,7 +300,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
       <span class="hero-badge warn">UK CMA9 commercial VRP went live 2024–25; PSD3 / PSR apply from 2026–27</span>
-      <span class="hero-badge">Last Reviewed · 2026-05-13</span>
+      <span class="hero-badge">Last Reviewed · 2026-06-10</span>
     </div>
   </div>
 
@@ -488,7 +488,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
           <div class="preview-body"><pre id="preview-out"></pre></div>
 
-          <div class="validation ok" id="validation">AP2 v1.0 · valid · @ainumbers.co/vrp-mandate-v1</div>
+          <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/vrp-mandate-v1</div>
 
           <div class="results-export-row">
             <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
@@ -524,7 +524,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Designing a BaaS or embedded-finance programme?</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">Sponsor-bank economics, unit economics, programme policy, card and lending stacks — we've modeled and built them. Let's pressure-test yours before it reaches committee.</p>
     <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · production deployments in the Caribbean &amp; South Asia · works with a limited number of institutions at a time</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
@@ -857,7 +857,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const v = document.getElementById('validation');
     if (errs.length === 0) {
       v.className = 'validation ok';
-      v.textContent = 'AP2 v1.0 · valid · ' + m['$schema'];
+      v.textContent = 'Policy Mandate v1 · valid · ' + m['$schema'];
     } else {
       v.className = 'validation err';
       v.textContent = 'Schema errors: ' + errs.join('; ');
