@@ -855,7 +855,7 @@ function renderArch(arch) {
 function renderTzGrid(tz) {
   const grid = document.getElementById('tzGrid');
   grid.innerHTML = '';
-  // TLS working hours 09–18 local = UTC 0–9 (UTC+9) … actually TLS local 09 = UTC 00. Working = UTC 0..9.
+  // TLS working hours 09–18 local (UTC+9) = UTC 0–9.
   // BGD working hours 09–18 local = UTC 3–12 (UTC+6)
   // Overlap UTC 3..9 (6h), but the modelled "business overlap" is the 3h window the user inputs (around 12-15 UTC for treasury desks).
   // For the visualization we'll show TLS shift (UTC 0-9), BGD shift (UTC 3-12), and the treasury overlap (UTC 12-15).

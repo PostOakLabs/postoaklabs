@@ -1129,7 +1129,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       </div>
       <div class="kpi">
         <div class="kpi-label">Freed via A2A · Modeled</div>
-        <div class="kpi-val green" id="kpi-freed">425.6<span class="ccy">M USD</span></div>
+        <div class="kpi-val green" id="kpi-freed">359.4<span class="ccy">M USD</span></div>
         <div class="kpi-sub"><span class="up">+ 87.3%</span> nostro release · instant rails</div>
       </div>
       <div class="kpi">
@@ -1386,10 +1386,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
             5) CLP release   -29.0M
             6) ARS release   -26.0M
             7) PEN release   -12.4M
-            8) HELD CMP+OPS  +62.0M  (residual still held — purple hatched)
-            9) END           62.0M (start - releases = residual still held)
-                actually let's display: end = total still held (~62M)
-                AND a separate "Released" total label
+            8) STILL HELD    128.0M  (residual: 487.4 − 359.4 released — purple hatched)
           -->
 
           <!-- Bar 1: START 487.4M -->
@@ -1463,21 +1460,10 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
           <line class="wf-connector" x1="646" y1="263.64" x2="662" y2="263.64"></line>
 
-          <!-- Bar 8: HELD (still trapped) residual = 487.4 - 132 - 110 - 50 - 29 - 26 - 12.4 = 128M
-               Wait — that's 128M. Let me redo: capital still held = 62M as residual.
-               But released = 359.4M (these add up to ≠ 425M from KPI).
-               Need to reconcile. Actually:
-               Released (KPI = 425.6) > sum of corridor releases above.
-               Let me adjust: corridor releases scale to ~360M, then total still held is 128M.
-               Actually — let me just go with bar values that ADD UP correctly and update KPI.
-               Sum of bars 2-7 = 132+110+50+29+26+12.4 = 359.4M released
-               Residual = 487.4 - 359.4 = 128M still held
-               Of that 128M: 62M compliance reserves + 38M FX hedge collateral + 28M ops float
-               OK adjusting KPI numbers below.
-
-               Bar 8 should be the END bar showing residual still held.
+          <!-- Bar 8: STILL HELD residual.
+               Sum of releases (bars 2-7) = 132+110+50+29+26+12.4 = 359.4M
+               Residual = 487.4 - 359.4 = 128M (62M compliance reserves + 38M FX hedge collateral + 28M ops float)
                height = 128M*0.6 = 76.8 → top at 340-76.8 = 263.2
-               BUT — we want it shown as a final bar at right.
           -->
           <g class="wf-bar">
             <rect x="662" y="263.2" width="74" height="76.8" fill="url(#hatch)" stroke="var(--purple)" stroke-width="1"></rect>

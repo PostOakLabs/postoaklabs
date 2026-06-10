@@ -691,7 +691,7 @@ function runSWR(){
     {name:'Bear Market',ret:0.03,stress:false},
     {name:'Stress (Seq. Risk)',ret:r,stress:true},
   ];
-  // Survival probabilities (research-calibrated)
+  // Survival probabilities (illustrative lookup — not Trinity-study figures)
   const SWR_PROB={3:0.99,3.5:0.96,4:0.87,4.5:0.75,5:0.60};
   const survProb=swr<=3?99:swr<=3.5?96:swr<=4?87:swr<=4.5?75:60;
 
