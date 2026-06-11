@@ -136,7 +136,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
     <p class="hero-sub">Complete GENIUS Act compliance pathway — effective January 18, 2027. Five-step assessment covering licensing, reserves, attestation, and AML/sanctions. Powered by AINumbers.co. Zero PII.</p>
     <div class="hero-meta">
       <span class="hbadge hb-gold">Effective Jan 18, 2027</span>
-      <span class="hbadge hb-warn">$10B PPSI Threshold</span>
+      <span class="hbadge hb-warn">$10B Federal Supervision Threshold</span>
       <span class="hbadge hb-teal">1:1 Reserve Coverage</span>
       <span class="hbadge hb-red">BSA / FinCEN</span>
     </div>
@@ -189,8 +189,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
               <label>Entity Type</label>
               <select id="entityType">
                 <option value="insured_depository">Insured Depository Institution (bank/thrift)</option>
-                <option value="non_bank_federal">Non-Bank — Federal PMSA Charter</option>
-                <option value="non_bank_state">Non-Bank — State PMSA Charter</option>
+                <option value="non_bank_federal">Federally Qualified Issuer (OCC)</option>
+                <option value="non_bank_state">State-Qualified Issuer</option>
                 <option value="foreign">Foreign Stablecoin Issuer (US nexus)</option>
               </select>
             </div>
@@ -199,7 +199,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
               <select id="totalAssets">
                 <option value="under1b">&lt; $1B</option>
                 <option value="1b_10b">$1B – $10B</option>
-                <option value="over10b">&gt; $10B (PPSI threshold)</option>
+                <option value="over10b">&gt; $10B (federal supervision threshold)</option>
               </select>
             </div>
             <div class="field">
@@ -340,9 +340,9 @@ function buildLicensing(){
 
   const regulatorMap = {
     insured_depository:'OCC / Federal Reserve / FDIC (primary federal banking regulator)',
-    non_bank_federal:'OCC — Office of the Comptroller of the Currency (Federal PMSA)',
+    non_bank_federal:'OCC — Office of the Comptroller of the Currency (Federally Qualified Issuer)',
     non_bank_state:'State banking regulator + Federal Reserve oversight',
-    foreign:'Federal Reserve Board (QFPSA determination required)',
+    foreign:'OCC / Treasury (foreign issuer — compatible-regime determination required)',
   };
   const primaryRegulator = regulatorMap[entityType];
 
@@ -354,16 +354,16 @@ function buildLicensing(){
       <div class="rrow"><span class="rrow-key">Entity Type</span><span class="rrow-val"><strong>${entityType.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</strong></span></div>
       <div class="rrow"><span class="rrow-key">Primary Regulator</span><span class="rrow-val">${primaryRegulator}</span></div>
       <div class="rrow"><span class="rrow-key">GENIUS Act Effective</span><span class="rrow-val"><strong style="color:var(--warn)">January 18, 2027</strong> — ${days} days remaining</span></div>
-      <div class="rrow"><span class="rrow-key">PPSI Status</span><span class="rrow-val"><span style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;padding:.18rem .5rem;border-radius:3px;${isPPSI?'background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3)':'background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3)'}">${isPPSI?'PPSI — LARGE ISSUER REQUIREMENTS':'Non-PPSI — Standard requirements'}</span></span></div>
+      <div class="rrow"><span class="rrow-key">PPSI Status</span><span class="rrow-val"><span style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;padding:.18rem .5rem;border-radius:3px;${isPPSI?'background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3)':'background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3)'}">${isPPSI?'Federal supervision required (>$10B)':'State supervision available (≤$10B)'}</span></span></div>
     </div>
     <div class="result-card">
-      <div class="result-label">PPSI Qualification Analysis ($10B Threshold)</div>
+      <div class="result-label">Federal Supervision Analysis ($10B Threshold)</div>
       <ul class="checklist">
-        <li class="chk-item"><span class="chk-icon ${isPPSI?'chk-crit':'chk-ok'}">${isPPSI?'!':'✓'}</span><span class="chk-text">${isPPSI?'PPSI threshold met — enhanced requirements apply: Federal Reserve Board oversight, enhanced capital standards, enhanced liquidity requirements':'Below $10B threshold — standard GENIUS Act requirements apply'}</span></li>
-        ${isPPSI?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">PPSI issuers must obtain approval from primary federal regulator before issuance</span></li>`:''}
+        <li class="chk-item"><span class="chk-icon ${isPPSI?'chk-crit':'chk-ok'}">${isPPSI?'!':'✓'}</span><span class="chk-text">${isPPSI?'$10B threshold met — primary federal supervision required: OCC / Federal Reserve / FDIC / NCUA as applicable':'Below $10B — state supervision available if state certified as substantially similar by Treasury'}</span></li>
+        ${isPPSI?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">Large issuers (>$10B) must obtain approval from primary federal regulator before issuance</span></li>`:''}
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">All permitted stablecoin issuers must obtain written approval from primary federal payment stablecoin regulator</span></li>
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">GENIUS Act compliance required: 18-month transition period post-enactment for existing issuers</span></li>
-        ${entityType==='foreign'?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">Foreign issuer: Federal Reserve Board must determine Qualifying Foreign Payment Stablecoin (QFPSA) — requires comparable regulatory treatment in home jurisdiction</span></li>`:''}
+        ${entityType==='foreign'?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">Foreign issuer: Foreign payment stablecoin issuer — Treasury Secretary must determine comparable regulatory regime in home jurisdiction; register with OCC</span></li>`:''}
       </ul>
     </div>`;
 }
@@ -406,8 +406,8 @@ function buildReserve(){
       <div class="result-label">Monthly Disclosure &amp; Attestation Checklist (T337)</div>
       <ul class="checklist">
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Monthly public disclosure of reserve composition and amounts — required within 10 business days of month-end</span></li>
-        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Attestation from registered public accounting firm — annual audit or semi-annual review depending on PPSI status</span></li>
-        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">${S.isPPSI?'PPSI: Annual examination by primary federal regulator (OCC / Federal Reserve)':'Annual examination or supervisory review by primary regulator'}</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Attestation from registered public accounting firm — annual audit or semi-annual review depending on issuer size ($10B threshold)</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">${S.isPPSI?'Federal supervision (>$10B): Annual examination by primary federal regulator (OCC / Federal Reserve)':'Annual examination or supervisory review by primary regulator'}</span></li>
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Redemption policy: must redeem at par within 1 business day of redemption request</span></li>
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Liquidity stress testing: demonstrate ability to handle 30-day outflow scenario</span></li>
       </ul>
@@ -445,14 +445,14 @@ function buildAml(){
         <li class="chk-item"><span class="chk-icon ${travelRuleRequired?'chk-crit':'chk-ok'}">${travelRuleRequired?'!':'✓'}</span><span class="chk-text">Travel Rule (FinCEN Rule 31 CFR §103.33): ${travelRuleRequired?'REQUIRED — transmittal orders of $3,000+ must include transmittor and recipient information':'Low volume — monitor $3,000 threshold triggers carefully'}</span></li>
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">SAR filing obligation: within 30 days of detecting suspicious activity; 60 days if no suspect identified — threshold $5,000 (MSB: $2,000)</span></li>
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">CTR filing: cash transactions exceeding $10,000 — report within 15 days</span></li>
-        ${isPPSI?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">PPSI: enhanced transaction monitoring program required — real-time velocity monitoring, geographic risk scoring, and blockchain analytics integration</span></li>`:''}
+        ${isPPSI?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">Federal supervision (>$10B): enhanced transaction monitoring required — real-time velocity monitoring, geographic risk scoring, and blockchain analytics integration</span></li>`:''}
       </ul>
     </div>`;
 }
 
 function buildSummary(){
   const readinessItems = [
-    {area:'Licensing & Charter', status: S.entityType==='foreign'?'action':'pending', note: S.entityType==='foreign'?'QFPSA determination required from Federal Reserve Board':'Submit permit application to primary federal payment stablecoin regulator before Jan 18, 2027'},
+    {area:'Licensing & Charter', status: S.entityType==='foreign'?'action':'pending', note: S.entityType==='foreign'?'Foreign issuer — Treasury compatible-regime determination required; register with OCC':'Submit permit application to primary federal payment stablecoin regulator before Jan 18, 2027'},
     {area:'Reserve Structure', status:'pending', note:'Establish bankruptcy-remote reserve account with eligible assets; engage Big-4 accounting firm for attestation engagement'},
     {area:'Monthly Disclosure', status:'pending', note:'Implement reserve reporting workflow; target first disclosure within 10 business days of month-end following enactment'},
     {area:'BSA / AML Program', status:'action', note:'Register with FinCEN as MSB; document written AML program with designated compliance officer'},
@@ -472,8 +472,8 @@ function buildSummary(){
     <div class="result-card">
       <div class="result-label">GENIUS Act Readiness Summary — ${S.issuerName}</div>
       <div class="rrow"><span class="rrow-key">Effective Date</span><span class="rrow-val"><strong style="color:var(--warn)">January 18, 2027</strong> — ${days} days remaining</span></div>
-      <div class="rrow"><span class="rrow-key">PPSI Status</span><span class="rrow-val">${S.isPPSI?'<strong style="color:var(--red)">PPSI — Large Issuer (>$10B)</strong>':'Standard issuer (below $10B PPSI threshold)'}</span></div>
-      <div class="rrow"><span class="rrow-key">Primary Regulator</span><span class="rrow-val">${{insured_depository:'OCC / Fed / FDIC',non_bank_federal:'OCC',non_bank_state:'State + Federal Reserve',foreign:'Federal Reserve Board'}[S.entityType]||'TBD'}</span></div>
+      <div class="rrow"><span class="rrow-key">PPSI Status</span><span class="rrow-val">${S.isPPSI?'<strong style="color:var(--red)">Federal supervision required (>$10B)</strong>':'State supervision available (below $10B threshold)'}</span></div>
+      <div class="rrow"><span class="rrow-key">Primary Regulator</span><span class="rrow-val">${{insured_depository:'OCC / Fed / FDIC',non_bank_federal:'OCC',non_bank_state:'State + Federal Reserve',foreign:'OCC / Treasury'}[S.entityType]||'TBD'}</span></div>
     </div>
     <div class="result-card">
       <div class="result-label">Compliance Checklist — 8 Areas</div>
@@ -500,9 +500,9 @@ function exportMandate(){
       ppsi:S.isPPSI,
     },
     licensing:{
-      primary_regulator:{insured_depository:'OCC/Fed/FDIC',non_bank_federal:'OCC',non_bank_state:'State+FederalReserve',foreign:'FederalReserveBoard'}[S.entityType],
-      ppsi_qualified:S.isPPSI,
-      foreign_qfpsa_required:S.entityType==='foreign',
+      primary_regulator:{insured_depository:'OCC/Fed/FDIC',non_bank_federal:'OCC',non_bank_state:'State+FederalReserve',foreign:'OCC/Treasury'}[S.entityType],
+      federal_supervision_required:S.isPPSI,
+      foreign_compatible_regime_required:S.entityType==='foreign',
     },
     reserves:{
       coverage_ratio:'1:1',
