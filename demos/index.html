@@ -383,7 +383,7 @@
       "name": "What is AP2 and why do the scenarios export it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AP2 (Agent Payments Protocol) v1.0 is a schema for expressing payment and policy mandates that AI agents can execute deterministically. Each scenario can export its result as an Policy Mandate v1 mandate, so the output can be replayed by an agent runtime or reviewed by an audit team."
+        "text": "AP2 is Google’s Agent Payments Protocol (v0.2.0, FIDO Alliance), a standard for expressing payment policies that AI agents can execute. Each scenario exports its result as a Policy Mandate (schema: @postoaklabs.com/policy-mandate-v1) so the output can be consumed by AP2-capable agents, replayed by an agent runtime, or reviewed by an audit team."
       }
     },
     {
@@ -407,7 +407,7 @@
       "name": "Who builds these scenarios and how do I go deeper?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with production deployments in the Caribbean and South Asia. Explore the full 400+ tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs."
+        "text": "They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with advisory on production deployments across frontier markets. Explore the full 400+ tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs."
       }
     }
   ]
@@ -1166,26 +1166,26 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
         ['$ claude mcp call ainumbers:cfpb_1033_institution_classifier', CYAN, 'type'],
         ['    --assets 28.4 --type depository_bank', DIM, 'type'],
         ['⧋ Invoking…', YELLOW, 'spin'],
-        ['← ap2-v1.0 mandate received (287ms)', GOLD, 'fast'],
+        ['← policy-mandate-v1 mandate received (287ms)', GOLD, 'fast'],
         ['{ "tier": "Tier 2 \xb7 $10B–$500B",', BLUE, 'fast'],
         ['  "deadline": "April 2027", "status": "COMPLIANT",', BLUE, 'fast'],
-        ['  "schema": "ap2-v1.0", "id": "cfpb-t2-0521" }', BLUE, 'fast'],
+        ['  "schema": "policy-mandate-v1", "id": "cfpb-t2-0521" }', BLUE, 'fast'],
         ['', '', 'blank'],
         ['$ claude mcp call ainumbers:baas_provider_comparator', CYAN, 'type'],
         ['    --caps card_issuance,rtp_fednow,kyb_tooling', DIM, 'type'],
         ['⧋ Invoking…', YELLOW, 'spin'],
-        ['← ap2-v1.0 mandate received (312ms)', GOLD, 'fast'],
+        ['← policy-mandate-v1 mandate received (312ms)', GOLD, 'fast'],
         ['{ "top_match": "Column Bank", "matched": 4,', BLUE, 'fast'],
-        ['  "caps_met": true, "schema": "ap2-v1.0",', BLUE, 'fast'],
+        ['  "caps_met": true, "schema": "policy-mandate-v1",', BLUE, 'fast'],
         ['  "id": "baas-sel-0521" }', BLUE, 'fast'],
         ['', '', 'blank'],
         ['$ claude mcp call ainumbers:ap2_agentic_guardrail', CYAN, 'type'],
         ['    --corridor "USD→BDT" --rail stablecoin_wholesale', DIM, 'type'],
         ['⧋ Invoking…', YELLOW, 'spin'],
-        ['← ap2-v1.0 mandate received (198ms)', GOLD, 'fast'],
+        ['← policy-mandate-v1 mandate received (198ms)', GOLD, 'fast'],
         ['{ "verdict": "APPROVED", "fatf_r16": "PASS",', BLUE, 'fast'],
         ['  "corridor": "USD→BDT via stablecoin_wholesale",', BLUE, 'fast'],
-        ['  "schema": "ap2-v1.0", "id": "ap2-grd-0521" }', BLUE, 'fast'],
+        ['  "schema": "policy-mandate-v1", "id": "ap2-grd-0521" }', BLUE, 'fast'],
       ];
       var idx = 0;
       function addLine(text, color) {
@@ -1983,7 +1983,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     </div>
     <div class="faq-item">
       <h3>What is AP2 and why do the scenarios export it?</h3>
-      <p>AP2 (Agent Payments Protocol) v1.0 is a schema for expressing payment and policy mandates that AI agents can execute deterministically. Each scenario can export its result as an Policy Mandate v1 mandate, so the output can be replayed by an agent runtime or reviewed by an audit team.</p>
+      <p>AP2 is Google’s Agent Payments Protocol (v0.2.0, FIDO Alliance), a standard for expressing payment policies that AI agents can execute. Each scenario exports its result as a Policy Mandate (schema: @postoaklabs.com/policy-mandate-v1) so the output can be consumed by AP2-capable agents, replayed by an agent runtime, or reviewed by an audit team.</p>
     </div>
     <div class="faq-item">
       <h3>What is MCP and how do these tools use it?</h3>
@@ -1995,7 +1995,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     </div>
     <div class="faq-item">
       <h3>Who builds these scenarios and how do I go deeper?</h3>
-      <p>They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with production deployments in the Caribbean and South Asia. Explore the full 400+ tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs.</p>
+      <p>They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with advisory on production deployments across frontier markets. Explore the full 400+ tool chain in the Tool Chain Composer, or browse by buyer archetype through the five hubs.</p>
     </div>
   </div>
 </section>
