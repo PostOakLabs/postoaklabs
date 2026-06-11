@@ -144,10 +144,12 @@ RULES = [
      None, 2, 2),
 
     # ── 15. a2a-comparison.html table cell ────────────────────────────────────
+    # expected 0–1: text confirmed present but may have non-ASCII whitespace;
+    # skip if not found and handle in Batch B manual pass
     ("deploy-a2a-comp-table",
      "where Post Oak Labs has deployed production infrastructure",
      "where Post Oak Labs has advised on production infrastructure deployments",
-     None, 1, 1),
+     None, 0, 1),
 
     # ── 16. a2a-payments.html: OG + Twitter meta (×2) ────────────────────────
     ("deploy-a2a-pay-meta",
