@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BaaS Provider Economics Comparator — Unit-Economics Modelling · Post Oak Labs</title>
 
-<meta name="description" content="Compare the unit economics of leading BaaS providers. Model per-account costs, interchange revenue, platform fees, and net margins across Unit, Treasury Prime, Column, Synctera, and Grasshopper — at any volume tier. Browser-based, zero PII.">
+<meta name="description" content="Compare the unit economics of leading BaaS providers. Model per-account costs, interchange revenue, platform fees, and net margins across five illustrative BaaS provider archetypes (A–E) — at any volume tier. Browser-based, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <link rel="canonical" href="https://postoaklabs.com/demos/baas-provider-economics-comparator.html">
 <meta property="og:title" content="BaaS Provider Economics Comparator — Post Oak Labs">
@@ -28,7 +28,7 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/baas-provider-economics-comparator.html",
-  "description": "Interactive BaaS unit-economics modelling tool. Compare per-account costs, interchange revenue, platform fees, and net margins across Unit, Treasury Prime, Column, Synctera, and Grasshopper — at any volume tier. Outputs an Policy Mandate v1 mandate with provider recommendation and break-even analysis.",
+  "description": "Interactive BaaS unit-economics modelling tool. Compare per-account costs, interchange revenue, platform fees, and net margins across five illustrative BaaS provider archetypes (A–E) — at any volume tier. Outputs an Policy Mandate v1 mandate with provider recommendation and break-even analysis.",
   "featureList": [
     "5 provider presets + custom provider: per-account fee, per-tx fee, platform fee, interchange share",
     "Volume inputs: active accounts, transactions/account/month, average transaction value",
@@ -39,7 +39,7 @@
     "Scenario presets: Seed Stage (1K accounts), Growth Stage (25K), Scale Stage (150K)",
     "Policy Mandate v1 mandate export: @ainumbers.co/baas-economics-v1"
   ],
-  "keywords": "BaaS, Banking as a Service, unit economics, interchange, fintech, platform fee, Treasury Prime, Unit Finance, Column, Synctera, Grasshopper, break-even, BaaS comparison, fintech economics, embedded finance",
+  "keywords": "BaaS, Banking as a Service, unit economics, interchange, fintech, platform fee, break-even, BaaS comparison, fintech economics, embedded finance",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-14",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -289,7 +289,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
         <span class="eyebrow-badge">Zero PII</span>
       </div>
       <h1 id="hero-title">BaaS Provider <em>Economics Comparator</em></h1>
-      <p class="hero-sub">Model the unit economics of leading Banking-as-a-Service providers at any volume tier. Compare per-account costs, interchange revenue share, platform fees, and net margins across Unit, Treasury Prime, Column, Synctera, and Grasshopper — then export a boardroom-ready AP2 mandate with your optimal provider recommendation.</p>
+      <p class="hero-sub">Model the unit economics of leading Banking-as-a-Service providers at any volume tier. Compare per-account costs, interchange revenue share, platform fees, and net margins across five illustrative BaaS provider archetypes (A–E) — then export a boardroom-ready AP2 mandate with your optimal provider recommendation.</p>
       <div class="hero-stats">
         <div class="hstat">
           <div class="hstat-l">Interchange Avg</div>
@@ -547,8 +547,8 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
 // --------------- PROVIDER DEFINITIONS ---------------
 const PROVIDERS = [
   {
-    id: 'unit',
-    name: 'Unit',
+    id: 'a',
+    name: 'Provider A',
     platformFee: 0,
     perAccountFee: 2.00,
     perTxFeeCents: 5,
@@ -558,8 +558,8 @@ const PROVIDERS = [
     color: '#2a7fc0',
   },
   {
-    id: 'treasury',
-    name: 'Treasury Prime',
+    id: 'b',
+    name: 'Provider B',
     platformFee: 5000,
     perAccountFee: 1.50,
     perTxFeeCents: 4,
@@ -569,8 +569,8 @@ const PROVIDERS = [
     color: '#10b981',
   },
   {
-    id: 'column',
-    name: 'Column',
+    id: 'c',
+    name: 'Provider C',
     platformFee: 0,
     perAccountFee: 3.00,
     perTxFeeCents: 3.5,
@@ -580,8 +580,8 @@ const PROVIDERS = [
     color: '#f59e0b',
   },
   {
-    id: 'synctera',
-    name: 'Synctera',
+    id: 'd',
+    name: 'Provider D',
     platformFee: 8000,
     perAccountFee: 1.25,
     perTxFeeCents: 4.5,
@@ -591,8 +591,8 @@ const PROVIDERS = [
     color: '#8b5cf6',
   },
   {
-    id: 'grasshopper',
-    name: 'Grasshopper',
+    id: 'e',
+    name: 'Provider E',
     platformFee: 2500,
     perAccountFee: 1.75,
     perTxFeeCents: 6,
