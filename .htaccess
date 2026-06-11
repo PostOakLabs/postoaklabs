@@ -60,6 +60,9 @@ RedirectMatch 301 ^/tools/(.+)$ https://ainumbers.co/$1
 Redirect 301 /meridian-capital-advisory.html  https://meridiancapital.me/
 Redirect 301 /apex-advisory-education.html    https://apexadvisory.site/
 
+# Off-ICP demo removed 2026-06-11 — relocated to AINumbers.co
+Redirect 301 /demos/personal-finance-retirement-simulator.html  https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html
+
 # Renamed showcase scenarios (2026-06-03) — internal demo-NN numbering removed from public URLs
 Redirect 301 /demos/demo-37-eu-ai-act-compliance-studio.html      /demos/eu-ai-act-compliance-studio.html
 Redirect 301 /demos/demo-38-genius-act-stablecoin-readiness.html  /demos/genius-act-stablecoin-readiness.html
