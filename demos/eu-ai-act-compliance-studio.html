@@ -332,12 +332,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 <script>
 // ── CLASSIFICATION ENGINE ──────────────────────────────────────────────
 const SYS_PROFILES = {
-  credit:       { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2027', label:'Credit Scoring / Creditworthiness Assessment', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  fraud:        { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2027', label:'Fraud Detection — Automated Account Block', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  aml:          { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2027', label:'AML / Transaction Monitoring (Automated Restriction)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
-  underwriting: { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2027', label:'Insurance Underwriting & Pricing', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  kyc:          { risk:'high', annexRef:'Annex III §1(a)', articleRef:'Article 6(1)', deadline:'2 August 2027', label:'Biometric KYC / Remote Identity Verification', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  kycscore:     { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2027', label:'KYC Risk Scoring (Natural Persons)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
+  credit:       { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'Credit Scoring / Creditworthiness Assessment', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  fraud:        { risk:'high', annexRef:'Annex III — §5(b) excepts fraud detection', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'Fraud Detection — Automated Account Block', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  aml:          { risk:'high', annexRef:'Annex III — §5(b) excepts AML/fraud detection', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'AML / Transaction Monitoring (Automated Restriction)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
+  underwriting: { risk:'high', annexRef:'Annex III §5(c)', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'Insurance Underwriting & Pricing', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  kyc:          { risk:'high', annexRef:'Annex III §1(a)', articleRef:'Article 6(1)', deadline:'2 August 2026', label:'Biometric KYC / Remote Identity Verification', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  kycscore:     { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'KYC Risk Scoring (Natural Persons)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
   chatbot:      { risk:'limited', annexRef:'Article 50', articleRef:'Article 50(1)', deadline:'2 August 2026', label:'Customer-Facing Chatbot', obligations:['Art. 50 Transparency Disclosure','Art. 50 No Deception'] },
   other:        { risk:'minimal', annexRef:'N/A', articleRef:'N/A', deadline:null, label:'Other AI System', obligations:['Art. 5 Prohibition Screening'] },
 };
@@ -465,7 +465,7 @@ function buildObligations() {
       <ul class="gaps-list" style="margin-top:.75rem">
         ${state.humanReview==='never'?`<li class="gap-item"><div class="gap-icon gi-red">!</div><div class="gap-text">No human oversight gate — Art. 14 compliance gap: design mandatory override capability before any production deployment</div></li>`:''}
         ${usersAffected==='vhigh'?`<li class="gap-item"><div class="gap-icon gi-warn">!</div><div class="gap-text">&gt;1M natural persons affected: escalated Art. 9 risk documentation depth and Art. 27 fundamental rights impact assessment recommended</div></li>`:''}
-        <li class="gap-item"><div class="gap-icon gi-green">✓</div><div class="gap-text">Art. 9 risk management system framework required before 2 August 2026 for GPAI obligations; full Art. 9 by 2 August 2027</div></li>
+        <li class="gap-item"><div class="gap-icon gi-green">✓</div><div class="gap-text">GPAI Art. 9 obligations in effect since 2 August 2025; full Annex III Art. 9 framework required before 2 August 2026</div></li>
       </ul>
     </div>
     <div class="result-card">
@@ -475,7 +475,7 @@ function buildObligations() {
       <ul class="gaps-list" style="margin-top:.75rem">
         ${dataSize==='unknown'?`<li class="gap-item"><div class="gap-icon gi-red">!</div><div class="gap-text">Training data size unknown — vendor-supplied models must have Art. 10 data documentation available from provider; request technical documentation under Art. 13</div></li>`:''}
         ${dataSize==='small'?`<li class="gap-item"><div class="gap-icon gi-warn">!</div><div class="gap-text">Small training dataset: Art. 10 requires representativeness — validate demographic coverage for credit/KYC/AML use cases to avoid biased outcomes</div></li>`:''}
-        <li class="gap-item"><div class="gap-icon gi-green">✓</div><div class="gap-text">Dataset bias assessment, lineage documentation, and provenance records required before August 2027 deadline</div></li>
+        <li class="gap-item"><div class="gap-icon gi-green">✓</div><div class="gap-text">Dataset bias assessment, lineage documentation, and provenance records required before August 2026 deadline</div></li>
       </ul>
     </div>`;
 
@@ -507,7 +507,7 @@ function buildReadiness() {
   state.overallScore = overall;
 
   const criticalGaps = [];
-  if(isHighRisk && state.humanReview==='never') criticalGaps.push('Art. 14 human oversight: design mandatory override capability — CRITICAL before Aug 2027');
+  if(isHighRisk && state.humanReview==='never') criticalGaps.push('Art. 14 human oversight: design mandatory override capability — CRITICAL before Aug 2026');
   if(isHighRisk && document.getElementById('dataSize').value==='unknown') criticalGaps.push('Art. 10 data documentation: obtain technical docs from vendor — request under Art. 13');
   if(isHighRisk && state.deployStatus==='live') criticalGaps.push('Live system: Art. 9 risk management system must be retroactively established — prioritise immediately');
   if(isHighRisk) criticalGaps.push('Art. 49 EU AI database registration: required before market placement or service commencement');
@@ -516,10 +516,10 @@ function buildReadiness() {
   const timeline = [];
   if(isHighRisk){
     timeline.push({date:'Now – Jul 2026', action:'Art. 9 risk management system design + Art. 10 dataset audit', priority:'HIGH'});
-    timeline.push({date:'Aug 2026', action:'GPAI obligations effective — verify any GPAI components comply with Art. 53', priority:'HIGH'});
-    timeline.push({date:'Sep – Dec 2026', action:'Art. 11 technical documentation, Art. 12 logging, Art. 13 instructions for use', priority:'MED'});
-    timeline.push({date:'Jan – Jul 2027', action:'Art. 14–17 obligations: human oversight, accuracy, QMS — prepare Art. 49 registration', priority:'MED'});
-    timeline.push({date:'Aug 2027', action:'Full Annex III compliance deadline — all obligations must be met', priority:'HIGH'});
+    timeline.push({date:'Aug 2026', action:'Annex III high-risk compliance deadline — all Arts. 9-17 and 49 obligations must be met', priority:'HIGH'});
+    timeline.push({date:'Sep – Dec 2026', action:'Post-deadline hardening: Art. 11 documentation audit, Art. 12 logging review, Art. 13 instructions for use — verify registration in EU AI database (Art. 49)', priority:'MED'});
+    timeline.push({date:'Jan – Jul 2027', action:'Ongoing compliance: Art. 14–17 obligations (human oversight, accuracy, QMS, cybersecurity) — monitor EU AI Office guidance updates', priority:'LOW'});
+    timeline.push({date:'Aug 2027', action:'Annex I (product-embedded) high-risk systems deadline — pre-existing Annex III systems should be well past compliance by this date', priority:'MED'});
   } else if(state.risk==='limited'){
     timeline.push({date:'Aug 2026', action:'Art. 50 transparency disclosure live — AI nature must be disclosed to users', priority:'HIGH'});
     timeline.push({date:'Ongoing', action:'Monitor EU AI Office guidance on transparency obligation scope', priority:'LOW'});
