@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>AP2 Visual Policy Guardrail · Post Oak Labs</title>
 <!-- Per-demo meta (spec Part 5.1) -->
-<meta name="description" content="Paste an AP2 mandate JSON to visualize its policy envelope, compile to runtime form, and emit MCP tool definitions. Browser-based, zero PII, Policy Mandate v1 policy-JSON tooling.">
+<meta name="description" content="Paste an Policy Mandate JSON to visualize its policy envelope, compile to runtime form, and emit MCP tool definitions. Browser-based, zero PII, Policy Mandate v1 policy-JSON tooling.">
 <meta name="author" content="Post Oak Labs">
 <link rel="canonical" href="https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html">
 <meta property="og:title" content="AP2 Agentic Payment Policy Guardrail — Post Oak Labs">
@@ -600,7 +600,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
 <div class="canvas-inner">
 
 <div class="pii-banner">
-  🔒 All inputs are processed locally in your browser. No data is transmitted, stored, or logged. Paste only synthetic or anonymised AP2 mandates — never live customer data.
+  🔒 All inputs are processed locally in your browser. No data is transmitted, stored, or logged. Paste only synthetic or anonymised Policy Mandates — never live customer data.
 </div>
 
 
@@ -627,7 +627,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
           <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(192,144,64,.32);background:rgba(192,144,64,.05);color:var(--showcase-gold);border-radius:3px;font-weight:500;">AP2 Policy JSON</span>
         </div>
 <h1>A <em>visual guardrail</em> for machine-readable<br>payment agent mandates.</h1>
-  <p class="hero-desc">Paste an AP2 JSON mandate on the left. The tool parses every constraint, renders it as a shield-gated flow chart through the agent's decision pipeline, and compiles a validated mandate ready to hand off to your MCP agent runtime. Every shield is a contract: the agent must satisfy all of them before settling a payment.</p>
+  <p class="hero-desc">Paste an Policy Mandate JSON mandate on the left. The tool parses every constraint, renders it as a shield-gated flow chart through the agent's decision pipeline, and compiles a validated mandate ready to hand off to your MCP agent runtime. Every shield is a contract: the agent must satisfy all of them before settling a payment.</p>
 </header>
 
 <!-- VALUE-AT-RISK SIDEBAR (spec Part 17) -->
@@ -647,7 +647,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
     <section class="panel">
       <div class="panel-header">
         <span class="panel-dot"></span>
-        <span class="panel-label">Mandate Source · AP2 JSON</span>
+        <span class="panel-label">Mandate Source · Policy Mandate JSON</span>
         <span class="panel-meta" id="charCount">0 chars</span>
       </div>
       <textarea class="json-input" id="jsonInput" spellcheck="false" autocomplete="off"></textarea>
@@ -695,7 +695,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
     <section class="panel mandate-card" id="mandateCard">
       <div class="mandate-row1">
         <div>
-          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">AP2 Mandate · Principal</div>
+          <div style="font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Policy Mandate · Principal</div>
           <h2 class="mandate-title" id="mPrincipal">— <em>—</em></h2>
         </div>
         <div class="mandate-id-pill"><span class="dot"></span><span id="mIdPill">mnd_—</span></div>
@@ -789,11 +789,11 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
     <!-- Export panel -->
     <section class="panel export-panel">
       <div class="export-info">
-        <h3>Compile to <em>MCP-ready</em> AP2 mandate</h3>
+        <h3>Compile to <em>MCP-ready</em> Policy Mandate</h3>
         <p>Generates a signed, version-stamped JSON envelope your MCP agent runtime can consume directly. Constraints are normalized, severity flags are resolved, and an <code>agent_instructions</code> block is appended in natural language so an LLM-backed agent can reason about edge cases.</p>
       </div>
       <div class="export-actions">
-        <button class="btn export" id="exportBtn">⬇ EXPORT AP2 JSON</button>
+        <button class="btn export" id="exportBtn">⬇ EXPORT Policy Mandate JSON</button>
         <button class="btn ghost" id="exportMcpBtn">⬇ MCP TOOL DEF</button>
       </div>
     </section>
@@ -828,7 +828,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
       <button class="modal-close" id="modalClose">✕ CLOSE</button>
     </div>
     <div class="modal-tabs">
-      <button class="modal-tab active" data-tab="ap2">AP2 JSON</button>
+      <button class="modal-tab active" data-tab="ap2">Policy Mandate JSON</button>
       <button class="modal-tab" data-tab="mcp">MCP TOOL DEFINITION</button>
       <button class="modal-tab" data-tab="instructions">AGENT INSTRUCTIONS</button>
     </div>
@@ -890,7 +890,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
 
 <script>
 /* ─────────────────────────────────────────────────────
-   SAMPLE AP2 MANDATE
+   SAMPLE POLICY MANDATE
    ───────────────────────────────────────────────────── */
 const SAMPLE = {
   "schema_version": "1.0",
@@ -1177,7 +1177,7 @@ function escapeHtml(s) {
 function parseAndRender() {
   try {
     const obj = JSON.parse(jsonInput.value);
-    if (!obj.schema_version) throw new Error('Missing `schema_version` — not an AP2 mandate');
+    if (!obj.schema_version) throw new Error('Missing `schema_version` — not an Policy Mandate');
     if (!Array.isArray(obj.constraints)) throw new Error('Missing `constraints[]` array');
     CURRENT = obj;
     renderMandate(obj);
@@ -1208,7 +1208,7 @@ function compileForRuntime(m) {
 
 function buildAgentInstructions(m) {
   const lines = [];
-  lines.push(`You are an agentic payment dispatcher operating under AP2 mandate ${m.mandate_id}.`);
+  lines.push(`You are an agentic payment dispatcher operating under Policy Mandate ${m.mandate_id}.`);
   lines.push(`Principal: ${m.principal?.name || '—'}. Scope: ${m.agent?.scope || '—'}.`);
   lines.push(`Before settling any transaction, you MUST clear every shielded constraint below:`);
   (m.constraints || []).forEach((c,i) => {
@@ -1227,7 +1227,7 @@ function buildMCPToolDef(m) {
   return {
     "$schema": "https://modelcontextprotocol.io/schema/0.4/tool",
     "name": "execute_payment_under_ap2_mandate",
-    "description": `Execute an outbound payment under AP2 mandate ${m.mandate_id}. The runtime will enforce every shielded constraint server-side and reject violations with the matching reason_code.`,
+    "description": `Execute an outbound payment under Policy Mandate ${m.mandate_id}. The runtime will enforce every shielded constraint server-side and reject violations with the matching reason_code.`,
     "inputSchema": {
       "type": "object",
       "required": ["amount", "currency", "rail", "counterparty"],

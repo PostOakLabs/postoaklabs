@@ -1136,7 +1136,7 @@ function classify() {
 
     <!-- Export row -->
     <div class="results-export-row">
-      <button class="export-btn primary" onclick="exportAP2()">↓ AP2 Mandate JSON</button>
+      <button class="export-btn primary" onclick="exportAP2()">↓ Policy Mandate JSON</button>
       <button class="export-btn secondary" onclick="exportMarkdown()">↓ Markdown Report</button>
       <span class="export-lbl">Schema: @ainumbers.co/eu-ai-act-risk-class-v1 · Policy Mandate v1</span>
     </div>
@@ -1207,7 +1207,7 @@ function buildBrief(uc, meta, daysLeft, advisories, qNatural, qBinding, qRegulat
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// AP2 MANDATE EXPORT — @ainumbers.co/eu-ai-act-risk-class-v1
+// POLICY MANDATE EXPORT — @ainumbers.co/eu-ai-act-risk-class-v1
 // ════════════════════════════════════════════════════════════════════════
 function buildAP2Mandate() {
   const r = window._lastResult;
@@ -1296,7 +1296,7 @@ function exportAP2() {
     a.click();
     URL.revokeObjectURL(url);
   } catch(e) {
-    alert('AP2 export error: ' + e.message);
+    alert('Policy Mandate export error: ' + e.message);
   }
 }
 

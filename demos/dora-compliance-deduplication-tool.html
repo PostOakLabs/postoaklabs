@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dual-Compliance Control Deduplicator · DORA × NIS2 · AINumbers.co</title>
 <!-- Per-demo meta (spec Part 5.1) -->
-<meta name="description" content="Dedupe overlapping ICT controls across DORA and NIS2 to surface real gaps. Browser-based, AP2 mandate export, EU enforcement-clock aware, zero PII.">
+<meta name="description" content="Dedupe overlapping ICT controls across DORA and NIS2 to surface real gaps. Browser-based, Policy Mandate export, EU enforcement-clock aware, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <link rel="canonical" href="https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html">
 <meta property="og:title" content="DORA / NIS2 Dual-Compliance Deduplicator — Post Oak Labs">
@@ -29,14 +29,14 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html",
-  "description": "For EU financial entities subject to both DORA (EU 2022/2554) and NIS2 (EU 2022/2555). Visualises control overlap, classifies incidents against the 4-hour NCA notification window, exports a Consolidated Resilience Roadmap as an AP2 mandate.",
+  "description": "For EU financial entities subject to both DORA (EU 2022/2554) and NIS2 (EU 2022/2555). Visualises control overlap, classifies incidents against the 4-hour NCA notification window, exports a Consolidated Resilience Roadmap as an Policy Mandate.",
   "featureList": [
     "DORA × NIS2 control-mapping Venn analysis with dedup tally",
     "Incident classification against DORA Article 18 / 17 notification windows",
     "Policy Mandate v1 mandate export against @ainumbers.co/mandate-v1 schema",
     "CRO-ready Consolidated Resilience Roadmap (Markdown)"
   ],
-  "keywords": "DORA, NIS2, EU 2022/2554, EU 2022/2555, operational resilience, ICT risk, incident notification, AP2 mandate, dual compliance, control library",
+  "keywords": "DORA, NIS2, EU 2022/2554, EU 2022/2555, operational resilience, ICT risk, incident notification, Policy Mandate, dual compliance, control library",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -45,7 +45,7 @@
 }
 </script>
 
-<meta name="description" content="DORA × NIS2 control deduplication for EU financial entities. Venn overlap, incident classification wizard with 4-hour NCA countdown, AP2 JSON Consolidated Resilience Roadmap. Client-side. Zero PII.">
+<meta name="description" content="DORA × NIS2 control deduplication for EU financial entities. Venn overlap, incident classification wizard with 4-hour NCA countdown, Policy Mandate JSON Consolidated Resilience Roadmap. Client-side. Zero PII.">
 <style>/* latin-ext */
 
 /* latin */
@@ -649,11 +649,11 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <div class="eyebrow-badges" style="display:flex;flex-wrap:wrap;gap:0.55rem;margin:0.85rem 0 0.5rem;">
           <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(42,127,192,.32);background:rgba(42,127,192,.04);color:var(--showcase-accent);border-radius:3px;font-weight:500;">Resilience Compliance</span>
           <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(16,185,129,.4);background:rgba(16,185,129,.06);color:var(--showcase-success);border-radius:3px;font-weight:500;">DORA Live · Jan 2025</span>
-          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(192,144,64,.32);background:rgba(192,144,64,.05);color:var(--showcase-gold);border-radius:3px;font-weight:500;">AP2 Mandate + CRO Memo</span>
+          <span class="eyebrow-badge" style="font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .7rem;border:1px solid rgba(192,144,64,.32);background:rgba(192,144,64,.05);color:var(--showcase-gold);border-radius:3px;font-weight:500;">Policy Mandate + CRO Memo</span>
         </div>
 
   <h1>Dual-Compliance Control Deduplicator</h1>
-  <p class="hero-desc">For EU financial entities subject to both <b style="color:var(--bright)">DORA (EU 2022/2554)</b> and <b style="color:var(--bright)">NIS2 (EU 2022/2555)</b>. Visualise the control overlap as a Venn diagram, classify a live incident against the 4-hour NCA notification window, and export a Consolidated Resilience Roadmap as an AP2 JSON mandate ready for your Chief Risk Officer.</p>
+  <p class="hero-desc">For EU financial entities subject to both <b style="color:var(--bright)">DORA (EU 2022/2554)</b> and <b style="color:var(--bright)">NIS2 (EU 2022/2555)</b>. Visualise the control overlap as a Venn diagram, classify a live incident against the 4-hour NCA notification window, and export a Consolidated Resilience Roadmap as an Policy Mandate JSON mandate ready for your Chief Risk Officer.</p>
   <div class="hero-meta">
     <span class="hero-badge badge-privacy">Zero PII · Client-side</span>
     <span class="hero-badge badge-warn">Lex specialis: DORA supersedes NIS2 on ICT risk for in-scope financial entities</span>
@@ -855,12 +855,12 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   <section class="panel">
     <div class="panel-label">§4 · Consolidated Resilience Roadmap <span class="panel-label-r">For the Chief Risk Officer</span></div>
     <h2 class="sec-h">12-step deduplicated programme</h2>
-    <p class="sec-sub">A roadmap composed from the matrix above + the wizard outcome. Exports as an AP2 JSON mandate addressable by your governance / GRC agent stack.</p>
+    <p class="sec-sub">A roadmap composed from the matrix above + the wizard outcome. Exports as an Policy Mandate JSON mandate addressable by your governance / GRC agent stack.</p>
 
     <div id="roadmap-body"></div>
 
     <div class="export-row">
-      <button class="btn-export btn-ap2" id="export-ap2">{} Export AP2 JSON · Consolidated Roadmap</button>
+      <button class="btn-export btn-ap2" id="export-ap2">{} Export Policy Mandate JSON · Consolidated Roadmap</button>
       <button class="btn-export btn-md" id="export-md">⬇ Export CRO Memo (.md)</button>
       <button class="btn-export btn-pre" id="toggle-preview">Preview AP2 payload</button>
     </div>
@@ -1274,7 +1274,7 @@ function showToast(t){
 document.getElementById('export-ap2').addEventListener('click', () => {
   const m = buildAP2Mandate();
   download(new Blob([JSON.stringify(m,null,2)],{type:'application/json'}), `consolidated-resilience-roadmap_${Date.now()}.ap2.json`);
-  showToast('{} AP2 mandate downloaded');
+  showToast('{} Policy Mandate downloaded');
 });
 
 document.getElementById('export-md').addEventListener('click', () => {

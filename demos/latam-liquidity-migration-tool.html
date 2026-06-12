@@ -1152,7 +1152,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 <aside class="value-at-risk" aria-label="Value at risk — trapped LATAM liquidity">
   <h4 class="var-eyebrow">Value at risk · trapped LATAM Nostro liquidity</h4>
   <p class="var-figure">$387M+ trapped across 6 corridors (modeled base)</p>
-  <p class="var-body">Nostro pre-funding across BRL + MXN + COP + CLP + ARS + PEN runs ~$387M base-case (modeled). At a 7.85% short-rate proxy that's ~$30M/yr in foregone deployable yield — before FRTB-style haircut. Manual corridor models cannot satisfy BCBS 239 aggregation and timeliness requirements; this tool produces an auditable AP2 mandate per re-run.</p>
+  <p class="var-body">Nostro pre-funding across BRL + MXN + COP + CLP + ARS + PEN runs ~$387M base-case (modeled). At a 7.85% short-rate proxy that's ~$30M/yr in foregone deployable yield — before FRTB-style haircut. Manual corridor models cannot satisfy BCBS 239 aggregation and timeliness requirements; this tool produces an auditable Policy Mandate per re-run.</p>
   <p class="var-cite"><small>BCBS 239 (2013) · Basel III FRTB IMA · LATAM corridor base figures synthesised from IMF WEO 2025 + BIS Triennial 2025</small></p>
 </aside>
 
@@ -1766,10 +1766,10 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 </footer>
 
 
-<!-- ═══ AP2 EXPORT ROW (spec Part 5.4 Demo 4) + SHAREABLE URL ═══ -->
+<!-- ═══ POLICY MANDATE EXPORT ROW (spec Part 5.4 Demo 4) + SHAREABLE URL ═══ -->
 <div class="results-export-row">
   <span class="export-label">Liquidity Mandate · validated against Policy Mandate v1 schema</span>
-  <button class="btn-export" id="exportAp2" type="button">Download AP2 Mandate (JSON)</button>
+  <button class="btn-export" id="exportAp2" type="button">Download Policy Mandate (JSON)</button>
   <button class="btn-export outline" id="exportMd" type="button">Markdown Summary</button>
   <button class="btn-export outline" id="copyShareUrl" type="button">Copy Share URL</button>
   <span class="btn-share-feedback" id="shareFeedback">Copied ✓</span>
@@ -1960,7 +1960,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   AP2 export — schema @ainumbers.co/liquidity-mandate-v1 (spec Part 5.4 Demo 4)
+   Policy Mandate export — schema @ainumbers.co/liquidity-mandate-v1 (spec Part 5.4 Demo 4)
    + Shareable URL deep-link encoding
    ════════════════════════════════════════════════════════════════════════ */
 (function(){

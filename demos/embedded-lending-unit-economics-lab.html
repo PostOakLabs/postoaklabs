@@ -39,7 +39,7 @@
     "Sensitivity table: default rate sweep vs RAROC viability",
     "Policy Mandate v1 mandate export against @ainumbers.co/embedded-lending-v1 schema"
   ],
-  "keywords": "embedded lending, unit economics, NIM, RAROC, expected loss, B2B credit, BaaS lending, embedded finance, cost of capital, default rate sensitivity, AP2 mandate",
+  "keywords": "embedded lending, unit economics, NIM, RAROC, expected loss, B2B credit, BaaS lending, embedded finance, cost of capital, default rate sensitivity, Policy Mandate",
   "author": {
     "@type": "Organization",
     "name": "Post Oak Labs",
@@ -466,7 +466,7 @@ footer.site-footer {
       <span class="eyebrow-badge gold">AP2 Lending Mandate</span>
     </div>
     <h1>Model B2B embedded lending <em>unit economics</em> — NIM, RAROC, and break-even default rate.</h1>
-    <p class="hero-sub">An interactive lab for BaaS product managers, credit leads, and embedded-finance architects. Configure your lending programme — product type, APR, default rate, cost of capital, loss curve — and receive a full P&amp;L waterfall, sensitivity table, and exportable AP2 mandate in seconds.</p>
+    <p class="hero-sub">An interactive lab for BaaS product managers, credit leads, and embedded-finance architects. Configure your lending programme — product type, APR, default rate, cost of capital, loss curve — and receive a full P&amp;L waterfall, sensitivity table, and exportable Policy Mandate in seconds.</p>
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-l">Embedded Finance TAM</div><div class="hstat-v gold">$148B+</div><div class="hstat-s">2026 · Apideck / Precedence Research</div></div>
       <div class="hstat"><div class="hstat-l">BaaS Market</div><div class="hstat-v">$29B → $65B</div><div class="hstat-s">2026–2031 CAGR · Apideck 2026</div></div>
@@ -580,7 +580,7 @@ footer.site-footer {
     <p class="section-sub">Download a versioned mandate for the current model state. Schema: <code>@ainumbers.co/embedded-lending-v1</code>. Validated against Policy Mandate v1 before download.</p>
     <div class="results-export-row">
       <span class="export-label">Programme Mandate · validated against Policy Mandate v1 schema</span>
-      <button class="btn-export" id="exportAp2" type="button">Download AP2 Mandate (JSON)</button>
+      <button class="btn-export" id="exportAp2" type="button">Download Policy Mandate (JSON)</button>
       <button class="btn-export outline" id="exportMd" type="button">Markdown Memo</button>
     </div>
   </div>
@@ -931,7 +931,7 @@ function renderOutput(r){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// AP2 MANDATE — @ainumbers.co/embedded-lending-v1 (spec Part 5.4 Demo 12)
+// POLICY MANDATE — @ainumbers.co/embedded-lending-v1 (spec Part 5.4 Demo 12)
 // ════════════════════════════════════════════════════════════════════════
 let _lastResult = null;
 
@@ -1009,7 +1009,7 @@ function exportAp2(){
   if (!_lastResult) return;
   const m = buildAP2Mandate(_lastResult);
   const v = validateAP2(m);
-  if (!v.ok){ alert('AP2 schema validation failed: ' + v.reason); return; }
+  if (!v.ok){ alert('Policy Mandate schema validation failed: ' + v.reason); return; }
   downloadFile(`embedded-lending-mandate-${m.mandate_id}.json`, JSON.stringify(m, null, 2), 'application/json');
 }
 

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentic Checkout, End-to-End — A2A Discovery · AP2 Mandate · x402 Settlement · Signed Audit Trail · Post Oak Labs</title>
+<title>Agentic Checkout, End-to-End — A2A Discovery · Policy Mandate · x402 Settlement · Signed Audit Trail · Post Oak Labs</title>
 
 <meta name="description" content="Four-stage agentic commerce chain: A2A agent-card discovery, Google AP2 checkout/payment mandates, x402 or Visa TAP settlement simulation, and an RFC 9421-signed audit trail — in a single deterministic browser flow. Zero PII.">
 <meta name="author" content="Post Oak Labs">
 <link rel="canonical" href="https://postoaklabs.com/demos/agentic-checkout-end-to-end.html">
 <meta property="og:title" content="Agentic Checkout, End-to-End — Post Oak Labs">
-<meta property="og:description" content="Agent discovery → AP2 mandate → x402/TAP settlement → signed audit trail. The complete agent-initiated payment chain in one flow.">
+<meta property="og:description" content="Agent discovery → Policy Mandate → x402/TAP settlement → signed audit trail. The complete agent-initiated payment chain in one flow.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/agentic-checkout-end-to-end.html">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +225,7 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
     </div>
     <div class="strip-actions">
       <a href="https://ainumbers.co/tools/283-a2a-agent-card-validator.html" target="_blank" rel="noopener">T283 Agent Card ↗</a>
-      <a href="https://ainumbers.co/tools/285-google-ap2-mandate-builder.html" target="_blank" rel="noopener">T285 AP2 Mandate ↗</a>
+      <a href="https://ainumbers.co/tools/285-google-ap2-mandate-builder.html" target="_blank" rel="noopener">T285 Policy Mandate ↗</a>
       <a href="https://ainumbers.co/tools/277-x402-payload-decoder-flow-simulator.html" target="_blank" rel="noopener">T277 x402 ↗</a>
       <a href="https://ainumbers.co/tools/286-visa-trusted-agent-protocol-inspector.html" target="_blank" rel="noopener">T286 Visa TAP ↗</a>
       <a href="https://ainumbers.co/guides/agentic-checkout-workflow.html" target="_blank" rel="noopener">Full Workflow ↗</a>
@@ -270,7 +270,7 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
       <div class="flow-arrow">→</div>
       <div class="flow-step">
         <div class="flow-num mand">02</div>
-        <div class="flow-label">AP2 Mandates</div>
+        <div class="flow-label">Policy Mandates</div>
         <div class="flow-tool">T285</div>
       </div>
       <div class="flow-arrow">→</div>
@@ -364,10 +364,10 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
             <div class="code-preview" id="cardPreview"></div>
           </div>
 
-          <!-- PANEL 2: AP2 MANDATES -->
+          <!-- PANEL 2: POLICY MANDATES -->
           <div class="panel">
             <div class="panel-hd">
-              <div class="panel-num mand">Stage 02 · T285 Google AP2 Mandates</div>
+              <div class="panel-num mand">Stage 02 · T285 Google Policy Mandates</div>
               <h2>Checkout &amp; Payment Mandate Construction</h2>
             </div>
             <div id="mandateGuard"></div>
@@ -520,7 +520,7 @@ function buildAgentCard(inp) {
   return { card, checks, ext };
 }
 
-/* ── STAGE 2: AP2 MANDATES ── */
+/* ── STAGE 2: POLICY MANDATES ── */
 function buildMandates(inp) {
   const now = new Date();
   const expires = new Date(now.getTime() + inp.expiry * 3600 * 1000);
@@ -554,7 +554,7 @@ function buildTrace(inp, mand) {
     return { rows: [
       { actor:'Buyer agent', action:'GET /resource', detail:'Requests the paid resource from ' + inp.merchant, st:'info', stTxt:'REQUEST' },
       { actor:'Merchant server', action:'402 Payment Required', detail:'Returns payment requirements: amount ' + fmtAmt(inp.amount, inp.currency) + ', scheme + network pair (illustrative)', st:'warn', stTxt:'402' },
-      { actor:'Buyer agent', action:'Construct X-PAYMENT', detail:'Signed payment payload bound to the AP2 mandate; amount matches mandate total', st:'info', stTxt:'RETRY' },
+      { actor:'Buyer agent', action:'Construct X-PAYMENT', detail:'Signed payment payload bound to the Policy Mandate; amount matches mandate total', st:'info', stTxt:'RETRY' },
       { actor:'Facilitator', action:'Verify payload', detail:'Schema + signature + amount-vs-requirements verification', st:'ok', stTxt:'VERIFIED' },
       { actor:'Facilitator', action:'Settle', detail:'On-chain / ledger settlement executed (simulated)', st:'ok', stTxt:'SETTLED' },
       { actor:'Merchant server', action:'200 OK + X-PAYMENT-RESPONSE', detail:'Resource delivered; settlement receipt attached', st:'ok', stTxt:'DELIVERED' }

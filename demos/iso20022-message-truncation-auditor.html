@@ -885,7 +885,7 @@ main.demo-canvas .canvas-inner { padding: 0; }
 .value-at-risk .var-cite { font-size: 0.7rem; color: var(--showcase-text-muted); }
 .value-at-risk .var-cite small { font-family: var(--showcase-mono-font); letter-spacing: 0.04em; }
 
-/* AP2 export row */
+/* Policy Mandate export row */
 .results-export-row {
   display: flex; flex-wrap: wrap;
   gap: 0.75rem;
@@ -1222,10 +1222,10 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 </footer>
 
 
-<!-- ═══ AP2 EXPORT ROW (spec Part 5.4 Demo 2) ═══ -->
+<!-- ═══ POLICY MANDATE EXPORT ROW (spec Part 5.4 Demo 2) ═══ -->
 <div class="results-export-row">
   <span class="export-label">Remediation Brief · validated against Policy Mandate v1 schema</span>
-  <button class="btn-export" id="exportAp2" type="button">Download AP2 Mandate (JSON)</button>
+  <button class="btn-export" id="exportAp2" type="button">Download Policy Mandate (JSON)</button>
   <button class="btn-export outline" id="exportMd" type="button">Markdown Summary</button>
 </div>
 
@@ -2005,7 +2005,7 @@ update();
 
 
 /* ════════════════════════════════════════════════════════════════════════
-   AP2 export — schema @ainumbers.co/remediation-brief-v1 (spec Part 5.4 Demo 2)
+   Policy Mandate export — schema @ainumbers.co/remediation-brief-v1 (spec Part 5.4 Demo 2)
    ════════════════════════════════════════════════════════════════════════ */
 (function(){
   // Hook the existing update() loop so we always have the most recent findings/remed

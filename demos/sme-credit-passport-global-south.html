@@ -1131,7 +1131,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       </div>
       <div class="footer-action-row no-print">
         <button class="btn muted" onclick="resetForm()">Reset</button>
-        <button class="btn ghost" onclick="exportJSON()">Export AP2 JSON</button>
+        <button class="btn ghost" onclick="exportJSON()">Export Policy Mandate JSON</button>
         <button class="btn primary" onclick="window.print()">Print / Save PDF</button>
       </div>
     </div>
@@ -1662,7 +1662,7 @@ function applyPreset(key){
 
 function resetForm(){ applyPreset('br-saas'); document.getElementById('blendSlider').value=50; analyse(); toast('✓ Reset to default preset'); }
 
-/* ────────────── Export AP2 JSON ─────────────────────────────────── */
+/* ────────────── Export Policy Mandate JSON ─────────────────────────────────── */
 function exportJSON(){
   if(!LAST) return;
   const c = COUNTRIES[STATE.country];

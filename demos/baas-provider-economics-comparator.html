@@ -289,7 +289,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
         <span class="eyebrow-badge">Zero PII</span>
       </div>
       <h1 id="hero-title">BaaS Provider <em>Economics Comparator</em></h1>
-      <p class="hero-sub">Model the unit economics of leading Banking-as-a-Service providers at any volume tier. Compare per-account costs, interchange revenue share, platform fees, and net margins across five illustrative BaaS provider archetypes (A–E) — then export a boardroom-ready AP2 mandate with your optimal provider recommendation.</p>
+      <p class="hero-sub">Model the unit economics of leading Banking-as-a-Service providers at any volume tier. Compare per-account costs, interchange revenue share, platform fees, and net margins across five illustrative BaaS provider archetypes (A–E) — then export a boardroom-ready Policy Mandate with your optimal provider recommendation.</p>
       <div class="hero-stats">
         <div class="hstat">
           <div class="hstat-l">Interchange Avg</div>
@@ -483,7 +483,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
 
           <!-- EXPORT -->
           <div class="results-export-row">
-            <button class="export-btn primary" onclick="exportAP2()">⬇ AP2 JSON Mandate</button>
+            <button class="export-btn primary" onclick="exportAP2()">⬇ Policy Mandate JSON Mandate</button>
             <button class="export-btn" onclick="exportMarkdown()">⬇ Markdown Report</button>
           </div>
         </div>
@@ -541,7 +541,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
 /* ============================================================
    BaaS Provider Economics Comparator
    Post Oak Labs · Fintech Intelligence Showcase · Demo #14
-   AP2 schema: @ainumbers.co/baas-economics-v1
+   Policy Mandate schema: @ainumbers.co/baas-economics-v1
    ============================================================ */
 
 // --------------- PROVIDER DEFINITIONS ---------------
@@ -905,7 +905,7 @@ function renderRecommendation(results, bestIdx, inp) {
   const spread = best.netRevenue - worseProvider.netRevenue;
 
   document.getElementById('recommendationBox').innerHTML = `
-    <div style="font-family:var(--showcase-mono-font);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:0.75rem;">AP2 Mandate Preview — Recommendation</div>
+    <div style="font-family:var(--showcase-mono-font);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--showcase-text-muted);margin-bottom:0.75rem;">Policy Mandate Preview — Recommendation</div>
     <h3 style="font-family:var(--showcase-heading-font);font-size:1.1rem;margin-bottom:0.75rem;color:var(--showcase-text);">
       Recommended: <span style="color:var(--showcase-success)">${best.provider.name}</span>
     </h3>
@@ -924,7 +924,7 @@ function renderRecommendation(results, bestIdx, inp) {
   `;
 }
 
-// --------------- AP2 EXPORT ---------------
+// --------------- POLICY MANDATE EXPORT ---------------
 function exportAP2() {
   if (!lastResult) { alert('Run the comparison first.'); return; }
   const { inp, results, bestIdx } = lastResult;

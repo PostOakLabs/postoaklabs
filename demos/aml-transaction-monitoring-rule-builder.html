@@ -38,7 +38,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/tm-ruleset-v1 schema",
     "Markdown ruleset brief and MCP tool definition export"
   ],
-  "keywords": "AML, transaction monitoring, TM rules, false positive, true positive, precision, recall, BSA, FinCEN, FATF, AP2 mandate, MCP, agentic AML",
+  "keywords": "AML, transaction monitoring, TM rules, false positive, true positive, precision, recall, BSA, FinCEN, FATF, Policy Mandate, MCP, agentic AML",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -329,7 +329,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       <section class="panel">
         <div class="panel-label">§1 · Rule Library <span class="panel-label-r" id="active-count">— / 6 active</span></div>
         <h2 class="sec-h">Compose the ruleset</h2>
-        <p class="sec-sub">Toggle rules on/off and adjust thresholds. The synthetic population (§2) refreshes the per-rule alert volume and precision in real time. Each rule emits its own clause in the AP2 mandate.</p>
+        <p class="sec-sub">Toggle rules on/off and adjust thresholds. The synthetic population (§2) refreshes the per-rule alert volume and precision in real time. Each rule emits its own clause in the Policy Mandate.</p>
 
         <div id="rules"></div>
       </section>
@@ -397,7 +397,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <p class="sec-sub">The chosen ruleset, the calibration metrics, and an MCP tool definition the agent can use to score a candidate transaction.</p>
 
         <div class="preview-tabs" id="preview-tabs">
-          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
           <button class="preview-tab" data-tab="md">Ruleset brief</button>
           <button class="preview-tab" data-tab="mcp">MCP tool def</button>
         </div>
@@ -407,7 +407,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/tm-ruleset-v1</div>
 
         <div class="results-export-row">
-          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
           <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
           <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
           <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -710,7 +710,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ─────────────────────────────────────────────────────
+  // ── Policy Mandate ─────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-11-' + Math.random().toString(36).slice(2,10);

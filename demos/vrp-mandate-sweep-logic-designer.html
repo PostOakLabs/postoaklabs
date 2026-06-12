@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VRP Mandate &amp; Sweep Logic Designer · UK CMA9 × EU PSD3 × SEPA VRP · Post Oak Labs</title>
 
-<meta name="description" content="Compose Variable Recurring Payment (VRP) mandates across UK CMA9, EU PSD3, and SEPA VRP rulebook. Sweep windows, per-period and per-transaction caps, idempotency policy, SCA exemptions, allowed-beneficiary set. AP2 mandate export. Client-side, zero PII.">
+<meta name="description" content="Compose Variable Recurring Payment (VRP) mandates across UK CMA9, EU PSD3, and SEPA VRP rulebook. Sweep windows, per-period and per-transaction caps, idempotency policy, SCA exemptions, allowed-beneficiary set. Policy Mandate export. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html">
 <meta property="og:title" content="VRP Mandate &amp; Sweep Logic Designer — Post Oak Labs">
-<meta property="og:description" content="Design VRP mandates with sweep windows, caps, and idempotency policy. UK CMA9 + EU PSD3 + SEPA VRP aligned. AP2 mandate. Zero PII.">
+<meta property="og:description" content="Design VRP mandates with sweep windows, caps, and idempotency policy. UK CMA9 + EU PSD3 + SEPA VRP aligned. Policy Mandate. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/vrp-mandate-sweep-logic-designer.png">
@@ -40,7 +40,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/vrp-mandate-v1",
     "Markdown mandate brief and MCP tool definition export"
   ],
-  "keywords": "VRP, variable recurring payment, sweep window, UK CMA9, OBIE, EU PSD3, SEPA VRP rulebook, idempotency, SCA exemption, AP2 mandate, MCP",
+  "keywords": "VRP, variable recurring payment, sweep window, UK CMA9, OBIE, EU PSD3, SEPA VRP rulebook, idempotency, SCA exemption, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -481,7 +481,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div style="margin-top:1rem;">
           <div class="preview-tabs" id="preview-tabs">
-            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
             <button class="preview-tab" data-tab="md">Mandate brief</button>
             <button class="preview-tab" data-tab="mcp">MCP tool def</button>
           </div>
@@ -491,7 +491,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/vrp-mandate-v1</div>
 
           <div class="results-export-row">
-            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
             <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
             <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
             <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -719,7 +719,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview();
   }
 
-  // ── AP2 MANDATE ──────────────────────────────────────────────────────
+  // ── POLICY MANDATE ──────────────────────────────────────────────────────
   function buildMandate(){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-18-' + Math.random().toString(36).slice(2,10);
@@ -922,7 +922,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate();
-    if (validate(m).length === 0) { download('vrp-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('vrp-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed — fix errors first');
   });
   document.getElementById('btn-md').addEventListener('click', () => {

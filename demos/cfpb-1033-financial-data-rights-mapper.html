@@ -312,7 +312,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
         <span class="eyebrow-badge">Zero PII</span>
       </div>
       <h1 id="hero-title">CFPB §1033 <em>Financial Data Rights</em> Mapper</h1>
-      <p class="hero-sub">The CFPB's Personal Financial Data Rights rule (12 CFR Part 1033) mandates that covered financial institutions give consumers and authorised third parties machine-readable access to their financial data. Map your institution's obligations, scope the seven data categories you must expose, navigate the five-tier compliance calendar (enforcement stayed by court; CFPB reconsidering rule) from April 2026 through April 2030, and generate an AP2 mandate for your open-banking programme.</p>
+      <p class="hero-sub">The CFPB's Personal Financial Data Rights rule (12 CFR Part 1033) mandates that covered financial institutions give consumers and authorised third parties machine-readable access to their financial data. Map your institution's obligations, scope the seven data categories you must expose, navigate the five-tier compliance calendar (enforcement stayed by court; CFPB reconsidering rule) from April 2026 through April 2030, and generate an Policy Mandate for your open-banking programme.</p>
       <div class="hero-stats">
         <div class="hstat">
           <div class="hstat-l">Rule Published</div>
@@ -462,7 +462,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
 
           <!-- EXPORT -->
           <div class="results-export-row">
-            <button class="export-btn primary" onclick="exportAP2()">⬇ AP2 JSON Mandate</button>
+            <button class="export-btn primary" onclick="exportAP2()">⬇ Policy Mandate JSON Mandate</button>
             <button class="export-btn" onclick="exportMarkdown()">⬇ Markdown Report</button>
           </div>
         </div>
@@ -521,7 +521,7 @@ footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin-top: 2rem;
 /* ============================================================
    CFPB §1033 Financial Data Rights Mapper
    Post Oak Labs · Fintech Intelligence Showcase · Demo #9
-   AP2 schema: @ainumbers.co/cfpb-1033-v1
+   Policy Mandate schema: @ainumbers.co/cfpb-1033-v1
    ============================================================ */
 
 // --------------- TIER DEFINITIONS ---------------
@@ -744,7 +744,7 @@ function renderResults({ tier, products, role, techs, techScore, pct, daysToDead
   });
 }
 
-// --------------- AP2 EXPORT ---------------
+// --------------- POLICY MANDATE EXPORT ---------------
 function exportAP2() {
   if (!lastResult) { alert('Run the mapper first.'); return; }
   const { tier, products, role, techs, pct, daysToDeadline, isOverdue } = lastResult;

@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KYB Beneficial Ownership Network Mapper · CTA × 6AMLD × PSC × MAS · Post Oak Labs</title>
 
-<meta name="description" content="Visualise corporate ownership chains, identify ultimate beneficial owners against jurisdiction thresholds (FinCEN CTA 25%, EU 6AMLD 25%, UK PSC 25%, MAS 25%), flag sanctioned-proximity hops and circular ownership. AP2 mandate export. Client-side, zero PII.">
+<meta name="description" content="Visualise corporate ownership chains, identify ultimate beneficial owners against jurisdiction thresholds (FinCEN CTA 25%, EU 6AMLD 25%, UK PSC 25%, MAS 25%), flag sanctioned-proximity hops and circular ownership. Policy Mandate export. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html">
 <meta property="og:title" content="KYB Beneficial Ownership Network Mapper — Post Oak Labs">
-<meta property="og:description" content="Interactive ownership-chain visualisation with UBO identification, sanctioned-proximity hops, circular-ownership detection. AP2 mandate. Zero PII.">
+<meta property="og:description" content="Interactive ownership-chain visualisation with UBO identification, sanctioned-proximity hops, circular-ownership detection. Policy Mandate. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/kyb-beneficial-ownership-network-mapper.png">
@@ -41,7 +41,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/kyb-ubo-v1",
     "Markdown KYB brief and MCP tool definition export"
   ],
-  "keywords": "KYB, KYC business, beneficial ownership, UBO, ultimate beneficial owner, FinCEN Corporate Transparency Act, EU 6AMLD, UK PSC, MAS, sanctioned proximity, circular ownership, AP2 mandate, MCP",
+  "keywords": "KYB, KYC business, beneficial ownership, UBO, ultimate beneficial owner, FinCEN Corporate Transparency Act, EU 6AMLD, UK PSC, MAS, sanctioned proximity, circular ownership, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -433,7 +433,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div style="margin-top:1rem;">
           <div class="preview-tabs" id="preview-tabs">
-            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
             <button class="preview-tab" data-tab="md">KYB brief</button>
             <button class="preview-tab" data-tab="mcp">MCP tool def</button>
           </div>
@@ -443,7 +443,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/kyb-ubo-v1</div>
 
           <div class="results-export-row">
-            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
             <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
             <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
             <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -862,7 +862,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ──────────────────────────────────────────────────────
+  // ── Policy Mandate ──────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-16-' + Math.random().toString(36).slice(2,10);
@@ -1079,7 +1079,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate(compute());
-    if (validate(m).length === 0) { download('kyb-ubo-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('kyb-ubo-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed');
   });
   document.getElementById('btn-md').addEventListener('click', () => {

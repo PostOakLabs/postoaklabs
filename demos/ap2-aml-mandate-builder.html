@@ -29,7 +29,7 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/ap2-aml-mandate-builder.html",
-  "description": "Compose Policy Mandate v1 AML mandates for agentic payment systems. Configure customer risk tier thresholds, TM rule parameters, SAR filing triggers, sanctions screening frequency and escalation workflows; export a validated AP2 JSON mandate, human-readable policy brief, and MCP tool definition.",
+  "description": "Compose Policy Mandate v1 AML mandates for agentic payment systems. Configure customer risk tier thresholds, TM rule parameters, SAR filing triggers, sanctions screening frequency and escalation workflows; export a validated Policy Mandate JSON mandate, human-readable policy brief, and MCP tool definition.",
   "featureList": [
     "Customer risk tier composer (Low / Medium / High / Prohibited)",
     "Transaction-monitoring rule parameters (velocity, structuring, geographic, behavioural)",
@@ -39,7 +39,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/aml-mandate-v1 schema",
     "Markdown policy brief export, MCP tool definition export"
   ],
-  "keywords": "AP2, AP2 mandate, AML, BSA, FinCEN, FATF Recommendation 16, OFAC, sanctions screening, transaction monitoring, customer risk rating, SAR, agentic payments, MCP, machine-readable AML policy",
+  "keywords": "AP2, Policy Mandate, AML, BSA, FinCEN, FATF Recommendation 16, OFAC, sanctions screening, transaction monitoring, customer risk rating, SAR, agentic payments, MCP, machine-readable AML policy",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -507,7 +507,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       <span class="eyebrow-badge eb-success">FATF R.16 · 6AMLD aligned</span>
       <span class="eyebrow-badge eb-gold">Mandate + Policy Brief + MCP def</span>
     </div>
-    <h1>Compose an AML policy. Export a machine-readable AP2 mandate.</h1>
+    <h1>Compose an AML policy. Export a machine-readable Policy Mandate.</h1>
     <p class="hero-desc">
       Translate <b>BSA program controls</b>, <b>transaction-monitoring rules</b>, and <b>customer-risk policy</b>
       into a structured <b>Policy Mandate v1</b> JSON mandate an agentic payment system can read, follow, and audit
@@ -664,7 +664,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <p class="sec-sub">Live preview. Switch tabs to see what an agent will load, what your CCO will sign, and what an MCP client will discover.</p>
 
         <div class="preview-tabs" id="preview-tabs">
-          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
           <button class="preview-tab" data-tab="md">Policy brief</button>
           <button class="preview-tab" data-tab="mcp">MCP tool def</button>
         </div>
@@ -674,7 +674,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <div class="validation ok" id="validation">Policy Mandate v1 schema · valid · @ainumbers.co/aml-mandate-v1</div>
 
         <div class="results-export-row">
-          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
           <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
           <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
           <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -1049,7 +1049,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const m = buildMandate();
     if (validateMandate(m).length === 0) {
       download('ap2-aml-mandate.json', JSON.stringify(m, null, 2), 'application/json');
-      toast('AP2 mandate exported');
+      toast('Policy Mandate exported');
     } else {
       toast('Schema validation failed — fix highlighted errors');
     }

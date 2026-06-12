@@ -40,7 +40,7 @@
     "Policy Mandate v1 treasury mandate export against @ainumbers.co/wallet-float-v1",
     "Markdown treasury memo + MCP tool definition export"
   ],
-  "keywords": "BaaS, wallet float, programme deposits, sweep MMF, FDIC pass-through, treasury yield, sponsor bank, Fed Funds, basis points, AP2 mandate, MCP",
+  "keywords": "BaaS, wallet float, programme deposits, sweep MMF, FDIC pass-through, treasury yield, sponsor bank, Fed Funds, basis points, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -308,7 +308,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   <aside class="value-at-risk" aria-label="Value at risk — programme failure / custody misrepresentation">
     <h4 class="var-eyebrow">Value at risk · programme termination &amp; custody misrepresentation</h4>
     <p class="var-figure">Synapse-Evolve precedent: $85M+ end-user losses, programme termination cascade, FDIC enforcement on misstated insurance</p>
-    <p class="var-body">Wallet-float economics evaporate the moment a sponsor-bank programme terminates. The <strong>2024 Synapse–Evolve</strong> failure produced mid-eight-figure end-user losses, multi-quarter receivership, and a wave of FDIC enforcement orders against fintechs that misrepresented pass-through insurance coverage. Sponsor-bank programme agreements typically include <strong>60–90 day termination clauses</strong> if allocation or recordkeeping rules are breached. Binding the float-allocation policy into an AP2 mandate the runtime cannot silently relax — and that auditors can read — is the audit-grade response.</p>
+    <p class="var-body">Wallet-float economics evaporate the moment a sponsor-bank programme terminates. The <strong>2024 Synapse–Evolve</strong> failure produced mid-eight-figure end-user losses, multi-quarter receivership, and a wave of FDIC enforcement orders against fintechs that misrepresented pass-through insurance coverage. Sponsor-bank programme agreements typically include <strong>60–90 day termination clauses</strong> if allocation or recordkeeping rules are breached. Binding the float-allocation policy into an Policy Mandate the runtime cannot silently relax — and that auditors can read — is the audit-grade response.</p>
     <p class="var-cite"><small>Synapse Ch. 11 (2024) · FDIC enforcement orders 2023–2025 · 12 CFR §330.5/§330.7 · FDIC Recordkeeping NPR 2024</small></p>
   </aside>
 
@@ -430,7 +430,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <!-- §4 Output -->
     <div>
       <section class="panel preview-sticky">
-        <div class="panel-label">§4 · Output <span class="panel-label-r">Live yield + AP2 mandate</span></div>
+        <div class="panel-label">§4 · Output <span class="panel-label-r">Live yield + Policy Mandate</span></div>
         <h2 class="sec-h">Yield economics</h2>
 
         <div class="kpi-grid">
@@ -446,7 +446,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div style="margin-top:1rem;">
           <div class="preview-tabs" id="preview-tabs">
-            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
             <button class="preview-tab" data-tab="md">Treasury memo</button>
             <button class="preview-tab" data-tab="mcp">MCP tool def</button>
           </div>
@@ -456,7 +456,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/wallet-float-v1</div>
 
           <div class="results-export-row">
-            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
             <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
             <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
             <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -659,7 +659,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ──────────────────────────────────────────────────────
+  // ── Policy Mandate ──────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-17-' + Math.random().toString(36).slice(2,10);

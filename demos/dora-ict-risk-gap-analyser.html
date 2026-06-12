@@ -10,7 +10,7 @@
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html">
 <meta property="og:title" content="DORA ICT Risk Gap Analyser — Post Oak Labs">
-<meta property="og:description" content="Five-pillar DORA maturity + Article 28 third-party concentration deep-dive. AP2 mandate export. Browser-based. Zero PII.">
+<meta property="og:description" content="Five-pillar DORA maturity + Article 28 third-party concentration deep-dive. Policy Mandate export. Browser-based. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/dora-ict-risk-gap-analyser.png">
@@ -39,7 +39,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/dora-gap-v1 schema",
     "Markdown gap report and MCP tool definition export"
   ],
-  "keywords": "DORA, EU 2022/2554, Article 28, ICT third-party risk, sub-outsourcing, EBA RTS, CTPP, concentration risk, operational resilience, AP2 mandate, MCP",
+  "keywords": "DORA, EU 2022/2554, Article 28, ICT third-party risk, sub-outsourcing, EBA RTS, CTPP, concentration risk, operational resilience, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -336,7 +336,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       <section class="panel">
         <div class="panel-label">§1 · Five-Pillar Maturity <span class="panel-label-r" id="composite-readout">— / 100</span></div>
         <h2 class="sec-h">Set each pillar 0 → 4</h2>
-        <p class="sec-sub">0 Initial · 1 Repeatable · 2 Defined · 3 Managed · 4 Optimised. The composite is the simple sum × 5; the AP2 mandate emits each pillar separately so an agentic remediation runtime can target the weakest pillar first.</p>
+        <p class="sec-sub">0 Initial · 1 Repeatable · 2 Defined · 3 Managed · 4 Optimised. The composite is the simple sum × 5; the Policy Mandate emits each pillar separately so an agentic remediation runtime can target the weakest pillar first.</p>
 
         <div id="pillars"></div>
       </section>
@@ -416,7 +416,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <p class="sec-sub">Schema includes the pillar matrix, Article 28 concentration metrics, and an ordered remediation roadmap an agentic compliance runtime can execute against.</p>
 
         <div class="preview-tabs" id="preview-tabs">
-          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
           <button class="preview-tab" data-tab="md">Gap report</button>
           <button class="preview-tab" data-tab="mcp">MCP tool def</button>
         </div>
@@ -426,7 +426,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/dora-gap-v1</div>
 
         <div class="results-export-row">
-          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
           <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
           <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
           <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -440,7 +440,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <p>
       Pair with <a href="/demos/dora-compliance-deduplication-tool.html">#3 — DORA / NIS2 Dual-Compliance Deduplicator</a>
       to first surface the control overlap, then run #26 to go deep on Article 28 third-party concentration. The
-      AP2 mandate from #26 is consumable by any agentic compliance runtime via the
+      Policy Mandate from #26 is consumable by any agentic compliance runtime via the
       <a href="/demos/ap2-agentic-payment-policy-guardrail.html">#7 — AP2 Visual Policy Guardrail</a>.
       Position in the 400+ tool atlas: <a href="/demos/composer.html">Tool Chain Composer</a>, T300 node.
     </p>
@@ -721,7 +721,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ──────────────────────────────────────────────────────
+  // ── Policy Mandate ──────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-26-' + Math.random().toString(36).slice(2,10);
@@ -922,7 +922,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate(compute());
-    if (validate(m).length === 0) { download('dora-gap-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('dora-gap-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed');
   });
   document.getElementById('btn-md').addEventListener('click', () => {

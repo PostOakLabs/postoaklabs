@@ -10,7 +10,7 @@
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html">
 <meta property="og:title" content="Instant-Payment Fraud Risk Lab — Post Oak Labs">
-<meta property="og:description" content="Real-time fraud decisioning for FedNow / RTP. Six-signal score model with confusion matrix and expected-loss. AP2 mandate export. Zero PII.">
+<meta property="og:description" content="Real-time fraud decisioning for FedNow / RTP. Six-signal score model with confusion matrix and expected-loss. Policy Mandate export. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/instant-payment-fraud-risk-lab.png">
@@ -39,7 +39,7 @@
     "Policy Mandate v1 fraud-policy mandate export against @ainumbers.co/instant-pay-fraud-v1",
     "Markdown fraud-policy memo and MCP tool definition export"
   ],
-  "keywords": "FedNow, RTP, instant payments, fraud, real-time decisioning, score model, FedNow risk, APP fraud, irreversibility, AP2 mandate, MCP",
+  "keywords": "FedNow, RTP, instant payments, fraud, real-time decisioning, score model, FedNow risk, APP fraud, irreversibility, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -294,7 +294,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       The decision must happen in the <b>sub-second window</b> between auth and send. This lab
       models a six-signal fraud score against an adjustable threshold and intervention budget,
       surfaces the resulting <b>confusion matrix</b> and <b>expected dollar loss</b>, and exports
-      the chosen policy as an AP2 mandate the runtime enforces and the fraud-ops team can audit.
+      the chosen policy as an Policy Mandate the runtime enforces and the fraud-ops team can audit.
     </p>
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
@@ -422,7 +422,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <!-- §5 Output -->
     <div>
       <section class="panel preview-sticky">
-        <div class="panel-label">§5 · Output <span class="panel-label-r">Live confusion + AP2 mandate</span></div>
+        <div class="panel-label">§5 · Output <span class="panel-label-r">Live confusion + Policy Mandate</span></div>
         <h2 class="sec-h">Decision economics</h2>
 
         <div class="kpi-grid">
@@ -457,7 +457,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div style="margin-top:1rem;">
           <div class="preview-tabs" id="preview-tabs">
-            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
             <button class="preview-tab" data-tab="md">Policy memo</button>
             <button class="preview-tab" data-tab="mcp">MCP tool def</button>
           </div>
@@ -467,7 +467,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/instant-pay-fraud-v1</div>
 
           <div class="results-export-row">
-            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
             <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
             <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
             <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -735,7 +735,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ──────────────────────────────────────────────────────
+  // ── Policy Mandate ──────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-13-' + Math.random().toString(36).slice(2,10);
@@ -971,7 +971,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate(compute());
-    if (validate(m).length === 0) { download('instant-pay-fraud-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('instant-pay-fraud-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed');
   });
   document.getElementById('btn-md').addEventListener('click', () => {

@@ -692,7 +692,7 @@ function renderOutput(r) {
 
     <!-- Export -->
     <div class="results-export-row">
-      <button class="export-btn primary" onclick="exportAP2()">↓ AP2 Mandate JSON</button>
+      <button class="export-btn primary" onclick="exportAP2()">↓ Policy Mandate JSON</button>
       <button class="export-btn secondary" onclick="exportMarkdown()">↓ CRR Report</button>
       <span class="export-lbl">Schema: @ainumbers.co/customer-risk-rating-v1 · Policy Mandate v1</span>
     </div>
@@ -751,7 +751,7 @@ function buildRadar(dimScores) {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// AP2 EXPORT
+// POLICY MANDATE EXPORT
 // ════════════════════════════════════════════════════════════════════════
 function exportAP2() {
   if (!lastResult) { alert('Run the rating engine first.'); return; }

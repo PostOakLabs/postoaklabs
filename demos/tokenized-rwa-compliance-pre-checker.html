@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tokenized RWA Compliance Pre-Checker · MiCA × Howey × FCA × MAS · Post Oak Labs</title>
 
-<meta name="description" content="Pre-issuance compliance pathway determination for tokenized real-world assets. Asset-class × jurisdiction × investor scope × token mechanics × custody → MiCA classification, Howey-test outcome, regulatory pathway. AP2 mandate export. Client-side, zero PII.">
+<meta name="description" content="Pre-issuance compliance pathway determination for tokenized real-world assets. Asset-class × jurisdiction × investor scope × token mechanics × custody → MiCA classification, Howey-test outcome, regulatory pathway. Policy Mandate export. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html">
 <meta property="og:title" content="Tokenized RWA Compliance Pre-Checker — Post Oak Labs">
-<meta property="og:description" content="Pre-issuance pathway determination for tokenized RWA. MiCA + Howey + FCA + MAS scoring with AP2 mandate. Zero PII.">
+<meta property="og:description" content="Pre-issuance pathway determination for tokenized RWA. MiCA + Howey + FCA + MAS scoring with Policy Mandate. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/tokenized-rwa-compliance-pre-checker.png">
@@ -41,7 +41,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/rwa-readiness-v1",
     "Markdown pre-issuance memo and MCP tool definition export"
   ],
-  "keywords": "tokenized real-world assets, RWA, MiCA Title II, Howey test, SEC registration, EU 2023/1114, securities tokens, asset-referenced tokens, FCA prospectus, MAS PSA, AP2 mandate, MCP",
+  "keywords": "tokenized real-world assets, RWA, MiCA Title II, Howey test, SEC registration, EU 2023/1114, securities tokens, asset-referenced tokens, FCA prospectus, MAS PSA, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-13",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -429,7 +429,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div style="margin-top:1rem;">
           <div class="preview-tabs" id="preview-tabs">
-            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
             <button class="preview-tab" data-tab="md">Pre-issuance memo</button>
             <button class="preview-tab" data-tab="mcp">MCP tool def</button>
           </div>
@@ -439,7 +439,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/rwa-readiness-v1</div>
 
           <div class="results-export-row">
-            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
             <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
             <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
             <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -750,7 +750,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ──────────────────────────────────────────────────────
+  // ── Policy Mandate ──────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-21-' + Math.random().toString(36).slice(2,10);
@@ -952,7 +952,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate();
-    if (validate(m).length === 0) { download('rwa-readiness-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('rwa-readiness-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed');
   });
   document.getElementById('btn-md').addEventListener('click', () => {

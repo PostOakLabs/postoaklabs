@@ -302,6 +302,53 @@ RULES = [
      "Active · Production Deployments",
      "Advisory · Production Deployments",
      None, 0, 4),
+
+    # ── 39–46. AP2 label rename: "AP2 <noun>" → "Policy Mandate <noun>" ─────
+    # All demo tools output a Policy Mandate (POL schema), not a Google AP2
+    # object. "AP2 mandate/JSON/schema/export" in UI strings, button labels,
+    # and copy should be "Policy Mandate ...". The flag-ap2-residual regex
+    # already excludes "Google AP2" (negative lookbehind), so every hit here
+    # is a POL-schema mislabeling. Three case variants for mandate/export;
+    # JSON and schema have only one natural casing in these files.
+    ("ap2-label-mandate-title",
+     "AP2 Mandate",
+     "Policy Mandate",
+     None, 0, 120),
+
+    ("ap2-label-mandate-lower",
+     "AP2 mandate",
+     "Policy Mandate",
+     None, 0, 160),
+
+    ("ap2-label-mandate-upper",
+     "AP2 MANDATE",
+     "POLICY MANDATE",
+     None, 0, 30),
+
+    ("ap2-label-json",
+     "AP2 JSON",
+     "Policy Mandate JSON",
+     None, 0, 60),
+
+    ("ap2-label-schema",
+     "AP2 schema",
+     "Policy Mandate schema",
+     None, 0, 20),
+
+    ("ap2-label-export-lower",
+     "AP2 export",
+     "Policy Mandate export",
+     None, 0, 20),
+
+    ("ap2-label-export-title",
+     "AP2 Export",
+     "Policy Mandate Export",
+     None, 0, 20),
+
+    ("ap2-label-export-upper",
+     "AP2 EXPORT",
+     "POLICY MANDATE EXPORT",
+     None, 0, 20),
 ]
 
 # ── Context-gated rule: EU TFR 2024/1624 → 2023/1113 ────────────────────────

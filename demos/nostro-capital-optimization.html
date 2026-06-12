@@ -31,14 +31,14 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/nostro-capital-optimization.html",
-  "description": "Model the migration from SWIFT correspondent rails to tokenized A2A settlement — corridor by corridor. Computes trapped capital, capital unlocked, FX spread savings, and annual P&L lift with AP2 export.",
+  "description": "Model the migration from SWIFT correspondent rails to tokenized A2A settlement — corridor by corridor. Computes trapped capital, capital unlocked, FX spread savings, and annual P&L lift with Policy Mandate export.",
   "featureList": [
     "Seven 2026-vintage cross-border corridor presets (LATAM, EM Asia, Africa)",
     "T+0 atomic vs T+1 net settlement model comparison",
     "Policy Mandate v1 mandate export against @ainumbers.co/capital-brief-v1 schema",
     "FX spread compression benchmarking (SWIFT vs fintech vs tokenized)"
   ],
-  "keywords": "nostro capital, correspondent banking, tokenized settlement, A2A payments, treasury liquidity, Basel III LCR, FX spread, cross-border payments, AP2 mandate",
+  "keywords": "nostro capital, correspondent banking, tokenized settlement, A2A payments, treasury liquidity, Basel III LCR, FX spread, cross-border payments, Policy Mandate",
   "author": {
     "@type": "Organization",
     "name": "Post Oak Labs",
@@ -1225,7 +1225,7 @@ footer.site-footer {
 
     <div class="results-export-row">
       <span class="export-label">Capital Brief · validated against Policy Mandate v1 schema</span>
-      <button class="btn-export" id="exportAp2" type="button">Download AP2 Mandate (JSON)</button>
+      <button class="btn-export" id="exportAp2" type="button">Download Policy Mandate (JSON)</button>
       <button class="btn-export outline" id="exportMd" type="button">Markdown Summary</button>
     </div>
   </div>
@@ -1571,7 +1571,7 @@ function renderFx(r){
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// AP2 MANDATE — schema @ainumbers.co/capital-brief-v1 (spec Part 5.4 Demo 5)
+// POLICY MANDATE — schema @ainumbers.co/capital-brief-v1 (spec Part 5.4 Demo 5)
 // ════════════════════════════════════════════════════════════════════════
 function buildAP2Mandate(){
   const r = compute();
@@ -1648,7 +1648,7 @@ function downloadFile(filename, content, mime){
 function exportAp2(){
   const m = buildAP2Mandate();
   const v = validateAP2(m);
-  if (!v.ok){ alert('AP2 schema validation failed: ' + v.reason); return; }
+  if (!v.ok){ alert('Policy Mandate schema validation failed: ' + v.reason); return; }
   downloadFile(`nostro-capital-brief-${m.mandate_id}.json`, JSON.stringify(m, null, 2), 'application/json');
 }
 

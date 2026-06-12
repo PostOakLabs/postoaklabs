@@ -306,7 +306,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   <aside class="value-at-risk" aria-label="Value at risk — BaaS programme enforcement">
     <h4 class="var-eyebrow">Value at risk · sponsor-bank enforcement &amp; programme termination</h4>
     <p class="var-figure">2023–24 BaaS consent orders: $14M–$24M civil penalties + 60–90 day programme-termination clauses</p>
-    <p class="var-body">Recent BaaS enforcement actions (<strong>Cross River 2023</strong> — $620K + corrective order; <strong>Blue Ridge 2023–24</strong> — $14M total + consent order; <strong>Lineage Bank 2024</strong> — $14M + consent order) repeatedly cite <strong>inadequate enforcement of programme-policy boundaries</strong>. A machine-readable AP2 mandate the runtime cannot silently relax — and that the sponsor bank's audit team can read — is the artifact that turns "policy on a wiki" into "policy on the wire."</p>
+    <p class="var-body">Recent BaaS enforcement actions (<strong>Cross River 2023</strong> — $620K + corrective order; <strong>Blue Ridge 2023–24</strong> — $14M total + consent order; <strong>Lineage Bank 2024</strong> — $14M + consent order) repeatedly cite <strong>inadequate enforcement of programme-policy boundaries</strong>. A machine-readable Policy Mandate the runtime cannot silently relax — and that the sponsor bank's audit team can read — is the artifact that turns "policy on a wiki" into "policy on the wire."</p>
     <p class="var-cite"><small>OCC Bull. 2023-17 · FDIC Recordkeeping NPR (2024) · 12 CFR §225.124 · Cross River / Blue Ridge / Lineage consent orders 2023–24</small></p>
   </aside>
 
@@ -440,7 +440,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <p class="sec-sub">The mandate the runtime loads, the policy your CCO will sign, the MCP tool definition the sponsor-bank auditor can call to verify enforcement.</p>
 
         <div class="preview-tabs" id="preview-tabs">
-          <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+          <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
           <button class="preview-tab" data-tab="md">Policy brief</button>
           <button class="preview-tab" data-tab="mcp">MCP tool def</button>
         </div>
@@ -450,7 +450,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/baas-mandate-v1</div>
 
         <div class="results-export-row">
-          <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+          <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
           <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
           <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
           <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -813,7 +813,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate();
-    if (validate(m).length === 0) { download('ap2-baas-mandate.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('ap2-baas-mandate.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed — fix errors first');
   });
   document.getElementById('btn-md').addEventListener('click', () => {

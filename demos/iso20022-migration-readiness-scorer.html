@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ISO 20022 Migration Readiness Scorer · CBPR+ Structured Address · 14 Nov 2026 · Post Oak Labs</title>
 
-<meta name="description" content="Bank / processor readiness scorer for CBPR+ compliance — MT→MX migration (coexistence ended 22 Nov 2025) and the 14 November 2026 SWIFT structured-address mandate. Per-message-family coverage (pacs.008/009/002, camt.053/054, pain.001), gateway capability, structured-address readiness, exception handling. AP2 mandate export. Client-side, zero PII.">
+<meta name="description" content="Bank / processor readiness scorer for CBPR+ compliance — MT→MX migration (coexistence ended 22 Nov 2025) and the 14 November 2026 SWIFT structured-address mandate. Per-message-family coverage (pacs.008/009/002, camt.053/054, pain.001), gateway capability, structured-address readiness, exception handling. Policy Mandate export. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html">
 <meta property="og:title" content="ISO 20022 Migration Readiness Scorer — Post Oak Labs">
-<meta property="og:description" content="Score your CBPR+ readiness — MT→MX migration (complete Nov 2025) and the 14 Nov 2026 structured-address mandate. Per-message coverage, gateway tier, structured-address state. AP2 mandate. Zero PII.">
+<meta property="og:description" content="Score your CBPR+ readiness — MT→MX migration (complete Nov 2025) and the 14 Nov 2026 structured-address mandate. Per-message coverage, gateway tier, structured-address state. Policy Mandate. Zero PII.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html">
 <meta property="og:image" content="https://postoaklabs.com/demos/og/iso20022-migration-readiness-scorer.png">
@@ -40,7 +40,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/iso20022-readiness-v1",
     "Markdown migration plan and MCP tool definition export"
   ],
-  "keywords": "ISO 20022, SWIFT CBPR+, 14 November 2026, pacs.008, pacs.009, camt.053, pain.001, structured address, MT to MX, payment market practice, migration readiness, AP2 mandate, MCP",
+  "keywords": "ISO 20022, SWIFT CBPR+, 14 November 2026, pacs.008, pacs.009, camt.053, pain.001, structured address, MT to MX, payment market practice, migration readiness, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-05-25",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -293,7 +293,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       open deadline is the <b>14 November 2026 structured-address mandate</b>: after that date,
       CBPR+ payment instructions carrying unstructured postal addresses face rejection. This lab
       scores readiness across six message families, the gateway capability tier, and CBPR+
-      structured-address state — then exports an AP2 mandate the programme team can audit against.
+      structured-address state — then exports an Policy Mandate the programme team can audit against.
     </p>
     <div class="hero-meta">
       <span class="hero-badge privacy">Zero PII · Client-side</span>
@@ -431,7 +431,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <div style="margin-top:1rem;">
           <div class="preview-tabs" id="preview-tabs">
-            <button class="preview-tab sel" data-tab="ap2">AP2 JSON</button>
+            <button class="preview-tab sel" data-tab="ap2">Policy Mandate JSON</button>
             <button class="preview-tab" data-tab="md">Migration plan</button>
             <button class="preview-tab" data-tab="mcp">MCP tool def</button>
           </div>
@@ -441,7 +441,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div class="validation ok" id="validation">Policy Mandate v1 · valid · @ainumbers.co/iso20022-readiness-v1</div>
 
           <div class="results-export-row">
-            <button class="btn-export btn-ap2" id="btn-ap2">⇣ AP2 JSON</button>
+            <button class="btn-export btn-ap2" id="btn-ap2">⇣ Policy Mandate JSON</button>
             <button class="btn-export btn-md" id="btn-md">⇣ Markdown</button>
             <button class="btn-export btn-mcp" id="btn-mcp">⇣ MCP def</button>
             <button class="btn-export btn-copy" id="btn-copy">📋 Copy current</button>
@@ -671,7 +671,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     renderPreview(m);
   }
 
-  // ── AP2 mandate ──────────────────────────────────────────────────────
+  // ── Policy Mandate ──────────────────────────────────────────────────────
   function buildMandate(model){
     const now = new Date().toISOString();
     const mandateId = 'pol-demo-22-' + Math.random().toString(36).slice(2,10);
@@ -839,7 +839,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   document.getElementById('btn-ap2').addEventListener('click', () => {
     const m = buildMandate(compute());
-    if (validate(m).length === 0) { download('iso20022-readiness-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('AP2 mandate exported'); }
+    if (validate(m).length === 0) { download('iso20022-readiness-mandate.ap2.json', JSON.stringify(m, null, 2), 'application/json'); toast('Policy Mandate exported'); }
     else toast('Schema validation failed');
   });
   document.getElementById('btn-md').addEventListener('click', () => {
