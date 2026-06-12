@@ -3,6 +3,7 @@
 # Format follows llms.txt convention (https://llmstxt.org)
 # Last updated: June 2026
 # Canonical: https://postoaklabs.com/llms.txt
+# Extended per-scenario descriptions: https://postoaklabs.com/llms-full.txt
 # X / Twitter: https://x.com/PostOakLabs
 # Contact: contact@postoaklabs.com
 
@@ -16,7 +17,7 @@ Post Oak Labs has deep advisory and integration experience in tokenized payment 
 
 The firm operates two public-facing properties:
 - postoaklabs.com — advisory, services, and client-facing content
-- ainumbers.co — 400+ browser-based fintech intelligence tools (built and maintained by Post Oak Labs)
+- ainumbers.co — 455 browser-based fintech intelligence tools (built and maintained by Post Oak Labs)
 
 ---
 
@@ -91,7 +92,7 @@ AINumbers.co tools export structured Policy Mandate JSON — a named open schema
 | DLT & Tokenization | 21 |
 | Rule-Based AI & Agentic | 7 |
 | Reference & Decoder | 1 |
-| **Total** | **109 (MCP-exposed tools; 400+ in the full ainumbers.co catalog)** |
+| **Total** | **109 (MCP-exposed tools; 455 in the full ainumbers.co catalog)** |
 
 ### Usage Notes for Agents
 
@@ -133,7 +134,7 @@ The showcase at https://postoaklabs.com/demos/ is a curated catalog of 44 browse
 Five buyer-archetype hubs filter and sequence the scenarios for distinct audiences. All five hubs are public, indexed, and crawlable.
 
 - Showcase landing — all 44 scenarios, persona filter, MCP recording, link to Tool Chain Composer: https://postoaklabs.com/demos/
-- Tool Chain Composer — the full 400+ tool AINumbers catalog as a clustered atlas, with the 33 showcase scenarios highlighted. 15 categories, Policy Mandate schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
+- Tool Chain Composer — the full 455 tool AINumbers catalog as a clustered atlas, with the 33 showcase scenarios highlighted. 15 categories, Policy Mandate schemas surfaced, filterable by capability and persona: https://postoaklabs.com/demos/composer.html
 - Agentic Runtime hub — deterministic AP2/MCP policy layer for agent runtime builders (Anthropic, Google AP2, OpenAI, Vellum, LangChain): https://postoaklabs.com/demos/agentic-runtime/
 - RegTech hub — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating (ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay): https://postoaklabs.com/demos/regtech/
 - BaaS hub — provider economics, embedded-lending unit economics, SME credit passport, wallet float yield, VRP mandates, AP2 BaaS infrastructure mandates (Unit, Synctera, Treasury Prime, Marqeta, Galileo): https://postoaklabs.com/demos/baas/
@@ -195,7 +196,7 @@ Composers orchestrate a full tool chain in one page via the AIN Bridge and expor
 
 ## Sister Sites & Affiliated Practices
 
-- Post Oak Labs Fintech Tools: https://ainumbers.co — 400+ free, open-source, client-side fintech tools for payments professionals. See https://ainumbers.co/llms.txt for the full tool catalog and MCP manifest.
+- Post Oak Labs Fintech Tools: https://ainumbers.co — 455 free, open-source, client-side fintech tools for payments professionals. See https://ainumbers.co/llms.txt for the full tool catalog and MCP manifest.
 - Meridian Capital Advisory (https://meridiancapital.me) — liquidity management, capital adequacy, Basel III/IV regulatory reporting, ILAAP/ICAAP, FP&A for banks.
 - Apex Advisory & Education (https://apexadvisory.site) — boutique MBA admissions consulting, online tutoring in economics/history/business/finance, TOEFL preparation, TEFL coaching.
 

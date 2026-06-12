@@ -349,6 +349,42 @@ RULES = [
      "AP2 EXPORT",
      "POLICY MANDATE EXPORT",
      None, 0, 20),
+
+    # ── 47–53. dateModified: update stale dates in demos/ to 2026-06-12 ──────
+    ("datemod-may12",
+     "\"dateModified\": \"2026-05-12\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 3),
+
+    ("datemod-may13",
+     "\"dateModified\": \"2026-05-13\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 25),
+
+    ("datemod-may14",
+     "\"dateModified\": \"2026-05-14\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 10),
+
+    ("datemod-may16",
+     "\"dateModified\": \"2026-05-16\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 10),
+
+    ("datemod-may25",
+     "\"dateModified\": \"2026-05-25\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 3),
+
+    ("datemod-may28",
+     "\"dateModified\": \"2026-05-28\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 3),
+
+    ("datemod-may29",
+     "\"dateModified\": \"2026-05-29\"",
+     "\"dateModified\": \"2026-06-12\"",
+     "demos", 0, 6),
 ]
 
 # ── Context-gated rule: EU TFR 2024/1624 → 2023/1113 ────────────────────────

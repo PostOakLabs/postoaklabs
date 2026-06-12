@@ -1,0 +1,366 @@
+# Post Oak Labs — llms-full.txt
+# Extended machine-readable site guide for LLMs, agents, and crawlers
+# Companion to llms.txt — per-scenario extended descriptions for agent ingestion
+# Format follows llms.txt convention (https://llmstxt.org)
+# Last updated: June 2026
+# Canonical: https://postoaklabs.com/llms-full.txt
+# See also: https://postoaklabs.com/llms.txt (concise overview)
+# Contact: contact@postoaklabs.com
+
+---
+
+## About Post Oak Labs
+
+Post Oak Labs is a specialist consulting firm focused on tokenized financial infrastructure, stablecoin strategy, CBDC integration, and institutional blockchain advisory. Clients are commercial banks, central banks, and large corporates — primarily Latin America, Africa, the Caribbean, and South Asia. This file provides extended per-scenario descriptions of the Fintech Intelligence Showcase at postoaklabs.com/demos/. For firm overview, MCP server details, and key content pages, see llms.txt.
+
+---
+
+## Fintech Intelligence Showcase — Extended Scenario Descriptions
+
+All scenarios are browser-based, client-side, zero PII, and Policy Mandate-exportable. Output format unless otherwise noted: structured Policy Mandate JSON exportable to clipboard or file, validated against the named ainumbers.co schema. Buyer personas are indicative — most tools serve multiple roles.
+
+---
+
+### Scenario #1 — Merchant Payment Rails Blender
+URL: https://postoaklabs.com/demos/merchant-payment-rails-blender.html
+
+Takes interchange rate, scheme fee, processing cost, and acquiring margin inputs across up to three payment processors (Adyen, Stripe, Worldpay, or custom) and computes blended take-rate, net margin per transaction, and annual cost delta at a given volume. The tool models both card-present and card-not-present environments with scheme-specific interchange schedules. Output is a Policy Mandate JSON summarising processor selection rationale, cost assumptions, and recommended rail split — suitable for direct ingestion by an agent executing a payment-optimisation workflow. Buyer persona: payments strategy teams at merchants, acquirers, and BaaS platforms evaluating processor mix or contract renegotiation.
+
+---
+
+### Scenario #2 — ISO 20022 / CBPR+ Message Truncation Auditor
+URL: https://postoaklabs.com/demos/iso20022-message-truncation-auditor.html
+
+Validates pacs.008 and pacs.009 CBPR+ messages against the 14 November 2026 SWIFT CBPR+ structured-address mandate, flagging truncation risk in Creditor/Debtor Agent, Debtor/Creditor structured address, and LEI fields. The tool models the three truncation scenarios defined in the SWIFT CBPR+ Migration Guide and scores each field for compliance readiness. Regulatory framework: SWIFT CBPR+ Harmonisation Programme, ISO 20022 message standards MX pacs/camt/pain. Buyer persona: payments operations and ISO 20022 programme managers at correspondent banks, CSDs, and payment service providers with CBPR+ cutover deadlines.
+
+---
+
+### Scenario #3 — DORA / NIS2 Dual-Compliance Deduplicator
+URL: https://postoaklabs.com/demos/dora-compliance-deduplication-tool.html
+
+Maps a financial entity's existing NIS2 controls against DORA requirements across five pillars (ICT risk management, incident classification, resilience testing, third-party risk, information sharing) and identifies obligations that satisfy both regimes simultaneously. The deduplication output shows control coverage, gaps unique to DORA, and the estimated effort reduction from a joint programme versus separate DORA and NIS2 work streams. Regulatory framework: EU DORA (Regulation 2022/2554, applicable 17 January 2025) and NIS2 Directive (2022/0383, transposed October 2024). Buyer persona: CISOs, compliance officers, and RegTech programme leads at EU banks, investment firms, and payment institutions subject to both directives.
+
+---
+
+### Scenario #4 — LATAM Treasury Rails Migration Lab
+URL: https://postoaklabs.com/demos/latam-liquidity-migration-tool.html
+
+Models the economics of migrating B2B cross-border payment flows from correspondent banking chains to tokenized A2A rails across five LATAM corridors (Brazil, Mexico, Colombia, Peru, Chile). Inputs include corridor volumes, current correspondent banking fees and FX spreads, and projected tokenized-rail settlement costs — the tool outputs net-savings projection, payback period, and a decision matrix across three migration scenarios (full cutover, parallel operation, selective corridors). The output Policy Mandate encodes corridor selection, timeline, and settlement-cost assumptions for agent-driven treasury workflow integration. Buyer persona: treasury and transaction banking heads at regional banks and multinational corporates with significant LATAM cross-border payment volumes.
+
+---
+
+### Scenario #5 — Nostro Capital Unlock Simulator
+URL: https://postoaklabs.com/demos/nostro-capital-optimization.html
+
+Quantifies the capital tied up in a bank's nostro network by modelling pre-funded balances across correspondent accounts, average float duration, and opportunity cost versus a tokenized PvP settlement alternative. The simulator computes freed capital, yield on redeployed funds at given money-market rates, and the reduction in FX settlement risk (Herstatt risk exposure). Regulatory context: BIS CPMI FX Global Code, PvP settlement best practices, BCBS LCR/NSFR treatment of nostro balances. Buyer persona: treasury, correspondent banking, and transaction banking teams at banks running multi-currency nostro networks seeking to quantify the business case for tokenized settlement.
+
+---
+
+### Scenario #6 — SME Credit Passport (Brazil + Nigeria)
+URL: https://postoaklabs.com/demos/sme-credit-passport-global-south.html
+
+Generates a portable SME credit profile from financial statement inputs (revenue, EBITDA, current ratio, debt service) combined with country-specific open banking consent data availability flags for Brazil (Open Finance Brasil) and Nigeria (CBN Open Banking Framework). The tool applies localised credit-scoring heuristics, flags data gaps that would prevent a creditworthiness determination, and outputs a structured Policy Mandate encoding the credit assessment — designed for submission to a BaaS-embedded lending API. Buyer persona: BaaS platforms, embedded-finance providers, and fintech lenders building credit products for SMEs in emerging markets where traditional bureau coverage is thin.
+
+---
+
+### Scenario #7 — Policy Mandate Payment Policy Guardrail
+URL: https://postoaklabs.com/demos/ap2-agentic-payment-policy-guardrail.html
+
+Generates a structured payment policy mandate that constrains an autonomous payment agent: spending cap per transaction and per day, permitted counterparty list, rail eligibility rules, and required pre-authorisation thresholds. The guardrail validates each proposed agent action against the active mandate before execution, returning a pass/fail decision with the specific policy clause cited. Output schema: Policy Mandate against @ainumbers.co/payment-guardrail-v1 — directly ingestible by Anthropic Claude tool calls, OpenAI function-calling, Vellum, and LangChain agent runtimes. Buyer persona: agent runtime engineers and payments architects building autonomous payment workflows that require human-defined policy constraints enforced at runtime.
+
+---
+
+### Scenario #8 — Stablecoin Issuer Readiness Lab (MiCA Title III + GENIUS Act)
+URL: https://postoaklabs.com/demos/stablecoin-issuer-readiness-mica-genius.html
+
+Scores a stablecoin issuer's reserve composition, redemption policy, and operational safeguards against both MiCA Title III (EU, applicable June 2024) and the GENIUS Act (US, effective January 2027), producing a composite readiness score and per-requirement gap analysis. The tool models reserve eligibility rules, segregation requirements, disclosure cadence obligations, and the interaction between EU issuer authorisation and US federal/state licensing pathways. Output is a Policy Mandate against @ainumbers.co/stablecoin-readiness-v1 encoding the issuer's current posture and priority remediation steps. Buyer persona: stablecoin issuers (Paxos, Circle, Bridge-type platforms), bank treasury teams evaluating stablecoin issuance, and compliance counsel assessing dual-jurisdiction filing requirements.
+
+---
+
+### Scenario #9 — BaaS Provider Economics Comparator
+URL: https://postoaklabs.com/demos/baas-provider-economics-comparator.html
+
+Compares the unit economics of three BaaS stack configurations (sponsor-bank direct, middleware BaaS platform, modular BaaS) across ledger fees, BIN sponsorship cost, compliance pass-through, and interchange revenue share, at a given monthly active user count and average transaction volume. The tool surfaces the revenue-per-account and cost-per-account for each configuration and models the break-even point at which a sponsor-bank direct relationship becomes economically superior to a middleware platform. Buyer persona: neobank founders, embedded-finance product leads, and bank partnership teams evaluating BaaS vendor selection or sponsor-bank negotiation strategy.
+
+---
+
+### Scenario #10 — Embedded Finance Licensing Navigator
+URL: https://postoaklabs.com/demos/embedded-finance-licensing-navigator.html
+
+Maps the regulatory licensing pathway for an embedded finance product (payments, lending, insurance, or investment) across seven jurisdictions (UK, EU, US, Brazil, Singapore, UAE, Nigeria), showing required authorisations, passporting options, minimum capital thresholds, and typical time-to-licence. The tool flags whether an EMI licence, payment institution authorisation, or bank licence is required for the intended product scope, and identifies sandbox or innovation hub routes where available. Regulatory frameworks covered: UK FCA, EU PSD2/EMD2 (transitioning to PSD3/EMDR), US state money transmission, Brazil BCB, MAS, CBUAE, CBN. Buyer persona: fintech founders, corporate venture arms, and legal counsel planning cross-border embedded finance product launches.
+
+---
+
+### Scenario #11 — AML Transaction Monitoring Rule Builder
+URL: https://postoaklabs.com/demos/aml-transaction-monitoring-rule-builder.html
+
+Builds and calibrates AML transaction monitoring rules — velocity, structuring, counterparty risk, and channel-specific signals — modelling false-positive and true-positive rates at configurable alert thresholds. The tool generates a ruleset export in Policy Mandate JSON and an MCP tool definition, enabling the ruleset to be invoked directly by an agent runtime without manual re-entry. Regulatory alignment: FATF Recommendation 10 (CDD), EU AMLR (2024/1624), FinCEN SAR filing thresholds, and UK MLR 2017. Buyer persona: financial crime operations teams, RegTech platform engineers (ComplyAdvantage, Hummingbird, ThetaRay), and compliance officers calibrating monitoring thresholds at banks, PSPs, and VASPs.
+
+---
+
+### Scenario #12 — Customer Risk Rating Engine
+URL: https://postoaklabs.com/demos/customer-risk-rating-engine.html
+
+Applies a configurable risk-scoring model to a customer profile — business type, jurisdiction, transaction behaviour, PEP/sanctions flags, and beneficial ownership complexity — producing a risk score, risk band (low/medium/high/very-high), and the specific risk factors driving the rating. The engine follows a weighted-attribute methodology aligned with FATF Guidance on Risk-Based Approach and EU 6AMLD / AMLR CDD requirements. Output is a structured Policy Mandate encoding the risk rating decision and the evidence base, suitable for audit trail and automated downstream CDD workflow triggers. Buyer persona: AML compliance teams, KYC operations, and RegTech vendors (Sumsub, Unit21) integrating risk-rating logic into customer onboarding and periodic review workflows.
+
+---
+
+### Scenario #13 — FedNow / Instant-Payment Fraud Risk Lab
+URL: https://postoaklabs.com/demos/instant-payment-fraud-risk-lab.html
+
+Models real-time fraud risk on instant-payment rails using a six-signal scoring model: device velocity, payee account age, transaction amount relative to historical, time-of-day anomaly, geographic delta, and counterparty network score. The lab produces a composite fraud score, expected dollar loss at a given false-negative rate, and a confusion matrix showing the precision/recall tradeoff at configurable threshold levels — with a constraint that total decision latency stays under 200ms. Output is a Policy Mandate against @ainumbers.co/instant-pay-fraud-v1 encoding the model configuration. Buyer persona: fraud operations and risk engineering teams at FedNow participants, RTP network members, and real-time payment processors (Stripe Compliance, Worldpay, Adyen) deploying sub-second fraud decisioning.
+
+---
+
+### Scenario #14 — FATF Sanctions Programme Readiness
+URL: https://postoaklabs.com/demos/fatf-sanctions-programme-readiness.html
+
+Assesses a financial institution's sanctions screening and controls programme against FATF Recommendation 6 (targeted financial sanctions), OFAC SDN/OFAC 50% rule, EU consolidated list, UN consolidated list, and UK HMT sanctions. The tool scores five programme dimensions — screening coverage, list refresh frequency, name-matching methodology, escalation workflow, and audit trail — and produces a gap analysis with priority remediation actions. Output is a Policy Mandate summarising the current sanctions posture and the steps required to meet the most stringent applicable regime. Buyer persona: compliance officers, sanctions programme leads, and RegTech integration teams at banks, payment institutions, and VASPs with cross-border exposure requiring multi-list screening.
+
+---
+
+### Scenario #15 — VASP Travel Rule (FATF R.16) Compliance Checker
+URL: https://postoaklabs.com/demos/vasp-travel-rule-compliance-checker.html
+
+Checks whether a given virtual asset transfer satisfies FATF Recommendation 16 Travel Rule obligations across five regulatory implementations: FATF baseline, EU TFR (2023/1113), FinCEN Travel Rule (31 CFR 103.33), UK MLR 2017, and MAS Notice PSN02. The tool validates originator and beneficiary data completeness, threshold applicability (USD/EUR/SGD 1,000 equivalents), and VASP-to-VASP data transmission requirements. Output is a Policy Mandate against @ainumbers.co/vasp-travel-rule-v1 with a per-jurisdiction pass/fail determination and the specific data fields missing or invalid. Buyer persona: compliance teams, VASP legal counsel, and Travel Rule solution providers (Notabene, Sygna, 21Analytics) integrating compliance checks into VASP onboarding and transaction workflows.
+
+---
+
+### Scenario #16 — KYB Beneficial Ownership Network Mapper
+URL: https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html
+
+Renders an interactive SVG ownership-chain graph from entity hierarchy inputs, identifying ultimate beneficial owners (UBOs) above configurable thresholds (25% default), detecting circular ownership structures, and counting hops to any sanctioned entity in the network. The tool applies UBO identification rules across four regimes: FinCEN Corporate Transparency Act (25% threshold, effective January 2024), EU 6AMLD (25%), UK PSC Register (25%), and MAS (25%). Output is a Policy Mandate against @ainumbers.co/kyb-ubo-v1 encoding the ownership graph structure and UBO determinations. Buyer persona: KYB operations teams, corporate onboarding units at banks, and RegTech platforms (ComplyAdvantage, Sumsub) building automated beneficial ownership verification workflows.
+
+---
+
+### Scenario #17 — Wallet Float Yield Estimator
+URL: https://postoaklabs.com/demos/wallet-float-yield-estimator.html
+
+Models the treasury revenue a BaaS platform can generate on stored-value wallet balances: inputs are average float per account, number of active accounts, money-market yield rate, programme fee pass-through, and FDIC pass-through or safeguarding cost. The tool computes gross float income, net yield after safeguarding and operational costs, and annualised revenue contribution in dollar and basis-point terms. Output is a Policy Mandate against @ainumbers.co/wallet-float-v1 encoding the treasury model parameters and revenue forecast. Buyer persona: BaaS CFOs, treasury teams, and product leads at neobanks and BaaS platforms (Unit, Synctera, Treasury Prime) optimising stored-value yield within safeguarding and e-money authorisation constraints.
+
+---
+
+### Scenario #18 — VRP Mandate & Sweep Logic Designer
+URL: https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html
+
+Designs a Variable Recurring Payment mandate specifying sweep window (daily/weekly/monthly), individual and periodic amount caps, idempotency key logic, beneficiary scope (single account or broad), and revocation handling — validated against UK CMA9 VRP framework, EU PSD3 proposed VRP provisions, SEPA VRP pilot specifications, and the US Open Banking Alliance model. A live 24-hour permitted-window timeline visualises the configured sweep schedule. Output is a Policy Mandate against @ainumbers.co/vrp-mandate-v1 encoding the full VRP consent structure. Buyer persona: open banking product managers, payments architects, and compliance teams at banks, fintechs, and payment initiation service providers building VRP-based sweeping, lending repayment, or bill-payment products.
+
+---
+
+### Scenario #19 — Global Real-Time Rails Comparator
+URL: https://postoaklabs.com/demos/global-real-time-rails-comparator.html
+
+Compares the scheme economics, settlement finality, operating hours, transaction limits, message format, and fraud liability model of the twelve major real-time payment rails globally — FedNow, RTP (TCH), Pix, UPI, Faster Payments, SEPA Instant, PromptPay, PayNow, FPS (HK), NPP (AU), IMPS, and SPEI. The comparator filters by region, use case (P2P, B2B, merchant, cross-border), and integration method (direct, sponsored, overlay) to surface the optimal rail for a given deployment scenario. Buyer persona: processors, regional banks, and payment infrastructure architects selecting rails for product expansion or cross-border overlay service design.
+
+---
+
+### Scenario #20 — Embedded Lending Unit Economics Lab
+URL: https://postoaklabs.com/demos/embedded-lending-unit-economics-lab.html
+
+Models the unit economics of an embedded lending product at the account level: revenue inputs (origination fee, interest income, interchange on associated card) against cost inputs (cost of funds, servicing cost, expected credit loss, compliance overhead). The lab computes net revenue per loan, contribution margin, and the customer lifetime value at a given retention rate and repeat-borrow frequency. Scenario modelling covers prime, near-prime, and thin-file credit cohorts with configurable loss rates. Buyer persona: BaaS platform product leaders, embedded-finance lenders, and bank partnership teams building or pricing embedded credit products for SME or consumer markets.
+
+---
+
+### Scenario #21 — Tokenized RWA Compliance Pre-Checker
+URL: https://postoaklabs.com/demos/tokenized-rwa-compliance-pre-checker.html
+
+Classifies a tokenized real-world asset offering across eight asset classes (real estate, private credit, commodities, infrastructure, trade finance receivables, money market funds, equities, bonds) and seven jurisdictions (EU/MiCA, US/Howey, UK, Singapore/MAS, UAE/ADGM, Hong Kong/SFC, Switzerland/FINMA), returning a per-jurisdiction compliance pathway verdict of viable, remediate, or not-viable with per-line findings. The tool models offering structure (fractional, fund-wrapped, direct token), secondary-market transferability, and whitelist requirements. Output is a Policy Mandate against @ainumbers.co/rwa-readiness-v1 encoding the classification rationale. Buyer persona: asset managers, tokenization platforms, and legal counsel structuring RWA token offerings across multiple jurisdictions.
+
+---
+
+### Scenario #22 — ISO 20022 Migration Readiness Scorer
+URL: https://postoaklabs.com/demos/iso20022-migration-readiness-scorer.html
+
+Scores a financial institution's ISO 20022 readiness across six message families (pacs, pain, camt, acmt, reda, setr), gateway architecture (native MX vs. translation-layer), structured-address population rate, and hybrid-period plan — producing a composite readiness score, a message-family coverage matrix, and a T-minus countdown to the 14 November 2026 CBPR+ structured-address mandate. The scorer flags the specific fields and message types most at risk of truncation or rejection post-mandate. Output is a Policy Mandate against @ainumbers.co/iso20022-readiness-v1. Buyer persona: ISO 20022 programme managers, payments architects, and operations leads at correspondent banks, central banks, and payment market infrastructures racing the CBPR+ structured-address deadline.
+
+---
+
+### Scenario #23 — Policy Mandate AML Mandate Builder
+URL: https://postoaklabs.com/demos/ap2-aml-mandate-builder.html
+
+Constructs a multi-domain AML policy mandate covering CDD/EDD thresholds, transaction monitoring rule parameters, SAR escalation triggers, and sanctions screening obligations — across up to three simultaneous regulatory regimes (FATF, EU AMLR, FinCEN). The builder exports the mandate as structured Policy Mandate JSON against @ainumbers.co/aml-mandate-v1, directly consumable by an agent runtime executing AML workflow automation. Each clause in the mandate includes a regulatory citation, enabling downstream audit trail generation. Buyer persona: AML programme architects, RegTech platform engineers, and compliance officers building agent-driven AML operations at banks, payment institutions, and VASPs.
+
+---
+
+### Scenario #24 — Policy Mandate BaaS Infrastructure Mandate Builder
+URL: https://postoaklabs.com/demos/ap2-baas-infrastructure-mandate-builder.html
+
+Generates a comprehensive BaaS infrastructure policy mandate encoding programme-level controls: sponsor-bank eligibility gates, BIN-tier transaction ceilings, rail-specific authorisation limits, KYC/KYB tier requirements, and velocity rules. The mandate is structured as Policy Mandate JSON against @ainumbers.co/baas-mandate-v1, enabling a BaaS middleware platform or agent runtime to enforce programme policy at the transaction level without human review of each decision. The builder models the three major BaaS programme structures (full-stack sponsor, middleware platform, modular BaaS) with preset configurations for Unit, Synctera, Treasury Prime, Marqeta, and Galileo. Buyer persona: BaaS product architects, sponsor-bank risk teams, and platform compliance officers configuring programme-level guardrails for embedded finance products.
+
+---
+
+### Scenario #25 — Cross-Border FX Netting Simulator
+URL: https://postoaklabs.com/demos/cross-border-fx-netting-simulator.html
+
+Models multilateral FX netting across an editable four-subsidiary, three-currency payable matrix, computing gross settlement flows, bilateral netting compression, and full multilateral netting compression — with FX spread savings, freed nostro balance, and Herstatt risk reduction expressed in dollar terms. Three settlement modes (gross, bilateral, multilateral) are compared side-by-side. Output is a Policy Mandate against @ainumbers.co/fx-netting-v1 encoding the netting configuration and settlement economics. Buyer persona: group treasury, in-house banking centres, and transaction banking teams at multinationals and correspondent banks evaluating netting centre design or POBO/COBO structure optimisation.
+
+---
+
+### Scenario #26 — DORA ICT Risk Gap Analyser
+URL: https://postoaklabs.com/demos/dora-ict-risk-gap-analyser.html
+
+Assesses ICT risk management programme maturity across all five DORA pillars (ICT risk framework, incident management, resilience testing, third-party risk, intelligence sharing) plus Article 28 third-party concentration risk depth — scoring each domain and producing a gap heat map with priority remediation actions. The analyser models the three DORA entity tiers (significant financial entities subject to TLPT, standard entities, simplified-regime entities) and calibrates obligation depth accordingly. Output is a Policy Mandate against @ainumbers.co/dora-gap-v1. Buyer persona: DORA programme leads, CISOs, and third-party risk officers at EU financial entities preparing for ongoing DORA supervisory scrutiny.
+
+---
+
+### Scenario #27 — Agentic Mandate Sandbox
+URL: https://postoaklabs.com/demos/agentic-mandate-sandbox.html
+
+Accepts any Policy Mandate emitted by any other showcase scenario, queues a candidate agent action (payment initiation, data access request, or rule modification), and executes a step-by-step trace showing how the mandate evaluates the action — pass, conditional pass, or block — with the specific policy clause cited at each decision step. The trace itself exports as a Policy Mandate against @ainumbers.co/sandbox-trace-v1, enabling audit-trail generation for agent action logs. This is the primary testing environment for engineers integrating Policy Mandate guardrails into autonomous agent workflows. Buyer persona: agent runtime engineers (Anthropic, Google AP2, OpenAI, Vellum, LangChain) validating that policy mandate constraints function correctly before deploying autonomous payment or data-access agents.
+
+---
+
+### Scenario #28 — Card Programme Design Studio
+URL: https://postoaklabs.com/demos/card-programme-design-studio.html
+
+Designs the commercial structure of a card programme end-to-end: BIN configuration, network scheme selection (Visa/Mastercard/Amex/UnionPay), interchange income model, processing fee stack, programme management fee, and cardholder reward cost — producing a contribution margin model at configurable active card counts and average monthly spend levels. The studio models co-brand, private-label, and open-loop programme structures with network-specific interchange schedules. Buyer persona: bank card product managers, BaaS platforms, and programme managers (Marqeta, Galileo, Mastercard Send) designing or repricing card programmes.
+
+---
+
+### Scenario #29 — CFPB §1033 Financial Data Rights Mapper
+URL: https://postoaklabs.com/demos/cfpb-1033-financial-data-rights-mapper.html
+
+Maps a US financial institution's data-sharing obligations under CFPB Rule §1033 (effective October 2024 for the largest institutions) — covering required data categories (account information, transaction history, upcoming bills, terms and conditions), standardised API formats (FDX alignment), third-party authorisation scope, and consumer data portability rights. The tool identifies which data types a given institution is obligated to share, by compliance tier date, and flags gaps in existing API infrastructure against the rule's technical specifications. Regulatory framework: Dodd-Frank Act Section 1033, CFPB Personal Financial Data Rights Rule (12 CFR Part 1033). Buyer persona: open banking programme managers, legal and compliance counsel, and API platform teams at US banks and credit unions scoping their §1033 implementation roadmap.
+
+---
+
+### Scenario #30 — Basel IV Capital Stress Lab
+URL: https://postoaklabs.com/demos/basel-iv-capital-stress-lab.html
+
+Models a bank's capital position under the Basel IV final rules: Standardised Approach for Credit Risk (SA-CR), Fundamental Review of the Trading Book (FRTB SA), revised Operational Risk Standardised Approach, and the 72.5% output floor applied against internal model results. Inputs are current RWA by portfolio, current CET1 ratio, and projected output floor impact — the tool computes the capital deficit or surplus under full Basel IV implementation and phases the impact across the 2025–2030 transition schedule. Regulatory framework: BCBS Basel IV final rules, EU CRR3 (in force January 2025), US Basel III Endgame NPR. Buyer persona: capital management, regulatory reporting, and CFO teams at banks with significant IRB model usage facing output floor transition.
+
+---
+
+### Scenario #31 — SME Credit Intelligence Platform
+URL: https://postoaklabs.com/demos/sme-credit-intelligence-platform.html
+
+Aggregates a multi-signal SME creditworthiness assessment from financial statement ratios, open banking transaction data coverage, market sector risk overlay, and management quality indicators — producing a structured credit intelligence report with risk score, peer benchmarking, and the specific data gaps that limit scoring confidence. Unlike the SME Credit Passport (Scenario #6), this tool focuses on the bank's internal credit intelligence workflow rather than the portable borrower-facing passport. Buyer persona: SME lending credit analysts, underwriting teams, and credit risk platform vendors building data-driven SME credit decisioning at regional and commercial banks.
+
+---
+
+### Scenario #32 — Timor-Leste / Bangladesh Stablecoin Settlement
+URL: https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html
+
+Models the economics and regulatory feasibility of a stablecoin-denominated settlement corridor between Timor-Leste and Bangladesh — two markets with high remittance dependence, limited correspondent banking infrastructure, and active CBDC or stablecoin regulatory engagement. The tool compares stablecoin corridor costs against SWIFT correspondent chain costs, models USD-peg reserve requirements, and identifies the regulatory authorisation pathway in both jurisdictions. This is a corridor-specific deep-dive companion to the broader stablecoin readiness tools. Buyer persona: remittance operators, central bank innovation teams, and development finance institutions designing payment infrastructure for underbanked corridors in South and Southeast Asia.
+
+---
+
+### Scenario #33 — EU AI Act Financial Services Risk Mapper
+URL: https://postoaklabs.com/demos/eu-ai-act-financial-services-risk-mapper.html
+
+Maps AI system use cases deployed at a financial institution against the EU AI Act risk classification framework (prohibited practices, high-risk Article 6 systems, and limited/minimal risk systems), with sector-specific guidance for financial services applications: credit scoring, AML transaction monitoring, insurance underwriting, and trading algorithm supervision. The tool identifies which Article 9 risk management, Article 10 data governance, and Article 13 transparency obligations apply to each system and surfaces the documentation requirements for the technical file and conformity assessment. Regulatory framework: EU AI Act (Regulation 2024/1689), DORA interaction, EBA/ESMA/EIOPA joint opinion on AI governance. Buyer persona: AI governance leads, model risk officers, and compliance teams at EU-regulated financial institutions inventorying their AI systems ahead of August 2026 high-risk deadlines.
+
+---
+
+### Scenario #34 — AML End-to-End Workflow
+URL: https://postoaklabs.com/demos/aml-end-to-end-workflow.html
+
+Chains four AML operations tools in sequence: customer risk rating, transaction monitoring rule calibration, SAR narrative generation, and final AML Policy Mandate export — with presets for three programme profiles (VASP, trade finance, retail bank). Each stage outputs a structured intermediate mandate that the next stage ingests, demonstrating a complete agent-executable AML operations chain. Regulatory alignment: FATF Recommendation 10 (CDD), FATF R.20 (SAR/STR filing), EU AMLR (2024/1624). Buyer persona: AML operations architects and compliance technology teams at banks, PSPs, and VASPs building or auditing end-to-end AML programme automation.
+
+---
+
+### Scenario #35 — CBDC / DLT Architecture Studio
+URL: https://postoaklabs.com/demos/cbdc-dlt-architecture-studio.html
+
+Designs the high-level architecture of a CBDC or tokenized payment system: wholesale vs. retail vs. hybrid model, two-tier vs. direct distribution, DLT platform selection (R3 Corda, Hyperledger Fabric, Besu, Digital Asset Canton, or custom), interoperability scenario (API gateway, atomic swap, HTLC, mBridge-style multi-CBDC hub), and privacy model (account-based, token-based, blind signature). The studio scores each configuration against five criteria: finality speed, programmability, privacy, interoperability, and regulatory compliance posture. Output Policy Mandate encodes the architecture decision rationale. Buyer persona: central bank digital currency teams, tokenized payment infrastructure architects, and DLT strategy leads at central banks, multilateral development banks, and large commercial banks.
+
+---
+
+### Scenario #36 — Embedded Finance Licensing Navigator (Advanced)
+URL: https://postoaklabs.com/demos/embedded-finance-licensing-navigator.html
+
+[See Scenario #10 above for the primary embedded finance licensing tool description. This entry in the scenario numbering sequence corresponds to a variant of the embedded finance licensing journey.]
+
+---
+
+### Scenario #37 — West Africa Digital Currency Corridor
+URL: https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html
+
+Models cross-border digital currency settlement across the five major West African markets (Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU CFA digital overlay, ECOWAS proposed regional CBDC, ECCU DCash comparator), comparing settlement economics — fees, FX conversion cost, finality — against SWIFT correspondent chain benchmarks. The tool includes a FATF compliance overlay showing where each corridor satisfies FATF R.16 Travel Rule and AML/CFT requirements, and flags the regulatory gaps blocking corridor activation. Output Policy Mandate encodes the corridor design, regulatory gaps, and settlement cost model. Buyer persona: regional development banks (AfDB, ECOWAS), central bank innovation teams, and cross-border payment operators designing digital currency infrastructure for West African corridors.
+
+---
+
+### Scenario #38 — mBridge Multi-CBDC Corridor Modeler
+URL: https://postoaklabs.com/demos/mbridge-multicbdc-corridor-modeler.html
+
+Models multi-CBDC PvP settlement across the five mBridge participant corridors (e-CNY, Digital Dirham UAE, e-Baht Thailand, Digital Riyal Saudi Arabia, e-HKD), computing settlement mechanism design, UTC business-hour overlap diagnostics for same-day finality, and corridor fee economics at given trade flow volumes. The tool benchmarks mBridge costs against SWIFT correspondent chain costs for the same corridors and identifies which trade flows benefit most from PvP tokenized settlement. Output Policy Mandate encodes the corridor configuration and settlement economics. Buyer persona: central bank payment innovation teams, BIS Innovation Hub participants, and treasury teams at banks with significant trade finance exposure in the Gulf-Asia corridors served by mBridge.
+
+---
+
+### Scenario #39 — GENIUS Act Issuer Readiness Lab
+URL: https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html
+
+Assesses a payment stablecoin issuer's reserve composition against the GENIUS Act requirements effective January 18, 2027: 1:1 backing obligation, US Treasury security maturity cap (≤93 days), eligible Federal Reserve deposit treatment, FDIC-insured deposit limits, prohibited asset classes (no algorithmic backing, no non-USD pegged collateral), and monthly third-party attestation cadence. The tool models the issuer's current reserve portfolio against each requirement and surfaces the specific rebalancing steps required for compliance. Output Policy Mandate encodes the reserve configuration and GENIUS Act compliance posture. Buyer persona: stablecoin issuers and their counsel preparing for the GENIUS Act effective date, as well as bank trust departments and custodians designing compliant reserve custody arrangements.
+
+---
+
+### Scenario #40 — AMLA Supervisory Readiness Gap Analyser
+URL: https://postoaklabs.com/demos/amla-supervisory-readiness-gap-analyser.html
+
+Assesses readiness for supervision by the EU Anti-Money Laundering Authority (AMLA), which assumes direct supervisory competence over the highest-risk financial entities from July 10, 2027. The analyser covers five AMLA supervisory pillars: CDD/EDD programme quality, real-time transaction monitoring, SAR/STR quality and timeliness, sanctions screening, and governance. It also models the EU AMLR-specific obligations: €10,000 cash transaction ban (applicable June 2025), enhanced CDD for high-risk third countries, and eIDAS-compliant digital identity CDD. Output Policy Mandate encodes the AMLA readiness posture. Buyer persona: AML compliance officers and heads of financial crime at EU-based banks, payment institutions, and crypto-asset service providers within AMLA's direct supervision perimeter.
+
+---
+
+### Scenario #41 — EU AI Act Financial Services Compliance Studio
+URL: https://postoaklabs.com/demos/eu-ai-act-compliance-studio.html
+
+Walks a financial institution through a four-step EU AI Act compliance process for a specific AI system: Article 6 risk classification, Article 9 risk management system design, Article 10 data governance checklist, and conformity documentation template. The studio generates a draft technical file structure and risk management documentation package for the classified system, covering the obligations applying from August 2, 2026 for high-risk AI systems. Unlike the Risk Mapper (Scenario #33), this tool focuses on building the compliance artefacts for a single system rather than mapping a full inventory. Buyer persona: AI governance leads, model risk officers, and compliance counsel at EU financial institutions preparing a specific AI system for August 2026 high-risk compliance.
+
+---
+
+### Scenario #42 — GENIUS Act Stablecoin Issuer Readiness Assessment
+URL: https://postoaklabs.com/demos/genius-act-stablecoin-readiness.html
+
+Provides a complete GENIUS Act compliance pathway for a payment stablecoin issuer: federal vs. state licensing route determination (based on issuer size: >$10B outstanding → federal OCC/Fed pathway; <$10B → qualified state money transmission licence), reserve composition validation, redemption policy at-par requirement, monthly public disclosure cadence, and BSA/AML programme obligations. The tool models the licensing timeline, outstanding balance threshold triggers, and interaction between federal preemption and state licensing. Complements Scenario #39 (reserve-specific readiness lab) with the full licensing and governance pathway. Buyer persona: stablecoin issuers, fintech legal counsel, and bank regulatory affairs teams mapping the complete GENIUS Act compliance journey.
+
+---
+
+### Scenario #43 — FCA BNPL / DPC Authorisation Navigator
+URL: https://postoaklabs.com/demos/fca-bnpl-dpc-navigator.html
+
+Navigates the FCA's new deferred payment credit (DPC) authorisation regime applicable from Regulation Day, July 15, 2026 — covering temporary permission conditions, full FCA authorisation pathway, affordability assessment obligations, Consumer Duty fair value requirements, and the interaction with existing Consumer Credit Act exemptions. The tool maps the specific permissions and notifications required for a given BNPL product structure (closed-loop merchant instalment, open-loop BNPL, deferred-settlement card) and models the timeline from application to full authorisation. Buyer persona: BNPL providers (Klarna, Clearpay, Laybuy UK operations), consumer credit compliance counsel, and retail banking teams adding deferred payment products ahead of the FCA DPC regime.
+
+---
+
+### Scenario #44 — Basel III Endgame Capital Impact Laboratory
+URL: https://postoaklabs.com/demos/basel-iii-endgame-capital-lab.html
+
+Quantifies the CET1 capital impact of the US Basel III Endgame proposal and the EU FRTB binding rules on a bank's specific portfolio: expanded risk-based approach (ERBA) for securitisation, output floor phase-in schedule, operational risk standardised approach recalibration, and trading book re-classification under the FRTB. Inputs are current RWA by asset class and current model-based capital calculations — the lab computes the expected RWA increase, required capital uplift, and the year-by-year impact through the 2025–2030 phase-in. Buyer persona: capital management and regulatory capital teams at internationally active banks subject to both US Basel III Endgame and EU CRR3/FRTB implementation.
+
+---
+
+### Scenario #45 — PSD3 / PSR2 EU Payments Transition Readiness
+URL: https://postoaklabs.com/demos/psd3-psr2-transition-readiness.html
+
+Assesses a payment service provider's readiness for the PSD2 → PSD3/PSR2 transition across the four major change areas: updated licensing requirements (PSR2 directly applicable, no national transposition required), SCA evolution (expanded payment instrument exemptions, SCA on payee-initiated flows), open banking API obligations (mandatory premium access tiers, fallback interface removal), and fraud liability shifts (enhanced IBAN-name verification obligations, expanded refund rights for authorised push payment fraud). The tool flags PSD2-era controls that are no longer sufficient under PSD3 and models the implementation timeline. Buyer persona: regulatory affairs, compliance, and payments product teams at EU banks, EMIs, PISPs, and AISPs managing the PSD3/PSR2 transition programme.
+
+---
+
+### Scenario #46 — Agentic Checkout, End-to-End
+URL: https://postoaklabs.com/demos/agentic-checkout-end-to-end.html
+
+Demonstrates a complete agentic payment checkout flow from agent-card discovery through settlement and audit: A2A agent-card discovery, Google AP2 checkout mandate generation with spending-cap guardrail, x402 or Visa TAP settlement trace, and RFC 9421-signed hash-chained audit trail. The scenario chains four AINumbers tools (T283 agent-card, T285 AP2 checkout, T277 x402 trace, T286 audit trail) via the AIN Bridge and exports the composite Policy Mandate covering the full flow. This is the primary reference implementation for engineers building autonomous agent payment workflows compliant with the emerging AP2 / x402 / RFC 9421 standards stack. Buyer persona: agent runtime engineers at Anthropic, Google, OpenAI, Vellum, and LangChain integrating autonomous payment capability, and payments architects at banks building AP2-compatible checkout infrastructure.
+
+---
+
+## Hub Pages (persona-filtered entry points)
+
+These pages are not scenarios — they are curated entry points that sequence the scenarios for specific buyer archetypes.
+
+- Showcase landing — all scenarios, persona filter: https://postoaklabs.com/demos/
+- Tool Chain Composer — 455-tool atlas, clustered by capability: https://postoaklabs.com/demos/composer.html
+- Agentic Runtime hub (agent engineers): https://postoaklabs.com/demos/agentic-runtime/
+- RegTech hub (compliance officers, RegTech platforms): https://postoaklabs.com/demos/regtech/
+- BaaS hub (neobanks, BaaS platforms): https://postoaklabs.com/demos/baas/
+- Processors hub (acquirers, processors, correspondent banks): https://postoaklabs.com/demos/processors/
+- Stablecoin Issuer hub (issuers, crypto compliance): https://postoaklabs.com/demos/stablecoin-issuer/
+
+---
+
+## Notes for Agents
+
+- All scenario outputs are deterministic and rule-based — no probabilistic content
+- Policy Mandate JSON schema reference: https://ainumbers.co/ap2-schema.json
+- MCP server (109 callable tools): https://ainumbers.co/mcp
+- Full tool catalog: https://ainumbers.co
+- Contact: contact@postoaklabs.com
