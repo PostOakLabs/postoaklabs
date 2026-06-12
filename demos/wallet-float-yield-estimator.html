@@ -297,10 +297,12 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       into <strong>money-market mutual funds</strong> for higher yield (and lower
       regulatory-deposit treatment). <strong>FDIC pass-through insurance</strong> only applies
       when specific recordkeeping and disclosure requirements are met (12 CFR §330.5,
-      §330.7). After the 2024 Synapse–Evolve receivership, the FDIC's December 2024
-      recordkeeping rule proposal tightened these expectations materially.
+      §330.7). After the 2024 Synapse–Evolve receivership, the FDIC issued a December 2024
+      recordkeeping rule proposal that highlighted these expectations — that proposal was
+      subsequently withdrawn in March 2025; the underlying 12 CFR §330 pass-through
+      insurance requirements remain in effect.
     </p>
-    <div class="baas-cite">Sources: 12 CFR §330 (FDIC pass-through) · FDIC Recordkeeping Rule (proposed 2024) · GENIUS Act 2025 (stablecoin yield bar) · SEC Rule 2a-7 (MMF)</div>
+    <div class="baas-cite">Sources: 12 CFR §330 (FDIC pass-through) · FDIC Recordkeeping Rule NPR (proposed Dec 2024, withdrawn Mar 2025) · GENIUS Act 2025 (stablecoin yield bar) · SEC Rule 2a-7 (MMF)</div>
   </div>
 
   <aside class="value-at-risk" aria-label="Value at risk — programme failure / custody misrepresentation">
@@ -663,7 +665,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const mandateId = 'pol-demo-17-' + Math.random().toString(36).slice(2,10);
     return {
       '$schema': '@ainumbers.co/wallet-float-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'BaaS treasury policy author (demonstration)' },
@@ -716,7 +718,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/wallet-float-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (!m.allocation_policy) errs.push('allocation_policy required');
     const a = m.allocation_policy;
     const sum = (a.sweep_deposit_pct || 0) + (a.mmf_pct || 0) + (a.non_yielding_reserve_pct || 0);
@@ -729,7 +731,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# BaaS Wallet-Float — Treasury Memo');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Source:** ' + m.provenance.source);
     out.push('');

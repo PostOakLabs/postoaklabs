@@ -721,7 +721,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const mandateId = 'pol-demo-25-' + Math.random().toString(36).slice(2,10);
     return {
       '$schema': '@ainumbers.co/fx-netting-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'treasury netting policy author (demonstration)' },
@@ -767,7 +767,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/fx-netting-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (!Array.isArray(m.programme.subsidiaries) || m.programme.subsidiaries.length < 2) errs.push('at least 2 subsidiaries required');
     if (!Array.isArray(m.programme.currencies) || m.programme.currencies.length < 1) errs.push('at least 1 currency required');
     if (!['gross','bilateral','multilateral'].includes(m.netting_policy.mode)) errs.push('mode must be gross/bilateral/multilateral');
@@ -779,7 +779,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# Cross-Border FX Netting — Treasury Memo');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Source:** ' + m.provenance.source);
     out.push('');

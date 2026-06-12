@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AP2 AML Mandate Builder · Agentic AML Policy as a Machine-Readable Mandate · Post Oak Labs</title>
 
-<meta name="description" content="Compose Policy Mandate v1 AML mandates — customer risk tiers, transaction-monitoring rules, sanctions screening cadence, SAR filing triggers, escalation workflows. Outputs validated AP2 JSON for agentic payment systems. Client-side, zero PII, AP2-stable.">
+<meta name="description" content="Compose Policy Mandate v1 AML mandates — customer risk tiers, transaction-monitoring rules, sanctions screening cadence, SAR filing triggers, escalation workflows. Outputs validated Policy Mandate JSON for agentic payment systems. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/ap2-aml-mandate-builder.html">
@@ -830,7 +830,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
     return {
       '$schema': '@ainumbers.co/aml-mandate-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: {
@@ -860,7 +860,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validateMandate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/aml-mandate-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (!m.mandate_id) errs.push('mandate_id missing');
     if (!Array.isArray(m.policies) || m.policies.length === 0) errs.push('at least one policy required');
     if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
@@ -872,7 +872,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# AP2 AML Mandate — Policy Brief');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '`');
     out.push('**Issued:** ' + m.issued_at);
     out.push('**Scope:** ' + m.subject.scope);

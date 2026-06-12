@@ -677,7 +677,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const mandateId = 'pol-demo-22-' + Math.random().toString(36).slice(2,10);
     return {
       '$schema': '@ainumbers.co/iso20022-readiness-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'ISO 20022 migration assessor (demonstration)' },
@@ -716,7 +716,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/iso20022-readiness-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (!Array.isArray(m.message_family_coverage) || m.message_family_coverage.length === 0) errs.push('message_family_coverage required');
     if (!m.gateway || !m.gateway.capability_tier) errs.push('gateway.capability_tier required');
     if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
@@ -727,7 +727,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# ISO 20022 Migration — Readiness Plan');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Cutover target:** ' + m.subject.cutover_date + ' (T-' + m.days_to_cutover + ' days)');
     out.push('**Source:** ' + m.provenance.source);

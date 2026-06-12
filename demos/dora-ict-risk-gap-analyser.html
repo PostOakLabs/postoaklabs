@@ -727,7 +727,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const mandateId = 'pol-demo-26-' + Math.random().toString(36).slice(2,10);
     return {
       '$schema': '@ainumbers.co/dora-gap-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'DORA gap assessor (demonstration)' },
@@ -782,7 +782,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/dora-gap-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (!m.maturity || !Array.isArray(m.maturity.pillars) || m.maturity.pillars.length !== 5) errs.push('exactly five pillars required');
     if (!m.article_28 || !Array.isArray(m.article_28.third_parties)) errs.push('article_28.third_parties required');
     if (!m.enforcement || m.enforcement.binding !== true) errs.push('enforcement.binding must be true');
@@ -793,7 +793,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# DORA ICT Risk Gap — Gap Report');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Regulation:** ' + m.subject.regulation + ' · Joint RTS ' + m.subject.joint_rts);
     out.push('**Source:** ' + m.provenance.source);

@@ -726,7 +726,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const sym = symbol(), cur = code();
     return {
       '$schema': '@ainumbers.co/vrp-mandate-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'VRP mandate author (demonstration)' },
@@ -771,7 +771,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/vrp-mandate-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (m.amount_caps.max_per_transaction > m.amount_caps.max_per_period) errs.push('per-tx must not exceed per-period');
     if (m.sweep_window.permitted_hour_of_day.start === m.sweep_window.permitted_hour_of_day.end) errs.push('window start equals end');
     if (m.beneficiary_set.posture === 'closed-loop' && m.beneficiary_set.whitelist.length === 0) errs.push('closed-loop requires whitelist');
@@ -783,7 +783,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# VRP Mandate — Brief');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Regime:** ' + m.subject.regime + ' · **Variant:** ' + m.subject.variant);
     out.push('**Source:** ' + m.provenance.source);

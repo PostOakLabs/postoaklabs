@@ -893,7 +893,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
    SAMPLE AP2 MANDATE
    ───────────────────────────────────────────────────── */
 const SAMPLE = {
-  "ap2_version": "1.0",
+  "schema_version": "1.0",
   "mandate_id": "mnd_8f3a92c10d44b6e2",
   "issued_at": "2026-05-12T14:22:08Z",
   "expires_at": "2026-08-12T14:22:08Z",
@@ -1177,11 +1177,11 @@ function escapeHtml(s) {
 function parseAndRender() {
   try {
     const obj = JSON.parse(jsonInput.value);
-    if (!obj.ap2_version) throw new Error('Missing `ap2_version` — not an AP2 mandate');
+    if (!obj.schema_version) throw new Error('Missing `schema_version` — not an AP2 mandate');
     if (!Array.isArray(obj.constraints)) throw new Error('Missing `constraints[]` array');
     CURRENT = obj;
     renderMandate(obj);
-    setStatus('ok', `VALID · AP2 ${obj.ap2_version} · ${obj.constraints.length} constraints parsed`);
+    setStatus('ok', `VALID · AP2 ${obj.schema_version} · ${obj.constraints.length} constraints parsed`);
     showToast('Mandate parsed · ' + obj.constraints.length + ' shields rendered', 'ok');
   } catch (e) {
     setStatus('err', 'PARSE ERROR · ' + e.message);

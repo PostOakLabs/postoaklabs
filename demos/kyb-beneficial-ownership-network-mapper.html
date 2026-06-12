@@ -868,7 +868,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const mandateId = 'pol-demo-16-' + Math.random().toString(36).slice(2,10);
     return {
       '$schema': '@ainumbers.co/kyb-ubo-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'KYB / UBO policy author (demonstration)' },
@@ -917,7 +917,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/kyb-ubo-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     if (!m.disclosure_policy || typeof m.disclosure_policy.threshold_pct !== 'number') errs.push('disclosure_policy.threshold_pct required');
     if (m.disclosure_policy.threshold_pct < 5 || m.disclosure_policy.threshold_pct > 50) errs.push('threshold_pct must be 5..50');
     if (!Array.isArray(m.identified_ubos)) errs.push('identified_ubos required');
@@ -929,7 +929,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# KYB / UBO — Compliance Brief');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Jurisdiction:** ' + m.jurisdiction);
     out.push('**Source:** ' + m.provenance.source);

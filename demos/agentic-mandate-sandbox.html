@@ -350,7 +350,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
         <details style="margin-top:0.95rem;">
           <summary style="cursor:pointer; font-family:var(--mono); font-size:0.7rem; letter-spacing:0.04em; color:var(--text-muted);">…or paste your own AP2 mandate JSON</summary>
-          <textarea class="mandate-paste" id="mandate-paste" placeholder='{"$schema":"@ainumbers.co/...","ap2_version":"1.0","mandate_id":"...","...":"..."}'></textarea>
+          <textarea class="mandate-paste" id="mandate-paste" placeholder='{"$schema":"@ainumbers.co/...","schema_version":"1.0","mandate_id":"...","...":"..."}'></textarea>
           <div class="paste-row">
             <button class="btn-load" id="btn-load">Load pasted mandate</button>
             <button class="btn-clear" id="btn-clear">Clear</button>
@@ -473,7 +473,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       schema: '@ainumbers.co/aml-mandate-v1',
       json: {
         '$schema': '@ainumbers.co/aml-mandate-v1',
-        ap2_version: '1.0',
+        schema_version: '1.0',
         mandate_id: 'tpl-aml-' + Math.random().toString(36).slice(2,8),
         issuer: { organization: 'Bundled template', role: 'AML policy author (demonstration)' },
         subject: { runtime: 'agentic-payment-system', scope: 'multi-domain' },
@@ -492,7 +492,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       schema: '@ainumbers.co/baas-mandate-v1',
       json: {
         '$schema': '@ainumbers.co/baas-mandate-v1',
-        ap2_version: '1.0',
+        schema_version: '1.0',
         mandate_id: 'tpl-baas-' + Math.random().toString(36).slice(2,8),
         programme: { programme_id: 'acme-checking-v3', customer_type: 'smb', minimum_kyc_tier: 'kyc-std' },
         sponsor_bank_gates: { auto_approve_usd_per_day: 2500, manual_review_usd_per_day: 25000, hard_stop_usd_per_day: 250000 },
@@ -512,7 +512,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       schema: '@ainumbers.co/instant-pay-fraud-v1',
       json: {
         '$schema': '@ainumbers.co/instant-pay-fraud-v1',
-        ap2_version: '1.0',
+        schema_version: '1.0',
         mandate_id: 'tpl-fraud-' + Math.random().toString(36).slice(2,8),
         rails: ['fednow','rtp'],
         decision_policy: { threshold: 62, hard_refuse_ceiling: 88, intervention_budget_pct: 2.5 },
@@ -527,7 +527,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       schema: '@ainumbers.co/dora-gap-v1',
       json: {
         '$schema': '@ainumbers.co/dora-gap-v1',
-        ap2_version: '1.0',
+        schema_version: '1.0',
         mandate_id: 'tpl-dora-' + Math.random().toString(36).slice(2,8),
         subject: { regulation: 'EU 2022/2554 (DORA)' },
         maturity: { composite_score: 60, pillars: [
@@ -546,7 +546,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       schema: '@ainumbers.co/stablecoin-readiness-v1',
       json: {
         '$schema': '@ainumbers.co/stablecoin-readiness-v1',
-        ap2_version: '1.0',
+        schema_version: '1.0',
         mandate_id: 'tpl-stable-' + Math.random().toString(36).slice(2,8),
         issuance: { token_classification: 'emt', circulating_supply_usd: 2_000_000_000, yield_to_holders: 'none' },
         reserve_composition: { cash_bank_pct: 40, tbills_pct: 45, govt_mmf_pct: 10, overnight_repo_pct: 5, other_pct: 0 },
@@ -934,7 +934,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
     const trace = {
       '$schema': '@ainumbers.co/sandbox-trace-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       trace_id: 'pol-trace-' + Math.random().toString(36).slice(2,10),
       issued_at: new Date().toISOString(),
       mandate_ref: { schema: m['$schema'], mandate_id: m.mandate_id || null },
@@ -995,7 +995,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# Sandbox Trace — Memo');
     out.push('');
-    out.push('**Schema:** `' + trace['$schema'] + '` · **AP2:** v' + trace.ap2_version);
+    out.push('**Schema:** `' + trace['$schema'] + '` · **AP2:** v' + trace.schema_version);
     out.push('**Trace ID:** `' + trace.trace_id + '` · **Issued:** ' + trace.issued_at);
     out.push('**Mandate:** `' + trace.mandate_ref.schema + '` · `' + (trace.mandate_ref.mandate_id || '(none)') + '`');
     out.push('**Source:** ' + trace.provenance.source);

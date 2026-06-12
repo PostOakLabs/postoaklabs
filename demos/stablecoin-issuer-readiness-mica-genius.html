@@ -804,7 +804,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const mandateId = 'pol-demo-08-' + Math.random().toString(36).slice(2,10);
     return {
       '$schema': '@ainumbers.co/stablecoin-readiness-v1',
-      ap2_version: '1.0',
+      schema_version: '1.0',
       mandate_id: mandateId,
       issued_at: now,
       issuer: { organization: 'Post Oak Labs Showcase Demo · synthetic', role: 'Stablecoin issuer readiness assessor (demonstration)' },
@@ -863,7 +863,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   function validate(m){
     const errs = [];
     if (m['$schema'] !== '@ainumbers.co/stablecoin-readiness-v1') errs.push('schema mismatch');
-    if (m.ap2_version !== '1.0') errs.push('ap2_version must be 1.0');
+    if (m.schema_version !== '1.0') errs.push('schema_version must be 1.0');
     const r = m.reserve_composition;
     const sum = r.cash_bank_pct + r.tbills_pct + r.govt_mmf_pct + r.overnight_repo_pct + r.other_pct;
     if (Math.abs(sum - 100) > 1) errs.push('reserve_composition sum must equal 100 (±1)');
@@ -876,7 +876,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     const out = [];
     out.push('# Stablecoin Issuer Readiness — Brief');
     out.push('');
-    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.ap2_version);
+    out.push('**Schema:** `' + m['$schema'] + '` · **AP2:** v' + m.schema_version);
     out.push('**Mandate ID:** `' + m.mandate_id + '` · **Issued:** ' + m.issued_at);
     out.push('**Regime:** ' + m.subject.regime);
     out.push('**Source:** ' + m.provenance.source);
