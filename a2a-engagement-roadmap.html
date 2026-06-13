@@ -739,53 +739,6 @@ function setDimBar(barId, scoreId, pct) {
   if (score) score.textContent = pct + '%';
 }
 
-// ── GATE SUBMIT ──
-function submitDiagGate() {
-  const email = document.getElementById('diag-email').value.trim();
-  const inst  = document.getElementById('diag-institution').value.trim();
-
-  if (!email || !inst) {
-    alert('Please enter your work email and institution name to unlock the full report.');
-    return;
-  }
-
-  // Recalculate final scores
-  const volRaw = parseFloat(document.getElementById('diag-volume').value) || 50;
-  const isoStatus = document.getElementById('diag-iso').value || 'not_started';
-
-  const isoScore  = isoScoreMap[isoStatus] || 15;
-  const volProxy  = Math.min(Math.round(volRaw / 200 * 80), 80);
-  const liqScore  = Math.max(volProxy, 20);
-  const regScore  = Math.max(Math.round(volProxy * 0.85), 25);
-  const techScore = Math.max(Math.round(volProxy * 0.9), 30);
-  const corrScore = Math.max(Math.round(volProxy * 0.75), 20);
-
-  setDimBar('dim-iso',  'dim-iso-score',  isoScore);
-  setDimBar('dim-liq',  'dim-liq-score',  liqScore);
-  setDimBar('dim-reg',  'dim-reg-score',  regScore);
-  setDimBar('dim-tech', 'dim-tech-score', techScore);
-  setDimBar('dim-corr', 'dim-corr-score', corrScore);
-
-  // Remove blur from all dimension elements
-  document.querySelectorAll('.diag-blur').forEach(el => {
-    el.classList.add('revealed');
-  });
-
-  // Show dimension notes
-  document.querySelectorAll('.dim-note').forEach(el => {
-    el.classList.add('visible');
-    el.classList.remove('diag-blur');
-  });
-
-  // Show confirmation block
-  const confirm = document.getElementById('diag-confirm');
-  confirm.classList.add('visible');
-
-  // Smooth scroll to confirmation
-  setTimeout(() => {
-    confirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 150);
-}
 </script>
 </body>
 </html>

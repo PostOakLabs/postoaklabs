@@ -35,7 +35,7 @@
     "Working-capital gap (CCC, daily revenue, funding gap) with severity classification",
     "Factoring + revenue-based-finance blend optimizer",
     "Policy Mandate v1 mandate export against @ainumbers.co/credit-mandate-v1 schema",
-    "Country / preset modes: Brazil (BRL · Selic 10.50%) · Nigeria (NGN · CBN MPR 27.50%)"
+    "Country / preset modes: Brazil (BRL · Selic 14.5% (Apr 2026)) · Nigeria (NGN · CBN MPR 26.5% (Feb 2026))"
   ],
   "keywords": "SME credit, Global South, Brazil, Nigeria, IFC, BIS, factoring, revenue-based finance, working capital, AP2 credit mandate, lending passport",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
@@ -723,14 +723,14 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
             <span class="flag flag-br"></span>
             <span>
               <span class="country-name">Brazil</span><br>
-              <span class="country-sub">BRL · São Paulo · Selic 10.50%</span>
+              <span class="country-sub">BRL · São Paulo · Selic 14.5% (Apr 2026)</span>
             </span>
           </button>
           <button class="flag-tab" data-country="NG">
             <span class="flag flag-ng"><span></span></span>
             <span>
               <span class="country-name">Nigeria</span><br>
-              <span class="country-sub">NGN · Lagos · CBN MPR 27.50%</span>
+              <span class="country-sub">NGN · Lagos · CBN MPR 26.5% (Feb 2026)</span>
             </span>
           </button>
         </div>
@@ -749,16 +749,16 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 <!-- IFC / BIS SME CALLOUT (Phase 1b Task 5) -->
 <div class="ifc-callout" role="note" aria-label="IFC / BIS SME framing">
   <div class="ifc-eyebrow">IFC / BIS · SME framing</div>
-  <p>The scoring weights (DSCR · revenue · age · payment behaviour · sector · adverse) align with <strong>IFC SME Finance Forum</strong> definitions and <strong>BCBS</strong> guidance on SME credit risk (BCBS 207, 2011) for jurisdictions where audited financials are scarce. The working-capital-gap method (CCC = AR + Inventory − AP) follows IFC's working-capital diagnostic toolkit; the factoring + RBF blend mirrors instruments commonly offered by IFC-partner local commercial banks in Brazil and Nigeria.</p>
-  <div class="ifc-cite">Sources: IFC SME Finance Forum · BCBS 207 (2011) · IFC Working Capital Diagnostic · CBN Microfinance Policy Framework</div>
+  <p>The scoring weights (DSCR · revenue · age · payment behaviour · sector · adverse) align with <strong>IFC SME Finance Forum</strong> definitions and the <strong>Basel II IRB retail/SME framework</strong> for jurisdictions where audited financials are scarce. The working-capital-gap method (CCC = AR + Inventory − AP) follows IFC's working-capital diagnostic toolkit; the factoring + RBF blend mirrors instruments commonly offered by IFC-partner local commercial banks in Brazil and Nigeria.</p>
+  <div class="ifc-cite">Sources: IFC SME Finance Forum · Basel II IRB retail/SME framework · IFC Working Capital Diagnostic · CBN Microfinance Policy Framework</div>
 </div>
 
 <!-- VALUE-AT-RISK SIDEBAR (spec Part 17) -->
 <aside class="value-at-risk" aria-label="Value at risk — SME credit-access gap">
   <h4 class="var-eyebrow">Value at risk · Global South SME credit gap</h4>
-  <p class="var-figure">$5.2T unmet SME credit demand (IFC 2024 est.)</p>
+  <p class="var-figure">$5.2T unmet SME credit demand (IFC–World Bank MSME Finance Gap Report, 2025)</p>
   <p class="var-body">The IFC estimates ~$5.2 trillion in unmet credit demand from formal MSMEs in developing countries — much of it blocked by a missing pre-bank readiness layer. A board-ready scorecard with auditable scoring (IFC / BCBS-aligned) accelerates local-bank underwriting and surfaces working-capital instruments (factoring / RBF) sized to actual cash-conversion-cycle exposure.</p>
-  <p class="var-cite"><small>IFC MSME Finance Gap (2024) · BCBS 207 SME guidance · CBN / CVM regulatory caps (NG / BR)</small></p>
+  <p class="var-cite"><small>IFC MSME Finance Gap (2024) · Basel II IRB retail/SME framework · CBN / CVM regulatory caps (NG / BR)</small></p>
 </aside>
 
 
@@ -1215,7 +1215,7 @@ const COUNTRIES = {
     sym: 'R$',
     currency: 'BRL',
     fxToGBP: 0.16,
-    rate: 'Selic 10.50%',
+    rate: 'Selic 14.5% (Apr 2026)',
     factoring: {
       name: 'Invoice Factoring',
       sub: 'Antecipação de recebíveis · BR',
@@ -1243,7 +1243,7 @@ const COUNTRIES = {
     sym: '₦',
     currency: 'NGN',
     fxToGBP: 0.00050,
-    rate: 'CBN MPR 27.50%',
+    rate: 'CBN MPR 26.5% (Feb 2026)',
     factoring: {
       name: 'Invoice Factoring',
       sub: 'Receivables discounting · NG',
@@ -1402,7 +1402,7 @@ function renderScore(score, cls){
   document.getElementById('scoreTier').style.color = cls.color;
   document.getElementById('scoreTierSub').textContent = cls.tier.toLowerCase() + ' readiness tier';
   const chip = document.getElementById('scoreRatingChip');
-  chip.textContent = 'S&P-equiv ' + cls.rating;
+  chip.textContent = 'S&P-equiv ' + cls.rating + ' (indicative internal tier, not a credit rating)';
   chip.style.color = cls.color;
   chip.style.borderColor = cls.color;
 }
@@ -1726,11 +1726,11 @@ function exportJSON(){
       counterparty_targets: c.banks
     },
     regulatory_context: {
-      framework: "IFC SME Finance Forum scoring methodology + BCBS 207 SME guidance",
-      citation: "IFC MSME Finance Gap 2024 · BCBS 207 (2011) treatment of SME exposures · IFC Working Capital Diagnostic Toolkit",
+      framework: "IFC SME Finance Forum scoring methodology + Basel II IRB retail/SME framework",
+      citation: "IFC MSME Finance Gap 2024 · Basel II IRB retail/SME framework · IFC Working Capital Diagnostic Toolkit",
       jurisdictional_notes: STATE.country === 'NG'
-        ? "Nigeria: CBN MPR 27.50% (Q2 2026), Microfinance Policy Framework applies; CBN tiered KYC thresholds may cap limit deployment."
-        : "Brazil: BCB Selic 10.50% (Q2 2026), CVM Resolution 88 (small-issuer carve-outs) governs RBF disclosures; LCR for SMEs follows BCB Resolution 4.557."
+        ? "Nigeria: CBN MPR 26.5% (Feb 2026), Microfinance Policy Framework applies; CBN tiered KYC thresholds may cap limit deployment."
+        : "Brazil: BCB Selic 14.5% (Apr 2026), CVM Resolution 88 (small-issuer carve-outs) governs RBF disclosures; LCR for SMEs follows BCB Resolution 4.557."
     },
     agent_instructions: [
       "Present the passport to local commercial banks (counterparty_targets) as the readiness baseline.",

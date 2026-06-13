@@ -310,9 +310,9 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
             <span class="hint">Tier-1 common equity</span>
           </div>
           <div class="field">
-            <label for="inp-minimum">Regulatory Min CET1 (%)</label>
+            <label for="inp-minimum">Regulatory minimum (total capital, %)</label>
             <input type="number" id="inp-minimum" value="10.5" min="4.5" max="20" step="0.25">
-            <span class="hint">Incl. capital conservation buffer</span>
+            <span class="hint">Total capital incl. all tiers + CCB (10.5%). CET1 minimum + CCB = 7% (4.5% + 2.5%).</span>
           </div>
           <div class="field">
             <label for="inp-shock">PD Shock Multiplier (×)</label>
@@ -407,7 +407,7 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
         <p>This lab does the recompute in one click. The Policy Mandate export gives an acquirer a deterministic, reproducible run they can re-execute on their own machine.</p>
         <div class="var-stat">Output floor (IRB → SA): 72.5%</div>
         <div class="var-stat">Buffer headroom flag: &lt; 100 bps</div>
-        <div class="cite">Refs: BCBS d424 (Dec 2017), BCBS Final Basel IV (Jan 2023), IFRS 9 ECL standard, BIS BIS QIS 2024.</div>
+        <div class="cite">Refs: BCBS d424 (Dec 2017) — Finalising Basel III, IFRS 9 ECL standard, BIS QIS 2024.</div>
       </aside>
     </div>
 
@@ -575,7 +575,7 @@ function compute(inp) {
   // RAROC
   // Required yield: covers expected loss + capital charge × hurdle
   const hurdle = 0.15; // 15% ROE hurdle
-  const stressedYieldReq = ((stressEL / inp.book) + ((stressedRWA / inp.book) * hurdle * inp.minimum/100*10)) * 100;
+  const stressedYieldReq = ((stressEL / inp.book) + ((stressedRWA / inp.book) * hurdle * inp.minimum/100)) * 100;
   // Simplified break-even: covers stressed EL and stressed cost of capital
   const stressedCoC = stressedRWA * inp.minimum/100 * hurdle;
   const currentReturn = inp.book * (inp.rate/100) - stressEL - stressedCoC;
@@ -841,7 +841,7 @@ function exportMarkdown() {
     `|-----------|-------|`,
     `| Loan Book | ${fmt(inp.book)} |`,
     `| CET1 Capital | ${fmt(inp.cet1)} |`,
-    `| Regulatory Min CET1 | ${pct(inp.minimum)} |`,
+    `| Regulatory minimum (total capital) | ${pct(inp.minimum)} |`,
     `| PD Shock | ${inp.shock}× |`,
     `| LGD Shock Uplift | ${inp.lgdshock} pp |`,
     `| Gross Yield | ${pct(inp.rate)} |`,

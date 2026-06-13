@@ -306,9 +306,9 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <p>
       <strong>MiCA (Regulation (EU) 2023/1114)</strong> Title III governs asset-referenced tokens (ARTs) and Title IV governs e-money tokens (EMTs).
       Arts. 35–42 set ART reserve composition, segregation and redemption obligations;
-      Arts. 48–58 govern EMT reserve backing and redemption at par. Article 111 carries penalties up to
-      <strong>€5M or 3% of annual turnover</strong>, whichever is higher. The US <strong>GENIUS Act
-      (2024)</strong> establishes the federal payment-stablecoin regime, bars interest payments to
+      Arts. 48–58 govern EMT reserve backing and redemption at par. Article 111 carries penalties of
+      <strong>at least €5M or 3% of annual turnover</strong>, whichever is higher (higher tiers apply for serious violations). The US <strong>GENIUS Act
+      (2025)</strong> establishes the federal payment-stablecoin regime, bars interest payments to
       holders on payment stablecoins, requires 1:1 reserves in cash and short-dated Treasuries, and
       gives the OCC / Federal Reserve a path to direct supervision.
     </p>
@@ -317,7 +317,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   <aside class="value-at-risk" aria-label="Value at risk — MiCA Title III/IV penalty regime">
     <h4 class="var-eyebrow">Value at risk · MiCA Article 111 + GENIUS Act bar</h4>
-    <p class="var-figure">Up to €5M per breach (or 3% of annual turnover) under MiCA Title III/IV; GENIUS Act bar on yield to payment-stablecoin holders</p>
+    <p class="var-figure">At least €5M per breach (or 3% of annual turnover; higher tiers for serious violations) under MiCA Title III/IV; GENIUS Act bar on yield to payment-stablecoin holders</p>
     <p class="var-body"><strong>MiCA Arts. 35–42 (ARTs) / 48–58 (EMTs)</strong> set reserve adequacy, redemption rights at par, and operational safeguards. The lab tests issuer parameters against the floor and surfaces what the prudential authority would flag at authorisation. Under <strong>GENIUS Act 2025</strong>, issuers paying yield to payment-stablecoin holders fall outside the payment-stablecoin regime — losing access to the federal supervisory path. The mandate codifies the chosen parameters so the runtime cannot silently drift away from them between audits.</p>
     <p class="var-cite"><small>EU 2023/1114 Arts. 35–42 (ARTs), 48–58 (EMTs), 111 · GENIUS Act 2025 §§ 4–6 · MiCA Level 2 RTS</small></p>
   </aside>
@@ -361,7 +361,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       <section class="panel">
         <div class="panel-label">§2 · Reserve Composition <span class="panel-label-r" id="reserve-readout">— quality</span></div>
         <h2 class="sec-h">Backing-asset mix</h2>
-        <p class="sec-sub">MiCA Article 36 requires <b>at least 30%</b> of reserves to be held in segregated bank deposits at <b>credit institutions</b>. GENIUS Act §4 narrows the allowed mix to cash and short-dated Treasuries for payment stablecoins. Move sliders; sum is auto-normalised.</p>
+        <p class="sec-sub">MiCA Article 36 requires <b>at least 30%</b> of reserves to be held in segregated bank deposits at <b>credit institutions</b> (60% for significant ARTs). GENIUS Act §4 narrows the allowed mix to cash and short-dated Treasuries for payment stablecoins. Move sliders; sum is auto-normalised.</p>
 
         <div class="slider-row">
           <div class="slider-label">Cash &amp; bank deposits (segregated)
@@ -372,7 +372,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <input type="range" id="r-cash" min="0" max="100" value="40" step="1">
 
         <div class="slider-row">
-          <div class="slider-label">Short-dated Treasury bills (≤90 days)
+          <div class="slider-label">Short-dated Treasury bills (≤93 days)
             <span class="sl-sub">Highest non-cash quality tier. GENIUS-Act eligible.</span>
           </div>
           <span class="slider-val" id="v-tbill">45%</span>
@@ -412,7 +412,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         </div>
         <div class="alloc-legend">
           <span><span class="ld" style="background:var(--success);"></span>Cash / bank</span>
-          <span><span class="ld" style="background:#059669;"></span>T-bills ≤90d</span>
+          <span><span class="ld" style="background:#059669;"></span>T-bills ≤93d</span>
           <span><span class="ld" style="background:var(--accent);"></span>Govt MMF</span>
           <span><span class="ld" style="background:var(--warn);"></span>O/N repo</span>
           <span><span class="ld" style="background:var(--error);"></span>Other</span>
@@ -890,7 +890,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     out.push('| Tier | % |');
     out.push('|---|---:|');
     out.push('| Cash & bank deposits | ' + m.reserve_composition.cash_bank_pct + '% |');
-    out.push('| T-bills ≤90d | ' + m.reserve_composition.tbills_pct + '% |');
+    out.push('| T-bills ≤93d | ' + m.reserve_composition.tbills_pct + '% |');
     out.push('| Government MMF | ' + m.reserve_composition.govt_mmf_pct + '% |');
     out.push('| Overnight repo | ' + m.reserve_composition.overnight_repo_pct + '% |');
     out.push('| Other | ' + m.reserve_composition.other_pct + '% |');

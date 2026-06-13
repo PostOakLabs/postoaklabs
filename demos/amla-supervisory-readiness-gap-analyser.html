@@ -206,7 +206,7 @@ button{cursor:pointer;font-family:inherit}
       <div><div class="dl-date">1 July 2025</div><div class="dl-label">AMLA operational (Frankfurt)</div><div class="dl-sub">✓ Live</div></div>
       <div><div class="dl-date">10 July 2027</div><div class="dl-label">AMLR applies EU-wide</div><div class="dl-sub">● Countdown</div></div>
       <div><div class="dl-date">From 2028</div><div class="dl-label">AMLA direct supervision (~40 FIs)</div><div class="dl-sub">● High risk</div></div>
-      <div><div class="dl-date">EU-wide now</div><div class="dl-label">€10k cash ban · €3k ID check</div><div class="dl-sub">● Immediate</div></div>
+      <div><div class="dl-date">From 10 July 2027 (AMLR Art. 80)</div><div class="dl-label">€10k cash ban · €3k ID check</div><div class="dl-sub">● Countdown</div></div>
     </div>
   </div>
 </section>
@@ -617,7 +617,7 @@ function runAnalysis() {
   if(sel('p2-reverif')!=='risk') gaps.push({sev:'remediate',pillar:'KYC',title:'Risk-differentiated re-verification cadence required',desc:'AMLA requires risk-based periodic re-verification — high-risk customers annually, standard-risk on 3-year cycle as minimum.'});
   if(sel('p2-ubo')!=='continuous') gaps.push({sev:'remediate',pillar:'KYC',title:'Automated beneficial ownership change detection required',desc:'AMLR mandates continuous UBO monitoring. Annual manual refresh creates gaps; automated detection recommended for AMLA compliance.'});
   if(sel('p3-tm')==='none') gaps.push({sev:'critical',pillar:'TM',title:'No transaction monitoring system in place',desc:'A calibrated TM system is mandatory for all obliged entities under AMLR. Absence constitutes a critical AMLA supervisory gap.'});
-  if(sel('p3-10k')!=='yes') gaps.push({sev:'critical',pillar:'TM',title:'€10k cash payment ban monitoring not implemented',desc:'EU-wide ban on cash payments exceeding €10,000 requires active monitoring capability. Gaps here are direct regulatory violations.'});
+  if(sel('p3-10k')!=='yes') gaps.push({sev:'critical',pillar:'TM',title:'€10k cash payment ban monitoring not implemented',desc:'EU-wide ban on cash payments exceeding €10,000 (AMLR Art. 80, from 10 July 2027) requires active monitoring capability. Gaps here will be direct regulatory violations.'});
   if(sel('p3-fp')==='high') gaps.push({sev:'remediate',pillar:'TM',title:'High false-positive rate — TM rule calibration required',desc:'AMLA supervisors assess TM quality including false-positive rates. Rates above 97% indicate uncalibrated rules that waste investigator capacity.'});
   if(sel('p4-sar')==='unstructured') gaps.push({sev:'remediate',pillar:'SAR',title:'SAR narratives not aligned with AMLA STR template',desc:'AMLA is developing standardised STR templates for EU-wide consistency. Structured narratives now reduce revision requests from FIUs.'});
   if(sel('p4-tip')==='no') gaps.push({sev:'remediate',pillar:'SAR',title:'Tipping-off controls absent',desc:'AMLR prohibits disclosure of STR filing to subjects. Formal controls and staff training are required to avoid criminal liability.'});
@@ -634,7 +634,7 @@ function runAnalysis() {
 
   // Threshold table
   var thresh=[
-    ['€10,000 cash payment ban','Mandatory monitoring EU-wide',sel('p3-10k')==='yes'?'Implemented':'Not implemented',sel('p3-10k')==='yes'?'td-pass':'td-fail'],
+    ['€10,000 cash payment ban','EU-wide from 10 July 2027 (AMLR Art. 80)',sel('p3-10k')==='yes'?'Implemented':'Not implemented',sel('p3-10k')==='yes'?'td-pass':'td-fail'],
     ['€3,000 identity verification','Cash + high-value purchases',sel('p1-3k')==='yes'?'Implemented':'Not implemented',sel('p1-3k')==='yes'?'td-pass':'td-fail'],
     ['eIDAS-compliant CDD','Standard from AMLR application',sel('p1-cdd')==='eid'?'Compliant':sel('p1-cdd')==='partial'?'Partial':'Non-compliant',sel('p1-cdd')==='eid'?'td-pass':sel('p1-cdd')==='partial'?'td-warn':'td-fail'],
     ['AMLA STR template','Standardised SAR format',sel('p4-sar')==='structured'?'Aligned':'Not aligned',sel('p4-sar')==='structured'?'td-pass':'td-warn'],
@@ -664,7 +664,7 @@ function buildMandate() {
     constraints:[
       'AMLA became operational 1 July 2025 (Frankfurt); full AMLR package applies 10 July 2027.',
       'AMLA will directly supervise ~40 highest-risk EU financial institutions from 2028.',
-      '€10,000 cash payment ban is EU-wide and mandatory — monitoring capability must be implemented.',
+      '€10,000 cash payment ban applies EU-wide from 10 July 2027 (AMLR Art. 80) — monitoring capability must be implemented.',
       '€3,000 identity verification threshold applies to cash and high-value purchase transactions.',
       'eIDAS-compliant digital identity verification is the expected standard for CDD from AMLR application.',
       'AMLA is developing harmonised STR templates — align SAR narratives to AMLA draft now.',

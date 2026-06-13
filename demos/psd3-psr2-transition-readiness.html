@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
-<title>PSD3 / PSR2 EU Payments Transition Readiness · Post Oak Labs Scenario #45</title>
-<meta name="description" content="Post Oak Labs showcase demo: PSD3/PSR2 EU Payments Transition Readiness Assessment. From PSD2 to PSD3 — know your gaps. Powered by AINumbers.co">
+<title>PSD3 / PSR EU Payments Transition Readiness · Post Oak Labs Scenario #45</title>
+<meta name="description" content="Post Oak Labs showcase demo: PSD3/PSR EU Payments Transition Readiness Assessment. From PSD2 to PSD3 — know your gaps. Powered by AINumbers.co">
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -131,10 +131,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 <section class="hero">
   <div class="container">
     <div class="hero-tag">Post Oak Labs · Showcase Scenario #45</div>
-    <h1>PSD3 / PSR2 EU Payments<br><em>Transition Readiness</em> Assessment</h1>
-    <p class="hero-sub">From PSD2 to PSD3 — know your gaps before the transposition clock starts. Five-step assessment covering licensing reclassification, VoP extension, ISO 20022, SCA, and open banking API performance. Powered by AINumbers.co. Zero PII.</p>
+    <h1>PSD3 / PSR EU Payments<br><em>Transition Readiness</em> Assessment</h1>
+    <p class="hero-sub">From PSD2 to PSD3 — know your gaps as the PSD3 Directive transposition clock starts (the PSR is a directly-applicable Regulation; no national transposition required for PSR). Five-step assessment covering licensing reclassification, VoP, ISO 20022, SCA, and open banking API performance. Powered by AINumbers.co. Zero PII.</p>
     <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-bottom:1.25rem">
-      <span class="hbadge hb-teal">PSD3 / PSR2</span>
+      <span class="hbadge hb-teal">PSD3 / PSR</span>
       <span class="hbadge hb-gold">VoP Extension</span>
       <span class="hbadge hb-warn">ISO 20022 Nov 2026</span>
       <span class="hbadge hb-purple">SCA Exemptions</span>
@@ -153,7 +153,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 <div class="wizard">
   <div class="container">
     <div class="powered-by">
-      Powered by <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers.co</a> T343, T342, T92, T93 · PSD3/PSR2 Payments Compliance Suite · Zero PII · Client-side only
+      Powered by <a href="https://ainumbers.co" target="_blank" rel="noopener">AINumbers.co</a> T343, T342, T92, T93 · PSD3/PSR Payments Compliance Suite · Zero PII · Client-side only
     </div>
 
     <!-- STEP 1 -->
@@ -209,7 +209,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
     <!-- STEP 2 -->
     <div class="step-panel" id="step2">
       <div class="step-card">
-        <div class="step-header"><span class="step-num">STEP 02</span><span class="step-title">PSD3/PSR2 Gap Analysis</span><span class="step-ref">AINumbers T343</span></div>
+        <div class="step-header"><span class="step-num">STEP 02</span><span class="step-title">PSD3/PSR Gap Analysis</span><span class="step-ref">AINumbers T343</span></div>
         <div class="step-body" id="gapBody"></div>
       </div>
       <div class="nav-btns"><button class="btn-back" onclick="goStep(1)">← Back</button><button class="btn-next" onclick="goStep(3)">Next: ISO 20022 Readiness →</button></div>
@@ -236,7 +236,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
     <!-- STEP 5 -->
     <div class="step-panel" id="step5">
       <div class="step-card">
-        <div class="step-header"><span class="step-num">STEP 05</span><span class="step-title">PSD3/PSR2 Transition Plan &amp; Export</span></div>
+        <div class="step-header"><span class="step-num">STEP 05</span><span class="step-title">PSD3/PSR Transition Plan &amp; Export</span></div>
         <div class="step-body" id="planBody"></div>
       </div>
       <div class="nav-btns"><button class="btn-back" onclick="goStep(4)">← Back</button><button class="btn-export" onclick="exportMandate()">⬇ Export Transition Plan (JSON)</button></div>
@@ -246,8 +246,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-copy">Post Oak Labs Scenario #45 · PSD3/PSR2 EU Payments Transition Readiness · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
-    <span class="footer-copy">Indicative guidance only — not legal advice. PSD3/PSR2 final texts and transposition timelines subject to change.</span>
+    <span class="footer-copy">Post Oak Labs Scenario #45 · PSD3/PSR EU Payments Transition Readiness · Powered by AINumbers.co · CC BY 4.0 · Zero PII</span>
+    <span class="footer-copy">Indicative guidance only — not legal advice. PSD3 Directive transposition timelines subject to change; PSR is directly applicable as a Regulation.</span>
   </div>
 </footer>
 
@@ -279,11 +279,11 @@ function buildGap(){
 
   // Licensing reclassification analysis
   const licenceChanges={
-    pi:{change:'PI category reclassification under PSR2 — verify activity scope aligns with PSR2 Art. 3 definitions. New categories: PI Type 1 (pure payment services) vs PI Type 2 (with currency exchange). Passporting via new PSR2 notification procedure.',passportChange:true},
-    emi:{change:'EMI framework consolidated under PSR2 — EMIs may need to assess whether DEMI (Digital EMI) reclassification applies. E-money token (MiCA) vs e-money (PSR2) boundary clarification required.',passportChange:true},
+    pi:{change:'PI category reclassification under PSR — verify activity scope aligns with PSR Art. 3 definitions. New categories: PI Type 1 (pure payment services) vs PI Type 2 (with currency exchange). Passporting via new PSR notification procedure.',passportChange:true},
+    emi:{change:'EMI framework consolidated under PSR — EMIs may need to assess whether DEMI (Digital EMI) reclassification applies. E-money token (MiCA) vs e-money (PSR) boundary clarification required.',passportChange:true},
     bank:{change:'Credit institutions retain payment services rights under PSD3 — no re-authorisation required. CRD VI interface provisions updated. Stronger obligation to provide access to payment account data for AISPs.',passportChange:false},
-    aisp:{change:'AISP registration under PSR2 replaces PSD2 registration. Enhanced security requirements: mandatory FAPI 2.0 or equivalent API security profile. Consent management rules updated.',passportChange:true},
-    pisp:{change:'PISP authorisation continues under PSR2. VoP (Verification of Payee) extension: PISPs must verify payee details before payment initiation for all credit transfers above €1. New liability framework.',passportChange:true},
+    aisp:{change:'AISP registration under PSR replaces PSD2 registration. Enhanced security requirements: mandatory FAPI 2.0 or equivalent API security profile. Consent management rules updated.',passportChange:true},
+    pisp:{change:'PISP authorisation continues under PSR. VoP already applies for SEPA credit transfers under Reg (EU) 2024/886; PSD3/PSR extends VoP to all EU credit transfers above €1. New liability framework.',passportChange:true},
   };
 
   const lc=licenceChanges[S.instType]||licenceChanges.pi;
@@ -295,9 +295,9 @@ function buildGap(){
 
   const gaps=[
     {area:'Licensing / Re-authorisation',severity:S.psd2Licence==='none'?'HIGH':S.passportChange?'MED':'LOW',desc:lc.change},
-    {area:'VoP (Verification of Payee)',severity:vopRequired?'HIGH':'LOW',desc:vopRequired?'VoP mandatory for EU credit transfers — implement payee name verification before payment authorisation. IBAN-name matching service integration required.':'VoP primarily applies to PSPs initiating credit transfers — verify scope for your activity type.'},
-    {area:'API SLA Changes',severity:'MED',desc:'PSD3/PSR2 dedicated interface: minimum API uptime 99.9%, 100ms response time for account data queries. NCA reporting obligation for SLA breaches. Fallback interface requirements for AISPs/PISPs.'},
-    {area:'Passporting',severity:S.passportChange&&S.euCountries!=='single'?'HIGH':'LOW',desc:S.passportChange&&S.euCountries!=='single'?`Pan-EU passporting: ${S.euCountries==='all'?'16+ countries — material re-notification effort under PSR2; allow 12 months':'2–5 countries — re-notification required; PSR2 simplified mutual recognition process'}`:S.euCountries==='single'?'Single member state — no passporting re-notification required':'Verify passporting scope under PSR2 for your institution type.'},
+    {area:'VoP (Verification of Payee)',severity:vopRequired?'HIGH':'LOW',desc:vopRequired?'VoP already applies for SEPA credit transfers under Reg (EU) 2024/886 (Instant Payments Regulation); PSD3/PSR extends it to all EU credit transfers. Implement IBAN-name matching before payment authorisation.':'VoP already applies under Reg (EU) 2024/886 for SEPA credit transfers; verify scope for your activity type under PSD3/PSR.'},
+    {area:'API SLA Changes',severity:'MED',desc:'PSD3/PSR dedicated interface: minimum API uptime 99.9%, 100ms response time for account data queries. NCA reporting obligation for SLA breaches. Fallback interface requirements for AISPs/PISPs.'},
+    {area:'Passporting',severity:S.passportChange&&S.euCountries!=='single'?'HIGH':'LOW',desc:S.passportChange&&S.euCountries!=='single'?`Pan-EU passporting: ${S.euCountries==='all'?'16+ countries — material re-notification effort under PSR; allow 12 months':'2–5 countries — re-notification required; PSR simplified mutual recognition process'}`:S.euCountries==='single'?'Single member state — no passporting re-notification required':'Verify passporting scope under PSR for your institution type.'},
   ];
   S.gaps=gaps;
 
@@ -308,8 +308,8 @@ function buildGap(){
     <div class="result-card">
       <div class="result-label">Licensing Reclassification — ${S.instName}</div>
       <div class="rrow"><span class="rrow-key">Institution Type</span><span class="rrow-val"><strong>${S.instType.toUpperCase()}</strong></span></div>
-      <div class="rrow"><span class="rrow-key">PSD3/PSR2 Change</span><span class="rrow-val">${lc.change}</span></div>
-      <div class="rrow"><span class="rrow-key">Re-notification Req.</span><span class="rrow-val">${lc.passportChange?'Yes — passporting re-notification required under PSR2':'No re-notification required for credit institutions'}</span></div>
+      <div class="rrow"><span class="rrow-key">PSD3/PSR Change</span><span class="rrow-val">${lc.change}</span></div>
+      <div class="rrow"><span class="rrow-key">Re-notification Req.</span><span class="rrow-val">${lc.passportChange?'Yes — passporting re-notification required under PSR':'No re-notification required for credit institutions'}</span></div>
     </div>
     <div class="result-card">
       <div class="result-label">Gap Analysis — 4 Key Areas (T343)</div>
@@ -345,7 +345,7 @@ function buildIso(){
         ${status==='none'||status==='partial'?`<li class="chk-item"><span class="chk-icon chk-crit">!</span><span class="chk-text">CRITICAL: SWIFT Nov 2026 deadline — unstructured address fields will be rejected by correspondent banks. Immediate migration programme required.</span></li>`:''}
         ${status==='mostly'?`<li class="chk-item"><span class="chk-icon chk-req">!</span><span class="chk-text">Structured address gap: fields 2A-2C (StreetName, BuildingNumber, PostCode, TownName) must be populated — free-form AddressLine not compliant after Nov 2026</span></li>`:''}
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">pacs.008 / pacs.009: all payment messages must carry structured creditor/debtor postal address by November 2026</span></li>
-        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">PSD3/PSR2 interface: dedicated API must support ISO 20022 structured address for account data queries and payment initiation</span></li>
+        <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">PSD3/PSR interface: dedicated API must support ISO 20022 structured address for account data queries and payment initiation</span></li>
         <li class="chk-item"><span class="chk-icon chk-req">→</span><span class="chk-text">Data enrichment: for legacy account data missing structured address, implement enrichment process before migration cutover</span></li>
         ${status==='full'?`<li class="chk-item"><span class="chk-icon chk-ok">✓</span><span class="chk-text">Structured address compliant — verify correspondent bank chain is also compliant and not truncating structured fields</span></li>`:''}
       </ul>
@@ -359,11 +359,11 @@ function buildSca(){
 
   // SCA exemptions
   const exemptions=[
-    {name:'Low-value transaction (&lt;€30)',applies:['pi','emi','bank','pisp'],psd3change:'Cumulative limit increased to €150 per session or 5 consecutive — more than PSD2 €100/5 aggregate'},
+    {name:'Low-value transaction (&lt;€30)',applies:['pi','emi','bank','pisp'],psd3change:'Cumulative limit proposed at €150 per session or 5 consecutive — more than PSD2 €100/5 aggregate (subject to final text)'},
     {name:'Trusted beneficiary (payer-set)',applies:['bank','pi','emi'],psd3change:'Explicit consent mechanism required for trusted payee list — PSD3 tightens consent rules'},
     {name:'Recurring transactions',applies:['bank','pi','emi','pisp'],psd3change:'First payment SCA required; subsequent recurring exempt if amount/payee unchanged'},
-    {name:'Corporate exclusion',applies:['bank','pi'],psd3change:'Legal entity payments with dedicated payment accounts may exclude SCA — verify PSR2 scope extension'},
-    {name:'Transaction Risk Analysis (TRA)',applies:['bank','pi','emi'],psd3change:'TRA thresholds retained but reference fraud rates under PSR2 will be updated by EBA 2025 RTS revision'},
+    {name:'Corporate exclusion',applies:['bank','pi'],psd3change:'Legal entity payments with dedicated payment accounts may exclude SCA — verify PSR scope extension'},
+    {name:'Transaction Risk Analysis (TRA)',applies:['bank','pi','emi'],psd3change:'TRA thresholds retained but reference fraud rates under PSR will be updated by EBA 2025 RTS revision'},
   ];
 
   const applicableExemptions=exemptions.filter(e=>e.applies.includes(instType));
@@ -375,7 +375,7 @@ function buildSca(){
     pisp:{score:70,issues:['VoP integration not confirmed — required before payment initiation for EU credit transfers','Callback latency for payment status exceeds acceptable thresholds in cross-border corridors']},
     bank:{score:80,issues:['AIS data refresh: must honour 4-hour refresh maximum — review API rate limiting','Strong authentication for AISPs: ensure no SCA required for first 90 days of AISP connection']},
     pi:{score:75,issues:['Dedicated interface: verify fallback interface availability and NCA notification process']},
-    emi:{score:75,issues:['E-money account API: ensure PSR2 compliance for payment account data access']},
+    emi:{score:75,issues:['E-money account API: ensure PSR compliance for payment account data access']},
   };
   const perf=apiPerf[instType]||apiPerf.bank;
   S.apiPerfScore=perf.score;
@@ -383,7 +383,7 @@ function buildSca(){
 
   document.getElementById('scaBody').innerHTML=`
     <div class="result-card">
-      <div class="result-label">SCA Exemptions under PSD3/PSR2 (T92)</div>
+      <div class="result-label">SCA Exemptions under PSD3/PSR (T92)</div>
       <p style="font-size:.75rem;color:var(--body);margin-bottom:.75rem">Applicable SCA exemptions for your institution type (${instType.toUpperCase()}):</p>
       <div style="display:flex;flex-direction:column;gap:.4rem">
         ${applicableExemptions.map(e=>`<div style="padding:.6rem .75rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)">
@@ -409,23 +409,23 @@ function buildPlan(){
   S.overallScore=overallScore;
 
   const milestones=[
-    {date:'Now – Q4 2026',action:'Licensing reclassification analysis — engage NCA for pre-application dialogue under PSR2',p:S.passportChange&&S.euCountries!=='single'?'HIGH':'MED'},
+    {date:'Now – Q4 2026',action:'Licensing reclassification analysis — engage NCA for pre-application dialogue under PSR',p:S.passportChange&&S.euCountries!=='single'?'HIGH':'MED'},
     {date:'Nov 2026',action:'ISO 20022 structured address mandatory — complete migration or face correspondent rejection',p:S.isoScore<70?'CRIT':'HIGH'},
-    {date:'Q1 2027',action:'VoP implementation — payee name verification for EU credit transfers above €1',p:S.vopRequired?'HIGH':'MED'},
-    {date:'PSD3 transposition',action:'PSR2 national transposition (expected 18 months post-adoption, est. 2026/27) — re-notify NCAs in all passporting jurisdictions',p:'MED'},
+    {date:'Now / Q1 2027',action:'VoP for SEPA credit transfers already applies under Reg (EU) 2024/886 (Instant Payments Regulation). PSD3/PSR extends VoP to all credit transfers — implement payee name verification above €1.',p:S.vopRequired?'HIGH':'MED'},
+    {date:'PSD3 transposition',action:'PSD3 Directive national transposition (expected 18 months post-adoption, est. 2026/27) — PSR is directly applicable as a Regulation (no transposition). Re-notify NCAs in all passporting jurisdictions.',p:'MED'},
     {date:'Post-transposition',action:'API SLA compliance: 99.9% uptime and 100ms response mandatory — implement NCA breach reporting procedure',p:'MED'},
   ];
   S.milestones=milestones;
 
   document.getElementById('planBody').innerHTML=`
     <div class="result-card">
-      <div class="result-label">PSD3/PSR2 Transition Summary — ${S.instName}</div>
+      <div class="result-label">PSD3/PSR Transition Summary — ${S.instName}</div>
       <div class="rrow" style="margin-bottom:.4rem"><span class="rrow-key">Overall Readiness</span><span class="rrow-val"><strong style="color:${overallColor}">${overallScore}/100</strong></span></div>
       <div class="gauge-bar" style="height:12px"><div class="gauge-fill" style="width:${overallScore}%;background:${overallColor}"></div></div>
       <div style="margin-top:.75rem">
         <div class="rrow"><span class="rrow-key">ISO 20022 Score</span><span class="rrow-val"><strong style="color:${S.isoScore>=70?'var(--green)':'var(--red)'}">${S.isoScore}/100</strong></span></div>
         <div class="rrow"><span class="rrow-key">API Perf Score</span><span class="rrow-val"><strong style="color:${S.apiPerfScore>=70?'var(--green)':'var(--warn)'}">${S.apiPerfScore}/100</strong></span></div>
-        <div class="rrow"><span class="rrow-key">VoP Required</span><span class="rrow-val">${S.vopRequired?'<strong style="color:var(--warn)">Yes — Q1 2027 implementation target</strong>':'Not directly applicable'}</span></div>
+        <div class="rrow"><span class="rrow-key">VoP Required</span><span class="rrow-val">${S.vopRequired?'<strong style="color:var(--warn)">Yes — already applies for SEPA credit transfers (Reg (EU) 2024/886); PSD3/PSR extends to all EU credit transfers</strong>':'Not directly applicable'}</span></div>
         <div class="rrow"><span class="rrow-key">Re-notification</span><span class="rrow-val">${S.passportChange&&S.euCountries!=='single'?'<strong style="color:var(--warn)">Required in all passporting states</strong>':'Not required for this institution type'}</span></div>
       </div>
     </div>
@@ -459,13 +459,13 @@ function exportMandate(){
     schema_version:'1.0',
     generated:new Date().toISOString(),
     tool:'AINumbers.co T343/T342/T92/T93 · Post Oak Labs Scenario #45',
-    regulation:'PSD3 / PSR2 EU Payments Transition',
+    regulation:'PSD3 / PSR EU Payments Transition',
     institution:{name:S.instName,type:S.instType,psd2_licence:S.psd2Licence,eu_countries:S.euCountries,iso_status:S.isoStatus},
     gap_analysis:{licence_change:S.licenceChange,passport_re_notification:S.passportChange,vop_required:S.vopRequired,gaps:(S.gaps||[]).map(g=>({area:g.area,severity:g.severity}))},
-    iso20022:{readiness_score:S.isoScore,deadline:'2026-11-01',structured_address_status:S.isoStatus},
+    iso20022:{readiness_score:S.isoScore,deadline:'2026-11-14',structured_address_status:S.isoStatus},
     sca_open_banking:{applicable_exemptions:(S.applicableExemptions||[]).map(e=>e.name),api_performance_score:S.apiPerfScore},
     readiness:{overall_score:S.overallScore,milestones:(S.milestones||[]).map(m=>({date:m.date,action:m.action,priority:m.p}))},
-    disclaimer:'Indicative guidance only — not legal advice. PSD3/PSR2 final texts and national transposition timelines subject to change. Consult qualified EU payments regulatory counsel.',
+    disclaimer:'Indicative guidance only — not legal advice. PSD3 Directive transposition timelines subject to change; the PSR is directly applicable as a Regulation (no national transposition). Consult qualified EU payments regulatory counsel.',
   };
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);

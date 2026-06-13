@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>EU AI Act Financial Services Compliance Studio · Post Oak Labs Scenario #41</title>
-<meta name="description" content="Post Oak Labs showcase demo: EU AI Act Financial Services Compliance Studio. From AI system inventory to August 2026 readiness in four steps. Powered by AINumbers.co">
+<meta name="description" content="Post Oak Labs showcase demo: EU AI Act Financial Services Compliance Studio. From AI system inventory to December 2027 readiness in four steps. Powered by AINumbers.co">
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -155,9 +155,9 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
   <div class="container">
     <div class="hero-tag">Post Oak Labs · Showcase Scenario #41</div>
     <h1>EU AI Act <em>Financial Services</em><br>Compliance Studio</h1>
-    <p class="hero-sub">From AI system inventory to August 2026 readiness in four steps. Powered by AINumbers.co deterministic compliance tools. Zero PII — all logic runs in your browser.</p>
+    <p class="hero-sub">From AI system inventory to December 2027 readiness in four steps. Powered by AINumbers.co deterministic compliance tools. Zero PII — all logic runs in your browser.</p>
     <div class="hero-meta">
-      <span class="hbadge hb-red">Aug 2, 2026 Deadline · 8 Weeks</span>
+      <span class="hbadge hb-red">Dec 2, 2027 Deadline (deferred by EU Digital Omnibus; provisional until OJ publication)</span>
       <span class="hbadge hb-warn">Annex III High-Risk</span>
       <span class="hbadge hb-teal">Art. 9 Risk Mgmt</span>
       <span class="hbadge hb-gold">Policy Mandate Export</span>
@@ -307,7 +307,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
       <div class="step-card">
         <div class="step-header">
           <span class="step-num">STEP 04</span>
-          <span class="step-title">August 2026 Readiness Report</span>
+          <span class="step-title">Annex III Readiness Report</span>
         </div>
         <div class="step-body" id="readinessBody">
           <p style="font-size:.78rem;color:var(--body)">Generating readiness report...</p>
@@ -332,12 +332,12 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
 <script>
 // ── CLASSIFICATION ENGINE ──────────────────────────────────────────────
 const SYS_PROFILES = {
-  credit:       { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'Credit Scoring / Creditworthiness Assessment', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  fraud:        { risk:'high', annexRef:'Annex III — §5(b) excepts fraud detection', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'Fraud Detection — Automated Account Block', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  aml:          { risk:'high', annexRef:'Annex III — §5(b) excepts AML/fraud detection', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'AML / Transaction Monitoring (Automated Restriction)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
-  underwriting: { risk:'high', annexRef:'Annex III §5(c)', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'Insurance Underwriting & Pricing', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  kyc:          { risk:'high', annexRef:'Annex III §1(a)', articleRef:'Article 6(1)', deadline:'2 August 2026', label:'Biometric KYC / Remote Identity Verification', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
-  kycscore:     { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 August 2026', label:'KYC Risk Scoring (Natural Persons)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
+  credit:       { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 December 2027', label:'Credit Scoring / Creditworthiness Assessment', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  fraud:        { risk:'limited', annexRef:'Annex III §5(b) — fraud detection EXCEPTED; requires legal assessment', articleRef:'Article 50', deadline:'2 August 2026', label:'Fraud Detection — Automated Account Block', obligations:['Art. 50 Transparency Disclosure','Art. 50 No Deception','Art. 5 Prohibition Screening — verify no prohibited practices apply'] },
+  aml:          { risk:'limited', annexRef:'Annex III §5(b) — AML/fraud detection EXCEPTED; requires legal assessment', articleRef:'Article 50', deadline:'2 August 2026', label:'AML / Transaction Monitoring (Automated Restriction)', obligations:['Art. 50 Transparency Disclosure','Art. 50 No Deception','Art. 5 Prohibition Screening — verify no prohibited practices apply'] },
+  underwriting: { risk:'high', annexRef:'Annex III §5(c)', articleRef:'Article 6(2)', deadline:'2 December 2027', label:'Insurance Underwriting & Pricing', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  kyc:          { risk:'high', annexRef:'Annex III §1(a)', articleRef:'Article 6(1)', deadline:'2 December 2027', label:'Biometric KYC / Remote Identity Verification', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 15','Art. 17','Art. 49'] },
+  kycscore:     { risk:'high', annexRef:'Annex III §5(b)', articleRef:'Article 6(2)', deadline:'2 December 2027', label:'KYC Risk Scoring (Natural Persons)', obligations:['Art. 9','Art. 10','Art. 11','Art. 12','Art. 13','Art. 14','Art. 17','Art. 49'] },
   chatbot:      { risk:'limited', annexRef:'Article 50', articleRef:'Article 50(1)', deadline:'2 August 2026', label:'Customer-Facing Chatbot', obligations:['Art. 50 Transparency Disclosure','Art. 50 No Deception'] },
   other:        { risk:'minimal', annexRef:'N/A', articleRef:'N/A', deadline:null, label:'Other AI System', obligations:['Art. 5 Prohibition Screening'] },
 };
@@ -447,7 +447,7 @@ function buildObligations() {
 
   // Provider/deployer split
   const providerObls = isVendor ? ['Art. 49 — verify EU AI database registration'] : ['Art. 9 Risk Mgmt System','Art. 10 Data Governance','Art. 11 Technical Documentation','Art. 12 Logging Capability','Art. 13 Instructions for Use','Art. 15 Accuracy & Robustness','Art. 17 QMS','Art. 49 EU AI Database Registration'];
-  const deployerObls = ['Art. 14 Human Oversight Design','Art. 26 Fundamental Rights Impact Assessment (public bodies)','Art. 26 Inform Affected Persons','Art. 12 Log Retention (min. 6 months)'];
+  const deployerObls = ['Art. 14 Human Oversight Design','Art. 27 Fundamental Rights Impact Assessment (public bodies)','Art. 26 Inform Affected Persons','Art. 12 Log Retention (min. 6 months)'];
 
   state.art9Score = art9Score;
   state.art10Score = art10Score;
@@ -457,7 +457,7 @@ function buildObligations() {
   const art9Color = art9Score>=80 ? 'var(--green)' : art9Score>=50 ? 'var(--warn)' : 'var(--red)';
   const art10Color = art10Score>=80 ? 'var(--green)' : art10Score>=50 ? 'var(--warn)' : 'var(--red)';
 
-  const highRiskContent = state.risk!=='high' ? `<div class="result-card"><div class="result-label">Status</div><p style="font-size:.78rem;color:var(--body)">This system is classified as <strong style="color:var(--bright)">${RISK_LABEL[state.risk]||'MINIMAL RISK'}</strong>. Articles 9–17 full obligations do not apply. ${state.risk==='limited'?'Article 50 transparency disclosure is required by 2 August 2026.':'No mandatory compliance framework beyond Article 5 prohibition check.'}</p></div>` : `
+  const highRiskContent = state.risk!=='high' ? `<div class="result-card"><div class="result-label">Status</div><p style="font-size:.78rem;color:var(--body)">This system is classified as <strong style="color:var(--bright)">${RISK_LABEL[state.risk]||'MINIMAL RISK'}</strong>. Articles 9–17 full Annex III obligations do not apply. ${state.risk==='limited'?'Article 50 transparency disclosure is required by 2 August 2026. Note: if the system is fraud/AML detection excepted under Annex III §5(b), this classification reflects that statutory exception — seek legal confirmation.':'No mandatory compliance framework beyond Article 5 prohibition check.'}</p></div>` : `
     <div class="result-card">
       <div class="result-label">Art. 9 Risk Management Gap Score (T333)</div>
       <div class="rrow" style="margin-bottom:.35rem"><span class="rrow-key">Readiness Score</span><span class="rrow-val"><strong style="color:${art9Color}">${art9Score}/100</strong></span></div>
@@ -465,7 +465,7 @@ function buildObligations() {
       <ul class="gaps-list" style="margin-top:.75rem">
         ${state.humanReview==='never'?`<li class="gap-item"><div class="gap-icon gi-red">!</div><div class="gap-text">No human oversight gate — Art. 14 compliance gap: design mandatory override capability before any production deployment</div></li>`:''}
         ${usersAffected==='vhigh'?`<li class="gap-item"><div class="gap-icon gi-warn">!</div><div class="gap-text">&gt;1M natural persons affected: escalated Art. 9 risk documentation depth and Art. 27 fundamental rights impact assessment recommended</div></li>`:''}
-        <li class="gap-item"><div class="gap-icon gi-green">✓</div><div class="gap-text">GPAI Art. 9 obligations in effect since 2 August 2025; full Annex III Art. 9 framework required before 2 August 2026</div></li>
+        <li class="gap-item"><div class="gap-icon gi-green">✓</div><div class="gap-text">GPAI Art. 9 obligations in effect since 2 August 2025; full Annex III Art. 9 framework required before 2 December 2027 (deferred by EU Digital Omnibus; provisional until OJ publication)</div></li>
       </ul>
     </div>
     <div class="result-card">
@@ -507,7 +507,7 @@ function buildReadiness() {
   state.overallScore = overall;
 
   const criticalGaps = [];
-  if(isHighRisk && state.humanReview==='never') criticalGaps.push('Art. 14 human oversight: design mandatory override capability — CRITICAL before Aug 2026');
+  if(isHighRisk && state.humanReview==='never') criticalGaps.push('Art. 14 human oversight: design mandatory override capability — CRITICAL before 2 December 2027 (Annex III deadline, deferred by EU Digital Omnibus)');
   if(isHighRisk && document.getElementById('dataSize').value==='unknown') criticalGaps.push('Art. 10 data documentation: obtain technical docs from vendor — request under Art. 13');
   if(isHighRisk && state.deployStatus==='live') criticalGaps.push('Live system: Art. 9 risk management system must be retroactively established — prioritise immediately');
   if(isHighRisk) criticalGaps.push('Art. 49 EU AI database registration: required before market placement or service commencement');
@@ -515,11 +515,10 @@ function buildReadiness() {
 
   const timeline = [];
   if(isHighRisk){
-    timeline.push({date:'Now – Jul 2026', action:'Art. 9 risk management system design + Art. 10 dataset audit', priority:'HIGH'});
-    timeline.push({date:'Aug 2026', action:'Annex III high-risk compliance deadline — all Arts. 9-17 and 49 obligations must be met', priority:'HIGH'});
-    timeline.push({date:'Sep – Dec 2026', action:'Post-deadline hardening: Art. 11 documentation audit, Art. 12 logging review, Art. 13 instructions for use — verify registration in EU AI database (Art. 49)', priority:'MED'});
-    timeline.push({date:'Jan – Jul 2027', action:'Ongoing compliance: Art. 14–17 obligations (human oversight, accuracy, QMS, cybersecurity) — monitor EU AI Office guidance updates', priority:'LOW'});
-    timeline.push({date:'Aug 2027', action:'Annex I (product-embedded) high-risk systems deadline — pre-existing Annex III systems should be well past compliance by this date', priority:'MED'});
+    timeline.push({date:'Now – Nov 2027', action:'Art. 9 risk management system design + Art. 10 dataset audit — Annex III deadline deferred to 2 Dec 2027 by EU Digital Omnibus (provisional until OJ publication)', priority:'HIGH'});
+    timeline.push({date:'Dec 2027', action:'Annex III high-risk compliance deadline (deferred from Aug 2026 by Digital Omnibus) — all Arts. 9–17 and 49 obligations must be met', priority:'HIGH'});
+    timeline.push({date:'Jan – Jun 2028', action:'Post-deadline hardening: Art. 11 documentation audit, Art. 12 logging review, Art. 13 instructions for use — verify registration in EU AI database (Art. 49)', priority:'MED'});
+    timeline.push({date:'Ongoing', action:'Ongoing compliance: Art. 14–17 obligations (human oversight, accuracy, QMS, cybersecurity) — monitor EU AI Office guidance updates', priority:'LOW'});
   } else if(state.risk==='limited'){
     timeline.push({date:'Aug 2026', action:'Art. 50 transparency disclosure live — AI nature must be disclosed to users', priority:'HIGH'});
     timeline.push({date:'Ongoing', action:'Monitor EU AI Office guidance on transparency obligation scope', priority:'LOW'});
@@ -527,7 +526,7 @@ function buildReadiness() {
 
   document.getElementById('readinessBody').innerHTML = `
     <div class="result-card">
-      <div class="result-label">Overall August 2026 Readiness Score — ${state.sysName||'System'}</div>
+      <div class="result-label">Overall Annex III Readiness Score — ${state.sysName||'System'}</div>
       <div class="rrow" style="margin-bottom:.4rem"><span class="rrow-key">Readiness Score</span><span class="rrow-val"><strong style="font-size:1.1rem;color:${overallColor}">${overall}/100</strong></span></div>
       <div class="gauge-bar" style="height:12px"><div class="gauge-fill" style="width:${overall}%;background:${overallColor}"></div></div>
       <div style="margin-top:.75rem;font-size:.72rem;color:var(--body)">Deadline: <strong style="color:${days<90?'var(--red)':'var(--warn)'}">${state.profile?.deadline||'N/A'}</strong> ${days?`(${days} days remaining)`:''}</div>

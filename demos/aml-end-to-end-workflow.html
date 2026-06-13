@@ -262,7 +262,7 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
         <span class="eyebrow-badge error">AML · Financial Crime</span>
         <span class="eyebrow-badge gold">T110 · T116 · T121 · T131</span>
         <span class="eyebrow-badge warn">CRR → TM Rules → SAR → Mandate</span>
-        <span class="eyebrow-badge">FATF R.10 · 4AMLD / 6AMLD</span>
+        <span class="eyebrow-badge">FATF R.10 · 4AMLD / 5AMLD → AMLR 2024/1624</span>
         <span class="eyebrow-badge">Zero PII</span>
       </div>
       <h1 id="hero-title">AML <em>End-to-End Workflow</em></h1>
@@ -554,7 +554,7 @@ function computeCRR(vals) {
     details.push({ ...d, score, weighted, cls });
   }
   composite = Math.round(composite);
-  const tier = composite < 30 ? 'low' : composite < 55 ? 'medium' : composite < 80 ? 'high' : 'prohibited';
+  const tier = composite < 25 ? 'low' : composite < 55 ? 'medium' : composite < 80 ? 'high' : 'prohibited';
   const tierLabel = { low:'Low Risk', medium:'Medium Risk', high:'High Risk', prohibited:'Prohibited' };
   const reviewCadence = { low:'Annual', medium:'6-monthly', high:'Quarterly', prohibited:'Immediate exit' };
   const eddRequired = composite >= 55;
@@ -619,7 +619,7 @@ function generateSAR(crr, tm, inp) {
 
     timing: `Alert generated: ${dateStr}. Suspicious activity period: ${suspiciousPeriodStart} to ${dateStr} (30-day window). Review deadline under applicable regulation: ${new Date(today.getTime() + 30*24*3600*1000).toISOString().split('T')[0]} (30-day filing window). Analyst escalation initiated: ${dateStr}.`,
 
-    regulatoryHooks: `Applicable frameworks: FinCEN 31 CFR § 1020.320 (US), POCA 2002 / TACT 2000 (UK), 6AMLD Art. 3 (EU), FATF Recommendation 10 (CDD), FATF Recommendation 20 (STR reporting). Risk-based approach rationale: ${crr.tierLabel} CRR tier with composite score ${crr.composite}/100 justifies enhanced scrutiny. ${crr.tier === 'prohibited' ? 'Relationship exit initiated per policy.' : 'Relationship review scheduled per ' + crr.reviewCadence + ' cadence.'}`
+    regulatoryHooks: `Applicable frameworks: FinCEN 31 CFR § 1020.320 (US), POCA 2002 / TACT 2000 (UK), AMLR (EU) 2024/1624 Art. 69 / 4AMLD Art. 33 (STR obligations), FATF Recommendation 10 (CDD), FATF Recommendation 20 (STR reporting). Risk-based approach rationale: ${crr.tierLabel} CRR tier with composite score ${crr.composite}/100 justifies enhanced scrutiny. ${crr.tier === 'prohibited' ? 'Relationship exit initiated per policy.' : 'Relationship review scheduled per ' + crr.reviewCadence + ' cadence.'}`
   };
   return { narrative, triggerDesc, triggerRule, dateStr, suspiciousPeriodStart, sc };
 }

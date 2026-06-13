@@ -1144,8 +1144,8 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 <!-- BIS 239 CALLOUT (spec Phase 1b Task 4) -->
 <div class="bis-callout" role="note" aria-label="BIS 239 / FRTB framing">
   <div class="bis-eyebrow">BIS 239 · FRTB framing</div>
-  <p>BCBS 239 (Principles for effective risk data aggregation, January 2013) requires G-SIBs and D-SIBs to maintain granular, timely FX exposure data and the architecture to aggregate it on demand. The haircut method below — <code>sigma × √(t/365) × Z<sub>99</sub></code> with a 90-day holding period — mirrors FRTB Internal Models Approach (IMA) parameters, so the deployable capital figure is directly comparable to the bank's regulatory capital allocation.</p>
-  <div class="bis-cite">Sources: BCBS 239 (2013) · Basel III FRTB final rule (revised, 2019) · 99% confidence (Z = 2.326), 90-day hold, base yield 7.85% short-rate proxy</div>
+  <p>BCBS 239 (Principles for effective risk data aggregation, January 2013) requires G-SIBs and D-SIBs to maintain granular, timely FX exposure data and the architecture to aggregate it on demand. The haircut method below — <code>sigma × √(t/365) × Z<sub>99</sub></code> with a 90-day holding period — applies a simplified 99% VaR haircut (not FRTB IMA, which uses ES at 97.5%), so the deployable capital figure is indicative rather than a direct regulatory capital equivalent.</p>
+  <div class="bis-cite">Sources: BCBS 239 (2013) · Basel III FRTB final rule (revised, 2019) · 99% confidence (Z = 2.326), 90-day hold, base yield 7.85% short-rate proxy (illustrative; verify currency basis)</div>
 </div>
 
 <!-- VALUE-AT-RISK SIDEBAR (spec Part 17) -->
@@ -1549,7 +1549,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         <div class="fx-section-title">Blended corridor FX volatility</div>
         <p class="fx-section-sub">
           Drag to stress-test. The haircut applied to freed Nostro capital scales as
-          <b>haircut = σ × √(holding-days) × confidence(99%)</b>. At baseline the desk runs
+          <b>haircut = σ × √(t/365) × Z₉₉ (t = 90 days)</b>. At baseline the desk runs
           at <b>14.8% blended σ</b>; capital controls in AR add tail risk above 25%.
         </p>
 
@@ -1641,7 +1641,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
           <div>
             <div class="stk-lbl">Base yield · target deploy</div>
             <div class="stk-val">7.85%</div>
-            <div class="stk-sub">LATAM short-dated sovereigns · USD blend</div>
+            <div class="stk-sub">LATAM short-dated sovereigns · USD blend (illustrative; verify currency basis)</div>
           </div>
           <div>
             <div class="stk-lbl">FX haircut applied</div>
@@ -2020,7 +2020,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         annual_vol_pct: c.annual_vol_pct,
         haircut_pct: +(corrHaircut * 100).toFixed(2),
         deployable_usd_m: +corrDeployable.toFixed(2),
-        annualized_yield_usd_m: +(corrDeployable * BASE_YIELD * (365/HOLD_DAYS)).toFixed(3)
+        annualized_yield_usd_m: +(corrDeployable * BASE_YIELD).toFixed(3)
       };
     });
     return {
@@ -2043,7 +2043,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
         total_freed_usd_m: +r.freed.toFixed(2),
         haircut_pct: +(r.haircut * 100).toFixed(2),
         deployable_usd_m: +r.deployable.toFixed(2),
-        projected_annual_yield_usd_m: +(r.returnDollars * (365 / HOLD_DAYS)).toFixed(2)
+        projected_annual_yield_usd_m: +r.returnDollars.toFixed(2)
       },
       per_corridor: perCorridor,
       agent_instructions: [

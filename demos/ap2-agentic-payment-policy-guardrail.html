@@ -635,7 +635,7 @@ main.demo-canvas .code-block .c { color: var(--showcase-text-muted) !important; 
   <h4 class="var-eyebrow">Value at risk · unscoped agent transactions</h4>
   <p class="var-figure">Full transaction loss + unauthorized-debit liability per breach</p>
   <p class="var-body">Autonomous agents executing payments without a client-side policy guard can fall outside the principal's intent envelope — wrong merchant, wrong amount cap, or an expired window. Policy Mandate v1 policy JSON enforces the envelope before the MCP tool call resolves, so the agent cannot emit a payment that the principal did not authorize. Visualizing the mandate before deployment is the cheapest path to catching scope-drift.</p>
-  <p class="var-cite"><small>Policy Mandate v1 mandate specification · Google AP2 working draft (v0.2 · FIDO Alliance) · ISO 20022 intent envelope · FATF Recommendation 16 (Travel Rule) for agent-initiated transfers</small></p>
+  <p class="var-cite"><small>Policy Mandate v1 mandate specification · Google AP2 working draft (v0.2) · ISO 20022 intent envelope · FATF Recommendation 16 (Travel Rule) for agent-initiated transfers</small></p>
 </aside>
 
 
@@ -1225,10 +1225,10 @@ function buildAgentInstructions(m) {
 
 function buildMCPToolDef(m) {
   return {
-    "$schema": "https://modelcontextprotocol.io/schema/0.4/tool",
     "name": "execute_payment_under_ap2_mandate",
     "description": `Execute an outbound payment under Policy Mandate ${m.mandate_id}. The runtime will enforce every shielded constraint server-side and reject violations with the matching reason_code.`,
     "inputSchema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
       "type": "object",
       "required": ["amount", "currency", "rail", "counterparty"],
       "properties": {

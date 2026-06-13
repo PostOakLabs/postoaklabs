@@ -199,7 +199,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem;margin-top:3rem;positio
               <select id="totalAssets">
                 <option value="under1b">&lt; $1B</option>
                 <option value="1b_10b">$1B – $10B</option>
-                <option value="over10b">&gt; $10B (federal supervision threshold)</option>
+                <option value="over10b">&gt; $10B</option>
               </select>
             </div>
             <div class="field">
@@ -335,7 +335,7 @@ function buildLicensing(){
   S.jurisdiction=document.getElementById('jurisdiction').value;
   S.issuerName=document.getElementById('issuerName').value.trim()||'Issuer';
 
-  const isPPSI = totalAssets==='over10b' || coinsOutstanding==='over10b';
+  const isPPSI = coinsOutstanding==='over10b';
   S.isPPSI=isPPSI;
 
   const regulatorMap = {
@@ -513,7 +513,7 @@ function exportMandate(){
     },
     aml:{
       bsa_registration_required:true,
-      finra_msbregistration:true,
+      fincen_msbregistration:true,
       travel_rule_required:S.travelRuleRequired,
       travel_rule_threshold_usd:3000,
       sar_threshold_usd:5000,

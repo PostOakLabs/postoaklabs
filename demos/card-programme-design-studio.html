@@ -255,7 +255,7 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
         <div class="hstat"><div class="hstat-l">Card Types</div><div class="hstat-v gold">4</div><div class="hstat-note">Debit · Prepaid · Credit · Commercial</div></div>
         <div class="hstat"><div class="hstat-l">PCI v4.0 Reqs</div><div class="hstat-v purple">12</div><div class="hstat-note">Goals checked</div></div>
         <div class="hstat"><div class="hstat-l">3DS Version</div><div class="hstat-v success">2.3</div><div class="hstat-note">Latest EMVCo standard</div></div>
-        <div class="hstat"><div class="hstat-l">Reg II Cap (US)</div><div class="hstat-v">21¢ + 5 bps</div><div class="hstat-note">Durbin debit, 2026</div></div>
+        <div class="hstat"><div class="hstat-l">Reg II Cap (US)</div><div class="hstat-v">21¢ + 5 bps</div><div class="hstat-note">Durbin debit — vacated by D.N.D. (Aug 2025), stayed pending appeal; in force but contested</div></div>
         <div class="hstat"><div class="hstat-l">Schema</div><div class="hstat-v success">v1.0</div><div class="hstat-note">@postoaklabs.com/card-programme-design-v1</div></div>
       </div>
     </section>
@@ -518,14 +518,23 @@ function compute(inp) {
   const monthlyVol = inp.cards * inp.txpm * inp.aov; // USD spend / month
   const icTable = IC_TABLE[inp.product];
 
+  const monthlyTxTotal = inp.cards * inp.txpm; // total monthly transactions
   const water = MCCS.map(k => {
     const share = (inp.mix[k] || 0) / total;
     const qualRate = icTable[k];
-    // Effective rate after 8% downgrade leakage (illustrative)
-    const downgrade = inp.product === 'debit' ? 0 : 0.08;
-    const eff = qualRate * (1 - downgrade) + qualRate * 1.25 * downgrade;
     const vol = monthlyVol * share;
-    const icRev = vol * eff / 100;
+    let icRev;
+    if (inp.product === 'debit') {
+      // Reg II hybrid cap: $0.21/tx + 5 bps of value (Durbin Amendment, 12 CFR 235)
+      const txShare = monthlyTxTotal * share;
+      icRev = (txShare * 0.21) + (vol * 0.0005);
+    } else {
+      // Effective rate after 8% downgrade leakage (illustrative)
+      const downgrade = 0.08;
+      const eff = qualRate * (1 - downgrade) + qualRate * 1.25 * downgrade;
+      icRev = vol * eff / 100;
+    }
+    const eff = icRev / (vol || 1) * 100; // back-compute effective % for display
     return { mcc:k, label: MCC_LABELS[k], share, qualRate, eff, vol, icRev };
   });
   const totalIcRev = water.reduce((a, r) => a + r.icRev, 0);

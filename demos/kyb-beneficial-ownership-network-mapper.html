@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KYB Beneficial Ownership Network Mapper · CTA × 6AMLD × PSC × MAS · Post Oak Labs</title>
+<title>KYB Beneficial Ownership Network Mapper · CTA × 4AMLD/AMLR × PSC × MAS · Post Oak Labs</title>
 
-<meta name="description" content="Visualise corporate ownership chains, identify ultimate beneficial owners against jurisdiction thresholds (FinCEN CTA 25%, EU 6AMLD 25%, UK PSC 25%, MAS 25%), flag sanctioned-proximity hops and circular ownership. Policy Mandate export. Client-side, zero PII.">
+<meta name="description" content="Visualise corporate ownership chains, identify ultimate beneficial owners against jurisdiction thresholds (FinCEN CTA 25%, EU 4AMLD/AMLR 25%, UK PSC 25%, MAS 25%), flag sanctioned-proximity hops and circular ownership. Policy Mandate export. Client-side, zero PII.">
 <meta name="author" content="Post Oak Labs">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html">
@@ -29,11 +29,11 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/kyb-beneficial-ownership-network-mapper.html",
-  "description": "Visualise a corporate ownership chain as a layered network graph. Identify ultimate beneficial owners against four jurisdictional disclosure thresholds (FinCEN Corporate Transparency Act, EU 6AMLD, UK Persons-with-Significant-Control regime, MAS), flag sanctioned-proximity hops in the counterparty graph, detect circular ownership. Policy Mandate v1 KYB mandate export against @ainumbers.co/kyb-ubo-v1.",
+  "description": "Visualise a corporate ownership chain as a layered network graph. Identify ultimate beneficial owners against four jurisdictional disclosure thresholds (FinCEN Corporate Transparency Act, EU 4AMLD/5AMLD/AMLR 2024/1624, UK Persons-with-Significant-Control regime, MAS), flag sanctioned-proximity hops in the counterparty graph, detect circular ownership. Policy Mandate v1 KYB mandate export against @ainumbers.co/kyb-ubo-v1.",
   "featureList": [
     "Interactive SVG ownership-chain visualisation",
     "Disclosure threshold slider (10–25% per jurisdiction)",
-    "Four-jurisdiction selector (US CTA / EU 6AMLD / UK PSC / MAS)",
+    "Four-jurisdiction selector (US CTA / EU 4AMLD–AMLR / UK PSC / MAS)",
     "Sanctioned-proximity hop counter",
     "Circular ownership detection",
     "Per-UBO disclosure status (reportable / not reportable)",
@@ -41,7 +41,7 @@
     "Policy Mandate v1 mandate export against @ainumbers.co/kyb-ubo-v1",
     "Markdown KYB brief and MCP tool definition export"
   ],
-  "keywords": "KYB, KYC business, beneficial ownership, UBO, ultimate beneficial owner, FinCEN Corporate Transparency Act, EU 6AMLD, UK PSC, MAS, sanctioned proximity, circular ownership, Policy Mandate, MCP",
+  "keywords": "KYB, KYC business, beneficial ownership, UBO, ultimate beneficial owner, FinCEN Corporate Transparency Act, EU 4AMLD, AMLR 2024/1624, UK PSC, MAS, sanctioned proximity, circular ownership, Policy Mandate, MCP",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
   "dateModified": "2026-06-12",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -306,7 +306,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <p class="hero-desc">
       Visualise a synthetic corporate ownership chain as a layered network graph. Adjust the
       <b>disclosure threshold</b> to see who becomes a reportable <b>ultimate beneficial owner
-      (UBO)</b> under <b>FinCEN's Corporate Transparency Act</b>, <b>EU 6AMLD</b>, the <b>UK
+      (UBO)</b> under <b>FinCEN's Corporate Transparency Act</b>, <b>EU 4AMLD/AMLR</b>, the <b>UK
       Persons-with-Significant-Control regime</b>, and <b>MAS</b>. The graph flags
       <b>sanctioned-proximity hops</b> and <b>circular ownership</b> in real time. Exports the
       mandate the runtime enforces on every onboarding action.
@@ -319,27 +319,27 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
   </div>
 
   <div class="kyb-callout" role="note">
-    <div class="kyb-eyebrow">CTA · 6AMLD · UK PSC · MAS — convergence on 25% with caveats</div>
+    <div class="kyb-eyebrow">CTA · 4AMLD/AMLR · UK PSC · MAS — convergence on 25% with caveats</div>
     <p>
       <strong>FinCEN's Corporate Transparency Act</strong> (31 USC §5336, BOI rule effective 1 Jan
       2024) requires reporting of beneficial owners at the <strong>25% ownership / substantial-control
       threshold</strong> — current status: <strong>injunction-affected for domestic entities</strong>
       (March 2025 interim rule narrowed scope to foreign reporting companies). The
-      <strong>EU 6AMLD</strong> (Dir. 2018/1673) sets a 25% baseline with member-state discretion to go
+      <strong>EU 4AMLD</strong> (Dir. 2015/849) / <strong>5AMLD</strong> (Dir. 2018/843) set the 25% baseline (continued under AMLR 2024/1624), with member-state discretion to go
       lower; AMLA (Reg. 2024/1620) harmonises supervision from 2028. <strong>UK PSC regime</strong>
       (Companies Act 2006 Part 21A) requires Persons of Significant Control disclosure at
       25%+. <strong>MAS</strong> aligns at 25% across PSN02 and the Companies Act. Notes:
       controllers via voting rights or trust arrangements can fall below the percentage but still
       be reportable.
     </p>
-    <div class="kyb-cite">Sources: 31 USC §5336 + FinCEN BOI Rule 2022; FinCEN Interim Rule (March 2025) · EU 2018/1673 (6AMLD) · UK Companies Act 2006 Pt 21A · MAS PSN02 · FATF Recommendation 24</div>
+    <div class="kyb-cite">Sources: 31 USC §5336 + FinCEN BOI Rule 2022; FinCEN Interim Rule (March 2025) · EU Dir. 2015/849 (4AMLD) / Dir. 2018/843 (5AMLD) / AMLR 2024/1624 · UK Companies Act 2006 Pt 21A · MAS PSN02 · FATF Recommendation 24</div>
   </div>
 
   <aside class="value-at-risk" aria-label="Value at risk — KYB enforcement">
     <h4 class="var-eyebrow">Value at risk · KYB enforcement</h4>
-    <p class="var-figure">FinCEN CTA: $591/day civil + criminal up to $10K / 2 years · EU 6AMLD: personal liability for directors · NYDFS recent KYB consent orders: 6–8 figure</p>
-    <p class="var-body">FinCEN's CTA penalty regime (31 USC §5336(h)) is <strong>$591 per day per violation</strong> (2024 inflation-adjusted) for civil enforcement, plus <strong>criminal exposure up to $10,000 and 2 years</strong> for willful failure. <strong>EU 6AMLD</strong> extends personal liability to named senior management. Recent enforcement — <strong>TD Bank 2024</strong> ($3B globally, with significant KYB-tied components) and <strong>NYDFS bank settlements 2023–2025</strong> consistently cite UBO-identification gaps as core programme defects. The mandate binds the chosen disclosure threshold so the runtime cannot silently relax it between examinations.</p>
-    <p class="var-cite"><small>31 USC §5336(h) · 31 CFR 1010.380 · EU 2018/1673 Art. 7 · FinCEN inflation-adjusted civil penalty (2024) · TD Bank 2024 settlement · NYDFS Coinbase 2023</small></p>
+    <p class="var-figure">FinCEN CTA: $591/day civil + criminal up to $10K / 2 years · EU AMLR 2024/1624: personal liability for directors · NYDFS recent KYB consent orders: 6–8 figure</p>
+    <p class="var-body">FinCEN's CTA penalty regime (31 USC §5336(h)) is <strong>$591 per day per violation</strong> (2024 inflation-adjusted) for civil enforcement, plus <strong>criminal exposure up to $10,000 and 2 years</strong> for willful failure. <strong>EU AMLR 2024/1624</strong> extends personal liability to named senior management. Recent enforcement — <strong>TD Bank 2024</strong> ($3B globally, with significant KYB-tied components) and <strong>NYDFS bank settlements 2023–2025</strong> consistently cite UBO-identification gaps as core programme defects. The mandate binds the chosen disclosure threshold so the runtime cannot silently relax it between examinations.</p>
+    <p class="var-cite"><small>31 USC §5336(h) · 31 CFR 1010.380 · EU Dir. 2015/849 (4AMLD) / AMLR 2024/1624 · FinCEN inflation-adjusted civil penalty (2024) · TD Bank 2024 settlement · NYDFS Coinbase 2023</small></p>
   </aside>
 
   <div class="lab-grid">
@@ -598,7 +598,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   const jurisdictions = [
     { id:'us-cta', name:'FinCEN CTA',  meta:'31 USC §5336', default_threshold: 25 },
-    { id:'eu',    name:'EU 6AMLD',     meta:'Dir. 2018/1673', default_threshold: 25 },
+    { id:'eu',    name:'EU 4AMLD/AMLR', meta:'Dir. 2015/849 / AMLR 2024/1624', default_threshold: 25 },
     { id:'uk',    name:'UK PSC',       meta:'Companies Act 2006 Pt 21A', default_threshold: 25 },
     { id:'sg',    name:'MAS',          meta:'PSN02', default_threshold: 25 }
   ];

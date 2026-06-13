@@ -29,7 +29,7 @@
   "applicationCategory": "FinancialApplication",
   "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/vrp-mandate-sweep-logic-designer.html",
-  "description": "Compose Variable Recurring Payment mandates an agentic runtime can enforce on every recurring debit. Configures sweep window (period + day-of-month/week + permitted hour-of-day), max amount per period, max amount per single transaction, idempotency-key policy, allowed-beneficiary set (closed-loop / open with limits), SCA exemption thresholds. Aligns with UK CMA9 commercial VRP, EU PSD3 (finalised 2024), and SEPA VRP rulebook 2023. Exports against @ainumbers.co/vrp-mandate-v1.",
+  "description": "Compose Variable Recurring Payment mandates an agentic runtime can enforce on every recurring debit. Configures sweep window (period + day-of-month/week + permitted hour-of-day), max amount per period, max amount per single transaction, idempotency-key policy, allowed-beneficiary set (closed-loop / open with limits), SCA exemption thresholds. Aligns with UK CMA9 commercial VRP, EU PSD3/PSR (provisional agreement Nov 2025; OJ number TBC), and SEPA VRP rulebook 2023. Exports against @ainumbers.co/vrp-mandate-v1.",
   "featureList": [
     "Sweep window: period (monthly / weekly / daily / hourly), day-of-month, hour-of-day",
     "Per-period and per-transaction amount ceilings",
@@ -293,7 +293,7 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
       recurring debit attempt. Configure the <b>sweep window</b> (period, day-of-month, hour-of-day),
       <b>per-period and per-transaction caps</b>, <b>idempotency policy</b>, the <b>allowed
       beneficiary set</b>, and <b>SCA exemption thresholds</b> — aligned with <b>UK CMA9 commercial
-      VRP</b> (live), <b>EU PSD3</b> (finalised 2024), and the <b>SEPA VRP rulebook</b> (2023).
+      VRP</b> (live), <b>EU PSD3/PSR</b> (provisional agreement Nov 2025; OJ number TBC), and the <b>SEPA VRP rulebook</b> (2023).
       Visualise the resulting permitted-window timeline; export the mandate the bank-side validator
       will read on every PISP call.
     </p>
@@ -309,22 +309,23 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
     <p>
       <strong>UK CMA9 commercial VRP</strong> launched in 2024–25 following the OBIE's
       multi-step rollout from sweeping VRP (2022) to non-sweeping commercial use cases. The
-      <strong>EU PSD3 package</strong> (Directive (EU) 2024/886 + the Payment Services Regulation)
-      was finalised in 2024, with applicability from <strong>2026–27</strong> — it formalises
-      "Multi-Step Payment Initiation Services" that include VRP-like mandates. The
+      <strong>EU PSD3/PSR package</strong> (PSD3 Directive + Payment Services Regulation; provisional
+      agreement Nov 2025, OJ number TBC) applies from <strong>2026–27</strong> — it formalises
+      "Multi-Step Payment Initiation Services" that include VRP-like mandates. Note: Regulation (EU) 2024/886
+      is the Instant Payments Regulation, not PSD3. The
       <strong>SEPA VRP rulebook</strong> (EPC, 2023) sets the euro-area baseline for VRP execution.
       All three regimes converge on the same control points: <strong>maximum amount per period,
       per-transaction ceiling, allowed-beneficiary scope, SCA application</strong> — and all three
       require the mandate to be machine-readable by the bank-side validator.
     </p>
-    <div class="vrp-cite">Sources: OBIE / OBL commercial VRP roadmap · Directive (EU) 2024/886 · EU 2024/PSR (PSD3 successor) · EPC SEPA VRP rulebook 2023 · FCA / PSR Guidance on VRP</div>
+    <div class="vrp-cite">Sources: OBIE / OBL commercial VRP roadmap · PSD3/PSR (provisional agreement Nov 2025; OJ TBC) · Reg (EU) 2024/886 (Instant Payments Regulation) · EPC SEPA VRP rulebook 2023 · FCA / PSR Guidance on VRP</div>
   </div>
 
   <aside class="value-at-risk" aria-label="Value at risk — VRP enforcement and customer-dispute exposure">
     <h4 class="var-eyebrow">Value at risk · enforcement &amp; customer-dispute exposure</h4>
     <p class="var-figure">PSD3 administrative penalties up to ~10% of annual turnover · unauthorised-payment refunds default to the bank under PSR 2017</p>
     <p class="var-body">Under <strong>PSD3 / PSR</strong> the administrative-penalty ceiling is set at <strong>up to 10% of the annual turnover</strong> for systematic breaches (Article 96 successor regime). Under <strong>UK PSR 2017</strong>, the bank carries the refund burden on unauthorised payments — every VRP debit that escapes the mandate's bounds is a candidate dispute. A machine-readable mandate the bank-side validator can re-evaluate on every PISP call — and that the runtime cannot silently relax — is the operational artifact that turns "policy in the PSP's terms" into "policy at the rail."</p>
-    <p class="var-cite"><small>Directive (EU) 2024/886 · EU PSR (PSD3 successor) Art. 96 · UK PSR 2017 reg. 76 (refund) · OBIE / OBL VRP standards · EPC SEPA VRP rulebook</small></p>
+    <p class="var-cite"><small>PSD3/PSR (provisional agreement Nov 2025; OJ TBC) Art. 96 successor · Reg (EU) 2024/886 (Instant Payments Reg.) · UK PSR 2017 reg. 76 (refund) · OBIE / OBL VRP standards · EPC SEPA VRP rulebook</small></p>
   </aside>
 
   <div class="lab-grid">
@@ -560,9 +561,9 @@ footer.pol-footer .footer-links a:hover { color: var(--pol-accent-lt); }
 
   const regimes = [
     { id:'uk-cma9', name:'UK CMA9',    meta:'OBIE commercial VRP · live 2024', currency_symbol:'£', currency_code:'GBP', default_sca: 30 },
-    { id:'eu-psd3', name:'EU PSD3',    meta:'Dir. 2024/886 + PSR · 2026–27', currency_symbol:'€', currency_code:'EUR', default_sca: 50 },
+    { id:'eu-psd3', name:'EU PSD3',    meta:'PSD3/PSR (prov. Nov 2025; OJ TBC) · 2026–27', currency_symbol:'€', currency_code:'EUR', default_sca: 50 },
     { id:'sepa',   name:'SEPA VRP',   meta:'EPC rulebook 2023', currency_symbol:'€', currency_code:'EUR', default_sca: 30 },
-    { id:'us-oba', name:'US Open Banking (1033)', meta:'CFPB §1033 (proposed)', currency_symbol:'$', currency_code:'USD', default_sca: 50 }
+    { id:'us-oba', name:'US Open Banking (1033)', meta:'CFPB §1033 Rule (final Oct 2024; enforcement stayed 2025)', currency_symbol:'$', currency_code:'USD', default_sca: 50 }
   ];
 
   const state = {

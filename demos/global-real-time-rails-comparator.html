@@ -246,8 +246,8 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
         <div class="hstat"><div class="hstat-l">Rails</div><div class="hstat-v accent">7</div><div class="hstat-note">+ SWIFT gpi (cross-border)</div></div>
         <div class="hstat"><div class="hstat-l">Corridors</div><div class="hstat-v gold">4</div><div class="hstat-note">Domestic US · EU · X-border · EM</div></div>
         <div class="hstat"><div class="hstat-l">ISO 20022 Coverage</div><div class="hstat-v success">85%</div><div class="hstat-note">By volume, 2026</div></div>
-        <div class="hstat"><div class="hstat-l">FedNow Live</div><div class="hstat-v purple">~1,400</div><div class="hstat-note">Participants Q4 2025</div></div>
-        <div class="hstat"><div class="hstat-l">PIX Volume</div><div class="hstat-v">~6.5B/mo</div><div class="hstat-note">Transactions 2024</div></div>
+        <div class="hstat"><div class="hstat-l">FedNow Live</div><div class="hstat-v purple">~1,500+</div><div class="hstat-note">Participants end 2025</div></div>
+        <div class="hstat"><div class="hstat-l">PIX Volume</div><div class="hstat-v">~7B+/mo</div><div class="hstat-note">Transactions 2025</div></div>
         <div class="hstat"><div class="hstat-l">Schema</div><div class="hstat-v success">v1.0</div><div class="hstat-note">@postoaklabs.com/rt-rails-comparator-v1</div></div>
       </div>
     </section>
@@ -331,6 +331,9 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
                 <tbody></tbody>
               </table>
             </div>
+            <p style="font-size:0.75rem;color:var(--text-muted,#8a9bb0);margin:.45rem 0 .75rem;line-height:1.45;">
+              <em>ISO 20022 column note:</em> PIX and UPI are not natively ISO 20022 rails — their scores reflect message-structure compatibility and data-richness relative to ISO 20022 standards, not native adoption. SEPA Instant and FedNow are full ISO 20022 implementations.
+            </p>
             <div class="composite-bars" id="compositeBars"></div>
           </div>
 
@@ -340,6 +343,9 @@ footer.pol-footer{border-top:1px solid var(--edge);padding:2.5rem 0;margin-top:2
               <div class="sub">Composite-weighted winner + sensitivity callouts</div>
             </div>
             <div class="diag-grid" id="recoGrid"></div>
+            <p style="font-size:0.78rem;color:var(--text-muted,#8a9bb0);margin-top:.75rem;line-height:1.5;border-top:1px solid var(--border,#2a3a50);padding-top:.6rem;">
+              <strong>Cross-border note:</strong> FedNow and RTP (TCH) are domestic US rails scored on a single-leg basis; they are not end-to-end cross-border capable. For cross-border corridors a second-leg rail (e.g. SWIFT gpi or a local instant rail in the destination country) is required. Scores for these rails on non-US corridors reflect the US-side leg only and a cross-border penalty is applied.
+            </p>
           </div>
 
           <div class="results-export-row">

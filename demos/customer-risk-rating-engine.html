@@ -469,7 +469,7 @@ footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); p
     <div class="source-item"><span class="source-num">[3]</span><span class="source-text">FinCEN SAR Filing Requirements — 31 CFR § 1020.320. Financial institutions must file SARs within 30 days of detecting a suspicious transaction. CRR directly informs SAR monitoring thresholds.</span></div>
     <div class="source-item"><span class="source-num">[4]</span><span class="source-text">OCC BSA/AML Examination Manual — "Customer Risk Assessment" section. Specifies eight risk dimensions examiners evaluate in CRR model adequacy reviews.</span></div>
     <div class="source-item"><span class="source-num">[5]</span><span class="source-text">FATF R.12 — Politically Exposed Persons. Requires enhanced due diligence for PEPs; domestic and foreign PEPs now treated equivalently under updated FATF guidance (2023).</span></div>
-    <div class="source-item"><span class="source-num">[6]</span><span class="source-text">EU AMLA — Regulation 2024/1620. AMLA assumes direct supervision of high-risk obliged entities from 2027; CRR model documentation is a primary examination focus.</span></div>
+    <div class="source-item"><span class="source-num">[6]</span><span class="source-text">EU AMLA — Regulation 2024/1620. AMLA assumes direct supervision of high-risk obliged entities from 2028; CRR model documentation is a primary examination focus.</span></div>
     <div class="source-item" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--showcase-border);">
       <span class="source-num" style="color:var(--showcase-text-muted)">⚠</span>
       <span class="source-text" style="color:var(--showcase-text-muted);font-size:0.74rem;">This tool provides AI-assisted CRR analysis for informational purposes only. It does not constitute legal or compliance advice. CRR models require institution-specific calibration, independent validation, and documented risk appetite approval. Consult qualified AML counsel before deployment.</span>
@@ -540,7 +540,7 @@ const TIERS = [
 
 const SCENARIOS = {
   lowRisk:  { geo:0,  pep:0,  industry:10, channel:20, volume:5,  ownership:15, adverse:0,  product:5  },
-  midRisk:  { geo:25, pep:0,  industry:15, channel:40, volume:40, ownership:35, adverse:20, product:20 },
+  midRisk:  { geo:50, pep:30, industry:25, channel:40, volume:40, ownership:35, adverse:45, product:40 },
   highRisk: { geo:55, pep:0,  industry:75, channel:65, volume:65, ownership:60, adverse:0,  product:90 },
   pep:      { geo:25, pep:80, industry:25, channel:40, volume:65, ownership:60, adverse:50, product:35 },
 };

@@ -468,9 +468,9 @@ function sbar(lbl,v,max,color){return`<div class="sbar-wrap"><div class="sbar-la
 // ── Step 1: Architecture ────────────────────────────────
 const IMPLS=[
   {name:'Digital Euro',region:'ECB / Eurozone',dist:'hybrid',claim:'account',scope:'retail',sub:'hybrid_tech',status:'pilot',note:'Retail CBDC with offline functionality pilot. €3,000 holding limit. ECB disintermediation safeguard active.'},
-  {name:'e-CNY',region:'PBoC / China',dist:'hybrid',claim:'token',scope:'dual',sub:'centralised',status:'live',note:'Two-tier architecture with "managed anonymity". 13 pilot cities + 2022 Winter Olympics deployment.'},
-  {name:'mBridge',region:'BIS Hub / 4 CBs',dist:'direct',claim:'token',scope:'wholesale',sub:'dlt',status:'pilot',note:'Multi-CBDC cross-border wholesale platform. PBoC, HKMA, BOT, CBUAE. MVP reached June 2024.'},
-  {name:'Project Dunbar',region:'BIS / MAS / RBA / SARB',dist:'direct',claim:'token',scope:'wholesale',sub:'dlt',status:'research',note:'Multi-CBDC common platform for international settlements. Corda and Partior infrastructure.'},
+  {name:'e-CNY',region:'PBoC / China',dist:'hybrid',claim:'token',scope:'dual',sub:'centralised',status:'live',note:'Two-tier architecture with "managed anonymity". Multiple provinces and cities + 2022 Winter Olympics deployment.'},
+  {name:'mBridge',region:'PBoC/HKMA/BOT/CBUAE/SAMA',dist:'direct',claim:'token',scope:'wholesale',sub:'dlt',status:'pilot',note:'Multi-CBDC cross-border wholesale platform. PBoC, HKMA, BOT, CBUAE, SAMA. BIS exited Oct 2024. MVP reached June 2024.'},
+  {name:'Project Dunbar',region:'BIS / MAS / RBA / BNM / SARB',dist:'direct',claim:'token',scope:'wholesale',sub:'dlt',status:'completed',note:'Multi-CBDC common platform for international settlements. Corda and Quorum prototypes. Completed.'},
   {name:'Sand Dollar',region:'CBOB / Bahamas',dist:'direct',claim:'token',scope:'retail',sub:'centralised',status:'live',note:'World\'s first live retail CBDC. Mobile wallet-based with authorised financial institution intermediaries.'},
   {name:'Project Helvetia',region:'SNB / SIX DX',dist:'hybrid',claim:'token',scope:'wholesale',sub:'dlt',status:'pilot',note:'Wholesale CBDC on SIX Digital Exchange. DvP settlement for tokenised securities.'},
   {name:'Project Aber',region:'SAMA / CBUAE',dist:'direct',claim:'token',scope:'wholesale',sub:'dlt',status:'research',note:'Dual-issued wholesale CBDC for cross-border settlement between Saudi Arabia and UAE. Corda-based.'},
@@ -515,9 +515,9 @@ const PLATS={
   fabric:{name:'Hyperledger Fabric',color:'#14B8A6',dev:'Large (open-source)',priv:'Channel-based PDC',
     scores:{cbdc_wholesale:7,cbdc_retail:5,rwa:7,trade_finance:9,fx_pvp:7,securities_dvp:7},
     live:'we.trade, Marco Polo, TradeIX',risk:'Value captured by integrators (IBM, AWS) — sustainability risk for open-source foundation.'},
-  besu:{name:'Hyperledger Besu',color:'#6EA8FE',dev:'Large (EVM / ~23k devs)',priv:'Tessera (deprecated Jun 2026)',
+  besu:{name:'Hyperledger Besu',color:'#6EA8FE',dev:'Large (EVM / ~23k devs)',priv:'Tessera (deprecated Dec 2024 — Besu 24.12.0)',
     scores:{cbdc_wholesale:8,cbdc_retail:6,rwa:8,trade_finance:6,fx_pvp:9,securities_dvp:7},
-    live:'mBridge-compatible, Adhara SILVER PvP',risk:'⚠ Tessera deprecated June 2026 — private tx deployments must migrate.'},
+    live:'mBridge-compatible, Adhara SILVER PvP',risk:'⚠ Tessera deprecated Dec 2024 (Besu 24.12.0) — private tx deployments must migrate.'},
   corda:{name:'R3 Corda',color:'#D4A847',dev:'Specialist (Kotlin, ~2,500)',priv:'Participant-level bilateral',
     scores:{cbdc_wholesale:8,cbdc_retail:6,rwa:9,trade_finance:8,fx_pvp:8,securities_dvp:9},
     live:'DTCC, Euroclear, HSBC, Partior, Project Dunbar',risk:'Commercial lock-in; Corda-on-Solana direction introduces roadmap uncertainty.'},
@@ -563,9 +563,9 @@ scorePlatforms();
 
 // ── Step 3: Interop ─────────────────────────────────────
 const CBDC_SYS={
-  mbridge:{name:'mBridge',region:'BIS Hub — PBoC/HKMA/BOT/CBUAE',iso:'Partial (custom MsgAPI)',pvp:9,dvp:6,cross_border:9,liquidity:8,collateral:6},
+  mbridge:{name:'mBridge',region:'PBoC/HKMA/BOT/CBUAE/SAMA (BIS exited Oct 2024)',iso:'Partial (custom MsgAPI)',pvp:9,dvp:6,cross_border:9,liquidity:8,collateral:6},
   digital_euro:{name:'Digital Euro',region:'ECB / Eurosystem',iso:'Native (pacs.008)',pvp:6,dvp:7,cross_border:8,liquidity:7,collateral:7},
-  dunbar:{name:'Project Dunbar',region:'BIS / MAS / RBA / SARB',iso:'Native (pacs.009)',pvp:8,dvp:8,cross_border:7,liquidity:8,collateral:8},
+  dunbar:{name:'Project Dunbar',region:'BIS / MAS / RBA / BNM / SARB',iso:'Native (pacs.009)',pvp:8,dvp:8,cross_border:7,liquidity:8,collateral:8},
   sama:{name:'SAMA / CBUAE',region:'Saudi Arabia / UAE',iso:'Partial',pvp:8,dvp:6,cross_border:8,liquidity:7,collateral:6},
   dchf:{name:'Project Helvetia',region:'SNB / SIX Digital Exchange',iso:'Native (camt.054)',pvp:7,dvp:9,cross_border:5,liquidity:8,collateral:9},
 };
@@ -611,6 +611,11 @@ runInterop();
 
 // ── Step 4: Report ──────────────────────────────────────
 function buildReport(){
+  if(!(ST.done.has(1)&&ST.done.has(2)&&ST.done.has(3))){
+    document.getElementById('report-body').innerHTML='<div class="card"><div class="card-title">Complete Steps 1–3 first</div><div class="card-body">Run the Architecture, Platform, and Interoperability steps before generating the decision report and mandate.</div></div>';
+    document.getElementById('mandate-panel').style.display='none';
+    return;
+  }
   const d=ST.arch,p=ST.platform,ip=ST.interop;
   const now=new Date().toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
   const DIST={direct:'Direct (CB→Public)',hybrid:'Hybrid (Two-Tier)',indirect:'Indirect (Synthetic)'};
