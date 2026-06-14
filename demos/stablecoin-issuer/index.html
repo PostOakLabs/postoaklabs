@@ -146,6 +146,25 @@ footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
 footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
 footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
 
+/* ── Chaingraph overlay ── */
+.hub-chaingraph { padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--edge); background: radial-gradient(55% 70% at 50% 0%, rgba(42,127,192,0.05) 0%, transparent 60%), var(--deep); }
+.hub-chaingraph-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
+.cg-wrap { overflow-x: auto; margin: 1.75rem 0 1.5rem; border: 1px solid var(--edge); border-radius: 6px; background: var(--navy); padding: 1.25rem 0.75rem; -webkit-overflow-scrolling: touch; }
+.cg-wrap svg { min-width: 640px; width: 100%; height: auto; display: block; }
+.cg-cta-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; }
+.cg-provenance { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--muted); border-left: 2px solid var(--accent); padding-left: 0.75rem; line-height: 1.5; }
+
+/* ── pol-convert-cta (extracted from inline styles) ── */
+.pol-convert-cta { background: #0a1628; border-top: 1px solid #1e3454; padding: 3.25rem 1.5rem; }
+.pol-convert-cta-inner { max-width: 780px; margin: 0 auto; border: 1px solid #1e3454; border-left: 3px solid #2dd4bf; border-radius: 8px; background: linear-gradient(180deg, rgba(20,37,64,0.5), rgba(10,22,40,0.5)); padding: 2rem 1.95rem; }
+.pol-convert-cta-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #2dd4bf; margin-bottom: 0.7rem; font-weight: 500; }
+.pol-convert-cta h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; line-height: 1.3; color: #fff; margin: 0 0 0.6rem; font-weight: 400; }
+.pol-convert-cta p { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; line-height: 1.65; color: #9fb4cc; margin: 0 0 1.5rem; max-width: 640px; }
+.pol-convert-cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: #fff; background: #2a7fc0; padding: 0.85rem 1.4rem; border-radius: 5px; text-decoration: none; }
+.pol-convert-cta-note { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; color: #5a7a95; margin-top: 1.1rem; line-height: 1.6; }
+.footer-gold { color: var(--gold); }
+.footer-copy-right { text-align: right; }
+
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media (max-width: 760px) {
   .hub-stats { grid-template-columns: 1fr; }
@@ -158,7 +177,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
 </head>
 <body>
 
-<nav class="pol-nav" role="navigation" aria-label="Primary">
+<nav class="pol-nav" aria-label="Primary">
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
     <div class="nav-links">
@@ -175,13 +194,13 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
   </div>
 </nav>
 
-<div class="hub-breadcrumb" aria-label="Breadcrumb">
+<nav class="hub-breadcrumb" aria-label="Breadcrumb">
   <div class="hub-breadcrumb-inner">
     <a href="/">Post Oak Labs</a><span class="crumb-sep">/</span>
     <a href="/demos/">Showcase</a><span class="crumb-sep">/</span>
     <span class="crumb-current">Stablecoin Issuer hub</span>
   </div>
-</div>
+</nav>
 
 <header class="hub-hero">
   <div class="hub-inner">
@@ -197,13 +216,176 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
       For teams working with <strong>Paxos · Circle · Bridge (post-Stripe) · Anchorage</strong>
       &nbsp;·&nbsp; usable by any covered VASP entering EU or US licensing
     </p>
-    <div class="hub-stats" aria-label="Hub at a glance">
+    <div class="hub-stats" role="group" aria-label="Hub at a glance">
       <div><strong>8</strong><span class="stat-label">scenarios in this stack</span></div>
       <div><strong>~$320B</strong><span class="stat-label">stablecoin market · 2026</span></div>
       <div><strong>3 regimes</strong><span class="stat-label">MiCA · GENIUS · FATF R.16</span></div>
     </div>
   </div>
 </header>
+
+<!-- ── CHAINGRAPH OVERLAY — additive, keeps all 8 scenario cards below ── -->
+<section class="hub-chaingraph" aria-labelledby="cg-heading">
+  <div class="hub-chaingraph-inner">
+    <div class="hub-section-label">Compliance chain · stablecoin-compliance · 4 stages</div>
+    <h2 id="cg-heading" class="hub-section-title">Issuer Compliance chaingraph — architecture to composite mandate.</h2>
+    <p class="hub-section-intro">
+      The four ordered stages of the <em>stablecoin-compliance</em> chain, with explicit handoff payloads on each edge.
+      VASP Travel Rule and AML monitoring are cross-cutting overlay branches, not inline stages. West Africa and mBridge
+      form a separate frontier-settlement branch. Each scenario card below remains individually openable.
+    </p>
+
+    <div class="cg-wrap">
+      <svg viewBox="0 0 960 200" xmlns="http://www.w3.org/2000/svg" aria-labelledby="cg-svg-title">
+        <title id="cg-svg-title">Issuer Compliance — stablecoin-compliance chaingraph: Stage 1 Architecture produces architecture_choice for Stage 2 Reserve stress, which produces reserve_adequacy and stress_results for Stage 3 GENIUS check, which produces genius_compliance_status for Stage 4 MiCA white paper, yielding the composite stablecoin compliance mandate. VASP Travel Rule overlays off Stage 3. AML monitoring overlays off Stage 4. West Africa Corridor and mBridge form a frontier settlement branch off Stage 1.</title>
+        <defs>
+          <marker id="cg-arr" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+            <path d="M0,0.5 L0,5.5 L6.5,3z" fill="#2a4a70"/>
+          </marker>
+          <marker id="cg-arr-gold" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+            <path d="M0,0.5 L0,5.5 L6.5,3z" fill="#c09040"/>
+          </marker>
+          <marker id="cg-arr-dim" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+            <path d="M0,0.5 L0,5.5 L6.5,3z" fill="#1e3454"/>
+          </marker>
+        </defs>
+
+        <!-- ══ PRIMARY CHAIN ══ -->
+
+        <!-- S1: Architecture -->
+        <a href="/demos/cbdc-dlt-architecture-studio.html" aria-label="Stage 1 Architecture — CBDC/DLT Studio scenario">
+          <rect x="10" y="8" width="172" height="80" rx="4" fill="#142540" stroke="#2a4a70" stroke-width="1"/>
+          <text x="96" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="1" fill="#4a9fdf">STAGE 1 · ARCHITECTURE</text>
+          <text x="96" y="38" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="14" fill="#ffffff">CBDC/DLT Studio</text>
+          <text x="96" y="53" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8.5" fill="#7090b0">cbdc-architecture-comparator</text>
+          <text x="96" y="67" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#10b981">● live · T53</text>
+          <text x="96" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+        <!-- Edge 1→2 -->
+        <line x1="182" y1="48" x2="238" y2="48" stroke="#2a4a70" stroke-width="1.5" marker-end="url(#cg-arr)"/>
+        <text x="210" y="41" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6" fill="#5a7a95">architecture_choice</text>
+
+        <!-- S2: Reserve stress -->
+        <a href="/demos/stablecoin-issuer-readiness-mica-genius.html" aria-label="Stage 2 Reserve stress — Stablecoin Issuer Readiness Lab scenario">
+          <rect x="240" y="8" width="172" height="80" rx="4" fill="#142540" stroke="#2a4a70" stroke-width="1"/>
+          <text x="326" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="1" fill="#4a9fdf">STAGE 2 · RESERVE STRESS</text>
+          <text x="326" y="38" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="13" fill="#ffffff">Issuer Readiness Lab</text>
+          <text x="326" y="52" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" fill="#7090b0">reserve-stress-test-modeller</text>
+          <text x="326" y="64" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#10b981">● live · T388</text>
+          <text x="326" y="77" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" fill="#7090b0">MiCA Arts. 35–42 · GENIUS Act</text>
+          <text x="326" y="88" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+        <!-- Edge 2→3 (two-line payload) -->
+        <line x1="412" y1="48" x2="469" y2="48" stroke="#2a4a70" stroke-width="1.5" marker-end="url(#cg-arr)"/>
+        <text x="440" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="5.8" fill="#5a7a95">{reserve_adequacy,</text>
+        <text x="440" y="49" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="5.8" fill="#5a7a95"> stress_results}</text>
+
+        <!-- S3: GENIUS check -->
+        <a href="/demos/genius-act-issuer-readiness-lab.html" aria-label="Stage 3 GENIUS check — GENIUS Act Issuer Readiness Lab scenario">
+          <rect x="471" y="8" width="172" height="80" rx="4" fill="#142540" stroke="#2a4a70" stroke-width="1"/>
+          <text x="557" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="1" fill="#4a9fdf">STAGE 3 · GENIUS CHECK</text>
+          <text x="557" y="38" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="14" fill="#ffffff">GENIUS Act Lab</text>
+          <text x="557" y="53" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8.5" fill="#7090b0">genius-act-compliance-checker</text>
+          <text x="557" y="67" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#10b981">● live · T386</text>
+          <text x="557" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+        <!-- Edge 3→4 -->
+        <line x1="643" y1="48" x2="700" y2="48" stroke="#2a4a70" stroke-width="1.5" marker-end="url(#cg-arr)"/>
+        <text x="671" y="41" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="5.8" fill="#5a7a95">genius_compliance_status</text>
+
+        <!-- S4: MiCA white paper (AINumbers-only, gold dashed border) -->
+        <a href="https://ainumbers.co/guides/stablecoin-compliance-composer.html" target="_blank" rel="noopener" aria-label="Stage 4 MiCA white paper — run at AINumbers (opens external site)">
+          <rect x="702" y="8" width="172" height="80" rx="4" fill="#0e1e35" stroke="#c09040" stroke-width="1" stroke-dasharray="5,2"/>
+          <text x="788" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="1" fill="#c09040">STAGE 4 · MiCA WHITE PAPER</text>
+          <text x="788" y="38" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="14" fill="#ffffff">MiCA White Paper</text>
+          <text x="788" y="53" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8.5" fill="#7090b0">mica-white-paper-builder · T390</text>
+          <text x="788" y="67" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#c09040">run at AINumbers ↗</text>
+          <text x="788" y="82" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" fill="#5a7a95">composite mandate export</text>
+        </a>
+
+        <!-- Terminal arrow + mandate badge -->
+        <line x1="874" y1="48" x2="906" y2="48" stroke="#c09040" stroke-width="1.5" marker-end="url(#cg-arr-gold)"/>
+        <rect x="908" y="26" width="46" height="44" rx="3" fill="rgba(192,144,64,0.1)" stroke="#c09040" stroke-width="0.8"/>
+        <text x="931" y="39" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="5.5" fill="#c09040">composite</text>
+        <text x="931" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="5.5" fill="#c09040">stablecoin</text>
+        <text x="931" y="61" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="5.5" fill="#c09040">mandate</text>
+
+        <!-- ── separator ── -->
+        <line x1="10" y1="100" x2="950" y2="100" stroke="#1e3454" stroke-width="0.5" stroke-dasharray="1,5"/>
+
+        <!-- ══ FRONTIER SETTLEMENT BRANCH (diverges from S1) ══ -->
+        <text x="10" y="112" font-family="'JetBrains Mono',monospace" font-size="6.5" letter-spacing="0.8" fill="#c09040">FRONTIER SETTLEMENT BRANCH</text>
+
+        <!-- stem from S1 bottom -->
+        <line x1="96" y1="88" x2="96" y2="114" stroke="#c09040" stroke-width="1" stroke-dasharray="3,3"/>
+        <!-- horizontal bar -->
+        <line x1="65" y1="114" x2="181" y2="114" stroke="#c09040" stroke-width="0.8" stroke-dasharray="2,3"/>
+        <!-- drops to boxes -->
+        <line x1="65" y1="114" x2="65" y2="122" stroke="#c09040" stroke-width="0.8" marker-end="url(#cg-arr-gold)"/>
+        <line x1="181" y1="114" x2="181" y2="122" stroke="#c09040" stroke-width="0.8" marker-end="url(#cg-arr-gold)"/>
+
+        <!-- West Africa box -->
+        <a href="/demos/west-africa-digital-currency-corridor.html" aria-label="Frontier: West Africa Digital Currency Corridor scenario">
+          <rect x="10" y="122" width="112" height="68" rx="3" fill="#0e1e35" stroke="#c09040" stroke-width="0.7" stroke-dasharray="4,2"/>
+          <text x="66" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#c09040">FRONTIER ↗</text>
+          <text x="66" y="150" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="12" fill="#d8e4f0">West Africa</text>
+          <text x="66" y="163" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">eNaira · e-Cedi</text>
+          <text x="66" y="174" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">DCash · ECCU</text>
+          <text x="66" y="185" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+        <!-- mBridge box -->
+        <a href="/demos/mbridge-multicbdc-corridor-modeler.html" aria-label="Frontier: mBridge Multi-CBDC Corridor Modeler scenario">
+          <rect x="127" y="122" width="112" height="68" rx="3" fill="#0e1e35" stroke="#c09040" stroke-width="0.7" stroke-dasharray="4,2"/>
+          <text x="183" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#c09040">FRONTIER ↗</text>
+          <text x="183" y="150" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="12" fill="#d8e4f0">mBridge</text>
+          <text x="183" y="163" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">e-CNY · Digital Dirham</text>
+          <text x="183" y="174" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">Multi-CBDC PvP</text>
+          <text x="183" y="185" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+        <!-- ══ OVERLAY BRANCHES ══ -->
+        <text x="471" y="112" font-family="'JetBrains Mono',monospace" font-size="6.5" letter-spacing="0.8" fill="#4a9fdf">OVERLAY BRANCHES</text>
+
+        <!-- VASP stem from S3 bottom -->
+        <line x1="557" y1="88" x2="557" y2="122" stroke="#2a4a70" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#cg-arr-dim)"/>
+
+        <!-- VASP overlay box -->
+        <a href="/demos/vasp-travel-rule-compliance-checker.html" aria-label="VASP Travel Rule overlay — FATF R.16 compliance checker scenario">
+          <rect x="471" y="122" width="172" height="68" rx="3" fill="#0e1e35" stroke="#2a4a70" stroke-width="0.8" stroke-dasharray="4,2"/>
+          <text x="557" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#4a9fdf">VASP TRAVEL RULE OVERLAY</text>
+          <text x="557" y="150" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="12" fill="#d8e4f0">Travel Rule (FATF R.16)</text>
+          <text x="557" y="163" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">EU TFR · FinCEN · MAS PSN02</text>
+          <text x="557" y="175" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">redemption / transfer flows</text>
+          <text x="557" y="186" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+        <!-- AML stem from S4 bottom -->
+        <line x1="788" y1="88" x2="788" y2="122" stroke="#2a4a70" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#cg-arr-dim)"/>
+
+        <!-- AML overlay box -->
+        <a href="/demos/aml-transaction-monitoring-rule-builder.html" aria-label="AML monitoring overlay — transaction monitoring rule builder scenario">
+          <rect x="702" y="122" width="172" height="68" rx="3" fill="#0e1e35" stroke="#2a4a70" stroke-width="0.8" stroke-dasharray="4,2"/>
+          <text x="788" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6.5" fill="#4a9fdf">AML MONITORING OVERLAY</text>
+          <text x="788" y="150" text-anchor="middle" font-family="'DM Serif Display',serif" font-size="12" fill="#d8e4f0">Transaction Monitoring</text>
+          <text x="788" y="163" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">→ aml-programme chain ↗</text>
+          <text x="788" y="175" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="7.5" fill="#7090b0">wallet-operator AML overlay</text>
+          <text x="788" y="186" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="6" fill="#4a9fdf">open scenario →</text>
+        </a>
+
+      </svg>
+    </div>
+
+    <div class="cg-cta-row">
+      <a href="https://ainumbers.co/guides/stablecoin-compliance-composer.html" class="hub-cta-btn primary" target="_blank" rel="noopener">Run this chain →</a>
+      <p class="cg-provenance">Stages demonstrated at Post Oak Labs; run + audited at AINumbers</p>
+    </div>
+  </div>
+</section>
+<!-- /CHAINGRAPH OVERLAY -->
 
 <section class="hub-demos" aria-label="Demos in workflow order">
   <div class="hub-demos-inner">
@@ -219,7 +401,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
 
     <div class="demo-grid">
 
-      <a class="demo-card live" href="/demos/stablecoin-issuer-readiness-mica-genius.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/stablecoin-issuer-readiness-mica-genius.html">
         <div class="card-head"><span class="card-step">Step 1 · Issuance</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #08</strong> · MiCA Title III · GENIUS Act</span>
         <h3 class="card-title">Stablecoin Issuer Readiness Lab</h3>
@@ -227,7 +409,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">MiCA Title III</span><span class="chip">GENIUS Act</span><span class="chip">~$320B mkt</span></div>
       </a>
 
-      <a class="demo-card live" href="/demos/vasp-travel-rule-compliance-checker.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/vasp-travel-rule-compliance-checker.html">
         <div class="card-head"><span class="card-step">Step 2 · VASP edge</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #15</strong> · FATF R.16</span>
         <h3 class="card-title">VASP Travel Rule (FATF R.16) Compliance Checker</h3>
@@ -235,7 +417,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">FATF R.16</span><span class="chip">EU TFR live</span><span class="chip">5 regimes</span></div>
       </a>
 
-      <a class="demo-card live" href="/demos/tokenized-rwa-compliance-pre-checker.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/tokenized-rwa-compliance-pre-checker.html">
         <div class="card-head"><span class="card-step">Step 3 · Adjacent</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #21</strong> · Tokenized RWA</span>
         <h3 class="card-title">Tokenized RWA Compliance Pre-Checker</h3>
@@ -243,7 +425,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">Tokenized RWA</span><span class="chip">MiCA + Howey</span><span class="chip">$1T+ proj.</span></div>
       </a>
 
-      <a class="demo-card live cross-link" href="/demos/aml-transaction-monitoring-rule-builder.html" style="text-decoration:none;">
+      <a class="demo-card live cross-link" href="/demos/aml-transaction-monitoring-rule-builder.html">
         <div class="card-head"><span class="card-step">Step 4 · Financial crime</span><span class="card-status live">Live · Cross</span></div>
         <span class="card-num"><strong>Scenario #11</strong> · AML</span>
         <h3 class="card-title">AML Transaction Monitoring Rule Builder</h3>
@@ -251,7 +433,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">AML</span><span class="chip">Tx Monitoring</span><span class="chip">FP/TP modeled</span></div>
       </a>
 
-      <a class="demo-card live" href="/demos/cbdc-dlt-architecture-studio.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/cbdc-dlt-architecture-studio.html">
         <div class="card-head"><span class="card-step">Step 5 · Infrastructure</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #35</strong> · Tools T53·T57·T58·T68·T73</span>
         <h3 class="card-title">CBDC / DLT Architecture Studio</h3>
@@ -259,7 +441,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">CBDC</span><span class="chip">DLT Platform</span><span class="chip">ISO 20022</span><span class="chip">Policy Mandate</span></div>
       </a>
 
-      <a class="demo-card live" href="/demos/west-africa-digital-currency-corridor.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/west-africa-digital-currency-corridor.html">
         <div class="card-head"><span class="card-step">Step 6 · Emerging corridors</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #37</strong> · Tools T58·T75·T157·T217·T218·T220·T221·T325</span>
         <h3 class="card-title">West Africa Digital Currency Corridor</h3>
@@ -267,7 +449,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">eNaira · cNGN · DCash</span><span class="chip">FATF R.16</span><span class="chip">Policy Mandate</span></div>
       </a>
 
-      <a class="demo-card live" href="/demos/mbridge-multicbdc-corridor-modeler.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/mbridge-multicbdc-corridor-modeler.html">
         <div class="card-head"><span class="card-step">Step 7 · Wholesale interop</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #38</strong> · Tools T58·T57·T65·T218·T325</span>
         <h3 class="card-title">mBridge Multi-CBDC Corridor Modeler</h3>
@@ -275,7 +457,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
         <div class="card-meta"><span class="chip">e-CNY · Digital Dirham</span><span class="chip">Atomic PvP</span><span class="chip">ISO 20022</span></div>
       </a>
 
-      <a class="demo-card live" href="/demos/genius-act-issuer-readiness-lab.html" style="text-decoration:none;">
+      <a class="demo-card live" href="/demos/genius-act-issuer-readiness-lab.html">
         <div class="card-head"><span class="card-step">Step 8 · US regulation</span><span class="card-status live">Live</span></div>
         <span class="card-num"><strong>Scenario #39</strong> · Tools T328·T75·T128 · GENIUS Act</span>
         <h3 class="card-title">GENIUS Act Issuer Readiness Lab</h3>
@@ -382,20 +564,20 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
 
 
 <!-- pol-convert-cta -->
-<section class="pol-convert-cta" aria-label="Talk to Post Oak Labs" style="background:#0a1628;border-top:1px solid #1e3454;padding:3.25rem 1.5rem;">
-  <div style="max-width:780px;margin:0 auto;border:1px solid #1e3454;border-left:3px solid #2dd4bf;border-radius:8px;background:linear-gradient(180deg,rgba(20,37,64,0.5),rgba(10,22,40,0.5));padding:2rem 1.95rem;">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#2dd4bf;margin-bottom:0.7rem;font-weight:500;">Stablecoin Issuer</div>
-    <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">Designing issuance or settlement architecture?</h2>
-    <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">MiCA / GENIUS readiness, FATF Travel Rule, tokenized RWA and wholesale settlement corridors — we’ve advised on tokenized rail implementations across frontier markets. Let’s talk.</p>
-    <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
+<section class="pol-convert-cta" aria-label="Talk to Post Oak Labs">
+  <div class="pol-convert-cta-inner">
+    <div class="pol-convert-cta-tag">Stablecoin Issuer</div>
+    <h2>Designing issuance or settlement architecture?</h2>
+    <p>MiCA / GENIUS readiness, FATF Travel Rule, tokenized RWA and wholesale settlement corridors — we’ve advised on tokenized rail implementations across frontier markets. Let’s talk.</p>
+    <a href="/contact.html" class="pol-convert-cta-btn">Talk to our team →</a>
+    <div class="pol-convert-cta-note">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 <!-- /pol-convert-cta -->
 <footer class="pol-footer">
   <div class="footer-inner">
     <div>
-      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
+      <div class="footer-brand">Post Oak <span class="footer-gold">Labs</span></div>
       <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
       <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
     </div>
@@ -410,7 +592,7 @@ footer.pol-footer .footer-links a.this-hub { color: var(--accent-lt); }
       <a href="/demos/stablecoin-issuer/" class="this-hub">Stablecoin Issuer hub</a>
       <a href="/contact.html">Contact</a>
     </div>
-    <div class="footer-copy" style="text-align:right;">
+    <div class="footer-copy footer-copy-right">
       <span>🔒 No data leaves your browser &nbsp;·&nbsp; 💻 Client-side only &nbsp;·&nbsp; CC BY 4.0</span><br>
       <a href="https://github.com/PostOakLabs/ainumbers" target="_blank" rel="noopener">github.com/PostOakLabs/ainumbers</a>
     </div>
