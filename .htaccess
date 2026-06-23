@@ -63,6 +63,48 @@ Redirect 301 /apex-advisory-education.html    https://apexadvisory.site/
 # Off-ICP demo removed 2026-06-11 — relocated to AINumbers.co
 Redirect 301 /demos/personal-finance-retirement-simulator.html  https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html
 
+# ─────────────────────────────────────────────────────────────────
+# 301 redirects — demos consolidated into AINumbers.co (Phase 1)
+# Bucket D: 27 firm + 2 borderline single-tool demos → tools/*.html
+# See /demos/REDIRECT-MAP.md for full data-room mapping
+# ─────────────────────────────────────────────────────────────────
+
+# Bucket D — firm (27)
+Redirect 301 /demos/merchant-payment-rails-blender.html            https://ainumbers.co/tools/clearcost-card-a2a-analyzer.html
+Redirect 301 /demos/iso20022-message-truncation-auditor.html       https://ainumbers.co/tools/77-iso-truncation-auditor.html
+Redirect 301 /demos/dora-compliance-deduplication-tool.html        https://ainumbers.co/tools/100-dora-resilience-auditor.html
+Redirect 301 /demos/latam-liquidity-migration-tool.html            https://ainumbers.co/tools/a2a-liquidity-simulator.html
+Redirect 301 /demos/nostro-capital-optimization.html               https://ainumbers.co/tools/19-nostro-roi-memo.html
+Redirect 301 /demos/ap2-agentic-payment-policy-guardrail.html      https://ainumbers.co/tools/102-ap2-payments-checker.html
+Redirect 301 /demos/stablecoin-issuer-readiness-mica-genius.html   https://ainumbers.co/tools/75-stablecoin-reserve-auditor.html
+Redirect 301 /demos/aml-transaction-monitoring-rule-builder.html   https://ainumbers.co/tools/116-tm-rule-builder.html
+Redirect 301 /demos/instant-payment-fraud-risk-lab.html            https://ainumbers.co/tools/04-fraud-score-simulator.html
+Redirect 301 /demos/vasp-travel-rule-compliance-checker.html       https://ainumbers.co/tools/126-vasp-travel-rule-checker.html
+Redirect 301 /demos/kyb-beneficial-ownership-network-mapper.html   https://ainumbers.co/tools/111-kyb-ubo-mapper.html
+Redirect 301 /demos/wallet-float-yield-estimator.html              https://ainumbers.co/tools/156-wallet-float-yield-estimator.html
+Redirect 301 /demos/vrp-mandate-sweep-logic-designer.html          https://ainumbers.co/tools/93-vrp-mandate-builder.html
+Redirect 301 /demos/tokenized-rwa-compliance-pre-checker.html      https://ainumbers.co/tools/63-tokenized-asset-compliance.html
+Redirect 301 /demos/iso20022-migration-readiness-scorer.html       https://ainumbers.co/tools/101-iso20022-migration-scorer.html
+Redirect 301 /demos/ap2-aml-mandate-builder.html                   https://ainumbers.co/tools/131-ap2-aml-mandate-builder.html
+Redirect 301 /demos/ap2-baas-infrastructure-mandate-builder.html   https://ainumbers.co/tools/164-ap2-baas-mandate-builder.html
+Redirect 301 /demos/cross-border-fx-netting-simulator.html         https://ainumbers.co/tools/105-fx-netting-simulator.html
+Redirect 301 /demos/dora-ict-risk-gap-analyser.html                https://ainumbers.co/tools/300-dora-ict-risk-gap-analyser.html
+Redirect 301 /demos/agentic-mandate-sandbox.html                   https://ainumbers.co/tools/rbe-06-agentic-mandate-sandbox.html
+Redirect 301 /demos/customer-risk-rating-engine.html               https://ainumbers.co/tools/110-customer-risk-rating.html
+Redirect 301 /demos/fatf-sanctions-programme-readiness.html        https://ainumbers.co/tools/124-fatf-readiness-scorer.html
+Redirect 301 /demos/eu-ai-act-financial-services-risk-mapper.html  https://ainumbers.co/tools/327-eu-ai-act-risk-class-mapper.html
+Redirect 301 /demos/embedded-lending-unit-economics-lab.html       https://ainumbers.co/tools/160-embedded-lending-unit-economics.html
+Redirect 301 /demos/cfpb-1033-financial-data-rights-mapper.html    https://ainumbers.co/tools/91-consent-dashboard-builder.html
+Redirect 301 /demos/mbridge-multicbdc-corridor-modeler.html        https://ainumbers.co/tools/65-settlement-finality-auditor.html
+Redirect 301 /demos/amla-supervisory-readiness-gap-analyser.html   https://ainumbers.co/tools/123-aml-program-gap-auditor.html
+
+# Bucket D — borderline (2, confirmed 2026-06-22)
+Redirect 301 /demos/baas-provider-economics-comparator.html        https://ainumbers.co/tools/152-baas-provider-comparator.html
+Redirect 301 /demos/sme-credit-passport-global-south.html          https://ainumbers.co/tools/239-sme-credit-risk-scoring.html
+
+# Composer retired — redirects to AINumbers chaingraph hub
+Redirect 301 /demos/composer.html                                   https://ainumbers.co/chaingraph/
+
 # Renamed showcase scenarios (2026-06-03) — internal demo-NN numbering removed from public URLs
 Redirect 301 /demos/demo-37-eu-ai-act-compliance-studio.html      /demos/eu-ai-act-compliance-studio.html
 Redirect 301 /demos/demo-38-genius-act-stablecoin-readiness.html  /demos/genius-act-stablecoin-readiness.html

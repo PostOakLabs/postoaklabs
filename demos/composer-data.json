@@ -207,17 +207,6 @@
    ]
   },
   {
-   "id": "T107",
-   "name": "Monte Carlo FIRE Trajectory Simulator",
-   "category": "Personal Finance",
-   "url": "https://ainumbers.co/tools/107-monte-carlo-fire-simulator.html",
-   "ap2_schema": null,
-   "demo": "/demos/personal-finance-retirement-simulator.html",
-   "personas": [
-    "Analyst"
-   ]
-  },
-  {
    "id": "T108",
    "name": "DLT Consensus Partition & Recovery Simulator",
    "category": "DLT & Tokenization",
