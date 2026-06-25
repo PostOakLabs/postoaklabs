@@ -82,5 +82,41 @@ Demos NOT redirected — still served from postoaklabs.com/demos/:
 
 ---
 
-*Phase 2: Hub rewrites + corridor case-studies (pending Tim review)*  
-*Phase 3: Bucket U redirects (pending AINumbers chain live-verification)*
+## Bucket U — chain redirects (12, Phase 3 · 2026-06-24)
+
+All 12 target chains verified live before redirecting.
+
+| PoL demo slug | AINumbers chain URL |
+|---|---|
+| card-programme-design-studio.html | https://ainumbers.co/guides/card-programme-composer.html |
+| aml-end-to-end-workflow.html | https://ainumbers.co/chaingraph/chains/aml-consolidation.html |
+| agentic-checkout-end-to-end.html | https://ainumbers.co/chaingraph/chains/agentic-commerce-checkout.html |
+| basel-iv-capital-stress-lab.html | https://ainumbers.co/chaingraph/chains/basel-iv-capital-stress.html |
+| sme-credit-intelligence-platform.html | https://ainumbers.co/chaingraph/chains/sme-credit-intelligence.html |
+| embedded-finance-licensing-navigator.html | https://ainumbers.co/chaingraph/chains/embedded-finance-licensing.html |
+| cbdc-dlt-architecture-studio.html | https://ainumbers.co/chaingraph/chains/cbdc-dlt-architecture.html |
+| eu-ai-act-compliance-studio.html | https://ainumbers.co/chaingraph/chains/eu-ai-act-provider-obligations.html |
+| genius-act-stablecoin-readiness.html | https://ainumbers.co/chaingraph/chains/genius-act-issuer-licensing.html |
+| fca-bnpl-dpc-navigator.html | https://ainumbers.co/chaingraph/chains/fca-bnpl-dpc.html |
+| basel-iii-endgame-capital-lab.html | https://ainumbers.co/chaingraph/chains/basel-endgame-frtb-capital.html |
+| psd3-psr2-transition-readiness.html | https://ainumbers.co/chaingraph/chains/psd3-psr2-transition.html |
+
+## Corridor case-studies — converted (Phase 3 · 2026-06-24)
+
+Kept as prose case-studies (NOT 301'd). Interactive tooling stripped; narrative and AINumbers chain links retained.
+
+| Demo slug | Status | AINumbers chain |
+|---|---|---|
+| timor-leste-bangladesh-stablecoin-settlement.html | Prose case-study | https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html |
+| west-africa-digital-currency-corridor.html | Prose case-study | https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html |
+
+## Demos on hold (spec-gap — Phase 3)
+
+| Demo slug | Reason |
+|---|---|
+| global-real-time-rails-comparator.html | No confirmed AINumbers chain target; held |
+| genius-act-issuer-readiness-lab.html | No confirmed AINumbers chain target; held |
+
+---
+
+*Phase 2: Hub rewrites (pending Tim brand voice sign-off)*

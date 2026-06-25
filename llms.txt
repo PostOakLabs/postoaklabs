@@ -129,27 +129,23 @@ AINumbers.co tools export structured Policy Mandate JSON — a named open schema
 
 ## Fintech Intelligence Showcase (browser scenarios)
 
-The showcase at https://postoaklabs.com/demos/ is a curated catalog of 16 live advisory scenarios drawn from the AINumbers.co tool library. Every scenario is client-side, zero PII, Policy Mandate-exportable, and MCP-discoverable. All 16 are live as of June 2026.
+The showcase at https://postoaklabs.com/demos/ hosts 2 interactive advisory scenarios and 2 corridor case studies from the Post Oak Labs practice. Every page is client-side, zero PII, and links into the AINumbers.co tool library. Remaining as of June 2026 after Phase 3 reorientation (Bucket D and Bucket U demos 301-redirected to their AINumbers chain equivalents).
 
-Five buyer-archetype hubs filter and sequence the scenarios for distinct audiences. All five hubs are public, indexed, and crawlable.
+Five buyer-archetype hubs serve as advisory landing pages for distinct client archetypes. All five hubs are public, indexed, and crawlable.
 
-- Showcase landing — all 16 live advisory scenarios, persona filter, MCP recording: https://postoaklabs.com/demos/
-- Agentic Runtime hub — deterministic AP2/MCP policy layer for agent runtime builders (Anthropic, Google AP2, OpenAI, Vellum, LangChain): https://postoaklabs.com/demos/agentic-runtime/
-- RegTech hub — DORA, NIS2, MiCA, EU AI Act, CFPB §1033, FATF, AML transaction monitoring, KYB, customer risk rating (ComplyAdvantage, Sumsub, Hummingbird, Unit21, ThetaRay): https://postoaklabs.com/demos/regtech/
-- BaaS hub — provider economics, embedded-lending unit economics, SME credit passport, wallet float yield, VRP mandates, AP2 BaaS infrastructure mandates (Unit, Synctera, Treasury Prime, Marqeta, Galileo): https://postoaklabs.com/demos/baas/
-- Processors hub — merchant rails blending, ISO 20022 CBPR+ cutover, LATAM corridor liquidity, nostro capital unlock, FedNow fraud, FX netting, VRP (Stripe Compliance, Adyen, Worldpay, Checkout.com): https://postoaklabs.com/demos/processors/
-- Stablecoin Issuer hub — MiCA Title III / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA, AML transaction monitoring (Paxos, Circle, Bridge, Anchorage): https://postoaklabs.com/demos/stablecoin-issuer/
+- Showcase landing: https://postoaklabs.com/demos/
+- Agentic Runtime hub: https://postoaklabs.com/demos/agentic-runtime/
+- RegTech hub: https://postoaklabs.com/demos/regtech/
+- BaaS hub: https://postoaklabs.com/demos/baas/
+- Processors hub: https://postoaklabs.com/demos/processors/
+- Stablecoin Issuer hub: https://postoaklabs.com/demos/stablecoin-issuer/
 
 ### Live Scenarios (direct URLs)
 
-- Scenario #34 — AML End-to-End Workflow (four-stage AML ops chain: customer risk rating → transaction-monitoring rule calibration → SAR narrative generation → AP2 AML Policy Mandate export; presets for VASP, trade finance, and retail; FATF R.10 aligned): https://postoaklabs.com/demos/aml-end-to-end-workflow.html
-- Scenario #35 — CBDC / DLT Architecture Studio (wholesale vs. retail CBDC design, platform selection, interoperability scenario modelling; Policy Mandate export): https://postoaklabs.com/demos/cbdc-dlt-architecture-studio.html
-- Scenario #37 — West Africa Digital Currency Corridor (cross-border CBDC and stablecoin settlement across Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, ECCU DCash; settlement economics vs. correspondent banking, FATF compliance overlay; Policy Mandate export): https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html- Scenario #39 — GENIUS Act Issuer Readiness Lab (payment stablecoin reserve composition vs. GENIUS Act requirements effective Jan 2027 — 1:1 backing, UST ≤93-day maturity caps, Fed deposits, monthly disclosure; Policy Mandate export): https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html- Scenario #41 — EU AI Act Financial Services Compliance Studio (AI system inventory to August 2026 high-risk readiness in four steps — Article 6 risk classification, Article 9 risk management, Article 10 data governance, conformity documentation): https://postoaklabs.com/demos/eu-ai-act-compliance-studio.html
-- Scenario #42 — GENIUS Act Stablecoin Issuer Readiness Assessment (complete GENIUS Act compliance pathway — federal vs. state licensing route, reserve composition, redemption policy, disclosure cadence, BSA/AML — ahead of the January 18, 2027 effective date): https://postoaklabs.com/demos/genius-act-stablecoin-readiness.html
-- Scenario #43 — FCA BNPL / DPC Authorisation Navigator (FCA deferred payment credit regime, Regulation Day 15 July 2026 — temporary permissions, full authorisation pathway, affordability checks, Consumer Duty): https://postoaklabs.com/demos/fca-bnpl-dpc-navigator.html
-- Scenario #44 — Basel III Endgame Capital Impact Laboratory (US Basel III Endgame proposal and EU FRTB binding rules — expanded risk-based approach, output floor phase-in, operational risk standardisation, trading book capital): https://postoaklabs.com/demos/basel-iii-endgame-capital-lab.html
-- Scenario #45 — PSD3 / PSR2 EU Payments Transition Readiness (PSD2 → PSD3/PSR2 gap assessment — licensing, SCA evolution, open banking API obligations, fraud liability shifts, IBAN-name verification for EU PSPs and EMIs): https://postoaklabs.com/demos/psd3-psr2-transition-readiness.html
-- Scenario #46 — Agentic Checkout, End-to-End (A2A agent-card discovery → Google AP2 checkout/payment mandates with spending-cap guardrail → x402 or Visa TAP settlement trace → RFC 9421-signed hash-chained audit trail; chains AINumbers T283·T285·T277·T286): https://postoaklabs.com/demos/agentic-checkout-end-to-end.html
+- Scenario #29 — Global Real-Time Rails Comparator (score SEPA Instant / FedNow / RTP / PIX / UPI / FPS / SWIFT gpi on speed, finality, cost, ISO 20022 readiness, and participation by corridor; weighted recommendation; Policy Mandate export): https://postoaklabs.com/demos/global-real-time-rails-comparator.html
+- Case Study — Timor-Leste × Bangladesh Stablecoin Settlement Bridge (corridor case study: USD-pegged wholesale stablecoin bridge across a thin-correspondent, 3-hour UTC overlap corridor — architecture viability, collateral sizing, ISO 20022 ledger schema; links to AINumbers emerging-market-fx-corridor chain for live modelling): https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html
+- Case Study — West Africa Digital Currency Corridor (corridor case study: CBDC and stablecoin settlement across Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU — settlement economics vs. correspondent banking, FATF compliance overlay; links to AINumbers emerging-market-fx-corridor chain for live modelling): https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html
+- Scenario #39 — GENIUS Act Issuer Readiness Lab (payment stablecoin reserve composition vs. GENIUS Act requirements effective Jan 2027 — 1:1 backing, UST ≤93-day maturity caps, Fed deposits, monthly disclosure; Policy Mandate export): https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html
 
 ---
 

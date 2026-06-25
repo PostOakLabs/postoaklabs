@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,18 +20,16 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": ["SoftwareApplication", "FinancialService"],
+  "@type": ["Article", "FinancialService"],
   "name": "West Africa Digital Currency Corridor",
-  "applicationCategory": "FinancialApplication",
-  "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html",
-  "description": "Model cross-border CBDC and stablecoin settlement across West Africa corridors — Nigeria eNaira/cNGN, Ghana e-Cedi, ECCU DCash, WAEMU digital CFA. Settlement economics vs correspondent banking, FATF Travel Rule compliance overlay, Policy Mandate export.",
-  "featureList": [
-    "Corridor configurator: Nigeria, Ghana, Senegal/WAEMU, ECCU, UK, US origin/destination pairs",
-    "Digital currency architecture selector: CBDC bridge, cNGN stablecoin, hybrid, nostro fallback",
-    "Settlement economics: all-in cost vs correspondent, FX spread compression, trapped capital release, D+0 finality",
-    "Compliance overlay: FATF Travel Rule status, AML obligations, eNaira/cNGN/DCash regulatory requirements",
-    "Policy Mandate export: @postoaklabs.com/west-africa-corridor-v1"
+  "description": "Corridor case study: digital currency and stablecoin settlement options across West Africa — Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, and ECCU DCash. Architecture viability, FATF Travel Rule compliance overlay, settlement economics vs correspondent banking.",
+  "about": [
+    "Architecture viability: CBDC bridge, cNGN stablecoin, hybrid rail, and nostro fallback compared across settlement cost and finality",
+    "Settlement economics: all-in cost vs correspondent banking, FX spread compression, D+0 feasibility by corridor pair",
+    "FATF Travel Rule status by corridor: VASP obligations, Travel Rule applicability for CBDC vs stablecoin transfers",
+    "eNaira, cNGN, e-Cedi, DCash, and XOF digital CFA — regulatory and operational status mid-2026",
+    "AINumbers emerging-market-fx-corridor chain: T58 · T75 · T157 · T217 · T218 · T220 · T221 · T325"
   ],
   "keywords": "West Africa CBDC, eNaira, cNGN, DCash, Nigeria corridor, cross-border payments, stablecoin settlement, ECCU, ECOWAS, FATF Travel Rule, correspondent banking",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
@@ -213,9 +211,9 @@ button{cursor:pointer;font-family:inherit}
 <!-- ══ HERO ══ -->
 <section class="pol-hero">
   <div class="container">
-    <div class="hero-eyebrow">Demo #37 · West Africa Digital Currency Corridor</div>
+    <div class="hero-eyebrow">Case Study #37 · West Africa Digital Currency Corridor</div>
     <h1>West Africa <em>Digital Currency</em> Corridor.</h1>
-    <p>Model cross-border CBDC and stablecoin settlement across West Africa's emerging digital currency ecosystem — Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, and ECCU DCash. Compare corridor economics against correspondent banking, layer on FATF compliance, and export a Policy Mandate.</p>
+    <p>Case study on digital currency and stablecoin settlement across West Africa's emerging corridors — Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, and ECCU DCash. Architecture viability, settlement economics vs correspondent banking, FATF compliance overlay. For live corridor modelling, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="color:var(--green-lt)">AINumbers emerging-market-fx-corridor chain ↗</a>.</p>
     <div class="hero-badges">
       <span class="hbadge hbadge-green">eNaira · cNGN · DCash</span>
       <span class="hbadge hbadge-gold">ECOWAS · WAEMU</span>
@@ -226,279 +224,180 @@ button{cursor:pointer;font-family:inherit}
   </div>
 </section>
 
-<!-- ══ DEMO CANVAS ══ -->
+<!-- ══ CASE STUDY CONTENT ══ -->
 <div class="demo-canvas">
   <div class="demo-canvas-inner">
 
-    <!-- Step nav -->
-    <div class="step-nav" role="tablist">
-      <button class="step-tab active" onclick="goStep(1)" id="tab-1" role="tab"><span class="step-num" id="sn-1">1</span>Corridor Config</button>
-      <button class="step-tab" onclick="goStep(2)" id="tab-2" role="tab"><span class="step-num" id="sn-2">2</span>Architecture &amp; Economics</button>
-      <button class="step-tab" onclick="goStep(3)" id="tab-3" role="tab"><span class="step-num" id="sn-3">3</span>Compliance Overlay</button>
-      <button class="step-tab" onclick="goStep(4)" id="tab-4" role="tab"><span class="step-num" id="sn-4">4</span>Corridor Report</button>
+    <!-- Case study note -->
+    <div style="border:1px solid var(--canvas-3);border-left:3px solid var(--green);border-radius:6px;padding:1.1rem 1.4rem;margin-bottom:2.5rem;background:var(--canvas-2);display:flex;align-items:flex-start;gap:0.9rem;" role="note">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;margin-top:1px" aria-hidden="true"><circle cx="10" cy="10" r="9" stroke="#16a34a" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-size:0.82rem;color:var(--ct-2);line-height:1.65;">Case study — practitioner analysis by Post Oak Labs. To run live corridor inputs against the same analytical framework, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline;">AINumbers emerging-market-fx-corridor chain ↗</a>.</span>
     </div>
 
-    <!-- ── STEP 1: Corridor Configuration ── -->
-    <div class="step-panel active" id="panel-1">
-      <div class="step-h">
-        <h2>Corridor Configuration</h2>
-        <p>Select your origin and destination, payment purpose, and transaction size. The tool will load corridor-specific CBDC availability and settlement data.</p>
+    <!-- Section 1: CBDC status -->
+    <div class="step-h">
+      <h2>Digital Currency Status — West Africa &amp; ECCU</h2>
+      <p>Operational status of CBDC and stablecoin instruments in the four-zone ecosystem as of mid-2026.</p>
+    </div>
+    <div class="status-grid">
+      <div class="status-card">
+        <div class="status-card-name">Nigeria</div>
+        <div class="status-card-currency">NGN · eNaira · cNGN</div>
+        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
+          <span class="badge badge-pilot">eNaira: Pilot / low uptake</span>
+          <span class="badge badge-live">cNGN: Live (private stablecoin)</span>
+        </div>
+        <div class="status-card-detail">eNaira is a Central Bank of Nigeria retail CBDC (launched Oct 2022) with limited adoption — CBN redesigning. cNGN is a consortium-backed NGN stablecoin (CBEX/Providus/UnionBank) live on-chain since 2024, suitable for settlement rail use.</div>
       </div>
-
-      <div class="field-grid">
-        <div class="field">
-          <label>Origin country / zone</label>
-          <select id="origin">
-            <option value="nigeria">Nigeria (NGN)</option>
-            <option value="ghana">Ghana (GHS)</option>
-            <option value="eccu">ECCU — Eastern Caribbean (XCD)</option>
-            <option value="senegal">Senegal / WAEMU (XOF)</option>
-          </select>
+      <div class="status-card">
+        <div class="status-card-name">Ghana</div>
+        <div class="status-card-currency">GHS · e-Cedi</div>
+        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
+          <span class="badge badge-paused">e-Cedi: Pilot paused</span>
         </div>
-        <div class="field">
-          <label>Destination country / zone</label>
-          <select id="dest">
-            <option value="ghana">Ghana (GHS)</option>
-            <option value="eccu">ECCU — Eastern Caribbean (XCD)</option>
-            <option value="senegal">Senegal / WAEMU (XOF)</option>
-            <option value="uk">United Kingdom (GBP)</option>
-            <option value="us">United States (USD)</option>
-            <option value="nigeria">Nigeria (NGN)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Payment purpose</label>
-          <select id="purpose">
-            <option value="remittance">Diaspora remittance</option>
-            <option value="trade">B2B trade settlement</option>
-            <option value="govt">Government / aid disbursement</option>
-            <option value="treasury">Bank treasury / FX conversion</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Transaction amount (USD equivalent)</label>
-          <input type="number" id="amount" value="5000" min="100" max="10000000">
-          <span class="field-note">Individual transaction amount for economics modelling</span>
-        </div>
-        <div class="field">
-          <label>Monthly volume (USD)</label>
-          <input type="number" id="volume" value="500000" min="1000" max="1000000000">
-          <span class="field-note">Programme/institutional monthly flow</span>
-        </div>
-        <div class="field">
-          <label>Institution type</label>
-          <select id="inst">
-            <option value="bank">Commercial bank</option>
-            <option value="mno">Mobile money operator</option>
-            <option value="fintech">Fintech / remittance platform</option>
-            <option value="central">Central bank / government</option>
-          </select>
-        </div>
+        <div class="status-card-detail">Bank of Ghana ran an e-Cedi CBDC pilot in 2022–2023. As of mid-2026 the programme is under review pending CBDC interoperability framework from BIS/ECOWAS. No live retail CBDC for cross-border settlement. Correspondent rails (GCB Bank, Ecobank) remain primary.</div>
       </div>
-
-      <div class="btn-row">
-        <button class="btn btn-green" onclick="runStep1()">Load corridor data →</button>
+      <div class="status-card">
+        <div class="status-card-name">ECCU</div>
+        <div class="status-card-currency">XCD · DCash</div>
+        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
+          <span class="badge badge-live">DCash: Live (7 member states)</span>
+        </div>
+        <div class="status-card-detail">ECCB (Eastern Caribbean Central Bank) DCash is the most operationally mature CBDC in the Americas — live across Antigua, Dominica, Grenada, Montserrat, St Kitts, St Lucia, St Vincent since 2021. Supports offline transactions. XCD-USD peg (2.7:1 fixed) simplifies FX risk for corridor pricing.</div>
+      </div>
+      <div class="status-card">
+        <div class="status-card-name">Senegal / WAEMU</div>
+        <div class="status-card-currency">XOF · digital CFA</div>
+        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
+          <span class="badge badge-research">Digital CFA: Research</span>
+        </div>
+        <div class="status-card-detail">BCEAO (Banque Centrale des États de l'Afrique de l'Ouest) is studying a digital XOF but no pilot as of mid-2026. XOF is pegged to EUR at a fixed rate — the CFA-EUR corridor is efficient via correspondent chains through Société Générale / BNP Paribas. Lowest digital upgrade urgency of the four zones.</div>
       </div>
     </div>
 
-    <!-- ── STEP 2: Architecture & Economics ── -->
-    <div class="step-panel" id="panel-2">
-      <div class="step-h">
-        <h2>Architecture &amp; Settlement Economics</h2>
-        <p>Select your preferred digital currency rail and FX mechanism. Live comparison against the correspondent banking baseline for your corridor.</p>
+    <!-- Section 2: Architecture comparison -->
+    <div class="step-h" style="margin-top:1rem;">
+      <h2>Architecture Viability — Four Corridors</h2>
+      <p>Settlement architecture options scored across cost, finality, Herstatt risk, and regulatory readiness. Results are corridor-specific; the Nigeria → Ghana pair is used as the base case.</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Architecture</th>
+          <th>All-in cost</th>
+          <th>Settlement</th>
+          <th>Herstatt risk</th>
+          <th>Corridor fit (NG→GH)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nostro correspondent</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">Current state</span></td>
+          <td class="val-bad">7.5–9.8%</td>
+          <td class="val-warn">T+2 to T+3.5</td>
+          <td class="val-bad">48–72 h window</td>
+          <td class="val-bad">High cost, operational</td>
+        </tr>
+        <tr>
+          <td><strong>cNGN stablecoin</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">NGN-pegged, on-chain</span></td>
+          <td class="val-good">1.2–1.8%</td>
+          <td class="val-good">45–90 s</td>
+          <td class="val-good">Eliminated (PvP)</td>
+          <td class="val-good">Best near-term option</td>
+        </tr>
+        <tr>
+          <td><strong>CBDC bridge</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">BIS Agorá pattern</span></td>
+          <td class="val-good">0.6–1.0%</td>
+          <td class="val-good">8–15 s</td>
+          <td class="val-good">Eliminated (PvP)</td>
+          <td class="val-warn">e-Cedi paused — not viable</td>
+        </tr>
+        <tr>
+          <td><strong>Hybrid rail</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">cNGN + nostro fallback</span></td>
+          <td class="val-good">1.0–1.4%</td>
+          <td class="val-good">15–45 s</td>
+          <td class="val-good">Low</td>
+          <td class="val-good">Recommended — resilience</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3: Settlement economics by corridor pair -->
+    <div class="step-h" style="margin-top:1.5rem;">
+      <h2>Settlement Economics — Key Corridor Pairs</h2>
+      <p>All-in cost and D+0 feasibility for four priority corridor pairs on digital currency vs correspondent rails.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Nigeria → Ghana</div>
+        <div class="stat-val good">8.2% → 1.4%</div>
+        <div class="stat-sub">cNGN rail · D+0 feasible · $1.8B annual flow</div>
       </div>
-
-      <div class="field-grid">
-        <div class="field">
-          <label>Primary digital currency rail</label>
-          <select id="rail" onchange="updateEconomics()">
-            <option value="cbdc_bridge">CBDC bridge (eNaira ↔ DCash / e-Cedi)</option>
-            <option value="stablecoin">Regulated stablecoin (cNGN / USD-pegged)</option>
-            <option value="hybrid">Hybrid (CBDC + stablecoin buffer)</option>
-            <option value="nostro">Nostro fallback (baseline)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>FX settlement mechanism</label>
-          <select id="fx_mech" onchange="updateEconomics()">
-            <option value="pvp">Atomic PvP swap (simultaneous)</option>
-            <option value="pool">Pre-funded liquidity pool</option>
-            <option value="mm">Market maker / AMM</option>
-          </select>
-        </div>
+      <div class="stat-card">
+        <div class="stat-label">Nigeria → ECCU</div>
+        <div class="stat-val good">9.8% → 1.1%</div>
+        <div class="stat-sub">DCash destination · 4-hop SWIFT eliminated</div>
       </div>
-
-      <h3 style="font-size:1.1rem;color:var(--ct);margin-bottom:1rem;">Settlement Economics Comparison</h3>
-      <div class="stat-grid" id="stat-grid">
-        <div class="stat-card"><div class="stat-label">All-in cost (digital rail)</div><div class="stat-val good" id="s-cost-digital">—</div><div class="stat-sub">vs corridor</div></div>
-        <div class="stat-card"><div class="stat-label">All-in cost (correspondent)</div><div class="stat-val warn" id="s-cost-corr">—</div><div class="stat-sub">G20 target &lt;5%</div></div>
-        <div class="stat-card"><div class="stat-label">Settlement time</div><div class="stat-val good" id="s-time">—</div><div class="stat-sub">vs 2–4 days correspondent</div></div>
-        <div class="stat-card"><div class="stat-label">FX spread compression</div><div class="stat-val good" id="s-fx">—</div><div class="stat-sub">bps saved per transaction</div></div>
-        <div class="stat-card"><div class="stat-label">Annual saving (at volume)</div><div class="stat-val good" id="s-saving">—</div><div class="stat-sub">on monthly programme</div></div>
-        <div class="stat-card"><div class="stat-label">Herstatt risk</div><div class="stat-val" id="s-herstatt">—</div><div class="stat-sub">settlement exposure window</div></div>
+      <div class="stat-card">
+        <div class="stat-label">Nigeria → WAEMU</div>
+        <div class="stat-val warn">8.5% → 2.1%</div>
+        <div class="stat-sub">No digital CFA · cNGN + nostro fallback</div>
       </div>
-
-      <h3 style="font-size:1.1rem;color:var(--ct);margin-bottom:1rem;">Full Comparison Table</h3>
-      <table class="data-table">
-        <thead><tr><th>Metric</th><th>Digital Rail (selected)</th><th>Correspondent banking</th><th>Improvement</th></tr></thead>
-        <tbody id="econ-table">
-          <tr><td colspan="4" style="text-align:center;color:var(--ct-3);padding:1.5rem">Select corridor and rail above to load economics data.</td></tr>
-        </tbody>
-      </table>
-
-      <div class="btn-row">
-        <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
-        <button class="btn btn-green" onclick="goStep(3)">Compliance overlay →</button>
+      <div class="stat-card">
+        <div class="stat-label">Ghana → ECCU</div>
+        <div class="stat-val warn">9.2% → 2.4%</div>
+        <div class="stat-sub">e-Cedi paused · correspondent + DCash partial</div>
       </div>
     </div>
 
-    <!-- ── STEP 3: Compliance Overlay ── -->
-    <div class="step-panel" id="panel-3">
-      <div class="step-h">
-        <h2>Compliance &amp; Regulatory Overlay</h2>
-        <p>CBDC and stablecoin status per country, FATF Travel Rule applicability, and AML obligations for the selected corridor.</p>
-      </div>
-
-      <h3 style="font-size:1.05rem;color:var(--ct);margin-bottom:1rem;">Digital Currency Status by Jurisdiction</h3>
-      <div class="status-grid">
-        <div class="status-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div class="status-card-name">Nigeria</div>
-            <span class="badge badge-live">Live</span>
-          </div>
-          <div class="status-card-currency">eNaira (retail CBDC) · cNGN (regulated stablecoin)</div>
-          <div class="status-card-detail">eNaira launched Oct 2021, ~13M registered wallets (low active use). cNGN launched Feb 2024 — consortium-issued regulated naira stablecoin (CBN sandbox-approved; not CBN-backed), interoperable with eNaira. AML: NFIU/CBN AML obligations apply.</div>
-        </div>
-        <div class="status-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div class="status-card-name">ECCU</div>
-            <span class="badge badge-live">Live</span>
-          </div>
-          <div class="status-card-currency">DCash (retail CBDC) · 8 island nations</div>
-          <div class="status-card-detail">DCash launched Mar 2021 — first multi-jurisdiction CBDC. Issued by ECCB across Antigua &amp; Barbuda, Dominica, Grenada, Montserrat, St Kitts, St Lucia, St Vincent, Anguilla. Cross-island PvP live.</div>
-        </div>
-        <div class="status-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div class="status-card-name">Ghana</div>
-            <span class="badge badge-paused">Paused</span>
-          </div>
-          <div class="status-card-currency">e-Cedi (retail CBDC pilot)</div>
-          <div class="status-card-detail">Pilot completed 2023; full launch paused pending Ghanaian cedi stabilisation. BoG reaffirmed commitment in Q1 2026. Interim: GhIPSS interbank rails used for digital settlement.</div>
-        </div>
-        <div class="status-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div class="status-card-name">Senegal / WAEMU</div>
-            <span class="badge badge-research">Research</span>
-          </div>
-          <div class="status-card-currency">BCEAO digital CFA franc (eCFA — study phase)</div>
-          <div class="status-card-detail">BCEAO (Central Bank of West African States) studying a digital CFA franc for the 8-nation WAEMU zone. Wave and Orange Money dominate digital payments. No live CBDC as of 2026.</div>
-        </div>
-        <div class="status-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div class="status-card-name">United Kingdom</div>
-            <span class="badge badge-pilot">Pilot 2026</span>
-          </div>
-          <div class="status-card-currency">Digital Pound (retail CBDC) — design phase</div>
-          <div class="status-card-detail">Bank of England &amp; HMT in extended design phase. FCA stablecoin regulatory sandbox cohort live 2026. UK MTL required for corridor from Nigeria/Ghana. PSR APP fraud rules apply.</div>
-        </div>
-        <div class="status-card">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start">
-            <div class="status-card-name">United States</div>
-            <span class="badge badge-research">No CBDC</span>
-          </div>
-          <div class="status-card-currency">GENIUS Act stablecoins (USD-pegged, regulated)</div>
-          <div class="status-card-detail">No US retail CBDC. GENIUS Act (Jul 2025) enables regulated USD payment stablecoins. Nigerian/West African remittance operators need FinCEN MSB registration + BSA/AML programme.</div>
-        </div>
-      </div>
-
-      <h3 style="font-size:1.05rem;color:var(--ct);margin-bottom:1rem;">FATF Travel Rule — Corridor Assessment</h3>
-      <table class="data-table">
-        <thead><tr><th>Corridor</th><th>FATF R.16 Threshold</th><th>Origin Status</th><th>Destination Status</th><th>Data Fields Required</th><th>Risk Flag</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>Nigeria → Ghana</td><td>$1,000 USD</td>
-            <td><span class="badge badge-pilot">Partial</span></td>
-            <td><span class="badge badge-pilot">Partial</span></td>
-            <td>Originator name, account, address, national ID; Beneficiary name, account</td>
-            <td><span class="badge" style="background:rgba(245,158,11,.1);color:#b45309;border:1px solid rgba(245,158,11,.3)">Sunrise risk — check VASP data sharing</span></td>
-          </tr>
-          <tr>
-            <td>Nigeria → ECCU</td><td>$1,000 USD</td>
-            <td><span class="badge badge-pilot">Partial</span></td>
-            <td><span class="badge badge-live">Compliant</span></td>
-            <td>Full originator + beneficiary; ECCB requires ISO 20022 pain.001 format</td>
-            <td><span class="badge badge-live">Low risk</span></td>
-          </tr>
-          <tr>
-            <td>Nigeria → UK</td><td>£1,000 GBP</td>
-            <td><span class="badge badge-pilot">Partial</span></td>
-            <td><span class="badge badge-live">Full (UK MLR 2017)</span></td>
-            <td>Full 5-field originator + beneficiary; PSR APP fraud liability check required</td>
-            <td><span class="badge badge-live">Manageable</span></td>
-          </tr>
-          <tr>
-            <td>Nigeria → US</td><td>$3,000 USD (FinCEN)</td>
-            <td><span class="badge badge-pilot">Partial</span></td>
-            <td><span class="badge badge-live">Full (BSA/MSB)</span></td>
-            <td>Full 5-field per 31 CFR 1010.410(f); FinCEN MSB registration required</td>
-            <td><span class="badge badge-live">Manageable with MSB licence</span></td>
-          </tr>
-          <tr>
-            <td>Any → Senegal/WAEMU</td><td>CFA equivalent ~$1,000</td>
-            <td>Varies</td>
-            <td><span class="badge badge-research">BCEAO guidelines only</span></td>
-            <td>Originator name + account; beneficiary name. Mobile money operator data gaps common</td>
-            <td><span class="badge" style="background:rgba(239,68,68,.08);color:#b91c1c;border:1px solid rgba(239,68,68,.3)">High data-gap risk</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="btn-row">
-        <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
-        <button class="btn btn-green" onclick="buildReport()">Build corridor report →</button>
-      </div>
+    <!-- Section 4: FATF compliance overlay -->
+    <div class="step-h" style="margin-top:1rem;">
+      <h2>FATF Compliance Overlay</h2>
+      <p>Travel Rule applicability, VASP registration requirements, and AML obligations by instrument type across the four zones.</p>
     </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Instrument</th>
+          <th>FATF category</th>
+          <th>Travel Rule (≥$1K)</th>
+          <th>Originator / beneficiary data</th>
+          <th>AML obligation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>eNaira / DCash</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">Retail CBDC</span></td>
+          <td>Central bank liability</td>
+          <td class="val-warn">Exempt (central bank)</td>
+          <td>Collected via CBN/ECCB rails</td>
+          <td>National AML law applies</td>
+        </tr>
+        <tr>
+          <td><strong>cNGN stablecoin</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">Private stablecoin</span></td>
+          <td>VASP / VA</td>
+          <td class="val-bad">Applies — R.16 compliant needed</td>
+          <td>Originator name, account, address</td>
+          <td>VASP registration + KYC/AML</td>
+        </tr>
+        <tr>
+          <td><strong>Nostro correspondent</strong></td>
+          <td>Bank-to-bank</td>
+          <td>SWIFT MX / MT103 covers</td>
+          <td>Full SWIFT field set</td>
+          <td>De Larosière / Basel AML matrix</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.8rem;color:var(--ct-3);margin-top:0.6rem;line-height:1.6;">Nigeria was removed from the FATF grey list in October 2023. Cross-border VASP transfers from Nigerian entities to ECCU (a non-FATF jurisdiction) require enhanced due diligence on the ECCU receiving side for transfers above $3K threshold. DCash, as a central-bank instrument, bypasses VASP Travel Rule but still requires originator data collection at the ECCB level under national AML law.</p>
 
-    <!-- ── STEP 4: Corridor Report & Policy Mandate ── -->
-    <div class="step-panel" id="panel-4">
-      <div class="step-h">
-        <h2>Corridor Report &amp; Policy Mandate</h2>
-        <p>Full architecture decision record for your selected corridor. Export as Policy Mandate JSON for board briefings, regulatory submissions, or agent runtime consumption.</p>
-      </div>
-
-      <div id="report-summary" style="margin-bottom:2rem"></div>
-
-      <div class="mandate-box">
-        <div class="mandate-title">Policy Mandate — West Africa Digital Currency Corridor</div>
-        <div class="mandate-preview" id="mandate-preview">{ Run steps 1–3 and click "Build corridor report" to generate mandate }</div>
-        <div class="export-row">
-          <button class="btn btn-gold" onclick="dlMandate('json')">↓ Policy Mandate (.policy.json)</button>
-          <button class="btn btn-ghost" onclick="dlMandate('md')">↓ Markdown Export</button>
-        </div>
-      </div>
-
-      <div style="font-size:.78rem;color:var(--ct-3);margin-top:1rem;padding:.75rem 1rem;background:var(--canvas-2);border-radius:4px;border-left:2px solid var(--canvas-3)">
-        🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
-      </div>
-
-      <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--canvas-3)">
-        <p style="font-size:.82rem;color:var(--ct-3);margin-bottom:.75rem">Powered by:</p>
-        <div style="display:flex;flex-wrap:wrap;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--ct-3)">
-          <span>T58 · CBDC Interop Scenario Modeler</span><span>·</span>
-          <span>T75 · Stablecoin Reserve &amp; Peg Health Auditor</span><span>·</span>
-          <span>T157 · Settlement Orchestration Simulator</span><span>·</span>
-          <span>T217 · EM FX Risk Classifier</span><span>·</span>
-          <span>T218 · PvP Settlement Sync Model</span><span>·</span>
-          <span>T220 · Correspondent De-Risking Modeler</span><span>·</span>
-          <span>T221 · D+0 Finality Comparator</span><span>·</span>
-          <span>T325 · Settlement Atlas</span>
-        </div>
-        <p style="font-size:.72rem;color:var(--ct-3);margin-top:.75rem"><a href="https://ainumbers.co" style="color:var(--green)">AINumbers.co</a> — The fintech tool catalog that powers this demo. CC BY 4.0.</p>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-ghost" onclick="goStep(3)">← Back</button>
-        <button class="btn btn-green" onclick="goStep(1)">New corridor →</button>
+    <!-- AINumbers chain link -->
+    <div class="mandate-box" style="margin-top:2rem;">
+      <div class="mandate-title">AINumbers.co — Live Modelling</div>
+      <h3 style="font-family:'DM Serif Display',serif;color:var(--ct);font-size:1.1rem;margin-bottom:0.5rem;font-weight:400;">Run the live emerging-market FX corridor model</h3>
+      <p style="font-size:0.85rem;color:var(--ct-2);line-height:1.65;margin-bottom:1rem;">The AINumbers <em>emerging-market-fx-corridor</em> chain sequences all eight tools referenced in this case study — T58, T75, T157, T217, T218, T220, T221, T325 — and exports a composite Policy Mandate. Use it to run your own corridor inputs against the same analytical framework.</p>
+      <div class="export-row">
+        <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" class="btn btn-green">Run corridor model on AINumbers ↗</a>
       </div>
     </div>
 
@@ -532,249 +431,5 @@ button{cursor:pointer;font-family:inherit}
   </div>
 </footer>
 
-<script>
-// ── Corridor data ──────────────────────────────────────────────────────
-var CORRIDORS = {
-  'nigeria-ghana': {
-    name:'Nigeria → Ghana', currencies:'NGN / GHS',
-    corr_cost:8.2, corr_days:2.5, corr_fx_spread:1.9, corr_herstatt:'48h window',
-    cbdc_cost:0.9, cbdc_sec:8, cbdc_fx_spread:0.28, cbdc_herstatt:'Eliminated (PvP)',
-    stable_cost:1.4, stable_sec:45, stable_fx_spread:0.45,
-    hybrid_cost:1.1, hybrid_sec:20, hybrid_fx_spread:0.35,
-    cbdc_status:'eNaira live (origin) · e-Cedi paused (dest)',
-    annual_vol_usd:1800000000,
-  },
-  'nigeria-eccu': {
-    name:'Nigeria → ECCU', currencies:'NGN / XCD',
-    corr_cost:9.8, corr_days:3.5, corr_fx_spread:2.4, corr_herstatt:'72h window',
-    cbdc_cost:1.1, cbdc_sec:12, cbdc_fx_spread:0.32, cbdc_herstatt:'Eliminated (PvP)',
-    stable_cost:1.6, stable_sec:60, stable_fx_spread:0.52,
-    hybrid_cost:1.25, hybrid_sec:25, hybrid_fx_spread:0.40,
-    cbdc_status:'eNaira live (origin) · DCash live (dest)',
-    annual_vol_usd:320000000,
-  },
-  'nigeria-senegal': {
-    name:'Nigeria → Senegal/WAEMU', currencies:'NGN / XOF',
-    corr_cost:10.4, corr_days:4.0, corr_fx_spread:2.8, corr_herstatt:'96h window',
-    cbdc_cost:1.5, cbdc_sec:30, cbdc_fx_spread:0.55, cbdc_herstatt:'Reduced (stablecoin bridge)',
-    stable_cost:1.8, stable_sec:90, stable_fx_spread:0.68,
-    hybrid_cost:1.65, hybrid_sec:45, hybrid_fx_spread:0.60,
-    cbdc_status:'eNaira/cNGN (origin) · eCFA research phase (dest) — stablecoin bridge required',
-    annual_vol_usd:280000000,
-  },
-  'nigeria-uk': {
-    name:'Nigeria → United Kingdom', currencies:'NGN / GBP',
-    corr_cost:6.2, corr_days:1.5, corr_fx_spread:1.4, corr_herstatt:'24h window',
-    cbdc_cost:0.85, cbdc_sec:15, cbdc_fx_spread:0.22, cbdc_herstatt:'Reduced',
-    stable_cost:1.2, stable_sec:30, stable_fx_spread:0.35,
-    hybrid_cost:1.0, hybrid_sec:20, hybrid_fx_spread:0.28,
-    cbdc_status:'cNGN (origin) · Digital Pound design phase — GENIUS Act stablecoin route recommended',
-    annual_vol_usd:5300000000,
-  },
-  'nigeria-us': {
-    name:'Nigeria → United States', currencies:'NGN / USD',
-    corr_cost:7.1, corr_days:2.0, corr_fx_spread:1.6, corr_herstatt:'36h window',
-    cbdc_cost:0.95, cbdc_sec:10, cbdc_fx_spread:0.25, cbdc_herstatt:'Eliminated (GENIUS Act stablecoin)',
-    stable_cost:1.15, stable_sec:20, stable_fx_spread:0.30,
-    hybrid_cost:1.05, hybrid_sec:15, hybrid_fx_spread:0.27,
-    cbdc_status:'cNGN (origin) · GENIUS Act USD stablecoin (dest) — FinCEN MSB registration required',
-    annual_vol_usd:3200000000,
-  },
-  'eccu-nigeria': {
-    name:'ECCU → Nigeria', currencies:'XCD / NGN',
-    corr_cost:8.9, corr_days:3.0, corr_fx_spread:2.1, corr_herstatt:'60h window',
-    cbdc_cost:1.1, cbdc_sec:12, cbdc_fx_spread:0.32, cbdc_herstatt:'Eliminated (PvP)',
-    stable_cost:1.5, stable_sec:55, stable_fx_spread:0.48,
-    hybrid_cost:1.25, hybrid_sec:25, hybrid_fx_spread:0.38,
-    cbdc_status:'DCash live (origin) · eNaira/cNGN live (dest)',
-    annual_vol_usd:95000000,
-  },
-  'ghana-nigeria': {
-    name:'Ghana → Nigeria', currencies:'GHS / NGN',
-    corr_cost:7.8, corr_days:2.5, corr_fx_spread:1.8, corr_herstatt:'48h window',
-    cbdc_cost:1.2, cbdc_sec:20, cbdc_fx_spread:0.38, cbdc_herstatt:'Reduced',
-    stable_cost:1.5, stable_sec:55, stable_fx_spread:0.50,
-    hybrid_cost:1.35, hybrid_sec:30, hybrid_fx_spread:0.42,
-    cbdc_status:'e-Cedi paused (origin) · eNaira/cNGN live (dest) — stablecoin bridge required',
-    annual_vol_usd:640000000,
-  },
-  'default': {
-    name:'Custom corridor', currencies:'—',
-    corr_cost:8.0, corr_days:3.0, corr_fx_spread:2.0, corr_herstatt:'60h window',
-    cbdc_cost:1.2, cbdc_sec:20, cbdc_fx_spread:0.38, cbdc_herstatt:'Reduced',
-    stable_cost:1.6, stable_sec:55, stable_fx_spread:0.50,
-    hybrid_cost:1.4, hybrid_sec:30, hybrid_fx_spread:0.44,
-    cbdc_status:'Varies by corridor',
-    annual_vol_usd:500000000,
-  }
-};
-
-var _state = {};
-
-function getCorridorKey() {
-  var o = document.getElementById('origin').value;
-  var d = document.getElementById('dest').value;
-  var key = o + '-' + d;
-  if (CORRIDORS[key]) return key;
-  return 'default';
-}
-
-function fmt(n) { return '$' + n.toLocaleString('en-US', {maximumFractionDigits:0}); }
-function fmtPct(n) { return n.toFixed(2) + '%'; }
-
-function runStep1() {
-  _state.origin = document.getElementById('origin').value;
-  _state.dest = document.getElementById('dest').value;
-  _state.purpose = document.getElementById('purpose').value;
-  _state.amount = parseFloat(document.getElementById('amount').value) || 5000;
-  _state.volume = parseFloat(document.getElementById('volume').value) || 500000;
-  _state.inst = document.getElementById('inst').value;
-  _state.corridorKey = getCorridorKey();
-  _state.corridor = CORRIDORS[_state.corridorKey];
-  updateEconomics();
-  goStep(2);
-}
-
-function updateEconomics() {
-  var c = _state.corridor;
-  if (!c) return;
-  var rail = document.getElementById('rail') ? document.getElementById('rail').value : 'cbdc_bridge';
-  var fxMech = document.getElementById('fx_mech') ? document.getElementById('fx_mech').value : 'pvp';
-
-  var digitalCost, digitalSec, digitalFx, digitalHerstatt;
-  if (rail === 'cbdc_bridge') { digitalCost=c.cbdc_cost; digitalSec=c.cbdc_sec; digitalFx=c.cbdc_fx_spread; digitalHerstatt=c.cbdc_herstatt||'Eliminated'; }
-  else if (rail === 'stablecoin') { digitalCost=c.stable_cost; digitalSec=c.stable_sec; digitalFx=c.stable_fx_spread; digitalHerstatt='Reduced'; }
-  else if (rail === 'hybrid') { digitalCost=c.hybrid_cost; digitalSec=c.hybrid_sec; digitalFx=c.hybrid_fx_spread; digitalHerstatt='Reduced'; }
-  else { digitalCost=c.corr_cost; digitalSec=c.corr_days*86400; digitalFx=c.corr_fx_spread; digitalHerstatt=c.corr_herstatt; }
-
-  // FX mechanism adjustment
-  if (fxMech === 'pvp') { digitalCost *= 0.95; digitalFx *= 0.85; }
-  else if (fxMech === 'mm') { digitalCost *= 1.08; digitalFx *= 1.15; }
-
-  var saving = (_state.volume||500000) * (c.corr_cost - digitalCost) / 100 * 12;
-  var fxSaving = Math.round((c.corr_fx_spread - digitalFx) * 100);
-  var timeStr = digitalSec < 60 ? digitalSec + 's' : digitalSec < 3600 ? Math.round(digitalSec/60) + 'min' : (digitalSec/3600).toFixed(1) + 'h';
-
-  // Update stat cards
-  document.getElementById('s-cost-digital').textContent = fmtPct(digitalCost);
-  document.getElementById('s-cost-corr').textContent = fmtPct(c.corr_cost);
-  document.getElementById('s-time').textContent = timeStr;
-  document.getElementById('s-fx').textContent = fxSaving + 'bps';
-  document.getElementById('s-saving').textContent = fmt(Math.max(0, saving));
-  document.getElementById('s-herstatt').textContent = digitalHerstatt;
-
-  var hClass = digitalHerstatt.indexOf('Elim') >= 0 ? 'good' : digitalHerstatt.indexOf('Reduc') >= 0 ? '' : 'warn';
-  document.getElementById('s-herstatt').className = 'stat-val ' + hClass;
-
-  // Update comparison table
-  var costSave = ((c.corr_cost - digitalCost) / c.corr_cost * 100).toFixed(0);
-  var fxSaveStr = fxSaving + 'bps (' + ((c.corr_fx_spread - digitalFx) / c.corr_fx_spread * 100).toFixed(0) + '% compression)';
-  document.getElementById('econ-table').innerHTML = [
-    row('All-in transaction cost', fmtPct(digitalCost), fmtPct(c.corr_cost), costSave + '% reduction', 'good'),
-    row('Settlement time', timeStr, c.corr_days + ' days', 'D+0 finality', 'good'),
-    row('FX spread', fmtPct(digitalFx), fmtPct(c.corr_fx_spread), fxSaveStr, 'good'),
-    row('Herstatt risk window', digitalHerstatt, c.corr_herstatt, digitalHerstatt.indexOf('Elim')>=0 ? 'Fully eliminated' : 'Reduced', digitalHerstatt.indexOf('Elim')>=0 ? 'good' : ''),
-    row('Annual saving (at volume)', fmt(Math.max(0,saving)), '—', 'On ' + fmt(_state.volume||500000) + '/mo flow', 'good'),
-    row('SWIFT messages', 'None required', '3–5 per transaction', 'Full avoidance', 'good'),
-    row('Correspondent relationships', 'None required', '1–3 intermediaries', 'Direct settlement', 'good'),
-    row('Trapped/prefunded capital', rail==='pool' ? 'Pool required' : 'Minimal', 'High (nostro prefunding)', rail==='pool' ? 'Partial reduction' : 'Near-eliminated', rail==='pool' ? '' : 'good'),
-  ].join('');
-
-  _state.digital = { rail:rail, fxMech:fxMech, cost:digitalCost, sec:digitalSec, fx:digitalFx, herstatt:digitalHerstatt, saving:saving, timeStr:timeStr };
-}
-
-function row(label, digital, corr, imp, cls) {
-  return '<tr><td class="val-strong">'+label+'</td><td class="val-'+(cls||'')+'">'+digital+'</td><td class="val-warn">'+corr+'</td><td class="val-'+(cls||'')+'">'+imp+'</td></tr>';
-}
-
-function goStep(n) {
-  [1,2,3,4].forEach(function(i) {
-    document.getElementById('panel-'+i).classList.toggle('active', i===n);
-    var tab = document.getElementById('tab-'+i);
-    tab.classList.toggle('active', i===n);
-    if (i < n) tab.classList.add('done'); else if (i!==n) tab.classList.remove('done');
-  });
-  if (n===2 && _state.corridor) updateEconomics();
-}
-
-function buildReport() {
-  if (!_state.corridor) { _state.origin='nigeria'; _state.dest='ghana'; _state.corridorKey='nigeria-ghana'; _state.corridor=CORRIDORS['nigeria-ghana']; _state.amount=5000; _state.volume=500000; _state.digital={rail:'cbdc_bridge',fxMech:'pvp',cost:0.9,sec:8,fx:0.28,herstatt:'Eliminated (PvP)',saving:350000,timeStr:'8s'}; }
-  var c = _state.corridor;
-  var d = _state.digital || {rail:'cbdc_bridge',cost:c.cbdc_cost,timeStr:c.cbdc_sec+'s'};
-  var now = new Date().toISOString();
-
-  var mandate = {
-    schema: '@postoaklabs.com/west-africa-corridor-v1',
-    generated: now,
-    powered_by: 'postoaklabs.com/demos/west-africa-digital-currency-corridor.html',
-    license: 'CC BY 4.0',
-    corridor: {
-      name: c.name,
-      currencies: c.currencies,
-      origin: _state.origin,
-      destination: _state.dest,
-      purpose: _state.purpose || 'remittance',
-      institution_type: _state.inst || 'bank',
-    },
-    architecture: {
-      selected_rail: d.rail,
-      fx_mechanism: d.fxMech || 'pvp',
-      cbdc_status: c.cbdc_status,
-    },
-    economics: {
-      digital_cost_pct: +(d.cost||c.cbdc_cost).toFixed(2),
-      correspondent_cost_pct: c.corr_cost,
-      settlement_time: d.timeStr || (c.cbdc_sec + 's'),
-      fx_spread_digital_pct: +(d.fx||c.cbdc_fx_spread).toFixed(2),
-      fx_spread_correspondent_pct: c.corr_fx_spread,
-      herstatt_risk: d.herstatt || 'Eliminated',
-      annual_saving_usd: Math.round(Math.max(0, d.saving||0)),
-    },
-    compliance: {
-      fatf_r16: 'See corridor compliance table',
-      aml_obligations: 'Origin + destination BSA/CBN/ECCB AML programme required',
-      data_fields: 'Originator name, account, address; beneficiary name, account per FATF R.16',
-    },
-    constraints: [
-      'eNaira/cNGN live in Nigeria as of 2025. e-Cedi (Ghana) pilot paused — stablecoin bridge required.',
-      'DCash (ECCU) live across 8 island jurisdictions. ECCB PvP interoperability confirmed.',
-      'BCEAO digital CFA franc (eCFA) in research phase — stablecoin intermediation required for Senegal/WAEMU.',
-      'FATF Travel Rule sunrise risk applies on Nigeria-Ghana corridor — validate VASP data sharing.',
-      'GENIUS Act USD stablecoin route available for Nigeria-US; FinCEN MSB registration required.',
-    ],
-  };
-
-  _state.mandate = mandate;
-  var preview = JSON.stringify(mandate, null, 2);
-  document.getElementById('mandate-preview').textContent = preview;
-
-  var summary = '<div style="background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:1.5rem">';
-  summary += '<h3 style="font-size:1.05rem;color:var(--ct);margin-bottom:1rem">Corridor Decision Summary</h3>';
-  summary += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">';
-  summary += kv('Corridor', c.name); summary += kv('Rail selected', d.rail.replace(/_/g,' ')); summary += kv('Cost (digital rail)', fmtPct(+(d.cost||c.cbdc_cost).toFixed(2)));
-  summary += kv('Cost (correspondent)', fmtPct(c.corr_cost)); summary += kv('Settlement time', d.timeStr||c.cbdc_sec+'s'); summary += kv('Annual saving', fmt(Math.max(0,d.saving||0)));
-  summary += kv('Herstatt risk', d.herstatt||'Eliminated'); summary += kv('CBDC status', c.cbdc_status);
-  summary += '</div></div>';
-  document.getElementById('report-summary').innerHTML = summary;
-
-  window._mm = '# West Africa Digital Currency Corridor — Policy Mandate\nGenerated: '+now+'\nPowered by: '+mandate.powered_by+'\n\n## Corridor\n- Name: '+c.name+'\n- Currencies: '+c.currencies+'\n- Purpose: '+(mandate.corridor.purpose)+'\n\n## Architecture\n- Rail: '+d.rail+'\n- FX Mechanism: '+(d.fxMech||'pvp')+'\n- CBDC Status: '+c.cbdc_status+'\n\n## Economics\n- Digital cost: '+fmtPct(+(d.cost||c.cbdc_cost).toFixed(2))+'\n- Correspondent cost: '+fmtPct(c.corr_cost)+'\n- Settlement time: '+(d.timeStr||c.cbdc_sec+'s')+'\n- FX spread (digital): '+fmtPct(+(d.fx||c.cbdc_fx_spread).toFixed(2))+'\n- Annual saving: '+fmt(Math.max(0,d.saving||0))+'\n- Herstatt risk: '+(d.herstatt||'Eliminated')+'\n\n## Constraints\n'+(mandate.constraints.map(function(x){return '- '+x;}).join('\n'))+'\n\n---\n*CC BY 4.0 · Post Oak Labs · postoaklabs.com*';
-
-  goStep(4);
-}
-
-function kv(label, val) { return '<div><div style="font-family:\'JetBrains Mono\',monospace;font-size:.52rem;text-transform:uppercase;color:var(--ct-3);margin-bottom:.2rem">'+label+'</div><div style="font-size:.9rem;color:var(--ct);font-weight:500">'+val+'</div></div>'; }
-
-function dlMandate(fmt_) {
-  if (!_state.mandate) { alert('Please complete all steps first.'); return; }
-  var content = fmt_==='json' ? JSON.stringify(_state.mandate, null, 2) : (window._mm||'');
-  var mime = fmt_==='json' ? 'application/json' : 'text/markdown';
-  var ext = fmt_==='json' ? '.policy.json' : '.md';
-  var blob = new Blob([content], {type:mime});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href=url; a.download='west-africa-corridor'+ext; a.click();
-  URL.revokeObjectURL(url);
-}
-</script>
 </body>
 </html>

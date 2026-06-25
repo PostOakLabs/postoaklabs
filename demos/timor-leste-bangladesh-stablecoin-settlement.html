@@ -22,19 +22,16 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": ["SoftwareApplication", "FinancialService"],
+  "@type": ["Article", "FinancialService"],
   "name": "Timor-Leste × Bangladesh Stablecoin Settlement Bridge",
-  "applicationCategory": "FinancialApplication",
-  "operatingSystem": "Web Browser",
   "url": "https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html",
-  "description": "Frontier-market settlement bridge modelling: architecture viability scoring, time-zone diagnostics, collateral & repo engine, and ISO 20022-aligned double-entry ledger schema generation for USD-pegged stablecoin corridors.",
-  "featureList": [
-    "Architecture Selector: wholesale CBDC bridge vs stablecoin escrow vs nostro pre-funding — viability scoring",
-    "Settlement & Time-Zone Diagnostics: 3-hour UTC overlap window, intraday liquidity buffer, SWIFT cutoff conflict map",
-    "Collateral & Repo Engine: collateral pool sizing, 3× spike stress test, repo sweep mechanics",
-    "Accounting Schema Generator: nostro / vostro / collateral / stablecoin float / FX revaluation accounts, ISO 20022-aligned",
-    "Policy Mandate export: @postoaklabs.com/em-settlement-bridge-v1",
-    "Markdown report export"
+  "description": "Corridor case study: USD-pegged wholesale stablecoin bridge across a thin-correspondent, 3-hour UTC overlap corridor — architecture analysis (CBDC vs stablecoin vs nostro), collateral sizing, ISO 20022 ledger schema. Links to AINumbers emerging-market-fx-corridor chain.",
+  "about": [
+    "Architecture viability analysis: wholesale CBDC bridge vs stablecoin escrow vs nostro pre-funding",
+    "Time-zone constraint: 3-hour UTC overlap window, intraday liquidity buffer, SWIFT cutoff conflict",
+    "Collateral pool sizing, 3× spike stress test, repo sweep mechanics",
+    "ISO 20022-aligned double-entry ledger schema (pacs.008 / camt.053)",
+    "AINumbers emerging-market-fx-corridor chain: T58 · T75 · T157 · T217 · T218 · T220 · T221 · T325"
   ],
   "keywords": "stablecoin settlement, wholesale CBDC, Timor-Leste, Bangladesh, cross-border payments, PvP settlement, correspondent banking, frontier markets, ISO 20022, nostro vostro, repo, collateral",
   "author": { "@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com" },
@@ -317,7 +314,7 @@ footer.pol-footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin
   <div class="strip-inner">
     <div class="strip-left">
       <span class="strip-eyebrow">Fintech Intelligence Showcase</span>
-      <span class="strip-title">Demo #33 — Timor-Leste × Bangladesh Stablecoin Settlement Bridge</span>
+      <span class="strip-title">Case Study #33 — Timor-Leste × Bangladesh Stablecoin Settlement Bridge</span>
     </div>
     <div class="strip-actions">
       <a href="https://ainumbers.co/tools/75-stablecoin-reserve-auditor.html" target="_blank" rel="noopener">T75 ↗</a>
@@ -346,7 +343,7 @@ footer.pol-footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin
         <span class="eyebrow-badge">Zero PII</span>
       </div>
       <h1 id="hero-title">Timor-Leste × Bangladesh <em>Stablecoin Settlement Bridge</em></h1>
-      <p class="hero-sub">Model a USD-pegged wholesale stablecoin settlement bridge between Timor-Leste (USD-dollarised, UTC+9, thin correspondent banking) and Bangladesh (BDT, bKash/BEFTN, UTC+6). Score three architectures — wholesale CBDC bridge, stablecoin escrow, nostro pre-funding — against a 3-hour business-hours overlap window. Size collateral pools for normal flow plus a 3× spike stress test, model repo sweep mechanics, and generate a full double-entry ISO 20022-aligned ledger schema. Boardroom-ready Policy Mandate export.</p>
+      <p class="hero-sub">A corridor case study: USD-pegged wholesale stablecoin bridge between Timor-Leste (USD-dollarised, UTC+9, thin correspondent banking) and Bangladesh (BDT, bKash/BEFTN, UTC+6). This page analyses three settlement architectures — wholesale CBDC bridge, stablecoin escrow, nostro pre-funding — scored against a 3-hour UTC overlap constraint, with collateral pool sizing, repo sweep mechanics, and an ISO 20022-aligned double-entry ledger schema. Grounded in BIS Project Agorá, IMF AREAER 2024, and World Bank Remittance Prices data. To run live corridor inputs, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="color:var(--showcase-accent)">AINumbers emerging-market-fx-corridor chain ↗</a>.</p>
       <div class="hero-stats">
         <div class="hstat">
           <div class="hstat-l">UTC Overlap</div>
@@ -381,189 +378,173 @@ footer.pol-footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin
       </div>
     </section>
 
-    <!-- PII BANNER -->
+    <!-- CASE STUDY NOTE -->
     <div class="pii-banner" role="note">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      🔒 All inputs are processed locally in your browser. No data is transmitted. Do not enter real personal data — use synthetic or anonymised inputs only.
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Case study — practitioner analysis by Post Oak Labs. To run live corridor inputs against the same analytical framework, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="color:#065f46;font-weight:500;">AINumbers emerging-market-fx-corridor chain ↗</a>.
     </div>
 
-    <!-- TOOL LAYOUT -->
+    <!-- CASE STUDY CONTENT -->
     <div class="tool-layout">
       <div class="tool-main">
 
-        <!-- SCENARIOS -->
-        <div class="section-hd">Corridor Scenarios</div>
-        <div class="scenario-row" role="group" aria-label="Scenario presets">
-          <button class="scenario-btn" data-scenario="remittance">🏠 Remittance Flow ($500K/day)</button>
-          <button class="scenario-btn" data-scenario="trade">📦 Trade Settlement ($5M/day)</button>
-          <button class="scenario-btn" data-scenario="wholesale">🏦 Wholesale Treasury ($25M/day)</button>
-        </div>
-
-        <!-- CORE INPUTS -->
-        <div class="section-hd">Corridor &amp; Volume Assumptions</div>
-        <div class="inputs-grid">
-          <div class="field">
-            <label for="inp-dailyvol">Avg Daily Volume (USD)</label>
-            <input type="number" id="inp-dailyvol" value="2500000" min="50000" max="100000000" step="50000">
-            <span class="hint">Total settlement value per business day</span>
+        <div class="section-hd">Architecture Analysis</div>
+        <div class="panel">
+          <div class="panel-hd">
+            <div>
+              <div class="panel-num">01 · Architecture Viability</div>
+              <h2>Three Options Scored Against Corridor Constraints</h2>
+            </div>
+            <div class="sub">Structural constraints: USD dollarization (TLS), BDT capital controls (BGD), thin correspondent network, 3-hour UTC overlap</div>
           </div>
-          <div class="field">
-            <label for="inp-txcount">Transactions / Day</label>
-            <input type="number" id="inp-txcount" value="320" min="1" max="100000">
-            <span class="hint">Bidirectional message count</span>
-          </div>
-          <div class="field">
-            <label for="inp-direction">Net Flow Direction</label>
-            <select id="inp-direction">
-              <option value="balanced">Balanced (TLS ↔ BGD)</option>
-              <option value="bgd-net" selected>BGD net receiver (remit)</option>
-              <option value="tls-net">TLS net receiver (trade)</option>
-            </select>
-            <span class="hint">Drives nostro/collateral asymmetry</span>
-          </div>
-          <div class="field">
-            <label for="inp-spike">Spike Multiplier</label>
-            <input type="number" id="inp-spike" value="3" min="1.5" max="10" step="0.5">
-            <span class="hint">Peak/avg ratio for stress test</span>
-          </div>
-          <div class="field">
-            <label for="inp-fxbuffer">FX Buffer (%)</label>
-            <input type="number" id="inp-fxbuffer" value="3.5" min="0.5" max="15" step="0.5">
-            <span class="hint">BDT vol cushion on collateral</span>
-          </div>
-          <div class="field">
-            <label for="inp-repo">Repo Rate (%/yr)</label>
-            <input type="number" id="inp-repo" value="5.25" min="0" max="20" step="0.25">
-            <span class="hint">Overnight collateralised funding</span>
-          </div>
-          <div class="field">
-            <label for="inp-overlap">UTC Overlap Window (h)</label>
-            <input type="number" id="inp-overlap" value="3" min="1" max="12" step="0.5">
-            <span class="hint">TLS 09–18 ∩ BGD 09–18 (= 12–15 UTC)</span>
-          </div>
-          <div class="field">
-            <label for="inp-correspondents">Correspondent Hops</label>
-            <input type="number" id="inp-correspondents" value="4" min="1" max="8">
-            <span class="hint">Legacy SWIFT route depth</span>
+          <div class="arch-grid">
+            <div class="arch-card best">
+              <h4>USD-Pegged Stablecoin Escrow</h4>
+              <div class="arch-tag">Recommended architecture</div>
+              <div class="arch-desc">USD-pegged wholesale stablecoin on a permissioned ledger (Corda or Fabric). TLS correspondent locks USD collateral into an escrow smart contract; Bangladeshi bank releases BDT via bKash/BEFTN on confirmed settlement signal. Eliminates the 3–5 hop SWIFT chain; collapses settlement to near-real-time within the UTC overlap window.</div>
+              <div class="arch-criteria">
+                <div><span>Settlement latency</span><span class="v">45–90 s</span></div>
+                <div><span>All-in cost</span><span class="v">0.45–0.85%</span></div>
+                <div><span>Herstatt risk</span><span class="v">Eliminated (PvP)</span></div>
+                <div><span>Capital controls fit</span><span class="v">High</span></div>
+              </div>
+            </div>
+            <div class="arch-card">
+              <h4>Wholesale CBDC Bridge</h4>
+              <div class="arch-tag">Conditional — requires BDT wholesale CBDC</div>
+              <div class="arch-desc">A bilateral CBDC bridge (BIS Project Agorá pattern) requires Bangladesh Bank to issue a wholesale BDT CBDC — not in active deployment as of mid-2026. Viable at best cost/latency if the programme advances; requires Treaty-level interoperability and shared settlement infrastructure.</div>
+              <div class="arch-criteria">
+                <div><span>Settlement latency</span><span class="v">8–15 s</span></div>
+                <div><span>All-in cost</span><span class="v">0.30–0.55%</span></div>
+                <div><span>BDT CBDC prerequisite</span><span class="v warn">Not live</span></div>
+                <div><span>Timeline to viability</span><span class="v warn">36–48 months</span></div>
+              </div>
+            </div>
+            <div class="arch-card">
+              <h4>Nostro Pre-Funding (Baseline)</h4>
+              <div class="arch-tag">Current state — legacy comparison</div>
+              <div class="arch-desc">TLS correspondent pre-funds a Dhaka nostro in USD. Familiar to both banking systems but ties up capital, exposes both legs to Herstatt risk across the 48–120 h window, and produces 4.2–6.5% all-in cost through a 3–5 correspondent hop chain.</div>
+              <div class="arch-criteria">
+                <div><span>Settlement finality</span><span class="v warn">2–5 days</span></div>
+                <div><span>All-in cost</span><span class="v err">4.2–6.5%</span></div>
+                <div><span>Herstatt window</span><span class="v warn">48–120 h</span></div>
+                <div><span>Trapped capital</span><span class="v err">High</span></div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="run-row">
-          <button class="run-btn" id="runBtn">Run Bridge Model →</button>
-          <span class="run-note">Deterministic · client-side · ~50 ms runtime</span>
+        <div class="section-hd">Time-Zone Constraint</div>
+        <div class="panel">
+          <div class="panel-hd">
+            <div>
+              <div class="panel-num">02 · UTC Overlap</div>
+              <h2>3-Hour Business-Hours Window</h2>
+            </div>
+            <div class="sub">Timor-Leste UTC+9 · Bangladesh UTC+6 · simultaneous business hours 04:00–07:00 UTC</div>
+          </div>
+          <p style="margin-bottom:1.1rem;font-size:0.9rem;line-height:1.7;">Timor-Leste (UTC+9, 09:00–17:00 local) and Bangladesh (UTC+6, 10:00–18:00 local) share only a ~3-hour window of simultaneous business hours. This constraint is critical for any architecture requiring human confirmation steps or same-day nostro reconciliation. SWIFT MT103 cutoff in Dhaka falls outside the Dili close window — any instruction initiated after 14:00 Dili time cannot receive same-day confirmation in Dhaka.</p>
+          <div class="diag-grid">
+            <div class="diag-cell">
+              <div class="diag-label">UTC Overlap Window</div>
+              <div class="diag-val warn">3.0 h</div>
+              <div class="diag-sub">04:00–07:00 UTC · Mon–Fri</div>
+            </div>
+            <div class="diag-cell">
+              <div class="diag-label">Intraday Liquidity Buffer</div>
+              <div class="diag-val accent">140%</div>
+              <div class="diag-sub">Of peak daily volume — minimum recommendation</div>
+            </div>
+            <div class="diag-cell">
+              <div class="diag-label">SWIFT MT Cutoff Conflict</div>
+              <div class="diag-val error">Yes</div>
+              <div class="diag-sub">Dili close falls outside Dhaka MT processing window</div>
+            </div>
+            <div class="diag-cell">
+              <div class="diag-label">D+0 Feasibility</div>
+              <div class="diag-val success">Stablecoin only</div>
+              <div class="diag-sub">CBDC and nostro architectures cannot achieve D+0</div>
+            </div>
+          </div>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--showcase-text-muted);">The stablecoin escrow is the only architecture achieving D+0 finality within the overlap window. Smart contract settlement is asynchronous — the BDT release signal fires on confirmed contract execution even outside Dhaka banking hours, provided the bKash/BEFTN integration handles the queued credit. This is the key structural advantage over both CBDC and nostro architectures for this corridor pair.</p>
         </div>
 
-        <!-- RESULTS -->
-        <section class="results-section" id="results">
-
-          <!-- PANEL 1: ARCHITECTURE -->
-          <div class="panel" id="panel-arch">
-            <div class="panel-hd">
-              <div>
-                <div class="panel-num">Panel 01 · Architecture Selector</div>
-                <h2>Settlement Architecture Viability</h2>
-              </div>
-              <div class="sub">Scores each architecture on liquidity, finality, regulatory fit, and operational risk</div>
+        <div class="section-hd">Collateral &amp; Repo Engine</div>
+        <div class="panel">
+          <div class="panel-hd">
+            <div>
+              <div class="panel-num">03 · Collateral</div>
+              <h2>Pool Sizing, 3× Spike Stress &amp; Repo Sweep</h2>
             </div>
-            <div class="arch-grid" id="archGrid"></div>
+            <div class="sub">BIS CPMI guidance: frontier-market corridors require 3× baseline stress sizing</div>
           </div>
-
-          <!-- PANEL 2: TIME ZONE DIAGNOSTICS -->
-          <div class="panel" id="panel-tz">
-            <div class="panel-hd">
-              <div>
-                <div class="panel-num">Panel 02 · Settlement &amp; Time-Zone Diagnostics</div>
-                <h2>Overlap Window, Intraday Buffer &amp; SWIFT Cutoffs</h2>
-              </div>
-              <div class="sub">Maps the 3-hour TLS–BGD business overlap against SWIFT MT103 / pacs.008 cutoffs</div>
+          <p style="margin-bottom:1.1rem;font-size:0.9rem;line-height:1.7;">The stablecoin escrow requires a collateral pool held at a TLS-side custodian in USD. Pool sizing must cover normal daily flow plus a 3× spike (remittance surge or corporate FX event). A repo sweep facility converts excess collateral into overnight yield. Under GENIUS Act compliance, eligible reserve assets must have ≤93-day maturity — overnight repo or T+1 MMF shares qualify.</p>
+          <div class="coll-summary">
+            <div class="hstat">
+              <div class="hstat-l">Example daily volume</div>
+              <div class="hstat-v accent">$5M</div>
+              <div class="hstat-note">Trade-flow scenario</div>
             </div>
-            <div class="tz-map">
-              <h4>24-hour UTC Working Window Map</h4>
-              <div class="tz-grid" id="tzGrid"></div>
-              <div class="tz-legend">
-                <span><i class="work"></i> Working hours (one side)</span>
-                <span><i class="overlap"></i> Overlap window (both sides)</span>
-                <span><i class="swift"></i> SWIFT cutoff conflict</span>
-              </div>
+            <div class="hstat">
+              <div class="hstat-l">Normal collateral pool</div>
+              <div class="hstat-v">$7M</div>
+              <div class="hstat-note">140% coverage ratio</div>
             </div>
-            <div class="diag-grid" id="diagGrid"></div>
-          </div>
-
-          <!-- PANEL 3: COLLATERAL & REPO -->
-          <div class="panel" id="panel-coll">
-            <div class="panel-hd">
-              <div>
-                <div class="panel-num">Panel 03 · Collateral &amp; Repo Engine</div>
-                <h2>Pool Sizing, Spike Stress &amp; Sweep Mechanics</h2>
-              </div>
-              <div class="sub">Sizes collateral for normal-day flow + 3× spike, models overnight repo sweep economics</div>
+            <div class="hstat">
+              <div class="hstat-l">3× spike requirement</div>
+              <div class="hstat-v warn">$21M</div>
+              <div class="hstat-note">Remittance surge or FX event</div>
             </div>
-            <div class="coll-summary" id="collSummary"></div>
-            <div class="section-hd">Stress Test — Spike Multiplier × Daily Volume</div>
-            <div class="stress-grid" id="stressGrid"></div>
-            <div class="section-hd">Repo Sweep Mechanics (Indicative)</div>
-            <div class="repo-table-wrap">
-              <table class="repo-table" id="repoTable">
-                <thead>
-                  <tr>
-                    <th>Sweep Path</th>
-                    <th>Notional (USD)</th>
-                    <th>Haircut</th>
-                    <th>Net Funding</th>
-                    <th>Annualised Cost</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <div class="hstat">
+              <div class="hstat-l">Repo sweep yield (ann.)</div>
+              <div class="hstat-v success">4.8–5.2%</div>
+              <div class="hstat-note">Overnight UST / MMF · GENIUS Act eligible</div>
             </div>
           </div>
+          <p style="font-size:0.88rem;line-height:1.7;color:var(--showcase-text-muted);">Net cost of maintaining the collateral pool after repo sweep: ~0.3–0.5% annually on the stressed pool size. Total corridor economics: 0.45–0.85% all-in vs 4.2–6.5% on legacy correspondent rails — a 70–80% cost reduction.</p>
+        </div>
 
-          <!-- PANEL 4: ACCOUNTING SCHEMA -->
-          <div class="panel" id="panel-schema">
-            <div class="panel-hd">
-              <div>
-                <div class="panel-num">Panel 04 · Accounting Schema Generator</div>
-                <h2>ISO 20022-Aligned Double-Entry Ledger Schema</h2>
-              </div>
-              <div class="sub">Account taxonomy + posting rules for a representative settlement cycle</div>
+        <div class="section-hd">ISO 20022 Ledger Schema</div>
+        <div class="panel">
+          <div class="panel-hd">
+            <div>
+              <div class="panel-num">04 · Accounting</div>
+              <h2>Double-Entry Ledger Schema — pacs.008 / camt.053 Aligned</h2>
             </div>
-            <div class="schema-toggle-row" role="tablist">
-              <button class="active" data-schema="accounts">Chart of Accounts (JSON)</button>
-              <button data-schema="postings">Sample Posting Cycle</button>
-              <button data-schema="iso">ISO 20022 Message Map</button>
-            </div>
-            <div class="schema-legend">Generated for the modelled corridor. Account codes follow IFRS / BIS Triennial conventions; ISO 20022 message identifiers from <code>pacs.008</code> / <code>pacs.009</code> / <code>camt.054</code>.</div>
-            <div id="schemaAccounts">
-              <pre class="schema-block" id="schemaAccountsBody"></pre>
-            </div>
-            <div id="schemaPostings" style="display:none">
-              <div class="de-table-wrap">
-                <table class="de-table" id="postingsTable">
-                  <thead>
-                    <tr>
-                      <th>Step</th>
-                      <th>Account</th>
-                      <th class="r">Debit (USD)</th>
-                      <th class="r">Credit (USD)</th>
-                      <th>Reference</th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
-            </div>
-            <div id="schemaIso" style="display:none">
-              <pre class="schema-block" id="schemaIsoBody"></pre>
-            </div>
+            <div class="sub">Five account types · IFRS / BIS Triennial conventions · ISO 20022 message identifiers</div>
           </div>
+          <p style="margin-bottom:1.1rem;font-size:0.9rem;line-height:1.7;">Settlement generates five account types in a double-entry ledger structured to align with ISO 20022 pacs.008 (credit transfers) and camt.053 (bank-to-customer statement). The schema supports real-time gross settlement at the wholesale layer with netting at the retail bKash disbursement layer.</p>
+          <pre class="schema-block" style="overflow:visible;font-size:0.76rem;"><span class="k">ACCOUNT STRUCTURE</span>  <span class="c">// pacs.008 / camt.053 aligned</span>
+<span class="k">nostro</span>           <span class="s">USD nostro at TLS correspondent</span>    Dr on send
+<span class="k">vostro</span>           <span class="s">BDT vostro at Dhaka agent bank</span>      Cr on receive confirmation
+<span class="k">collateral</span>       <span class="s">Stablecoin escrow pool (USD)</span>        Dr on lock; Cr on release
+<span class="k">stable_float</span>     <span class="s">Issued stablecoin in circulation</span>    Cr on mint; Dr on burn
+<span class="k">fx_revaluation</span>   <span class="s">USD/BDT mark-to-market (P&amp;L)</span>       Daily sweep
 
-          <!-- EXPORT ROW -->
-          <div class="results-export-row">
-            <button class="export-btn primary" id="ap2ExportBtn" type="button">📋 Export Policy Mandate (JSON)</button>
-            <button class="export-btn" id="mdExportBtn" type="button">📝 Export Markdown Report</button>
-            <button class="export-btn" id="csvExportBtn" type="button">📊 Export Postings (CSV)</button>
-          </div>
-        </section>
+<span class="c">// Posting sequence — $500K trade settlement</span>
+<span class="k">Step 1 — Lock collateral</span>
+  Dr  collateral      500,000 USD   <span class="c">// Escrow contract funded</span>
+  Cr  nostro          500,000 USD
+
+<span class="k">Step 2 — Mint stablecoin</span>
+  Dr  stable_float    500,000 USDTL  <span class="c">// Issued 1:1 against collateral</span>
+  Cr  collateral      500,000 USD
+
+<span class="k">Step 3 — PvP atomic swap  (pacs.008)</span>
+  Dr  vostro_bdt      [BDT equiv]   <span class="c">// Atomic — simultaneous with Step 2 burn</span>
+  Cr  stable_float    500,000 USDTL
+
+<span class="k">Step 4 — FX revaluation  (pacs.009 / camt.054)</span>
+  Dr/Cr  fx_revaluation  [gain/loss]  <span class="c">// Daily BDT/USD MTM</span></pre>
+        </div>
+
+        <!-- AINumbers chain link -->
+        <div style="background:var(--ink);border:1px solid var(--edge);border-left:3px solid var(--gold);border-radius:6px;padding:1.5rem;margin-top:2rem;">
+          <div style="font-family:var(--showcase-mono-font);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">AINumbers.co — Live Modelling</div>
+          <h3 style="font-family:var(--showcase-heading-font);color:#fff;font-size:1.1rem;margin-bottom:0.5rem;">Run the live emerging-market FX corridor model</h3>
+          <p style="font-size:0.85rem;color:var(--body);line-height:1.65;margin-bottom:1rem;">The AINumbers <em>emerging-market-fx-corridor</em> chain sequences all eight tools referenced in this case study — T58, T75, T157, T217, T218, T220, T221, T325 — and exports a composite Policy Mandate. Use it to run your own corridor inputs against the same analytical framework.</p>
+          <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--showcase-mono-font);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:var(--accent);padding:0.7rem 1.3rem;border-radius:4px;text-decoration:none;font-weight:500;">Run corridor model on AINumbers ↗</a>
+        </div>
 
       </div>
 
@@ -611,623 +592,5 @@ footer.pol-footer { border-top: 1px solid var(--edge); padding: 2.5rem 0; margin
   </div>
 </footer>
 
-<script>
-'use strict';
-
-// =========== MODEL CONSTANTS ===========
-const ARCHITECTURES = [
-  { id: 'cbdc',       name: 'Wholesale CBDC Bridge',   tag: 'BIS Agorá pattern',
-    desc: 'Permissioned wholesale CBDC rail between central-bank participants; PvP finality at the central bank.',
-    liq: 0.65, fin: 0.95, reg: 0.55, ops: 0.70 },
-  { id: 'stablecoin', name: 'Stablecoin Escrow Bridge', tag: 'Permissioned, USD-pegged',
-    desc: 'USD-pegged stablecoin on permissioned ledger with attested reserves; escrow + on-chain atomic settle.',
-    liq: 0.90, fin: 0.85, reg: 0.65, ops: 0.80 },
-  { id: 'nostro',     name: 'Nostro Pre-Funding',      tag: 'Status-quo correspondent',
-    desc: 'Pre-funded nostro accounts at correspondent banks on both ends; SWIFT MT103 / pacs.008 messaging.',
-    liq: 0.40, fin: 0.50, reg: 0.85, ops: 0.55 }
-];
-
-const SCENARIOS = {
-  remittance: { dailyvol: 500000,  txcount: 1200, direction: 'bgd-net',  spike: 4,   fxbuffer: 4.5, repo: 5.25, overlap: 3, correspondents: 4 },
-  trade:      { dailyvol: 5000000, txcount: 180,  direction: 'balanced', spike: 2.5, fxbuffer: 3.0, repo: 5.25, overlap: 3, correspondents: 4 },
-  wholesale:  { dailyvol: 25000000,txcount: 60,   direction: 'tls-net',  spike: 2,   fxbuffer: 2.5, repo: 5.25, overlap: 3, correspondents: 3 }
-};
-
-// SWIFT/local cutoffs in UTC hour
-const CUTOFFS = [
-  { label: 'SWIFT MT103 (US correspondent)', hour: 21 },
-  { label: 'BEFTN final settlement (BGD)',   hour: 10 },
-  { label: 'TLS BNCTL net settlement',       hour: 8  },
-  { label: 'Asian correspondent cutoff',     hour: 11 }
-];
-
-let lastResult = null;
-
-// =========== FORMATTING HELPERS ===========
-const fmt   = (n, d = 0) => '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
-const fmtK  = (n) => n >= 1e6 ? '$' + (n/1e6).toFixed(2) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(1) + 'K' : '$' + n.toFixed(0);
-const pct   = (n, d = 1) => Number(n).toFixed(d) + '%';
-const uuid4 = () => {
-  const b = new Uint8Array(16);
-  crypto.getRandomValues(b);
-  b[6] = (b[6] & 0x0f) | 0x40;
-  b[8] = (b[8] & 0x3f) | 0x80;
-  const h = Array.from(b, x => x.toString(16).padStart(2,'0')).join('');
-  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
-};
-const sha256Stub = (s) => {
-  // Deterministic non-crypto SHA-256-shaped hex stub (deterministic for export reproducibility)
-  let h = 0n;
-  for (const c of s) { h = (h * 1315423911n + BigInt(c.charCodeAt(0))) & 0xffffffffffffffffn; }
-  const head = h.toString(16).padStart(16, '0');
-  return (head + head + head + head).slice(0, 64);
-};
-
-// =========== INPUT READ ===========
-function readInputs() {
-  return {
-    dailyvol:       Number(document.getElementById('inp-dailyvol').value)       || 0,
-    txcount:        Number(document.getElementById('inp-txcount').value)        || 0,
-    direction:      document.getElementById('inp-direction').value,
-    spike:          Number(document.getElementById('inp-spike').value)          || 1,
-    fxbuffer:       Number(document.getElementById('inp-fxbuffer').value)       || 0,
-    repo:           Number(document.getElementById('inp-repo').value)           || 0,
-    overlap:        Number(document.getElementById('inp-overlap').value)        || 0,
-    correspondents: Number(document.getElementById('inp-correspondents').value) || 1
-  };
-}
-
-// =========== ARCHITECTURE VIABILITY ===========
-function scoreArchitectures(inp) {
-  // Penalties / boosts based on inputs
-  const overlapPenalty   = Math.max(0, (3 - inp.overlap)) * 0.06;  // tighter overlap hurts nostro/CBDC more
-  const hopsPenalty      = (inp.correspondents - 3) * 0.05;
-  const spikeBonusStablecoin = Math.min(0.08, (inp.spike - 2) * 0.04);
-  const spikePenaltyNostro   = Math.min(0.20, (inp.spike - 2) * 0.10);
-
-  return ARCHITECTURES.map(a => {
-    let liq = a.liq, fin = a.fin, reg = a.reg, ops = a.ops;
-    if (a.id === 'nostro')     { liq -= overlapPenalty + spikePenaltyNostro; ops -= hopsPenalty * 1.5; }
-    if (a.id === 'cbdc')       { liq -= overlapPenalty * 0.5; reg -= hopsPenalty * 0.3; }
-    if (a.id === 'stablecoin') { liq += spikeBonusStablecoin; fin -= overlapPenalty * 0.2; }
-    const composite = (liq * 0.30 + fin * 0.30 + reg * 0.20 + ops * 0.20);
-    return { ...a, liq: Math.max(0, Math.min(1, liq)), fin: Math.max(0, Math.min(1, fin)),
-                   reg: Math.max(0, Math.min(1, reg)), ops: Math.max(0, Math.min(1, ops)),
-                   composite: Math.max(0, Math.min(1, composite)) };
-  }).sort((a, b) => b.composite - a.composite);
-}
-
-// =========== TIME ZONE DIAGNOSTICS ===========
-function tzDiagnostics(inp) {
-  const overlapHours = inp.overlap;
-  const intradayBuffer = inp.dailyvol / 24 * (24 - overlapHours) * 0.06; // ~6% liquidity cushion per off-hour
-  const swiftConflicts = CUTOFFS.filter(c => c.hour >= 12 && c.hour <= 15).length; // overlap window 12-15 UTC
-  const finalitySlaH = overlapHours >= 3 ? 4 : 8;
-  const liquidityScore = Math.max(0, Math.min(1, overlapHours / 6));
-  return {
-    overlapHours,
-    overlapStart: 12,
-    overlapEnd:   12 + overlapHours,
-    intradayBuffer,
-    swiftConflicts,
-    finalitySlaH,
-    liquidityScore,
-    cutoffs: CUTOFFS
-  };
-}
-
-// =========== COLLATERAL & REPO ===========
-function collateralEngine(inp) {
-  const baseDay      = inp.dailyvol;
-  const spikeDay     = inp.dailyvol * inp.spike;
-  const fxBufferMult = 1 + (inp.fxbuffer / 100);
-
-  // Base pool: 1.25 days base + FX buffer
-  const basePool   = baseDay * 1.25 * fxBufferMult;
-  // Stress pool: 1 spike day + 0.5 follow-on day
-  const stressPool = spikeDay * 1.0 * fxBufferMult + baseDay * 0.5;
-  // Headroom: stress pool over base pool
-  const headroom   = stressPool - basePool;
-
-  // Repo sweep table — 3 sweep paths
-  const sweepRows = [
-    { path: 'TLS Treasury → USD repo (overnight)',          notional: basePool * 0.45, haircut: 0.020, days: 1   },
-    { path: 'BGD BB → Cross-border USD repo (7d)',          notional: basePool * 0.30, haircut: 0.035, days: 7   },
-    { path: 'Stablecoin float → On-chain repo (collat USD)',notional: basePool * 0.25, haircut: 0.015, days: 1   }
-  ].map(r => ({
-    ...r,
-    netFunding: r.notional * (1 - r.haircut),
-    annualCost: r.notional * (1 - r.haircut) * (inp.repo / 100)
-  }));
-
-  const totalAnnualCost = sweepRows.reduce((a, r) => a + r.annualCost, 0);
-
-  return { baseDay, spikeDay, basePool, stressPool, headroom, sweepRows, totalAnnualCost };
-}
-
-// =========== ACCOUNTING SCHEMA ===========
-function generateSchema(inp, coll, arch) {
-  const accounts = {
-    "schema": "iso20022-aligned-double-entry-v1",
-    "generated": new Date().toISOString().split('T')[0],
-    "corridor": "TLS_USD <-> BGD_BDT",
-    "base_currency": "USD",
-    "accounts": [
-      { "code": "1010", "name": "Nostro · TLS BNCTL · USD",           "type": "asset",   "iso_20022_ref": "pacs.009" },
-      { "code": "1020", "name": "Nostro · BGD BB · USD",              "type": "asset",   "iso_20022_ref": "pacs.009" },
-      { "code": "1030", "name": "Vostro · BGD bKash · BDT",           "type": "asset",   "iso_20022_ref": "pacs.008" },
-      { "code": "1110", "name": "Stablecoin Float (USD-peg)",         "type": "asset",   "iso_20022_ref": "pacs.008" },
-      { "code": "1210", "name": "Collateral Pool · USD T-Bills",      "type": "asset",   "iso_20022_ref": "pacs.009" },
-      { "code": "1220", "name": "Collateral Pool · USD Repo Receivable","type": "asset", "iso_20022_ref": "pacs.009" },
-      { "code": "1310", "name": "FX Revaluation Receivable",          "type": "asset",   "iso_20022_ref": "camt.054" },
-      { "code": "2010", "name": "Customer Payable · TLS Originator",  "type": "liability","iso_20022_ref": "pacs.008" },
-      { "code": "2020", "name": "Customer Payable · BGD Beneficiary", "type": "liability","iso_20022_ref": "pacs.008" },
-      { "code": "2110", "name": "Stablecoin Issuance Liability",      "type": "liability","iso_20022_ref": "pacs.008" },
-      { "code": "2210", "name": "Repo Funding Payable",               "type": "liability","iso_20022_ref": "pacs.009" },
-      { "code": "3010", "name": "FX P&L · USD/BDT Translation",       "type": "equity",  "iso_20022_ref": "camt.054" },
-      { "code": "4010", "name": "Settlement Fee Revenue",             "type": "revenue", "iso_20022_ref": "camt.054" },
-      { "code": "5010", "name": "Repo Funding Expense",               "type": "expense", "iso_20022_ref": "camt.054" },
-      { "code": "5020", "name": "Stablecoin Network Fee Expense",     "type": "expense", "iso_20022_ref": "pacs.002" }
-    ],
-    "recommended_architecture": arch.name,
-    "recommended_collateral_pool_usd": Math.round(coll.basePool),
-    "stress_collateral_pool_usd":     Math.round(coll.stressPool),
-    "fx_buffer_pct": inp.fxbuffer
-  };
-
-  // Sample posting cycle: $250K remittance, TLS originator → BGD beneficiary
-  const sample = Math.min(250000, Math.round(inp.dailyvol * 0.1));
-  const fxRate = 110.4; // illustrative USD/BDT
-  const bdtAmt = sample * fxRate;
-  const settleFee = sample * 0.0035;
-  const postings = [
-    { step: 1, account: '2010 · Customer Payable · TLS Originator', debit: 0, credit: sample,
-      ref: `pacs.008 / EndToEndId=TLS-${uuid4().slice(0,8).toUpperCase()}` },
-    { step: 2, account: '1010 · Nostro · TLS BNCTL · USD',          debit: sample, credit: 0,
-      ref: 'pacs.009 / SttlmMtd=CLRG' },
-    { step: 3, account: '2110 · Stablecoin Issuance Liability',     debit: 0, credit: sample,
-      ref: 'mint USDC-perm · on-chain ref' },
-    { step: 4, account: '1110 · Stablecoin Float (USD-peg)',        debit: sample, credit: 0,
-      ref: 'token transfer · atomic settle' },
-    { step: 5, account: '1110 · Stablecoin Float (USD-peg)',        debit: 0, credit: sample,
-      ref: 'burn on BGD-side redeem' },
-    { step: 6, account: '1030 · Vostro · BGD bKash · BDT',          debit: bdtAmt, credit: 0,
-      ref: `pacs.008 / FX=${fxRate.toFixed(2)} BDT` },
-    { step: 7, account: '2020 · Customer Payable · BGD Beneficiary',debit: bdtAmt - (settleFee * fxRate), credit: 0,
-      ref: 'BEFTN credit' },
-    { step: 8, account: '4010 · Settlement Fee Revenue',            debit: 0, credit: settleFee,
-      ref: 'camt.054 fee notification' },
-    { step: 9, account: '5010 · Repo Funding Expense',              debit: sample * (inp.repo/100) / 365, credit: 0,
-      ref: 'overnight repo prorated' }
-  ];
-
-  const isoMap = {
-    "schema": "iso20022-message-map-v1",
-    "corridor": "TLS_USD -> BGD_BDT",
-    "messages": [
-      { "step": "originate",  "iso": "pacs.008.001.10",  "purpose": "Customer credit transfer (TLS → BGD)",
-        "fields": ["EndToEndId","InstrId","IntrBkSttlmAmt","ChrgBr","UltmtDbtr","UltmtCdtr","RmtInf"] },
-      { "step": "mint",       "iso": "internal/mint-v1", "purpose": "Stablecoin mint against escrowed USD",
-        "fields": ["txnId","reserveProof","amount","chain","walletAddr"] },
-      { "step": "transfer",   "iso": "internal/xfr-v1",  "purpose": "On-chain atomic transfer TLS-side ↔ BGD-side",
-        "fields": ["from","to","amount","blockHash","finalityMs"] },
-      { "step": "burn",       "iso": "internal/burn-v1", "purpose": "Redeem stablecoin on BGD side for USD",
-        "fields": ["txnId","amount","reserveProof"] },
-      { "step": "fx-convert", "iso": "pacs.009.001.09",  "purpose": "USD → BDT inter-bank conversion at agreed rate",
-        "fields": ["IntrBkSttlmAmt","SttlmMtd","SttlmAcct","ExchgRate"] },
-      { "step": "credit-bgd", "iso": "pacs.008.001.10",  "purpose": "Final credit to BGD beneficiary via BEFTN",
-        "fields": ["IntrBkSttlmAmt","UltmtCdtr","ChrgBr"] },
-      { "step": "notify",     "iso": "camt.054.001.08",  "purpose": "Debit/credit notification + fee disclosure",
-        "fields": ["NtryDtls","Amt","ChrgsInf"] },
-      { "step": "ack-or-rjt", "iso": "pacs.002.001.10",  "purpose": "Payment status report (ACSC / RJCT)",
-        "fields": ["TxSts","StsRsnInf","OrgnlTxId"] }
-    ]
-  };
-
-  return { accounts, postings, isoMap };
-}
-
-// =========== RENDER ===========
-function renderArch(arch) {
-  const grid = document.getElementById('archGrid');
-  grid.innerHTML = '';
-  arch.forEach((a, idx) => {
-    const card = document.createElement('div');
-    card.className = 'arch-card' + (idx === 0 ? ' best' : '');
-    card.innerHTML = `
-      <h4>${a.name}</h4>
-      <div class="arch-tag">${a.tag}</div>
-      <div class="arch-desc">${a.desc}</div>
-      <div class="viability-bar-wrap">
-        <div class="viability-bar-label"><span>Composite Viability</span><span>${(a.composite*100).toFixed(0)}/100</span></div>
-        <div class="viability-bar"><div class="fill" style="width:${(a.composite*100).toFixed(1)}%"></div></div>
-      </div>
-      <div class="arch-criteria">
-        <div><span>Liquidity</span><span class="v">${(a.liq*100).toFixed(0)}</span></div>
-        <div><span>Finality</span><span class="v">${(a.fin*100).toFixed(0)}</span></div>
-        <div><span>Regulatory fit</span><span class="v ${a.reg<0.6?'warn':''}">${(a.reg*100).toFixed(0)}</span></div>
-        <div><span>Ops resilience</span><span class="v ${a.ops<0.6?'warn':''}">${(a.ops*100).toFixed(0)}</span></div>
-      </div>`;
-    grid.appendChild(card);
-  });
-}
-
-function renderTzGrid(tz) {
-  const grid = document.getElementById('tzGrid');
-  grid.innerHTML = '';
-  // TLS working hours 09–18 local (UTC+9) = UTC 0–9.
-  // BGD working hours 09–18 local = UTC 3–12 (UTC+6)
-  // Overlap UTC 3..9 (6h), but the modelled "business overlap" is the 3h window the user inputs (around 12-15 UTC for treasury desks).
-  // For the visualization we'll show TLS shift (UTC 0-9), BGD shift (UTC 3-12), and the treasury overlap (UTC 12-15).
-  const rows = [
-    { label: 'TLS', work: [...range(0,9)] },
-    { label: 'BGD', work: [...range(3,12)] },
-    { label: 'O/L', work: [...range(tz.overlapStart, tz.overlapEnd)], isOverlap: true },
-    { label: 'SWIFT', cutoffs: tz.cutoffs.map(c => c.hour) }
-  ];
-  for (const r of rows) {
-    const lbl = document.createElement('div');
-    lbl.className = 'tz-label';
-    lbl.textContent = r.label;
-    grid.appendChild(lbl);
-    const row = document.createElement('div');
-    row.className = 'tz-row';
-    for (let h = 0; h < 24; h++) {
-      const cell = document.createElement('span');
-      if (r.cutoffs && r.cutoffs.includes(h)) cell.classList.add('swift');
-      else if (r.isOverlap && r.work.includes(h)) cell.classList.add('overlap');
-      else if (r.work && r.work.includes(h)) cell.classList.add('work');
-      cell.title = `UTC ${String(h).padStart(2,'0')}:00`;
-      row.appendChild(cell);
-    }
-    grid.appendChild(row);
-  }
-}
-function range(a, b) { const r = []; for (let i = a; i < b; i++) r.push(i); return r; }
-
-function renderDiagGrid(tz) {
-  const grid = document.getElementById('diagGrid');
-  grid.innerHTML = '';
-  const cells = [
-    { label: 'UTC Overlap Window', val: tz.overlapHours.toFixed(1) + ' h', cls: tz.overlapHours >= 3 ? 'success' : 'warn',
-      sub: 'TLS/BGD desk co-availability' },
-    { label: 'Intraday Buffer (USD)', val: fmtK(tz.intradayBuffer), cls: 'accent',
-      sub: '6% per off-hour liquidity reserve' },
-    { label: 'SWIFT Conflict Count', val: String(tz.swiftConflicts), cls: tz.swiftConflicts > 1 ? 'warn' : 'success',
-      sub: 'cutoffs in 12–15 UTC window' },
-    { label: 'Finality SLA (target)', val: tz.finalitySlaH + ' h', cls: 'accent',
-      sub: 'Wholesale rail expectation' },
-    { label: 'Liquidity Score', val: (tz.liquidityScore*100).toFixed(0) + '/100', cls: tz.liquidityScore >= 0.5 ? 'success' : 'warn',
-      sub: 'Overlap-weighted index' }
-  ];
-  for (const c of cells) {
-    const el = document.createElement('div');
-    el.className = 'diag-cell';
-    el.innerHTML = `<div class="diag-label">${c.label}</div><div class="diag-val ${c.cls}">${c.val}</div><div class="diag-sub">${c.sub}</div>`;
-    grid.appendChild(el);
-  }
-}
-
-function renderColl(coll, inp) {
-  const sum = document.getElementById('collSummary');
-  sum.innerHTML = '';
-  const cells = [
-    { label: 'Daily Avg Flow',      val: fmtK(coll.baseDay),   sub: 'Modelled corridor volume' },
-    { label: 'Daily Spike Flow',    val: fmtK(coll.spikeDay),  sub: `× ${inp.spike} stress multiplier`, cls: 'warn' },
-    { label: 'Base Collateral Pool',val: fmtK(coll.basePool),  sub: '1.25 d × FX buffer' },
-    { label: 'Stress Collateral Pool', val: fmtK(coll.stressPool), sub: 'Spike + 0.5d follow-on', cls: 'warn' },
-    { label: 'Required Headroom',   val: fmtK(coll.headroom),  sub: 'Stress – Base', cls: 'accent' }
-  ];
-  for (const c of cells) {
-    const el = document.createElement('div');
-    el.className = 'diag-cell';
-    el.innerHTML = `<div class="diag-label">${c.label}</div><div class="diag-val ${c.cls||''}">${c.val}</div><div class="diag-sub">${c.sub}</div>`;
-    sum.appendChild(el);
-  }
-
-  // stress grid
-  const sg = document.getElementById('stressGrid');
-  sg.innerHTML = '';
-  const stressCards = [
-    { hdr: 'Normal Day Coverage Ratio',   val: (coll.basePool / coll.baseDay).toFixed(2) + '×', cls: 'success',
-      sub: 'Base pool ÷ avg daily flow' },
-    { hdr: 'Spike Day Coverage Ratio',    val: (coll.stressPool / coll.spikeDay).toFixed(2) + '×',
-      cls: (coll.stressPool / coll.spikeDay) >= 1.0 ? 'success' : (coll.stressPool / coll.spikeDay) >= 0.7 ? 'warn' : 'err',
-      sub: 'Stress pool ÷ spike day flow' },
-    { hdr: 'Spike-to-Base Headroom',      val: ((coll.headroom / coll.basePool) * 100).toFixed(0) + '%',
-      cls: (coll.headroom / coll.basePool) >= 1.0 ? 'success' : (coll.headroom / coll.basePool) >= 0.5 ? 'warn' : 'err',
-      sub: 'Marginal capital required' }
-  ];
-  for (const c of stressCards) {
-    const el = document.createElement('div');
-    el.className = 'stress-card' + (c.cls === 'warn' ? ' warn' : c.cls === 'err' ? ' err' : '');
-    el.innerHTML = `<h5>${c.hdr}</h5><div class="stress-val ${c.cls||''}">${c.val}</div><div class="stress-sub">${c.sub}</div>`;
-    sg.appendChild(el);
-  }
-
-  // repo table
-  const tbody = document.querySelector('#repoTable tbody');
-  tbody.innerHTML = '';
-  for (const r of coll.sweepRows) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.path}</td><td>${fmtK(r.notional)}</td><td>${pct(r.haircut*100,2)}</td><td>${fmtK(r.netFunding)}</td><td>${fmtK(r.annualCost)}</td>`;
-    tbody.appendChild(tr);
-  }
-  const tot = document.createElement('tr');
-  tot.innerHTML = `<td><strong>Total annualised funding cost</strong></td><td></td><td></td><td></td><td><strong>${fmtK(coll.totalAnnualCost)}</strong></td>`;
-  tbody.appendChild(tot);
-}
-
-function renderSchema(schema) {
-  // Accounts JSON pretty
-  const accountsHtml = jsonHtml(schema.accounts);
-  document.getElementById('schemaAccountsBody').innerHTML = accountsHtml;
-
-  // ISO map JSON
-  const isoHtml = jsonHtml(schema.isoMap);
-  document.getElementById('schemaIsoBody').innerHTML = isoHtml;
-
-  // Postings table
-  const tbody = document.querySelector('#postingsTable tbody');
-  tbody.innerHTML = '';
-  let dTot = 0, cTot = 0;
-  for (const p of schema.postings) {
-    dTot += p.debit; cTot += p.credit;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${p.step}</td><td>${p.account}</td>
-                    <td class="r debit">${p.debit ? fmt(p.debit, 2) : ''}</td>
-                    <td class="r credit">${p.credit ? fmt(p.credit, 2) : ''}</td>
-                    <td>${p.ref}</td>`;
-    tbody.appendChild(tr);
-  }
-  const tot = document.createElement('tr');
-  tot.className = 'totals';
-  tot.innerHTML = `<td></td><td><strong>Totals (illustrative; mixed-currency before FX consolidation)</strong></td>
-                   <td class="r"><strong>${fmt(dTot, 2)}</strong></td>
-                   <td class="r"><strong>${fmt(cTot, 2)}</strong></td><td></td>`;
-  tbody.appendChild(tot);
-}
-
-function jsonHtml(obj) {
-  const json = JSON.stringify(obj, null, 2);
-  return json
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"([^"]+)":/g, '<span class="k">"$1":</span>')
-    .replace(/: "([^"]*)"/g, ': <span class="s">"$1"</span>')
-    .replace(/: (-?\d+\.?\d*)/g, ': <span class="n">$1</span>');
-}
-
-// =========== RUN ===========
-function run() {
-  const inp  = readInputs();
-  const arch = scoreArchitectures(inp);
-  const tz   = tzDiagnostics(inp);
-  const coll = collateralEngine(inp);
-  const schema = generateSchema(inp, coll, arch[0]);
-
-  renderArch(arch);
-  renderTzGrid(tz);
-  renderDiagGrid(tz);
-  renderColl(coll, inp);
-  renderSchema(schema);
-
-  document.getElementById('results').classList.add('visible');
-  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  lastResult = { inp, arch, tz, coll, schema };
-}
-
-// =========== SCENARIOS ===========
-function applyScenario(name) {
-  const s = SCENARIOS[name];
-  if (!s) return;
-  document.getElementById('inp-dailyvol').value       = s.dailyvol;
-  document.getElementById('inp-txcount').value        = s.txcount;
-  document.getElementById('inp-direction').value      = s.direction;
-  document.getElementById('inp-spike').value          = s.spike;
-  document.getElementById('inp-fxbuffer').value       = s.fxbuffer;
-  document.getElementById('inp-repo').value           = s.repo;
-  document.getElementById('inp-overlap').value        = s.overlap;
-  document.getElementById('inp-correspondents').value = s.correspondents;
-  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.toggle('active', b.dataset.scenario === name));
-  run();
-}
-
-// =========== EXPORTS ===========
-function exportPolicyMandate() {
-  if (!lastResult) { alert('Run the bridge model first.'); return; }
-  const { inp, arch, tz, coll, schema } = lastResult;
-  const best = arch[0];
-
-  const mandate = {
-    "mandate_schema": "@postoaklabs.com/em-settlement-bridge-v1",
-    "mandate_id":     uuid4(),
-    "schema_version": "1.0.0",
-    "issued_at":      new Date().toISOString(),
-    "issued_by":      "Post Oak Labs · Frontier Settlement Bridge Demo",
-    "corridor": {
-      "origin_country":      "TL",
-      "destination_country": "BD",
-      "origin_currency":     "USD",
-      "destination_currency":"BDT",
-      "modelled_daily_volume_usd": inp.dailyvol,
-      "modelled_transactions":     inp.txcount,
-      "net_flow_direction":  inp.direction
-    },
-    "recommended_architecture": {
-      "id":        best.id,
-      "name":      best.name,
-      "composite_viability_score": Math.round(best.composite * 100),
-      "scores": {
-        "liquidity":  Math.round(best.liq * 100),
-        "finality":   Math.round(best.fin * 100),
-        "regulatory": Math.round(best.reg * 100),
-        "ops":        Math.round(best.ops * 100)
-      }
-    },
-    "alternatives_considered": arch.slice(1).map(a => ({
-      "id": a.id, "name": a.name, "composite_viability_score": Math.round(a.composite * 100)
-    })),
-    "time_zone_diagnostics": {
-      "utc_overlap_hours":   tz.overlapHours,
-      "overlap_window_utc":  `${String(tz.overlapStart).padStart(2,'0')}:00–${String(tz.overlapEnd).padStart(2,'0')}:00`,
-      "intraday_buffer_usd": Math.round(tz.intradayBuffer),
-      "swift_cutoff_conflicts": tz.swiftConflicts,
-      "finality_sla_hours":  tz.finalitySlaH
-    },
-    "collateral_engine": {
-      "base_pool_usd":            Math.round(coll.basePool),
-      "stress_pool_usd":          Math.round(coll.stressPool),
-      "required_headroom_usd":    Math.round(coll.headroom),
-      "spike_multiplier":         inp.spike,
-      "fx_buffer_pct":            inp.fxbuffer,
-      "annualised_funding_cost_usd": Math.round(coll.totalAnnualCost),
-      "repo_sweep": coll.sweepRows.map(r => ({
-        path: r.path, notional_usd: Math.round(r.notional), haircut_pct: r.haircut*100,
-        net_funding_usd: Math.round(r.netFunding), annual_cost_usd: Math.round(r.annualCost)
-      }))
-    },
-    "accounting_schema": {
-      "schema_id":   "iso20022-aligned-double-entry-v1",
-      "account_count": schema.accounts.accounts.length,
-      "iso_20022_messages": schema.isoMap.messages.map(m => m.iso),
-      "fx_revaluation_account": "1310"
-    },
-    "obligations": [
-      "Maintain stablecoin reserve attestations on a monthly cadence (CPMI/IOSCO 2022 principles).",
-      "Hold collateral pool ≥ stress pool sizing through any 30-day rolling window.",
-      "Reconcile nostro/vostro to ledger schema accounts (1010/1020/1030) at T+1 cutoff.",
-      "Report intraday liquidity buffer breaches to the bridge oversight committee within 24 hours.",
-      "Apply ISO 20022 message identifiers (pacs.008, pacs.009, camt.054) on all corridor flows.",
-      "Run quarterly 3× spike stress test; recalibrate buffer if coverage ratio < 1.0×."
-    ],
-    "next_actions": [
-      `Adopt ${best.name} as the corridor architecture target state.`,
-      `Pre-position collateral pool of ${fmtK(coll.basePool)} (base) and ensure committed lines for ${fmtK(coll.headroom)} headroom.`,
-      "Engage TLS BNCTL and BGD BB on PvP / atomic-settlement legal framework.",
-      "Validate the 8-message ISO 20022 corridor map against scheme rulebooks (BEFTN / bKash).",
-      "This mandate is deterministic and client-side generated. No PII was transmitted."
-    ],
-    "audit_signature": {
-      "client_side_executed": true,
-      "deterministic_run":    true,
-      "no_pii_transmitted":   true,
-      "input_hash":           sha256Stub(JSON.stringify(inp))
-    }
-  };
-
-  const blob = new Blob([JSON.stringify(mandate, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `em-settlement-bridge-mandate-${Date.now()}.policy.json`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-function exportMarkdown() {
-  if (!lastResult) { alert('Run the bridge model first.'); return; }
-  const { inp, arch, tz, coll, schema } = lastResult;
-  const best = arch[0];
-  const md = [
-    `# Timor-Leste × Bangladesh Stablecoin Settlement Bridge — Report`,
-    ``,
-    `**Generated:** ${new Date().toISOString().split('T')[0]}  `,
-    `**Tool:** Post Oak Labs · Frontier Settlement Bridge Demo  `,
-    `**Schema:** \`@postoaklabs.com/em-settlement-bridge-v1\``,
-    ``,
-    `## Corridor Inputs`,
-    ``,
-    `| Parameter | Value |`,
-    `|-----------|-------|`,
-    `| Daily Volume (USD) | ${fmt(inp.dailyvol)} |`,
-    `| Daily Transactions | ${inp.txcount.toLocaleString()} |`,
-    `| Net Flow Direction | ${inp.direction} |`,
-    `| Spike Multiplier | ${inp.spike}× |`,
-    `| FX Buffer | ${inp.fxbuffer}% |`,
-    `| Repo Rate | ${inp.repo}% |`,
-    `| UTC Overlap | ${inp.overlap} h |`,
-    `| Correspondent Hops | ${inp.correspondents} |`,
-    ``,
-    `## Architecture Recommendation`,
-    ``,
-    `**Selected:** ${best.name} — composite viability **${Math.round(best.composite*100)}/100**.`,
-    ``,
-    `| Architecture | Composite | Liquidity | Finality | Regulatory | Ops |`,
-    `|--------------|-----------|-----------|----------|------------|-----|`,
-    ...arch.map(a => `| ${a.name} | ${Math.round(a.composite*100)} | ${Math.round(a.liq*100)} | ${Math.round(a.fin*100)} | ${Math.round(a.reg*100)} | ${Math.round(a.ops*100)} |`),
-    ``,
-    `## Time-Zone Diagnostics`,
-    ``,
-    `- UTC overlap window: **${tz.overlapHours} h** (UTC ${String(tz.overlapStart).padStart(2,'0')}:00–${String(tz.overlapEnd).padStart(2,'0')}:00)`,
-    `- Intraday liquidity buffer: **${fmtK(tz.intradayBuffer)}**`,
-    `- SWIFT cutoff conflicts in window: **${tz.swiftConflicts}**`,
-    `- Target finality SLA: **${tz.finalitySlaH} h**`,
-    ``,
-    `## Collateral & Repo Engine`,
-    ``,
-    `- Base collateral pool: **${fmtK(coll.basePool)}**`,
-    `- Stress pool (× ${inp.spike} spike): **${fmtK(coll.stressPool)}**`,
-    `- Required headroom: **${fmtK(coll.headroom)}**`,
-    `- Annualised funding cost: **${fmtK(coll.totalAnnualCost)}**`,
-    ``,
-    `### Repo Sweep`,
-    ``,
-    `| Path | Notional | Haircut | Net Funding | Annual Cost |`,
-    `|------|----------|---------|-------------|-------------|`,
-    ...coll.sweepRows.map(r => `| ${r.path} | ${fmtK(r.notional)} | ${(r.haircut*100).toFixed(2)}% | ${fmtK(r.netFunding)} | ${fmtK(r.annualCost)} |`),
-    ``,
-    `## Accounting Schema`,
-    ``,
-    `- ${schema.accounts.accounts.length} accounts across asset/liability/equity/revenue/expense (ISO 20022-aligned).`,
-    `- ${schema.isoMap.messages.length}-message corridor map: ${schema.isoMap.messages.map(m=>m.iso).join(', ')}.`,
-    ``,
-    `---`,
-    ``,
-    `*Illustrative model. Negotiate actual corridor terms with central banks, correspondents, and stablecoin issuers directly.*`,
-    `*© Post Oak Labs · postoaklabs.com · CC BY 4.0*`,
-    ``
-  ].join('\n');
-
-  const blob = new Blob([md], { type: 'text/markdown' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `em-settlement-bridge-report-${Date.now()}.md`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-function exportCsv() {
-  if (!lastResult) { alert('Run the bridge model first.'); return; }
-  const { schema } = lastResult;
-  const rows = [['step','account','debit_usd','credit_usd','reference']];
-  for (const p of schema.postings) rows.push([p.step, p.account, p.debit, p.credit, p.ref]);
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `em-settlement-postings-${Date.now()}.csv`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-// =========== WIRING ===========
-document.getElementById('runBtn').addEventListener('click', run);
-document.getElementById('ap2ExportBtn').addEventListener('click', exportPolicyMandate);
-document.getElementById('mdExportBtn').addEventListener('click', exportMarkdown);
-document.getElementById('csvExportBtn').addEventListener('click', exportCsv);
-document.querySelectorAll('.scenario-btn').forEach(b => b.addEventListener('click', () => applyScenario(b.dataset.scenario)));
-document.querySelectorAll('.schema-toggle-row button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.schema-toggle-row button').forEach(x => x.classList.toggle('active', x === b));
-    const which = b.dataset.schema;
-    document.getElementById('schemaAccounts').style.display = which === 'accounts' ? '' : 'none';
-    document.getElementById('schemaPostings').style.display = which === 'postings' ? '' : 'none';
-    document.getElementById('schemaIso').style.display      = which === 'iso'      ? '' : 'none';
-  });
-});
-
-// Auto-load Trade scenario for an immediate populated view
-setTimeout(() => applyScenario('trade'), 60);
-</script>
 </body>
 </html>

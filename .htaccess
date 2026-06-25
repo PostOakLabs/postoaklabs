@@ -108,6 +108,24 @@ Redirect 301 /demos/sme-credit-passport-global-south.html          https://ainum
 # Composer retired — redirects to AINumbers chaingraph hub
 Redirect 301 /demos/composer.html                                   https://ainumbers.co/chaingraph/
 
+# ─────────────────────────────────────────────────────────────────
+# 301 redirects — Bucket U demos → AINumbers chains (Phase 3)
+# All 12 target chains verified live 2026-06-24
+# See /demos/REDIRECT-MAP.md for full data-room mapping
+# ─────────────────────────────────────────────────────────────────
+Redirect 301 /demos/card-programme-design-studio.html              https://ainumbers.co/guides/card-programme-composer.html
+Redirect 301 /demos/aml-end-to-end-workflow.html                   https://ainumbers.co/chaingraph/chains/aml-consolidation.html
+Redirect 301 /demos/agentic-checkout-end-to-end.html               https://ainumbers.co/chaingraph/chains/agentic-commerce-checkout.html
+Redirect 301 /demos/basel-iv-capital-stress-lab.html               https://ainumbers.co/chaingraph/chains/basel-iv-capital-stress.html
+Redirect 301 /demos/sme-credit-intelligence-platform.html          https://ainumbers.co/chaingraph/chains/sme-credit-intelligence.html
+Redirect 301 /demos/embedded-finance-licensing-navigator.html      https://ainumbers.co/chaingraph/chains/embedded-finance-licensing.html
+Redirect 301 /demos/cbdc-dlt-architecture-studio.html              https://ainumbers.co/chaingraph/chains/cbdc-dlt-architecture.html
+Redirect 301 /demos/eu-ai-act-compliance-studio.html               https://ainumbers.co/chaingraph/chains/eu-ai-act-provider-obligations.html
+Redirect 301 /demos/genius-act-stablecoin-readiness.html           https://ainumbers.co/chaingraph/chains/genius-act-issuer-licensing.html
+Redirect 301 /demos/fca-bnpl-dpc-navigator.html                    https://ainumbers.co/chaingraph/chains/fca-bnpl-dpc.html
+Redirect 301 /demos/basel-iii-endgame-capital-lab.html             https://ainumbers.co/chaingraph/chains/basel-endgame-frtb-capital.html
+Redirect 301 /demos/psd3-psr2-transition-readiness.html            https://ainumbers.co/chaingraph/chains/psd3-psr2-transition.html
+
 # Renamed showcase scenarios (2026-06-03) — internal demo-NN numbering removed from public URLs
 Redirect 301 /demos/demo-37-eu-ai-act-compliance-studio.html      /demos/eu-ai-act-compliance-studio.html
 Redirect 301 /demos/demo-38-genius-act-stablecoin-readiness.html  /demos/genius-act-stablecoin-readiness.html

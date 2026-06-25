@@ -147,25 +147,7 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- 16 live advisory scenarios (Bucket U + spec gaps; Bucket D → 301 to AINumbers) -->
-  <url>
-    <loc>https://postoaklabs.com/demos/basel-iv-capital-stress-lab.html</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/card-programme-design-studio.html</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/embedded-finance-licensing-navigator.html</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
+  <!-- 4 live scenarios (2 case studies + 2 active tools; Bucket D + Bucket U → 301 to AINumbers) -->
   <url>
     <loc>https://postoaklabs.com/demos/global-real-time-rails-comparator.html</loc>
     <lastmod>2026-05-25</lastmod>
@@ -173,74 +155,20 @@
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/sme-credit-intelligence-platform.html</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
     <loc>https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://postoaklabs.com/demos/aml-end-to-end-workflow.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/cbdc-dlt-architecture-studio.html</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html</loc>
     <lastmod>2026-06-01</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/eu-ai-act-compliance-studio.html</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/genius-act-stablecoin-readiness.html</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/fca-bnpl-dpc-navigator.html</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/basel-iii-endgame-capital-lab.html</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/psd3-psr2-transition-readiness.html</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>quarterly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://postoaklabs.com/demos/agentic-checkout-end-to-end.html</loc>
-    <lastmod>2026-06-07</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
