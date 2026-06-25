@@ -3010,7 +3010,7 @@
    "category": "Personal Finance",
    "url": "https://ainumbers.co/tools/169-roth-traditional-conversion-estimator.html",
    "ap2_schema": "mandate-v1",
-   "demo": "/demos/personal-finance-retirement-simulator.html",
+   "demo": null,
    "personas": [
     "Consumer",
     "Advisor"
@@ -3022,7 +3022,7 @@
    "category": "Personal Finance",
    "url": "https://ainumbers.co/tools/170-safe-withdrawal-rate-calculator.html",
    "ap2_schema": "mandate-v1",
-   "demo": "/demos/personal-finance-retirement-simulator.html",
+   "demo": null,
    "personas": [
     "Consumer",
     "Advisor"
