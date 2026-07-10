@@ -134,4 +134,4 @@ If GitHub Actions is unavailable, upload everything except paths in [`.deployign
 
 ---
 
-&copy; Post Oak Labs. All rights reserved.
+&copy; Post Oak Labs. All rights reserved. Site content is not open source; see the [OpenChainGraph standard repo](https://github.com/PostOakLabs/chaingraph) for our open specifications.
