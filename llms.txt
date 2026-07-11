@@ -125,6 +125,19 @@ AINumbers.co tools export structured Policy Mandate JSON — a named open schema
 - R3 Corda A2A Tokenization — Europe-Middle East corridor, node topology, FX flows: https://postoaklabs.com/example-corda-a2a.html
 - Hyperledger Fabric A2A Tokenization — Europe-Saudi Arabia corridor, channel design: https://postoaklabs.com/example-fabric-a2a.html
 
+### Autonity Track A — Educational Archive (interactive terminal microsite)
+
+A seven-page educational archive reconstructing the mechanics of the Autonity EVM L1 blockchain and its Forecastathon forecast-futures project (Seasons 1–4). Museum-mode, not a live product; nothing connects to mainnet or moves funds. Six pages document recovered mechanics; page 7 is labelled speculative future-state. Cross-links to the Autonity tool set on ainumbers.co.
+
+- Track A hub: https://postoaklabs.com/autonity/
+- Protocol — EVM L1, Tendermint BFT consensus, validator set, NTN/LNTN staking: https://postoaklabs.com/autonity/autonity-page1-protocol.html
+- Money — ACU basket, ATN/NTN/LNTN tokens, ASM/CDP liquidation, oracle network: https://postoaklabs.com/autonity/autonity-page2-money.html
+- Autonomous Futures Protocol (AFP) — DCC, two-key clearing, forecast futures: https://postoaklabs.com/autonity/autonity-page3-afp.html
+- Clearing vs. Trading — venue portability, shared cross-margining: https://postoaklabs.com/autonity/autonity-page4-clearing.html
+- AutEx — the order-execution venue, order book and simulation: https://postoaklabs.com/autonity/autonity-page5-autex.html
+- Forecastathon — the four-season competition series (CPI, GDP, unemployment, BTC vol): https://postoaklabs.com/autonity/autonity-page6-forecastathon.html
+- Endogenous Collateral (speculative) — ASMv3, ATN as base collateral, Hyperlane bridging: https://postoaklabs.com/autonity/autonity-page7-endogenous-collateral.html
+
 ---
 
 ## Fintech Intelligence Showcase (browser scenarios)

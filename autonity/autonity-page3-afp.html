@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFP_OVERVIEW.DAT — The Autonomous Futures Protocol</title>
+<meta name="description" content="An interactive recovered terminal explaining Autonity's Autonomous Futures Protocol — the Decentralised Clearing Contract, the two-key architecture that separates margin from execution venue, and the Season 1 stress test that proved it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="autonity-logo.jpg">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   AUTONITY TRACK A — SHARED DESIGN TOKENS (per v2 §Visual Language)
+   Hosting note (v3 A-1): this file will relocate to Post Oak Labs.
+   Cross-site links use the TRACK_B_BASE constant defined in the script block below.
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000000;
+  --fg:#FFFFFF;
+  --dim:#7A7A7A;
+  --dim2:#4A4A4A;
+  --green:#66FF66;
+  --orange:#FF5900;
+  --teal:#0D7680;
+  --buy:#00CC00;
+  --sell:#CC0000;
+  --amber:#FFB020;
+  --red:#FF3B3B;
+  --dimred:#5A1414;
+  --gold:#D4A847;
+  --panel:#0A0A0A;
+  --panel2:#0F0F0F;
+  --line:#242424;
+  --mono:'JetBrains Mono','Berkeley Mono','Courier New',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--green);color:#000;}
+a{color:inherit;}
+button{font-family:var(--mono);cursor:pointer;background:none;border:none;color:inherit;}
+.upper{text-transform:uppercase;}
+.mono{font-family:var(--mono);}
+
+/* ── CRT scanline overlay ── */
+.crt-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:500;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.018) 0px,
+    rgba(255,255,255,0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode:overlay;
+}
+.crt-vignette{
+  position:fixed;inset:0;pointer-events:none;z-index:499;
+  box-shadow:inset 0 0 180px rgba(0,0,0,0.7);
+}
+
+/* ── layout ── */
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+section{padding:64px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+
+/* ── nav ── */
+nav.topnav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.topnav-inner{
+  max-width:980px;margin:0 auto;padding:0 24px;
+  height:52px;display:flex;align-items:center;gap:18px;
+}
+.logo{
+  width:26px;height:26px;background:#000;border:1px solid var(--fg);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;flex-shrink:0;overflow:hidden;
+}
+.brand{font-size:.72rem;letter-spacing:.14em;color:var(--dim);}
+.brand strong{color:var(--fg);}
+.hub-link{font-size:.62rem;letter-spacing:.1em;color:var(--dim);border:1px solid var(--line);padding:4px 9px;border-radius:3px;transition:all .15s;white-space:nowrap;}
+.hub-link:hover{color:var(--fg);border-color:var(--dim);}
+.progress-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.pdot{
+  width:8px;height:8px;border-radius:50%;background:var(--dim2);
+  border:none;position:relative;
+}
+.pdot.current{background:var(--green);box-shadow:0 0 6px var(--green);}
+.pdot:not(.current){cursor:default;}
+.pdot .tip{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-size:.58rem;white-space:nowrap;background:#111;border:1px solid var(--line);
+  padding:3px 6px;display:none;letter-spacing:.06em;color:var(--dim);
+}
+.pdot:hover .tip{display:block;}
+
+/* ── boot hero ── */
+.hero{padding-top:40px;}
+.hero-term{
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;
+  padding:20px 22px;position:relative;overflow:hidden;
+}
+.hero-term::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(102,255,102,.03),transparent 40%);
+  pointer-events:none;
+}
+.boot-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:10px;}
+.boot-line{font-size:.82rem;color:var(--dim);min-height:1.3em;white-space:pre;}
+.boot-line.done{color:var(--fg);}
+
+/* hero quote (typewriter) */
+.quote-panel{
+  margin-top:16px;border-left:2px solid var(--teal);padding:16px 20px;
+  background:rgba(13,118,128,.05);font-size:.86rem;color:#D8D8D8;min-height:7.4em;
+}
+.quote-panel .qtext{white-space:pre-wrap;}
+.quote-src{margin-top:10px;font-size:.68rem;color:var(--dim);letter-spacing:.03em;}
+.quote-cursor{display:inline-block;width:7px;background:var(--green);margin-left:1px;animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+/* hero contract-formation animation */
+.hero-anim-wrap{margin-top:20px;border-top:1px dashed var(--line);padding-top:18px;}
+#heroAnim{width:100%;height:auto;display:block;}
+.hero-anim-controls{margin-top:12px;display:flex;justify-content:center;}
+
+/* ── stage headers ── */
+.stage-eyebrow{font-size:.62rem;letter-spacing:.18em;color:var(--teal);margin-bottom:6px;}
+h2.stage-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;letter-spacing:.01em;}
+.stage-goal{color:var(--dim);font-size:.82rem;margin-bottom:26px;max-width:640px;}
+.callout{
+  border-left:2px solid var(--teal);padding:10px 16px;margin:18px 0;
+  font-size:.82rem;color:#D8D8D8;background:rgba(13,118,128,.06);
+}
+.callout.small{font-size:.74rem;color:var(--dim);}
+.callout.note{border-left-color:var(--dim2);}
+/* glossary */
+dfn.gloss{
+  font-style:normal;border-bottom:1px dotted var(--teal);cursor:help;color:var(--fg);
+  text-decoration:none;
+}
+.btn{
+  font-size:.66rem;letter-spacing:.1em;padding:7px 14px;border:1px solid var(--fg);
+  transition:all .15s;text-transform:uppercase;
+}
+.btn:hover{background:var(--fg);color:#000;}
+.btn.on{background:var(--green);border-color:var(--green);color:#000;}
+
+/* ── STAGE 1A comparison table ── */
+.compare-table{width:100%;border-collapse:collapse;font-size:.8rem;background:var(--panel);border:1px solid var(--line);}
+.compare-table th,.compare-table td{padding:12px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+.compare-table th{font-size:.62rem;letter-spacing:.08em;color:var(--dim);text-transform:uppercase;font-weight:500;}
+.compare-table th:first-child,.compare-table td:first-child{color:var(--red);border-right:1px dashed var(--line);}
+.compare-table th:last-child,.compare-table td:last-child{color:var(--green);}
+.compare-table tr:last-child td{border-bottom:none;}
+.source-note{margin-top:14px;font-size:.72rem;color:var(--dim);border-left:2px solid var(--dim2);padding:8px 14px;}
+
+/* ── reference accordion (AFP vs. other platforms) ── */
+details.acc{border:1px solid var(--line);margin-top:22px;background:var(--panel);}
+details.acc summary{
+  padding:12px 16px;cursor:pointer;list-style:none;font-size:.78rem;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+details.acc summary::-webkit-details-marker{display:none;}
+details.acc summary::after{content:'+';color:var(--dim);font-size:1rem;flex-shrink:0;}
+details.acc[open] summary::after{content:'–';}
+details.acc summary:hover{color:var(--fg);}
+table.ref-table{width:100%;border-collapse:collapse;font-size:.72rem;background:var(--panel);}
+table.ref-table th,table.ref-table td{padding:9px 14px;border-top:1px solid var(--line);text-align:left;vertical-align:top;}
+table.ref-table thead th{border-top:none;}
+table.ref-table th{color:var(--dim);font-weight:500;letter-spacing:.05em;font-size:.6rem;text-transform:uppercase;}
+table.ref-table td:first-child{color:var(--dim);font-size:.66rem;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
+table.ref-table .yes{color:var(--green);}
+table.ref-table .no{color:var(--red);}
+table.ref-table .partial{color:var(--amber);}
+
+/* ── STAGE 1B payoff diagram ── */
+.payoff-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:20px;}
+.payoff-toprow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+.dir-toggle{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+.dir-btn{font-size:.66rem;letter-spacing:.08em;padding:6px 14px;color:var(--dim);}
+.dir-btn.active-long{background:var(--buy);color:#000;}
+.dir-btn.active-short{background:var(--sell);color:#fff;}
+.payoff-legend{display:flex;gap:16px;font-size:.68rem;color:var(--dim);flex-wrap:wrap;}
+.payoff-legend label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;}
+.payoff-legend input{accent-color:var(--teal);}
+.payoff-hint{font-size:.64rem;color:var(--dim2);margin-bottom:10px;letter-spacing:.02em;}
+.swatch{width:16px;height:2px;display:inline-block;}
+.swatch.solid{background:var(--buy);}
+.swatch.dash{background-image:repeating-linear-gradient(90deg,var(--orange) 0 4px,transparent 4px 7px);height:2px;}
+#payoffSvg{width:100%;height:auto;display:block;cursor:default;touch-action:none;}
+.payoff-readout{
+  margin-top:14px;border:1px solid var(--line);padding:14px 18px;background:#080808;
+  font-size:.78rem;
+}
+.payoff-readout .row{display:flex;justify-content:space-between;padding:2px 0;}
+.payoff-readout .row span:first-child{color:var(--dim);}
+.payoff-readout .cap{color:var(--dim2);font-size:.66rem;}
+.implementor-note{margin-top:12px;font-size:.66rem;color:var(--dim2);border-top:1px dashed var(--line);padding-top:10px;}
+
+/* ── STAGE 2 DCC diagram ── */
+.dcc-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;}
+.dcc-product{font-size:.68rem;color:var(--teal);letter-spacing:.05em;margin-bottom:14px;}
+.dcc-box{border:1px solid var(--fg);border-radius:3px;overflow:hidden;margin-bottom:18px;}
+.dcc-zone{
+  padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;font-size:.78rem;
+  transition:background .15s;
+}
+.dcc-zone:last-child{border-bottom:none;}
+.dcc-zone:hover{background:#0d0d0d;}
+.dcc-zone.active{background:#0d0d0d;color:var(--teal);}
+.dcc-zone .click-hint{font-size:.62rem;color:var(--dim2);}
+.dcc-zone-body{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:.76rem;color:var(--dim);
+  background:#060606;
+}
+.dcc-zone-wrap.open .dcc-zone-body{max-height:160px;padding:12px 16px;}
+.dcc-zone-wrap.open .dcc-zone{background:#0d0d0d;color:var(--teal);}
+.dcc-venues{display:flex;justify-content:center;gap:60px;position:relative;padding-top:6px;}
+.dcc-venue{
+  border:1px solid var(--line);padding:10px 18px;font-size:.72rem;text-align:center;
+  border-radius:3px;background:#080808;
+}
+.dcc-venue .v-label{font-weight:600;color:var(--fg);}
+.dcc-venue .v-sub{font-size:.6rem;color:var(--dim2);margin-top:2px;}
+.dcc-connectors{height:34px;position:relative;}
+.dcc-connectors-caption{font-size:.68rem;color:var(--dim);text-align:center;margin-top:10px;}
+#dccArrows{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+
+/* ── STAGE 2 real product exhibits ── */
+.recreation-label{display:flex;align-items:center;gap:10px;margin:18px 0 12px;font-size:.62rem;letter-spacing:.12em;color:var(--dim2);}
+.recreation-label .line{flex:1;height:1px;background:var(--line);}
+table.product-table{width:100%;border-collapse:collapse;font-size:.7rem;background:var(--panel);border:1px solid var(--line);}
+table.product-table th,table.product-table td{padding:7px 12px;border-top:1px solid var(--line);text-align:left;}
+table.product-table thead th{border-top:none;color:var(--dim);font-weight:500;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;}
+table.product-table td.ticker{color:var(--teal);white-space:nowrap;font-weight:600;}
+.state-pill{font-size:.6rem;padding:1px 7px;border-radius:2px;letter-spacing:.03em;}
+.state-pill.live{background:rgba(102,255,102,.12);color:var(--green);}
+.state-pill.pending{background:rgba(122,122,122,.15);color:var(--dim);}
+.spec-card{border:1px solid var(--fg);border-radius:3px;overflow:hidden;background:#050505;font-size:.76rem;}
+.spec-head{display:flex;border-bottom:1px solid var(--fg);}
+.spec-head-main{flex:1;padding:14px 16px;}
+.spec-ticker{font-size:1.1rem;font-weight:700;color:var(--fg);}
+.spec-desc{font-size:.72rem;color:var(--dim);margin-top:2px;}
+.spec-head-meta{width:150px;border-left:1px solid var(--fg);}
+.spec-head-meta div{padding:8px 12px;border-bottom:1px solid var(--line);font-size:.66rem;}
+.spec-head-meta div:last-child{border-bottom:none;}
+.spec-head-meta .k{color:var(--dim2);font-size:.58rem;text-transform:uppercase;letter-spacing:.05em;}
+.spec-builder{display:flex;border-bottom:1px solid var(--fg);font-size:.68rem;}
+.spec-builder-addr{flex:1;padding:10px 16px;}
+.spec-builder-addr .k{color:var(--dim2);font-size:.58rem;text-transform:uppercase;letter-spacing:.05em;margin-right:8px;}
+.spec-builder-addr code{color:var(--teal);}
+.spec-builder-venue{width:150px;border-left:1px solid var(--fg);padding:10px 16px;text-align:center;color:var(--dim);}
+.spec-section-label{background:#111;padding:6px 16px;font-size:.62rem;letter-spacing:.08em;color:var(--dim);text-transform:uppercase;}
+.spec-fields{padding:14px 16px;}
+.spec-field{display:flex;padding:4px 0;font-size:.72rem;}
+.spec-field .k{width:150px;flex-shrink:0;color:var(--dim);}
+.spec-field .v{color:#D8D8D8;}
+.spec-field .v.valid{color:var(--green);}
+.spec-field .v a{color:var(--teal);word-break:break-all;}
+.keyflow-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:16px 20px;margin:18px 0;}
+.keyflow-panel svg{width:100%;height:auto;display:block;}
+.keyflow-caption{font-size:.7rem;color:var(--dim);text-align:center;margin-top:8px;}
+.key-panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.key-box{border:1px solid var(--line);background:var(--panel);padding:16px 18px;}
+.key-box .k-title{font-size:.7rem;font-weight:700;letter-spacing:.06em;color:var(--teal);margin-bottom:10px;}
+.key-box ul{list-style:none;font-size:.76rem;color:var(--dim);}
+.key-box li{padding:3px 0;padding-left:14px;position:relative;}
+.key-box li::before{content:'→';position:absolute;left:0;color:var(--teal);}
+.key-same{text-align:center;font-size:.78rem;color:var(--fg);margin:16px 0;padding:10px;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);}
+.code-block{
+  margin-top:16px;background:#060606;border:1px solid var(--line);border-radius:3px;
+  padding:14px 18px;font-size:.72rem;color:#9adf9a;overflow-x:auto;white-space:pre;
+}
+.code-block .cm{color:var(--dim2);}
+
+/* ── STAGE 4 stress test animation ── */
+.stress-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;}
+#stressSvg{width:100%;height:auto;display:block;}
+.stress-controls{display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px;}
+.stress-step-label{font-size:.7rem;color:var(--dim);letter-spacing:.03em;min-height:1.4em;}
+.stress-caption{font-size:.68rem;color:var(--dim2);margin-top:6px;min-height:1.3em;}
+blockquote.src-quote{
+  margin-top:18px;border-left:2px solid var(--gold);padding:12px 18px;font-size:.78rem;
+  color:#D8D8D8;background:rgba(212,168,71,.04);
+}
+blockquote.src-quote cite{display:block;margin-top:8px;font-size:.66rem;color:var(--gold);font-style:normal;}
+
+/* ── STAGE 5 season table ── */
+.season-table{width:100%;border-collapse:collapse;font-size:.76rem;background:var(--panel);border:1px solid var(--line);}
+.season-table th,.season-table td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;}
+.season-table th{font-size:.6rem;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;font-weight:500;}
+.season-table tr:last-child td{border-bottom:none;}
+.season-table td.warn{color:var(--gold);}
+
+/* ── CTA block ── */
+.cta-block{background:var(--panel2);border:1px solid var(--teal);border-radius:4px;padding:26px 28px;}
+.cta-pill{
+  display:inline-flex;align-items:center;gap:6px;font-size:.62rem;color:var(--green);
+  border:1px solid var(--green);padding:3px 9px;letter-spacing:.08em;margin-bottom:14px;
+}
+.cta-copy{font-size:.82rem;color:#D8D8D8;max-width:660px;margin-bottom:20px;}
+.cta-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
+.cta-tool-card{border:1px solid var(--line);padding:14px;}
+.cta-tool-btn{
+  display:block;font-size:.68rem;letter-spacing:.06em;border:1px solid var(--fg);
+  padding:9px 12px;text-align:center;margin-bottom:8px;transition:all .15s;
+}
+.cta-tool-btn:hover{background:var(--fg);color:#000;}
+.mandate-pill{
+  display:inline-block;font-size:.6rem;color:var(--teal);border:1px solid var(--teal);
+  padding:2px 7px;letter-spacing:.03em;background:rgba(13,118,128,.08);
+}
+.ocg-link{font-size:.72rem;color:var(--dim);text-decoration:underline;text-underline-offset:3px;}
+.ocg-link:hover{color:var(--fg);}
+
+/* ── prev/next page nav ── */
+.page-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:32px 0 0;}
+.page-nav .btn{font-size:.62rem;}
+@media(max-width:640px){ .page-nav{justify-content:center;} }
+
+/* ── footer / validator strip ── */
+footer{padding:36px 0 60px;}
+.vstrip-wrap{position:relative;}
+.vstrip{display:flex;gap:5px;flex-wrap:wrap;cursor:help;}
+.vstrip .vd{width:9px;height:9px;border-radius:50%;}
+.vstrip .vd.g{background:var(--green);}
+.vstrip .vd.r{background:var(--red);}
+.vstrip .vd.a{background:var(--amber);}
+.vstrip .vd.u{background:var(--dim2);}
+.vstrip .vd.dr{background:var(--dimred);}
+.vstrip-tip{
+  display:none;position:absolute;bottom:22px;left:0;background:#111;border:1px solid var(--line);
+  padding:8px 12px;font-size:.68rem;color:var(--dim);white-space:nowrap;
+}
+.vstrip-wrap:hover .vstrip-tip{display:block;}
+.foot-legend{margin-top:10px;font-size:.6rem;color:var(--dim2);letter-spacing:.05em;}
+.foot-meta{margin-top:24px;font-size:.64rem;color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+@media(max-width:640px){
+  .key-panel{grid-template-columns:1fr;}
+  .dcc-venues{gap:20px;}
+  .cta-tools{grid-template-columns:1fr;}
+  .compare-table th:first-child,.compare-table td:first-child{border-right:none;}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .table-scroll table{min-width:520px;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+
+/* ── keyboard accessibility ── */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-visible, summary:focus-visible{
+  outline:2px solid var(--green); outline-offset:2px;
+}
+.dcc-zone:focus-visible{ background:#0d0d0d; color:var(--teal); }
+#settleHandle:focus-visible path{ stroke:var(--fg); stroke-width:2.5; }
+#settleHandle{ outline:none; } /* SVG elements can't take a box outline; handled via stroke above */
+
+/* ── print ── */
+@media print{
+  .crt-overlay,.crt-vignette,nav.topnav,.hero-anim-controls,.dir-toggle,.payoff-legend,
+  #payoffResetBtn,.payoff-hint,.stress-controls,.dcc-zone .click-hint,footer{ display:none !important; }
+  body{ background:#fff; color:#000; }
+  section{ border-bottom:1px solid #ccc; padding:24px 0; break-inside:avoid; }
+  .callout,.dcc-panel,.payoff-panel,.stress-panel,.key-box,.cta-block{ background:#fff; border-color:#999; }
+  .compare-table,.ref-table,.season-table{ background:#fff; }
+  a{ color:#000; text-decoration:underline; }
+  details.acc{ break-inside:avoid; }
+  details.acc:not([open]) .dcc-zone-body{ display:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo"><img src="data:image/jpeg;base64,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" alt="Autonity logo" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="brand"><strong>AUTONITY</strong> // RECOVERED TERMINAL</div>
+    <div class="progress-dots" id="progressDots">
+      <a class="pdot" href="index.html"><span class="tip">1 · HUB</span></a>
+      <a class="pdot" href="autonity-page1-protocol.html"><span class="tip">2 · PROTOCOL</span></a>
+      <a class="pdot" href="autonity-page2-money.html"><span class="tip">3 · MONEY</span></a>
+      <button class="pdot current"><span class="tip">4 · AFP (this page)</span></button>
+      <a class="pdot" href="autonity-page4-clearing.html"><span class="tip">5 · CLEARING VS TRADING</span></a>
+      <a class="pdot" href="autonity-page5-autex.html"><span class="tip">6 · AUTEX</span></a>
+      <a class="pdot" href="autonity-page6-forecastathon.html"><span class="tip">7 · FORECASTATHON</span></a>
+      <a class="pdot" href="autonity-page7-endogenous-collateral.html"><span class="tip">8 · ENDOGENOUS COLLATERAL (speculative)</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero-term">
+      <div class="boot-file">&gt;&gt; AFP_OVERVIEW.DAT</div>
+      <div id="bootLines"></div>
+
+      <div class="quote-panel">
+        <div class="qtext" id="quoteText"></div>
+      </div>
+      <div class="quote-src">— Autonity mainnet announcement, August 12, 2025</div>
+
+      <div class="hero-anim-wrap">
+        <svg id="heroAnim" viewBox="0 0 900 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="hero-anim-controls">
+          <button class="btn" id="createContractBtn">[ CREATE CONTRACT ]</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 1A — What is a Forecast Future? ══ -->
+  <section id="stage-1a">
+    <div class="stage-eyebrow">STAGE 1A</div>
+    <h2 class="stage-title">What Is a Forecast Future?</h2>
+    <p class="stage-goal">Not a prediction market. Not a perpetual. Not an option. A dated, linear contract on a measurable public outcome — with margin that lives on-chain, not in a venue's custody.</p>
+
+    <div class="table-scroll">
+    <table class="compare-table">
+      <thead><tr><th>What It Is Not</th><th>What It Is</th></tr></thead>
+      <tbody>
+        <tr><td>A prediction market (binary yes/no)</td><td>A time-series tracking dated futures contract</td></tr>
+        <tr><td>A perpetual future (no expiry)</td><td>A dated future with a fixed settlement date</td></tr>
+        <tr><td>An option (non-linear payoff)</td><td>A linear (delta-one) payoff on a measurable public outcome</td></tr>
+        <tr><td>Venue-custodied collateral</td><td>On-chain margin in the <dfn class="gloss" title="Decentralised Clearing Contract — one per underlying product; holds four on-chain state slots: (1) open-interest ledger, (2) margin balances, (3) mark/settlement price (oracle-fed), (4) venue connections. Venue-agnostic: any venue may submit intents against the same DCC.">DCC</dfn> — portable across venues</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="source-note">
+      Source: CoinDesk, July 28, 2025. Forecast contracts move one-to-one with an underlying factor and carry a symmetrical payoff; a prediction market instead pays out once and the market ends there. A sequence of futures on an underlying data series, by contrast, can continue indefinitely.
+    </div>
+
+    <details class="acc">
+      <summary>AFP vs. POLYMARKET vs. KALSHI <span style="color:var(--dim);font-size:.62rem;">12 entries</span></summary>
+      <div class="table-scroll">
+      <table class="ref-table">
+        <thead><tr><th>Feature</th><th>AFP</th><th>Polymarket</th><th>Kalshi</th></tr></thead>
+        <tbody id="afpCompareBody"></tbody>
+      </table>
+      </div>
+    </details>
+    <div class="callout small" style="margin-top:14px;">
+      *Binary Prediction Markets were deployed on AFP starting in Season 4 (see Page 6, Stage 3) — before that, AFP offered continuous Forecast Futures only. Real deployed examples, confirmed from AutEx's own product list: <code>WOMHUSA26</code> / <code>WOMHCAN26</code> ("United States wins Milano Cortina 2026 Men's Ice Hockey gold" / "Canada wins..."), and <code>SBPATRIOTS26</code> / <code>SBSEAHAWKS26</code> ("New England Patriots win Super Bowl LX" / "Seattle Seahawks win..."). Same underlying DCC and clearing as any Forecast Future — a different payoff shape, not a different system.
+    </div>
+    <div class="callout small">
+      AFP and Polymarket both settle on-chain via smart contracts, but their contract types diverge sharply: Polymarket and Kalshi solve binary yes/no outcomes on discrete events, while AFP lets forecasters trade arbitrary, recurring time-series data.
+    </div>
+
+    <div class="callout small">
+      Beyond the CPI example above, launched Forecast Futures have included Weekly Jobless Claims, US GDP, and US Unemployment Rate — each a dated contract settling to the actual reported figure.
+    </div>
+
+    <div class="callout small">
+      Source: CoinDesk, July 28, 2025 (same interview cited above). Singapore's Certificate of Entitlement — the auction-priced quota that owning a car there requires — is a real-world risk factor nobody can currently hedge. It's a public, auction-set number with no derivatives market behind it: exactly the kind of measurable, recurring time series a Forecast Future is built to track, and a working illustration of AFP's pitch that permissionless contract creation extends past crypto and financial indexes into everyday public data. <strong>This one shipped</strong>: <code>COE1G26</code>, <code>COE1H26</code>, <code>COE2G26</code>, and <code>COE2H26</code> (Category A COE, Feb/Mar 2026, Bidding Rounds 1 and 2) were all live on AutEx's Season 4 product list — not just a hypothetical from the interview.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 1B — Payoff Diagram ══ -->
+  <section id="stage-1b">
+    <div class="stage-eyebrow">STAGE 1B</div>
+    <h2 class="stage-title">Payoff Diagram</h2>
+    <p class="stage-goal">Drag the settlement marker along the axis. Watch a linear Forecast Future keep scaling with the surprise while a binary Prediction Market only cares which side of the line the outcome landed on.</p>
+
+    <div class="payoff-panel">
+      <div class="payoff-toprow">
+        <div class="dir-toggle">
+          <button class="dir-btn active-long" id="btnLong">LONG</button>
+          <button class="dir-btn" id="btnShort">SHORT</button>
+        </div>
+        <div class="payoff-legend">
+          <label><input type="checkbox" id="chkFuture" checked><span class="swatch solid"></span> Forecast Future</label>
+          <label><input type="checkbox" id="chkBinary" checked><span class="swatch dash"></span> Binary Prediction Market</label>
+        </div>
+        <button class="btn" id="payoffResetBtn" title="Reset to defaults">[ RESET ]</button>
+      </div>
+
+      <div class="payoff-hint">Drag the white diamond, click anywhere on the chart, or focus it and use ← → (hold Shift for bigger steps).</div>
+
+      <svg id="payoffSvg" viewBox="0 0 620 300" preserveAspectRatio="xMidYMid meet"></svg>
+
+      <div class="payoff-readout">
+        <div class="row"><span>SETTLEMENT</span><span id="roSettlement">3.0%</span></div>
+        <div class="row"><span>FORECAST FUTURE</span><span id="roFuture">+0 USDZ <span class="cap">(linear — keeps scaling)</span></span></div>
+        <div class="row"><span>BINARY MARKET</span><span id="roBinary">+0 USDZ <span class="cap"></span></span></div>
+      </div>
+
+      <div class="implementor-note">Educational only. The Track B tool <span class="mono">ain:at-01</span> is the practitioner's instrument, with validation, range checking, and OCG artifact emission.</div>
+    </div>
+
+    <div class="callout">
+      "A Forecast Future's payoff keeps scaling with the size of the surprise. A binary Prediction Market only cares which side of the threshold the outcome landed on. Seasons 1–3 used Forecast Futures exclusively. Binary Prediction Markets were introduced in Season 4."
+    </div>
+  </section>
+
+  <!-- ══ STAGE 2 — The DCC ══ -->
+  <section id="stage-2">
+    <div class="stage-eyebrow">STAGE 2</div>
+    <h2 class="stage-title">The <dfn class="gloss" title="Decentralised Clearing Contract — one per underlying product; holds four on-chain state slots: (1) open-interest ledger, (2) margin balances, (3) mark/settlement price (oracle-fed), (4) venue connections. Venue-agnostic: any venue may submit intents against the same DCC.">DCC</dfn></h2>
+    <p class="stage-goal">One clearing contract per product. Click a slot to see what actually lives there.</p>
+
+    <div class="dcc-panel">
+      <div class="dcc-product">&gt;&gt; DCC_STATE.DAT &nbsp;// Decentralised Clearing Contract &nbsp;·&nbsp; Product: US_CPI_FUTURES_Q1_2026</div>
+
+      <div class="dcc-box" id="dccBox"></div>
+
+      <div class="dcc-connectors">
+        <svg id="dccArrows" viewBox="0 0 620 34" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="dcc-venues">
+        <div class="dcc-venue"><div class="v-label">AutEx</div><div class="v-sub">production venue</div></div>
+        <div class="dcc-venue"><div class="v-label">[Venue B ⇢]</div><div class="v-sub">slot always open — only AutEx ever shipped</div></div>
+      </div>
+      <div class="dcc-connectors-caption">↑ Both arrows land in the VENUE CONNECTIONS zone — the bottom slot in the DCC box above. Any venue submits intents there; nothing else in the DCC changes based on which one.</div>
+    </div>
+
+    <div class="callout small" style="margin-top:18px;">
+      No public post from Autonity's own account showed a raw product spec — but real AutEx screenshots settle the question directly, and they're more concrete than a JSON schema alone. Separately, the <code>afp-sdk</code> GitHub repo confirms the underlying shape: every product is a JSON document with five top-level sections; the on-chain part is a <code>PredictionProductV1</code> object registered in the Product Registry contract, while the rest — the "extended metadata" — is pinned to IPFS.
+    </div>
+    <div class="code-block"><span class="cm"># afp-sdk — the shape of a real product specification</span>
+spec_dict = {
+    "product": {...},          <span class="cm"># on-chain: PredictionProductV1 — id, symbol, collateral asset</span>
+    "outcome_space": {...},    <span class="cm"># what the contract pays out on</span>
+    "outcome_point": {...},    <span class="cm"># the specific settlement target</span>
+    "oracle_config": {...},    <span class="cm"># which oracle feed resolves it</span>
+    "oracle_fallback": {...},  <span class="cm"># what happens if the primary oracle fails</span>
+}
+<span class="cm"># registering a new product requires a builder stake:</span>
+product.register(pinned_specification, initial_builder_stake=Decimal(<span style="color:#e8c07d">"10"</span>))</div>
+    <div class="callout small">
+      That <code>initial_builder_stake</code> argument is easy to miss but real: creating a new product on AFP isn't free — a product builder has to post collateral of their own to register it. Source: <code>github.com/autonity/afp-sdk</code>, README.
+    </div>
+
+    <div class="recreation-label"><span class="line"></span>REAL SEASON 4 PRODUCT LIST — AutEx "BROWSE PRODUCTS"<span class="line"></span></div>
+    <table class="product-table">
+      <thead><tr><th>Ticker</th><th>State</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="ticker">CPIG26</td><td><span class="state-pill live">LIVE</span></td><td>US Consumer Price Index | Value 01/26 | February 2026 Release</td></tr>
+        <tr><td class="ticker">GDPG26</td><td><span class="state-pill live">LIVE</span></td><td>US GDP Q4 2025 (Advance Estimate)</td></tr>
+        <tr><td class="ticker">UERH26</td><td><span class="state-pill live">LIVE</span></td><td>US Unemployment Rate | Value 02/26 | March 2026 Release</td></tr>
+        <tr><td class="ticker">NFPH26</td><td><span class="state-pill live">LIVE</span></td><td>US Total Nonfarm Employment | Value 02/26 | March 2026 Release</td></tr>
+        <tr><td class="ticker">CLAIMS07W26</td><td><span class="state-pill live">LIVE</span></td><td>US Initial Claims Week 7 2026</td></tr>
+        <tr><td class="ticker">GSATG26</td><td><span class="state-pill live">LIVE</span></td><td>Global surface air temperature anomaly — January 2026</td></tr>
+        <tr><td class="ticker">EQCT06W26</td><td><span class="state-pill live">LIVE</span></td><td>Global Earthquake Count for Week Ending 3rd February 2026</td></tr>
+        <tr><td class="ticker">GOLD07W26</td><td><span class="state-pill live">LIVE</span></td><td>LBMA Gold Prices — US Dollar — PM | Week 7 | 2026</td></tr>
+        <tr><td class="ticker">BTCVOL06W26</td><td><span class="state-pill live">LIVE</span></td><td>Bitcoin 30-Day Implied Volatility (Deribit DVOL), Friday close, Feb 6 2026</td></tr>
+        <tr><td class="ticker">ETHBFG26</td><td><span class="state-pill live">LIVE</span></td><td>Ethereum BASEFEE contract-month avg (Gwei) — Feb 2026</td></tr>
+        <tr><td class="ticker">CMCFGI04G26</td><td><span class="state-pill pending">PENDING</span></td><td>Coin Market Cap Fear and Greed Index — Feb 4 2026</td></tr>
+        <tr><td class="ticker">COE1G26</td><td><span class="state-pill pending">PENDING</span></td><td>Singapore Cat A Certificate of Entitlement — Feb 2026 Bidding 1</td></tr>
+        <tr><td class="ticker">WOMHUSA26 *</td><td><span class="state-pill live">LIVE</span></td><td>United States wins Milano Cortina 2026 Men's Ice Hockey gold</td></tr>
+        <tr><td class="ticker">SBPATRIOTS26 *</td><td><span class="state-pill live">LIVE</span></td><td>New England Patriots win Super Bowl LX (2025 NFL season)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout small" style="margin-top:10px;">A partial list — the full Season 4 catalog ran well past these fourteen. * marks a Binary Prediction Market rather than a continuous Forecast Future. Note the range: macro data sits next to weather, crypto microstructure, precious metals, a foreign government auction price, and sports outcomes — all the same DCC machinery underneath.</div>
+
+    <div class="recreation-label" style="margin-top:26px;"><span class="line"></span>REAL PRODUCT DETAIL PAGE — UERX25<span class="line"></span></div>
+    <div class="spec-card">
+      <div class="spec-head">
+        <div class="spec-head-main">
+          <div class="spec-ticker">UERX25</div>
+          <div class="spec-desc">US Unemployment Rate November 2025</div>
+        </div>
+        <div class="spec-head-meta">
+          <div><span class="k">End</span><br>11/7/2025</div>
+          <div><span class="k">Status</span><br><span class="state-pill live">LIVE</span></div>
+        </div>
+      </div>
+      <div class="spec-builder">
+        <div class="spec-builder-addr"><span class="k">Builder</span> <code>0x4081e7Oaeb2dC6A8ECeBeO67225aO9dE1AfFCa3b</code></div>
+        <div class="spec-builder-venue">Autex</div>
+      </div>
+      <div class="spec-section-label">Financial Data</div>
+      <div class="spec-fields">
+        <div class="spec-field"><span class="k">Data Validation</span><span class="v valid">✓ Valid</span></div>
+        <div class="spec-field"><span class="k">Description</span><span class="v">US Unemployment Rate</span></div>
+        <div class="spec-field"><span class="k">Frequency</span><span class="v">Monthly</span></div>
+        <div class="spec-field"><span class="k">Units</span><span class="v">Percent</span></div>
+        <div class="spec-field"><span class="k">Source</span><span class="v"><a href="#">Federal Reserve Economic Data (FRED) — Employment Situation</a></span></div>
+        <div class="spec-field"><span class="k">Data Source</span><span class="v"><a href="#">api.stlouisfed.org/fred/series/observations?series_id=UNRATE&amp;file_type=json</a></span></div>
+      </div>
+    </div>
+    <div class="callout small" style="margin-top:10px;">
+      This is the actual rendered shape of a product's "extended metadata" — matches the JSON sections above closely enough to identify which is which: <code>Description</code>/<code>Frequency</code>/<code>Units</code> read as <code>outcome_space</code>, and <code>Source</code>/<code>Data Source</code> read as <code>oracle_config</code> (a live FRED API endpoint, not a placeholder). Four other real products share this exact card layout and the same builder address — <code>BTCVOL49W25</code>/<code>BTCVOL52W25</code> (Deribit DVOL), <code>CPIX25</code> (BLS via FRED), and <code>GDPF26</code> — suggesting AutEx itself registered the reference product set, builder stake and all.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 3 — Two-Key Architecture ══ -->
+  <section id="stage-3">
+    <div class="stage-eyebrow">STAGE 3</div>
+    <h2 class="stage-title">Two-Key Architecture</h2>
+    <p class="stage-goal">&gt;&gt; KEY_MODEL.DAT — margin and authentication are two separate keys. They can be the same key. They do not have to be.</p>
+
+    <div class="key-panel">
+      <div class="key-box">
+        <div class="k-title">MARGIN ACCOUNT KEY</div>
+        <ul>
+          <li>Holds USDZ and ATN for gas</li>
+          <li>Deposited directly to the DCC</li>
+          <li>Venue-agnostic: same key works on any AFP venue</li>
+        </ul>
+      </div>
+      <div class="key-box">
+        <div class="k-title">INTENT-SIGNING KEY</div>
+        <ul>
+          <li>Authenticates orders to a specific venue (e.g. AutEx)</li>
+          <li>Venue-specific: AutEx verifies this key</li>
+          <li>Does NOT hold capital</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="key-same">The two can be the same key. They do not have to be.<br>This is why "enter on AutEx, exit on Venue B" was possible without moving or re-custodying your collateral. The DCC tracks the margin account, not the venue's signing key.</div>
+
+    <div class="keyflow-panel">
+      <svg viewBox="0 0 620 170" id="keyflowSvg">
+        <defs>
+          <marker id="keyflowArrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#0D7680"/></marker>
+        </defs>
+        <!-- connecting lines -->
+        <path d="M140,120 L300,45" stroke="#242424" stroke-width="1.5" fill="none"/>
+        <path d="M300,45 L480,120" stroke="#242424" stroke-width="1.5" fill="none" marker-end="url(#keyflowArrow)"/>
+
+        <!-- margin account key node (top, fixed) -->
+        <rect x="220" y="15" width="160" height="46" rx="4" fill="#080808" stroke="#0D7680" stroke-width="1.5"/>
+        <text x="300" y="34" text-anchor="middle" fill="#0D7680" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="600">MARGIN ACCOUNT KEY</text>
+        <text x="300" y="48" text-anchor="middle" fill="#7A7A7A" font-size="8" font-family="'JetBrains Mono',monospace">shared · capital never moves</text>
+
+        <!-- AutEx node (bottom left) -->
+        <rect x="40" y="115" width="150" height="40" rx="4" fill="#080808" stroke="#242424" stroke-width="1.5"/>
+        <text x="115" y="134" text-anchor="middle" fill="#FFFFFF" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="600">AutEx</text>
+        <text x="115" y="147" text-anchor="middle" fill="#4A4A4A" font-size="8" font-family="'JetBrains Mono',monospace">intent-signing key A</text>
+
+        <!-- Venue B node (bottom right) -->
+        <rect x="430" y="115" width="150" height="40" rx="4" fill="#080808" stroke="#242424" stroke-width="1.5"/>
+        <text x="505" y="134" text-anchor="middle" fill="#FFFFFF" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="600">[Venue B ⇢]</text>
+        <text x="505" y="147" text-anchor="middle" fill="#4A4A4A" font-size="8" font-family="'JetBrains Mono',monospace">intent-signing key B</text>
+
+        <!-- animated position dot: opens on AutEx, travels through the margin key, closes on Venue B -->
+        <circle r="5" fill="#66FF66">
+          <animateMotion dur="4s" repeatCount="indefinite"
+            path="M140,120 L300,45 L480,120"
+            keyPoints="0;0.48;0.5;1" keyTimes="0;0.45;0.55;1" calcMode="linear"/>
+        </circle>
+
+        <text x="115" y="105" text-anchor="middle" fill="#66FF66" font-size="8" font-family="'JetBrains Mono',monospace" opacity="0">
+          OPEN
+          <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.05;0.4;0.45;1" dur="4s" repeatCount="indefinite"/>
+        </text>
+        <text x="505" y="105" text-anchor="middle" fill="#66FF66" font-size="8" font-family="'JetBrains Mono',monospace" opacity="0">
+          CLOSE
+          <animate attributeName="opacity" values="0;0;0;1;1;0" keyTimes="0;0.55;0.6;0.65;0.95;1" dur="4s" repeatCount="indefinite"/>
+        </text>
+      </svg>
+      <div class="keyflow-caption">Same position, same margin account, two different venue signing keys — nothing about the collateral moves between "open" and "close."</div>
+    </div>
+
+    <div class="code-block"><span class="cm"># afp-sdk README — margin API</span>
+margin_account.deposit(USDZ, Decimal(<span style="color:#e8c07d">"100.00"</span>))   <span class="cm"># margin key controls this</span>
+margin_account.capital(USDZ)  → 100.00            <span class="cm"># readable independently of any venue</span></div>
+
+    <div class="callout small">
+      In practice: visit forecastathon.ai/margin-account, connect the same wallet used to register, and sign a gasless message proving ownership — no transaction, no gas. Then deposit USDZ into the on-chain margin account (a small ATN fee applies for this one on-chain step). From there, unrealized gains in one market can be used as margin in another — the cross-venue, cross-margining behaviour this stage is describing.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 4 — Season 1 Stress Test ══ -->
+  <section id="stage-4">
+    <div class="stage-eyebrow">STAGE 4</div>
+    <h2 class="stage-title">Season 1 Stress Test (Historical)</h2>
+    <p class="stage-goal">AutEx went down mid-season. Step through what happened to the clearing layer underneath it.</p>
+
+    <div class="stress-panel">
+      <svg id="stressSvg" viewBox="0 0 700 220" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="stress-controls">
+        <div class="stress-step-label" id="stressStepLabel">STEP 1 / 4 — NORMAL OPERATION</div>
+        <button class="btn" id="stressNextBtn">[ STEP → ]</button>
+      </div>
+      <div class="stress-caption" id="stressCaption">Orders flow AutEx → DCC. Both systems green.</div>
+    </div>
+
+    <blockquote class="src-quote">
+      "The brief service outages of AutEx then gave the builders of the AFP clearing system a chance to verify that margin and settlement operations continued seamlessly on-chain. The robustness of the system was amply shown by the correctness of the on-chain state regardless of AutEx's double processing of trades during a period of operational disruption."
+      <cite>— Autonity Medium, "Forecastathon Season 1: Lessons Learnt," October 24, 2025</cite>
+    </blockquote>
+
+    <div class="callout small">
+      Consequence: rate limits imposed on AutEx post-Season 1 due to market-maker surge. Base fee cut 90%: 10 gwei → 1 gwei. Full writeup: <a href="autonity-page6-forecastathon.html" style="color:var(--teal);text-decoration:underline;">Page 6 — Forecastathon, Season 1</a>.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 5 — Contract Types Across Seasons ══ -->
+  <section id="stage-5">
+    <div class="stage-eyebrow">STAGE 5</div>
+    <h2 class="stage-title">Contract Types Across Seasons</h2>
+    <p class="stage-goal">What was tradeable, when, and where.</p>
+
+    <div class="table-scroll">
+    <table class="season-table">
+      <thead><tr><th>Season</th><th>Dates</th><th>Products</th><th>Collateral</th><th>Venue</th></tr></thead>
+      <tbody>
+        <tr><td>S1</td><td>Sept 19 – Oct 20, 2025</td><td>US CPI Futures, Jobless Claims Futures</td><td>USDZ</td><td>AutEx only</td></tr>
+        <tr><td>S2</td><td>Oct 28 – Nov 27, 2025</td><td>+ US Quarterly GDP Futures, US Monthly Unemployment Rate Futures</td><td>USDZ</td><td>AutEx</td></tr>
+        <tr><td>S3</td><td>Dec 5, 2025 – Jan 6, 2026</td><td>+ Bitcoin Volatility (most active product of the series)</td><td>USDZ</td><td>AutEx</td></tr>
+        <tr><td>S4</td><td>Jan 16 – Mar 2, 2026</td><td>Zero-leverage Forecast Futures + binary Prediction Markets</td><td>USDZ</td><td>AutEx + community venues</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="callout small">
+      Full Season 1–4 timeline, standings, and community narrative: see <a href="autonity-page6-forecastathon.html" style="color:var(--teal);text-decoration:underline;">Page 6 — Forecastathon</a>.
+    </div>
+  </section>
+
+  <!-- ══ TRACK B CTA BLOCK ══ -->
+  <section id="cta">
+    <div class="cta-block">
+      <div class="cta-pill">● TOOL AVAILABLE — AINUMBERS.CO</div>
+      <div class="cta-copy">
+        The computation on this page has a working implementation in the Autonity Tool Suite on AINumbers.co. Each tool produces a fingerprint of its result — if the calculation changes, the fingerprint changes. Share it with anyone. They can verify it in seconds, in their own browser, with no server access.
+      </div>
+      <div class="cta-tools" id="ctaTools"></div>
+      <a class="ocg-link" id="ocgLink" href="#" target="_blank" rel="noopener noreferrer">[ READ THE OCG STANDARD → ]</a>
+    </div>
+  </section>
+
+  <!-- ══ PREV/NEXT ══ -->
+  <nav class="page-nav" aria-label="Page navigation">
+    <a class="btn" href="autonity-page2-money.html">[ ← PREV · 2 MONEY ]</a>
+    <a class="btn" href="index.html">[ ⌂ HUB ]</a>
+    <a class="btn" href="autonity-page4-clearing.html">[ NEXT · 4 CLEARING VS TRADING → ]</a>
+  </nav>
+
+</div><!-- /wrap -->
+
+<!-- ══ FOOTER — validator health strip ══ -->
+<footer>
+  <div class="wrap">
+    <div class="vstrip-wrap">
+      <div class="vstrip" id="vstrip"></div>
+      <div class="vstrip-tip">11 of 27 validators confirmed active as of July 8, 2026 (remaining 16 seats pending confirmation). The chain has not stopped producing blocks.</div>
+    </div>
+    <div class="foot-legend">27 VALIDATORS · LIVE HEALTH SNAPSHOT · JULY 8, 2026</div>
+    <div class="foot-meta">
+      <span>AUTONITY TRACK A — MUSEUM MODE — EDUCATIONAL ONLY — NO ARTIFACT EMISSION</span>
+      <span><a href="index.html#glossary" style="color:var(--dim2);text-decoration:underline;">GLOSSARY</a> · PAGE 3 / 6 — AFP</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG — relocation constants (v3 A-1)
+═══════════════════════════════════════════════════════════ */
+const TRACK_B_BASE = 'https://ainumbers.co/tools/autonity/';
+const OCG_STANDARD_URL = 'https://ainumbers.co/chaingraph/openchain-graph-paper.html';
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — boot line, typewriter quote, contract-formation animation
+═══════════════════════════════════════════════════════════ */
+const BOOT_LINES = ['> LOADING AUTONOMOUS FUTURES PROTOCOL ...'];
+function playBoot(){
+  const wrap = document.getElementById('bootLines');
+  wrap.innerHTML = '';
+  BOOT_LINES.forEach((line, i) => {
+    const d = document.createElement('div');
+    d.className = 'boot-line';
+    d.textContent = line;
+    wrap.appendChild(d);
+    setTimeout(() => d.classList.add('done'), reduceMotion ? 0 : i*260);
+  });
+}
+playBoot();
+
+const QUOTE_TEXT = '"THE AFP ENABLES PERMISSIONLESS CREATION OF FUTURES CONTRACTS\nTHAT SETTLE AGAINST ANY VERIFIABLE DATA SOURCE.\nTHE PROTOCOL SEPARATES TRADE EXECUTION FROM CLEARING,\nENABLING FUTURES CONTRACTS TO TRADE ACROSS MULTIPLE VENUES\nWHILE SHARING UNIFIED COLLATERAL AND CROSS-MARGINING."';
+function typewriter(el, text, speed){
+  el.textContent = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'quote-cursor';
+  if(reduceMotion){ el.textContent = text; return; }
+  let i = 0;
+  function step(){
+    el.textContent = text.slice(0, i);
+    el.appendChild(cursor);
+    i++;
+    if(i <= text.length) setTimeout(step, speed);
+    else cursor.remove();
+  }
+  step();
+}
+setTimeout(() => typewriter(document.getElementById('quoteText'), QUOTE_TEXT, 15), reduceMotion ? 0 : 350);
+
+/* ── hero contract-formation animation ── */
+const GDP_DATA = [2.1, 2.4, 2.0, 2.6, 3.1, 2.8]; // illustrative quarterly GDP, %
+function buildHeroAnim(){
+  const svg = document.getElementById('heroAnim');
+  const x0 = 60, x1 = 480, y0 = 190, y1 = 40;
+  const min = Math.min(...GDP_DATA)-0.4, max = Math.max(...GDP_DATA)+0.4;
+  const pts = GDP_DATA.map((v,i) => {
+    const x = x0 + (i/(GDP_DATA.length-1))*(x1-x0);
+    const y = y1 + (1-(v-min)/(max-min))*(y0-y1);
+    return [x,y];
+  });
+  const path = pts.map((p,i) => (i===0?'M':'L')+p[0]+','+p[1]).join(' ');
+
+  svg.innerHTML = `
+    <g id="chartGroup" style="transition:opacity .5s ease, transform .5s ease;transform-origin:270px 115px;">
+      <text x="60" y="24" font-size="11" fill="#7A7A7A" font-family="monospace">GDP QUARTERLY (ILLUSTRATIVE)</text>
+      <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" stroke="#242424"/>
+      <path d="${path}" fill="none" stroke="#66FF66" stroke-width="2"/>
+      ${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#66FF66"/><text x="${p[0]}" y="${y0+16}" font-size="9" fill="#4A4A4A" text-anchor="middle" font-family="monospace">Q${(i%4)+1}${i<4?" '25":" '26"}</text>`).join('')}
+    </g>
+    <g id="dccGroup" style="opacity:0;transition:opacity .5s ease;">
+      <rect x="382" y="95" width="136" height="46" rx="4" fill="#0A0A0A" stroke="#FFFFFF"/>
+      <text x="450" y="112" font-size="11" fill="#FFFFFF" text-anchor="middle" font-family="monospace" font-weight="700">DCC</text>
+      <text x="450" y="128" font-size="8" fill="#7A7A7A" text-anchor="middle" font-family="monospace">shared clearing contract</text>
+    </g>
+    <g id="venueGroup" style="opacity:0;transition:opacity .6s ease;">
+      <rect x="560" y="60" width="130" height="40" rx="3" fill="#080808" stroke="#242424"/>
+      <text x="625" y="84" font-size="10" fill="#FFFFFF" text-anchor="middle" font-family="monospace">AutEx</text>
+      <rect x="560" y="150" width="130" height="40" rx="3" fill="#080808" stroke="#242424"/>
+      <text x="625" y="174" font-size="10" fill="#FFFFFF" text-anchor="middle" font-family="monospace">[Venue B — permissionless]</text>
+      <path d="M560,80 L520,110" stroke="#0D7680" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+      <path d="M560,170 L520,125" stroke="#0D7680" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+    </g>
+    <defs>
+      <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#0D7680"/>
+      </marker>
+    </defs>
+  `;
+}
+buildHeroAnim();
+let contractFormed = false;
+document.getElementById('createContractBtn').addEventListener('click', () => {
+  contractFormed = !contractFormed;
+  const chart = document.getElementById('chartGroup');
+  const dcc = document.getElementById('dccGroup');
+  const venues = document.getElementById('venueGroup');
+  const btn = document.getElementById('createContractBtn');
+  if(contractFormed){
+    chart.style.opacity = '0.15';
+    chart.style.transform = 'scale(0.6) translate(150px, 20px)';
+    dcc.style.opacity = '1';
+    venues.style.opacity = '1';
+    btn.textContent = '[ RESET ]';
+  } else {
+    chart.style.opacity = '1';
+    chart.style.transform = 'scale(1) translate(0,0)';
+    dcc.style.opacity = '0';
+    venues.style.opacity = '0';
+    btn.textContent = '[ CREATE CONTRACT ]';
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 1B — Payoff diagram
+═══════════════════════════════════════════════════════════ */
+const PO = {
+  x0:60, x1:580, yTop:30, yBottom:260, yMid:150,
+  domainMin:0, domainMax:8, strike:3.0,
+  factor:40,      // USDZ per % point of deviation
+  yScale:0.44,    // px per USDZ
+  settlement:3.0,
+  isLong:true,
+  showFuture:true,
+  showBinary:true,
+};
+function poXPix(v){ return PO.x0 + (v-PO.domainMin)/(PO.domainMax-PO.domainMin)*(PO.x1-PO.x0); }
+function poYPix(pnl){ return PO.yMid - pnl*PO.yScale; }
+function poFuturePnl(v){ return (v-PO.strike)*PO.factor*(PO.isLong?1:-1); }
+function poBinaryPnl(v){
+  if(Math.abs(v-PO.strike) < 0.05) return 0;
+  const above = v > PO.strike;
+  const wins = PO.isLong ? above : !above;
+  return wins ? 200 : -100;
+}
+function renderPayoff(){
+  const svg = document.getElementById('payoffSvg');
+  const xAxisY = poYPix(0);
+  const futureStart = [poXPix(PO.domainMin), poYPix(poFuturePnl(PO.domainMin))];
+  const futureEnd   = [poXPix(PO.domainMax), poYPix(poFuturePnl(PO.domainMax))];
+  const binaryBelowY = poYPix(PO.isLong ? -100 : 200);
+  const binaryAboveY = poYPix(PO.isLong ? 200 : -100);
+  const strikeX = poXPix(PO.strike);
+  const settleX = poXPix(PO.settlement);
+  const futureColor = PO.isLong ? '#00CC00' : '#CC0000';
+
+  const binaryPath = `M${PO.x0},${binaryBelowY} L${strikeX},${binaryBelowY} L${strikeX},${binaryAboveY} L${PO.x1},${binaryAboveY}`;
+
+  svg.innerHTML = `
+    <line x1="${PO.x0}" y1="${xAxisY}" x2="${PO.x1}" y2="${xAxisY}" stroke="#242424"/>
+    <line x1="${strikeX}" y1="${PO.yTop}" x2="${strikeX}" y2="${PO.yBottom}" stroke="#242424" stroke-dasharray="2,3"/>
+    <text x="${strikeX}" y="${PO.yBottom+18}" font-size="9" fill="#4A4A4A" text-anchor="middle" font-family="monospace">STRIKE ${PO.strike.toFixed(1)}%</text>
+    <text x="${PO.x0}" y="${PO.yTop-10}" font-size="9" fill="#4A4A4A" font-family="monospace">PnL (USDZ)</text>
+    <text x="${PO.x1}" y="${PO.yBottom+34}" font-size="9" fill="#4A4A4A" text-anchor="end" font-family="monospace">SETTLEMENT VALUE →</text>
+
+    ${PO.showBinary ? `<path d="${binaryPath}" fill="none" stroke="#FF5900" stroke-width="2" stroke-dasharray="6,4"/>` : ''}
+    ${PO.showFuture ? `<line x1="${futureStart[0]}" y1="${futureStart[1]}" x2="${futureEnd[0]}" y2="${futureEnd[1]}" stroke="${futureColor}" stroke-width="2.5"/>` : ''}
+
+    <line id="settleLine" x1="${settleX}" y1="${PO.yTop}" x2="${settleX}" y2="${PO.yBottom}" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.35"/>
+    <g id="settleHandle" style="cursor:grab;" transform="translate(${settleX},${PO.yBottom+8})"
+       tabindex="0" role="slider" aria-label="Settlement value"
+       aria-valuemin="${PO.domainMin}" aria-valuemax="${PO.domainMax}" aria-valuenow="${PO.settlement}">
+      <path d="M0,-7 L7,0 L0,7 L-7,0 Z" fill="#FFFFFF" stroke="#66FF66" stroke-width="1.5"/>
+    </g>
+  `;
+  attachDrag();
+  updateReadout();
+}
+function updateReadout(){
+  const futurePnl = poFuturePnl(PO.settlement);
+  const binaryPnl = poBinaryPnl(PO.settlement);
+  document.getElementById('roSettlement').textContent = PO.settlement.toFixed(1) + '%';
+  document.getElementById('roFuture').innerHTML = (futurePnl>=0?'+':'') + Math.round(futurePnl) + ' USDZ  <span class="cap">(linear — keeps scaling)</span>';
+  const cappedNote = Math.abs(PO.settlement-PO.strike) < 0.05 ? '' : '(capped — binary pays fixed amount)';
+  document.getElementById('roBinary').innerHTML = (binaryPnl>=0?'+':'') + Math.round(binaryPnl) + ' USDZ  <span class="cap">'+cappedNote+'</span>';
+}
+function attachDrag(){
+  const handle = document.getElementById('settleHandle');
+  const svg = document.getElementById('payoffSvg');
+  if(!handle) return;
+  let dragging = false;
+  function svgPoint(evt){
+    const pt = svg.createSVGPoint();
+    pt.x = evt.clientX; pt.y = evt.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+  }
+  function onMove(evt){
+    if(!dragging) return;
+    const p = svgPoint(evt);
+    let v = PO.domainMin + (p.x-PO.x0)/(PO.x1-PO.x0)*(PO.domainMax-PO.domainMin);
+    v = Math.max(PO.domainMin, Math.min(PO.domainMax, v));
+    PO.settlement = Math.round(v*10)/10;
+    renderPayoff();
+  }
+  handle.addEventListener('pointerdown', (e) => { dragging = true; handle.setPointerCapture(e.pointerId); handle.style.cursor='grabbing'; });
+  handle.addEventListener('pointermove', onMove);
+  handle.addEventListener('pointerup', (e) => { dragging = false; handle.style.cursor='grab'; });
+  handle.addEventListener('keydown', (e) => {
+    const step = e.shiftKey ? 0.5 : 0.1;
+    if(e.key === 'ArrowRight' || e.key === 'ArrowUp'){
+      e.preventDefault();
+      PO.settlement = Math.min(PO.domainMax, Math.round((PO.settlement+step)*10)/10);
+      renderPayoff();
+      document.getElementById('settleHandle').focus();
+    } else if(e.key === 'ArrowLeft' || e.key === 'ArrowDown'){
+      e.preventDefault();
+      PO.settlement = Math.max(PO.domainMin, Math.round((PO.settlement-step)*10)/10);
+      renderPayoff();
+      document.getElementById('settleHandle').focus();
+    } else if(e.key === 'Home'){
+      e.preventDefault();
+      PO.settlement = PO.domainMin; renderPayoff(); document.getElementById('settleHandle').focus();
+    } else if(e.key === 'End'){
+      e.preventDefault();
+      PO.settlement = PO.domainMax; renderPayoff(); document.getElementById('settleHandle').focus();
+    }
+  });
+  svg.addEventListener('pointerdown', (e) => {
+    if(e.target === handle || handle.contains(e.target)) return;
+    const p = svgPoint(e);
+    if(p.x < PO.x0 || p.x > PO.x1) return;
+    let v = PO.domainMin + (p.x-PO.x0)/(PO.x1-PO.x0)*(PO.domainMax-PO.domainMin);
+    v = Math.max(PO.domainMin, Math.min(PO.domainMax, v));
+    PO.settlement = Math.round(v*10)/10;
+    renderPayoff();
+  });
+}
+document.getElementById('btnLong').addEventListener('click', () => {
+  PO.isLong = true;
+  document.getElementById('btnLong').classList.add('active-long');
+  document.getElementById('btnShort').classList.remove('active-short');
+  renderPayoff();
+});
+document.getElementById('btnShort').addEventListener('click', () => {
+  PO.isLong = false;
+  document.getElementById('btnShort').classList.add('active-short');
+  document.getElementById('btnLong').classList.remove('active-long');
+  renderPayoff();
+});
+document.getElementById('chkFuture').addEventListener('change', (e) => { PO.showFuture = e.target.checked; renderPayoff(); });
+document.getElementById('chkBinary').addEventListener('change', (e) => { PO.showBinary = e.target.checked; renderPayoff(); });
+document.getElementById('payoffResetBtn').addEventListener('click', () => {
+  PO.settlement = 3.0;
+  PO.isLong = true;
+  PO.showFuture = true;
+  PO.showBinary = true;
+  document.getElementById('btnLong').classList.add('active-long');
+  document.getElementById('btnShort').classList.remove('active-short');
+  document.getElementById('chkFuture').checked = true;
+  document.getElementById('chkBinary').checked = true;
+  renderPayoff();
+});
+renderPayoff();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 1A — AFP vs. Polymarket vs. Kalshi
+   Source: AINumbers.co, Oct 11, 2025
+═══════════════════════════════════════════════════════════ */
+const AFP_COMPARE_ROWS = [
+  ['Built on blockchain','yes:Autonity L1','yes:Polygon','no:—'],
+  ['Decentralized clearing','yes:Yes','partial:Single venue','no:No'],
+  ['Non-custodial','yes:Yes','yes:Yes','no:No'],
+  ['Permissionless market creation','yes:Yes','no:Curated','no:Company-controlled'],
+  ['Multi-venue / shared liquidity','yes:Yes','no:No','no:No'],
+  ['Continuous data products','yes:Forecast Futures','no:Binary only','no:Binary only'],
+  ['Binary yes/no markets','partial:Yes* (Season 4 only)','yes:Yes','yes:Yes'],
+  ['Cross-venue margining','yes:Yes','no:No','no:No'],
+  ['Open-source venues possible','yes:AutEx &amp; others','no:No','no:No'],
+  ['Collateral','yes:ATN, USDC (on-chain)','yes:USDC (on-chain)','no:Fiat / stablecoin (custodial)'],
+  ['Leverage / margin trading','yes:Yes','no:No','no:No'],
+  ['Accessible worldwide','yes:Yes','partial:U.S. restricted','no:U.S. only'],
+];
+function afpCompareCell(v){
+  const [cls, label] = v.split(':');
+  return `<td class="${cls}">${label}</td>`;
+}
+document.getElementById('afpCompareBody').innerHTML = AFP_COMPARE_ROWS.map(r =>
+  `<tr><td>${r[0]}</td>${afpCompareCell(r[1])}${afpCompareCell(r[2])}${afpCompareCell(r[3])}</tr>`
+).join('');
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 2 — DCC zones
+═══════════════════════════════════════════════════════════ */
+const DCC_ZONES = [
+  {label:'OPEN INTEREST LEDGER', body:'Every position across every venue lives in this one ledger. Opening via AutEx and closing via Venue B would write to the same row. This is the slot that kept working correctly during the Season 1 AutEx outage.'},
+  {label:'MARGIN BALANCES', body:"Margin is posted directly to the DCC — not to whichever venue the trader used. The venue is just the order router."},
+  {label:'MARK / SETTLEMENT PRICE', body:'Fed by the same validator oracle network — OFD/OAFD-secured. This slot is what the oracle feeds. No oracle, no settlement price, no contract expiry. Live oracle parameters per Stakeflow (July 8, 2026): 600-block vote period, 3% outlier-detection threshold, 15.00% outlier slashing rate, 0.10% base slashing rate, non-reveal threshold of 5, 10-round reveal-reset interval.'},
+  {label:'VENUE CONNECTIONS', body:'Only AutEx ever shipped as a production AFP execution venue. Leibniz LzV3 (Nov 2025) and Mori Finance (Dec 2025) were ATN liquidity AMMs — they did not connect to the AFP DCC. The slot for a second AFP venue was always architecturally open.'},
+];
+function buildDccBox(){
+  const box = document.getElementById('dccBox');
+  box.innerHTML = DCC_ZONES.map((z,i) => `
+    <div class="dcc-zone-wrap" data-i="${i}">
+      <div class="dcc-zone" tabindex="0" role="button" aria-expanded="false"><span>${z.label}</span><span class="click-hint">◂ click / enter</span></div>
+      <div class="dcc-zone-body">${z.body}</div>
+    </div>
+  `).join('');
+  function toggleZone(el){
+    const wrap = el.closest('.dcc-zone-wrap');
+    const wasOpen = wrap.classList.contains('open');
+    box.querySelectorAll('.dcc-zone-wrap').forEach(w => w.classList.remove('open'));
+    box.querySelectorAll('.dcc-zone').forEach(z => z.setAttribute('aria-expanded','false'));
+    if(!wasOpen){ wrap.classList.add('open'); el.setAttribute('aria-expanded','true'); }
+  }
+  box.querySelectorAll('.dcc-zone').forEach((el) => {
+    el.addEventListener('click', () => toggleZone(el));
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleZone(el); }
+    });
+  });
+}
+buildDccBox();
+function buildDccArrows(){
+  const svg = document.getElementById('dccArrows');
+  svg.innerHTML = `
+    <defs><marker id="dccArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0D7680"/></marker></defs>
+    <path d="M155,32 L100,3" stroke="#0D7680" stroke-width="1.5" marker-end="url(#dccArrow)" fill="none"/>
+    <path d="M465,32 L520,3" stroke="#0D7680" stroke-width="1.5" marker-end="url(#dccArrow)" fill="none"/>
+  `;
+}
+buildDccArrows();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 4 — Season 1 stress test sequence
+═══════════════════════════════════════════════════════════ */
+const STRESS_STEPS = [
+  {label:'STEP 1 / 4 — NORMAL OPERATION', caption:'Orders flow AutEx → DCC. Both systems green.', autex:'g', dcc:'g', line:'g', flag:null},
+  {label:'STEP 2 / 4 — VENUE OFFLINE', caption:'AutEx flashes red, dims. Line from AutEx to the DCC goes grey.', autex:'r', dcc:'g', line:'grey', flag:'VENUE OFFLINE'},
+  {label:'STEP 3 / 4 — CLEARING CONTINUES', caption:'AFP DCC: clearing continues. Settlement packets still flow out downward — unaffected by the venue outage.', autex:'r', dcc:'g', line:'grey', flag:'AFP DCC: CLEARING CONTINUES'},
+  {label:'STEP 4 / 4 — RECOVERY', caption:'AutEx double-processes some trades during recovery. The DCC rejects the duplicate.', autex:'a', dcc:'g', line:'g', flag:'DOUBLE TRADE DETECTED — REJECTED'},
+];
+let stressIdx = 0;
+function stressColor(c){ return c==='g' ? '#66FF66' : c==='r' ? '#FF3B3B' : c==='a' ? '#FFB020' : '#4A4A4A'; }
+function renderStress(){
+  const s = STRESS_STEPS[stressIdx];
+  const svg = document.getElementById('stressSvg');
+  const lineColor = s.line==='grey' ? '#333333' : '#66FF66';
+  svg.innerHTML = `
+    <rect x="60" y="70" width="160" height="70" rx="4" fill="#080808" stroke="${stressColor(s.autex)}" stroke-width="2"/>
+    <text x="140" y="100" font-size="13" fill="${stressColor(s.autex)}" text-anchor="middle" font-family="monospace" font-weight="700">AutEx</text>
+    <text x="140" y="118" font-size="9" fill="#7A7A7A" text-anchor="middle" font-family="monospace">execution venue</text>
+
+    <line x1="220" y1="105" x2="480" y2="105" stroke="${lineColor}" stroke-width="2" stroke-dasharray="${s.line==='grey'?'4,4':'0'}"/>
+    <path d="M470,99 L482,105 L470,111 Z" fill="${lineColor}"/>
+
+    <rect x="480" y="70" width="160" height="70" rx="4" fill="#080808" stroke="${stressColor(s.dcc)}" stroke-width="2"/>
+    <text x="560" y="100" font-size="13" fill="${stressColor(s.dcc)}" text-anchor="middle" font-family="monospace" font-weight="700">AFP DCC</text>
+    <text x="560" y="118" font-size="9" fill="#7A7A7A" text-anchor="middle" font-family="monospace">clearing layer</text>
+
+    <line x1="560" y1="140" x2="560" y2="180" stroke="${stressColor(s.dcc)}" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+    ${s.flag ? `<rect x="330" y="185" width="260" height="26" fill="rgba(255,59,59,0.08)" stroke="${s.autex==='a'?'#FFB020':'#FF3B3B'}"/>
+    <text x="460" y="202" font-size="10" fill="${s.autex==='a'?'#FFB020':'#FF3B3B'}" text-anchor="middle" font-family="monospace">${s.flag}</text>` : ''}
+  `;
+  document.getElementById('stressStepLabel').textContent = s.label;
+  document.getElementById('stressCaption').textContent = s.caption;
+}
+document.getElementById('stressNextBtn').addEventListener('click', () => {
+  stressIdx = (stressIdx + 1) % STRESS_STEPS.length;
+  renderStress();
+});
+renderStress();
+
+/* ═══════════════════════════════════════════════════════════
+   CTA — Track B tools (page-specific)
+═══════════════════════════════════════════════════════════ */
+const CTA_TOOLS = [
+  {label:'FORECAST FUTURE PNL CALCULATOR', slug:'forecast-future-pnl-calculator', id:'ain:at-01', mandate:'afp_forecast_future_pnl'},
+  {label:'DCC MARGIN HEALTH CALCULATOR', slug:'dcc-margin-health-calculator', id:'ain:at-02', mandate:'dcc_margin_health_calc'},
+  {label:'CROSS-MARGIN EFFICIENCY SCORER', slug:'cross-margin-efficiency-scorer', id:'ain:at-05', mandate:'cross_margin_efficiency_score'},
+];
+document.getElementById('ctaTools').innerHTML = CTA_TOOLS.map(t => `
+  <div class="cta-tool-card">
+    <a class="cta-tool-btn" href="${TRACK_B_BASE}${t.slug}.html" target="_blank" rel="noopener noreferrer">[ ${t.label} → ]</a>
+    <span class="mandate-pill">${t.mandate}</span>
+    <div style="font-size:.6rem;color:var(--dim);margin-top:6px;">${t.id}</div>
+  </div>
+`).join('');
+document.getElementById('ocgLink').href = OCG_STANDARD_URL;
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER — validator health strip (27 seats)
+   Corrected from an earlier 30-validator figure. Per Stakeflow, July 8, 2026:
+   11 confirmed Active, remaining 16 seats' status pending confirmation.
+═══════════════════════════════════════════════════════════ */
+const JULY_STATE = (() => {
+  const arr = new Array(27).fill('u');
+  for(let i=0;i<11;i++) arr[i] = 'g';
+  return arr;
+})();
+(function buildStrip(){
+  const el = document.getElementById('vstrip');
+  let html = '';
+  for(let i=0;i<27;i++){
+    html += `<span class="vd ${JULY_STATE[i]}"></span>`;
+  }
+  el.innerHTML = html;
+})();
+</script>
+</body>
+</html>

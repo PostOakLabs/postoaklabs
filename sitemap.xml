@@ -172,4 +172,54 @@
     <changefreq>quarterly</changefreq>
     <priority>0.85</priority>
   </url>
+
+  <!-- Autonity Track A — educational archive microsite (7 pages + hub) -->
+  <url>
+    <loc>https://postoaklabs.com/autonity/</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page1-protocol.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page2-money.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page3-afp.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page4-clearing.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page5-autex.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page6-forecastathon.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://postoaklabs.com/autonity/autonity-page7-endogenous-collateral.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>quarterly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>

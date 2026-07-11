@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENDOGENOUS_COLLATERAL.DAT — Autonity Track A (Speculative)</title>
+<meta name="description" content="A speculative future-state page — not a recovered artifact — walking through what ASMv3's free-floating target would have unlocked: ATN as AFP collateral, per-contract collateral choice, the community's Hyperlane/Chainlink bridge, and Canonicals as a project that used it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="autonity-logo.jpg">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   AUTONITY TRACK A — SHARED DESIGN TOKENS (per v2 §Visual Language)
+   Page 7 note: this is the one page in the series that is NOT a
+   recovered/faithful-recreation artifact. Accent swapped teal→violet
+   throughout so it reads visually distinct from Pages 1–6 at a glance.
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000000;
+  --fg:#FFFFFF;
+  --dim:#7A7A7A;
+  --dim2:#4A4A4A;
+  --green:#66FF66;
+  --orange:#FF5900;
+  --teal:#0D7680;
+  --violet:#8B7CF0;
+  --violet-dim:#4A4180;
+  --buy:#00CC00;
+  --sell:#CC0000;
+  --amber:#FFB020;
+  --red:#FF3B3B;
+  --dimred:#5A1414;
+  --gold:#D4A847;
+  --panel:#0A0A0A;
+  --panel2:#0F0F0F;
+  --line:#242424;
+  --mono:'JetBrains Mono','Berkeley Mono','Courier New',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--violet);color:#000;}
+a{color:inherit;}
+button{font-family:var(--mono);cursor:pointer;background:none;border:none;color:inherit;}
+.upper{text-transform:uppercase;}
+.mono{font-family:var(--mono);}
+
+.crt-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:500;
+  background:repeating-linear-gradient(to bottom,rgba(255,255,255,0.018) 0px,rgba(255,255,255,0.018) 1px,transparent 1px,transparent 3px);
+  mix-blend-mode:overlay;
+}
+.crt-vignette{position:fixed;inset:0;pointer-events:none;z-index:499;box-shadow:inset 0 0 180px rgba(0,0,0,0.7);}
+
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+section{padding:64px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+
+nav.topnav{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--violet-dim);}
+.topnav-inner{max-width:980px;margin:0 auto;padding:0 24px;height:52px;display:flex;align-items:center;gap:18px;}
+.logo{width:26px;height:26px;background:#000;border:1px solid var(--violet);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--violet);flex-shrink:0;overflow:hidden;border-radius:3px;}
+.logo img{width:100%;height:100%;object-fit:cover;display:block;}
+.brand{font-size:.72rem;letter-spacing:.14em;color:var(--dim);}
+.brand strong{color:var(--fg);}
+.brand .tag{color:var(--violet);}
+.hub-link{font-size:.66rem;color:var(--dim);text-decoration:none;border:1px solid var(--line);padding:4px 9px;border-radius:3px;white-space:nowrap;}
+.hub-link:hover{color:var(--fg);border-color:var(--dim);}
+.progress-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--dim2);border:none;position:relative;display:block;text-decoration:none;}
+.pdot.current{background:var(--violet);box-shadow:0 0 6px var(--violet);}
+.pdot:not(.current){cursor:default;}
+.pdot .tip{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:.58rem;white-space:nowrap;background:#111;border:1px solid var(--line);padding:3px 6px;display:none;letter-spacing:.06em;color:var(--dim);}
+.pdot:hover .tip{display:block;}
+
+/* ── proposal banner ── */
+.proposal-banner{
+  background:repeating-linear-gradient(45deg,rgba(139,124,240,.08),rgba(139,124,240,.08) 10px,rgba(139,124,240,.03) 10px,rgba(139,124,240,.03) 20px);
+  border:1px solid var(--violet);border-radius:4px;padding:14px 18px;
+  display:flex;align-items:center;gap:12px;margin:18px 0 0;
+}
+.proposal-banner .dot{width:8px;height:8px;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet);flex-shrink:0;}
+.proposal-banner .txt{font-size:.7rem;letter-spacing:.08em;color:var(--fg);}
+.proposal-banner .txt strong{color:var(--violet);}
+
+.hero{padding-top:40px;}
+.hero-term{background:var(--panel);border:1px solid var(--violet-dim);border-radius:4px;padding:20px 22px;position:relative;overflow:hidden;}
+.hero-term::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(139,124,240,.05),transparent 40%);pointer-events:none;}
+.boot-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:10px;}
+.hero-h1{font-size:1.3rem;font-weight:700;margin-bottom:8px;}
+.hero-sub{color:var(--dim);font-size:.84rem;max-width:640px;}
+
+.stage-eyebrow{font-size:.62rem;letter-spacing:.18em;color:var(--violet);margin-bottom:6px;}
+h2.stage-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;letter-spacing:.01em;}
+.stage-goal{color:var(--dim);font-size:.82rem;margin-bottom:26px;max-width:640px;}
+.callout{border-left:2px solid var(--violet);padding:10px 16px;margin:18px 0;font-size:.82rem;color:#D8D8D8;background:rgba(139,124,240,.06);}
+.callout.small{font-size:.74rem;color:var(--dim);}
+.callout.risk{border-left:2px solid var(--red);background:rgba(255,59,59,.06);}
+dfn.gloss{font-style:normal;border-bottom:1px dotted var(--violet);cursor:help;color:var(--fg);text-decoration:none;}
+
+/* ── Stage 2 — v2 vs v3 collateral comparison ── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr;}}
+.compare-card{border:1px solid var(--line);border-radius:4px;padding:18px;background:var(--panel);}
+.compare-card.no{border-color:var(--dimred);}
+.compare-card.yes{border-color:var(--violet-dim);}
+.compare-card .head{font-size:.68rem;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
+.compare-card.no .head{color:var(--red);}
+.compare-card.yes .head{color:var(--violet);}
+.compare-card .body{font-size:.8rem;color:#D8D8D8;line-height:1.7;}
+
+/* ── Stage 4 — collateral choice selector ── */
+.collateral-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:0;overflow:hidden;margin-bottom:18px;}
+.collateral-file{padding:14px 22px;font-size:.68rem;letter-spacing:.1em;color:var(--dim);border-bottom:1px solid var(--line);}
+.collateral-row{display:flex;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line);font-size:.78rem;align-items:baseline;}
+.collateral-row:last-child{border-bottom:none;}
+.collateral-row .k{flex-shrink:0;width:150px;color:var(--dim);}
+.collateral-row .v{color:var(--fg);}
+.collateral-row .v .pill{display:inline-block;font-size:.64rem;letter-spacing:.06em;padding:2px 8px;border-radius:10px;margin-right:6px;}
+.pill.usdc{background:rgba(255,255,255,.08);color:var(--fg);border:1px solid var(--line);}
+.pill.atn{background:rgba(139,124,240,.15);color:var(--violet);border:1px solid var(--violet-dim);}
+
+/* ── Stage 5 — Hyperlane bridge diagram ── */
+.bridge-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:24px;}
+.bridge-row{display:flex;align-items:center;gap:10px;font-size:.76rem;flex-wrap:wrap;}
+.bridge-node{border:1px solid var(--line);border-radius:4px;padding:10px 14px;background:var(--panel2);white-space:nowrap;}
+.bridge-node.autonity{border-color:var(--violet-dim);color:var(--violet);}
+.bridge-arrow{color:var(--dim2);font-size:.9rem;}
+
+/* ── Stage 6 — Canonicals mini-recreation ── */
+.recreation-label{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:.62rem;letter-spacing:.12em;color:var(--dim2);}
+.recreation-label .line{flex:1;height:1px;background:var(--line);}
+.cn-shell{background:#050505;border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+.cn-nav{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);background:#0A0A0A;}
+.cn-logo{font-weight:700;color:var(--gold);font-size:.9rem;}
+.cn-logo .beta{font-size:.55rem;color:var(--green);border:1px solid var(--green);border-radius:8px;padding:1px 6px;margin-left:6px;}
+.cn-tabs{display:flex;gap:16px;font-size:.7rem;color:var(--dim);margin-left:8px;}
+.cn-tabs .active{color:var(--fg);}
+.cn-body{padding:18px;}
+.cn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:640px){.cn-grid{grid-template-columns:1fr;}}
+.cn-card{border:1px solid var(--line);border-radius:4px;padding:12px;background:var(--panel2);font-size:.72rem;}
+.cn-card .name{color:var(--fg);font-weight:600;margin-bottom:6px;}
+.cn-card .meta{color:var(--dim);font-size:.66rem;}
+.cn-card .pool{color:var(--gold);}
+
+/* ── Footnote (BanZhuan) ── */
+.footnote{border:1px dashed var(--dim2);border-radius:4px;padding:12px 16px;font-size:.72rem;color:var(--dim);margin-top:14px;}
+
+/* ── nav back link ── */
+.page-nav{display:flex;justify-content:space-between;gap:16px;margin-top:40px;flex-wrap:wrap;font-size:.72rem;}
+.page-nav a{color:var(--dim);text-decoration:underline;text-underline-offset:3px;}
+.page-nav a:hover{color:var(--fg);}
+
+@media print{
+  .crt-overlay,.crt-vignette,nav.topnav{display:none;}
+  body{background:#fff;color:#000;}
+  .proposal-banner{background:none;border:1px solid #000;}
+  a{text-decoration:underline;color:#000;}
+}
+</style>
+</head>
+<body>
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo"><img src="data:image/jpeg;base64,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" alt="Autonity logo" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="brand"><strong>AUTONITY</strong> // <span class="tag">SPECULATIVE FUTURE-STATE</span></div>
+    <div class="progress-dots" id="progressDots">
+      <a class="pdot" href="index.html"><span class="tip">1 · HUB</span></a>
+      <a class="pdot" href="autonity-page1-protocol.html"><span class="tip">2 · PROTOCOL</span></a>
+      <a class="pdot" href="autonity-page2-money.html"><span class="tip">3 · MONEY</span></a>
+      <a class="pdot" href="autonity-page3-afp.html"><span class="tip">4 · AFP</span></a>
+      <a class="pdot" href="autonity-page4-clearing.html"><span class="tip">5 · CLEARING VS TRADING</span></a>
+      <a class="pdot" href="autonity-page5-autex.html"><span class="tip">6 · AUTEX</span></a>
+      <a class="pdot" href="autonity-page6-forecastathon.html"><span class="tip">7 · FORECASTATHON</span></a>
+      <button class="pdot current"><span class="tip">8 · ENDOGENOUS COLLATERAL (this page, speculative)</span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <section class="hero" id="hero">
+    <div class="hero-term">
+      <div class="boot-file">&gt;&gt; ENDOGENOUS_COLLATERAL.DAT</div>
+      <div class="hero-h1">Endogenous Collateral: What ASMv3 Would Have Unlocked</div>
+      <div class="hero-sub">Pages 1–6 are faithful recreations of things that existed. This page is different: it's a walk-through of a mechanism that was proposed and discussed, but never shipped. Nothing on this page is a recovered artifact — treat every screen and diagram here as a working sketch, not a historical record.</div>
+    </div>
+    <div class="proposal-banner">
+      <div class="dot"></div>
+      <div class="txt"><strong>PROPOSAL — NOT YET BUILT.</strong> ASMv3 was discussed by the community but never deployed. Everything downstream of it on this page is speculative.</div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 1 — The Problem ══ -->
+  <section id="stage-1">
+    <div class="stage-eyebrow">STAGE 1</div>
+    <h2 class="stage-title">Real Money Needs a Collateral Answer</h2>
+    <p class="stage-goal">Forecastathon ran on USDZ — explicitly play money, auto-provisioned per participant, zero real value at stake. Once the competition ended and "real money" activation began, every product creator had to answer one question before their contract could clear: what actually backs the margin?</p>
+
+    <div class="callout">
+      Per Page 6: collateral during the competition was auto-provisioned as 100,000 "play" USDZ plus a small ATN allotment for gas — explicitly flagged as fake, not a real-money instrument. Real-money activation is the moment that stops being true.
+    </div>
+    <div class="callout small">
+      The community's starting answer was USDC — the least novel, most liquid option available for a first real-money listing. That's where the next two stages pick up.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 2 — Why v2 Couldn't Do It ══ -->
+  <section id="stage-2">
+    <div class="stage-eyebrow">STAGE 2</div>
+    <h2 class="stage-title">Why a Pegged ATN Was Never Safe Collateral</h2>
+    <p class="stage-goal">The blocker wasn't technical plumbing — it was that ATN under ASM v1/v2 is a fundamentally different kind of asset than USDC.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card no">
+        <div class="head">ATN under ASM v1 / v2</div>
+        <div class="body">Actively defended peg. The <dfn class="gloss" title="Collateralized Debt Position-based stabilization mechanism, covered on Page 2">CDP/auction mechanism</dfn> is continuously minting and burning ATN supply to hold its market value to the ACU target. That's a protocol-managed asset whose supply changes in response to its own price — a materially different risk profile than an asset that simply floats.</div>
+      </div>
+      <div class="compare-card yes">
+        <div class="head">ATN under (hypothetical) ASM v3</div>
+        <div class="body">Free-floating target. No active peg defense — ATN moves like any other free-floating currency inside the ACU basket, the same way USD or EUR float against each other day to day. At that point ATN is economically the same category of instrument as the fiat currencies already routinely used to collateralize derivatives in TradFi.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      This is the same ASMv3 already logged on <a href="autonity-page2-money.html#stage-1" style="color:var(--violet);text-decoration:underline;">Page 2's ASM_VERSION_HISTORY.DAT</a> — free-floating target, RAI-PID-controller-inspired, never deployed. There's no separate proposal here: the free float and the collateral-enablement are the same mechanism viewed from two angles.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 3 — Collateral Choice at Contract Creation ══ -->
+  <section id="stage-3">
+    <div class="stage-eyebrow">STAGE 3</div>
+    <h2 class="stage-title">Collateral Choice at Contract Creation</h2>
+    <p class="stage-goal">Not a protocol-wide switch. Each contract creator picks the collateral asset for their own product at listing time — the same permissionless, per-product logic that already governs venue listing on Page 4.</p>
+
+    <div class="collateral-panel">
+      <div class="collateral-file">&gt;&gt; COLLATERAL_SELECTION.DAT</div>
+      <div class="collateral-row">
+        <span class="k">Pre-ASMv3</span>
+        <span class="v"><span class="pill usdc">USDC</span>only option available at real-money activation</span>
+      </div>
+      <div class="collateral-row">
+        <span class="k">Post-ASMv3</span>
+        <span class="v"><span class="pill usdc">USDC</span><span class="pill atn">ATN</span>creator selects per contract, at creation</span>
+      </div>
+      <div class="collateral-row">
+        <span class="k">Existing contracts</span>
+        <span class="v">Unaffected — collateral choice is fixed at creation, not retroactively switchable</span>
+      </div>
+    </div>
+
+    <div class="callout small">
+      A separate, non-speculative data point: <strong>LNTN</strong> (the validator-specific staking receipt covered on Page 2) was also planned as CDP collateral — but that was never implemented either, independent of anything ASMv3-related. Two different collateral expansions, both real plans, neither shipped.
+    </div>
+
+    <div class="callout small">
+      This mirrors Page 4's Contract Portability framing: the AFP's whole pitch is that decentralization means choice at the product level, not a single protocol-wide default imposed on every listing.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 4 — The Hyperlane Bridge ══ -->
+  <section id="stage-4">
+    <div class="stage-eyebrow">STAGE 4</div>
+    <h2 class="stage-title">The Hyperlane Bridge: A Second Price Feed</h2>
+    <p class="stage-goal">Autonity's native oracle network is validator-run — good for liveness, but Page 2 already flags it as a single point of failure shared by ACU, ASM, CDP, and AFP simultaneously. An independent community-built bridge carrying Chainlink prices in is a second, externally-sourced feed that doesn't depend on Autonity's own validator set.</p>
+
+    <div class="bridge-panel">
+      <div class="bridge-row">
+        <div class="bridge-node">Chainlink price feed</div>
+        <div class="bridge-arrow">──▶</div>
+        <div class="bridge-node">Hyperlane Mailbox + ISM</div>
+        <div class="bridge-arrow">──▶</div>
+        <div class="bridge-node autonity">Autonity (Bakerloo + Mainnet)</div>
+      </div>
+    </div>
+
+    <div class="callout small">
+      The Hyperlane deployment onto both Bakerloo and Mainnet, and the specific projects that used it below, come from community record rather than independent public confirmation — the same standing the Feb 2026 stand-down has on Pages 5–6: stated as reported, not verified.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 5 — Canonicals ══ -->
+  <section id="stage-5">
+    <div class="stage-eyebrow">STAGE 5</div>
+    <h2 class="stage-title">Canonicals: A Project That Used It</h2>
+    <p class="stage-goal">Canonicals (canonicals.co) is a real, live distribution-market platform: instead of a single yes/no probability, it lets forecasters predict a full value — oil prices, a stock index, weekly temperatures — using what it calls Time-Series Predictions (TSP), confirmed directly on its docs site (docs.canonicals.co/docs/introduction). It went live in early February 2026 — before Hyperliquid's unrelated, similarly-named "canonical prediction markets" product, which followed in May 2026; the two aren't connected. Its thesis is that binary prediction markets throw away the nuance of crowd wisdom by collapsing everything to one probability; a distribution market captures the shape of that uncertainty and is, in its view, more informationally efficient. It resolves via Chainlink Functions, and its Autonity-specific deployment is the one that needed the Hyperlane bridge above to get Chainlink prices onto the chain.</p>
+
+    <div class="recreation-label"><span class="line"></span>SIMPLIFIED RECREATION<span class="line"></span></div>
+    <div class="cn-shell">
+      <div class="cn-nav">
+        <div class="cn-logo">Canonicals<span class="beta">Beta</span></div>
+        <div class="cn-tabs"><span class="active">Market Expiries</span><span>My Predictions</span><span>My Wallet</span></div>
+      </div>
+      <div class="cn-body">
+        <div class="cn-grid">
+          <div class="cn-card">
+            <div class="name">ETH-ClosePrice-W</div>
+            <div class="meta">Expiries: 3 · <span class="pool">fUSDC pool</span></div>
+          </div>
+          <div class="cn-card">
+            <div class="name">USAWeeklyInitialClaims</div>
+            <div class="meta">Expiries: 3 · Source: Chainlink</div>
+          </div>
+          <div class="cn-card">
+            <div class="name">TemperatureLondon-W</div>
+            <div class="meta">Expiries: 2 · <span class="pool">fUSDC pool</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout small" style="margin-top:14px;">
+      Real confirmed mechanics behind each expiry, per Canonicals' own UI: a prediction is a single value (not a range) staked against a lognormal or normal price model — e.g. a real CrudeOilBrent-W expiry showed a $60–$150 prediction range, 40% annualized volatility, a 100 fUSDC minimum stake, and a 2.25% expiry fee. Payout uses three named parameters — <strong>Multiplier</strong>, <strong>Alpha</strong>, and <strong>Time cost</strong> — rather than a simple linear payout, and a "What others think" panel shows the pool's average prediction and largest single stake before an expiry resolves. Expiries move through a visible lifecycle (Pending → Live → Cancelling/Tradeout → Settlement); a "Cancelling" expiry lets forecasters withdraw their stake.
+    </div>
+
+    <div class="callout small">
+      Collateral shown as <strong>fUSDC</strong> — explicitly a fake/test token, not real USDC. Canonicals' beta runs on Sepolia and Monad mainnet in addition to its Autonity deployment.
+    </div>
+
+  </section>
+
+  <!-- ══ STAGE 6 — The Long-Term Plan: Perpetual Contracts ══ -->
+  <section id="stage-6">
+    <div class="stage-eyebrow">STAGE 6</div>
+    <h2 class="stage-title">The Long-Term Plan: Perpetual Contracts</h2>
+    <p class="stage-goal">Dated futures were a stepping stone, not the destination — this was discussed publicly in multiple community channels, not a hidden roadmap item.</p>
+
+    <div class="callout small">
+      The stated long-term direction for AFP was a perpetual-style contract — no expiry, continuously funded, the same shape as a Hyperliquid or dYdX perpetual (see Page 4's comparison) but settling on arbitrary time-series data instead of just crypto prices. Dated Forecast Futures were the practical way to get there: simpler to clear, simpler to price, and a real product to ship while the harder perpetual-funding mechanics were worked out.
+    </div>
+    <div class="callout small">
+      Contract duration itself was never fixed by the protocol — a product's contract designer could have set it to daily or semi-weekly if they'd wanted to. In practice, the products actually deployed during Forecastathon were weekly, monthly, and quarterly. The gap between "could have been much shorter-dated" and "what actually shipped" indicates how far the roadmap had moved toward a perpetual-shaped product by the time development stopped in February 2026.
+    </div>
+    <div class="callout small">
+      Two open questions follow from the above. First: if AFP had shipped a genuine perpetual contract, would its funding-rate mechanism have needed the same free-floating ATN (ASMv3) that endogenous collateral depends on — or could it have worked with the pegged v1/v2 ATN this page treats as unsuitable collateral? Second: was "dated futures first, perpetuals later" a deliberate de-risking sequence, or simply the point the roadmap had reached before the February 2026 stand-down? The public record does not settle either question.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 7 — Open Questions ══ -->
+  <section id="stage-7">
+    <div class="stage-eyebrow">STAGE 7</div>
+    <h2 class="stage-title">Open Questions</h2>
+    <p class="stage-goal">Endogenous collateral carries real trade-offs. The main risks are set out plainly below.</p>
+
+    <div class="callout risk">
+      <strong>Reflexivity.</strong> If ATN can be both AFP collateral and a traded underlying (an NTN/ATN Forecast Future, for instance), the collateral asset and the thing being traded on it could become the same instrument — a circularity that doesn't exist when collateral is an external stablecoin.
+    </div>
+    <div class="callout risk">
+      <strong>Shifted, not eliminated, trust.</strong> The Hyperlane bridge doesn't remove the single-point-of-failure problem from Page 2 — it moves the trust assumption from Autonity's own validator set to Hyperlane's independent validator/relayer set. That's a different failure mode, not a solved one.
+    </div>
+    <div class="callout risk">
+      <strong>Correlated liquidation risk.</strong> If ATN price and AFP margin health move together during stress (which is plausible if ATN is both collateral and a widely-traded product), liquidation cascades could be sharper than with an uncorrelated stablecoin collateral base.
+    </div>
+  </section>
+
+  <div class="page-nav">
+    <a href="autonity-page6-forecastathon.html">← Page 6: Forecastathon</a>
+    <a href="index.html">☰ All pages</a>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRACK_A // AUTONITY — Recovered Terminal</title>
+<meta name="description" content="Autonity Track A — a recovered terminal exploring the Autonity blockchain's financial infrastructure. Seven recovered pages from the Forecastathon project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="autonity-logo.jpg">
+
+<style>
+:root{
+  --bg:#000000;--fg:#FFFFFF;--dim:#7A7A7A;--dim2:#4A4A4A;
+  --green:#66FF66;--orange:#FF5900;--teal:#0D7680;
+  --violet:#8B7CF0;--buy:#00CC00;--sell:#CC0000;
+  --amber:#FFB020;--red:#FF3B3B;--dimred:#5A1414;
+  --gold:#D4A847;--panel:#0A0A0A;--panel2:#0F0F0F;--line:#242424;
+  --mono:'JetBrains Mono','Berkeley Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--fg);font-family:var(--mono);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::selection{background:var(--green);color:#000;}
+a{color:inherit;text-decoration:none;}
+button{font-family:var(--mono);cursor:pointer;background:none;border:none;color:inherit;}
+.crt-overlay{position:fixed;inset:0;pointer-events:none;z-index:500;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0px,rgba(255,255,255,.018) 1px,transparent 1px,transparent 3px);mix-blend-mode:overlay;}
+.crt-vignette{position:fixed;inset:0;pointer-events:none;z-index:499;box-shadow:inset 0 0 180px rgba(0,0,0,.7);}
+nav.topnav{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+.topnav-inner{max-width:980px;margin:0 auto;padding:0 24px;height:52px;display:flex;align-items:center;gap:18px;}
+.logo{width:26px;height:26px;background:#000;border:1px solid var(--fg);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.brand{font-size:.72rem;letter-spacing:.14em;color:var(--dim);}
+.brand strong{color:var(--fg);}
+.progress-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--dim2);border:none;position:relative;display:block;text-decoration:none;}
+.pdot.current{background:var(--green);box-shadow:0 0 6px var(--green);}
+.pdot:not(.current){cursor:default;}
+.pdot .tip{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:.58rem;white-space:nowrap;background:#111;border:1px solid var(--line);padding:3px 6px;display:none;letter-spacing:.06em;color:var(--dim);}
+.pdot:hover .tip{display:block;}
+.hub-tag{margin-left:12px;font-size:.62rem;letter-spacing:.08em;color:var(--dim2);border:1px solid var(--line);padding:2px 8px;border-radius:2px;}
+.nav-gloss-link{margin-left:auto;font-size:.62rem;letter-spacing:.1em;color:var(--dim);border:1px solid var(--line);padding:3px 9px;border-radius:2px;transition:all .15s;}
+.nav-gloss-link:hover{border-color:var(--teal);color:var(--teal);}
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+section{padding:56px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+.hero{padding-top:52px;padding-bottom:60px;border-bottom:1px solid var(--line);}
+.hero-boot{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px 24px;position:relative;overflow:hidden;}
+.hero-boot::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,118,128,.06),transparent 50%);pointer-events:none;}
+.boot-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:10px;}
+.boot-line{font-size:.82rem;color:var(--dim);min-height:1.3em;white-space:pre;}
+.boot-line.done{color:var(--fg);}
+.hero-title{margin-top:24px;font-size:1.6rem;font-weight:700;letter-spacing:.02em;}
+.hero-subtitle{font-size:.86rem;color:var(--dim);margin-top:10px;max-width:600px;}
+.hero-badges{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.hero-blurb{font-size:.78rem;color:var(--dim);margin-top:16px;max-width:620px;line-height:1.7;}
+.badge{font-size:.6rem;letter-spacing:.1em;padding:3px 9px;border:1px solid var(--line);color:var(--dim);}
+.badge.green{border-color:var(--green);color:var(--green);}
+.badge.teal{border-color:var(--teal);color:var(--teal);}
+.grid-label{font-size:.62rem;letter-spacing:.18em;color:var(--dim);margin-bottom:20px;}
+.page-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.page-card{border:1px solid var(--line);background:var(--panel);padding:20px 22px;border-radius:3px;transition:border-color .15s,background .15s;display:block;position:relative;overflow:hidden;}
+.page-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,118,128,.04),transparent 60%);pointer-events:none;opacity:0;transition:opacity .2s;}
+.page-card:hover{border-color:var(--teal);background:#0c0c0c;}
+.page-card:hover::before{opacity:1;}
+.page-card.violet{border-color:#2a2a3a;}
+.page-card.violet:hover{border-color:var(--violet);}
+.card-num{font-size:.6rem;letter-spacing:.12em;color:var(--dim);margin-bottom:8px;}
+.card-title{font-size:.88rem;font-weight:600;margin-bottom:6px;}
+.card-desc{font-size:.74rem;color:var(--dim);line-height:1.55;}
+.card-tag{display:inline-block;margin-top:12px;font-size:.58rem;letter-spacing:.08em;padding:2px 7px;border:1px solid var(--line);color:var(--dim);}
+.card-tag.teal{border-color:var(--teal);color:var(--teal);}
+.card-tag.violet{border-color:var(--violet);color:var(--violet);}
+.card-arrow{position:absolute;top:16px;right:16px;font-size:.7rem;color:var(--dim2);transition:color .15s,transform .15s;}
+.page-card:hover .card-arrow{color:var(--teal);transform:translateX(2px);}
+.page-card.violet:hover .card-arrow{color:var(--violet);}
+.seq-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;margin-top:18px;}
+.seq-title{font-size:.7rem;letter-spacing:.08em;color:var(--dim);margin-bottom:16px;}
+.seq-track{display:flex;gap:0;overflow-x:auto;padding-bottom:8px;}
+.seq-step{flex:0 0 auto;min-width:120px;border:1px solid var(--line);border-radius:3px;padding:12px 14px;position:relative;}
+.seq-step::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--dim2);font-size:.7rem;}
+.seq-step:last-child::after{display:none;}
+.seq-num{font-size:.58rem;color:var(--dim);letter-spacing:.06em;margin-bottom:4px;}
+.seq-name{font-size:.72rem;font-weight:600;margin-bottom:4px;}
+.seq-sub{font-size:.62rem;color:var(--dim);}
+.seq-step.current{border-color:var(--green);}
+.seq-step.current .seq-name{color:var(--green);}
+.seq-step.speculative{border-color:#2a2a3a;}
+.seq-step.speculative .seq-sub{color:var(--violet);}
+.gloss-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;}
+.gloss-note{font-size:.72rem;color:var(--dim);line-height:1.7;margin-bottom:16px;}
+.gloss-note:last-child{margin-bottom:0;margin-top:16px;}
+.gloss-note a{color:var(--teal);text-decoration:underline;text-underline-offset:3px;}
+.gloss-note a:hover{color:var(--fg);}
+.gloss-note strong{color:var(--fg);}
+.gloss-list{display:grid;grid-template-columns:120px 1fr;gap:10px 16px;}
+.gloss-list dt{font-weight:700;font-size:.78rem;color:var(--green);letter-spacing:.03em;}
+.gloss-list dd{font-size:.76rem;color:var(--dim);line-height:1.6;}
+@media(max-width:640px){.gloss-list{grid-template-columns:1fr;gap:2px 0;}.gloss-list dt{margin-top:10px;}.gloss-list dt:first-child{margin-top:0;}}
+footer{padding:36px 0 60px;}
+.vstrip-wrap{position:relative;}
+.vstrip{display:flex;gap:5px;flex-wrap:wrap;cursor:help;}
+.vstrip .vd{width:9px;height:9px;border-radius:50%;}
+.vstrip .vd.g{background:var(--green);}
+.vstrip .vd.r{background:var(--red);}
+.vstrip .vd.a{background:var(--amber);}
+.vstrip .vd.u{background:var(--dim2);}
+.vstrip-tip{display:none;position:absolute;bottom:22px;left:0;background:#111;border:1px solid var(--line);padding:8px 12px;font-size:.68rem;color:var(--dim);white-space:nowrap;}
+.vstrip-wrap:hover .vstrip-tip{display:block;}
+.foot-legend{margin-top:10px;font-size:.6rem;color:var(--dim2);letter-spacing:.05em;}
+.foot-links{margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;}
+.foot-links a{font-size:.62rem;letter-spacing:.08em;color:var(--dim);transition:color .15s;}
+.foot-links a:hover{color:var(--teal);}
+.foot-meta{margin-top:24px;font-size:.64rem;color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+@media(max-width:640px){.page-grid{grid-template-columns:1fr;}.hero-title{font-size:1.2rem;}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+/* ── keyboard accessibility (L3) ── */
+a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:2px;}
+.page-card:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;}
+
+/* ── print stylesheet (L3) ── */
+@media print{
+  .crt-overlay,.crt-vignette,nav.topnav{display:none;}
+  body{background:#fff;color:#000;}
+  .page-card,.hero-boot,.seq-panel,.gloss-panel{border:1px solid #999;background:#fff;}
+  a{text-decoration:underline;}
+}
+</style>
+</head>
+<body>
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gKgSUNDX1BST0ZJTEUAAQEAAAKQbGNtcwQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtkZXNjAAABCAAAADhjcHJ0AAABQAAAAE53dHB0AAABkAAAABRjaGFkAAABpAAAACxyWFlaAAAB0AAAABRiWFlaAAAB5AAAABRnWFlaAAAB+AAAABRyVFJDAAACDAAAACBnVFJDAAACLAAAACBiVFJDAAACTAAAACBjaHJtAAACbAAAACRtbHVjAAAAAAAAAAEAAAAMZW5VUwAAABwAAAAcAHMAUgBHAEIAIABiAHUAaQBsAHQALQBpAG4AAG1sdWMAAAAAAAAAAQAAAAxlblVTAAAAMgAAABwATgBvACAAYwBvAHAAeQByAGkAZwBoAHQALAAgAHUAcwBlACAAZgByAGUAZQBsAHkAAAAAWFlaIAAAAAAAAPbWAAEAAAAA0y1zZjMyAAAAAAABDEoAAAXj///zKgAAB5sAAP2H///7ov///aMAAAPYAADAlFhZWiAAAAAAAABvlAAAOO4AAAOQWFlaIAAAAAAAACSdAAAPgwAAtr5YWVogAAAAAAAAYqUAALeQAAAY3nBhcmEAAAAAAAMAAAACZmYAAPKnAAANWQAAE9AAAApbcGFyYQAAAAAAAwAAAAJmZgAA8qcAAA1ZAAAT0AAACltwYXJhAAAAAAADAAAAAmZmAADypwAADVkAABPQAAAKW2Nocm0AAAAAAAMAAAAAo9cAAFR7AABMzQAAmZoAACZmAAAPXP/bAEMABQMEBAQDBQQEBAUFBQYHDAgHBwcHDwsLCQwRDxISEQ8RERMWHBcTFBoVEREYIRgaHR0fHx8TFyIkIh4kHB4fHv/bAEMBBQUFBwYHDggIDh4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHv/CABEIAZABkAMBIgACEQEDEQH/xAAcAAEAAgMBAQEAAAAAAAAAAAAABwgEBQYDAQL/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAGGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGd2hHqbN4V3WNwSAEvceci/f4AB7Hi6ccw6ccw3OmAAAAAAAAAAAAABJZxsxyJmGNkgAABoIWsQKZpxhA/Mix1Y870AwiDoxy8QAAAAAAAAAAAAEjm7ml9AB4nsjXjSfFe90TU5zowBBk54ZVO2cPzKAItlKrxygAAAAAAAAAAAAMy1sOTsAD4autux4kAA97DVy2xbZ4e4B5+gAcvVyVIqAAAAAAAAAAAAB7lk+y8PcAcd2MGETAAAAsb38FTqAAMbJjQgzBAAAAAAAAAAAASCR90Ug7klAACsVnYiIQTGIcTGIcTGIcTGOMs5EEvgACslkogIbTGIcTHHRoQAAAAAAAAALT1otyfsAAAAAAAAAAAACt9kK3nBgAAAAAAAAA3MkQ8Jh3MC9EWqAAh2YqtncoeEwoeEwoeEwoeE2TBWWzQABFeo1EakwoeEwx5oQAAAAAAAAAAA9/AXF9+O7EAQBP8eFdgAAD0JjmXRb0AAiiCrPVhAAAAAAAAAAAAAAJanKodrzNA8fYVP0dn64GvAAk/mbLGaAADxqdbfiCtTLxAAAAAAAAAAAAABLsRehchwndgDVbUQ5y1jBW7sZgGLlAAcV8O2ABrNZ0w5mCrN1vODAAAAAAAAAAAABlT/Xb9FyleZgOmAAAA0uHXM/GNgiyfc03k8nlz+/PoFb7IVvODAAAAAAAAAAAAAA+/B0fXxaJ12tdRY7HryJt5HgB7eIAAfdvpx033mB0+lwgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB/8QAKRAAAQMDAwQCAgMBAAAAAAAABAIDBQABBhYgQAcTFBUQMBI2ESGQMf/aAAgBAQABBQL/ACeFFIKUJiMq9Q+Et2pGHxNqviMNT2Gx6qJwl61G47LC2Va6b7Gm1uuegmK9BMV6CYr0ExRkYeG3zY2NLkXYnEBWLMMMsI3yURHyCZ7FygbfOBB+RMbOoB3ekuZjeMOm0KMwKz9eV40lxN/jBg/Fhfk4hAohbyySeXiOOWXb7s6hrMORYqjZBpCWm/nqEd2gOXhcN55W151tluQzCPYu9mkgq9sxlaEzZf8AMVMgSVthg7ZQuFxKx5jZlRvnTXKDYcKJjA2wAdkocxHCTcwXKPbGnFtOYjOezY2WSlN/nKDfBhuX08B7hmz/AJWWyt5GR3RRiwD2HUPM7+oZ3dN5eGjeNA7MvNuFCfRghXkQm4p5A455CyzOUwi7rw7dmmNnUYn8jPo6ckfiduz87sRfLxtvuzu3MHe7kH0Ye92cg3Zeb5s3yYDGlyoWh11C4pePkdp2HrKM0OutDrrQ660OutDrrQ660OutDroPDnBy9pCVrYvhDl76HXWh11oddTkf6yQ4uMD+NB8vO/2PiR7FyTkJshHLzv8AY+JEGWjz9cOVrhyoXK1SEjtKzJ1gnXDla4crXDla4crXDla4crXDla4coPMXSC9svlbsfI64crXDla4crXDlTkheTkOPjbnanNuVNdmf+jDWO/kG3qEx25nmMru08wuzrGzqGP25b6OnAm7qOP8AkDzcOJ8mB2Z6H5EPvQm61QIXr4rbl7Hfx/m9OzvwK2PtoeZmwFxsjuwWKuSZuebS6zKCOAn8wAlYZgRDZYuzJYZuWFOFICI2QEORKkhDNBjb8og0SrBQ7wr3MwKX7bm2QjxD2j8KTdTmIy6aRikwpUXhiUqGYZGZ+kwAMyvQQ9egh6zAZgWc5KFXQrFJtMkN9uWS1o2PxOXRJAb87/Y+UM+6O9jeSMHp+uXkR40SVOekTAyXgyMcyEeTRuzv9j5dv6qFyowOo2cjT/pnJkWLZlZEmSJ+EqulULlxDFATEcdbZnf7HzgpuTEobNDkUxmoqqTl8RetXQ1LzCKtRGbN2sdlkoRTq1uL3MyUgxXvpevfzFe/mKLJfLe/yU//xAAUEQEAAAAAAAAAAAAAAAAAAACQ/9oACAEDAQE/ARx//8QAFBEBAAAAAAAAAAAAAAAAAAAAkP/aAAgBAgEBPwEcf//EAEEQAAECAwIJBwoFBAMAAAAAAAECAwAEESAhEhMiMTVAUZPhJDAyNEFhcQUjM0JSYnKBobEQFIKRkhWQwdFTY3P/2gAIAQEABj8C/tPYMuwt0+6Iq4G2B7xjlE6T3JTGVjVfqj0bu8jzbrqPrHJ5xCu5SaRVUsVp2oviigQe+ylttJUtRoAI6g7HUHY6g7HUHYDk1LLaSTSp17FyrRVtPYIC55WPc9kdERgMtpbTsSOY5RLpwvbFxhT0vyhgfyFjHqGQwK/OymUSchgX/EddTMzlW5fsT2rgMy7aW0DsHOKnfJ6KLzrbHb4filwjLfOGfDssOzDnRbTWHH3OktVTriZ+fRk522z9zz/9Rl0+bWfOAdh2wzLJ9dVIS2gUSkUFhuSScp41V4DXPzT6eTtH+RtFx1aUIGckwUy6FzCtouEeaYZR9YvSx/GKTMmCNqFRSXey/YVcbLku6KoWKGJtx4dXOLT3my84DVCTgJ8Brbcu0KqWaCG5VvMgfvZVMPm4ZhtMEuqKWq5LYzCyHG1FK05iIxD55S2L/eG2ySABXPYedBotQwUeJ1xydWMloYKfE2lJQrk7VyP922ppHqG/vEIeQapWKjmG5JJyWhVXjrjF17mWfnZdKTRbmQnmQ2TlMqwbbjzholCamHZledxVdbQ0M61AQhsZkpAssSgNyE4R8TzL8sTctGEPlbTKpOW+fprkoj/sBtTJ9k4PMy19yjg23SDVDeQnWvzP5oMjCoBgVjSKd1xhubM6HMD1cXT/ADadmD5QAxiiqmK4xpFO64xpFO64xpFO64xpFO64xpFO64xpFO64xpFO64xpFO64w1MDyiKtqCvRcbS0NrwFqTQKpmip8pCv/lxjSKd1xjSKd1xjSKd1xhUoXcbggHCpTVpVulDgYR+euO/An7aqywPXWBAQMwFNcd+BP21VubxWNwPVrSNHJ3vCNHJ3vCG5RUmlvD9bDracZPk9OQop9JwjRyd7wjRyd7wjRyd7wjRyd7wjRyd7wjRyd7wjRyd7wjRyd7whpgeT01cUE+k4WnZQyKVYBz4zP9I0cne8I0cne8I0cne8I0cne8IVNlrF4QAwa11iUWf+QC1Np2rrzLF1yMs2ku0udb11DgzpUDCHBmUkGy2/S51v6jmZidUPcTal5jtQvB/fXmL728g/KzjkiqmFYXy7eYCUipNwhmW9YCqvG1Mj2Rhftrzsio3ODCT42VtOCqVihEOSyswOQdot/n3U+ZZ6Peq2tpXRWKGHZVwXpN3eNdamW+k2qsNzDRqlYqLNLkvo9Gv/ABBYmWyhYsgJBSyOm5shEuwnBQgUHMYxuiZlHRO3uhTL7ZbWnODrv9MfVkqvaPfstYuaZSsdh7RBVJTWD7rgi5LS/BcUxKE+KoC/KD+H7iP9wGWGw2hOYDmh+Zl23abRHUGo6g1DjMu2G2wlNw8NaCkmhGYwGXlUmkC/3u/nilCuUO3I7u+EoWvlLYosbe/mHfgT9tbS8ysoWnMRCWJohqZ+iucMw+fhT2qMKmXjecw2CEvy6yhae2A04Q1Ndqfa8LbvwJ+2uhqZ5Qz39IQA1MBK/YXceZJcUFO+q2DeYL0wuuxPYn8QpJIIzEQGp9Jfb9sdIR5iZRX2TcbLvwJ+2v0am3MHYq8RR9hl36R52VWjwVWMouj9Eekd3cZONV+mPMSRJ95UENqQwPcEFbiytRzkm35qcfT+uOvux192OvuwXphwuOHtP9pX/8QAKxABAAECAwcDBQEBAAAAAAAAAREAISAxQTBAUWFxgfGRobFQwdHh8BCQ/9oACAEBAAE/If8Ak917qsUSJHPfQowUdbP5om1+spRYe7/GFNJmik+lOjrVqtKswQmECgM2WvAleBK8CV4EqJgRqu/Wofk9Zp6udkfkome5QDYOBDLDD3pMW6YLPM1wZsbvz2MLaVFx/RvsSc/kfiKynJjs29RKOxW5+agiiQmZ/llfAARq4fONKUKXd7fJxygbP+MqACAg20I5AN/JqQa2ngavpQHAiNAwaEcP613zNPaDlw+lABAQYdAGrBQFl5Fq0H4M1G3J1/mhnV269Go8IkvxOuGZAdWbDkjM19Pn6AVskJB6glLVeLVwwl8oz4RQpRdPI4W/5KoRoFGYYjixygzfoD2kcX1P9ZfOFQKsBTcVU9HjjNbey9QqJkr8nYfIPr+t8GdCf4ntGHPT+1vn7bFZ6U+mZjkCM3SlFvenlveSaHuxQDwJOhhe9HL+NDYvahBzX7xlE9ycuf23w2iT2F8XJ79JsZkwU+5j+3G/P33pbeFl+Ncz/Ki9M7LluOI8zzQidiqqqqqqqqXFCGqGcQ/TCpSdYpkmmVwVVVTHliL0k5btJkmBzu+o1EPLE96IWBDofUanIb6LO615lTzKhGGZC1bhGJltnJ3hp5lTzKnmVPMqeZU8yp5lTzKg54RnaWMS1JYaIaNPMqeZU8yp5lQVjhFqCM94F5B7y2KwEEHvfY6tK9j94oLgBniln7b7lhJ7M048iXqYUFsl+x+NjZzSPnftigkul0H636RMif6cowofvWbfZsEuLgNWigj1bu4oBJTPdv3xXTZ+3xhEC67UaCdvE7Ljz6DOf1GMkZT0kp0AsXoO+tVYdfKoTj/iwwVDT9xyrRE668zC4Z7xYcDnVi4h99hbqV3I8VJSqB76TQHkOWruxcZBB6DUQJpM9ym6SnjmBirMRfLO9BEVA4NkSNMN87149rx7SJ8jLvvRK75DMaPBZrp4NtFqBMz4qEGZSbj6GqR8cuyrJQ+9unz5bTkqwegK0bXoaQU9UrD4oHULrbm/D6HUlSMJk1G1K11jk60YlKMvsFxs+cOBU3ZpZHA/1sLSiEo0YWP4mik7jYOzQiSfQqioOGa3zUUBNUl1AD2r+BRl36mvLqNY+kpYaGbPxQaj6nq0vSpllxFmSjIEMiUUGR7teRK8iUReAc+3/JX/2gAMAwEAAgADAAAAEPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPNPPNPPPMMPPPPPPPPPPPPPPPDPPPPGNKPPNPPPPPPPPPPPPOHPOPMPPKJPIPPPPPPPPPPPPPPPPFPPGNPPPPPPPPPPPPPPPPPNPPPPPPHPPPPPPPPPPPPPPPPNPPLMMMMHPPOMMPPPPPPPPPPMPPPPPPPPPPPPPKPPPPPPPPPPHOPPPPPPPHPPFPLPPPPPPPPPPPLHPOPPPPNPPPPPPPPPPPPPPPPPFPLEPPIPPPCPPPPPPPPPPPPPPLNPPLLHPPPPLGPPPPPPPPPPPPPPMNPPPMDMPPKPPPPPPPPPPPPPPPPDHPHPPLLDPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP/xAAUEQEAAAAAAAAAAAAAAAAAAACQ/9oACAEDAQE/EBx//8QAFBEBAAAAAAAAAAAAAAAAAAAAkP/aAAgBAgEBPxAcf//EACkQAQABAgQFBQEBAQEAAAAAAAERACEgMUFRQGFxgZEwobHB8PEQkNH/2gAIAQEAAT8Q/wCT1z2QhvUljvWcKpifJRNLoK7svaipGMz4tQBHcWh2dcpbfKUqZvkgSVe2axodC/tTvDhxGyOWEtCkSpgCk39XmvzX3X5r7r8191GF/wCBCsF9h469Wr5B3Wx0zq3pSmdtv1sdKJ/MCkdvQhdAC6M595qVPDdtWQ3PBgW9BmLZD1ze2GV7MJtcM9AHd41JYRfC5fLm6b0SAIhTq7vN9MARBGyOtHVG295pGW41pWyIQhHb/Bvdwl3IPF++AIAHrFiTuYO9OZbzup4zScBI5hOm3c0CABABAHrZCSEDNgbaufWjukdE3Z7EmjotNYEB4MBxtBjc3usPHGFY5R7G5zDN7FAgAQAQBhL4EhG5rU6eAin8idClW3xbzJRll1yKmp6iHiR71EEgJDvCydJwmvLCZSWTmN6dozHZcR8XAUBVgKG61YyKJJ1Ze/FocHWyubyM6A2MEhzV5rLhjn+FG2LVadM5Xj0nkauE1aXYWolBU86NOBvonR1w2qpsMUS7sYEvdMNwkE6EvalVVZW68Xc8Cgs5idA+GEiwJVyCh5BVujHNVLcgxqCipsCWbqTQOt/wBPn0Fl6Djnlj0h54wSAy93/wYTB4QmAlkdA+ix2ZWY/pfbGBRDtATSMlmLMFt2EHbi/fYLIfNB/IDIAPrDP6AzqQT0930WebIbRfHsx2BDE3I2XVR54yVMM/XLEs4oByiPR7ykmYDzGPZOMyQ2R1TxV/vtEQTK1dSOVf2lVTQhKSjUjPbEsG4ldTE54r+0r/AGlf7Sv9pX+0r/aV/tK/2lZ1X8kihO+KMsMa0EkkFwmOtKeUhKrm1/tK/wBpX+0qvAsZwoXOU78NZGLur8nGfobeFk0zbhE+01BaY7BB7HGfobeFY3JOKhBscpnL/UCBN5AlISXGct8S2mCK4JjJMT6KBAgQIECBAaheNIpR1UZXw3w9tVBglEjvhQIECBGXNBhSkGcbcRDkUP63xLcJnGhPt6LBejIGz5GJZeW3N9jjUxtktyHxR+SA1AfvC+IEY5oo8PokLckk2uj4dsRS+uxlM+Txxjl4NxyT3YWeSQEoH0Lt6A1mhSowFKcCqa/CrHbFpUo7yDbtPHBFYjWxbB1U4WSkIAEJS06is9fas8xxloWzWnHLM80xxpB0agfmlUDAzGS6kca7oCGwbrqSUQSHDMSXXMZO2FMypBrrzXtnSiGuNjuZI7mEEs+oDcehQ0xtQ7p1VuvoGBfltm59tnSrIUAHqbnM40BadlP7OY5zviizQkBPqNylSLLZPI+4qJnbh9hQI2unPE0SkIhq8kunQKtu6BOfN5vpMTMnJbGaOU1+A+6/AfdAokZAgrfd4oblWYAyI0O6A6Ibc53NH1hYqisRHJCbc4oJJ7G1g7jrz9D9DbxZcexBR8nKiagCKTu3Jbu3qE5sIiwsHy6VO2SG23hFTTnNzNUajqUINRCNuufuOeP9Dbxg1yJBhHcoA5wsP7KHzQ87LgDsCw9lpAERG4noJgOhTaPyGnLSI2Nq/eb/AKFYSBBkiZNROkSAOentedTB8lP+xpQBBG4jZwfobeOSIiiXEorSj2pEoOlfx0hlT2oTQcA7F1THZX1KSLJW4OmQufmgxDR12Je9aNR7XzNSqpAdzW+JIIiXE0ogRoFQchUo4Izcv1X5r6r819UlBDiQIC2x/wAlf//Z" alt="Autonity logo" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="brand"><strong>AUTONITY</strong> // RECOVERED TERMINAL</div>
+    <div class="progress-dots" id="progressDots">
+      <button class="pdot current"><span class="tip">1 · HUB (this page)</span></button>
+      <a class="pdot" href="autonity-page1-protocol.html"><span class="tip">2 · PROTOCOL</span></a>
+      <a class="pdot" href="autonity-page2-money.html"><span class="tip">3 · MONEY</span></a>
+      <a class="pdot" href="autonity-page3-afp.html"><span class="tip">4 · AFP</span></a>
+      <a class="pdot" href="autonity-page4-clearing.html"><span class="tip">5 · CLEARING VS TRADING</span></a>
+      <a class="pdot" href="autonity-page5-autex.html"><span class="tip">6 · AUTEX</span></a>
+      <a class="pdot" href="autonity-page6-forecastathon.html"><span class="tip">7 · FORECASTATHON</span></a>
+      <a class="pdot" href="autonity-page7-endogenous-collateral.html"><span class="tip">8 · ENDOGENOUS COLLATERAL (speculative)</span></a>
+    </div>
+    <a class="nav-gloss-link" href="#glossary" style="margin-left:14px;">GLOSSARY</a>
+    <div class="hub-tag">TRACK A — MUSEUM MODE</div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-boot">
+      <div class="boot-file">&gt;&gt; TRACK_A_INDEX.DAT</div>
+      <div id="bootLines"></div>
+    </div>
+    <h1 class="hero-title">Autonity Track A</h1>
+    <p class="hero-subtitle">A recovered terminal from the Forecastathon project — exploring how Autonity's EVM blockchain reimagined financial infrastructure. Seven recovered pages from the Season 1–4 educational archive.</p>
+    <div class="hero-badges">
+      <span class="badge green">6 RECOVERED PAGES</span>
+      <span class="badge green">1 SPECULATIVE PAGE</span>
+      <span class="badge teal">SEASON 1 — 4 ARCHIVE</span>
+      <span class="badge">EDUCATIONAL ONLY</span>
+    </div>
+    <p class="hero-blurb">This site is an educational archive, not a live product. Six pages reconstruct real Autonity mechanics — the ACU basket, CDP liquidation, oracle voting, order execution — as they existed during the Forecastathon. Page 7 is labeled speculative. Nothing here connects to mainnet or moves real funds.</p>
+  </section>
+
+  <section id="pages">
+    <div class="grid-label">// NAVIGATE THE TRACK</div>
+    <div class="page-grid">
+      <a class="page-card" href="autonity-page1-protocol.html">
+        <div class="card-num">01 // PROTOCOL</div>
+        <div class="card-title">Protocol</div>
+        <div class="card-desc">What Autonity is — an EVM L1 blockchain designed for financial contracts. The two-token economy, the validator set, and the purpose-built architecture.</div>
+        <span class="card-tag teal">RECOVERED ARTIFACT</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="page-card" href="autonity-page2-money.html">
+        <div class="card-num">02 // MONEY</div>
+        <div class="card-title">Money</div>
+        <div class="card-desc">The token system: NTN the staking token, ATN the algorithmic stable gas token targeting the ACU basket. How the two-token model separates consensus from contract execution.</div>
+        <span class="card-tag teal">RECOVERED ARTIFACT</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="page-card" href="autonity-page3-afp.html">
+        <div class="card-num">03 // AFP</div>
+        <div class="card-title">Autonomous Futures Protocol</div>
+        <div class="card-desc">The DCC, the two-key architecture, and why forecast futures are not prediction markets. The Season 1 stress test that proved the clearing layer works independently of the venue.</div>
+        <span class="card-tag teal">RECOVERED ARTIFACT</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="page-card" href="autonity-page4-clearing.html">
+        <div class="card-num">04 // CLEARING VS TRADING</div>
+        <div class="card-title">Clearing vs. Trading</div>
+        <div class="card-desc">The silo problem in traditional CEX/DEX architecture. Contract portability across venues. The capital efficiency of shared cross-margining.</div>
+        <span class="card-tag teal">RECOVERED ARTIFACT</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="page-card" href="autonity-page5-autex.html">
+        <div class="card-num">05 // AUTEX</div>
+        <div class="card-title">AutEx</div>
+        <div class="card-desc">The execution venue that shipped. Order book interface, order simulation, and the complete architecture layers. The stand-down post-Forecastathon.</div>
+        <span class="card-tag teal">RECOVERED ARTIFACT</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="page-card" href="autonity-page6-forecastathon.html">
+        <div class="card-num">06 // FORECASTATHON</div>
+        <div class="card-title">Forecastathon</div>
+        <div class="card-desc">The competition series across four seasons. US CPI, GDP, Unemployment, Bitcoin Vol — what was tradeable, when, and how the open interest grew.</div>
+        <span class="card-tag teal">RECOVERED ARTIFACT</span>
+        <span class="card-arrow">→</span>
+      </a>
+      <a class="page-card violet" href="autonity-page7-endogenous-collateral.html">
+        <div class="card-num">07 // ENDOGENOUS COLLATERAL</div>
+        <div class="card-title">Endogenous Collateral</div>
+        <div class="card-desc">ASMv3, ATN as base collateral, Hyperlane bridging, and the Canonicals project. This page is a speculative future-state reconstruction — not a recovered artifact.</div>
+        <span class="card-tag violet">SPECULATIVE FUTURE-STATE</span>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="glossary">
+    <div class="grid-label">// GLOSSARY</div>
+    <div class="gloss-panel">
+      <p class="gloss-note">Terms used across all seven pages, defined once. "NTN" is short for <strong>Newton</strong> — noted here since the abbreviation is used throughout without being spelled out. This glossary grows as more pages are revised; if a term you need isn't here yet, it's likely still pending its page's own edit pass.</p>
+      <dl class="gloss-list">
+        <dt>ACU</dt><dd>Autonity Currency Unit — the multi-currency basket the protocol targets. Not a stablecoin peg.</dd>
+        <dt>AFP</dt><dd>Autonomous Futures Protocol — Autonity's on-chain forecast-futures architecture. See Page 3.</dd>
+        <dt>AGC</dt><dd>Autonity Go Client — the reference node software (a fork of Geth) run by every peer on an Autonity network.</dd>
+        <dt>AOS</dt><dd>Autonity Oracle Server — the software validator nodes run to source external price data and submit price reports on-chain.</dd>
+        <dt>ASM</dt><dd>Auton Stabilization Mechanism — the CDP-based mechanism that stabilizes ATN's value against the ACU. ASMv3 refers to a planned, never-deployed free-floating version. See Page 2.</dd>
+        <dt>ATN</dt><dd>Auton — Autonity's native gas coin. An algorithmic stable asset targeting the ACU basket, not a fiat peg. See Page 2.</dd>
+        <dt>AutEx</dt><dd>The order-execution venue built on Autonity. See Page 5.</dd>
+        <dt>CDP</dt><dd>Collateralized Debt Position — a smart-contract lending mechanism where collateral (NTN or LNTN) is locked to borrow ATN. Used by the ASM.</dd>
+        <dt>DCC</dt><dd>Decentralized Clearing Contract — the on-chain contract that implements one derivatives product and holds every participant's position ledger for it.</dd>
+        <dt>Forecastathon</dt><dd>The four-season (S1–S4) forecast-futures competition series this archive documents. See Page 6.</dd>
+        <dt>LNTN</dt><dd>Liquid Newton — a validator-specific ERC-20 receipt token minted when NTN is delegated. Not interchangeable across validators; was planned as CDP collateral but never implemented.</dd>
+        <dt>NTN</dt><dd>Newton — Autonity's staking token. Bonded to validators to secure the network; also usable as CDP collateral.</dd>
+        <dt>OAFD</dt><dd>Oracle Accountability Fault Detection — outlier and misbehavior detection for validator oracle price submissions.</dd>
+        <dt>OFD</dt><dd>Omission Fault Detection — automated detection of validator inactivity via aggregated consensus signatures.</dd>
+      </dl>
+      <p class="gloss-note">Full protocol reference: <a href="https://docs.autonity.org" target="_blank" rel="noopener noreferrer">docs.autonity.org</a>.</p>
+    </div>
+  </section>
+
+  <section id="sequence">
+    <div class="grid-label">// READING ORDER</div>
+    <div class="seq-panel">
+      <div class="seq-title">Proceed through the recovered terminal in sequence, or jump to any page directly.</div>
+      <div class="seq-track">
+        <div class="seq-step current"><div class="seq-num">STEP 01</div><div class="seq-name">Protocol</div><div class="seq-sub">What is Autonity?</div></div>
+        <div class="seq-step"><div class="seq-num">STEP 02</div><div class="seq-name">Money</div><div class="seq-sub">ATN · NTN · LNTN</div></div>
+        <div class="seq-step"><div class="seq-num">STEP 03</div><div class="seq-name">AFP</div><div class="seq-sub">Forecast Futures</div></div>
+        <div class="seq-step"><div class="seq-num">STEP 04</div><div class="seq-name">Clearing</div><div class="seq-sub">Separating Trade from Settlement</div></div>
+        <div class="seq-step"><div class="seq-num">STEP 05</div><div class="seq-name">AutEx</div><div class="seq-sub">Execution Venue</div></div>
+        <div class="seq-step"><div class="seq-num">STEP 06</div><div class="seq-name">Forecastathon</div><div class="seq-sub">S1–S4 Seasons</div></div>
+        <div class="seq-step speculative"><div class="seq-num">STEP 07</div><div class="seq-name">Endogenous Collateral</div><div class="seq-sub">Speculative · ASMv3</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="vstrip-wrap">
+      <div class="vstrip" id="vstrip"></div>
+      <div class="vstrip-tip">11 of 27 validators confirmed active as of July 8, 2026 (remaining 16 seats pending confirmation). The chain has not stopped producing blocks.</div>
+    </div>
+    <div class="foot-legend">27 VALIDATORS · LIVE HEALTH SNAPSHOT · JULY 8, 2026</div>
+    <div class="foot-links"><a href="#glossary">GLOSSARY</a><a href="https://docs.autonity.org" target="_blank" rel="noopener noreferrer">DOCS.AUTONITY.ORG</a></div>
+    <div class="foot-meta">
+      <span>AUTONITY TRACK A — MUSEUM MODE — EDUCATIONAL ONLY — NO ARTIFACT EMISSION</span>
+      <span>HOSTED AT PostOakLabs.com/autonity</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const BOOT_LINES=['> LOADING TRACK_A_INDEX ...','> MOUNTING /recovered/track_a/ ...','> SCANNING ARCHIVE ... 7 PAGES FOUND','> 6 RECOVERED ARTIFACTS · 1 SPECULATIVE RECONSTRUCTION'];
+function playBoot(){
+  const wrap=document.getElementById('bootLines');
+  wrap.innerHTML='';
+  BOOT_LINES.forEach((line,i)=>{
+    const d=document.createElement('div');
+    d.className='boot-line';
+    d.textContent=line;
+    wrap.appendChild(d);
+    setTimeout(()=>d.classList.add('done'),reduceMotion?0:i*220);
+  });
+}
+playBoot();
+const JULY_STATE=(()=>{const a=new Array(27).fill('u');for(let i=0;i<11;i++)a[i]='g';return a;})();
+(function buildStrip(){const el=document.getElementById('vstrip');let h='';for(let i=0;i<27;i++)h+=`<span class="vd ${JULY_STATE[i]}"></span>`;el.innerHTML=h;})();
+</script>
+</body>
+</html>

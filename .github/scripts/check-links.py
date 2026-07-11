@@ -79,7 +79,10 @@ def main():
         text = f.read_text(encoding="utf-8", errors="ignore")
         for raw in LINK_RE.findall(text):
             link = raw.strip()
-            if not link or link.lower().startswith(EXTERNAL_PREFIXES):
+            # JS template-literal hrefs (e.g. href="${BASE}${slug}.html" built
+            # inside a <script> block) are resolved at runtime to absolute URLs,
+            # not static internal paths. Skip them like any external link.
+            if not link or link.lower().startswith(EXTERNAL_PREFIXES) or "${" in link:
                 external += 1
                 continue
             clean = link.split("#", 1)[0].split("?", 1)[0]

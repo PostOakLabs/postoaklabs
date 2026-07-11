@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTEX.DAT — Autonity Track A</title>
+<meta name="description" content="An interactive recovered terminal recreating AutEx, the first AFP execution venue — its trading interface, the moment an order becomes an on-chain clearing receipt, its layered architecture, and the dormant state it entered after the February 2026 stand-down.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="autonity-logo.jpg">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   AUTONITY TRACK A — SHARED DESIGN TOKENS (per v2 §Visual Language)
+   Hosting note (v3 A-1): this file will relocate to Post Oak Labs.
+   Cross-site links use the TRACK_B_BASE constant defined in the script block below.
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000000;
+  --fg:#FFFFFF;
+  --dim:#7A7A7A;
+  --dim2:#4A4A4A;
+  --green:#66FF66;
+  --orange:#FF5900;
+  --teal:#0D7680;
+  --buy:#00CC00;
+  --sell:#CC0000;
+  --amber:#FFB020;
+  --red:#FF3B3B;
+  --dimred:#5A1414;
+  --gold:#D4A847;
+  --panel:#0A0A0A;
+  --panel2:#0F0F0F;
+  --line:#242424;
+  --mono:'JetBrains Mono','Berkeley Mono','Courier New',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--green);color:#000;}
+a{color:inherit;}
+button{font-family:var(--mono);cursor:pointer;background:none;border:none;color:inherit;}
+input{font-family:var(--mono);}
+.upper{text-transform:uppercase;}
+.mono{font-family:var(--mono);}
+
+/* ── CRT scanline overlay ── */
+.crt-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:500;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.018) 0px,
+    rgba(255,255,255,0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode:overlay;
+}
+.crt-vignette{
+  position:fixed;inset:0;pointer-events:none;z-index:499;
+  box-shadow:inset 0 0 180px rgba(0,0,0,0.7);
+}
+
+/* ── layout ── */
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+section{padding:64px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+
+/* ── nav (page-level, shared across Track A) ── */
+nav.topnav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.topnav-inner{
+  max-width:980px;margin:0 auto;padding:0 24px;
+  height:52px;display:flex;align-items:center;gap:18px;
+}
+.logo{
+  width:26px;height:26px;background:#000;border:1px solid var(--fg);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;flex-shrink:0;overflow:hidden;
+}
+.brand{font-size:.72rem;letter-spacing:.14em;color:var(--dim);}
+.brand strong{color:var(--fg);}
+.progress-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.pdot{
+  width:8px;height:8px;border-radius:50%;background:var(--dim2);
+  border:none;position:relative;display:block;text-decoration:none;
+}
+.pdot.current{background:var(--green);box-shadow:0 0 6px var(--green);}
+.pdot:not(.current){cursor:default;}
+.pdot .tip{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-size:.58rem;white-space:nowrap;background:#111;border:1px solid var(--line);
+  padding:3px 6px;display:none;letter-spacing:.06em;color:var(--dim);
+}
+.pdot:hover .tip{display:block;}
+
+/* ── boot hero ── */
+.hero{padding-top:40px;}
+.hero-term{
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;
+  padding:20px 22px;position:relative;overflow:hidden;
+}
+.hero-term::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(102,255,102,.03),transparent 40%);
+  pointer-events:none;
+}
+.boot-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:10px;}
+.boot-line{font-size:.82rem;color:var(--dim);min-height:1.3em;white-space:pre;}
+.boot-line.done{color:var(--fg);}
+.boot-status-row{
+  margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+  display:flex;align-items:center;gap:18px;font-size:.72rem;flex-wrap:wrap;
+}
+.status-pill{display:inline-flex;align-items:center;gap:5px;color:var(--green);}
+.status-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);}
+.hero-clock{margin-left:auto;color:var(--dim);letter-spacing:.05em;}
+.boot-footer{margin-top:14px;font-size:.68rem;color:var(--dim2);letter-spacing:.08em;}
+
+/* ── stage headers ── */
+.stage-eyebrow{font-size:.62rem;letter-spacing:.18em;color:var(--teal);margin-bottom:6px;}
+h2.stage-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;letter-spacing:.01em;}
+.stage-goal{color:var(--dim);font-size:.82rem;margin-bottom:26px;max-width:640px;}
+.callout{
+  border-left:2px solid var(--teal);padding:10px 16px;margin:18px 0;
+  font-size:.82rem;color:#D8D8D8;background:rgba(13,118,128,.06);
+}
+.callout.small{font-size:.74rem;color:var(--dim);}
+
+dfn.gloss{
+  font-style:normal;border-bottom:1px dotted var(--teal);cursor:help;color:var(--fg);
+  text-decoration:none;
+}
+.btn{
+  font-size:.66rem;letter-spacing:.1em;padding:7px 14px;border:1px solid var(--fg);
+  transition:all .15s;text-transform:uppercase;
+}
+.btn:hover{background:var(--fg);color:#000;}
+.btn.on{background:var(--green);border-color:var(--green);color:#000;}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 1 — Faithful recreation of the AutEx trading interface
+═══════════════════════════════════════════════════════════ */
+.recreation-label{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:.62rem;
+  letter-spacing:.12em;color:var(--dim2);
+}
+.recreation-label .line{flex:1;height:1px;background:var(--line);}
+
+.autex-shell{border:1px solid var(--fg);border-radius:4px;overflow:hidden;background:#050505;}
+
+.autex-nav{
+  display:flex;align-items:center;gap:16px;padding:10px 16px;
+  border-bottom:1px solid var(--line);background:#0A0A0A;
+}
+.autex-nav .logo-sm{
+  width:20px;height:20px;background:#000;border:1px solid var(--fg);flex-shrink:0;overflow:hidden;
+}
+.autex-tabs{display:flex;gap:18px;font-size:.7rem;letter-spacing:.04em;color:var(--dim);}
+.autex-tabs span.active{color:var(--fg);border-bottom:1px solid var(--green);padding-bottom:2px;}
+.autex-connect{
+  margin-left:auto;font-size:.6rem;letter-spacing:.08em;border:1px solid var(--dim2);
+  padding:5px 10px;color:var(--dim);
+}
+
+.autex-body{display:grid;grid-template-columns:2fr 1fr;gap:0;}
+.autex-left{padding:18px 20px;border-right:1px solid var(--line);}
+.autex-right{padding:18px 18px;}
+
+.product-head{display:flex;align-items:baseline;gap:14px;margin-bottom:4px;flex-wrap:wrap;}
+.product-name{font-size:.86rem;font-weight:600;letter-spacing:.02em;}
+.product-price{font-size:1.3rem;font-weight:700;}
+.product-change{font-size:.74rem;color:var(--green);}
+.product-sub{font-size:.62rem;color:var(--dim2);letter-spacing:.05em;margin-bottom:16px;}
+
+#chartSvg{width:100%;height:auto;display:block;}
+
+.ob-title{font-size:.6rem;letter-spacing:.1em;color:var(--dim);margin-bottom:8px;text-transform:uppercase;}
+.ob-table{width:100%;font-size:.7rem;border-collapse:collapse;}
+.ob-table th{
+  font-size:.58rem;color:var(--dim2);letter-spacing:.05em;text-align:right;padding-bottom:4px;
+  text-transform:uppercase;font-weight:500;
+}
+.ob-table th:first-child,.ob-table td:first-child{text-align:left;}
+.ob-table td{padding:2px 0;text-align:right;}
+.ob-ask td:nth-child(2){color:var(--sell);}
+.ob-bid td:nth-child(2){color:var(--buy);}
+.ob-mid-rule td{border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);padding:6px 0;text-align:center;color:var(--dim);font-size:.62rem;letter-spacing:.06em;}
+
+.order-entry{margin-top:18px;border-top:1px solid var(--line);padding-top:16px;}
+.oe-row{display:flex;gap:8px;margin-bottom:8px;}
+.oe-field{flex:1;}
+.oe-field label{display:block;font-size:.58rem;color:var(--dim2);letter-spacing:.05em;margin-bottom:3px;text-transform:uppercase;}
+.oe-field input{
+  width:100%;background:#0A0A0A;border:1px solid var(--line);color:var(--fg);
+  padding:6px 8px;font-size:.76rem;
+}
+.oe-field input:focus{outline:none;border-color:var(--teal);}
+.oe-toggle{display:flex;align-items:center;gap:6px;font-size:.62rem;color:var(--dim);margin-bottom:12px;}
+.oe-toggle .sw{width:26px;height:14px;border:1px solid var(--dim2);border-radius:7px;position:relative;}
+.oe-toggle .sw::after{content:'';position:absolute;top:1px;left:1px;width:10px;height:10px;border-radius:50%;background:var(--dim);}
+.oe-toggle.on .sw{border-color:var(--green);}
+.oe-toggle.on .sw::after{left:13px;background:var(--green);}
+details.oe-adv{margin-bottom:12px;}
+details.oe-adv summary{font-size:.6rem;color:var(--dim2);letter-spacing:.05em;cursor:pointer;text-transform:uppercase;}
+details.oe-adv .adv-body{font-size:.66rem;color:var(--dim);padding:8px 0 0 4px;}
+.oe-buysell{display:flex;gap:8px;}
+.oe-buysell button{
+  flex:1;padding:10px;font-size:.72rem;letter-spacing:.08em;border:1px solid;
+}
+.oe-buy{border-color:var(--buy);color:var(--buy);}
+.oe-buy:hover{background:var(--buy);color:#000;}
+.oe-sell{border-color:var(--sell);color:var(--sell);}
+.oe-sell:hover{background:var(--sell);color:#000;}
+
+.oe-details{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;font-size:.66rem;color:var(--dim);}
+.oe-details .row{display:flex;justify-content:space-between;padding:2px 0;}
+.oe-details .row span:last-child{color:var(--fg);}
+
+.autex-statusbar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 16px;
+  border-top:1px solid var(--line);background:#0A0A0A;font-size:.62rem;color:var(--dim2);
+}
+.autex-statusbar .status-pill{color:var(--green);font-size:.62rem;}
+.autex-statusbar .status-pill .dot{width:5px;height:5px;}
+.sb-links{margin-left:auto;display:flex;gap:12px;color:var(--dim2);}
+.sb-links a{text-decoration:none;}
+.sb-links a:hover{color:var(--dim);}
+
+@media(max-width:760px){
+  .autex-body{grid-template-columns:1fr;}
+  .autex-left{border-right:none;border-bottom:1px solid var(--line);}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 2 — Order simulation
+═══════════════════════════════════════════════════════════ */
+.sim-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;}
+.sim-controls{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px;}
+.sim-controls .oe-field{max-width:140px;}
+.sim-controls button.btn{padding:9px 18px;}
+
+.sim-tabs{display:flex;gap:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:0;}
+.sim-tab{flex:1;text-align:center;padding:8px;font-size:.66rem;letter-spacing:.05em;color:var(--dim);border-right:1px solid var(--line);}
+.sim-tab:last-child{border-right:none;}
+.sim-tab.active{color:var(--fg);background:#0d0d0d;}
+.sim-tab .count{color:var(--teal);}
+
+.sim-body{border:1px solid var(--line);border-top:none;min-height:64px;padding:12px 16px;font-size:.74rem;}
+.sim-log-line{color:var(--dim);margin-bottom:4px;}
+.sim-log-line.hi{color:var(--fg);}
+.sim-log-line .tag{color:var(--teal);}
+.sim-empty{color:var(--dim2);font-size:.72rem;}
+
+.receipt-box{
+  margin-top:18px;border:1px solid var(--line);border-radius:3px;padding:14px 16px;
+  background:#060606;opacity:0;max-height:0;overflow:hidden;transition:opacity .3s ease, max-height .3s ease;
+}
+.receipt-box.show{opacity:1;max-height:200px;padding:14px 16px;}
+.receipt-title{font-size:.66rem;color:var(--dim);letter-spacing:.06em;margin-bottom:8px;}
+.receipt-row{font-size:.78rem;color:var(--green);margin-bottom:3px;}
+.receipt-row .lbl{color:var(--dim);}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 3 — Architecture layers accordion
+═══════════════════════════════════════════════════════════ */
+.arch-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;}
+.arch-box{border:1px solid var(--fg);border-radius:3px;overflow:hidden;}
+.arch-zone{
+  padding:14px 18px;border-bottom:1px solid var(--line);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;font-size:.8rem;
+  transition:background .15s;
+}
+.arch-zone-wrap:last-child .arch-zone{border-bottom:none;}
+.arch-zone:hover{background:#0d0d0d;}
+.arch-zone .click-hint{font-size:.6rem;color:var(--dim2);}
+.arch-zone-body{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:.76rem;color:var(--dim);
+  background:#060606;
+}
+.arch-zone-wrap.open .arch-zone-body{max-height:200px;padding:12px 18px;}
+.arch-zone-wrap.open .arch-zone{background:#0d0d0d;color:var(--teal);}
+.arch-connector{text-align:center;font-size:.7rem;color:var(--dim2);padding:2px 0;}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 4 — Stand-down toggle
+═══════════════════════════════════════════════════════════ */
+.standdown-toggle{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:18px;}
+.standdown-toggle .btn{border:none;border-right:1px solid var(--line);}
+.standdown-toggle .btn:last-child{border-right:none;}
+
+.sd-panel{border:1px solid var(--fg);border-radius:4px;overflow:hidden;background:#050505;}
+.sd-nav{
+  display:flex;align-items:center;gap:16px;padding:10px 16px;
+  border-bottom:1px solid var(--line);background:#0A0A0A;
+}
+.sd-nav .logo-sm{width:20px;height:20px;background:#000;border:1px solid var(--fg);flex-shrink:0;overflow:hidden;}
+.sd-body{padding:26px 20px;min-height:120px;}
+.sd-product-active .product-name{font-size:.86rem;font-weight:600;}
+.sd-empty{text-align:center;color:var(--dim);padding:18px 0;}
+.sd-empty .big{font-size:.86rem;color:var(--fg);margin-bottom:8px;}
+.sd-empty .placeholder{
+  margin-top:14px;border:1px dashed var(--line);color:var(--dim2);
+  padding:8px 40px;display:inline-block;letter-spacing:.1em;
+}
+.sd-statusbar{
+  display:flex;align-items:center;gap:16px;padding:10px 16px;
+  border-top:1px solid var(--line);background:#0A0A0A;font-size:.62rem;color:var(--dim2);
+}
+.sd-statusbar .status-pill{color:var(--green);font-size:.62rem;}
+.sd-statusbar .status-pill .dot{width:5px;height:5px;}
+.sd-statusbar .clock{margin-left:auto;}
+
+.hist-note{
+  margin-top:18px;border:1px solid var(--line);border-radius:3px;padding:14px 18px;
+  font-size:.8rem;color:#D8D8D8;background:rgba(255,255,255,.02);
+}
+.hist-note .src{display:block;margin-top:8px;font-size:.64rem;color:var(--dim);}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 5 — Live Price recreation (autonity.org/live-price)
+═══════════════════════════════════════════════════════════ */
+.lp-shell{border:1px solid var(--fg);border-radius:4px;overflow:hidden;background:#050505;display:grid;grid-template-columns:200px 1fr;}
+.lp-side{border-right:1px solid var(--line);padding:20px 16px;background:#0A0A0A;}
+.lp-side .logo-sm{width:26px;height:26px;background:#000;border:1px solid var(--fg);margin-bottom:18px;overflow:hidden;}
+.lp-nav-item{font-size:.72rem;color:var(--dim);padding:6px 0;}
+.lp-nav-item.active{color:var(--fg);display:flex;align-items:center;gap:6px;}
+.lp-nav-item.active::before{content:'>';color:var(--dim);}
+
+.lp-main{padding:22px 24px;}
+.lp-pill-title{
+  display:inline-block;font-size:.78rem;letter-spacing:.06em;border:1px solid var(--fg);
+  padding:4px 10px;margin-bottom:20px;
+}
+.lp-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.lp-head h3{font-size:.92rem;font-weight:600;}
+.lp-badge{
+  display:inline-flex;align-items:center;font-size:.6rem;color:var(--teal);border:1px solid var(--teal);
+  padding:2px 8px;letter-spacing:.05em;border-radius:10px;
+}
+.lp-desc{font-size:.78rem;color:var(--dim);max-width:640px;margin-bottom:22px;}
+
+.lp-price-panel{border:1px solid var(--line);border-radius:3px;padding:18px 20px;margin-bottom:22px;background:#080808;}
+.lp-price-label{font-size:.62rem;letter-spacing:.08em;color:var(--dim);margin-bottom:6px;text-transform:uppercase;}
+.lp-price-big{font-size:2.2rem;font-weight:700;margin-bottom:10px;}
+.lp-price-sub{font-size:.72rem;color:var(--dim);}
+.lp-price-sub .formula{display:block;margin-top:4px;color:var(--dim2);font-size:.68rem;}
+
+.acu-table{width:100%;border-collapse:collapse;font-size:.76rem;}
+.acu-table th{
+  font-size:.6rem;letter-spacing:.06em;color:var(--dim);text-transform:uppercase;font-weight:500;
+  text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);
+}
+.acu-table td{padding:9px 10px;border-bottom:1px solid var(--line);}
+.acu-table tr:last-child td{border-bottom:none;}
+.acu-table td:not(:first-child){text-align:right;}
+.acu-table th:not(:first-child){text-align:right;}
+.acu-caption{font-size:.7rem;color:var(--dim);margin-bottom:12px;max-width:680px;}
+
+.lp-search-note{
+  margin-top:16px;font-size:.7rem;color:var(--dim2);border-left:2px solid var(--dim2);
+  padding:8px 14px;
+}
+
+@media(max-width:640px){
+  .lp-shell{grid-template-columns:1fr;}
+  .lp-side{border-right:none;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px 16px;}
+  .lp-side .logo-sm{margin-bottom:0;}
+}
+
+/* ── CTA block ── */
+.cta-block{background:var(--panel2);border:1px solid var(--teal);border-radius:4px;padding:26px 28px;}
+.cta-pill{
+  display:inline-flex;align-items:center;gap:6px;font-size:.62rem;color:var(--green);
+  border:1px solid var(--green);padding:3px 9px;letter-spacing:.08em;margin-bottom:14px;
+}
+.cta-copy{font-size:.82rem;color:#D8D8D8;max-width:660px;margin-bottom:20px;}
+.cta-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
+.cta-tool-card{border:1px solid var(--line);padding:14px;}
+.cta-tool-btn{
+  display:block;font-size:.68rem;letter-spacing:.06em;border:1px solid var(--fg);
+  padding:9px 12px;text-align:center;margin-bottom:8px;transition:all .15s;
+}
+.cta-tool-btn:hover{background:var(--fg);color:#000;}
+.mandate-pill{
+  display:inline-block;font-size:.6rem;color:var(--teal);border:1px solid var(--teal);
+  padding:2px 7px;letter-spacing:.03em;background:rgba(13,118,128,.08);
+}
+.ocg-link{font-size:.72rem;color:var(--dim);text-decoration:underline;text-underline-offset:3px;}
+.ocg-link:hover{color:var(--fg);}
+
+/* ── footer / validator strip ── */
+footer{padding:36px 0 60px;}
+.vstrip-wrap{position:relative;}
+.vstrip{display:flex;gap:5px;flex-wrap:wrap;cursor:help;}
+.vstrip .vd{width:9px;height:9px;border-radius:50%;}
+.vstrip .vd.g{background:var(--green);}
+.vstrip .vd.r{background:var(--red);}
+.vstrip .vd.a{background:var(--amber);}
+.vstrip .vd.u{background:var(--dim2);}
+.vstrip .vd.dr{background:var(--dimred);}
+.vstrip-tip{
+  display:none;position:absolute;bottom:22px;left:0;background:#111;border:1px solid var(--line);
+  padding:8px 12px;font-size:.68rem;color:var(--dim);white-space:nowrap;
+}
+.vstrip-wrap:hover .vstrip-tip{display:block;}
+.foot-legend{margin-top:10px;font-size:.6rem;color:var(--dim2);letter-spacing:.05em;}
+.foot-meta{margin-top:24px;font-size:.64rem;color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+/* ── Prev/Next series navigation (H9) ── */
+.page-nav{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:20px 0;font-size:.7rem;letter-spacing:.04em;
+}
+.page-nav-link{text-decoration:none;color:var(--dim);border:1px solid var(--line);padding:8px 14px;border-radius:3px;transition:all .15s;}
+.page-nav-link:hover{color:var(--fg);border-color:var(--fg);}
+.page-nav-progress{color:var(--dim2);letter-spacing:.1em;font-size:.64rem;}
+
+/* ── keyboard accessibility (L3) ── */
+a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--teal);outline-offset:2px;
+}
+.pdot:focus-visible .tip{display:block;}
+
+@media(max-width:640px){
+  .cta-tools{grid-template-columns:1fr;}
+  .sim-controls{flex-direction:column;align-items:stretch;}
+  .sim-controls .oe-field{max-width:none;}
+  .page-nav{flex-direction:column;align-items:stretch;text-align:center;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+
+/* ── print stylesheet (L3) ── */
+@media print{
+  .crt-overlay,.crt-vignette,nav.topnav,.autex-connect,.standdown-toggle,#simModeToggle,
+  .sim-controls,footer,.page-nav,.cta-block{display:none !important;}
+  body{background:#fff;color:#000;}
+  .autex-shell,.sim-panel,.arch-panel,.sd-panel,.lp-shell{border-color:#000;background:#fff;}
+  a{text-decoration:underline;}
+}
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo"><svg viewBox="0 0 26 26" width="100%" height="100%" role="img" aria-label="Autonity logo"><text x="50%" y="70%" font-family="monospace" font-weight="700" font-size="14" fill="var(--fg)" text-anchor="middle">A</text></svg></div>
+    <div class="brand"><strong>AUTONITY</strong> // RECOVERED TERMINAL</div>
+    <div class="progress-dots" id="progressDots">
+      <a class="pdot" href="index.html"><span class="tip">1 · HUB</span></a>
+      <a class="pdot" href="autonity-page1-protocol.html"><span class="tip">2 · PROTOCOL</span></a>
+      <a class="pdot" href="autonity-page2-money.html"><span class="tip">3 · MONEY</span></a>
+      <a class="pdot" href="autonity-page3-afp.html"><span class="tip">4 · AFP</span></a>
+      <a class="pdot" href="autonity-page4-clearing.html"><span class="tip">5 · CLEARING VS TRADING</span></a>
+      <button class="pdot current"><span class="tip">6 · AUTEX (this page)</span></button>
+      <a class="pdot" href="autonity-page6-forecastathon.html"><span class="tip">7 · FORECASTATHON</span></a>
+      <a class="pdot" href="autonity-page7-endogenous-collateral.html"><span class="tip">8 · ENDOGENOUS COLLATERAL (speculative)</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero-term">
+      <div class="boot-file">&gt;&gt; AUTEX.DAT</div>
+      <div id="bootLines"></div>
+
+      <div class="boot-status-row">
+        <span class="status-pill"><span class="dot"></span> BLOCKCHAIN</span>
+        <span class="status-pill"><span class="dot"></span> API</span>
+        <span class="hero-clock mono" id="heroClock">UTC --:--:--</span>
+      </div>
+
+      <div class="boot-footer">AUTONITY BLOCKCHAIN TERMINAL v1.1.2 — CONNECTED TO AFP CLEARING LAYER</div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 1 — Trading Interface ══ -->
+  <section id="stage-1">
+    <div class="stage-eyebrow">STAGE 1</div>
+    <h2 class="stage-title">The Trading Interface</h2>
+    <p class="stage-goal">AutEx was the first — and, before the stand-down, the only — execution venue to ship against the <dfn class="gloss" title="Decentralised Clearing Contract — the on-chain contract holding shared margin, open interest, and settlement for a product across every venue that lists it.">DCC</dfn>. This is a faithful recreation of its interface.</p>
+
+    <div class="recreation-label"><span class="line"></span>FAITHFUL RECREATION — NON-FUNCTIONAL<span class="line"></span></div>
+
+    <div class="autex-shell">
+      <div class="autex-nav">
+        <div class="logo-sm"><svg viewBox="0 0 26 26" width="100%" height="100%" role="img" aria-label="Autonity logo mark"><text x="50%" y="70%" font-family="monospace" font-weight="700" font-size="14" fill="var(--fg)" text-anchor="middle">A</text></svg></div>
+        <div class="autex-tabs"><span class="active">Trade</span><span>Account</span><span>Products</span></div>
+        <div class="autex-connect">CONNECT WALLET</div>
+      </div>
+
+      <div class="autex-body">
+        <div class="autex-left">
+          <div class="product-head">
+            <div class="product-name">US CPI FUTURES Q1 2026</div>
+            <div class="product-price">314.686</div>
+            <div class="product-change">▲ +0.42% (24H)</div>
+          </div>
+          <div class="product-sub">SETTLEMENT: MAR 31 2026 &nbsp;·&nbsp; ORACLE-FED MARK PRICE &nbsp;·&nbsp; ILLUSTRATIVE DATA</div>
+
+          <svg id="chartSvg" viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="40" x2="560" y2="40" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="90" x2="560" y2="90" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="140" x2="560" y2="140" stroke="#1a1a1a" stroke-width="1"/>
+            <line x1="0" y1="190" x2="560" y2="190" stroke="#1a1a1a" stroke-width="1"/>
+            <text x="4" y="36" font-size="8" fill="#4A4A4A" font-family="monospace">316.0</text>
+            <text x="4" y="136" font-size="8" fill="#4A4A4A" font-family="monospace">314.0</text>
+            <text x="4" y="186" font-size="8" fill="#4A4A4A" font-family="monospace">313.0</text>
+            <polyline points="10,150 45,142 80,148 115,120 150,128 185,108 220,116 255,98 290,104 325,80 360,88 395,70 430,76 465,58 500,62 550,50"
+              fill="none" stroke="#66FF66" stroke-width="1.6"/>
+            <circle cx="550" cy="50" r="3" fill="#66FF66"/>
+            <text x="500" y="42" font-size="8" fill="#66FF66" font-family="monospace" text-anchor="end">314.686</text>
+          </svg>
+        </div>
+
+        <div class="autex-right">
+          <div class="ob-title">Order Book</div>
+          <table class="ob-table">
+            <thead><tr><th>Qty</th><th>Bid</th><th>Ask</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr class="ob-ask"><td></td><td></td><td>314.710</td><td>340</td></tr>
+              <tr class="ob-ask"><td></td><td></td><td>314.705</td><td>120</td></tr>
+              <tr class="ob-ask"><td></td><td></td><td>314.700</td><td>400</td></tr>
+              <tr class="ob-ask"><td></td><td></td><td>314.695</td><td>260</td></tr>
+              <tr class="ob-ask" id="bestAskRow"><td></td><td></td><td>314.690</td><td>150</td></tr>
+              <tr class="ob-mid-rule"><td colspan="4">314.686 · LAST</td></tr>
+              <tr class="ob-bid" id="bestBidRow"><td>250</td><td>314.680</td><td></td><td></td></tr>
+              <tr class="ob-bid"><td>180</td><td>314.675</td><td></td><td></td></tr>
+              <tr class="ob-bid"><td>420</td><td>314.670</td><td></td><td></td></tr>
+              <tr class="ob-bid"><td>90</td><td>314.665</td><td></td><td></td></tr>
+              <tr class="ob-bid"><td>300</td><td>314.660</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+
+          <div class="order-entry">
+            <div class="oe-row">
+              <div class="oe-field"><label>Price</label><input type="text" value="314.690" id="oePrice"></div>
+              <div class="oe-field"><label>Quantity</label><input type="text" value="100" id="oeQty"></div>
+            </div>
+            <div class="oe-toggle on"><span class="sw"></span> Good Till Cancelled</div>
+            <details class="oe-adv">
+              <summary>Advanced Settings</summary>
+              <div class="adv-body">Reduce-only: off &nbsp;·&nbsp; Post-only: off &nbsp;·&nbsp; Slippage tolerance: 0.5%</div>
+            </details>
+            <div class="oe-buysell">
+              <button class="oe-buy" id="staticBuyBtn">BUY</button>
+              <button class="oe-sell" id="staticSellBtn">SELL</button>
+            </div>
+            <div class="oe-details">
+              <div class="row"><span>Notional Value</span><span>31,469.00 USDZ</span></div>
+              <div class="row"><span>Min Price</span><span>300.000</span></div>
+              <div class="row"><span>Max Price</span><span>330.000</span></div>
+              <div class="row"><span>Unit Value</span><span>100 USDZ / pt</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="autex-statusbar">
+        <span class="status-pill"><span class="dot"></span> BLOCKCHAIN</span>
+        <span class="status-pill"><span class="dot"></span> API</span>
+        <span>Light | Dark | System</span>
+        <span class="clock" id="stage1Clock">UTC --:--:--</span>
+        <div class="sb-links"><a href="#">Docs</a><a href="#">Support</a><a href="#">Terms</a><a href="#">Privacy Policy</a></div>
+      </div>
+    </div>
+
+    <div class="callout small" style="margin-top:16px;">Try the BUY/SELL buttons above — they only flash. The real order lifecycle is simulated in Stage 2, below, where clearing actually happens.</div>
+
+    <div class="callout small">
+      The full products list — every active contract, with ticker codes and next data date — lived at autex.exchange/products. An October 2025 writeup described AutEx as "expected to be open-sourced soon so others can deploy similar exchanges" — it shipped Dec 3, 2025, publicly, as <strong>AFX</strong> (see Page 1, History).
+    </div>
+  </section>
+
+  <!-- ══ STAGE 2 — Placing an Order ══ -->
+  <section id="stage-2">
+    <div class="stage-eyebrow">STAGE 2</div>
+    <h2 class="stage-title">Placing an Order</h2>
+    <p class="stage-goal">Watch where AutEx's job ends and AFP's job begins. Enter a price and quantity, then place the order.</p>
+
+    <div class="sim-panel">
+      <div class="standdown-toggle" id="simModeToggle">
+        <button class="btn on" id="modeTakeBtn">TAKE AN ORDER</button>
+        <button class="btn" id="modeMakeBtn">RUN A MARKET-MAKING BOT</button>
+      </div>
+      <div class="callout small" id="simHint" style="margin:0 0 18px;">Try changing the price and quantity below, then place the order — watch the log and the DCC receipt update as it clears.</div>
+
+      <div class="sim-controls" id="takeControls">
+        <div class="oe-field"><label>Price</label><input type="text" value="314.690" id="simPrice"></div>
+        <div class="oe-field"><label>Quantity</label><input type="text" value="100" id="simQty"></div>
+        <button class="btn on" id="simBuyBtn">PLACE BUY ORDER</button>
+        <button class="btn" id="simResetBtn">RESET</button>
+      </div>
+
+      <div class="sim-controls" id="makeControls" style="display:none;">
+        <div class="oe-field"><label>Spread (ticks)</label><input type="text" value="2" id="mmSpread"></div>
+        <div class="oe-field"><label>Quote Size</label><input type="text" value="150" id="mmSize"></div>
+        <button class="btn on" id="mmStartBtn">START QUOTING</button>
+        <button class="btn" id="mmResetBtn">RESET</button>
+      </div>
+
+      <div class="sim-tabs">
+        <div class="sim-tab active" id="tabOpen">OPEN ORDERS <span class="count" id="openCount">(0)</span></div>
+        <div class="sim-tab" id="tabHistory">TRADE HISTORY <span class="count" id="histCount">(0)</span></div>
+      </div>
+      <div class="sim-body" id="simBody">
+        <div class="sim-empty">No open orders. Place an order above to begin the simulation.</div>
+      </div>
+
+      <div class="receipt-box" id="receiptBox">
+        <div class="receipt-title">&gt;&gt; DCC STATE UPDATE</div>
+        <div class="receipt-row"><span class="lbl">OPEN INTEREST:</span> <span id="receiptOi">+1 LONG (via AutEx)</span></div>
+        <div class="receipt-row"><span class="lbl">MARGIN:</span> <span id="receiptMargin">100 USDZ (posted directly to DCC)</span></div>
+      </div>
+
+      <div class="callout" style="margin-top:18px;">This is where AutEx ended and AFP began. AutEx matched the order. AFP cleared it — updating the on-chain margin balance and open interest ledger. When AutEx went offline in Season 1, this bottom layer kept running. <a href="autonity-page4-clearing.html" style="color:var(--teal);">→ Page 4 goes deeper on where execution ends and clearing begins.</a></div>
+
+      <div class="callout small" style="margin-top:10px;">Market making was one of Forecastathon's four officially scored competition categories — this bot mode is a facsimile of that role: quote both sides, get lifted on one, re-center and quote again.</div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 3 — Architecture Layers ══ -->
+  <section id="stage-3">
+    <div class="stage-eyebrow">STAGE 3</div>
+    <h2 class="stage-title">Architecture Layers</h2>
+    <p class="stage-goal">AutEx was never the whole system — only the top layer. Click each layer to see what it actually held.</p>
+
+    <div class="arch-panel">
+      <div class="arch-box" id="archBox"></div>
+    </div>
+
+    <div class="callout" style="margin-top:18px;">AutEx is only the interface. The AFP SDK (Python, PyPI: <code>afp-sdk</code>) made it possible for any developer to connect a new execution venue and trading modality to the same clearing layer. The slot for Venue B was always open — and, per community accounts, it wasn't entirely unused.</div>
+
+    <div class="callout small">
+      Nothing above required AutEx's UI to verify. The <strong>AFP Explorer</strong> (afp.network) is a separate front end for AFP data — Products, Accounts, Trades, and Activity by address, including liquidation and bankruptcy events at the contract level, independent of any single venue. <strong>AutonityScan</strong> (autonityscan.org) covers the underlying chain itself — blocks, transactions, and contract calls. <strong>web3cdn</strong> built a second execution venue against the AFP DCC, alongside its confirmed RPC and indexing infrastructure work for Autonity — it was live, but never whitelisted for production trading (<a href="autonity-page3-afp.html" style="color:var(--teal);">→ Page 3 covers the DCC and the AFP SDK this second venue connected to</a>). A separate community project, the <strong>Centralized Auton Exchange (CAX)</strong>, was released during the PCGC testnet rounds — a third example of the permissionless-venue slot being exercised, distinct from both AutEx and web3cdn's venue. Two other short-lived PCGC-era community dapps, for context: <strong>tknzd</strong>, an NFT trading platform (rounds 4–5), and a front-end deployment of the Perpetual Protocol project, <strong>Margined</strong> — neither connected to the AFP DCC.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 4 — The Stand-Down Artifact ══ -->
+  <section id="stage-4">
+    <div class="stage-eyebrow">STAGE 4</div>
+    <h2 class="stage-title">The Stand-Down Artifact</h2>
+    <p class="stage-goal">Same nav, same status bar, same ticking clock. Only the products disappeared.</p>
+
+    <div class="standdown-toggle">
+      <button class="btn on" id="btnActiveState">VIEW ACTIVE STATE</button>
+      <button class="btn" id="btnMay2026State">VIEW MAY 2026 STATE</button>
+    </div>
+
+    <div class="sd-panel">
+      <div class="sd-nav">
+        <div class="logo-sm"><svg viewBox="0 0 26 26" width="100%" height="100%" role="img" aria-label="Autonity logo mark"><text x="50%" y="70%" font-family="monospace" font-weight="700" font-size="14" fill="var(--fg)" text-anchor="middle">A</text></svg></div>
+        <div class="autex-tabs"><span class="active">Trade</span><span>Account</span><span>Products</span></div>
+        <div class="autex-connect">CONNECT WALLET</div>
+      </div>
+      <div class="sd-body" id="sdBody"></div>
+      <div class="sd-statusbar">
+        <span class="status-pill"><span class="dot"></span> BLOCKCHAIN</span>
+        <span>API</span>
+        <span class="clock" id="stage4Clock">UTC --:--:--</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 5 — Live Price (autonity.org/live-price) ══ -->
+  <section id="stage-5">
+    <div class="stage-eyebrow">STAGE 5</div>
+    <h2 class="stage-title">Live Price — ACU &amp; ATN-USD</h2>
+    <p class="stage-goal">A separate, still-standing corner of the site: a simple on-chain-derived view of the ACU Index and the implied ATN-USD price.</p>
+
+    <div class="recreation-label"><span class="line"></span>FAITHFUL RECREATION — NON-FUNCTIONAL<span class="line"></span></div>
+
+    <div class="lp-shell">
+      <div class="lp-side">
+        <div class="logo-sm"><svg viewBox="0 0 26 26" width="100%" height="100%" role="img" aria-label="Autonity logo mark"><text x="50%" y="70%" font-family="monospace" font-weight="700" font-size="14" fill="var(--fg)" text-anchor="middle">A</text></svg></div>
+        <div class="lp-nav-item">Home</div>
+        <div class="lp-nav-item active">Live Price</div>
+        <div class="lp-nav-item">Metrics</div>
+        <div class="lp-nav-item">Ecosystem</div>
+        <div class="lp-nav-item">Validators</div>
+        <div class="lp-nav-item">Grants</div>
+        <div class="lp-nav-item">Networks</div>
+        <div class="lp-nav-item">News</div>
+        <div class="lp-nav-item">Community</div>
+        <div class="lp-nav-item">FAQs</div>
+      </div>
+
+      <div class="lp-main">
+        <div class="lp-pill-title">LIVE PRICE</div>
+        <div class="lp-head">
+          <h3>ACU &amp; ATN-USD</h3>
+          <span class="lp-badge">ON-CHAIN DERIVED</span>
+        </div>
+        <div class="lp-desc">Live view of the ACU Index value, implied ATN-USD price (ACU × φ), and ACU currency basket composition. Charted historical view of index and implied price from Mainnet launch.</div>
+
+        <div class="lp-price-panel">
+          <div class="lp-price-label">ATN-USD (Implied)</div>
+          <div class="lp-price-big">1.3484</div>
+          <div class="lp-price-sub">
+            Target price (φ): 1.618034
+            <span class="formula">ATN-USD = ACU Index (0.8334) × ASM target price (φ = 1.618034)</span>
+          </div>
+        </div>
+
+        <div class="lp-price-label" style="margin-bottom:8px;">ACU Basket (Current Weights)</div>
+        <div class="acu-caption">Quantities from ACU config; prices from the latest oracle FX report. Weights = quantity × price; ACU share = weight × ACU Index. USD-USD is treated as 1.0.</div>
+
+        <table class="acu-table">
+          <thead><tr><th>Symbol</th><th>Quantity</th><th>Price</th><th>Weight</th><th>ACU Share</th></tr></thead>
+          <tbody>
+            <tr><td>AUD-USD</td><td>0.1826</td><td>0.6685</td><td>14.6488%</td><td>0.1221</td></tr>
+            <tr><td>CAD-USD</td><td>0.1634</td><td>0.7200</td><td>14.1199%</td><td>0.1177</td></tr>
+            <tr><td>EUR-USD</td><td>0.1024</td><td>1.1645</td><td>14.3030%</td><td>0.1192</td></tr>
+            <tr><td>GBP-USD</td><td>0.0887</td><td>1.3429</td><td>14.2927%</td><td>0.1191</td></tr>
+            <tr><td>JPY-USD</td><td>17.7066</td><td>0.0063</td><td>13.3497%</td><td>0.1113</td></tr>
+            <tr><td>SEK-USD</td><td>1.1514</td><td>0.1084</td><td>14.9824%</td><td>0.1249</td></tr>
+            <tr><td>USD-USD</td><td>0.1192</td><td>1.0000*</td><td>14.3034%</td><td>0.1192</td></tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TRACK B CTA BLOCK ══ -->
+  <section id="cta">
+    <div class="cta-block">
+      <div class="cta-pill">● TOOL AVAILABLE — AINUMBERS.CO</div>
+      <div class="cta-copy">
+        The computation on this page has a working implementation in the Autonity Tool Suite on AINumbers.co. Each tool produces a fingerprint of its result — if the calculation changes, the fingerprint changes. Share it with anyone. They can verify it in seconds, in their own browser, with no server access.
+      </div>
+      <div class="cta-tools" id="ctaTools"></div>
+      <a class="ocg-link" id="ocgLink" href="#" target="_blank" rel="noopener noreferrer">[ READ THE OCG STANDARD → ]</a>
+    </div>
+  </section>
+
+  <!-- ══ PREV/NEXT + PROGRESS ══ -->
+  <nav class="page-nav" aria-label="Series navigation">
+    <a class="page-nav-link prev" href="autonity-page4-clearing.html">← PAGE 4 · CLEARING VS TRADING</a>
+    <span class="page-nav-progress">PAGE 5 OF 6</span>
+    <a class="page-nav-link next" href="autonity-page6-forecastathon.html">PAGE 6 · FORECASTATHON →</a>
+  </nav>
+
+</div><!-- /wrap -->
+
+<!-- ══ FOOTER — validator health strip ══ -->
+<footer>
+  <div class="wrap">
+    <div class="vstrip-wrap">
+      <div class="vstrip" id="vstrip"></div>
+      <div class="vstrip-tip">11 of 27 validators confirmed active as of July 8, 2026 (remaining 16 seats pending confirmation). The chain has not stopped producing blocks.</div>
+    </div>
+    <div class="foot-legend">27 VALIDATORS · LIVE HEALTH SNAPSHOT · JULY 8, 2026</div>
+    <div class="foot-meta">
+      <span>AUTONITY TRACK A — MUSEUM MODE — EDUCATIONAL ONLY — NO ARTIFACT EMISSION</span>
+      <span><a href="index.html#glossary" style="color:var(--dim2);">GLOSSARY</a> · PAGE 5 / 6 — AUTEX</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG — relocation constants (v3 A-1)
+═══════════════════════════════════════════════════════════ */
+const TRACK_B_BASE = 'https://ainumbers.co/tools/autonity/';
+const OCG_STANDARD_URL = 'https://ainumbers.co/chaingraph/openchain-graph-paper.html';
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — boot line sequence
+═══════════════════════════════════════════════════════════ */
+const BOOT_LINES = [
+  '> LOADING AUTEX ...',
+  '> CONNECTING TO AFP CLEARING LAYER ... OK',
+  '> FETCHING PRODUCTS ........ [DONE]',
+  '> SYSTEM READY',
+];
+function playBoot(){
+  const wrap = document.getElementById('bootLines');
+  wrap.innerHTML = '';
+  BOOT_LINES.forEach((line, i) => {
+    const d = document.createElement('div');
+    d.className = 'boot-line';
+    d.textContent = line;
+    wrap.appendChild(d);
+    setTimeout(() => d.classList.add('done'), reduceMotion ? 0 : i*260);
+  });
+}
+playBoot();
+
+/* ═══════════════════════════════════════════════════════════
+   LIVE UTC CLOCK — updates every element with class "mono" and id ending Clock
+═══════════════════════════════════════════════════════════ */
+function pad(n){ return n.toString().padStart(2,'0'); }
+function tickClock(){
+  const now = new Date();
+  const s = `UTC ${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}:${pad(now.getUTCSeconds())}`;
+  ['heroClock','stage1Clock','stage4Clock'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = s;
+  });
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 1 — static BUY/SELL flash (non-functional recreation)
+═══════════════════════════════════════════════════════════ */
+document.getElementById('staticBuyBtn').addEventListener('click', (e) => {
+  e.target.style.background = 'var(--buy)'; e.target.style.color = '#000';
+  setTimeout(() => { e.target.style.background = ''; e.target.style.color = ''; }, 200);
+});
+document.getElementById('staticSellBtn').addEventListener('click', (e) => {
+  e.target.style.background = 'var(--sell)'; e.target.style.color = '#000';
+  setTimeout(() => { e.target.style.background = ''; e.target.style.color = ''; }, 200);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 2 — Order placement simulation
+═══════════════════════════════════════════════════════════ */
+function sleep(ms){ return new Promise(r => setTimeout(r, reduceMotion ? 0 : ms)); }
+
+let simRunning = false;
+let openOrders = [];
+let tradeHistory = [];
+let activeTab = 'open';
+
+function renderSimBody(){
+  const body = document.getElementById('simBody');
+  const list = activeTab === 'open' ? openOrders : tradeHistory;
+  document.getElementById('openCount').textContent = `(${openOrders.length})`;
+  document.getElementById('histCount').textContent = `(${tradeHistory.length})`;
+  document.getElementById('tabOpen').classList.toggle('active', activeTab === 'open');
+  document.getElementById('tabHistory').classList.toggle('active', activeTab === 'history');
+
+  if(list.length === 0){
+    body.innerHTML = `<div class="sim-empty">${activeTab === 'open' ? 'No open orders.' : 'No trades yet.'}</div>`;
+    return;
+  }
+  body.innerHTML = list.map(o => `<div class="sim-log-line ${o.hi ? 'hi' : ''}"><span class="tag">[${o.tag}]</span> ${o.text}</div>`).join('');
+}
+document.getElementById('tabOpen').addEventListener('click', () => { activeTab = 'open'; renderSimBody(); });
+document.getElementById('tabHistory').addEventListener('click', () => { activeTab = 'history'; renderSimBody(); });
+renderSimBody();
+
+async function runOrderSimulation(){
+  if(simRunning) return;
+  simRunning = true;
+  const price = document.getElementById('simPrice').value || '314.690';
+  const qty = document.getElementById('simQty').value || '100';
+  document.getElementById('receiptBox').classList.remove('show');
+  openOrders = []; tradeHistory = []; activeTab = 'open'; renderSimBody();
+
+  openOrders.push({tag:'NEW', text:`BUY ${qty} @ ${price} — order placed`, hi:true});
+  renderSimBody();
+  await sleep(500);
+
+  const bestAsk = document.getElementById('bestAskRow');
+  if(bestAsk){ bestAsk.style.background = 'rgba(255,59,59,.15)'; }
+  openOrders.push({tag:'MATCH', text:`Matching ask fired at 314.690 for ${qty}`, hi:true});
+  renderSimBody();
+  await sleep(700);
+  if(bestAsk){ bestAsk.style.background = ''; }
+
+  openOrders.push({tag:'FILL', text:`Order filled: ${qty} @ ${price}`, hi:true});
+  renderSimBody();
+  await sleep(600);
+
+  openOrders = [];
+  tradeHistory.push({tag:'FILLED', text:`BUY ${qty} @ ${price} — moved to trade history`, hi:true});
+  activeTab = 'history';
+  renderSimBody();
+  await sleep(500);
+
+  document.getElementById('receiptOi').textContent = `+1 LONG (via AutEx)`;
+  document.getElementById('receiptMargin').textContent = `${price} × ${qty}% ≈ ${(parseFloat(price)*parseFloat(qty)/100).toFixed(2)} USDZ (posted directly to DCC)`;
+  document.getElementById('receiptBox').classList.add('show');
+
+  simRunning = false;
+}
+document.getElementById('simBuyBtn').addEventListener('click', runOrderSimulation);
+document.getElementById('simResetBtn').addEventListener('click', () => {
+  openOrders = []; tradeHistory = []; activeTab = 'open';
+  document.getElementById('receiptBox').classList.remove('show');
+  renderSimBody();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 2b — Market-making bot mode (M1)
+   Same order-book/DCC-receipt scaffolding as the "take an order"
+   simulation above; a second scripted run showing a two-sided
+   quote, a lift, and a re-quote instead of a single resting order.
+═══════════════════════════════════════════════════════════ */
+const TICK = 0.005; // matches the order-book increments shown in Stage 1 (…690/.685… bid side, …695/.700… ask side)
+const MID_PRICE = 314.686;
+
+async function runMarketMakerSimulation(){
+  if(simRunning) return;
+  simRunning = true;
+  const spreadTicks = parseFloat(document.getElementById('mmSpread').value) || 2;
+  const size = document.getElementById('mmSize').value || '150';
+  const bidPx = (MID_PRICE - spreadTicks*TICK).toFixed(3);
+  const askPx = (MID_PRICE + spreadTicks*TICK).toFixed(3);
+
+  document.getElementById('receiptBox').classList.remove('show');
+  openOrders = []; tradeHistory = []; activeTab = 'open'; renderSimBody();
+
+  openOrders.push({tag:'QUOTE', text:`Bot posts a two-sided quote: BID ${size} @ ${bidPx} / ASK ${size} @ ${askPx}`, hi:true});
+  renderSimBody();
+  await sleep(600);
+
+  const bestAsk = document.getElementById('bestAskRow');
+  if(bestAsk){ bestAsk.style.background = 'rgba(255,59,59,.15)'; }
+  openOrders.push({tag:'LIFT', text:`Incoming order lifts the bot's ASK — bot sells ${size} @ ${askPx}`, hi:true});
+  renderSimBody();
+  await sleep(700);
+  if(bestAsk){ bestAsk.style.background = ''; }
+
+  openOrders = [];
+  tradeHistory.push({tag:'FILLED', text:`SOLD ${size} @ ${askPx} — bot is now short ${size}`, hi:true});
+  activeTab = 'history';
+  renderSimBody();
+  await sleep(500);
+
+  tradeHistory.push({tag:'REQUOTE', text:`Bot re-centers on the new mid and posts a fresh two-sided quote`, hi:false});
+  renderSimBody();
+  await sleep(500);
+
+  document.getElementById('receiptOi').textContent = `-${size} SHORT (via AutEx market-making bot)`;
+  document.getElementById('receiptMargin').textContent = `${askPx} × ${size}% ≈ ${(parseFloat(askPx)*parseFloat(size)/100).toFixed(2)} USDZ (posted directly to DCC)`;
+  document.getElementById('receiptBox').classList.add('show');
+
+  simRunning = false;
+}
+
+const SIM_HINTS = {
+  take: 'Try changing the price and quantity below, then place the order — watch the log and the DCC receipt update as it clears.',
+  make: 'Try widening or narrowing the spread, then start quoting — watch the bot post both sides, get lifted on one, and re-quote around the new mid.'
+};
+function setSimMode(mode){
+  document.getElementById('modeTakeBtn').classList.toggle('on', mode === 'take');
+  document.getElementById('modeMakeBtn').classList.toggle('on', mode === 'make');
+  document.getElementById('takeControls').style.display = mode === 'take' ? 'flex' : 'none';
+  document.getElementById('makeControls').style.display = mode === 'make' ? 'flex' : 'none';
+  document.getElementById('simHint').textContent = SIM_HINTS[mode];
+  openOrders = []; tradeHistory = []; activeTab = 'open';
+  document.getElementById('receiptBox').classList.remove('show');
+  renderSimBody();
+}
+document.getElementById('modeTakeBtn').addEventListener('click', () => setSimMode('take'));
+document.getElementById('modeMakeBtn').addEventListener('click', () => setSimMode('make'));
+document.getElementById('mmStartBtn').addEventListener('click', runMarketMakerSimulation);
+document.getElementById('mmResetBtn').addEventListener('click', () => {
+  openOrders = []; tradeHistory = []; activeTab = 'open';
+  document.getElementById('receiptBox').classList.remove('show');
+  renderSimBody();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 3 — Architecture layers accordion
+═══════════════════════════════════════════════════════════ */
+const ARCH_ZONES = [
+  {
+    label: 'AutEx — execution venue (front-end interface)',
+    body: 'Authenticated via the intent account private key. AutEx matches orders and presents the interface. It does not hold capital and never held sole custody of any position.'
+  },
+  {
+    label: 'AFP Clearing Layer — DCC (on-chain smart contracts)',
+    body: 'Margin account key (may differ from the intent key). Margin balances, the open interest ledger, and settlement all live here — not on the venue.'
+  },
+  {
+    label: 'Autonity Mainnet',
+    body: 'Tendermint BFT, 1-second blocks, BLS-12-381 quorum certificates. Oracle aggregation from the validator network feeds the DCC mark price — the foundation everything above depends on.'
+  },
+];
+function renderArch(){
+  const box = document.getElementById('archBox');
+  box.innerHTML = ARCH_ZONES.map((z,i) => `
+    <div class="arch-zone-wrap" data-i="${i}">
+      <div class="arch-zone" role="button" tabindex="0" aria-expanded="false"><span>${z.label}</span><span class="click-hint">◂ click</span></div>
+      <div class="arch-zone-body">${z.body}</div>
+    </div>
+    ${i < ARCH_ZONES.length-1 ? '<div class="arch-connector">↓</div>' : ''}
+  `).join('');
+  function toggleZone(el){
+    const wrap = el.closest('.arch-zone-wrap');
+    const wasOpen = wrap.classList.contains('open');
+    box.querySelectorAll('.arch-zone-wrap').forEach(w => w.classList.remove('open'));
+    box.querySelectorAll('.arch-zone').forEach(z => z.setAttribute('aria-expanded','false'));
+    if(!wasOpen){ wrap.classList.add('open'); el.setAttribute('aria-expanded','true'); }
+  }
+  box.querySelectorAll('.arch-zone').forEach((el) => {
+    el.addEventListener('click', () => toggleZone(el));
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleZone(el); }
+    });
+  });
+}
+renderArch();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 4 — Active / May 2026 toggle
+═══════════════════════════════════════════════════════════ */
+const SD_ACTIVE_HTML = `
+  <div class="sd-product-active">
+    <div class="product-head">
+      <div class="product-name">US CPI FUTURES Q1 2026</div>
+      <div class="product-price">314.686</div>
+      <div class="product-change">▲ +0.42% (24H)</div>
+    </div>
+    <div class="product-sub" style="margin-bottom:0;">24 PRODUCTS LIVE &nbsp;·&nbsp; ORDER BOOK POPULATED &nbsp;·&nbsp; SEASON IN PROGRESS</div>
+  </div>
+`;
+const SD_MAY2026_HTML = `
+  <div class="sd-empty">
+    <div class="big">No products available</div>
+    <div style="font-size:.76rem;color:var(--dim);">The exchange has no products available at this time.</div>
+    <div class="placeholder">-------</div>
+  </div>
+`;
+function setSdState(state){
+  document.getElementById('sdBody').innerHTML = state === 'active' ? SD_ACTIVE_HTML : SD_MAY2026_HTML;
+  document.getElementById('btnActiveState').classList.toggle('on', state === 'active');
+  document.getElementById('btnMay2026State').classList.toggle('on', state !== 'active');
+}
+document.getElementById('btnActiveState').addEventListener('click', () => setSdState('active'));
+document.getElementById('btnMay2026State').addEventListener('click', () => setSdState('may2026'));
+setSdState('active');
+
+/* ═══════════════════════════════════════════════════════════
+   CTA — Track B tools (page-specific)
+═══════════════════════════════════════════════════════════ */
+const CTA_TOOLS = [
+  {label:'FORECASTATHON SCORE CALCULATOR', slug:'forecastathon-score-calculator', id:'ain:at-07', mandate:'forecastathon_score_calc'},
+  {label:'NETWORK HEALTH AUDIT', slug:'network-health-audit', id:'ain:at-12', mandate:'network_health_audit'},
+];
+document.getElementById('ctaTools').innerHTML = CTA_TOOLS.map(t => `
+  <div class="cta-tool-card">
+    <a class="cta-tool-btn" href="${TRACK_B_BASE}${t.slug}.html" target="_blank" rel="noopener noreferrer">[ ${t.label} → ]</a>
+    <span class="mandate-pill">${t.mandate}</span>
+    <div style="font-size:.6rem;color:var(--dim);margin-top:6px;">${t.id}</div>
+  </div>
+`).join('');
+document.getElementById('ocgLink').href = OCG_STANDARD_URL;
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER — validator health strip (27 seats)
+   Corrected from an earlier 30-validator figure. Per Stakeflow, July 8, 2026:
+   11 confirmed Active, remaining 16 seats' status pending confirmation.
+═══════════════════════════════════════════════════════════ */
+const JULY_STATE = (() => {
+  const arr = new Array(27).fill('u');
+  for(let i=0;i<11;i++) arr[i] = 'g';
+  return arr;
+})();
+(function buildStrip(){
+  const el = document.getElementById('vstrip');
+  let html = '';
+  for(let i=0;i<27;i++){
+    html += `<span class="vd ${JULY_STATE[i]}"></span>`;
+  }
+  el.innerHTML = html;
+})();
+</script>
+</body>
+</html>

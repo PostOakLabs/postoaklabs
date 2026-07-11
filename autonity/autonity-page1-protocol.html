@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTONITY_PROTOCOL.DAT — Consensus, Validators &amp; Staking</title>
+<meta name="description" content="An interactive recovered terminal explaining Autonity's Tendermint BFT consensus, validator states, Penalty Absorbing Stake, and the LNTN staking model.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="autonity-logo.jpg">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   AUTONITY TRACK A — SHARED DESIGN TOKENS (per v2 §Visual Language)
+   Hosting note (v3 A-1): this file will relocate to Post Oak Labs.
+   Cross-site links use the TRACK_B_BASE constant defined in the script block below.
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000000;
+  --fg:#FFFFFF;
+  --dim:#7A7A7A;
+  --dim2:#4A4A4A;
+  --green:#66FF66;
+  --orange:#FF5900;
+  --teal:#0D7680;
+  --buy:#00CC00;
+  --sell:#CC0000;
+  --amber:#FFB020;
+  --red:#FF3B3B;
+  --dimred:#5A1414;
+  --gold:#D4A847;
+  --panel:#0A0A0A;
+  --panel2:#0F0F0F;
+  --line:#242424;
+  --mono:'JetBrains Mono','Berkeley Mono','Courier New',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--green);color:#000;}
+a{color:inherit;}
+button{font-family:var(--mono);cursor:pointer;background:none;border:none;color:inherit;}
+.upper{text-transform:uppercase;}
+.mono{font-family:var(--mono);}
+
+/* ── CRT scanline overlay ── */
+.crt-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:500;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.018) 0px,
+    rgba(255,255,255,0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode:overlay;
+}
+.crt-vignette{
+  position:fixed;inset:0;pointer-events:none;z-index:499;
+  box-shadow:inset 0 0 180px rgba(0,0,0,0.7);
+}
+
+/* ── layout ── */
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+section{padding:64px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+
+/* ── nav ── */
+nav.topnav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.topnav-inner{
+  max-width:980px;margin:0 auto;padding:0 24px;
+  height:52px;display:flex;align-items:center;gap:18px;
+}
+.logo{
+  width:26px;height:26px;background:#000;border:1px solid var(--fg);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;flex-shrink:0;overflow:hidden;
+}
+.brand{font-size:.72rem;letter-spacing:.14em;color:var(--dim);}
+.brand strong{color:var(--fg);}
+.progress-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.pdot{
+  width:8px;height:8px;border-radius:50%;background:var(--dim2);
+  border:none;position:relative;
+}
+.pdot.current{background:var(--green);box-shadow:0 0 6px var(--green);}
+.pdot:not(.current){cursor:default;}
+.pdot .tip{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-size:.58rem;white-space:nowrap;background:#111;border:1px solid var(--line);
+  padding:3px 6px;display:none;letter-spacing:.06em;color:var(--dim);
+}
+.pdot:hover .tip{display:block;}
+
+/* ── boot hero ── */
+.hero{padding-top:40px;}
+.hero-term{
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;
+  padding:20px 22px;position:relative;overflow:hidden;
+}
+.hero-term::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(102,255,102,.03),transparent 40%);
+  pointer-events:none;
+}
+.boot-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:10px;}
+.boot-line{font-size:.82rem;color:var(--dim);min-height:1.3em;white-space:pre;}
+.boot-line .arrow{color:var(--teal);}
+.boot-line.done{color:var(--fg);}
+.boot-status{color:var(--green);}
+.boot-footer{margin-top:14px;font-size:.68rem;color:var(--dim2);letter-spacing:.08em;}
+.cursor-blink{display:inline-block;width:7px;background:var(--green);margin-left:1px;animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+.hero-mesh-wrap{margin-top:18px;}
+#heroMesh{width:100%;height:auto;display:block;}
+.chain-strip{
+  margin-top:8px;height:34px;display:flex;align-items:center;gap:6px;
+  overflow:hidden;border-top:1px dashed var(--line);padding-top:8px;
+}
+.chain-block{
+  flex-shrink:0;font-size:.6rem;color:var(--green);border:1px solid var(--green);
+  padding:3px 7px;opacity:0;transform:translateX(20px);
+  transition:opacity .45s ease, transform .45s ease;white-space:nowrap;
+}
+.chain-block.show{opacity:1;transform:translateX(0);}
+
+/* ── stage headers ── */
+.stage-eyebrow{font-size:.62rem;letter-spacing:.18em;color:var(--teal);margin-bottom:6px;}
+h2.stage-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;letter-spacing:.01em;}
+.stage-goal{color:var(--dim);font-size:.82rem;margin-bottom:26px;max-width:640px;}
+.callout{
+  border-left:2px solid var(--teal);padding:10px 16px;margin:18px 0;
+  font-size:.82rem;color:#D8D8D8;background:rgba(13,118,128,.06);
+}
+.callout.small{font-size:.74rem;color:var(--dim);}
+/* glossary */
+dfn.gloss{
+  font-style:normal;border-bottom:1px dotted var(--teal);cursor:help;color:var(--fg);
+  text-decoration:none;
+}
+
+/* ── STAGE 1 mesh ── */
+.mesh-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:18px;position:relative;}
+#validatorMesh{width:100%;height:auto;display:block;}
+.node-c{cursor:pointer;transition:r .2s ease;}
+.node-c:hover{filter:brightness(1.3);}
+.mesh-controls{display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px;}
+.btn{
+  font-size:.66rem;letter-spacing:.1em;padding:7px 14px;border:1px solid var(--fg);
+  transition:all .15s;text-transform:uppercase;
+}
+.btn:hover{background:var(--fg);color:#000;}
+.btn.on{background:var(--green);border-color:var(--green);color:#000;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.65rem;color:var(--dim);}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.dot.g{background:var(--green);}
+.dot.r{background:var(--red);}
+.dot.a{background:var(--amber);}
+.dot.dr{background:var(--dimred);border:1px solid #7a2a2a;}
+
+.info-card{
+  margin-top:14px;background:#080808;border:1px solid var(--fg);
+  padding:12px 16px;font-size:.76rem;display:none;max-width:420px;
+}
+.info-card.show{display:block;}
+.info-card .row{display:flex;justify-content:space-between;padding:2px 0;}
+.info-card .row span:first-child{color:var(--dim);}
+.info-card .title{border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px;color:var(--fg);font-weight:600;}
+.status-pill{font-size:.65rem;}
+.status-pill.g{color:var(--green);}
+.status-pill.r{color:var(--red);}
+.status-pill.a{color:var(--amber);}
+.status-pill.dr{color:#a05050;}
+.status-pill.u{color:var(--dim2);}
+
+.warning-banner{
+  display:none;margin-top:12px;padding:9px 14px;border:1px solid var(--red);
+  color:var(--red);font-size:.72rem;letter-spacing:.03em;background:rgba(255,59,59,.06);
+}
+.warning-banner.show{display:block;}
+
+/* ── STAGE 2 delegation ── */
+.delegation-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:20px;}
+.coin-tray{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;min-height:46px;padding:10px;border:1px dashed var(--line);}
+.coin{
+  width:40px;height:40px;border-radius:50%;border:1.5px solid var(--gold);
+  color:var(--gold);display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:700;cursor:grab;user-select:none;background:#0a0a05;
+  transition:transform .15s;
+}
+.coin:active{cursor:grabbing;}
+.coin.selected{background:var(--gold);color:#000;transform:scale(1.1);}
+.coin.spent{opacity:.15;pointer-events:none;}
+.val-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.val-box{
+  border:1px solid var(--line);padding:14px;min-height:150px;transition:border-color .2s;
+  position:relative;
+}
+.val-box.dragover{border-color:var(--gold);background:rgba(212,168,71,.05);}
+.val-name{font-size:.78rem;font-weight:600;margin-bottom:4px;}
+.val-commission{font-size:.65rem;color:var(--dim);margin-bottom:10px;}
+.val-bar-track{height:6px;background:#1a1a1a;margin-bottom:8px;}
+.val-bar-fill{height:100%;background:var(--teal);width:0%;transition:width .35s ease;}
+.val-vp{font-size:.65rem;color:var(--fg);margin-bottom:6px;}
+.lntn-badge{
+  display:inline-block;font-size:.58rem;padding:2px 6px;border-radius:2px;
+  letter-spacing:.05em;opacity:0;transform:translateY(4px);transition:all .25s;
+}
+.lntn-badge.show{opacity:1;transform:translateY(0);}
+
+/* ── STAGE 3 PAS ── */
+.pas-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;}
+.pas-slider{width:100%;accent-color:var(--teal);margin:18px 0 6px;}
+.pas-zone-labels{display:flex;justify-content:space-between;font-size:.6rem;color:var(--dim);letter-spacing:.04em;}
+.pas-readout{margin-top:20px;border:1px solid var(--line);padding:16px;background:#080808;}
+.pas-buffer-track{height:14px;background:#161616;margin:8px 0;border:1px solid var(--line);}
+.pas-buffer-fill{height:100%;transition:width .4s ease, background-color .4s ease;}
+.pas-status-line{font-size:.8rem;margin-bottom:4px;}
+.pas-status-line .lbl{color:var(--dim);}
+
+/* ── STAGE 4 rings ── */
+.rings-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;display:flex;gap:26px;flex-wrap:wrap;align-items:center;}
+#ringsSvg{width:280px;height:280px;flex-shrink:0;}
+.ring-desc{flex:1;min-width:240px;}
+.ring-tab{
+  padding:10px 12px;border-left:2px solid var(--line);margin-bottom:8px;
+  cursor:pointer;font-size:.74rem;color:var(--dim);transition:all .15s;
+}
+.ring-tab:hover{color:var(--fg);}
+.ring-tab.active{border-left-color:var(--fg);color:var(--fg);background:#0d0d0d;}
+.ring-tab .lbl{font-weight:700;letter-spacing:.06em;font-size:.66rem;}
+
+/* ── STAGE 5 block production ── */
+.chain-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:20px;}
+.chain-scroll{display:flex;gap:8px;overflow:hidden;padding:10px 0;min-height:50px;align-items:center;}
+.block-item{
+  flex-shrink:0;border:1px solid var(--dim2);padding:6px 12px;font-size:.66rem;
+  color:var(--dim);cursor:pointer;white-space:nowrap;transition:all .2s ease;
+  opacity:0;transform:translateX(24px);
+}
+.block-item.show{opacity:1;transform:translateX(0);border-color:var(--green);color:var(--green);}
+.block-item.tx{border-color:var(--gold);color:var(--gold);}
+.block-detail{
+  margin-top:12px;border:1px solid var(--fg);padding:12px 16px;font-size:.74rem;
+  display:none;background:#080808;
+}
+.block-detail.show{display:block;}
+.block-detail .row{display:flex;justify-content:space-between;padding:2px 0;}
+.block-detail .row span:first-child{color:var(--dim);}
+.mempool{margin-top:12px;font-size:.66rem;color:var(--dim);min-height:16px;}
+.mempool .tx-dot{color:var(--gold);}
+
+/* ── STAGE 6 network channels ── */
+.channels-panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:0;overflow:hidden;}
+.channel-block{padding:18px 22px;border-bottom:1px solid var(--line);}
+.channel-block:last-child{border-bottom:none;}
+.channel-title{font-weight:700;font-size:.82rem;color:var(--fg);margin-bottom:8px;}
+.channel-title .port{color:var(--teal);font-weight:400;}
+.channel-row{display:flex;font-size:.75rem;padding:2px 0;gap:10px;}
+.channel-row .k{color:var(--dim);min-width:70px;flex-shrink:0;}
+.why-block{padding:18px 22px;background:#080808;font-size:.78rem;color:var(--dim);}
+.why-block strong{color:var(--fg);}
+
+/* ── STAGE 7 accordion ── */
+details.acc{border:1px solid var(--line);margin-bottom:10px;background:var(--panel);}
+details.acc summary{
+  padding:12px 16px;cursor:pointer;list-style:none;font-size:.78rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+details.acc summary::-webkit-details-marker{display:none;}
+details.acc summary::after{content:'+';color:var(--dim);font-size:1rem;}
+details.acc[open] summary::after{content:'–';}
+details.acc summary:hover{color:var(--fg);}
+table.ref-table{width:100%;border-collapse:collapse;font-size:.72rem;padding:0 4px 12px;}
+table.ref-table th,table.ref-table td{padding:8px 12px;border-top:1px solid var(--line);text-align:left;}
+table.ref-table th{color:var(--dim);font-weight:500;letter-spacing:.05em;font-size:.62rem;text-transform:uppercase;}
+table.ref-table td.src{color:var(--dim);font-size:.66rem;}
+
+/* ── STAGE 8 timeline ── */
+.vtl{position:relative;padding-left:26px;}
+.vtl::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line);}
+.vtl-item{position:relative;padding:14px 0;cursor:pointer;}
+.vtl-item::before{
+  content:'';position:absolute;left:-26px;top:20px;width:9px;height:9px;
+  border-radius:50%;background:var(--panel);border:2px solid var(--teal);
+}
+.vtl-date{font-size:.68rem;color:var(--teal);letter-spacing:.05em;}
+.vtl-event{font-size:.85rem;margin-top:2px;}
+.vtl-expand{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+  font-size:.75rem;color:var(--dim);
+}
+.vtl-item.open .vtl-expand{max-height:200px;padding-top:8px;}
+.vtl-item.open::before{background:var(--teal);}
+
+/* ── CTA block ── */
+.cta-block{background:var(--panel2);border:1px solid var(--teal);border-radius:4px;padding:26px 28px;}
+.cta-pill{
+  display:inline-flex;align-items:center;gap:6px;font-size:.62rem;color:var(--green);
+  border:1px solid var(--green);padding:3px 9px;letter-spacing:.08em;margin-bottom:14px;
+}
+.cta-copy{font-size:.82rem;color:#D8D8D8;max-width:660px;margin-bottom:20px;}
+.cta-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
+.cta-tool-card{border:1px solid var(--line);padding:14px;}
+.cta-tool-btn{
+  display:block;font-size:.68rem;letter-spacing:.06em;border:1px solid var(--fg);
+  padding:9px 12px;text-align:center;margin-bottom:8px;transition:all .15s;
+}
+.cta-tool-btn:hover{background:var(--fg);color:#000;}
+.mandate-pill{
+  display:inline-block;font-size:.6rem;color:var(--teal);border:1px solid var(--teal);
+  padding:2px 7px;letter-spacing:.03em;background:rgba(13,118,128,.08);
+}
+.ocg-link{font-size:.72rem;color:var(--dim);text-decoration:underline;text-underline-offset:3px;}
+.ocg-link:hover{color:var(--fg);}
+
+/* ── footer / validator strip ── */
+footer{padding:36px 0 60px;}
+.vstrip-wrap{position:relative;}
+.vstrip{display:flex;gap:5px;flex-wrap:wrap;cursor:help;}
+.vstrip .vd{width:9px;height:9px;border-radius:50%;}
+.vstrip .vd.g{background:var(--green);}
+.vstrip .vd.r{background:var(--red);}
+.vstrip .vd.a{background:var(--amber);}
+.vstrip .vd.dr{background:var(--dimred);}
+.vstrip .vd.u{background:var(--dim2);}
+.vstrip-tip{
+  display:none;position:absolute;bottom:22px;left:0;background:#111;border:1px solid var(--line);
+  padding:8px 12px;font-size:.68rem;color:var(--dim);white-space:nowrap;
+}
+.vstrip-wrap:hover .vstrip-tip{display:block;}
+.foot-legend{margin-top:10px;font-size:.6rem;color:var(--dim2);letter-spacing:.05em;}
+.foot-meta{margin-top:24px;font-size:.64rem;color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+@media(max-width:640px){
+  .val-row{grid-template-columns:1fr;}
+  .rings-panel{flex-direction:column;}
+  #ringsSvg{width:100%;max-width:260px;}
+  .cta-tools{grid-template-columns:1fr;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo"><img src="data:image/jpeg;base64,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" alt="Autonity logo" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="brand"><strong>AUTONITY</strong> // RECOVERED TERMINAL</div>
+    <div class="progress-dots" id="progressDots">
+      <a class="pdot" href="index.html"><span class="tip">1 · HUB</span></a>
+      <button class="pdot current"><span class="tip">2 · PROTOCOL (this page)</span></button>
+      <a class="pdot" href="autonity-page2-money.html"><span class="tip">3 · MONEY</span></a>
+      <a class="pdot" href="autonity-page3-afp.html"><span class="tip">4 · AFP</span></a>
+      <a class="pdot" href="autonity-page4-clearing.html"><span class="tip">5 · CLEARING VS TRADING</span></a>
+      <a class="pdot" href="autonity-page5-autex.html"><span class="tip">6 · AUTEX</span></a>
+      <a class="pdot" href="autonity-page6-forecastathon.html"><span class="tip">7 · FORECASTATHON</span></a>
+      <a class="pdot" href="autonity-page7-endogenous-collateral.html"><span class="tip">8 · ENDOGENOUS COLLATERAL (speculative)</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero-term">
+      <div class="boot-file">&gt;&gt; AUTONITY_PROTOCOL.DAT</div>
+      <div id="bootLines"></div>
+      <div class="boot-footer">AUTONITY BLOCKCHAIN TERMINAL v1.1.2</div>
+      <div class="hero-mesh-wrap">
+        <svg id="heroMesh" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="chain-strip" id="chainStripHero"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 1 — What is a Validator ══ -->
+  <section id="stage-1">
+    <div class="stage-eyebrow">STAGE 1</div>
+    <h2 class="stage-title">What Is a Validator?</h2>
+    <p class="stage-goal">Twenty-seven validator seats keep this chain alive. Click one to see what it is actually doing. Then look at what July 2026 really looked like.</p>
+
+    <div class="mesh-panel">
+      <svg id="validatorMesh" viewBox="0 0 760 420" preserveAspectRatio="xMidYMid meet"></svg>
+
+      <div class="info-card" id="infoCard">
+        <div class="title" id="infoName">—</div>
+        <div class="row"><span>VOTING POWER</span><span id="infoVp">—</span></div>
+        <div class="row"><span>COMMISSION</span><span id="infoCommission">—</span></div>
+        <div class="row"><span>DELEGATED NTN</span><span id="infoDelegated">—</span></div>
+        <div class="row"><span>ORACLE PART.</span><span id="infoOracle">—</span></div>
+        <div class="row"><span>STATUS</span><span class="status-pill" id="infoStatus">—</span></div>
+      </div>
+
+      <div class="warning-banner" id="superminorityBanner">
+        ▲ Max Validators = 27. As of July 8, 2026: 11 validators confirmed Active — including the top 3 by stake (ITRocket, Stakeflow, Coinage x DAIC) — with the remaining 16 seats' status pending confirmation, not jailed.
+      </div>
+
+      <div class="mesh-controls">
+        <div class="legend">
+          <span><i class="dot g"></i>ACTIVE (confirmed)</span>
+          <span><i class="dot" style="background:var(--dim2);"></i>STATUS PENDING CONFIRMATION</span>
+        </div>
+        <button class="btn" id="juneToggle">[ VIEW JULY 2026 STATE ]</button>
+      </div>
+    </div>
+
+    <div class="callout">
+      "The chain is still producing blocks. BFT consensus requires only 2f+1 of 3f+1 voting power. With at least 11 of 27 validator seats confirmed active, consensus is maintained."
+    </div>
+  </section>
+
+  <!-- ══ STAGE 2 — Delegation and LNTN ══ -->
+  <section id="stage-2">
+    <div class="stage-eyebrow">STAGE 2</div>
+    <h2 class="stage-title">Delegation and LNTN</h2>
+    <p class="stage-goal">Click an NTN coin, then click a validator to delegate. Watch voting power grow and a validator-specific LNTN badge appear.</p>
+
+    <div class="delegation-panel">
+      <div class="coin-tray" id="coinTray"></div>
+
+      <div class="val-row" id="valRow"></div>
+    </div>
+
+    <div class="callout">
+      "LNTN from Validator A cannot be exchanged for LNTN from Validator B. Each represents a claim on a different bonded stake, a different commission rate, and a different performance history."
+    </div>
+    <div class="callout">
+      "LNTN can also be used as CDP collateral — a delegator can borrow ATN against staked NTN without first unstaking."
+    </div>
+    <div class="callout small">
+      NTN inflation rewards are automatically re-bonded to the originating validator at epoch end — protocol-level, no toggle. Only ATN fee rewards are directly claimable.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 3 — PAS ══ -->
+  <section id="stage-3">
+    <div class="stage-eyebrow">STAGE 3</div>
+    <h2 class="stage-title">Penalty Absorbing Stake (<dfn class="gloss" title="Penalty Absorbing Stake — a buffer of bonded stake that absorbs minor penalties before slashing touches delegated funds.">PAS</dfn>)</h2>
+    <p class="stage-goal">Drag the slider from a perfect record toward inactivity and watch the buffer drain, then watch what happens after it's gone.</p>
+
+    <div class="pas-panel">
+      <input type="range" class="pas-slider" id="pasSlider" min="0" max="3" step="1" value="0">
+      <div class="pas-zone-labels">
+        <span>PERFECT</span><span>MINOR ISSUE</span><span>MAJOR ISSUE</span><span>JAILBOUND</span>
+      </div>
+
+      <div class="pas-readout">
+        <div class="pas-status-line"><span class="lbl">STATUS: </span><span id="pasStatus">● ACTIVE</span></div>
+        <div class="pas-status-line" id="pasNote">Validator earns full rewards.</div>
+        <div class="pas-buffer-track"><div class="pas-buffer-fill" id="pasFill"></div></div>
+        <div class="pas-status-line"><span class="lbl">PAS BUFFER: </span><span id="pasPct">100%</span></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      "<dfn class="gloss" title="Omission Fault Detection — automated detection of validator inactivity via aggregated BLS precommit signatures.">OFD</dfn> (Omission Fault Detection) is fully automated. The block proposer aggregates BLS precommit signatures from the previous epoch to prove which validators were inactive. No manual intervention required."
+    </div>
+  </section>
+
+  <!-- ══ STAGE 4 — Three Jobs ══ -->
+  <section id="stage-4">
+    <div class="stage-eyebrow">STAGE 4</div>
+    <h2 class="stage-title">Validator = Three Jobs</h2>
+    <p class="stage-goal">One validator, three non-optional responsibilities. Click a ring.</p>
+
+    <div class="rings-panel">
+      <svg id="ringsSvg" viewBox="0 0 280 280"></svg>
+      <div class="ring-desc">
+        <div class="ring-tab active" data-ring="0">
+          <div class="lbl" style="color:var(--teal)">INNER — CONSENSUS</div>
+          Tendermint BFT // 1-second blocks // BLS quorum certificate
+        </div>
+        <div class="ring-tab" data-ring="1">
+          <div class="lbl">MIDDLE — STAKING</div>
+          Issues LNTN // Receives delegations // Earns ATN + NTN rewards
+        </div>
+        <div class="ring-tab" data-ring="2">
+          <div class="lbl" style="color:var(--orange)">OUTER — ORACLE</div>
+          Publishes FX prices // AOS v0.2.6 // Subject to <dfn class="gloss" title="Oracle Availability Fault Detection — outlier and misbehaviour detection for validator oracle submissions.">OAFD</dfn>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">"REMOVE ANY RING AND THE PROTOCOL BREAKS."</div>
+    <div class="callout small">
+      Oracle duty is not optional. The oracle output feeds the <dfn class="gloss" title="Autonity Currency Unit — the multi-currency basket the protocol targets. Not a stablecoin peg.">ACU</dfn> calculation, the <dfn class="gloss" title="Auction Stabilisation Mechanism — the CDP/auction system that keeps ATN tracking the ACU basket.">ASM</dfn> stabilisation mechanism, CDP liquidation prices, and <dfn class="gloss" title="Autonity Forecast Protocol — on-chain forecast futures and prediction markets.">AFP</dfn> futures settlement prices — all four simultaneously.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 5 — Block Production ══ -->
+  <section id="stage-5">
+    <div class="stage-eyebrow">STAGE 5</div>
+    <h2 class="stage-title">Block Production</h2>
+    <p class="stage-goal">A new block slides in roughly every second. Click any block to inspect it, or inject a synthetic transaction and watch it clear the mempool.</p>
+
+    <div class="chain-panel">
+      <div class="chain-scroll" id="blockChain"></div>
+      <div class="mempool" id="mempool"></div>
+      <div class="block-detail" id="blockDetail">
+        <div class="row"><span>TIMESTAMP</span><span id="bdTs">—</span></div>
+        <div class="row"><span>GAS USED</span><span id="bdGas">—</span></div>
+        <div class="row"><span>EPOCH</span><span id="bdEpoch">—</span></div>
+        <div class="row"><span>TXS</span><span id="bdTxs">—</span></div>
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn" id="injectTx">[ INJECT TRANSACTION ]</button>
+      </div>
+    </div>
+
+    <div class="callout small">
+      EIP-1559 gas mechanism. Fee paid in ATN. Base fee burned. Priority tip to validator.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 6 — Two P2P Channels ══ -->
+  <section id="stage-6">
+    <div class="stage-eyebrow">STAGE 6</div>
+    <h2 class="stage-title">Two P2P Channels</h2>
+    <p class="stage-goal">Transaction gossip and consensus messages never share a wire.</p>
+
+    <div class="channels-panel">
+      <div class="channel-block">
+        <div class="channel-title">ETHWIRE <span class="port">(port 30303)</span></div>
+        <div class="channel-row"><span class="k">Purpose</span><span>Transaction gossip</span></div>
+        <div class="channel-row"><span class="k">Carries</span><span>Pending transactions, block bodies</span></div>
+        <div class="channel-row"><span class="k">Risk</span><span>High-volume spikes during market activity</span></div>
+      </div>
+      <div class="channel-block">
+        <div class="channel-title">ACN — <dfn class="gloss" title="Autonity Consensus Network — a dedicated peer-to-peer channel isolating BFT consensus messages from transaction gossip.">Autonity Consensus Network</dfn> <span class="port">(port 20203)</span></div>
+        <div class="channel-row"><span class="k">Purpose</span><span>Tendermint BFT consensus messages only</span></div>
+        <div class="channel-row"><span class="k">Carries</span><span>Proposals, prevotes, precommits, BLS quorum certificates</span></div>
+        <div class="channel-row"><span class="k">Introduced</span><span>AGC v0.13.0</span></div>
+        <div class="channel-row"><span class="k">Risk</span><span>Isolated from transaction volume — consensus can proceed even during transaction-layer congestion</span></div>
+      </div>
+      <div class="why-block">
+        <strong>WHY TWO CHANNELS?</strong><br>
+        If consensus messages share ethwire bandwidth with transactions, a transaction surge can delay BFT messages and threaten liveness. ACN isolates consensus — both channels can be tuned independently.
+      </div>
+    </div>
+
+    <div class="callout small">
+      AGC v1.1.1's clustering model (Originator / First Relayer / Local Relayer roles) was tested to 500 validators and 1,000 TPS in that configuration.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 7 — Technical Reference ══ -->
+  <section id="stage-7">
+    <div class="stage-eyebrow">STAGE 7</div>
+    <h2 class="stage-title">Technical Reference</h2>
+    <p class="stage-goal">Every parameter, sourced.</p>
+
+    <details class="acc" open>
+      <summary>PROTOCOL PARAMETERS <span style="color:var(--dim);font-size:.62rem;">13 entries</span></summary>
+      <table class="ref-table">
+        <thead><tr><th>Parameter</th><th>Value</th><th>Source</th></tr></thead>
+        <tbody id="refTableBody"></tbody>
+      </table>
+    </details>
+
+    <details class="acc">
+      <summary>TOOLING &amp; EXPLORERS <span style="color:var(--dim);font-size:.62rem;">7 entries</span></summary>
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>What it's for</th><th>Source</th></tr></thead>
+        <tbody id="toolsTableBody"></tbody>
+      </table>
+    </details>
+    <div class="callout small" style="margin-top:12px;">Mix of official and community-built. AFP.network and AutonityScan cover the chain and the clearing layer respectively; Adanode and the LCI are independent community projects — treated with the same care as any other community-sourced claim in this series. A separate community-built trading venue (CAX) is covered on Page 5.</div>
+  </section>
+
+  <!-- ══ STAGE 8 — History Timeline ══ -->
+  <section id="stage-8">
+    <div class="stage-eyebrow">STAGE 8</div>
+    <h2 class="stage-title">History (post-2021)</h2>
+    <p class="stage-goal">Click any node to expand.</p>
+
+    <div class="vtl" id="vtl"></div>
+  </section>
+
+  <!-- ══ TRACK B CTA BLOCK ══ -->
+  <section id="cta">
+    <div class="cta-block">
+      <div class="cta-pill">● TOOL AVAILABLE — AINUMBERS.CO</div>
+      <div class="cta-copy">
+        The computation on this page has a working implementation in the Autonity Tool Suite on AINumbers.co. Each tool produces a fingerprint of its result — if the calculation changes, the fingerprint changes. Share it with anyone. They can verify it in seconds, in their own browser, with no server access.
+      </div>
+      <div class="cta-tools" id="ctaTools"></div>
+      <a class="ocg-link" id="ocgLink" href="#" target="_blank" rel="noopener noreferrer">[ READ THE OCG STANDARD → ]</a>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- ══ FOOTER — validator health strip ══ -->
+<footer>
+  <div class="wrap">
+    <div class="vstrip-wrap">
+      <div class="vstrip" id="vstrip"></div>
+      <div class="vstrip-tip">11 of 27 validators confirmed active as of July 8, 2026 (remaining 16 seats pending confirmation). The chain has not stopped producing blocks.</div>
+    </div>
+    <div class="foot-legend">27 VALIDATORS · LIVE HEALTH SNAPSHOT · JULY 8, 2026</div>
+    <div class="foot-meta">
+      <span>AUTONITY TRACK A — MUSEUM MODE — EDUCATIONAL ONLY — NO ARTIFACT EMISSION</span>
+      <span>PAGE 1 / 7 — PROTOCOL</span>
+    </div>
+    <div class="foot-meta">
+      <a href="index.html" style="color:var(--dim);text-decoration:underline;text-underline-offset:2px;">← SERIES HUB</a>
+      <a href="index.html#glossary" style="color:var(--dim);text-decoration:underline;text-underline-offset:2px;">GLOSSARY</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG — relocation constants (v3 A-1)
+═══════════════════════════════════════════════════════════ */
+const TRACK_B_BASE = 'https://ainumbers.co/tools/autonity/';
+const OCG_STANDARD_URL = 'https://ainumbers.co/chaingraph/openchain-graph-paper.html';
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — boot sequence + validator mesh + chain strip
+═══════════════════════════════════════════════════════════ */
+const BOOT_LINES = [
+  '> INITIALISING CONSENSUS NETWORK ...',
+  '> VALIDATORS ONLINE: 11 / 27',
+  '> BLOCK PRODUCTION: ACTIVE',
+  '> LAST BLOCK: #24,400,001',
+  '> STATUS: ● SYSTEM ONLINE',
+];
+function playBoot(){
+  const wrap = document.getElementById('bootLines');
+  wrap.innerHTML = '';
+  BOOT_LINES.forEach((line, i) => {
+    const d = document.createElement('div');
+    d.className = 'boot-line';
+    d.textContent = line;
+    wrap.appendChild(d);
+    setTimeout(() => {
+      d.classList.add('done');
+      if(line.includes('ONLINE')) d.innerHTML = line.replace('●','<span class="boot-status">●</span>');
+    }, reduceMotion ? 0 : i*260);
+  });
+}
+playBoot();
+
+/* hero validator mesh — small ring of ~12 nodes with proposer cycling */
+const HERO_N = 12;
+let heroBlockNum = 24400001;
+let heroProposer = 0;
+function buildHeroMesh(){
+  const svg = document.getElementById('heroMesh');
+  const cx = 450, cy = 95, r = 78;
+  let html = '';
+  const pts = [];
+  for(let i=0;i<HERO_N;i++){
+    const a = (i/HERO_N)*Math.PI*2 - Math.PI/2;
+    const x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
+    pts.push([x,y]);
+  }
+  // connecting lines (drawn first, under nodes)
+  for(let i=0;i<HERO_N;i++){
+    html += `<line id="hline${i}" x1="${cx}" y1="${cy}" x2="${pts[i][0]}" y2="${pts[i][1]}" stroke="#1c1c1c" stroke-width="1"/>`;
+  }
+  for(let i=0;i<HERO_N;i++){
+    html += `<circle id="hnode${i}" cx="${pts[i][0]}" cy="${pts[i][1]}" r="5" fill="#333" stroke="#66FF66" stroke-width="1"/>`;
+  }
+  html += `<circle cx="${cx}" cy="${cy}" r="3" fill="#66FF66"/>`;
+  svg.innerHTML = html;
+}
+buildHeroMesh();
+
+function tickHero(){
+  // reset all lines/nodes
+  for(let i=0;i<HERO_N;i++){
+    const line = document.getElementById(`hline${i}`);
+    const node = document.getElementById(`hnode${i}`);
+    if(!line || !node) continue;
+    const isProposer = i === heroProposer;
+    line.setAttribute('stroke', isProposer ? '#66FF66' : '#1c1c1c');
+    line.setAttribute('stroke-opacity', isProposer ? '0.9' : '1');
+    node.setAttribute('fill', isProposer ? '#66FF66' : '#333');
+  }
+  heroProposer = (heroProposer + 1) % HERO_N;
+  heroBlockNum++;
+  addHeroChainBlock(heroBlockNum);
+}
+function addHeroChainBlock(n){
+  const strip = document.getElementById('chainStripHero');
+  const d = document.createElement('div');
+  d.className = 'chain-block';
+  d.textContent = 'BLOCK #' + n.toLocaleString();
+  strip.appendChild(d);
+  requestAnimationFrame(()=> d.classList.add('show'));
+  while(strip.children.length > 12) strip.removeChild(strip.firstChild);
+}
+if(!reduceMotion) setInterval(tickHero, 1000); else tickHero();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 1 — Validator mesh
+═══════════════════════════════════════════════════════════ */
+const NAMED = ['ITRocket','Stakeflow','Coinage x DAIC','Noders','UTSA','STAVR','Decentrio','Staketab','Speedy Staking','Enigma','Validation Cloud','Adanode','Finoa Consensus Services','Stakin by The Tie','Zuka','RHINO','breskulpeak.com','Kingnodes','UncommonLab','stakeFi','Vault Staking','StakingCabin'];
+const VALIDATORS = [];
+(function buildValidators(){
+  for(let i=0;i<27;i++){
+    const name = NAMED[i] || `validator-${String(i+1).padStart(2,'0')}.node`;
+    VALIDATORS.push({
+      name,
+      vp: (Math.random()*4 + 1).toFixed(1),
+      commission: (Math.random()*15 + 5).toFixed(1),
+      delegated: Math.round((Math.random()*1.5+0.3)*1000000),
+      oracle: (Math.random()*10 + 90).toFixed(1),
+    });
+  }
+  // featured example — real figures from the July 8, 2026 Stakeflow snapshot
+  VALIDATORS[0] = {...VALIDATORS[0], name:'ITRocket', vp:'18.5', commission:'10.0', delegated:531638, oracle:'—'};
+})();
+
+// July 8, 2026 state: 11 confirmed Active (indices 0–10, matching the named validators
+// above in the same order as the Stakeflow "Active" filter view), remaining 16 seats
+// pending confirmation — NOT asserted red/jailed, since that wasn't confirmed either way.
+const JULY_STATE = (() => {
+  const arr = new Array(27).fill('u');
+  for(let i=0;i<11;i++) arr[i] = 'g';
+  return arr;
+})();
+
+let meshMode = 'idle'; // idle = all green, july = real July 8, 2026 distribution
+let selectedNode = null;
+
+function nodeColor(i){
+  if(meshMode === 'idle') return '#66FF66';
+  const s = JULY_STATE[i];
+  return s === 'g' ? '#66FF66' : '#4A4A4A';
+}
+function nodeStatusLabel(i){
+  if(meshMode === 'idle') return {text:'● ACTIVE', cls:'g'};
+  const s = JULY_STATE[i];
+  if(s === 'g') return {text:'● ACTIVE (confirmed)', cls:'g'};
+  return {text:'● STATUS PENDING CONFIRMATION', cls:'u'};
+}
+
+function buildValidatorMesh(){
+  const svg = document.getElementById('validatorMesh');
+  const cx = 380, cy = 210, r = 165;
+  let html = '';
+  const pts = [];
+  for(let i=0;i<27;i++){
+    const a = (i/27)*Math.PI*2 - Math.PI/2;
+    pts.push([cx + r*Math.cos(a), cy + r*Math.sin(a)]);
+  }
+  for(let i=0;i<27;i++){
+    html += `<line x1="${cx}" y1="${cy}" x2="${pts[i][0].toFixed(1)}" y2="${pts[i][1].toFixed(1)}" stroke="#181818" stroke-width="1"/>`;
+  }
+  svg.innerHTML = html;
+  for(let i=0;i<27;i++){
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx', pts[i][0].toFixed(1));
+    c.setAttribute('cy', pts[i][1].toFixed(1));
+    c.setAttribute('r', 8);
+    c.setAttribute('fill', nodeColor(i));
+    c.setAttribute('class','node-c');
+    c.setAttribute('id', 'vnode'+i);
+    c.addEventListener('click', () => selectNode(i));
+    svg.appendChild(c);
+  }
+  const center = document.createElementNS('http://www.w3.org/2000/svg','text');
+  center.setAttribute('x', cx); center.setAttribute('y', cy);
+  center.setAttribute('text-anchor','middle'); center.setAttribute('fill','#4a4a4a');
+  center.setAttribute('font-size','11'); center.setAttribute('font-family','JetBrains Mono, monospace');
+  center.textContent = '27 VALIDATORS';
+  svg.appendChild(center);
+}
+
+function refreshMeshColors(){
+  for(let i=0;i<27;i++){
+    const n = document.getElementById('vnode'+i);
+    if(n) n.setAttribute('fill', nodeColor(i));
+  }
+  document.getElementById('superminorityBanner').classList.toggle('show', meshMode === 'july');
+}
+
+function selectNode(i){
+  selectedNode = i;
+  const v = VALIDATORS[i];
+  const st = nodeStatusLabel(i);
+  document.getElementById('infoCard').classList.add('show');
+  document.getElementById('infoName').textContent = 'VALIDATOR: ' + v.name;
+  document.getElementById('infoVp').textContent = v.vp + '%';
+  document.getElementById('infoCommission').textContent = v.commission + '%';
+  document.getElementById('infoDelegated').textContent = v.delegated.toLocaleString();
+  document.getElementById('infoOracle').textContent = v.oracle + '%';
+  const statusEl = document.getElementById('infoStatus');
+  statusEl.textContent = st.text;
+  statusEl.className = 'status-pill ' + st.cls;
+}
+
+buildValidatorMesh();
+selectNode(0);
+
+document.getElementById('juneToggle').addEventListener('click', function(){
+  meshMode = meshMode === 'idle' ? 'july' : 'idle';
+  this.classList.toggle('on', meshMode === 'july');
+  this.textContent = meshMode === 'july' ? '[ RETURN TO IDLE STATE ]' : '[ VIEW JULY 2026 STATE ]';
+  refreshMeshColors();
+  if(selectedNode !== null) selectNode(selectedNode);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 2 — Delegation / LNTN
+═══════════════════════════════════════════════════════════ */
+const DEL_VALIDATORS = [
+  {name:'Cloud Validation', commission:10.0, color:'#66FF66', vp:0, delegated:0},
+  {name:'Stake Flow', commission:14.5, color:'#0D7680', vp:0, delegated:0},
+  {name:'Finoa', commission:8.0, color:'#D4A847', vp:0, delegated:0},
+];
+let selectedCoin = null;
+
+function buildDelegationUI(){
+  const tray = document.getElementById('coinTray');
+  tray.innerHTML = '';
+  for(let i=0;i<8;i++){
+    const c = document.createElement('div');
+    c.className = 'coin';
+    c.textContent = 'NTN';
+    c.dataset.idx = i;
+    c.draggable = true;
+    c.addEventListener('click', () => selectCoin(c));
+    c.addEventListener('dragstart', e => { selectCoin(c); e.dataTransfer.setData('text/plain', c.dataset.idx); });
+    tray.appendChild(c);
+  }
+  const row = document.getElementById('valRow');
+  row.innerHTML = DEL_VALIDATORS.map((v,i) => `
+    <div class="val-box" data-idx="${i}">
+      <div class="val-name">${v.name}</div>
+      <div class="val-commission">Commission: ${v.commission.toFixed(1)}%</div>
+      <div class="val-bar-track"><div class="val-bar-fill" id="valBar${i}" style="background:${v.color}"></div></div>
+      <div class="val-vp" id="valVp${i}">Voting power contribution: 0 NTN</div>
+      <span class="lntn-badge" id="lntnBadge${i}" style="border:1px solid ${v.color};color:${v.color}">LNTN-${v.name.split('.')[0].split('-')[0].toUpperCase()} ISSUED</span>
+    </div>
+  `).join('');
+  row.querySelectorAll('.val-box').forEach(box => {
+    box.addEventListener('dragover', e => { e.preventDefault(); box.classList.add('dragover'); });
+    box.addEventListener('dragleave', () => box.classList.remove('dragover'));
+    box.addEventListener('drop', e => {
+      e.preventDefault();
+      box.classList.remove('dragover');
+      const idx = parseInt(box.dataset.idx,10);
+      delegate(idx);
+    });
+    box.addEventListener('click', () => { if(selectedCoin) delegate(parseInt(box.dataset.idx,10)); });
+  });
+}
+function selectCoin(c){
+  document.querySelectorAll('.coin').forEach(x => x.classList.remove('selected'));
+  if(c.classList.contains('spent')) return;
+  c.classList.add('selected');
+  selectedCoin = c;
+}
+function delegate(valIdx){
+  if(!selectedCoin || selectedCoin.classList.contains('spent')) return;
+  selectedCoin.classList.add('spent');
+  selectedCoin.classList.remove('selected');
+  const v = DEL_VALIDATORS[valIdx];
+  v.delegated += 210000;
+  v.vp = Math.min(100, v.vp + 12);
+  document.getElementById(`valBar${valIdx}`).style.width = v.vp + '%';
+  document.getElementById(`valVp${valIdx}`).textContent = `Voting power contribution: ${v.delegated.toLocaleString()} NTN`;
+  document.getElementById(`lntnBadge${valIdx}`).classList.add('show');
+  selectedCoin = null;
+}
+buildDelegationUI();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 3 — PAS slider
+═══════════════════════════════════════════════════════════ */
+const PAS_ZONES = [
+  {status:'● ACTIVE', cls:'g', note:'Validator earns full rewards.', pct:100, color:'#66FF66'},
+  {status:'● ACTIVE', cls:'a', note:'Penalty absorbed from PAS buffer only. Validator continues.', pct:75, color:'#FFB020'},
+  {status:'● JAILED_FOR_INACTIVITY', cls:'r', note:'PAS depleted. Slashing fires. NTN balance decreases visually.', pct:0, color:'#FF3B3B'},
+  {status:'● jailbound', cls:'dr', note:'Introduced AGC v0.13.0. Permanent removal. No reinstatement path.', pct:0, color:'#5A1414'},
+];
+function updatePas(){
+  const z = PAS_ZONES[document.getElementById('pasSlider').value];
+  const statusEl = document.getElementById('pasStatus');
+  statusEl.textContent = z.status;
+  statusEl.style.color = z.color;
+  document.getElementById('pasNote').textContent = z.note;
+  document.getElementById('pasFill').style.width = z.pct + '%';
+  document.getElementById('pasFill').style.background = z.color;
+  document.getElementById('pasPct').textContent = z.pct + '%' + (z.pct === 0 && z.cls==='dr' ? ' ← PERMANENT' : z.pct===0 ? ' ← ERROR' : z.pct===75 ? ' ← WARN' : '');
+}
+document.getElementById('pasSlider').addEventListener('input', updatePas);
+updatePas();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 4 — Three rings
+═══════════════════════════════════════════════════════════ */
+function buildRings(){
+  const svg = document.getElementById('ringsSvg');
+  const cx=140, cy=140;
+  svg.innerHTML = `
+    <circle cx="${cx}" cy="${cy}" r="120" fill="none" stroke="#FF5900" stroke-width="14" opacity="0.85" class="ring-el" data-ring="2"/>
+    <circle cx="${cx}" cy="${cy}" r="82" fill="none" stroke="#FFFFFF" stroke-width="14" opacity="0.85" class="ring-el" data-ring="1"/>
+    <circle cx="${cx}" cy="${cy}" r="44" fill="none" stroke="#0D7680" stroke-width="14" opacity="0.9" class="ring-el" data-ring="0"/>
+    <circle cx="${cx}" cy="${cy}" r="8" fill="#fff"/>
+  `;
+  svg.querySelectorAll('.ring-el').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => activateRing(el.dataset.ring));
+  });
+}
+function activateRing(ring){
+  document.querySelectorAll('.ring-tab').forEach(t => t.classList.toggle('active', t.dataset.ring === ring));
+}
+document.querySelectorAll('.ring-tab').forEach(t => t.addEventListener('click', () => activateRing(t.dataset.ring)));
+buildRings();
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 5 — Block production
+═══════════════════════════════════════════════════════════ */
+let blockCounter = 24400001;
+let epochCounter = 14271;
+const blocks = {};
+function addBlock(withTx){
+  blockCounter++;
+  const item = document.createElement('div');
+  item.className = 'block-item' + (withTx ? ' tx' : '');
+  item.textContent = 'BLOCK #' + blockCounter.toLocaleString();
+  const data = {
+    ts: new Date().toISOString().slice(0,19)+'Z',
+    gas: Math.round(400000 + Math.random()*600000).toLocaleString(),
+    epoch: epochCounter,
+    txs: withTx ? 4 : Math.round(Math.random()*3)+1,
+  };
+  blocks[blockCounter] = data;
+  item.addEventListener('click', () => showBlockDetail(blockCounter));
+  const chain = document.getElementById('blockChain');
+  chain.appendChild(item);
+  requestAnimationFrame(()=> item.classList.add('show'));
+  while(chain.children.length > 14) chain.removeChild(chain.firstChild);
+}
+function showBlockDetail(n){
+  const d = blocks[n];
+  if(!d) return;
+  document.getElementById('blockDetail').classList.add('show');
+  document.getElementById('bdTs').textContent = d.ts;
+  document.getElementById('bdGas').textContent = d.gas;
+  document.getElementById('bdEpoch').textContent = d.epoch;
+  document.getElementById('bdTxs').textContent = d.txs;
+}
+for(let i=0;i<8;i++) addBlock(false);
+if(!reduceMotion) setInterval(()=>addBlock(false), 1400);
+
+document.getElementById('injectTx').addEventListener('click', () => {
+  const mp = document.getElementById('mempool');
+  mp.innerHTML = '<span class="tx-dot">●</span> synthetic transaction pending in mempool ...';
+  setTimeout(() => {
+    mp.textContent = '';
+    addBlock(true);
+  }, 900);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 7 — Reference table
+═══════════════════════════════════════════════════════════ */
+const REF_ROWS = [
+  ['Consensus','Tendermint BFT — built from scratch to the Tendermint spec, not a fork of an existing codebase','docs.autonity.org'],
+  ['Chain ID','65000000','docs.autonity.org'],
+  ['Block time','1 second','docs.autonity.org'],
+  ['Max validators (protocol cap)','100','docs.autonity.org'],
+  ['Validator seats in use','30 planned at genesis; a few didn\'t meet/fulfill requirements, leaving 27 confirmed as of July 8, 2026','Timeline / Stakeflow'],
+  ['P2P channels','ethwire (30303, txs) + ACN (20203, consensus)','AGC v0.13.0'],
+  ['BLS curve','BLS12-381 (blst)','docs.autonity.org'],
+  ['Quorum rule','2f+1 of 3f+1 (&gt;⅔ voting power)','docs.autonity.org'],
+  ['NTN supply cap','100,000,000 (40M for inflation rewards)','docs.autonity.org'],
+  ['autobond','NTN inflation rewards auto-rebonded at epoch end; protocol-level, no toggle','AGC v1.0.2-alpha "Rome"'],
+  ['Scalability test','500 validators, 1,000 TPS (AGC v1.1.1 clustering model)','AGC v1.1.1 release notes'],
+  ['Final client','AGC v1.1.2','docs.autonity.org/networks/mainnet'],
+  ['Final oracle','AOS v0.2.6','docs.autonity.org/networks/mainnet'],
+];
+document.getElementById('refTableBody').innerHTML = REF_ROWS.map(r =>
+  `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="src">${r[2]}</td></tr>`
+).join('');
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 7 — Tooling & Explorers table
+═══════════════════════════════════════════════════════════ */
+const TOOLS_ROWS = [
+  ['AutonityScan','BlockScout-based block explorer — blocks, transactions, addresses, contracts.','autonityscan.org'],
+  ['AFP.network','Public block explorer for AFP specifically — products, accounts, trades, and activity by address, including liquidation and bankruptcy events at the contract level.','afp.network'],
+  ['Stakeflow','Validator &amp; oracle explorer — stake, commission, uptime, oracle feed participation.','stakeflow.io'],
+  ['Adanode','Community-run validator explorer — also let users stake/unstake NTN directly through its interface.','explorer.adanothe.com'],
+  ['LCI (ntn-lc-ui)','Open-source staking/unstaking UI for PCGC, Tiber, and Forecastathon participants.','github.com/ntnunlocker/ntn-lc-ui'],
+  ['Autonity CLI (aut)','Python CLI for accounts, balances, transactions, contract calls, and staking/validator ops.','pipx install autonity-cli'],
+  ['FaucetMe','Daily ATN faucet for the Bakerloo testnet, which mirrors mainnet production settings.','account.faucetme.pro'],
+];
+document.getElementById('toolsTableBody').innerHTML = TOOLS_ROWS.map(r =>
+  `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="src">${r[2]}</td></tr>`
+).join('');
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 8 — Vertical history timeline
+═══════════════════════════════════════════════════════════ */
+const VTL = [
+  {date:'Oct 31, 2022', event:'Community-run Simulated Testnet', expand:'Early community contributors went through the motions — a dry run ahead of the public testnet launch.'},
+  {date:'Jan 24, 2023', event:'Piccadilly + Bakerloo testnets', expand:'"Babylon" AGC release.'},
+  {date:'Mar 2023 – Aug 2024', event:'PCGC — 6 rounds', expand:'Six public testnet rounds ahead of mainnet launch.'},
+  {date:'Dec 18, 2024 – June 23, 2025', event:'Tiber Challenge', expand:'Oracle calibration challenge — begins Dec 18, 2024, 12:00 UTC; concludes June 23, 2025.'},
+  {date:'Aug 12, 2025', event:'Mainnet launch', expand:'Genesis block; AGC v1.1.2.'},
+  {date:'Sept 19, 2025', event:'Forecastathon Season 1 live — AFP + AutEx', expand:'ViaLabs (ProtoUSD) and Subquery partnered at launch.'},
+  {date:'Dec 3, 2025', event:'AutEx open-sourced as AFX', expand:'The exchange codebase is released publicly.', link:'https://github.com/autonity/afx/'},
+  {date:'Jan 30, 2026', event:'Forecastathon product creation open-sourced', expand:'Season 4. Product-creation tooling released publicly.', link:'https://github.com/autonity/forecastathon-products'},
+  {date:'Feb 16, 2026', event:'Validators moved to full community mode', expand:'Last public tweet. afp-sdk last commit: Feb 11. afp-agents: Feb 9.'},
+];
+document.getElementById('vtl').innerHTML = VTL.map((v,i) => `
+  <div class="vtl-item" data-i="${i}">
+    <div class="vtl-date">${v.date}</div>
+    <div class="vtl-event">${v.event}</div>
+    <div class="vtl-expand">${v.expand}${v.link ? ` <a href="${v.link}" target="_blank" rel="noopener noreferrer" style="color:var(--teal);text-decoration:underline;text-underline-offset:2px;">${v.link.replace('https://','')}</a>` : ''}</div>
+  </div>
+`).join('');
+document.querySelectorAll('.vtl-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('open'));
+});
+
+/* ═══════════════════════════════════════════════════════════
+   CTA — Track B tools (page-specific)
+═══════════════════════════════════════════════════════════ */
+const CTA_TOOLS = [
+  {label:'STAKE DELEGATION CALCULATOR', slug:'stake-delegation-calculator', id:'ain:at-08', mandate:'stake_delegation_calc'},
+  {label:'VALIDATOR PENALTY SIMULATOR', slug:'validator-penalty-simulator', id:'ain:at-09', mandate:'validator_penalty_sim'},
+  {label:'NETWORK HEALTH AUDIT', slug:'network-health-audit', id:'ain:at-12', mandate:'network_health_audit'},
+];
+document.getElementById('ctaTools').innerHTML = CTA_TOOLS.map(t => `
+  <div class="cta-tool-card">
+    <a class="cta-tool-btn" href="${TRACK_B_BASE}${t.slug}.html" target="_blank" rel="noopener noreferrer">[ ${t.label} → ]</a>
+    <span class="mandate-pill">${t.mandate}</span>
+    <div style="font-size:.6rem;color:var(--dim);margin-top:6px;">${t.id}</div>
+  </div>
+`).join('');
+document.getElementById('ocgLink').href = OCG_STANDARD_URL;
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER — validator health strip (30 dots)
+═══════════════════════════════════════════════════════════ */
+(function buildStrip(){
+  const el = document.getElementById('vstrip');
+  let html = '';
+  for(let i=0;i<27;i++){
+    const s = JULY_STATE[i];
+    html += `<span class="vd ${s}"></span>`;
+  }
+  el.innerHTML = html;
+})();
+</script>
+</body>
+</html>

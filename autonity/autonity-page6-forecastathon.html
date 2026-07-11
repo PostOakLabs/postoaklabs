@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORECASTATHON.DAT — Autonity Track A</title>
+<meta name="description" content="An interactive recovered terminal covering Forecastathon — Autonity's community trading competition across four seasons — the Forecast Futures vs. Prediction Markets distinction, and the stand-down that ended the project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="autonity-logo.jpg">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   AUTONITY TRACK A — SHARED DESIGN TOKENS (per v2 §Visual Language)
+   Hosting note (v3 A-1): this file will relocate to Post Oak Labs.
+   Cross-site links use the TRACK_B_BASE constant defined in the script block below.
+═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000000;
+  --fg:#FFFFFF;
+  --dim:#7A7A7A;
+  --dim2:#4A4A4A;
+  --green:#66FF66;
+  --orange:#FF5900;
+  --teal:#0D7680;
+  --buy:#00CC00;
+  --sell:#CC0000;
+  --amber:#FFB020;
+  --red:#FF3B3B;
+  --dimred:#5A1414;
+  --gold:#D4A847;
+  --panel:#0A0A0A;
+  --panel2:#0F0F0F;
+  --line:#242424;
+  --mono:'JetBrains Mono','Berkeley Mono','Courier New',monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--orange);color:#000;}
+a{color:inherit;}
+button{font-family:var(--mono);cursor:pointer;background:none;border:none;color:inherit;}
+.upper{text-transform:uppercase;}
+.mono{font-family:var(--mono);}
+
+/* ── CRT scanline overlay ── */
+.crt-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:500;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.018) 0px,
+    rgba(255,255,255,0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode:overlay;
+}
+.crt-vignette{
+  position:fixed;inset:0;pointer-events:none;z-index:499;
+  box-shadow:inset 0 0 180px rgba(0,0,0,0.7);
+}
+
+/* ── layout ── */
+.wrap{max-width:980px;margin:0 auto;padding:0 24px;}
+section{padding:64px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+
+/* ── nav ── */
+nav.topnav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.topnav-inner{
+  max-width:980px;margin:0 auto;padding:0 24px;
+  height:52px;display:flex;align-items:center;gap:18px;
+}
+.logo{
+  width:26px;height:26px;background:#000;border:1px solid var(--fg);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;flex-shrink:0;overflow:hidden;
+}
+.brand{font-size:.72rem;letter-spacing:.14em;color:var(--dim);}
+.brand strong{color:var(--fg);}
+.progress-dots{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.pdot{
+  width:8px;height:8px;border-radius:50%;background:var(--dim2);
+  border:none;position:relative;display:block;text-decoration:none;
+}
+.pdot.current{background:var(--orange);box-shadow:0 0 6px var(--orange);}
+.pdot:not(.current){cursor:default;}
+.pdot .tip{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  font-size:.58rem;white-space:nowrap;background:#111;border:1px solid var(--line);
+  padding:3px 6px;display:none;letter-spacing:.06em;color:var(--dim);
+}
+.pdot:hover .tip{display:block;}
+
+/* ── boot hero ── */
+.hero{padding-top:40px;}
+.hero-term{
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;
+  padding:20px 22px;position:relative;overflow:hidden;
+}
+.hero-term::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at top,rgba(255,89,0,.08),transparent 55%);
+  pointer-events:none;
+}
+.boot-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:10px;}
+.boot-line{font-size:.82rem;color:var(--dim);min-height:1.3em;white-space:pre;}
+.boot-line.done{color:var(--fg);}
+.boot-status-row{
+  margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+  display:flex;align-items:center;gap:18px;font-size:.72rem;flex-wrap:wrap;
+}
+.status-pill{display:inline-flex;align-items:center;gap:5px;color:var(--orange);}
+.status-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 5px var(--orange);}
+.hero-clock{margin-left:auto;color:var(--dim);letter-spacing:.05em;}
+.boot-footer{margin-top:14px;font-size:.68rem;color:var(--dim2);letter-spacing:.08em;}
+
+/* ── hero leaderboard fade-in ── */
+.hero-lb{
+  margin-top:18px;border-top:1px dashed var(--line);padding-top:16px;
+  opacity:0;transform:translateY(6px);transition:opacity .6s ease,transform .6s ease;
+}
+.hero-lb.show{opacity:1;transform:translateY(0);}
+.hero-lb-title{font-size:.6rem;letter-spacing:.1em;color:var(--dim);margin-bottom:8px;text-transform:uppercase;}
+table.lb-table{width:100%;border-collapse:collapse;font-size:.74rem;}
+table.lb-table th{font-size:.58rem;color:var(--dim2);letter-spacing:.05em;text-align:left;padding-bottom:6px;text-transform:uppercase;font-weight:500;}
+table.lb-table td{padding:4px 0;border-top:1px solid var(--line);}
+table.lb-table td:last-child,table.lb-table th:last-child{text-align:right;}
+table.lb-table td:nth-child(2){color:var(--dim);}
+.lb-pnl-pos{color:var(--green);}
+.lb-pnl-neg{color:var(--red);}
+.lb-fictional{font-size:.6rem;color:var(--dim2);margin-top:8px;letter-spacing:.04em;}
+
+/* ── stage headers ── */
+.stage-eyebrow{font-size:.62rem;letter-spacing:.18em;color:var(--teal);margin-bottom:6px;}
+h2.stage-title{font-size:1.05rem;font-weight:600;margin-bottom:6px;letter-spacing:.01em;}
+.stage-goal{color:var(--dim);font-size:.82rem;margin-bottom:26px;max-width:640px;}
+.callout{
+  border-left:2px solid var(--teal);padding:10px 16px;margin:18px 0;
+  font-size:.82rem;color:#D8D8D8;background:rgba(13,118,128,.06);
+}
+.callout.small{font-size:.74rem;color:var(--dim);}
+.callout.orange{border-left-color:var(--orange);background:rgba(255,89,0,.06);}
+
+dfn.gloss{
+  font-style:normal;border-bottom:1px dotted var(--teal);cursor:help;color:var(--fg);
+  text-decoration:none;
+}
+.btn{
+  font-size:.66rem;letter-spacing:.1em;padding:7px 14px;border:1px solid var(--fg);
+  transition:all .15s;text-transform:uppercase;
+}
+.btn:hover{background:var(--fg);color:#000;}
+.btn.on{background:var(--orange);border-color:var(--orange);color:#000;}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 1 — Stats bar
+═══════════════════════════════════════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);}
+.stat-tile{
+  padding:20px 16px;text-align:center;border-right:1px solid var(--line);
+  background:var(--panel);
+}
+.stat-tile:last-child{border-right:none;}
+.stat-label{font-size:.6rem;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
+.stat-value{font-size:1.5rem;font-weight:700;color:var(--orange);letter-spacing:.01em;}
+.stat-value.unconfirmed{font-size:.72rem;font-weight:400;color:var(--dim2);letter-spacing:.02em;}
+.stat-sub{font-size:.6rem;color:var(--dim2);margin-top:6px;letter-spacing:.03em;}
+
+@media(max-width:640px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-tile{border-bottom:1px solid var(--line);}
+  .stat-tile:nth-child(2n){border-right:none;}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 2 — Season timeline accordion
+═══════════════════════════════════════════════════════════ */
+details.acc{border:1px solid var(--line);margin-bottom:10px;background:var(--panel);}
+details.acc summary{
+  padding:12px 16px;cursor:pointer;list-style:none;font-size:.78rem;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+details.acc summary::-webkit-details-marker{display:none;}
+details.acc summary::after{content:'+';color:var(--dim);font-size:1rem;flex-shrink:0;}
+details.acc[open] summary::after{content:'–';}
+details.acc summary:hover{color:var(--fg);}
+.season-name{font-weight:600;}
+.season-dates{color:var(--dim);font-size:.68rem;flex-shrink:0;}
+.season-body{padding:0 16px 16px;font-size:.76rem;color:var(--dim);}
+.season-body ul{list-style:none;padding:0;}
+.season-body li{padding:4px 0;border-top:1px solid var(--line);}
+.season-body li:first-child{border-top:none;}
+.season-body li .k{color:var(--dim2);text-transform:uppercase;font-size:.6rem;letter-spacing:.06em;display:block;margin-bottom:2px;}
+.season-body li .v{color:#D8D8D8;}
+.milestone{font-size:.7rem;color:var(--gold);margin-top:6px;}
+.unconfirmed-note{font-size:.68rem;color:var(--dim2);}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 3 — Forecast Futures vs Binary Prediction Markets
+═══════════════════════════════════════════════════════════ */
+table.ref-table{width:100%;border-collapse:collapse;font-size:.76rem;background:var(--panel);border:1px solid var(--line);}
+table.ref-table th,table.ref-table td{padding:10px 14px;border-top:1px solid var(--line);text-align:left;vertical-align:top;}
+table.ref-table thead th{border-top:none;}
+table.ref-table th{color:var(--dim);font-weight:500;letter-spacing:.05em;font-size:.6rem;text-transform:uppercase;}
+table.ref-table td:first-child{color:var(--dim);font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 4 — Final exhibit
+═══════════════════════════════════════════════════════════ */
+.pullquote{
+  font-size:.92rem;color:var(--fg);line-height:1.75;padding:20px 24px;
+  border-left:2px solid var(--fg);background:var(--panel);font-style:italic;
+}
+
+.subsection-label{font-size:.66rem;letter-spacing:.14em;color:var(--dim2);text-transform:uppercase;margin:36px 0 14px;}
+.subsection-label:first-of-type{margin-top:0;}
+
+.recreation-label{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:.62rem;
+  letter-spacing:.12em;color:var(--dim2);
+}
+.recreation-label .line{flex:1;height:1px;background:var(--line);}
+
+/* forecastathon.ai dormant recreation */
+.fa-shell{border:1px solid var(--fg);border-radius:4px;overflow:hidden;background:#050505;}
+.fa-body{padding:32px 26px;text-align:center;}
+.fa-status-pill{
+  display:inline-flex;align-items:center;gap:6px;font-size:.66rem;letter-spacing:.08em;
+  color:var(--orange);border:1px solid var(--orange);padding:4px 12px;margin-bottom:16px;
+}
+.fa-status-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--orange);}
+.fa-subhead{font-size:.9rem;color:var(--fg);margin-bottom:6px;}
+.fa-subhead2{font-size:.74rem;color:var(--dim);margin-bottom:20px;}
+.fa-cta{
+  display:inline-block;font-size:.68rem;letter-spacing:.08em;padding:9px 18px;
+  background:var(--orange);color:#000;font-weight:600;margin-bottom:28px;cursor:default;
+}
+.fa-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+.fa-stat{padding:16px 10px;border-right:1px solid var(--line);}
+.fa-stat:last-child{border-right:none;}
+.fa-stat-label{font-size:.56rem;color:var(--dim2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.fa-stat-value{font-size:1rem;font-weight:700;color:var(--fg);}
+.fa-footer{
+  border-top:1px solid var(--line);padding:10px 16px;display:flex;justify-content:space-between;
+  font-size:.6rem;color:var(--dim2);letter-spacing:.04em;background:#0A0A0A;
+}
+@media(max-width:640px){
+  .fa-stats{grid-template-columns:repeat(2,1fr);}
+  .fa-stat:nth-child(2n){border-right:none;}
+  .fa-stat:nth-child(1),.fa-stat:nth-child(2){border-bottom:1px solid var(--line);}
+}
+
+/* validator status table (Sub-section C) */
+table.vtable{width:100%;border-collapse:collapse;font-size:.74rem;background:var(--panel);border:1px solid var(--line);}
+table.vtable th,table.vtable td{padding:8px 14px;border-top:1px solid var(--line);text-align:left;}
+table.vtable thead th{border-top:none;color:var(--dim);font-weight:500;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;}
+table.vtable td:last-child,table.vtable th:last-child{text-align:right;}
+.vt-status{display:inline-flex;align-items:center;gap:6px;}
+.vt-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.vt-dot.jailed{background:var(--red);}
+.vt-dot.active{background:var(--green);}
+.vt-dot.paused{background:var(--amber);}
+.vt-dot.dimred{background:var(--dimred);}
+.vt-slashed{color:var(--red);font-size:.62rem;letter-spacing:.03em;margin-left:6px;}
+.vt-summary{margin-top:14px;font-size:.72rem;color:var(--dim);border-top:1px dashed var(--line);padding-top:12px;}
+.vt-summary-row{display:flex;justify-content:space-between;max-width:280px;padding:2px 0;}
+.vt-super{margin-top:10px;color:var(--gold);font-size:.72rem;letter-spacing:.02em;}
+
+/* closing statement */
+.closing-term{
+  background:var(--panel);border:1px solid var(--line);border-radius:4px;
+  padding:22px 24px;font-size:.82rem;color:var(--dim);
+}
+.closing-term .cl-file{color:var(--dim);font-size:.72rem;letter-spacing:.1em;margin-bottom:14px;}
+.closing-term .cl-line{min-height:1.4em;white-space:pre-wrap;opacity:0;transition:opacity .4s ease;}
+.closing-term .cl-line.show{opacity:1;color:var(--fg);}
+.closing-term .cl-line.dim{color:var(--dim);}
+.closing-term .cl-line.gold{color:var(--gold);}
+.cl-cursor{display:inline-block;width:7px;height:1em;background:var(--fg);vertical-align:text-bottom;animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+/* ── CTA block ── */
+.cta-block{background:var(--panel2);border:1px solid var(--teal);border-radius:4px;padding:26px 28px;}
+.cta-pill{
+  display:inline-flex;align-items:center;gap:6px;font-size:.62rem;color:var(--green);
+  border:1px solid var(--green);padding:3px 9px;letter-spacing:.08em;margin-bottom:14px;
+}
+.cta-copy{font-size:.82rem;color:#D8D8D8;max-width:660px;margin-bottom:20px;}
+.cta-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;}
+.cta-tool-card{border:1px solid var(--line);padding:14px;}
+.cta-tool-btn{
+  display:block;font-size:.68rem;letter-spacing:.06em;border:1px solid var(--fg);
+  padding:9px 12px;text-align:center;margin-bottom:8px;transition:all .15s;
+}
+.cta-tool-btn:hover{background:var(--fg);color:#000;}
+.mandate-pill{
+  display:inline-block;font-size:.6rem;color:var(--teal);border:1px solid var(--teal);
+  padding:2px 7px;letter-spacing:.03em;background:rgba(13,118,128,.08);
+}
+.ocg-link{font-size:.72rem;color:var(--dim);text-decoration:underline;text-underline-offset:3px;}
+.ocg-link:hover{color:var(--fg);}
+
+/* ── footer / validator strip ── */
+footer{padding:36px 0 60px;}
+.vstrip-wrap{position:relative;}
+.vstrip{display:flex;gap:5px;flex-wrap:wrap;cursor:help;}
+.vstrip .vd{width:9px;height:9px;border-radius:50%;}
+.vstrip .vd.g{background:var(--green);}
+.vstrip .vd.r{background:var(--red);}
+.vstrip .vd.a{background:var(--amber);}
+.vstrip .vd.dr{background:var(--dimred);}
+.vstrip .vd.u{background:var(--dim2);}
+.vstrip-tip{
+  display:none;position:absolute;bottom:22px;left:0;background:#111;border:1px solid var(--line);
+  padding:8px 12px;font-size:.68rem;color:var(--dim);white-space:nowrap;
+}
+.vstrip-wrap:hover .vstrip-tip{display:block;}
+.foot-legend{margin-top:10px;font-size:.6rem;color:var(--dim2);letter-spacing:.05em;}
+.foot-meta{margin-top:24px;font-size:.64rem;color:var(--dim2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+@media(max-width:640px){
+  .cta-tools{grid-template-columns:1fr;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="crt-vignette"></div>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="logo"><img src="data:image/jpeg;base64,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" alt="Autonity logo" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="brand"><strong>AUTONITY</strong> // RECOVERED TERMINAL</div>
+    <div class="progress-dots" id="progressDots">
+      <a class="pdot" href="index.html"><span class="tip">1 · HUB</span></a>
+      <a class="pdot" href="autonity-page1-protocol.html"><span class="tip">2 · PROTOCOL</span></a>
+      <a class="pdot" href="autonity-page2-money.html"><span class="tip">3 · MONEY</span></a>
+      <a class="pdot" href="autonity-page3-afp.html"><span class="tip">4 · AFP</span></a>
+      <a class="pdot" href="autonity-page4-clearing.html"><span class="tip">5 · CLEARING VS TRADING</span></a>
+      <a class="pdot" href="autonity-page5-autex.html"><span class="tip">6 · AUTEX</span></a>
+      <button class="pdot current"><span class="tip">7 · FORECASTATHON (this page)</span></button>
+      <a class="pdot" href="autonity-page7-endogenous-collateral.html"><span class="tip">8 · ENDOGENOUS COLLATERAL (speculative)</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="hero">
+    <div class="hero-term">
+      <div class="boot-file">&gt;&gt; FORECASTATHON.DAT</div>
+      <div id="bootLines"></div>
+
+      <div class="boot-status-row">
+        <span class="status-pill"><span class="dot"></span> SEASON 4 COMPLETE</span>
+        <span class="hero-clock mono" id="heroClock">UTC --:--:--</span>
+      </div>
+
+      <div class="hero-lb" id="heroLb">
+        <div class="hero-lb-title">Leaderboard — Top 5</div>
+        <table class="lb-table">
+          <thead><tr><th>Rank</th><th>Team</th><th>PnL (USDZ)</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>quantum_drift</td><td class="lb-pnl-pos">+48,220</td></tr>
+            <tr><td>2</td><td>north_by_northeast</td><td class="lb-pnl-pos">+41,905</td></tr>
+            <tr><td>3</td><td>degenerate_alpha</td><td class="lb-pnl-pos">+37,110</td></tr>
+            <tr><td>4</td><td>cold_front_capital</td><td class="lb-pnl-pos">+29,860</td></tr>
+            <tr><td>5</td><td>basis_risk_bureau</td><td class="lb-pnl-neg">−4,215</td></tr>
+          </tbody>
+        </table>
+        <div class="lb-fictional">Illustrative team names and PnL — not sourced from a real leaderboard capture.</div>
+      </div>
+
+      <div class="boot-footer">AUTONITY BLOCKCHAIN TERMINAL v1.1.2 — FORECASTATHON.AI</div>
+    </div>
+  </section>
+
+  <!-- ══ STAGE 1 — Stats Bar ══ -->
+  <section id="stage-1">
+    <div class="stage-eyebrow">STAGE 1</div>
+    <h2 class="stage-title">Stats Bar</h2>
+    <p class="stage-goal">Three tiles adapted from the <code>forecastathon.ai</code> layout.</p>
+
+    <div class="stats-grid">
+      <div class="stat-tile">
+        <div class="stat-label">Products</div>
+        <div class="stat-value">24</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">USDZ Traded</div>
+        <div class="stat-value">$1B+</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Trades</div>
+        <div class="stat-value">400,000+</div>
+        <div class="stat-sub">(Season 1 alone)</div>
+      </div>
+    </div>
+    <div class="callout small" style="margin-top:16px;">2,400+ participants, per <code>forecastathon.ai</code>. Collateral was auto-provisioned per participant: 100,000 "play" USDZ plus a small ATN allotment for gas. Trading itself felt gasless because the foundation temporarily covered clearing gas on traders' behalf for the duration of the competition — not because AutEx or the DCC waived fees outright. <strong>USDZ</strong> (contract <code>0xAB436b...</code>) is a test stablecoin created specifically for Forecastathon collateral — not one of Autonity's three native assets (ATN, NTN, LNTN) and not documented in the core protocol glossary for that reason. It has no value outside the competition.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 2 — Season Timeline ══ -->
+  <section id="stage-2">
+    <div class="stage-eyebrow">STAGE 2</div>
+    <h2 class="stage-title">Season Timeline</h2>
+    <p class="stage-goal">Four seasons, five months, one venue that became two. Click a season to expand it.</p>
+
+    <details class="acc" open>
+      <summary><span class="season-name">Season 1</span><span class="season-dates">Sept 19 – Oct 20, 2025</span></summary>
+      <div class="season-body">
+        <ul>
+          <li><span class="k">Products</span><span class="v">US CPI Futures, US Initial Jobless Claims Futures</span></li>
+          <li><span class="k">Venue</span><span class="v">AutEx exclusively</span></li>
+          <li><span class="k">Events</span><span class="v">400,000+ trades; an AutEx outage proved the AFP <dfn class="gloss" title="Decentralised Clearing Contract — the on-chain contract holding shared margin, open interest, and settlement for a product across every venue that lists it.">DCC</dfn>'s robustness; gas subsidy exhausted; base fee cut 90% (10 gwei → 1 gwei)</span></li>
+          <li><span class="k">Prize</span><span class="v">Prizes existed for this season, pooled with Seasons 2–3.</span></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="season-name">Season 2</span><span class="season-dates">Oct 28 – Nov 27, 2025</span></summary>
+      <div class="season-body">
+        <ul>
+          <li><span class="k">Products</span><span class="v">Crypto, weather, and macro underlyings</span></li>
+          <li><span class="k">Prize</span><span class="v">Prizes existed for this season, same structure as Season 1.</span></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="season-name">Season 3</span><span class="season-dates">Dec 5, 2025 – Jan 6, 2026</span></summary>
+      <div class="season-body">
+        <ul>
+          <li><span class="k">Products</span><span class="v">+ Bitcoin Volatility (most active product of the series)</span></li>
+          <li><span class="k">Notes</span><span class="v">Bankruptcy-related edge cases discovered; clearing layer improvements followed</span></li>
+          <li><span class="k">Prize</span><span class="v">Prizes existed for this season, same structure as Season 1.</span></li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary><span class="season-name">Season 4</span><span class="season-dates">Jan 16 – Mar 2, 2026 (nominal; went dark Feb 16)</span></summary>
+      <div class="season-body">
+        <ul>
+          <li><span class="k">Products</span><span class="v">Zero-leverage Forecast Futures + binary Prediction Markets (new in S4)</span></li>
+          <li><span class="k">Prize</span><span class="v">Prizes existed for this season, on a different split structure than Seasons 1–3.</span></li>
+          <li><span class="k">AI agent activity</span><span class="v">@aggwis prediction market (Claude Code, deployed Feb 3)</span></li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ══ STAGE 3 — Forecast Futures vs Binary Prediction Markets ══ -->
+  <section id="stage-3">
+    <div class="stage-eyebrow">STAGE 3</div>
+    <h2 class="stage-title">Forecast Futures vs. Binary Prediction Markets</h2>
+    <p class="stage-goal">Season 4 introduced a second product family alongside the original Forecast Futures. They look similar. The payoff shape is not.</p>
+
+    <table class="ref-table">
+      <thead><tr><th></th><th>Forecast Futures</th><th>Binary Prediction Markets</th></tr></thead>
+      <tbody>
+        <tr><td>Question type</td><td>"By how much?" (continuous)</td><td>"Will it happen?" (yes/no)</td></tr>
+        <tr><td>Payoff</td><td>Linear / delta-one</td><td>Binary (all or nothing)</td></tr>
+        <tr><td>Settlement</td><td>Oracle price at expiry</td><td>Oracle resolves binary event</td></tr>
+        <tr><td>Introduced</td><td>Season 1</td><td>Season 4</td></tr>
+        <tr><td>Leverage</td><td>Position-size limited</td><td>None (zero-leverage in S4)</td></tr>
+        <tr><td>Analogy</td><td>Futures contract</td><td>Options expiry / sports betting</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout orange" style="margin-top:16px;">[ ▸ SEE THE PAYOFF DIFFERENCE INTERACTIVELY → <a href="autonity-page3-afp.html#stage-1b" style="text-decoration:underline;">PAGE 3 STAGE 1B</a> ]</div>
+    <div class="callout small" style="margin-top:12px;">This same continuous-vs-binary distinction is what separates AFP overall from Polymarket and Kalshi — see the full comparison table on <a href="autonity-page3-afp.html#stage-1a" style="color:var(--teal);text-decoration:underline;">Page 3, Stage 1A</a>.</div>
+
+    <details class="acc" style="margin-top:22px;">
+      <summary>FORECASTATHON vs. METACULUS vs. NUMERAI vs. KAGGLE <span style="color:var(--dim);font-size:.62rem;">5 entries</span></summary>
+      <table class="ref-table">
+        <thead><tr><th></th><th>Metaculus</th><th>Numerai</th><th>Kaggle</th><th>Forecastathon (Autonity/AFP)</th></tr></thead>
+        <tbody>
+          <tr><td>Core mechanic</td><td>Reputation-based forecasting; community aggregates probabilities on real-world questions</td><td>Data scientists submit ML models on obfuscated stock data; models feed a live hedge fund</td><td>Data scientists submit models/code against a fixed dataset for a prize</td><td>Traders/forecasters trade real derivatives (Forecast Futures) settling on real-world time series, plus a separate daily-forecast scoring track</td></tr>
+          <tr><td>What's staked</td><td>Reputation/points only — no money at risk</td><td>NMR token, burned/rewarded by model performance</td><td>Nothing — free entry, prize paid by host</td><td>100,000 USDZ simulated funds per participant; 300,000 NTN total prize pool (165,000 of which is reserved for team results across all three seasons)</td></tr>
+          <tr><td>On-chain?</td><td>No</td><td>Partially — NMR staking/payouts are on-chain, the fund itself is off-chain</td><td>No</td><td>Fully — trades, clearing, and margin all settle on-chain via AFP</td></tr>
+          <tr><td>Status (Jan 30, 2026)</td><td>Mature, Coefficient Giving-funded (formerly Open Philanthropy, since 2022); running AI-vs-human forecasting tournaments</td><td>$30M Series C closed Nov 20, 2025 at a $500M valuation; separately, a $500M JPMorgan capacity commitment from Aug 2025; NumerCon 2026 held that same day in San Francisco</td><td>Still flagship-competitions-only at this point — the "Community Hackathons" self-serve pivot didn't launch until March 19, 2026</td><td>Season 4 "LIVE" per Autonity's own announcement — described as running on major AFP upgrades to how markets are created, traded, and evaluated</td></tr>
+          <tr><td>Closest analogue</td><td>The daily-forecast/accuracy-scoring side of Forecastathon — pure prediction, no capital at risk</td><td>The staking-with-skin-in-the-game side — real token risk tied to predictive performance</td><td>Neither — no trading or staking layer at all</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </details>
+    <div class="callout small" style="margin-top:12px;">
+      Forecastathon sits structurally between Metaculus (daily accuracy scoring) and Numerai (real economic stake tied to predictive performance) — it's not really comparable to Kaggle, which has no trading or staking mechanism at all. None of the three combine on-chain derivatives trading with a parallel pure-forecast leaderboard the way Forecastathon does; that combination looks like Autonity's own differentiation claim rather than something with a direct competitor equivalent.
+    </div>
+    <div class="callout small">
+      The daily-forecast side itself is confirmed, not speculative: Season 1's own rules state it plainly — "Forecast Accuracy: Submit daily forecasts for settlement prices. Your final update before 13:00 UTC counts as the scoreable forecast" — alongside trading performance, volume, and referrals. Season 2 coverage confirms the same structure, with scoring spanning portfolio performance, forecasting accuracy, market making, and product creation. No Season 4-specific rules page turned up to confirm the exact daily mechanic carried over unchanged, though nothing suggests it was dropped — Season 4's own announcement frames the change as expanding market creation and evaluation, not simplifying scoring.
+    </div>
+    <div class="callout small">
+      A separate, informal <strong>CrunchDAO</strong> connection was active at the start of Season 4 — worth noting briefly.
+    </div>
+  </section>
+
+  <!-- ══ STAGE 4 — The Final Exhibit ══ -->
+  <section id="stage-4">
+    <div class="stage-eyebrow">STAGE 4</div>
+    <h2 class="stage-title">The Final Exhibit</h2>
+    <p class="stage-goal">Three artifacts from the last days of the project — a frozen front end, a validator set that never came back, and the system's own account of what happened.</p>
+
+    <!-- Sub-section B — forecastathon.ai dormant state -->
+    <div class="subsection-label">Sub-section B — forecastathon.ai, dormant state (faithful recreation)</div>
+    <div class="recreation-label"><span class="line"></span>FAITHFUL RECREATION — NON-FUNCTIONAL<span class="line"></span></div>
+    <div class="fa-shell">
+      <div class="fa-body">
+        <div class="fa-status-pill"><span class="dot"></span> SEASON 4 COMPLETE</div>
+        <div class="fa-subhead">Season 4 Complete</div>
+        <div class="fa-subhead2">Stay tuned, more competitions coming soon</div>
+        <div class="fa-cta">VIEW LEADERBOARD →</div>
+      </div>
+      <div class="fa-stats">
+        <div class="fa-stat"><div class="fa-stat-label">Products</div><div class="fa-stat-value">24</div></div>
+        <div class="fa-stat"><div class="fa-stat-label">Trades</div><div class="fa-stat-value">400,000+</div></div>
+        <div class="fa-stat"><div class="fa-stat-label">NTN Prizes</div><div class="fa-stat-value">375,000</div></div>
+        <div class="fa-stat"><div class="fa-stat-label">Participants</div><div class="fa-stat-value">2,400+</div></div>
+      </div>
+      <div class="fa-footer">
+        <span>BUILT ON AUTONITY</span>
+        <span>Light | Dark | System</span>
+      </div>
+    </div>
+
+    <!-- Sub-section C — Validator table -->
+    <div class="subsection-label">Sub-section C — Validator table (July 8, 2026)</div>
+    <div class="callout small" style="margin-bottom:14px;">This table reflects <strong>validator consensus status only</strong> (block production / jailing / pausing). It does not reflect oracle (price feed voting) status, which is tracked separately and is not shown on this page.</div>
+    <table class="vtable">
+      <thead><tr><th>Validator</th><th>Status</th><th>Stake</th></tr></thead>
+      <tbody>
+        <tr><td>ITRocket</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>531,638.38 NTN (18.54%)</td></tr>
+        <tr><td>Stakeflow</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>528,860.45 NTN (18.44%)</td></tr>
+        <tr><td colspan="3" style="color:var(--gold);font-size:.66rem;text-align:center;border-top:1px dashed var(--line);">▲ superminority (33.3%) crossed above this line</td></tr>
+        <tr><td>Coinage x DAIC</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>506,134.09 NTN (17.65%)</td></tr>
+        <tr><td>[NODERS]</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>439,545.99 NTN (15.33%)</td></tr>
+        <tr><td>UTSA</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>148,097.49 NTN (5.16%)</td></tr>
+        <tr><td>STAVR</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>124,802.12 NTN (4.85%)</td></tr>
+        <tr><td>Decentrio</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>122,134.61 NTN (4.26%)</td></tr>
+        <tr><td>Staketab</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>119,677.37 NTN (4.17%)</td></tr>
+        <tr><td>0x8264...6577Cc</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>117,692.50 NTN (4.10%)</td></tr>
+        <tr><td>Speedy Staking</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>116,144.86 NTN (4.05%)</td></tr>
+        <tr><td>Enigma</td><td><span class="vt-status"><span class="vt-dot active"></span>ACTIVE</span></td><td>113,425.56 NTN (3.95%)</td></tr>
+        <tr><td colspan="3" style="color:var(--dim2);font-size:.68rem;text-align:center;">…remaining 16 of 27 seats — status pending confirmation…</td></tr>
+      </tbody>
+    </table>
+    <div class="callout small" style="margin-top:10px;">The 11 validators above are the complete Active set per Stakeflow's July 8, 2026 snapshot, with exact stake and cumulative-share figures. The remaining 16 of 27 seats' consensus status isn't confirmed from that snapshot (it was filtered to Active only) — left pending rather than guessed.</div>
+    <div class="vt-summary">
+      <div class="vt-summary-row"><span>ACTIVE (confirmed)</span><span>11 / 27</span></div>
+      <div class="vt-summary-row"><span>Status pending</span><span>16 / 27</span></div>
+    </div>
+    <div class="vt-super">▲ Max Validators = 27. Superminority (33.3% of stake) crossed at just 2 validators — ITRocket + Stakeflow.</div>
+
+    <!-- Sub-section D — Closing Statement -->
+    <div class="subsection-label">Sub-section D — Closing Statement</div>
+    <div class="closing-term">
+      <div class="cl-file">&gt;&gt; SYSTEM_STATUS.DAT</div>
+      <div id="closingLines"></div>
+    </div>
+  </section>
+
+  <!-- ══ TRACK B CTA BLOCK ══ -->
+  <section id="cta">
+    <div class="cta-block">
+      <div class="cta-pill">● TOOL AVAILABLE — AINUMBERS.CO</div>
+      <div class="cta-copy">
+        The computation on this page has a working implementation in the Autonity Tool Suite on AINumbers.co. Each tool produces a fingerprint of its result — if the calculation changes, the fingerprint changes. Share it with anyone. They can verify it in seconds, in their own browser, with no server access.
+      </div>
+      <div class="cta-tools" id="ctaTools"></div>
+      <a class="ocg-link" id="ocgLink" href="#" target="_blank" rel="noopener noreferrer">[ READ THE OCG STANDARD → ]</a>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- ══ FOOTER — validator health strip ══ -->
+<footer>
+  <div class="wrap">
+    <div class="vstrip-wrap">
+      <div class="vstrip" id="vstrip"></div>
+      <div class="vstrip-tip">Oracle price-feed participation, per Stakeflow, July 8, 2026: 11 active, 7 paused, 12 jailed for inactivity — 30 oracle-registered operators (a different, larger set than the 27 validator seats above). The chain has not stopped producing blocks.</div>
+    </div>
+    <div class="foot-legend">30 ORACLE OPERATORS · JULY 8, 2026 · SEE SUB-SECTION C FOR VALIDATOR (CONSENSUS) STATUS</div>
+    <div class="foot-meta">
+      <span>AUTONITY TRACK A — MUSEUM MODE — EDUCATIONAL ONLY — NO ARTIFACT EMISSION</span>
+      <span>PAGE 6 / 6 — FORECASTATHON</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG — relocation constants (v3 A-1)
+═══════════════════════════════════════════════════════════ */
+const TRACK_B_BASE = 'https://ainumbers.co/tools/autonity/';
+const OCG_STANDARD_URL = 'https://ainumbers.co/chaingraph/openchain-graph-paper.html';
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — boot line sequence, then leaderboard fade-in
+═══════════════════════════════════════════════════════════ */
+const BOOT_LINES = [
+  '> LOADING FORECASTATHON.AI ...',
+  '> SEASONS: 4 (SEPT 2025 \u2013 MAR 2026)',
+  '> PARTICIPANTS: 2,400+',
+  '> STATUS: \u25CF SEASON 4 COMPLETE',
+];
+function playBoot(){
+  const wrap = document.getElementById('bootLines');
+  wrap.innerHTML = '';
+  BOOT_LINES.forEach((line, i) => {
+    const d = document.createElement('div');
+    d.className = 'boot-line';
+    d.textContent = line;
+    wrap.appendChild(d);
+    setTimeout(() => d.classList.add('done'), reduceMotion ? 0 : i*260);
+  });
+  setTimeout(() => {
+    document.getElementById('heroLb').classList.add('show');
+  }, reduceMotion ? 0 : BOOT_LINES.length*260 + 200);
+}
+playBoot();
+
+/* ═══════════════════════════════════════════════════════════
+   LIVE UTC CLOCK
+═══════════════════════════════════════════════════════════ */
+function pad(n){ return n.toString().padStart(2,'0'); }
+function tickClock(){
+  const now = new Date();
+  const s = `UTC ${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}:${pad(now.getUTCSeconds())}`;
+  const el = document.getElementById('heroClock');
+  if(el) el.textContent = s;
+}
+tickClock();
+setInterval(tickClock, 1000);
+
+/* ═══════════════════════════════════════════════════════════
+   STAGE 4 SUB-D — Closing statement, typed line by line
+═══════════════════════════════════════════════════════════ */
+const CLOSING_LINES = [
+  {text:'CHAIN STATUS      : PRODUCING BLOCKS', cls:''},
+  {text:'ACTIVE VALIDATORS : ? / 27', cls:''},
+  {text:'PRODUCTS LIVE     : 0', cls:''},
+  {text:'LAST PUBLIC COMMS : 2026-02-16', cls:''},
+  {text:'', cls:''},
+  {text:'NTN was never listed on any exchange.', cls:'dim'},
+  {text:'Prize holders have no liquidity path.', cls:'dim'},
+  {text:'', cls:''},
+  {text:'Autonity was not merely a blockchain.', cls:''},
+  {text:'It was a vertically integrated financial infrastructure:', cls:''},
+  {text:'consensus \u2192 staking \u2192 oracles \u2192 monetary policy \u2192', cls:'dim'},
+  {text:'clearing \u2192 trading \u2192 community competition \u2014', cls:'dim'},
+  {text:'each layer depending on every other.', cls:''},
+  {text:'', cls:''},
+  {text:'It went dark mid-season.', cls:''},
+  {text:'The lights stayed on.', cls:''},
+];
+function playClosing(){
+  const wrap = document.getElementById('closingLines');
+  wrap.innerHTML = '';
+  CLOSING_LINES.forEach((line, i) => {
+    const d = document.createElement('div');
+    d.className = 'cl-line' + (line.cls ? ' ' + line.cls : '');
+    d.textContent = line.text || '\u00A0';
+    wrap.appendChild(d);
+    setTimeout(() => d.classList.add('show'), reduceMotion ? 0 : i*220);
+  });
+  setTimeout(() => {
+    const cursorLine = document.createElement('div');
+    cursorLine.className = 'cl-line show';
+    cursorLine.innerHTML = '&gt;&gt; <span class="cl-cursor"></span>';
+    wrap.appendChild(cursorLine);
+  }, reduceMotion ? 0 : CLOSING_LINES.length*220 + 300);
+}
+const closingObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      playClosing();
+      closingObserver.disconnect();
+    }
+  });
+}, {threshold:.15});
+closingObserver.observe(document.getElementById('stage-4'));
+
+/* ═══════════════════════════════════════════════════════════
+   CTA — Track B tools (page-specific)
+═══════════════════════════════════════════════════════════ */
+const CTA_TOOLS = [
+  {label:'FORECASTATHON SCORE CALCULATOR', slug:'forecastathon-score-calculator', id:'ain:at-07', mandate:'forecastathon_score_calc'},
+  {label:'NETWORK HEALTH AUDIT', slug:'network-health-audit', id:'ain:at-12', mandate:'network_health_audit'},
+];
+document.getElementById('ctaTools').innerHTML = CTA_TOOLS.map(t => `
+  <div class="cta-tool-card">
+    <a class="cta-tool-btn" href="${TRACK_B_BASE}${t.slug}.html" target="_blank" rel="noopener noreferrer">[ ${t.label} \u2192 ]</a>
+    <span class="mandate-pill">${t.mandate}</span>
+    <div style="font-size:.6rem;color:var(--dim);margin-top:6px;">${t.id}</div>
+  </div>
+`).join('');
+document.getElementById('ocgLink').href = OCG_STANDARD_URL;
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER — validator health strip (27 dots)
+   Validator count updated to 27 (Max Validators) per the July 8, 2026
+   screenshot reconciliation. Per-validator status was NOT carried over
+   from the old 30-validator figure (12g/13r/5a) since that breakdown
+   no longer applies to the current 27-validator roster and we don't
+   have the actual per-operator status from the new snapshot yet.
+   All dots render as "pending" (dim/neutral) until real status data
+   is supplied — see the callout under Sub-section C.
+═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   FOOTER — validator health strip
+   This strip shows ORACLE (price-feed voting) participation, not validator
+   consensus status — a distinct dimension, per Stakeflow, July 8, 2026:
+   11 active, 7 paused, 12 jailed for inactivity, out of 30 oracle-registered
+   operators. See Sub-section C above for the separate validator/consensus table.
+═══════════════════════════════════════════════════════════ */
+const JULY_STATE = (() => {
+  const arr = new Array(30).fill('g');
+  for(let i=11;i<18;i++) arr[i] = 'a';   // 7 paused
+  for(let i=18;i<30;i++) arr[i] = 'r';   // 12 jailed for inactivity
+  return arr;
+})();
+(function buildStrip(){
+  const el = document.getElementById('vstrip');
+  let html = '';
+  for(let i=0;i<30;i++){
+    html += `<span class="vd ${JULY_STATE[i]}"></span>`;
+  }
+  el.innerHTML = html;
+})();
+</script>
+</body>
+</html>
