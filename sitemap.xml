@@ -81,13 +81,13 @@
   <url>
     <loc>https://postoaklabs.com/glossary.html</loc>
     <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/faq.html</loc>
     <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
@@ -99,7 +99,7 @@
   <url>
     <loc>https://postoaklabs.com/sitemap.html</loc>
     <lastmod>2026-06-03</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
@@ -151,25 +151,25 @@
   <url>
     <loc>https://postoaklabs.com/demos/global-real-time-rails-comparator.html</loc>
     <lastmod>2026-05-25</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html</loc>
     <lastmod>2026-06-24</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html</loc>
     <lastmod>2026-06-24</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html</loc>
     <lastmod>2026-06-01</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
@@ -177,49 +177,49 @@
   <url>
     <loc>https://postoaklabs.com/autonity/</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page1-protocol.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page2-money.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page3-afp.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page4-clearing.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page5-autex.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page6-forecastathon.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://postoaklabs.com/autonity/autonity-page7-endogenous-collateral.html</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>quarterly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
 </urlset>
