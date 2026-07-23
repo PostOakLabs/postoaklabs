@@ -153,12 +153,12 @@ Five buyer-archetype hubs serve as advisory landing pages for distinct client ar
 - Processors hub: https://postoaklabs.com/demos/processors/
 - Stablecoin Issuer hub: https://postoaklabs.com/demos/stablecoin-issuer/
 
-### Live Scenarios (direct URLs)
+### Live Corridor Case Studies (direct URLs)
 
-- Scenario #29 — Global Real-Time Rails Comparator (score SEPA Instant / FedNow / RTP / PIX / UPI / FPS / SWIFT gpi on speed, finality, cost, ISO 20022 readiness, and participation by corridor; weighted recommendation; Policy Mandate export): https://postoaklabs.com/demos/global-real-time-rails-comparator.html
-- Case Study — Timor-Leste × Bangladesh Stablecoin Settlement Bridge (corridor case study: USD-pegged wholesale stablecoin bridge across a thin-correspondent, 3-hour UTC overlap corridor — architecture viability, collateral sizing, ISO 20022 ledger schema; links to AINumbers emerging-market-fx-corridor chain for live modelling): https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html
-- Case Study — West Africa Digital Currency Corridor (corridor case study: CBDC and stablecoin settlement across Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU — settlement economics vs. correspondent banking, FATF compliance overlay; links to AINumbers emerging-market-fx-corridor chain for live modelling): https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html
-- Scenario #39 — GENIUS Act Issuer Readiness Lab (payment stablecoin reserve composition vs. GENIUS Act requirements effective Jan 2027 — 1:1 backing, UST ≤93-day maturity caps, Fed deposits, monthly disclosure; Policy Mandate export): https://postoaklabs.com/demos/genius-act-issuer-readiness-lab.html
+Post Oak Labs hosts two prose corridor case studies. All single-tool and single-chain scenarios have moved to ainumbers.co (see the tool catalog and chaingraph).
+
+- Case Study — Timor-Leste × Bangladesh Stablecoin Settlement Bridge (corridor case study: USD-pegged wholesale stablecoin bridge across a thin-correspondent, 3-hour UTC overlap corridor; architecture viability, collateral sizing, ISO 20022 ledger schema; links to AINumbers emerging-market-fx-corridor chain for live modelling): https://postoaklabs.com/demos/timor-leste-bangladesh-stablecoin-settlement.html
+- Case Study — West Africa Digital Currency Corridor (corridor case study: CBDC and stablecoin settlement across Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU; settlement economics vs correspondent banking, FATF compliance overlay; links to AINumbers emerging-market-fx-corridor chain for live modelling): https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html
 
 ---
 
@@ -166,14 +166,10 @@ Five buyer-archetype hubs serve as advisory landing pages for distinct client ar
 
 Composers orchestrate a full tool chain in one page via the AIN Bridge and export a composite Policy Mandate with a per-stage audit trail. Diagnostics grade posture A–F with a remediation map. All client-side, zero PII, free.
 
-- Agentic Policy Composer (RBE-06 → T285 → T320 → T288): https://ainumbers.co/guides/policy-composer.html
-- AML Programme Composer (T110 → T116 → T119 → T131): https://ainumbers.co/guides/aml-programme-composer.html
-- Card Programme Composer (T163 → T225 → T226 → T228 → T233): https://ainumbers.co/guides/card-programme-composer.html
-- ISO 20022 Cutover Composer (T77 → T101 → T254): https://ainumbers.co/guides/iso20022-cutover-composer.html
-- Treasury Corridor Composer (T105 → T76 → T23): https://ainumbers.co/guides/treasury-corridor-composer.html
-- Agentic Payments Readiness Diagnostic (graded A–F): https://ainumbers.co/guides/agentic-readiness-diagnostic.html
-- MCP Server Deployability Diagnostic (graded A–F): https://ainumbers.co/guides/mcp-server-deployability-diagnostic.html
-- DORA Readiness Diagnostic (graded A–F): https://ainumbers.co/guides/dora-readiness-diagnostic.html
+- Agentic Policy Chain (ART-15 → ART-16 → ART-17 → ART-18): https://ainumbers.co/chaingraph/chains/agentic-policy.html
+- Card Programme Chain (launch readiness → interchange → PCI scope → 3DS/EMV → scheme fees): https://ainumbers.co/chaingraph/chains/card-programme.html
+- ISO 20022 Cutover Chain (truncation audit → migration scorer → cross-rail compatibility): https://ainumbers.co/chaingraph/chains/iso20022-cutover.html
+- Treasury Corridor Chain (FX netting → hedge optimizer → corridor savings): https://ainumbers.co/chaingraph/chains/treasury-corridor.html
 
 ---
 

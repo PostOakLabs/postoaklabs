@@ -59,6 +59,9 @@ Redirect 301 /tools/tool-06-agentic-mandate-sandbox.html  https://ainumbers.co/t
 # Catch-all for any remaining /tools/* path
 RedirectMatch 301 ^/tools/(.+)$ https://ainumbers.co/tools/$1
 
+# Tools landing page retired 2026-07-23 — POL does not host tools
+Redirect 301 /tools.html https://ainumbers.co/tools.html
+
 # Stale partner pages that were never deployed (sitemap referenced them)
 Redirect 301 /meridian-capital-advisory.html  https://meridiancapital.me/
 Redirect 301 /apex-advisory-education.html    https://apexadvisory.site/
@@ -125,6 +128,10 @@ Redirect 301 /demos/genius-act-stablecoin-readiness.html           https://ainum
 Redirect 301 /demos/fca-bnpl-dpc-navigator.html                    https://ainumbers.co/chaingraph/chains/fca-bnpl-dpc.html
 Redirect 301 /demos/basel-iii-endgame-capital-lab.html             https://ainumbers.co/chaingraph/chains/basel-endgame-frtb-capital.html
 Redirect 301 /demos/psd3-psr2-transition-readiness.html            https://ainumbers.co/chaingraph/chains/psd3-psr2-transition.html
+
+# Spec-gap demos resolved (2026-07-23) — AINumbers tool targets confirmed live
+Redirect 301 /demos/global-real-time-rails-comparator.html         https://ainumbers.co/tools/17-instant-payment-limits.html
+Redirect 301 /demos/genius-act-issuer-readiness-lab.html           https://ainumbers.co/tools/328-genius-act-reserve-optimizer.html
 
 # Renamed showcase scenarios (2026-06-03) — internal demo-NN numbering removed from public URLs
 Redirect 301 /demos/demo-37-eu-ai-act-compliance-studio.html      /demos/eu-ai-act-compliance-studio.html

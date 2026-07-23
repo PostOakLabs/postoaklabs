@@ -110,12 +110,14 @@ Kept as prose case-studies (NOT 301'd). Interactive tooling stripped; narrative 
 | timor-leste-bangladesh-stablecoin-settlement.html | Prose case-study | https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html |
 | west-africa-digital-currency-corridor.html | Prose case-study | https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html |
 
-## Demos on hold (spec-gap — Phase 3)
+## Spec-gap demos resolved (2026-07-23)
 
-| Demo slug | Reason |
+Targets confirmed live before redirecting; files pulled from live index and staged in `/LookThrough/`.
+
+| Demo slug | AINumbers tool URL |
 |---|---|
-| global-real-time-rails-comparator.html | No confirmed AINumbers chain target; held |
-| genius-act-issuer-readiness-lab.html | No confirmed AINumbers chain target; held |
+| global-real-time-rails-comparator.html | https://ainumbers.co/tools/17-instant-payment-limits.html |
+| genius-act-issuer-readiness-lab.html | https://ainumbers.co/tools/328-genius-act-reserve-optimizer.html |
 
 ---
 

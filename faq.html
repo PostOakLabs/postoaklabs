@@ -81,7 +81,7 @@
       "name": "What is ISO 20022 and how does it relate to tokenized A2A infrastructure?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ISO 20022 is the global standard for financial messaging, replacing the older SWIFT MT format with richly structured XML or JSON messages that can carry far more data: full legal entity names, structured addresses, purpose codes, and compliance-relevant fields, rather than the truncated, ambiguous strings in legacy MT messages. SWIFT completed mandatory migration to ISO 20022 for cross-border payments in stages through 2025. The US Federal Reserve also migrated Fedwire Funds Service - the largest RTGS system in the world by transaction value - to ISO 20022 on July 14, 2025. The connection to tokenized A2A is direct: ISO 20022 data travels inside the payment token on the ledger, so every transaction carries complete structured data at the point of settlement, not just a routing instruction. This eliminates the data degradation that occurs across a correspondent chain, reduces sanctions screening false positives, enables straight-through processing, and creates an audit trail visible to every participating institution simultaneously."
+        "text": "ISO 20022 is the global standard for financial messaging, replacing the older SWIFT MT format with richly structured XML or JSON messages that can carry far more data: full legal entity names, structured addresses, purpose codes, and compliance-relevant fields, rather than the truncated, ambiguous strings in legacy MT messages. SWIFT completed mandatory migration to ISO 20022 for cross-border payments in stages through 2025. The US Federal Reserve also migrated Fedwire Funds Service - the largest RTGS system in the world by transaction value - to ISO 20022 on July 14, 2025. The connection to tokenized A2A is direct: ISO 20022 data travels inside the payment token on the ledger, so every transaction carries complete structured data at the point of settlement, where legacy rails carry only a routing instruction. This eliminates the data degradation that occurs across a correspondent chain, reduces sanctions screening false positives, enables straight-through processing, and creates an audit trail visible to every participating institution simultaneously."
       }
     },
     {
@@ -592,7 +592,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     
     <!-- P4: AINumbers tools CTA banner -->
     <div style="background:rgba(20,184,166,0.07);border:1px solid rgba(20,184,166,0.25);border-radius:6px;padding:1rem 1.4rem;margin:1.8rem 0;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
-      <span style="font-size:1.2rem;">🛠</span>
+      <span style="font-size:1.2rem;"></span>
       <div style="flex:1;min-width:200px;">
         <p style="margin:0 0 0.25rem;font-size:0.88rem;font-weight:600;color:var(--bright,#f1f5f9);">33 Free Fintech Tools — now at AINumbers.co</p>
         <p style="margin:0;font-size:0.82rem;color:var(--body,#94a3b8);">A2A fee routing, ISO 20022 message builder, fraud score simulator, compliance checklist, IBAN/BIC validator, and more; all browser-based, no install.</p>
@@ -705,7 +705,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </button>
         <div class="faq-a">
           <p>ISO 20022 is the global standard for financial messaging, replacing the older SWIFT MT format with richly structured XML or JSON messages. Unlike legacy MT messages (which truncate beneficiary names, addresses, and purpose codes), ISO 20022 MX messages carry complete structured data, enabling automated sanctions screening, straight-through processing, and richer AML analytics. SWIFT completed mandatory migration to ISO 20022 for cross-border payments in stages through 2025. The US Federal Reserve also migrated Fedwire Funds Service (the largest RTGS system in the world by transaction value) to ISO 20022 on July 14, 2025.</p>
-          <p>The connection to tokenized A2A is direct: ISO 20022-formatted data travels <strong>inside the payment token on the ledger</strong>, so every transaction carries complete structured information at the point of settlement, not just a routing instruction degraded through multiple correspondent hops. This eliminates the data loss that occurs across the correspondent chain and gives every participating institution simultaneous access to the same compliance-relevant data. See the <a href="iso20022-a2a.html">ISO 20022 page</a> for a full technical treatment.</p>
+          <p>The connection to tokenized A2A is direct: ISO 20022-formatted data travels <strong>inside the payment token on the ledger</strong>, so every transaction carries complete structured information at the point of settlement, where a legacy transfer would carry only a degraded routing instruction across multiple correspondent hops. This eliminates the data loss that occurs across the correspondent chain and gives every participating institution simultaneous access to the same compliance-relevant data. See the <a href="iso20022-a2a.html">ISO 20022 page</a> for a full technical treatment.</p>
         </div>
       </div>
 
