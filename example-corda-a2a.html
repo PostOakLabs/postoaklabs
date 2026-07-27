@@ -641,7 +641,7 @@ footer {
 <section class="hero">
   <div class="container">
     <p class="hero-eyebrow">Technical Deep-Dive · R3 Corda · Cross-Border Settlement</p>
-    <h1 data-i18n="hero-h1">A2A tokenization on Corda: <em>two European banks, one UAE bank</em></h1>
+    <h1 data-i18n="hero-h1">A2A tokenization on Corda: two European banks, one UAE bank</h1>
     <p class="hero-sub" data-i18n="hero-sub">
       A minute-detail walkthrough of how R3 Corda's permissioned distributed ledger enables tokenized account-to-account settlement across a three-bank network: a German commercial bank (Frankfurt), a Dutch commercial bank (Amsterdam), and a UAE commercial bank (Dubai/ADGM). Every layer covered: node architecture, CorDapp structure, token lifecycle, FX handling, notary design, ISO 20022 integration, and the applicable regulatory frameworks on both sides of the corridor.
     </p>
@@ -875,7 +875,7 @@ footer {
       <div class="node-card notary">
         <p class="node-type">Notary Cluster · Consensus Layer</p>
         <h3>BFT Notary: 3-of-5 Independent Signatories</h3>
-        <p>The notary cluster is the sole consensus mechanism in Corda. Its function is narrow and critical: confirming that the input states being consumed by a proposed transaction have not already been spent (uniqueness) and issuing a timestamped signature that makes the transaction irrevocable. The notary does <em>not</em> see the content of the transaction: only the state references being consumed and their identifiers. In a cross-jurisdictional network, the notary cluster must be governed by an entity that is jurisdictionally neutral or jointly governed by the participating banks. In production, this is typically a consortium entity (analogous to how SDX runs its own notary for European trades), a joint-venture vehicle, or a regulated third-party trust service provider. The BFT notary consensus (BFT-SMaRt variant) algorithm tolerates up to <em>f</em> Byzantine faults where 5 nodes tolerate up to 1 fault (3-of-5 quorum). The five notary nodes run in geographically separated data centers: two in EU-regulated cloud zones, two in UAE-regulated cloud zones, and one in a jurisdictionally neutral location (e.g. Switzerland).</p>
+        <p>The notary cluster is the sole consensus mechanism in Corda. Its function is narrow and critical: confirming that the input states being consumed by a proposed transaction have not already been spent (uniqueness) and issuing a timestamped signature that makes the transaction irrevocable. The notary does not see the content of the transaction: only the state references being consumed and their identifiers. In a cross-jurisdictional network, the notary cluster must be governed by an entity that is jurisdictionally neutral or jointly governed by the participating banks. In production, this is typically a consortium entity (analogous to how SDX runs its own notary for European trades), a joint-venture vehicle, or a regulated third-party trust service provider. The BFT notary consensus (BFT-SMaRt variant) algorithm tolerates up to f Byzantine faults where 5 nodes tolerate up to 1 fault (3-of-5 quorum). The five notary nodes run in geographically separated data centers: two in EU-regulated cloud zones, two in UAE-regulated cloud zones, and one in a jurisdictionally neutral location (e.g. Switzerland).</p>
       </div>
     </div>
   </div>
@@ -891,7 +891,7 @@ footer {
     </p>
 
     <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1: State definitions</h3>
-    <p>A Corda <em>state</em> is an immutable object representing a shared fact between two or more parties at a specific point in time. Once created, a state is never modified; it is consumed (spent) and replaced by a new state in a transaction. The two primary state types in this CorDapp are:</p>
+    <p>A Corda state is an immutable object representing a shared fact between two or more parties at a specific point in time. Once created, a state is never modified; it is consumed (spent) and replaced by a new state in a transaction. The two primary state types in this CorDapp are:</p>
 
     <pre><code><span class="cm">// EUR deposit token — issued by BankFR, owned by BankAE after transfer</span>
 <span class="kw">data class</span> <span class="ty">EurDepositToken</span>(
@@ -1420,7 +1420,7 @@ footer {
       The Corda on-ledger layer handles real-time token transfer and PvP settlement. The RTGS layer handles final settlement in central bank money. Understanding how these two layers interact is essential for treasury teams evaluating the liquidity implications of this architecture.
     </p>
 
-    <p>In correspondent banking, a €5M payment requires €5M in pre-funded nostro balances at the Frankfurt–Dubai correspondent chain. In the Corda A2A model, the payment is settled on-ledger atomically: the corporate's account is debited immediately and the Dubai supplier's account is credited within 60 seconds. The RTGS settlement happens later (at the next intraday netting cycle), and settles only the <em>net</em> position between BankFR and BankAE across all transactions in the cycle.</p>
+    <p>In correspondent banking, a €5M payment requires €5M in pre-funded nostro balances at the Frankfurt–Dubai correspondent chain. In the Corda A2A model, the payment is settled on-ledger atomically: the corporate's account is debited immediately and the Dubai supplier's account is credited within 60 seconds. The RTGS settlement happens later (at the next intraday netting cycle), and settles only the net position between BankFR and BankAE across all transactions in the cycle.</p>
 
     <p>If in a given 4-hour cycle BankFR sends €20M to Dubai suppliers and BankAE sends €12M to Frankfurt corporate clients (in separate transactions), the net EUR obligation is €8M, not €32M gross. This netting is the core capital efficiency mechanism. At a 5% rate, the reduction from €32M to €8M in RTGS exposure frees approximately €1.2M in annual foregone yield on what would otherwise have been pre-funded nostro balances.</p>
 
@@ -1488,7 +1488,7 @@ footer {
         <div class="step-body">
           <p class="step-phase">Legal Finality Risk</p>
           <h4>On-ledger finality and legal finality are distinct concepts</h4>
-          <p>When the notary signs a transaction, the state transitions on the Corda ledger are technically irrevocable. But <em>legal</em> finality (the right to retain funds against counterparty insolvency) depends on the legal regime governing the network. In the EU, the Settlement Finality Directive provides legal finality protection for transactions in designated payment systems. Corda networks are not (yet) designated payment systems under the SFD. Fnality's Sterling Fnality Payment System (£FnPS) received Bank of England Settlement Finality Designation in 2024, the first DLT-based payment system to do so. The EUR–AED network described here would need equivalent regulatory engagement in both the EU and UAE before it could claim full legal finality protection. This is an 18–36 month regulatory process, not a technical one.</p>
+          <p>When the notary signs a transaction, the state transitions on the Corda ledger are technically irrevocable. But legal finality (the right to retain funds against counterparty insolvency) depends on the legal regime governing the network. In the EU, the Settlement Finality Directive provides legal finality protection for transactions in designated payment systems. Corda networks are not (yet) designated payment systems under the SFD. Fnality's Sterling Fnality Payment System (£FnPS) received Bank of England Settlement Finality Designation in 2024, the first DLT-based payment system to do so. The EUR–AED network described here would need equivalent regulatory engagement in both the EU and UAE before it could claim full legal finality protection. This is an 18–36 month regulatory process, not a technical one.</p>
         </div>
       </div>
       <div class="step-item">

@@ -49,14 +49,14 @@ jobs:
         if: ${{ !cancelled() }}
         run: python3 .github/scripts/check-links.py
 
-      # Anti-AI-tell copy gate (ANTI-AI-TELL ban, CLAUDE.md). Blocks on
-      # ERROR-tier hits (two-tone, validation, dramatic, filler, emoji);
-      # italics + em-dashes are non-blocking warns pending editorial triage.
-      # INTERIM POL-local script — replace with vendored AINumbers canonical
-      # copy-hallmarks gate when COPY-GATE-2 lands (single-lineage rule).
+      # Anti-AI-tell copy gate (ANTI-AI-TELL ban, CLAUDE.md). Vendored from
+      # AINumbers repo/scripts/check-copy-hallmarks.mjs (single-lineage rule
+      # — see provenance header in scripts/check-copy-hallmarks.mjs). Zero-
+      # tolerance on italics, twotone, filler-vocab, emoji-in-headers;
+      # em-dash/bold are baseline+ratchet (scripts/copy-hallmarks-baseline.json).
       - name: Copy-hallmarks gate
         if: ${{ !cancelled() }}
-        run: python3 scripts/copy-hallmarks.py
+        run: node scripts/check-copy-hallmarks.mjs
 
   # ──────────────────────────────────────────────────────────────────────────
   deploy:

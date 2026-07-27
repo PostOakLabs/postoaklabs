@@ -1,0 +1,152 @@
+{
+  "a2a-comparison.html": {
+    "emdash": 0,
+    "jargon": 0,
+    "bold": 27
+  },
+  "a2a-engagement-roadmap.html": {
+    "emdash": 1,
+    "jargon": 0,
+    "bold": 0
+  },
+  "a2a-payments.html": {
+    "emdash": 2,
+    "jargon": 0,
+    "bold": 5
+  },
+  "a2a-workflow.html": {
+    "emdash": 0,
+    "jargon": 0,
+    "bold": 12
+  },
+  "autonity/autonity-page1-protocol.html": {
+    "emdash": 27,
+    "jargon": 0,
+    "bold": 2
+  },
+  "autonity/autonity-page2-money.html": {
+    "emdash": 24,
+    "jargon": 0,
+    "bold": 4
+  },
+  "autonity/autonity-page3-afp.html": {
+    "emdash": 46,
+    "jargon": 0,
+    "bold": 2
+  },
+  "autonity/autonity-page4-clearing.html": {
+    "emdash": 21,
+    "jargon": 0,
+    "bold": 9
+  },
+  "autonity/autonity-page5-autex.html": {
+    "emdash": 26,
+    "jargon": 0,
+    "bold": 8
+  },
+  "autonity/autonity-page6-forecastathon.html": {
+    "emdash": 36,
+    "jargon": 0,
+    "bold": 4
+  },
+  "autonity/autonity-page7-endogenous-collateral.html": {
+    "emdash": 28,
+    "jargon": 0,
+    "bold": 10
+  },
+  "autonity/index.html": {
+    "emdash": 24,
+    "jargon": 0,
+    "bold": 2
+  },
+  "demos/agentic-runtime/index.html": {
+    "emdash": 16,
+    "jargon": 0,
+    "bold": 15
+  },
+  "demos/baas/index.html": {
+    "emdash": 20,
+    "jargon": 0,
+    "bold": 13
+  },
+  "demos/index.html": {
+    "emdash": 7,
+    "jargon": 0,
+    "bold": 0
+  },
+  "demos/processors/index.html": {
+    "emdash": 16,
+    "jargon": 0,
+    "bold": 20
+  },
+  "demos/regtech/index.html": {
+    "emdash": 22,
+    "jargon": 0,
+    "bold": 19
+  },
+  "demos/stablecoin-issuer/index.html": {
+    "emdash": 20,
+    "jargon": 0,
+    "bold": 16
+  },
+  "demos/timor-leste-bangladesh-stablecoin-settlement.html": {
+    "emdash": 18,
+    "jargon": 0,
+    "bold": 0
+  },
+  "demos/west-africa-digital-currency-corridor.html": {
+    "emdash": 15,
+    "jargon": 0,
+    "bold": 7
+  },
+  "enterprise-blockchain.html": {
+    "emdash": 0,
+    "jargon": 0,
+    "bold": 37
+  },
+  "example-besu-a2a.html": {
+    "emdash": 14,
+    "jargon": 0,
+    "bold": 23
+  },
+  "example-canton-a2a.html": {
+    "emdash": 10,
+    "jargon": 0,
+    "bold": 23
+  },
+  "example-corda-a2a.html": {
+    "emdash": 11,
+    "jargon": 0,
+    "bold": 20
+  },
+  "example-fabric-a2a.html": {
+    "emdash": 9,
+    "jargon": 0,
+    "bold": 42
+  },
+  "faq.html": {
+    "emdash": 8,
+    "jargon": 0,
+    "bold": 75
+  },
+  "glossary.html": {
+    "emdash": 7,
+    "jargon": 0,
+    "bold": 101
+  },
+  "iso20022-a2a.html": {
+    "emdash": 0,
+    "jargon": 0,
+    "bold": 23
+  },
+  "sitemap.html": {
+    "emdash": 7,
+    "jargon": 0,
+    "bold": 0
+  },
+  "tmmf-a2a.html": {
+    "emdash": 9,
+    "jargon": 0,
+    "bold": 16
+  }
+}

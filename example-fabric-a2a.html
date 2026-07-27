@@ -680,7 +680,7 @@ footer {
 <section class="hero">
   <div class="container">
     <p class="hero-eyebrow">Technical Deep-Dive · Hyperledger Fabric · Cross-Border Settlement</p>
-    <h1 data-i18n="hero-h1">A2A tokenization on Fabric: <em>two European banks, one Saudi bank</em></h1>
+    <h1 data-i18n="hero-h1">A2A tokenization on Fabric: two European banks, one Saudi bank</h1>
     <p class="hero-sub" data-i18n="hero-sub">
       A concrete reference architecture for cross-border, account-to-account payment tokenization between two European credit institutions and one Saudi commercial bank, executed on a permissioned Hyperledger Fabric network. Channel design, MSP configuration, Go chaincode, the Fabric Token SDK, Raft ordering, ISO 20022 message embedding, Travel Rule treatment via private data collections, and net settlement against TARGET2 and SARIE.
     </p>
@@ -1081,7 +1081,7 @@ footer {
         <div class="step-body">
           <p class="step-phase">Compliance · 10:14:02.244 CET</p>
           <h4>Hub composes pacs.008 and Travel Rule witness</h4>
-          <p>The payment hub builds the ISO 20022 <code>pacs.008.001.10</code> message including the originator's name, address, and BIC, and the beneficiary's name, address, IBAN/account, and BIC. It hashes the message body with SHA-256 to produce the <em>travel-rule witness</em> that will be placed in the transient map (never landing on the public ledger).</p>
+          <p>The payment hub builds the ISO 20022 <code>pacs.008.001.10</code> message including the originator's name, address, and BIC, and the beneficiary's name, address, IBAN/account, and BIC. It hashes the message body with SHA-256 to produce the travel-rule witness that will be placed in the transient map (never landing on the public ledger).</p>
           <p class="step-timing">Timing: <span>&lt;1 second</span> · Travel Rule witness computed</p>
         </div>
       </div>
@@ -1171,7 +1171,7 @@ footer {
         <div class="step-body">
           <p class="step-phase">Events · 10:14:02.549 CET</p>
           <h4>Chaincode Transfer events emitted to payment hubs</h4>
-          <p>Each peer fires the <code>Transfer</code> events to its local payment hub via the block-listener API. Hubs match the event to the pending instruction by reference and update internal state from <em>SUBMITTED</em> to <em>SETTLED-ON-LEDGER</em>.</p>
+          <p>Each peer fires the <code>Transfer</code> events to its local payment hub via the block-listener API. Hubs match the event to the pending instruction by reference and update internal state from SUBMITTED to SETTLED-ON-LEDGER.</p>
           <p class="step-timing">Timing: <span>Automated</span> · Block-listener API · Reference matching</p>
         </div>
       </div>
@@ -1285,7 +1285,7 @@ footer {
   &lt;/CdtTrfTxInf&gt;
 &lt;/FIToFICstmrCdtTrf&gt;</pre>
 
-    <p>The hub canonicalises the XML per <em>W3C Canonical XML 1.1</em>, hashes it with SHA-256, and that 32-byte hash is what the chaincode persists on the public ledger as the <code>trHash</code> field of the transfer event. Any subsequent dispute can be resolved by replaying the private data from either bank's PDC and re-canonicalising; a hash mismatch flags tampering.</p>
+    <p>The hub canonicalises the XML per W3C Canonical XML 1.1, hashes it with SHA-256, and that 32-byte hash is what the chaincode persists on the public ledger as the <code>trHash</code> field of the transfer event. Any subsequent dispute can be resolved by replaying the private data from either bank's PDC and re-canonicalising; a hash mismatch flags tampering.</p>
   </div>
 </section>
 
@@ -1354,7 +1354,7 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_12">Section 12</p>
     <h2 class="sec-title" data-i18n="t-net_settlement_against_tar">Net settlement against TARGET2 and SARIE</h2>
     <p class="sec-lead">
-      On-ledger transfers move <em>commercial bank money tokens</em>: a liability of the issuing bank denominated in fiat. They are not <em>final</em> in the legal sense until the corresponding central-bank-money settlement has occurred between the banks. The corridor flattens this through end-of-day net settlement against TARGET2 for the EUR leg and SARIE for the SAR leg.
+      On-ledger transfers move commercial bank money tokens: a liability of the issuing bank denominated in fiat. They are not final in the legal sense until the corresponding central-bank-money settlement has occurred between the banks. The corridor flattens this through end-of-day net settlement against TARGET2 for the EUR leg and SARIE for the SAR leg.
     </p>
 
     <p>At 17:00 CET the netting chaincode produces a multilateral net position per currency per bank. For 21 April 2026, after netting all corridor flows:</p>
@@ -1442,18 +1442,18 @@ footer {
     <h3>References and Source Notes</h3>
     <ol>
       <li id="fn1"><strong>Hyperledger Fabric Documentation, v2.5 LTS:</strong> Architecture, Channels, MSP, Private Data, Token SDK — <a href="https://hyperledger-fabric.readthedocs.io/en/release-2.5/" target="_blank" rel="noopener">hyperledger-fabric.readthedocs.io</a>.</li>
-      <li id="fn2"><strong>Androulaki, E. et al. (2018).</strong> <em>Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains.</em> EuroSys '18. Foundational architecture paper describing channels, MSP, and the ordering service design.</li>
-      <li id="fn3"><strong>IBM Research — Fabric Token SDK:</strong> <em>A Framework for Tokenization on Hyperledger Fabric.</em> Describes the fabtoken and zkat drivers, UTXO model, and Idemix-based privacy guarantees. GitHub: <a href="https://github.com/hyperledger-labs/fabric-token-sdk" target="_blank" rel="noopener">github.com/hyperledger-labs/fabric-token-sdk</a>.</li>
-      <li id="fn4"><strong>Ongaro &amp; Ousterhout (2014).</strong> <em>In Search of an Understandable Consensus Algorithm (Raft).</em> USENIX ATC. The foundational paper for the etcd/Raft consensus used in Fabric 2.x ordering.</li>
-      <li id="fn5"><strong>ISO 20022:</strong> <em>Financial services – Universal financial industry message scheme</em>; pacs.008.001.10 schema. <a href="https://www.iso20022.org/" target="_blank" rel="noopener">iso20022.org</a>.</li>
+      <li id="fn2"><strong>Androulaki, E. et al. (2018).</strong> Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains. EuroSys '18. Foundational architecture paper describing channels, MSP, and the ordering service design.</li>
+      <li id="fn3"><strong>IBM Research — Fabric Token SDK:</strong> A Framework for Tokenization on Hyperledger Fabric. Describes the fabtoken and zkat drivers, UTXO model, and Idemix-based privacy guarantees. GitHub: <a href="https://github.com/hyperledger-labs/fabric-token-sdk" target="_blank" rel="noopener">github.com/hyperledger-labs/fabric-token-sdk</a>.</li>
+      <li id="fn4"><strong>Ongaro &amp; Ousterhout (2014).</strong> In Search of an Understandable Consensus Algorithm (Raft). USENIX ATC. The foundational paper for the etcd/Raft consensus used in Fabric 2.x ordering.</li>
+      <li id="fn5"><strong>ISO 20022:</strong> Financial services – Universal financial industry message scheme; pacs.008.001.10 schema. <a href="https://www.iso20022.org/" target="_blank" rel="noopener">iso20022.org</a>.</li>
       <li id="fn6"><strong>Regulation (EU) 2023/1113 — Transfer of Funds Regulation (recast).</strong> Transposes FATF Recommendation 16 (Travel Rule) into EU law; in force December 2024.</li>
       <li id="fn7"><strong>Regulation (EU) 2022/2554 — Digital Operational Resilience Act (DORA).</strong> Applies to the Fabric stack as critical ICT infrastructure; in force January 2025.</li>
       <li id="fn8"><strong>Regulation (EU) 2023/1114 — Markets in Crypto-Assets (MiCA).</strong> Art. 2(4)(a) explicitly excludes deposits; the EUR-CBM tokens described here fall outside MiCA scope.</li>
       <li id="fn9"><strong>EBA Report on Tokenised Deposits, EBA/REP/2024/24 (December 2024).</strong> Confirms non-bearer tokenised deposits remain regulated under CRD/CRR rather than MiCA Title III.</li>
       <li id="fn10"><strong>SAMA AML/CFT Rules (latest revision)</strong> and <strong>SAMA Payment Services Provider Regulations.</strong> Govern Bank Al-Madinah's obligations on the Saudi side of the corridor. <a href="https://www.sama.gov.sa/en-US/Pages/sama-rules.aspx" target="_blank" rel="noopener">sama.gov.sa</a>.</li>
-      <li id="fn11"><strong>SAMA &amp; CBUAE (2020). Project Aber:</strong> <em>A Joint Digital Currency and Infrastructure Initiative.</em> Confirmed technical viability of Corda/DLT for cross-border dual-currency settlement; the supervisory precedent directly informs SAMA's stance on permissioned ledger deployments by licensed banks.</li>
+      <li id="fn11"><strong>SAMA &amp; CBUAE (2020). Project Aber:</strong> A Joint Digital Currency and Infrastructure Initiative. Confirmed technical viability of Corda/DLT for cross-border dual-currency settlement; the supervisory precedent directly informs SAMA's stance on permissioned ledger deployments by licensed banks.</li>
       <li id="fn12"><strong>FATF Recommendation 16 — Wire Transfers.</strong> The Travel Rule requiring originator and beneficiary information to accompany wire transfers; transposed variously into EU TFR and SAMA AML/CFT Rules.</li>
-      <li id="fn13"><strong>SWIFT — ISO 20022 Migration for Cross-Border Payments and Reporting (CBPR+).</strong> Documents the structured-data AML false-positive reduction ranges; see also Accenture (2023) <em>Transforming Financial Crime Compliance with AI and ISO 20022.</em></li>
+      <li id="fn13"><strong>SWIFT — ISO 20022 Migration for Cross-Border Payments and Reporting (CBPR+).</strong> Documents the structured-data AML false-positive reduction ranges; see also Accenture (2023) Transforming Financial Crime Compliance with AI and ISO 20022.</li>
       <li id="fn14"><strong>BIS CPMI, "PvP arrangements and the case for greater adoption" (2022).</strong> Documents that roughly one-third of global FX transactions still settle without PvP, representing approximately $2.2 trillion in daily settlement value exposed to principal risk. <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener">bis.org/cpmi/publ/d208.htm</a>.</li>
       <li id="fn15"><strong>BaFin Merkblatt zu Hinweisen zum Tatbestand des Kryptowertpapiergeschäfts (2024).</strong> BaFin guidance on DLT-based financial infrastructure; Bayerische Handelsbank's tokenisation activity is notified under §32 KWG pursuant to this guidance.</li>
     </ol>

@@ -620,7 +620,7 @@ footer {
 <section class="hero">
   <div class="container">
     <p class="hero-eyebrow">Technical Deep-Dive · Canton Network · Daml · Four-FMI Settlement</p>
-    <h1 data-i18n="hero-h1">A2A tokenization on Canton: <em>four FMIs, one synchronized ledger</em></h1>
+    <h1 data-i18n="hero-h1">A2A tokenization on Canton: four FMIs, one synchronized ledger</h1>
     <p class="hero-sub" data-i18n="hero-sub">
       A minute-detail walkthrough of how Digital Asset's Canton Network and the Daml smart contract language enable tokenized account-to-account settlement across four of the world's largest financial market infrastructures: Deutsche Börse Group's Clearstream D7, the Depository Trust & Clearing Corporation (DTCC) ComposerX, Broadridge's Distributed Ledger Repo (DLR), and Euroclear's D-FMI. Every layer covered: Canton's participant-and-synchronizer topology, Daml templates and choices, sub-transaction privacy, atomic delivery-versus-payment across applications, and the regulatory frameworks (EU CSDR/MiCA/DORA, US SEC/CFTC, UK FMI rules, Belgian NBB) that govern each FMI.
     </p>
@@ -708,7 +708,7 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_02">Section 02</p>
     <h2 class="sec-title" data-i18n="t-network_topology_and_parti">Network topology and participant architecture</h2>
     <p class="sec-lead">
-      A Canton network is not a single ledger. It is a federation of independently operated <em>participant nodes</em>, each owned by a legal entity, communicating through one or more <em>synchronizer</em> domains. Each participant maintains its own private contract store containing only the contracts to which its hosted parties are stakeholders. The synchronizer orders messages and provides finality but never sees contract content: only opaque, encrypted payloads addressed to the relevant participants.
+      A Canton network is not a single ledger. It is a federation of independently operated participant nodes, each owned by a legal entity, communicating through one or more synchronizer domains. Each participant maintains its own private contract store containing only the contracts to which its hosted parties are stakeholders. The synchronizer orders messages and provides finality but never sees contract content: only opaque, encrypted payloads addressed to the relevant participants.
     </p>
 
     <div class="diagram-wrap">
@@ -833,7 +833,7 @@ footer {
       <div class="node-card synch">
         <p class="node-type">Global Synchronizer · Consensus &amp; Ordering</p>
         <h3>13 Super Validators · BFT-ordered, content-blind</h3>
-        <p>The Global Synchronizer is the message-ordering and finality layer for the Canton Network. It is operated by 13 Super Validators (as of 2026) including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, SBI Digital Markets, Tradeweb, Cumberland Labs and others, governed by the Global Synchronizer Foundation (a non-profit independent of any single participant). The synchronizer's job is precise and deliberately narrow: it orders encrypted messages between participants, runs a BFT consensus over message commitment, and produces a global timestamp that gives transactions deterministic finality. It never sees contract content: every message is encrypted end-to-end between the participants party to it. Sub-transactions in a multi-FMI atomic transaction either all commit or none commit; the synchronizer enforces this through a two-phase commit protocol with the participants involved, but participates in commitment <em>without ever seeing what is being committed</em>. Validator selection, rotation, and slashing are governed on-chain through the Canton Coin governance module.</p>
+        <p>The Global Synchronizer is the message-ordering and finality layer for the Canton Network. It is operated by 13 Super Validators (as of 2026) including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, SBI Digital Markets, Tradeweb, Cumberland Labs and others, governed by the Global Synchronizer Foundation (a non-profit independent of any single participant). The synchronizer's job is precise and deliberately narrow: it orders encrypted messages between participants, runs a BFT consensus over message commitment, and produces a global timestamp that gives transactions deterministic finality. It never sees contract content: every message is encrypted end-to-end between the participants party to it. Sub-transactions in a multi-FMI atomic transaction either all commit or none commit; the synchronizer enforces this through a two-phase commit protocol with the participants involved, but participates in commitment without ever seeing what is being committed. Validator selection, rotation, and slashing are governed on-chain through the Canton Coin governance module.</p>
       </div>
     </div>
 
@@ -867,7 +867,7 @@ footer {
     <p class="sec-kicker" data-i18n="kicker-section_03">Section 03</p>
     <h2 class="sec-title" data-i18n="t-daml_templates__choices__a">Daml templates, choices, and the party model</h2>
     <p class="sec-lead">
-      Daml is the smart contract language created by Digital Asset and the lingua franca of the Canton Network. Where Solidity describes computation on a globally replicated state machine, and Corda's Kotlin contracts describe verification of state transitions, Daml describes the <em>rights and obligations</em> of named parties. Every Daml template names its <code>signatory</code> parties (whose authority is required to create the contract), <code>observer</code> parties (who can see it but not act), and <code>controller</code> parties (who can exercise specific choices on it). This party-and-authority model maps directly onto the legal structure of an FMI agreement; each clause becomes a choice, each signature requirement becomes a signatory, each information right becomes an observer disclosure.
+      Daml is the smart contract language created by Digital Asset and the lingua franca of the Canton Network. Where Solidity describes computation on a globally replicated state machine, and Corda's Kotlin contracts describe verification of state transitions, Daml describes the rights and obligations of named parties. Every Daml template names its <code>signatory</code> parties (whose authority is required to create the contract), <code>observer</code> parties (who can see it but not act), and <code>controller</code> parties (who can exercise specific choices on it). This party-and-authority model maps directly onto the legal structure of an FMI agreement; each clause becomes a choice, each signature requirement becomes a signatory, each information right becomes an observer disclosure.
     </p>
 
     <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1: Tokenized US Treasury at DTCC</h3>
@@ -1026,7 +1026,7 @@ footer {
 
     <div class="callout gold">
       <p class="callout-label">Why Daml's authority model matters</p>
-      <p>Notice that <code>DeliverAgainstTreasuryPledge</code> on Clearstream's CP fetches a contract whose template lives in the DTCC <code>ComposerX</code> package. Daml's authority model means that <em>fetching</em> a contract requires the fetcher to be an observer or stakeholder; the fetched contract's signatories are not transitively granted authority. The cross-FMI atomicity is enforced by Canton's two-phase commit at the synchronizer level, not by ambient permission. Each FMI's application code remains independently auditable and remains controlled by that FMI.</p>
+      <p>Notice that <code>DeliverAgainstTreasuryPledge</code> on Clearstream's CP fetches a contract whose template lives in the DTCC <code>ComposerX</code> package. Daml's authority model means that fetching a contract requires the fetcher to be an observer or stakeholder; the fetched contract's signatories are not transitively granted authority. The cross-FMI atomicity is enforced by Canton's two-phase commit at the synchronizer level, not by ambient permission. Each FMI's application code remains independently auditable and remains controlled by that FMI.</p>
     </div>
   </div>
 </section>
@@ -1041,7 +1041,7 @@ footer {
     </p>
 
     <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">4.1: Projections, views, and informees</h3>
-    <p>When a Daml transaction is submitted, the participant's runtime decomposes it into a tree of <em>sub-transactions</em>, each with its own set of <em>informees</em> (the parties who must see that sub-transaction to validate or be informed of it). The runtime then constructs a per-participant <em>view</em> containing only the sub-transactions whose informees include parties hosted on that participant. Each view is encrypted under the receiving participant's key. The synchronizer's sequencer orders the encrypted blobs; the synchronizer's mediator coordinates a two-phase commit confirmation across the involved participants without ever decrypting them.</p>
+    <p>When a Daml transaction is submitted, the participant's runtime decomposes it into a tree of sub-transactions, each with its own set of informees (the parties who must see that sub-transaction to validate or be informed of it). The runtime then constructs a per-participant view containing only the sub-transactions whose informees include parties hosted on that participant. Each view is encrypted under the receiving participant's key. The synchronizer's sequencer orders the encrypted blobs; the synchronizer's mediator coordinates a two-phase commit confirmation across the involved participants without ever decrypting them.</p>
 
     <div class="detail-table-wrap">
       <table class="detail-table">
@@ -1076,11 +1076,11 @@ footer {
     </div>
 
     <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">4.2: The Global Synchronizer</h3>
-    <p>The Global Synchronizer is the canonical synchronizer domain on the Canton Network. It comprises three logical components: a <em>sequencer</em> (orders encrypted messages), a <em>mediator</em> (coordinates two-phase commit), and a <em>topology manager</em> (publishes party-to-participant mapping), operated together by 13 Super Validators. Consensus among the Super Validators uses a Tendermint-style BFT algorithm with deterministic finality at the sequencer level. The synchronizer fee model is paid in Canton Coin (CC) to incentivize honest validation; fee burn and minting are governed by on-chain rules.<sup><a href="#fn7">[7]</a></sup></p>
+    <p>The Global Synchronizer is the canonical synchronizer domain on the Canton Network. It comprises three logical components: a sequencer (orders encrypted messages), a mediator (coordinates two-phase commit), and a topology manager (publishes party-to-participant mapping), operated together by 13 Super Validators. Consensus among the Super Validators uses a Tendermint-style BFT algorithm with deterministic finality at the sequencer level. The synchronizer fee model is paid in Canton Coin (CC) to incentivize honest validation; fee burn and minting are governed by on-chain rules.<sup><a href="#fn7">[7]</a></sup></p>
 
     <div class="callout teal">
       <p class="callout-label">Multiple synchronizers, one network</p>
-      <p>A Canton network can include multiple synchronizers. An FMI may run a <em>local synchronizer</em> for purely intra-application transactions (e.g. internal Clearstream D7 settlement) and connect to the Global Synchronizer only for cross-FMI atomic transactions. This gives each FMI control over latency, fees, and operational governance for its own flows while preserving cross-application composability when needed.</p>
+      <p>A Canton network can include multiple synchronizers. An FMI may run a local synchronizer for purely intra-application transactions (e.g. internal Clearstream D7 settlement) and connect to the Global Synchronizer only for cross-FMI atomic transactions. This gives each FMI control over latency, fees, and operational governance for its own flows while preserving cross-application composability when needed.</p>
     </div>
   </div>
 </section>
@@ -1174,7 +1174,7 @@ footer {
     </p>
 
     <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">7.1: Canton Coin and synchronizer fees</h3>
-    <p>Canton Coin (CC) is the native asset of the Global Synchronizer. Its sole purpose is to meter and pay for synchronizer services: sequencing, mediation, and storage. Fees are computed deterministically from transaction size and complexity and are paid by the submitting participant. Super Validators receive CC rewards for honest validation. CC supply is governed by the Global Synchronizer Foundation under transparent on-chain rules: minting tied to network usage growth, burning of unused balances, and capped issuance.<sup><a href="#fn8">[8]</a></sup></p>
+    <p>Canton Coin (CC) is the native asset of the Global Synchronizer. Its sole purpose is to meter and pay for synchronizer services: sequencing, mediation, and storage. Fees are computed deterministically from transaction size and complexity and are paid by the submitting participant. Super Validators receive CC rewards for correct validation. CC supply is governed by the Global Synchronizer Foundation under transparent on-chain rules: minting tied to network usage growth, burning of unused balances, and capped issuance.<sup><a href="#fn8">[8]</a></sup></p>
 
     <p>Critically, Canton Coin is not a settlement asset and is not intended to be one. The four FMIs in this network do not hold CC as inventory; they hold operating reserves (similar to a SWIFT membership pre-fund) used solely to pay synchronizer fees on behalf of their applications.</p>
 
@@ -1291,7 +1291,7 @@ footer {
 
     <div class="callout gold">
       <p class="callout-label">Cross-jurisdictional supervisory access</p>
-      <p>Each regulator (BaFin, SEC, FCA, NBB) is granted Daml <em>observer</em> party rights on the contracts within its supervisory perimeter. Observer rights confer read-only visibility; the regulator sees the same contract state as the supervised entity, in real time, with cryptographic guarantee of integrity. This is materially stronger than today's T+1 regulatory reporting feeds and resolves a long-standing ESMA and SEC concern about post-trade data integrity.</p>
+      <p>Each regulator (BaFin, SEC, FCA, NBB) is granted Daml observer party rights on the contracts within its supervisory perimeter. Observer rights confer read-only visibility; the regulator sees the same contract state as the supervised entity, in real time, with cryptographic guarantee of integrity. This is materially stronger than today's T+1 regulatory reporting feeds and resolves a long-standing ESMA and SEC concern about post-trade data integrity.</p>
     </div>
   </div>
 </section>
