@@ -6,13 +6,16 @@
 
 RewriteEngine On
 
-# Force HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Strip "www." (canonical = postoaklabs.com without www)
+# Strip "www." AND force HTTPS in a single hop.
+# This rule must come first: it rewrites straight to the canonical
+# https://postoaklabs.com origin, so http://www.postoaklabs.com/ resolves in
+# one 301 instead of chaining through https://www.postoaklabs.com/.
 RewriteCond %{HTTP_HOST} ^www\.postoaklabs\.com$ [NC]
 RewriteRule ^(.*)$ https://postoaklabs.com/$1 [L,R=301]
+
+# Force HTTPS for any remaining (non-www) request.
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # ─────────────────────────────────────────────────────────────────
 # 301 redirects — fintech tools migrated to AINumbers.co
