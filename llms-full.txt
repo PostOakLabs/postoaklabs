@@ -2,7 +2,7 @@
 # Extended machine-readable site guide for LLMs, agents, and crawlers
 # Companion to llms.txt — per-scenario extended descriptions for agent ingestion
 # Format follows llms.txt convention (https://llmstxt.org)
-# Last updated: June 2026
+# Last updated: July 2026
 # Canonical: https://postoaklabs.com/llms-full.txt
 # See also: https://postoaklabs.com/llms.txt (concise overview)
 # Contact: contact@postoaklabs.com

@@ -1,7 +1,7 @@
 # Post Oak Labs — llms.txt
 # Machine-readable site guide for LLMs, agents, and crawlers
 # Format follows llms.txt convention (https://llmstxt.org)
-# Last updated: June 2026
+# Last updated: July 2026
 # Canonical: https://postoaklabs.com/llms.txt
 # Extended per-scenario descriptions: https://postoaklabs.com/llms-full.txt
 # X / Twitter: https://x.com/PostOakLabs
