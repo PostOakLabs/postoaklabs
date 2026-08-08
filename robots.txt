@@ -1,20 +1,23 @@
 # robots.txt — postoaklabs.com
 # Last updated: August 2026
 #
-# ⚠ WHAT THIS FILE SAYS IS NOT WHAT CRAWLERS SEE.
+# ⚠ THIS FILE ONLY REACHES CRAWLERS WHILE THE ZONE LEAVES robots.txt UNMANAGED.
 #
-# Cloudflare prepends a managed block to the served response, above everything
-# below. That block carries "Content-Signal: ai-train=no" plus Disallow rules
-# for ClaudeBot, GPTBot, CCBot, Google-Extended, Applebot-Extended, Amazonbot
-# and meta-externalagent. Because it appears FIRST, it wins for those agents —
-# the Allow rules further down never take effect for them.
+# Cloudflare can prepend a managed block to the served response, above
+# everything below. That block carries "Content-Signal: ai-train=no" plus
+# Disallow rules for ClaudeBot, GPTBot, CCBot, Google-Extended and others.
+# It appears FIRST, so while it is active it wins and the Allow rules below
+# never take effect — regardless of what this file says.
 #
-# Net effect: the AI citation/training access this file intends to grant is
-# denied at the edge. Editing this file cannot change that. The fix is in the
-# Cloudflare dashboard for this zone (the managed robots.txt / AI crawler
-# control setting), not in the repo.
+# Three zone fields govern this, and all three must stay set:
+#   ai_bots_protection    = disabled
+#   crawler_protection    = disabled
+#   is_robots_txt_managed = false
 #
-# Verify what is actually served with:
+# These match the settings on ainumbers.co, apexlogics.org and
+# omegacentauri.me. Editing this file cannot substitute for them.
+#
+# Always confirm what is actually served — not what is committed here:
 #   curl -s https://postoaklabs.com/robots.txt
 
 # General crawlers — allow everything
