@@ -117,16 +117,9 @@ a { color: inherit; text-decoration: none; }
   position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
-.hero::after {
-  content: '';
-  position: absolute; top: -150px; right: -200px;
-  width: 800px; height: 800px;
-  background: radial-gradient(ellipse, rgba(42,127,192,0.07) 0%, transparent 65%);
-  pointer-events: none;
-}
 .hero-eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.57rem; letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 0.85rem; letter-spacing: 0.01em; text-transform: none;
   color: var(--accent-lt); margin-bottom: 1.25rem;
   display: flex; align-items: center; gap: 0.75rem;
 }
@@ -139,7 +132,6 @@ a { color: inherit; text-decoration: none; }
   color: var(--white); max-width: 760px; margin-bottom: 1.5rem;
   letter-spacing: -0.01em;
 }
-.hero h1 em { color: var(--gold-lt); font-style: normal; }
 .hero-sub {
   font-size: 1rem; color: var(--body);
   max-width: 600px; line-height: 1.85; margin-bottom: 2rem;
@@ -203,6 +195,24 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
 .stat-source { font-family: 'JetBrains Mono', monospace; font-size: 0.46rem; color: var(--muted); margin-top: 0.3rem; }
 .stat-source a { color: var(--accent-lt); text-decoration: none; }
 .stat-source a:hover { text-decoration: underline; }
+
+/* ── DIAGRAM WRAPPER ── */
+.diagram-wrap {
+  margin: 2rem 0;
+  border: 1px solid var(--edge);
+  background: var(--deep);
+  padding: 2rem;
+  overflow-x: auto;
+}
+.diagram-wrap svg {
+  display: block;
+  margin: 0 auto;
+}
+.diagram-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.53rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 1rem; text-align: center;
+}
 
 /* ── STACK DIAGRAM ── */
 .stack-diagram {
@@ -357,35 +367,24 @@ sup a:hover { color: var(--accent-lt); }
 .footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
 .footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
 .footer-col > a:hover { color: var(--accent-lt); }
-.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
 /* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
-.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
-.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
-.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
-.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
-html[lang="ar"] body { direction: rtl; text-align: right; }
-html[lang="ar"] .lang-inner { justify-content: flex-start; }
 nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
-.nav-logo span { color: var(--gold); }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
-.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
-.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
+.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
+nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
+.nav-links { display: flex; gap: 0.6rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
 footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 .footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
-.footer-brand span { color: var(--gold); }
 .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
 .footer-copy a { color: var(--accent-lt); text-decoration: none; }
 .footer-copy a:hover { text-decoration: underline; }
 .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
-.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--accent-lt); }
 /* ══════════════════════════════════════════════════ */
 </style>
 <link rel="me" href="https://ainumbers.co">
@@ -469,30 +468,22 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 </head>
 <body>
 
-<!-- Language bar -->
-<div class="lang-bar">
-  <div class="lang-inner">
-    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
-    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
-    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
-    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
-    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
-    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
-  </div>
-</div>
-
 <nav role="navigation" aria-label="Primary">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
+    </a>
     <div class="nav-links">
-      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
-      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
-      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
-      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
-      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
-      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
-      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Talk to us</a>
+      <a href="index.html">Home</a>
+      <a href="demos/">Scenarios</a>
     </div>
   </div>
 </nav>
@@ -500,12 +491,12 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
 <section class="hero">
   <div class="container">
-    <p class="hero-eyebrow" data-i18n="hero-eyebrow">Post Oak Labs · Infrastructure Comparison Framework</p>
-    <h1 data-i18n="hero-h1">Three layers. One stack. Knowing the difference is the entire game.</h1>
-    <p class="hero-sub" data-i18n="hero-sub">Tokenized A2A, stablecoin infrastructure, and correspondent banking occupy distinct layers of the institutional payment stack. This is a fully consolidated reference for banks and corporates evaluating where tokenization fits in their architecture and revenue model.</p>
+    <p class="hero-eyebrow">Post Oak Labs · infrastructure comparison framework</p>
+    <h1>A2A, stablecoins, and correspondent banking are three layers of one stack, and most institutions get the order wrong.</h1>
+    <p class="hero-sub">Tokenized A2A, stablecoin infrastructure, and correspondent banking occupy distinct layers of the institutional payment stack. This is a fully consolidated reference for banks and corporates evaluating where tokenization fits in their architecture and revenue model.</p>
     <div class="hero-cta-row">
-      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="hero-cta-primary">Talk to Post Oak Labs</a>
-      <a href="#stack" class="btn-outline" data-i18n="hero-cta-stack">See the stack →</a>
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary">Talk to Post Oak Labs</a>
+      <a href="#stack" class="btn-outline">See the stack →</a>
       <a href="a2a-workflow.html" class="btn-outline">A2A architecture deep-dive →</a>
     </div>
   </div>
@@ -536,6 +527,38 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <p class="stat-source">Project mBridge / Jasper-Ubin, see fn. 9</p>
       </div>
     </div>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg" width="800" style="max-width:100%;" role="img" aria-label="Bar chart comparing settlement cost as a percentage of transaction value: tokenized A2A at approximately 0.2 percent versus correspondent banking at 2.5 to 5 percent or more.">
+        <!-- scale: 0–6%, ~76.7px per 1% ; bar area x: 260 → 720 -->
+        <line x1="260" y1="20" x2="260" y2="120" stroke="var(--edge)" stroke-width="1"/>
+        <line x1="337" y1="20" x2="337" y2="120" stroke="var(--edge)" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="414" y1="20" x2="414" y2="120" stroke="var(--edge)" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="490" y1="20" x2="490" y2="120" stroke="var(--edge)" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="567" y1="20" x2="567" y2="120" stroke="var(--edge)" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="643" y1="20" x2="643" y2="120" stroke="var(--edge)" stroke-width="1" stroke-dasharray="2,4"/>
+        <line x1="720" y1="20" x2="720" y2="120" stroke="var(--edge)" stroke-width="1" stroke-dasharray="2,4"/>
+
+        <!-- bar 1: tokenized A2A, ~0.2% -->
+        <text x="255" y="38" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--text)">Tokenized A2A</text>
+        <rect x="260" y="26" width="15" height="22" fill="var(--green-lt)" opacity="0.9" rx="1"/>
+        <text x="285" y="42" font-family="JetBrains Mono, monospace" font-size="12" fill="var(--green-lt)">~0.2%</text>
+
+        <!-- bar 2: correspondent banking, 2.5-5%+ -->
+        <text x="255" y="90" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="var(--text)">Correspondent banking</text>
+        <rect x="260" y="78" width="192" height="22" fill="var(--gold)" opacity="0.45" rx="1"/>
+        <rect x="260" y="78" width="384" height="22" fill="none" stroke="var(--gold-lt)" stroke-width="1.5" stroke-dasharray="2,3" rx="1"/>
+        <text x="654" y="94" font-family="JetBrains Mono, monospace" font-size="12" fill="var(--gold-lt)">2.5–5%+</text>
+
+        <!-- axis -->
+        <line x1="260" y1="120" x2="720" y2="120" stroke="var(--muted)" stroke-width="1"/>
+        <text x="260" y="138" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--muted)">0%</text>
+        <text x="414" y="138" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--muted)">2%</text>
+        <text x="567" y="138" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--muted)">4%</text>
+        <text x="720" y="138" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--muted)">6%</text>
+      </svg>
+      <p class="diagram-caption">Direct settlement cost as a percentage of transaction value. Dashed outline on correspondent banking marks the full 2.5–5%+ cited range; solid fill marks the low end. See footnote 8 for sourcing and what's included in each figure.</p>
+    </div>
   </div>
 </div>
 
@@ -543,10 +566,10 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <!-- ═══════════════════════════════════════ SECTION 1: STACK OVERVIEW ═══════════════════════════════════════ -->
 <section id="stack" style="border-top: 1px solid var(--edge);">
   <div class="container">
-    <p class="sec-kicker" data-i18n="s1-kicker">The Institutional Payment Stack</p>
-    <h2 class="sec-title" data-i18n="s1-title">Where each layer sits, and why the order matters</h2>
+    <p class="sec-kicker">The Institutional Payment Stack</p>
+    <h2 class="sec-title">Where each layer sits, and why the order matters</h2>
     <p class="sec-intro">
-      The most common mistake banks make is treating these three as substitutes. They are not. Stablecoin/CBDC infrastructure is the monetary primitive: what digital money is. Tokenized A2A is the institutional rail: how banks move it between accounts. RTGS is the final settlement backbone beneath everything. The confusion costs institutions time, money, and the wrong vendor relationships.
+      The most common mistake banks make is treating these three as substitutes for each other. They're not. Stablecoin and CBDC infrastructure is what digital money actually is, tokenized A2A is how banks move that money between accounts, and RTGS is the settlement backbone underneath both. Mixing them up is expensive: it wastes time, money, and often ends with the wrong vendor in the room.
     </p>
 
     <div class="stack-diagram">
@@ -616,10 +639,10 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <!-- ═══════════════════════════════════════ SECTION 2: A2A vs STABLECOIN ═══════════════════════════════════════ -->
 <section id="a2a-vs-stablecoin" style="border-top: 1px solid var(--edge);">
   <div class="container">
-    <p class="sec-kicker" data-i18n="s2-kicker">Comparison 01</p>
-    <h2 class="sec-title" data-i18n="s2-title">Tokenized A2A vs. Stablecoin Infrastructure</h2>
+    <p class="sec-kicker">Comparison 01</p>
+    <h2 class="sec-title">Tokenized A2A vs. Stablecoin Infrastructure</h2>
     <p class="sec-intro">
-      A2A is a payment rail: the mechanism by which value moves between bank accounts. Stablecoin is a monetary instrument: what moves on the rail. A bank that conflates the two will architect for the wrong problem. Where the two models differ on a structural dimension, a contextual note explains whether the difference is a design trade-off or a fit-for-purpose distinction. Neither model has a universal advantage over the other; each is optimized for a specific position in the stack.<sup><a href="#fn1">[1]</a></sup>
+      A2A is the rail, the mechanism that moves value between bank accounts. A stablecoin is what actually moves on it. Banks that treat the two as interchangeable end up architecting for the wrong problem. Where the table below flags a structural difference, we've noted whether it's a genuine trade-off or just a fit-for-purpose call: A2A wins for regulated B2B settlement inside the banking system, stablecoins win for open, permissionless reach. Pick based on the job, not a general preference.<sup><a href="#fn1">[1]</a></sup>
     </p>
 
     <div class="compare-wrap">
@@ -722,8 +745,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <!-- ═══════════════════════════════════════ SECTION 3: A2A vs CORRESPONDENT ═══════════════════════════════════════ -->
 <section id="a2a-vs-correspondent" style="border-top: 1px solid var(--edge);">
   <div class="container">
-    <p class="sec-kicker" data-i18n="s3-kicker">Comparison 02</p>
-    <h2 class="sec-title" data-i18n="s3-title">Tokenized A2A vs. Correspondent Banking / RTGS</h2>
+    <p class="sec-kicker">Comparison 02</p>
+    <h2 class="sec-title">Tokenized A2A vs. Correspondent Banking / RTGS</h2>
     <p class="sec-intro">
       Tokenized A2A and correspondent banking both address the same problem: moving money between banks across borders. They differ fundamentally in how they achieve it. This table reflects the structural differences relevant to institutional architecture decisions. Where a difference is a design trade-off rather than a binary win, a contextual note explains why.
     </p>
@@ -824,7 +847,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     </div>
 
     <div class="insight-box">
-      <div class="insight-box-label" data-i18n="insight1-label">Key Insight</div>
+      <div class="insight-box-label">Key Insight</div>
       <p>
         <strong>A2A enhances RTGS rather than replacing it.</strong> RTGS remains the final settlement layer (central bank money); A2A is the transaction layer that uses RTGS for net settlement at end-of-cycle. RTGS stays in place, abstracted and used far more efficiently, which drives fewer intermediaries, less capital lock-up, faster perceived settlement, and richer compliance data. <strong>The primary near-term limitation of A2A is network reach:</strong> SWIFT's 11,000-plus member institution footprint represents a global coverage that tokenized A2A networks are still building toward, and correspondent banking remains the only viable option for corridors not yet served by A2A participants.<sup><a href="#fn11">[11]</a></sup>
       </p>
@@ -836,8 +859,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <!-- ═══════════════════════════════════════ SECTION 4: DECISION MATRIX ═══════════════════════════════════════ -->
 <section id="decision" style="border-top: 1px solid var(--edge);">
   <div class="container">
-    <p class="sec-kicker" data-i18n="s4-kicker">Quick Reference</p>
-    <h2 class="sec-title" data-i18n="s4-title">Scenario Decision Matrix: which infrastructure, when</h2>
+    <p class="sec-kicker">Quick Reference</p>
+    <h2 class="sec-title">Scenario Decision Matrix: which infrastructure, when</h2>
     <p class="sec-intro">
       The correct infrastructure choice depends on the scenario, counterparty type, market maturity, and regulatory environment. No single infrastructure is universally superior. Each is fit for specific use cases, and the most capable bank architectures combine all three in the correct dependency order. Correspondent banking retains a role wherever A2A network reach has not yet extended.
     </p>
@@ -894,15 +917,15 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     </div>
 
     <div class="insight-box">
-      <div class="insight-box-label" data-i18n="insight2-label">Practical Synthesis</div>
+      <div class="insight-box-label">Practical Synthesis</div>
       <p>
         <strong>Stablecoin/CBDC = enabling layer</strong> (what is the digital money?). <strong>A2A = institutional payment rail</strong> (how do banks move it between accounts?). <strong>RTGS = settlement backbone</strong> (how do positions net finally?). The most compelling institutional deployments combine all three in the correct order of dependency, not as competing bids for budget but as complementary layers of a single coherent architecture. Correspondent banking retains a genuine and important role for global reach in corridors where A2A network participants have not yet been established.
       </p>
     </div>
 
     <div class="cta-block">
-      <h3 data-i18n="cta-h">Ready to move from analysis to deployment?</h3>
-      <p data-i18n="cta-p">Post Oak Labs works with commercial banks, central banks, and large corporates that are ready to design and deploy tokenized A2A infrastructure. We have advised on and supported production deployments across frontier markets. We know what works.</p>
+      <h3>Ready to move from analysis to deployment?</h3>
+      <p>Post Oak Labs works with commercial banks, central banks, and large corporates that are ready to design and deploy tokenized A2A infrastructure. We have advised on and supported production deployments across frontier markets. We know what works.</p>
       <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
         <a href="mailto:contact@postoaklabs.com" class="btn-primary">contact@postoaklabs.com</a>
         <a href="a2a-workflow.html" class="btn-outline">A2A Architecture Deep-Dive →</a>
@@ -916,10 +939,10 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <!-- ═══════════════════════════════════════ FOOTNOTES ═══════════════════════════════════════ -->
 <div class="cmp-footnotes">
   <div class="container">
-    <h3 data-i18n="fn-heading">References and Notes</h3>
+    <h3>References and Notes</h3>
     <ol>
       <li id="fn1">
-        <strong>On contextual tags ("Trade-off" / "Context"):</strong> Where this document notes a structural difference between infrastructure models, the hover tag indicates whether the difference is a structural trade-off (each model makes a rational choice with associated costs and benefits) or a context-dependent distinction (neither is universally better; fitness depends on use case, user population, and regulatory environment). No cell in either comparison table implies that one infrastructure is globally superior. Each is fit for specific scenarios; the Decision Matrix provides scenario-level guidance.
+        <strong>On contextual tags ("Trade-off" / "Context"):</strong> The hover tags in the tables below mean two different things. "Trade-off" means each model made a rational engineering choice with real costs and benefits attached. "Context" means the right answer just depends on your use case, user population, or regulatory environment, not that one model is better. No cell in these tables is ranking one infrastructure above the other; use the Decision Matrix for scenario-specific guidance.
       </li>
       <li id="fn2">
         <strong>$27 trillion nostro/vostro pre-funding estimate:</strong> This is an industry estimate cited across multiple sources, including the Keyrock stablecoin report (cited in <a href="https://www.opendue.com/blog/correspondent-banking-how-it-works-and-why-its-expensive" target="_blank">opendue.com's correspondent banking explainer</a>), <a href="https://www.thegccedge.com/the-27-trillion-dollar-liquidity-problem-in-global-trade/" target="_blank">The GCC Edge (March 2026)</a>, and the <a href="https://fedpaymentsimprovement.org/news/blog/payments-across-borders-three-observations-on-challenges-and-developments/" target="_blank">Federal Reserve Payments Improvement blog</a>. It is not an official BIS or IMF statistic. Some 2025 sources cite figures closer to $28 trillion. At a 5% rate, holding $1B in a non-interest-bearing nostro account costs approximately $50 million per year in foregone yield (opendue.com). In practice, actual opportunity cost varies by bank treasury management: some nostro balances are swept into overnight facilities and earn partial returns, though typically well below what that capital could earn deployed productively. The opportunity cost is documented; the $50M/year figure represents the upper bound assuming zero yield on the balance. Stablecoin full reserve backing is a structural choice for issuer solvency, not the same as nostro pre-funding inefficiency; the two should not be directly equated.
@@ -928,7 +951,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <strong>Stablecoin reserve quality and regulatory frameworks:</strong> Reserve composition varies significantly by issuer. The GENIUS Act (Guiding and Establishing National Innovation for US Stablecoins Act) was signed into law on July 18, 2025, with requirements taking effect on January 18, 2027 (July 18, 2025 is the signing date; January 18, 2027 is the effective date; source: Congress.gov), the first federal US regulatory framework for payment stablecoins. It requires 1:1 reserve backing with US dollars or short-term Treasuries, prohibits algorithmic stablecoins, and subjects issuers to AML/BSA obligations. Circle's USDC reserves consist predominantly of cash and short-dated US Treasuries; Tether's reserve mix differs and includes assets outside GENIUS's permitted list for US issuance. MiCA imposes comparable requirements in the EU. See <a href="https://economics.td.com/us-stablecoins-enter-the-mainstream" target="_blank">TD Economics, "Stablecoins Enter the Mainstream"</a> and <a href="https://www.ecb.europa.eu/press/financial-stability-publications/fsr/focus/2025/html/ecb.fsrbox202511_05~63636227b4.en.html" target="_blank">ECB Financial Stability Review, November 2025</a>. Reserve risk is issuer-specific, not a universal property of stablecoins as a class.
       </li>
       <li id="fn4">
-        <strong>On open vs. restricted access, and FX revenue redistribution:</strong> Open wallet-based access is a structural feature of public stablecoin infrastructure, enabling consumer remittances, DeFi, and financial inclusion for unbanked populations. Restricted permissioned access is a structural feature of institutional A2A rails, enabling KYC/AML compliance and regulatory oversight. Neither is universally preferable; they serve different user populations and regulatory contexts. The FX revenue shift in A2A (from correspondent bank margin to originating bank margin) is a commercial redistribution. Correspondent banks provide genuine currency conversion services; A2A changes which institution captures that revenue.
+        <strong>On open vs. restricted access, and FX revenue redistribution:</strong> Public stablecoin infrastructure is built for open, wallet-based access, that's what makes it useful for consumer remittances, DeFi, and reaching unbanked populations. Institutional A2A rails are built restricted and permissioned on purpose, because that's what KYC/AML compliance and regulatory oversight require. Which one you want depends entirely on who you're serving: a retail wallet user or a regulated bank counterparty. On the FX side, A2A doesn't eliminate currency conversion, it just moves who captures that revenue, from the correspondent bank's margin to the originating bank's.
       </li>
       <li id="fn5">
         <strong>ISO 20022 vs. legacy MT data richness:</strong> ISO 20022 MX messages can carry significantly more structured data than legacy MT messages. SWIFT's own standards documentation confirms that ISO 20022 "reporting messages support much richer data than MT"; see <a href="https://www.swift.com/standards/iso-20022/iso-20022-standards" target="_blank">SWIFT ISO 20022 standards page</a> (primary source) and <a href="https://www.iso20022.org" target="_blank">iso20022.org</a> for field-level specifications. A commonly cited figure is up to 10× more data capacity vs. MT, per <a href="https://medium.com/@scrumfox/a-technical-deep-dive-into-iso-20022-xml-messaging-cac7524666b8" target="_blank">technical analysis published December 2025</a> (secondary source; readers should cross-reference against SWIFT primary documentation). The approximately 30% reduction in payment exceptions is cited by Post Oak Labs based on production deployment experience and ISO 20022 migration industry benchmarking, corroborated by SWIFT's own ISO 20022 migration progress reporting and ACI Worldwide ISO 20022 guidance on straight-through processing improvements.
@@ -949,7 +972,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <strong>On repeated KYC as cost driver and compliance safeguard:</strong> Repeated KYC checks at each correspondent hop are simultaneously an operational cost driver and a genuine regulatory safeguard. Each institution in the chain bears independent responsibility for sanctions screening and AML compliance under its own jurisdiction's rules. A2A shared attestation models reduce duplication but require participating institutions to trust the network's shared compliance architecture, which itself requires governance agreements, legal agreements, and regulatory approval in each relevant jurisdiction. The efficiency gain is well-documented; the transition requires careful regulatory sequencing.
       </li>
       <li id="fn11">
-        <strong>SWIFT global reach and A2A network limitations:</strong> SWIFT connects over 11,000 financial institutions across more than 200 countries and territories. See <a href="https://www.swift.com/standards/iso-20022/iso-20022-standards" target="_blank">swift.com</a>. Tokenized A2A networks are expanding but currently reach a fraction of this footprint. For cross-border corridors not yet served by A2A network participants, correspondent banking via SWIFT remains the only viable institutional option. A2A's current ceiling is network reach. SWIFT connects 11,000 institutions across 200+ countries; A2A does not. This is a genuine structural advantage of the correspondent banking model that institutions should weigh in their architecture and vendor decisions. Post Oak Labs focuses on corridors and markets where A2A network effects are practical to establish; see <a href="https://postoaklabs.com/a2a-payments.html" target="_blank">a2a-payments.html</a>.
+        <strong>SWIFT global reach and A2A network limitations:</strong> SWIFT connects over 11,000 financial institutions across more than 200 countries and territories. See <a href="https://www.swift.com/standards/iso-20022/iso-20022-standards" target="_blank">swift.com</a>. Tokenized A2A networks are expanding but currently reach a fraction of this footprint, and for cross-border corridors not yet served by A2A network participants, correspondent banking via SWIFT remains the only viable institutional option. That reach gap is a genuine structural advantage of the correspondent banking model, and one institutions should weigh in their architecture and vendor decisions. Post Oak Labs focuses on corridors and markets where A2A network effects are practical to establish; see <a href="https://postoaklabs.com/a2a-payments.html" target="_blank">a2a-payments.html</a>.
       </li>
       <li id="fn12">
         <strong>Permissioned DLT vendors and protocols:</strong> The permissioned DLT layer encompasses a range of vendor implementations and open-source protocols with meaningfully different architectural characteristics. Key examples include: <strong>Hyperledger Besu</strong>, an open-source, EVM-compatible client maintained under the Linux Foundation's Hyperledger umbrella, enabling Solidity smart contracts and interoperability with public Ethereum tooling within a permissioned network; <strong>Hyperledger Fabric</strong>, also open-source under the Linux Foundation, a modular platform using a distinct execute-order-validate architecture with pluggable consensus, widely deployed in enterprise and trade finance applications; and <strong>R3 Corda</strong>, a proprietary platform purpose-built for regulated financial institutions, with point-to-point transaction visibility, CorDapps as the smart contract layer, and a commercial licensing model. Banks and corporates should treat vendor and protocol selection as a material architecture decision. Not all permissioned DLT is equivalent in governance model, licensing cost, regulatory acceptance, or interoperability with RTGS and CBDC infrastructure. For a detailed, practitioner-authored comparison of these platforms, see the <a href="enterprise-blockchain.html" target="_blank" rel="noopener" style="color:var(--accent-lt);">Post Oak Labs Enterprise Blockchain Market Briefing →</a>
@@ -963,12 +986,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="footer-inner footer-grid">
 
     <div class="footer-col footer-brand-col">
-      <div class="footer-brand">Post Oak <span>Labs</span></div>
-      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
-      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
-      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
-      <p class="footer-copy" style="margin-top:0.3rem;">
-        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+      <p class="footer-copy">
+        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
         &nbsp;&middot;&nbsp;
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
       </p>
@@ -979,7 +998,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <a href="a2a-payments.html">Market coverage</a>
       <a href="a2a-workflow.html">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
       <a href="iso20022-a2a.html">ISO 20022 alignment</a>
       <a href="tmmf-a2a.html">tMMF on A2A rails</a>
     </div>
@@ -1012,154 +1030,24 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
   </div>
 
-  <div class="footer-meta">
-    <p class="footer-copy" style="opacity:0.7;">
-      Last revised May 2026.
-      Content licensed CC BY 4.0 unless otherwise noted.
-      &nbsp;&middot;&nbsp;
-      <a href="llms.txt">llms.txt</a>
-    </p>
-  </div>
 </footer>
 
 <script>
-const i18n = {
-  en: {
-    "hero-eyebrow": "Post Oak Labs · Infrastructure Comparison Framework",
-    "hero-h1": "Three layers. One stack. Knowing the difference is the entire game.",
-    "hero-sub": "Tokenized A2A, stablecoin infrastructure, and correspondent banking occupy distinct layers of the institutional payment stack. This is a fully consolidated reference for banks and corporates evaluating where tokenization fits in their architecture and revenue model.",
-    "hero-cta-primary": "Talk to Post Oak Labs",
-    "hero-cta-stack": "See the stack →",
-    "s1-kicker": "The Institutional Payment Stack",
-    "s1-title": "Where each layer sits, and why the order matters",
-    "s2-kicker": "Comparison 01",
-    "s2-title": "Tokenized A2A vs. Stablecoin Infrastructure",
-    "s3-kicker": "Comparison 02",
-    "s3-title": "Tokenized A2A vs. Correspondent Banking / RTGS",
-    "s4-kicker": "Quick Reference",
-    "s4-title": "Scenario Decision Matrix: which infrastructure, when",
-    "cta-h": "Ready to move from analysis to deployment?",
-    "cta-p": "Post Oak Labs works with commercial banks, central banks, and large corporates that are ready to design and deploy tokenized A2A infrastructure. We have advised on and supported production deployments across frontier markets. We know what works.",
-    "insight1-label": "Key Insight",
-    "insight2-label": "Practical Synthesis",
-    "fn-heading": "References and Notes"
-  },
-  es: {
-    "hero-eyebrow": "Post Oak Labs · Marco de Comparación de Infraestructura",
-    "hero-h1": "Tres capas. Una pila. Conocer la diferencia es todo el juego.",
-    "hero-sub": "A2A tokenizado, infraestructura de stablecoin y banca corresponsal ocupan capas distintas de la pila de pagos institucionales. Este marco es una referencia consolidada para bancos y corporativos que evalúan dónde encaja la tokenización en su arquitectura.",
-    "hero-cta-primary": "Hablar con Post Oak Labs",
-    "hero-cta-stack": "Ver la pila →",
-    "s1-kicker": "La Pila de Pagos Institucionales",
-    "s1-title": "Dónde se ubica cada capa y por qué el orden importa",
-    "s2-kicker": "Comparación 01",
-    "s2-title": "A2A Tokenizado vs. Infraestructura Stablecoin",
-    "s3-kicker": "Comparación 02",
-    "s3-title": "A2A Tokenizado vs. Banca Corresponsal / RTGS",
-    "s4-kicker": "Referencia Rápida",
-    "s4-title": "Matriz de Decisión por Escenario: qué infraestructura y cuándo",
-    "cta-h": "¿Listo para pasar del marco al despliegue?",
-    "cta-p": "Post Oak Labs trabaja con bancos comerciales, bancos centrales y grandes corporativos listos para diseñar y desplegar infraestructura A2A tokenizada. Hemos construido sistemas de producción en el Caribe y el Sur de Asia. Sabemos qué funciona.",
-    "insight1-label": "Perspectiva Clave",
-    "insight2-label": "Síntesis Práctica",
-    "fn-heading": "Referencias y Notas"
-  },
-  fr: {
-    "hero-eyebrow": "Post Oak Labs · Cadre de Comparaison des Infrastructures",
-    "hero-h1": "Trois couches. Une pile. Connaître la différence est tout l'enjeu.",
-    "hero-sub": "L'A2A tokenisé, l'infrastructure stablecoin et la banque correspondante occupent des couches distinctes de la pile de paiements institutionnels. Ce cadre est une référence consolidée pour les banques et les entreprises qui évaluent la place de la tokenisation dans leur architecture.",
-    "hero-cta-primary": "Parler à Post Oak Labs",
-    "hero-cta-stack": "Voir la pile →",
-    "s1-kicker": "La Pile de Paiements Institutionnels",
-    "s1-title": "Où se situe chaque couche et pourquoi l'ordre compte",
-    "s2-kicker": "Comparaison 01",
-    "s2-title": "A2A Tokenisé vs. Infrastructure Stablecoin",
-    "s3-kicker": "Comparaison 02",
-    "s3-title": "A2A Tokenisé vs. Banque Correspondante / RTGS",
-    "s4-kicker": "Référence Rapide",
-    "s4-title": "Matrice de Décision par Scénario : quelle infrastructure et quand",
-    "cta-h": "Prêt à passer du cadre au déploiement ?",
-    "cta-p": "Post Oak Labs travaille avec des banques commerciales, des banques centrales et de grandes entreprises prêtes à concevoir et déployer une infrastructure A2A tokenisée. Nous avons construit des systèmes de production aux Caraïbes et en Asie du Sud. Nous savons ce qui fonctionne.",
-    "insight1-label": "Point Clé",
-    "insight2-label": "Synthèse Pratique",
-    "fn-heading": "Références et Notes"
-  },
-  ar: {
-    "hero-eyebrow": "Post Oak Labs · إطار المقارنة بين البنى التحتية",
-    "hero-h1": "ثلاث طبقات. منظومة واحدة. معرفة الفرق هي جوهر اللعبة.",
-    "hero-sub": "تشغل بنية A2A المرمّزة وبنية العملة المستقرة والمصرفية المراسلة طبقات متمايزة في منظومة المدفوعات المؤسسية. يمثّل هذا الإطار مرجعاً موحداً للبنوك والشركات التي تقيّم موضع التوكينزيشن في بنيتها التحتية ونموذج إيراداتها.",
-    "hero-cta-primary": "تحدّث مع Post Oak Labs",
-    "hero-cta-stack": "استعرض المنظومة →",
-    "s1-kicker": "منظومة المدفوعات المؤسسية",
-    "s1-title": "موقع كل طبقة وسبب أهمية الترتيب",
-    "s2-kicker": "مقارنة 01",
-    "s2-title": "A2A المرمّزة مقابل بنية العملة المستقرة",
-    "s3-kicker": "مقارنة 02",
-    "s3-title": "A2A المرمّزة مقابل المصرفية المراسلة / RTGS",
-    "s4-kicker": "مرجع سريع",
-    "s4-title": "مصفوفة القرار حسب السيناريو: أيّ بنية تحتية ومتى",
-    "cta-h": "هل أنت مستعد للانتقال من الإطار إلى التطبيق الفعلي؟",
-    "cta-p": "تعمل Post Oak Labs مع البنوك التجارية والبنوك المركزية والشركات الكبرى المستعدة لتصميم ونشر بنية A2A المرمّزة. لقد بنينا أنظمة إنتاجية في منطقة البحر الكاريبي وجنوب آسيا. نحن نعرف ما ينجح.",
-    "insight1-label": "رؤية أساسية",
-    "insight2-label": "تركيب عملي",
-    "fn-heading": "المراجع والملاحظات"
-  },
-  pt: {
-    "hero-eyebrow": "Post Oak Labs · Estrutura de Comparação de Infraestrutura",
-    "hero-h1": "Três camadas. Uma pilha. Conhecer a diferença é todo o jogo.",
-    "hero-sub": "A2A tokenizado, infraestrutura de stablecoin e banco correspondente ocupam camadas distintas da pilha de pagamentos institucionais. Esta estrutura é uma referência consolidada para bancos e corporativos que avaliam onde a tokenização se encaixa em sua arquitetura e modelo de receita.",
-    "hero-cta-primary": "Falar com o Post Oak Labs",
-    "hero-cta-stack": "Ver a pilha →",
-    "s1-kicker": "A Pilha de Pagamentos Institucionais",
-    "s1-title": "Onde cada camada se situa e por que a ordem importa",
-    "s2-kicker": "Comparação 01",
-    "s2-title": "A2A Tokenizado vs. Infraestrutura Stablecoin",
-    "s3-kicker": "Comparação 02",
-    "s3-title": "A2A Tokenizado vs. Banco Correspondente / RTGS",
-    "s4-kicker": "Referência Rápida",
-    "s4-title": "Matriz de Decisão por Cenário: qual infraestrutura e quando",
-    "cta-h": "Pronto para passar do framework para o deploy?",
-    "cta-p": "O Post Oak Labs trabalha com bancos comerciais, bancos centrais e grandes corporativos prontos para projetar e implantar infraestrutura A2A tokenizada. Construímos sistemas de produção no Caribe e no Sul da Ásia. Sabemos o que funciona.",
-    "insight1-label": "Insight Principal",
-    "insight2-label": "Síntese Prática",
-    "fn-heading": "Referências e Notas"
-  },
-  zh: {
-    "hero-eyebrow": "Post Oak Labs · 基础设施比较框架",
-    "hero-h1": "三层架构。一套体系。理解差异，才是关键所在。",
-    "hero-sub": "代币化A2A、稳定币基础设施与代理行银行业务分别占据机构支付体系的不同层级。本框架是供银行及企业评估代币化在其架构和收入模型中适配位置的全面参考资料。",
-    "hero-cta-primary": "联系 Post Oak Labs",
-    "hero-cta-stack": "查看体系架构 →",
-    "s1-kicker": "机构支付体系",
-    "s1-title": "各层级的位置及其顺序的重要性",
-    "s2-kicker": "比较 01",
-    "s2-title": "代币化A2A vs. 稳定币基础设施",
-    "s3-kicker": "比较 02",
-    "s3-title": "代币化A2A vs. 代理行银行业务 / RTGS",
-    "s4-kicker": "快速参考",
-    "s4-title": "场景决策矩阵：选择哪种基础设施及适用时机",
-    "cta-h": "准备好从框架走向实际部署了吗？",
-    "cta-p": "Post Oak Labs与准备设计和部署代币化A2A基础设施的商业银行、中央银行及大型企业合作。我们已在加勒比海地区和南亚建立了生产级系统。我们深知什么能够切实落地。",
-    "insight1-label": "核心洞察",
-    "insight2-label": "实践综合",
-    "fn-heading": "参考文献与注释"
+(function(){
+  var nav = document.querySelector('nav[role="navigation"]');
+  var hero = document.querySelector('.hero, .showcase-hero');
+  if(!nav || !hero) return;
+  function onScroll(){
+    var threshold = hero.offsetHeight * 0.6;
+    if(window.scrollY > threshold){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   }
-};
-
-function setLang(lang) {
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
-  if (btn) btn.classList.add('active');
-  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
-  if (t) {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (t[key] !== undefined) el.innerHTML = t[key];
-    });
-  }
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-}
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
 </script>
 </body>
 </html>

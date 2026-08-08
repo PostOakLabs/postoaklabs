@@ -69,8 +69,8 @@
   --white:    #ecf4fc;
   --gold:     #c09040;
   --gold-lt:  #d8b060;
-  --accent:   #2a7fc0;
-  --accent-lt:#4a9fd8;
+  --accent:   var(--gold);
+  --accent-lt:var(--gold-lt);
   --green:    #1e6040;
   --green-lt: #3ab878;
 }
@@ -81,18 +81,9 @@ h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-hei
 a { color: inherit; text-decoration: none; }
 .container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
 
-.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
-.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
-.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
-.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
-
-
-
 section[id] { scroll-margin-top: 62px; }
 
-.hero { padding: 5rem 0 4rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
-.breadcrumb { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-.breadcrumb a { color: var(--accent); }
+.hero { padding: 2rem 0 4rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
 .hero-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 1.25rem; }
 .hero h1 { font-size: clamp(2rem, 5vw, 3.1rem); color: var(--white); max-width: 820px; margin-bottom: 1.25rem; }
 .hero-sub { font-size: 0.95rem; color: var(--body); max-width: 700px; line-height: 1.85; margin-bottom: 2rem; }
@@ -156,8 +147,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
 .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
 
 html[lang="ar"] body { direction: rtl; text-align: right; }
-html[lang="ar"] .lang-inner { justify-content: flex-start; }
-
 @media (max-width: 720px) {
   .nav-links { display: none; }
   .stat-row { grid-template-columns: repeat(2,1fr); }
@@ -172,35 +161,28 @@ sup a:hover { color: var(--gold-lt); }
 .footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
 .footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
 .footer-brand-col { gap: 0.4rem; }
-.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
 .footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
 .footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
 .footer-col > a:hover { color: var(--accent-lt); }
-.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
 /* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
 nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
-.nav-logo span { color: var(--gold); }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
+.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
+nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
+.nav-links { display: flex; gap: 0.6rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
 .nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
 .nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
-.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
-.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
 footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 .footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
-.footer-brand span { color: var(--gold); }
 .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
 .footer-copy a { color: var(--accent-lt); text-decoration: none; }
 .footer-copy a:hover { text-decoration: underline; }
-.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
-.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--accent-lt); }
 /* ══════════════════════════════════════════════════ */
 </style>
 <link rel="me" href="https://ainumbers.co">
@@ -296,41 +278,34 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 </head>
 <body>
 
-<div class="lang-bar">
-  <div class="lang-inner">
-    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
-    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
-    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
-    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
-    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
-    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
-  </div>
-</div>
 
 <nav role="navigation" aria-label="Primary">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
+    </a>
     <div class="nav-links">
-      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
-      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
-      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
-      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
-      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
-      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
-      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Talk to us</a>
+      <a href="index.html">Home</a>
+      <a href="demos/">Scenarios</a>
     </div>
   </div>
 </nav>
 
 <section class="hero">
   <div class="container">
-    <p class="breadcrumb"><a href="index.html">Post Oak Labs</a> &nbsp;/&nbsp; Tokenized MMF + A2A Product Architecture</p>
     <p class="hero-tag">Tokenized MMF · A2A Rails · Institutional Treasury</p>
-    <h1 data-i18n="hero-h1">Local-currency tokenized money market funds on A2A rails: the combined product architecture</h1>
-    <p class="hero-sub" data-i18n="hero-sub">USD-denominated tokenized money market funds are real, funded, and growing. The product that does not exist — anywhere Post Oak Labs is aware of — is a local-currency equivalent for corporate treasurers in non-dollarized markets: same short-duration yield, same overnight liquidity, denominated in COP, NGN, or JMD instead of USD. That is the product architecture this page covers.</p>
+    <h1>Local-currency tokenized money market funds on A2A rails: the combined product architecture</h1>
+    <p class="hero-sub">USD-denominated tokenized money market funds are real, funded, and growing. The product that does not exist, anywhere Post Oak Labs is aware of, is a local-currency equivalent for corporate treasurers in non-dollarized markets: same short-duration yield, same overnight liquidity, denominated in COP, NGN, or JMD instead of USD. That is the product architecture this page covers.</p>
     <div class="hero-cta-row">
-      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="cta-primary">Talk to Post Oak Labs</a>
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary">Talk to Post Oak Labs</a>
       <a href="a2a-workflow.html" class="btn-outline">A2A Rail Architecture</a>
       <a href="glossary.html" class="btn-outline">tMMF in the Glossary</a>
     </div>
@@ -349,9 +324,47 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       </div>
       <div class="stat-cell">
         <span class="stat-num">6–26%+</span>
-        <span class="stat-label">Local-currency overnight rate range in target emerging markets (Colombia ~9.75%, Nigeria ~26.25%, Jamaica ~6.5–7%) — enough to matter for treasury on operating balances above $1M<sup><a href="#fn3">[3]</a></sup></span>
+        <span class="stat-label">Local-currency overnight rate range in target emerging markets (Colombia ~9.75%, Nigeria ~26.25%, Jamaica ~6.5–7%), enough to matter for treasury on operating balances above $1M<sup><a href="#fn3">[3]</a></sup></span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- LOCAL-CURRENCY OVERNIGHT RATES CHART -->
+<section id="rates-chart">
+  <div class="container">
+    <p class="sec-tag">The Yield Gap</p>
+    <h2 class="sec-title">Local-currency overnight rates dwarf the USD alternative</h2>
+    <p class="sec-intro">A corporate treasurer holding idle COP, NGN, or JMD balances is forgoing a materially higher overnight yield than a USD tMMF would ever offer, the product gap costs real basis points every day it stays unclosed.</p>
+    <svg viewBox="0 0 700 230" style="width:100%;max-width:640px;height:auto;font-family:'JetBrains Mono',monospace;" role="img" aria-label="Bar chart comparing local-currency overnight rates: Colombia 9.75%, Jamaica 6.5-7%, Nigeria 26.25%, versus USD money market funds at approximately 5%">
+      <line x1="150" y1="10" x2="150" y2="190" stroke="var(--edge)" stroke-width="1"/>
+      <!-- USD reference line -->
+      <line x1="150" y1="10" x2="252" y2="10" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="258" y="14" fill="var(--muted)" font-size="11">USD tMMF ≈ 5%</text>
+
+      <!-- Colombia -->
+      <text x="0" y="44" fill="var(--text)" font-size="12">Colombia</text>
+      <rect x="150" y="32" width="199" height="20" fill="rgba(192,144,64,0.15)"/>
+      <rect x="150" y="32" width="199" height="20" fill="none" stroke="var(--gold)" stroke-width="1"/>
+      <text x="358" y="47" fill="var(--gold-lt)" font-size="13" font-weight="600">9.75%</text>
+
+      <!-- Jamaica -->
+      <text x="0" y="94" fill="var(--text)" font-size="12">Jamaica</text>
+      <rect x="150" y="82" width="137" height="20" fill="rgba(192,144,64,0.15)"/>
+      <rect x="150" y="82" width="137" height="20" fill="none" stroke="var(--gold)" stroke-width="1"/>
+      <text x="296" y="97" fill="var(--gold-lt)" font-size="13" font-weight="600">6.5–7%</text>
+
+      <!-- Nigeria -->
+      <text x="0" y="144" fill="var(--text)" font-size="12">Nigeria</text>
+      <rect x="150" y="132" width="536" height="20" fill="rgba(192,144,64,0.15)"/>
+      <rect x="150" y="132" width="536" height="20" fill="none" stroke="var(--gold)" stroke-width="1"/>
+      <text x="695" y="147" fill="var(--gold-lt)" font-size="13" font-weight="600" text-anchor="end">26.25%</text>
+
+      <line x1="150" y1="190" x2="686" y2="190" stroke="var(--edge)" stroke-width="1"/>
+      <text x="150" y="210" fill="var(--muted)" font-size="10">0%</text>
+      <text x="686" y="210" fill="var(--muted)" font-size="10" text-anchor="end">27%</text>
+    </svg>
+    <p class="term-see-also" style="font-size:0.78rem;color:var(--muted);margin-top:0.75rem;">Illustrative overnight-rate benchmarks, not fund yields; actual tMMF net yield would run below the policy/overnight rate shown. Sources: central bank policy rate publications, as cited in note [3] above.</p>
   </div>
 </section>
 
@@ -359,14 +372,14 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="why">
   <div class="container">
     <p class="sec-tag">The Gap in the Market</p>
-    <h2 class="sec-title" data-i18n="t-why_local_currency_tmmfs_m">Why local-currency tMMFs matter in non-dollarized economies</h2>
+    <h2 class="sec-title">Why local-currency tMMFs matter in non-dollarized economies</h2>
     <p class="sec-intro">A Bogotá corporate treasurer with excess COP in an operating account is solving the same problem as a New York treasurer with excess USD: idle cash earns nothing, and short-duration money market instruments fix that. The New York treasurer has BlackRock BUIDL and a dozen equivalents. The Bogotá treasurer's options are limited, slow, or structurally unavailable in their functional currency. Three structural constraints explain why.</p>
 
     <div class="three-col">
       <div class="col-cell">
         <p class="col-head">FX exposure</p>
         <h4>USD instruments don't work for local-currency books</h4>
-        <p>A company with COP-denominated revenues and payables that holds idle cash in a USD money market fund is paying a round-trip FX cost — typically 1–2% on COP/USD — that erodes the entire yield benefit for positions under 30 days. The instrument they need is a COP-denominated short-duration fund with T+0 redemption, equivalent in structure to BUIDL but denominated in their functional currency. That product does not exist in Colombian institutional banking today. Illustrative assumptions for yield examples on this page: COP overnight policy rate approximately 9.75% (Banco de la República rate, Q1 2026; verify current rate); tMMF management fee 20bps; A2A settlement fee approximately 0.2%; net yield to corporate holder approximately 8.8–9.0% annualised. Rate environment has changed significantly since 2022; verify current policy rates before modelling.</p>
+        <p>A company with COP-denominated revenues and payables that holds idle cash in a USD money market fund is paying a round-trip FX cost, typically 1–2% on COP/USD, that erodes the entire yield benefit for positions under 30 days. The instrument they need is a COP-denominated short-duration fund with T+0 redemption, equivalent in structure to BUIDL but denominated in their functional currency. That product does not exist in Colombian institutional banking today. Illustrative assumptions for yield examples on this page: COP overnight policy rate approximately 9.75% (Banco de la República rate, Q1 2026; verify current rate); tMMF management fee 20bps; A2A settlement fee approximately 0.2%; net yield to corporate holder approximately 8.8–9.0% annualised. Rate environment has changed significantly since 2022; verify current policy rates before modelling.</p>
         <p class="col-metric">FX round-trip at ~1–2% erases yield on &lt;30-day positions</p>
       </div>
       <div class="col-cell">
@@ -378,7 +391,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="col-cell">
         <p class="col-head">Redemption mechanics</p>
         <h4>T+1 settlement makes overnight positions operationally impractical</h4>
-        <p>Local-currency overnight rates in Colombia (7–8% in 2024–2025), Nigeria (22–26% policy rate context), and Jamaica (6–7%) are rates worth capturing on operating balances above $1M. Traditional fund redemption at T+1 or T+2, combined with minimum investment thresholds and manual subscription processes, makes daily sweeps impractical. With same-day A2A redemption, the treasurer sweeps idle operating account cash into the tMMF position each evening and redeems it each morning — no wire transfer, no manual process, no settlement window.</p>
+        <p>Local-currency overnight rates in Colombia (7–8% in 2024–2025), Nigeria (22–26% policy rate context), and Jamaica (6–7%) are rates worth capturing on operating balances above $1M. Traditional fund redemption at T+1 or T+2, combined with minimum investment thresholds and manual subscription processes, makes daily sweeps impractical. With same-day A2A redemption, the treasurer sweeps idle operating account cash into the tMMF position each evening and redeems it each morning, no wire transfer, no manual process, no settlement window.</p>
         <p class="col-metric">100bp annualised = $100K on a $10M operating balance; T+1 makes it unreachable</p>
       </div>
     </div>
@@ -389,7 +402,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="existing">
   <div class="container">
     <p class="sec-tag">Existing Products</p>
-    <h2 class="sec-title" data-i18n="t-what_already_exists_and_wh">What already exists and what does not</h2>
+    <h2 class="sec-title">What already exists and what does not</h2>
     <p class="sec-intro">The opportunity is not to compete with BlackRock BUIDL in USD. It is to serve the market that USD tMMFs structurally cannot serve.</p>
 
     <div class="caution-box">
@@ -457,20 +470,20 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="architecture">
   <div class="container">
     <p class="sec-tag">Product Architecture</p>
-    <h2 class="sec-title" data-i18n="t-how_the_a2a_rail_functions">How the A2A rail functions as the distribution and redemption layer</h2>
+    <h2 class="sec-title">How the A2A rail functions as the distribution and redemption layer</h2>
     <p class="sec-intro">The originating bank probably already has both components. The work is connecting them on the same ledger.</p>
 
     <div class="step-list">
       <div class="step-item">
-        <span class="step-tag">Layer 1 — Fund Vehicle</span>
+        <span class="step-tag">Layer 1 · Fund Vehicle</span>
         <p class="step-body"><strong>The underlying fund: a locally-regulated collective investment scheme holding short-duration local-currency instruments.</strong> The fund invests in short-duration local-currency sovereign instruments (government treasury bills, central bank repos, or equivalent), commercial bank certificates of deposit, and high-grade local-currency commercial paper. The fund is regulated as a collective investment scheme under the local jurisdiction's CIS law (the licensing requirement that most varies across markets; see Regulatory section). The fund manager is the originating bank or its asset management subsidiary. The fund generates overnight yield from the short-duration instruments. The structure is identical to a traditional money market fund; the tokenization layer sits above it, not inside it.</p>
       </div>
       <div class="step-item">
-        <span class="step-tag">Layer 2 — Token Layer</span>
+        <span class="step-tag">Layer 2 · Token Layer</span>
         <p class="step-body"><strong>Fund units represented as tokens on the permissioned ledger.</strong> Each unit (or fraction) of the fund is represented as a token on the same permissioned ledger that hosts the A2A payment rail. The token is a digital claim on a fund unit: legally, the underlying instrument is the fund unit; the token is the bearer mechanism for that claim on the ledger. Token minting occurs when a corporate client moves funds from their operating account into the tMMF position via A2A instruction. Token redemption occurs when the corporate instructs the fund to redeem: the token is burned, and local-currency fiat is credited back to the operating account via the A2A rail. Both operations settle in real time on the same ledger, making the round-trip overnight cycle operationally trivial.</p>
       </div>
       <div class="step-item">
-        <span class="step-tag">Layer 3 — A2A Distribution Rail</span>
+        <span class="step-tag">Layer 3 · A2A Distribution Rail</span>
         <p class="step-body"><strong>The A2A rail as distribution and redemption mechanism.</strong> The A2A payment rail serves two functions in this architecture: first, as the distribution channel through which the corporate client moves funds from operating account to tMMF position; and second, as the redemption channel through which the tMMF position is liquidated back to the operating account. Because both the operating account balance and the tMMF position exist on the same ledger, the minting and redemption operations are atomic, with no settlement risk. There is no T+1 settlement window. No wire transfer. No manual process. The corporate treasury team runs it from the bank's existing digital banking interface.</p>
       </div>
       <div class="step-item">
@@ -485,7 +498,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="daily-flow">
   <div class="container">
     <p class="sec-tag">Daily Operating Flow</p>
-    <h2 class="sec-title" data-i18n="t-the_overnight_yield_cycle">The overnight yield cycle for a corporate treasury client</h2>
+    <h2 class="sec-title">The overnight yield cycle for a corporate treasury client</h2>
     <p class="sec-intro">The following describes a standard overnight cycle for a corporate treasury client using the tMMF product. The entire sequence runs on the bank's digital banking interface. The treasury team never interacts with the fund directly; they work only with the bank's familiar payment and account management tools.</p>
 
     <div class="step-list">
@@ -513,7 +526,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="revenue">
   <div class="container">
     <p class="sec-tag">Revenue Model</p>
-    <h2 class="sec-title" data-i18n="t-three_revenue_streams_for">Three revenue streams for the originating bank</h2>
+    <h2 class="sec-title">Three revenue streams for the originating bank</h2>
     <p class="sec-intro">The combined tMMF + A2A product creates revenue for the originating bank across three distinct streams. Each is defensible and high-margin. Together they represent a more attractive economics profile than either the fund or the payment rail would generate independently.</p>
 
     <div class="three-col">
@@ -543,7 +556,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="regulatory">
   <div class="container">
     <p class="sec-tag">Regulatory Considerations</p>
-    <h2 class="sec-title" data-i18n="t-what_constitutes_a_collect">What constitutes a collective investment scheme, and what the tMMF wrapper requires</h2>
+    <h2 class="sec-title">What constitutes a collective investment scheme, and what the tMMF wrapper requires</h2>
     <p class="sec-intro">The regulatory requirements for a tokenized money market fund are primarily driven by local CIS (collective investment scheme) regulation, not by digital asset or CBDC rules. In most target jurisdictions, the tMMF is regulated as what it economically is: a money market fund that happens to have a digital distribution mechanism. The tokenization layer does not create a new regulatory category; what matters is the fund wrapper.</p>
 
     <div class="caution-box">
@@ -611,12 +624,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="footer-inner footer-grid">
 
     <div class="footer-col footer-brand-col">
-      <div class="footer-brand">Post Oak <span>Labs</span></div>
-      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
-      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
-      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
-      <p class="footer-copy" style="margin-top:0.3rem;">
-        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+      <p class="footer-copy">
+        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
         &nbsp;&middot;&nbsp;
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
       </p>
@@ -627,7 +636,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <a href="a2a-payments.html">Market coverage</a>
       <a href="a2a-workflow.html">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
       <a href="iso20022-a2a.html">ISO 20022 alignment</a>
       <a href="tmmf-a2a.html">tMMF on A2A rails</a>
     </div>
@@ -659,41 +667,27 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     </div>
 
   </div>
-
-  <div class="footer-meta">
-    <p class="footer-copy" style="opacity:0.7;">
-      Last revised May 2026.
-      Content licensed CC BY 4.0 unless otherwise noted.
-      &nbsp;&middot;&nbsp;
-      <a href="llms.txt">llms.txt</a>
-    </p>
-  </div>
 </footer>
 
 <script>
-const i18n = {
-  en: {"hero-h1": "Local-currency tokenized money market funds on A2A rails: the combined product architecture", "hero-sub": "USD-denominated tokenized money market funds are real, funded, and growing. The product that does not exist is a local-currency equivalent for corporate treasurers in non-dollarized markets: same overnight liquidity, denominated in COP, NGN, or JMD instead of USD. That is the product architecture this page covers.", "cta-primary": "Talk to Post Oak Labs", "t-why_local_currency_tmmfs_m": "Why local-currency tMMFs matter in non-dollarized economies", "t-what_already_exists_and_wh": "What already exists and what does not", "t-how_the_a2a_rail_functions": "How the A2A rail functions as the distribution and redemption layer", "t-the_overnight_yield_cycle": "The overnight yield cycle for a corporate treasury client", "t-three_revenue_streams_for": "Three revenue streams for the originating bank", "t-what_constitutes_a_collect": "What constitutes a collective investment scheme, and what the tMMF wrapper requires"},
-  es: {"hero-h1": "Fondos de mercado monetario tokenizados en moneda local en rieles A2A: la arquitectura de producto combinada", "hero-sub": "Los fondos del mercado monetario tokenizados denominados en USD ya existen y están atrayendo capital institucional significativo. Lo que no existe ampliamente son los tMMF en moneda local.", "cta-primary": "Hablar con Post Oak Labs", "t-why_local_currency_tmmfs_matte": "Por qué los tMMF en moneda local importan en economías no dolarizadas", "t-what_already_exists_and_what_d": "Qué existe ya y qué no existe", "t-how_the_a2a_rail_functions_as_": "Cómo el riel A2A funciona como capa de distribución y redención", "t-the_overnight_yield_cycle_for_": "El ciclo de rendimiento overnight para un cliente de tesorería corporativa", "t-three_revenue_streams_for_the_": "Tres fuentes de ingresos para el banco originador", "t-what_constitutes_a_collective_": "Qué constituye un esquema de inversión colectiva y qué requiere el envoltorio tMMF", "t-what_constitutes_a_collect": "What constitutes a collective investment scheme, and what the tMMF wrapper requires", "t-how_the_a2a_rail_functions": "How the A2A rail functions as the distribution and redemption layer", "t-the_overnight_yield_cycle": "The overnight yield cycle for a corporate treasury client", "t-why_local_currency_tmmfs_m": "Why local-currency tMMFs matter in non-dollarized economies", "t-three_revenue_streams_for": "Three revenue streams for the originating bank", "t-what_already_exists_and_wh": "What already exists and what does not"},
-  fr: {"hero-h1": "Fonds monétaires tokenisés en monnaie locale sur rails A2A : l'architecture produit combinée", "hero-sub": "Les fonds monétaires tokenisés en USD existent déjà et attirent des capitaux institutionnels significatifs. Ce qui n'existe pas largement, ce sont les tMMF en monnaie locale.", "cta-primary": "Parler à Post Oak Labs", "t-why_local_currency_tmmfs_matte": "Pourquoi les tMMF en monnaie locale sont importants dans les économies non dollarisées", "t-what_already_exists_and_what_d": "Ce qui existe déjà et ce qui n'existe pas", "t-how_the_a2a_rail_functions_as_": "Comment le rail A2A fonctionne comme couche de distribution et de rachat", "t-the_overnight_yield_cycle_for_": "Le cycle de rendement overnight pour un client de trésorerie d'entreprise", "t-three_revenue_streams_for_the_": "Trois sources de revenus pour la banque originatrice", "t-what_constitutes_a_collective_": "Ce qui constitue un schéma d'investissement collectif et ce que l'enveloppe tMMF requiert", "t-what_constitutes_a_collect": "What constitutes a collective investment scheme, and what the tMMF wrapper requires", "t-how_the_a2a_rail_functions": "How the A2A rail functions as the distribution and redemption layer", "t-the_overnight_yield_cycle": "The overnight yield cycle for a corporate treasury client", "t-why_local_currency_tmmfs_m": "Why local-currency tMMFs matter in non-dollarized economies", "t-three_revenue_streams_for": "Three revenue streams for the originating bank", "t-what_already_exists_and_wh": "What already exists and what does not"},
-  ar: {"hero-h1": "صناديق سوق المال المرمّزة بالعملة المحلية على قضبان A2A: هيكل المنتج المدمج", "hero-sub": "صناديق سوق المال المرمّزة بالدولار موجودة بالفعل وتجتذب رأس مال مؤسسي كبيراً. ما لا يوجد على نطاق واسع هو صناديق tMMF بالعملة المحلية.", "cta-primary": "تحدّث مع Post Oak Labs", "t-why_local_currency_tmmfs_matte": "لماذا تهم صناديق tMMF بالعملة المحلية في الاقتصادات غير المدولرة", "t-what_already_exists_and_what_d": "ما هو موجود بالفعل وما هو غائب", "t-how_the_a2a_rail_functions_as_": "كيف يعمل قضيب A2A كطبقة توزيع واسترداد", "t-the_overnight_yield_cycle_for_": "دورة العائد الليلي لعميل الخزينة المؤسسية", "t-three_revenue_streams_for_the_": "ثلاثة تدفقات إيرادات للبنك المنشئ", "t-what_constitutes_a_collective_": "ما يُشكّل مخطط استثمار جماعي وما يتطلبه الغلاف tMMF", "t-what_constitutes_a_collect": "What constitutes a collective investment scheme, and what the tMMF wrapper requires", "t-how_the_a2a_rail_functions": "How the A2A rail functions as the distribution and redemption layer", "t-the_overnight_yield_cycle": "The overnight yield cycle for a corporate treasury client", "t-why_local_currency_tmmfs_m": "Why local-currency tMMFs matter in non-dollarized economies", "t-three_revenue_streams_for": "Three revenue streams for the originating bank", "t-what_already_exists_and_wh": "What already exists and what does not"},
-  pt: {"hero-h1": "Fundos de mercado monetário tokenizados em moeda local sobre trilhos A2A: a arquitetura de produto combinada", "hero-sub": "Fundos de mercado monetário tokenizados denominados em USD já existem e estão atraindo capital institucional significativo. O que não existe amplamente são os tMMF em moeda local.", "cta-primary": "Falar com o Post Oak Labs", "t-why_local_currency_tmmfs_matte": "Por que os tMMF em moeda local importam em economias não dolarizadas", "t-what_already_exists_and_what_d": "O que já existe e o que não existe", "t-how_the_a2a_rail_functions_as_": "Como o trilho A2A funciona como camada de distribuição e resgate", "t-the_overnight_yield_cycle_for_": "O ciclo de rendimento overnight para um cliente de tesouraria corporativa", "t-three_revenue_streams_for_the_": "Três fontes de receita para o banco originador", "t-what_constitutes_a_collective_": "O que constitui um esquema de investimento coletivo e o que o envelope tMMF exige", "t-what_constitutes_a_collect": "What constitutes a collective investment scheme, and what the tMMF wrapper requires", "t-how_the_a2a_rail_functions": "How the A2A rail functions as the distribution and redemption layer", "t-the_overnight_yield_cycle": "The overnight yield cycle for a corporate treasury client", "t-why_local_currency_tmmfs_m": "Why local-currency tMMFs matter in non-dollarized economies", "t-three_revenue_streams_for": "Three revenue streams for the originating bank", "t-what_already_exists_and_wh": "What already exists and what does not"},
-  zh: {"hero-h1": "本币代币化货币市场基金在A2A轨道上的结合产品架构", "hero-sub": "以美元计价的代币化货币市场基金已然存在，并正在吸引大量机构资本。目前尚不普遍存在的，是本币计价的tMMF——这正是Post Oak Labs所看到的特殊机构机遇所在。", "cta-primary": "联系 Post Oak Labs", "t-why_local_currency_tmmfs_matte": "本币tMMF在非美元化经济体中的重要性", "t-what_already_exists_and_what_d": "现有产品与缺失产品", "t-how_the_a2a_rail_functions_as_": "A2A轨道作为分发与赎回层的功能", "t-the_overnight_yield_cycle_for_": "企业财资客户的隔夜收益周期", "t-three_revenue_streams_for_the_": "发起行的三条收入来源", "t-what_constitutes_a_collective_": "何为集合投资计划及tMMF包装的要求", "t-what_constitutes_a_collect": "What constitutes a collective investment scheme, and what the tMMF wrapper requires", "t-how_the_a2a_rail_functions": "How the A2A rail functions as the distribution and redemption layer", "t-the_overnight_yield_cycle": "The overnight yield cycle for a corporate treasury client", "t-why_local_currency_tmmfs_m": "Why local-currency tMMFs matter in non-dollarized economies", "t-three_revenue_streams_for": "Three revenue streams for the originating bank", "t-what_already_exists_and_wh": "What already exists and what does not"}
-};
 
-function setLang(lang) {
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
-  if (btn) btn.classList.add('active');
-  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
-  if (t) {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (t[key] !== undefined) el.innerHTML = t[key];
-    });
+</script>
+<script>
+(function(){
+  var nav = document.querySelector('nav[role="navigation"]');
+  var hero = document.querySelector('.hero, .showcase-hero');
+  if(!nav || !hero) return;
+  function onScroll(){
+    var threshold = hero.offsetHeight * 0.6;
+    if(window.scrollY > threshold){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   }
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-}
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
 </script>
 </body>
 </html>

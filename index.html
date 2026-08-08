@@ -317,20 +317,16 @@ html[lang="ar"] .footer-inner { flex-direction: row-reverse; }
 .lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
 .lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
 nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
-.nav-logo span { color: var(--gold); }
-.nav-links { display: flex; gap: 1rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
+.nav-links { display: flex; gap: 0.6rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
 .nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.7rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
 .nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
-.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.7rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
-.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
 footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 .footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
-.footer-brand span { color: var(--gold); }
 .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
 .footer-copy a { color: var(--accent-lt); text-decoration: none; }
 .footer-copy a:hover { text-decoration: underline; }
@@ -395,14 +391,22 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
 <nav role="navigation" aria-label="Primary">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
+    </a>
     <div class="nav-links">
       <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
       <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
       <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
       <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
-      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
-      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
       <div class="nav-dropdown">
         <a href="demos/" class="nav-dropdown-trigger" data-i18n="nav-demos">Scenarios&nbsp;↓</a>
         <div class="nav-dropdown-menu">
@@ -417,8 +421,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <a href="https://ainumbers.co/mcp" target="_blank" rel="noopener">MCP Server&nbsp;↗</a>
         </div>
       </div>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
-      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Talk to us</a>
     </div>
   </div>
 </nav>
@@ -616,7 +618,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="footer-inner footer-grid">
 
     <div class="footer-col footer-brand-col">
-      <div class="footer-brand">Post Oak <span>Labs</span></div>
       <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
       <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
       <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
@@ -632,7 +633,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <a href="a2a-payments.html">Market coverage</a>
       <a href="a2a-workflow.html">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
       <a href="iso20022-a2a.html">ISO 20022 alignment</a>
       <a href="tmmf-a2a.html">tMMF on A2A rails</a>
     </div>
@@ -668,10 +668,12 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
   <div class="footer-meta">
     <p class="footer-copy" style="opacity:0.7;">
-      Last revised June 2026.
+      Last revised July 2026.
       Content licensed CC BY 4.0 unless otherwise noted.
       &nbsp;&middot;&nbsp;
-      <a href="llms.txt">llms.txt</a>
+      <a href="https://postoaklabs.com/llms.txt">llms.txt</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://postoaklabs.com/llms-full.txt">llms-full.txt</a>
       &nbsp;&middot;&nbsp;
       <a href="https://ainumbers.co/mcp" target="_blank" rel="noopener noreferrer">MCP Server</a>
     </p>

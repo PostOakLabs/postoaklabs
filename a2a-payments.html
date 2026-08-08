@@ -104,13 +104,6 @@ a { color: inherit; text-decoration: none; }
   position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
-.hero::after {
-  content: '';
-  position: absolute; bottom: -200px; right: -200px;
-  width: 700px; height: 700px;
-  background: radial-gradient(ellipse, rgba(42,127,192,0.06) 0%, transparent 65%);
-  pointer-events: none;
-}
 .breadcrumb {
   font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
   letter-spacing: 0.16em; text-transform: uppercase;
@@ -118,16 +111,11 @@ a { color: inherit; text-decoration: none; }
 }
 .breadcrumb a { color: var(--accent); }
 .breadcrumb a:hover { color: var(--accent-lt); }
-.hero-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--accent-lt); margin-bottom: 1.25rem;
-}
+
 .hero h1 {
   font-size: clamp(2rem, 5vw, 3.4rem);
   color: var(--white); max-width: 740px; margin-bottom: 1.25rem;
 }
-.hero h1 em { color: var(--gold-lt); font-style: normal; }
 .hero-sub {
   font-size: 0.95rem; color: var(--body);
   max-width: 580px; line-height: 1.85; margin-bottom: 2.5rem;
@@ -285,35 +273,26 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
 .footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
 .footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
 .footer-col > a:hover { color: var(--accent-lt); }
-.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
 /* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
-.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
-.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
-.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
-.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
 nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
-.nav-logo span { color: var(--gold); }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
+.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
+nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
+.nav-links { display: flex; gap: 0.6rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
 .nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
 .nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
-.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
-.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
 footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 .footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
-.footer-brand span { color: var(--gold); }
 .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
 .footer-copy a { color: var(--accent-lt); text-decoration: none; }
 .footer-copy a:hover { text-decoration: underline; }
 .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
-.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--accent-lt); }
 /* ══════════════════════════════════════════════════ */
 .footnotes-section { border-top: 1px solid var(--edge); padding: 2.5rem 0 2rem; }
 .footnotes-section h3 { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; font-weight: 400; }
@@ -390,30 +369,22 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 </head>
 <body>
 
-<!-- Language bar -->
-<div class="lang-bar">
-  <div class="lang-inner">
-    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
-    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
-    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
-    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
-    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
-    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
-  </div>
-</div>
-
 <nav role="navigation" aria-label="Primary">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
+    </a>
     <div class="nav-links">
-      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
-      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
-      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
-      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
-      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
-      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
-      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Talk to us</a>
+      <a href="index.html">Home</a>
+      <a href="demos/">Scenarios</a>
     </div>
   </div>
 </nav>
@@ -423,12 +394,12 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="container">
     <p class="breadcrumb"><a href="index.html">Post Oak Labs</a> &nbsp;/&nbsp; A2A Tokenization &amp; Blockchain Payments</p>
 
-    <h1 data-i18n="hero-h1">Institutional infrastructure for the next layer of global payments</h1>
+    <h1>Institutional infrastructure for the next layer of global payments</h1>
 
-    <p class="hero-sub" data-i18n="hero-sub">Post Oak Labs works with commercial banks, central banks, and large corporates to design, evaluate, and deploy tokenized account-to-account payment rails, the bank-grade settlement layer that operates above consumer fast-payment systems and below traditional correspondent banking. Our team has direct production experience in this space, led blockchain payment programs at the senior level inside major global institutions, and advised central banks directly on digital currency infrastructure. The advisory practice comes out of that operational experience directly.</p>
+    <p class="hero-sub">Post Oak Labs works with commercial banks, central banks, and large corporates to design, evaluate, and deploy tokenized account-to-account payment rails, the bank-grade settlement layer that sits above consumer fast-payment systems and below traditional correspondent banking. We've run blockchain payment programs at the senior level inside major global institutions and advised central banks directly on digital currency infrastructure, and this practice grew straight out of that work.</p>
 
     <div class="hero-cta-row">
-      <a href="mailto:contact@postoaklabs.com" class="btn-primary" data-i18n="hero-cta-primary">Start a conversation</a>
+      <a href="mailto:contact@postoaklabs.com" class="btn-primary">Start a conversation</a>
       <a href="a2a-workflow.html" class="btn-outline">A2A Explained →</a>
       <a href="#market-signals" class="btn-outline">Market signals</a>
     </div>
@@ -458,8 +429,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="market-signals">
   <div class="container">
     <p class="sec-tag">Market Signals</p>
-    <h2 class="sec-title" data-i18n="s1-title">What we look for in a market</h2>
-    <p class="sec-intro">Two signals predict near-term deployment fit more reliably than any others. The first is nascent fast-payment infrastructure at the institutional level — not absence of payments, but absence of a mature B2B incumbent that A2A would compete with rather than complement. The second is an active institutional money market operation at the bank: that dual qualification is the strongest predictor of deployment readiness we have seen across engagements.</p>
+    <h2 class="sec-title">What we look for in a market</h2>
+    <p class="sec-intro">Two signals predict near-term deployment fit more reliably than any others. The first is nascent fast-payment infrastructure at the institutional level, not absence of payments, but absence of a mature B2B incumbent that A2A would compete with rather than complement. The second is an active institutional money market operation at the bank: that dual qualification is the strongest predictor of deployment readiness we have seen across engagements.</p>
 
     <div class="signal-grid">
       <div class="signal-cell">
@@ -490,7 +461,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="signal-cell">
         <div class="signal-icon">Supporting</div>
         <h4>Regulatory modernization inflection points</h4>
-        <p>Payment system launches, SEPA accession, and AML upgrades open windows where an institution is already in motion. An institution building for those mandates is the right timing for A2A — before the second project gets deprioritized. That is when we engage.</p>
+        <p>Payment system launches, SEPA accession, and AML upgrades open windows where an institution is already in motion. An institution building for those mandates is the right timing for A2A, before the second project gets deprioritized. That is when we engage.</p>
       </div>
     </div>
 
@@ -507,8 +478,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="regions">
   <div class="container">
     <p class="sec-tag">Target Geographies</p>
-    <h2 class="sec-title" data-i18n="s2-title">Where we focus, and why</h2>
-    <p class="sec-intro">We believe in educating the marketplace. That's why we publish market research to the public covering regions where the B2B tokenized layer is open whitespace.</p>
+    <h2 class="sec-title">Where we focus, and why</h2>
+    <p class="sec-intro">We publish this market research publicly because we think the industry benefits from it, these are the regions where the B2B tokenized layer is still wide open.</p>
 
     <div class="market-list">
       <div class="market-item">
@@ -548,7 +519,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </div>
         <div>
           <h4>Nigeria, South Africa, Kenya, Egypt, Pan-African networks</h4>
-          <p>Africa is the world's fastest-growing fintech region by revenue trajectory, but the B2B institutional layer remains almost entirely undeveloped. Tokenized bank account-to-account transfers between commercial banks, central banks, and large corporates is open whitespace. Mobile money dominates consumer payments; the B2B bank layer is open whitespace. The Pan-African Payment and Settlement System (PAPSS) under AfCFTA is enabling cross-border local-currency settlement at the infrastructure level. Post Oak Labs' A2A advisory operates above this layer, not in competition with it. Nigeria is particularly active: several major banks operate nodes on a regulated blockchain payment network enabling real-time on-chain interbank settlement, and multiple institutions simultaneously operate large money market mutual funds, a uniquely dual-qualified prospect set. Africa is also the most active CBDC continent globally, with 25 countries exploring or deploying digital currencies.</p>
+          <p>Africa is the world's fastest-growing fintech region by revenue trajectory, but the B2B institutional layer remains almost entirely undeveloped. Mobile money has consumer payments locked up; nobody has built the equivalent for tokenized bank account-to-account transfers between commercial banks, central banks, and large corporates. The Pan-African Payment and Settlement System (PAPSS) under AfCFTA is already enabling cross-border local-currency settlement at the infrastructure level, and Post Oak Labs' A2A advisory operates above that layer rather than competing with it. Nigeria stands out in particular: several major banks already run nodes on a regulated blockchain payment network for real-time on-chain interbank settlement, and a handful of those same institutions also run large money market mutual funds, a dual qualification we rarely see elsewhere. Africa is also the most active CBDC continent globally, with 25 countries exploring or deploying digital currencies.</p>
         </div>
       </div>
       <div class="market-item">
@@ -584,7 +555,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section id="ideal-client">
   <div class="container">
     <p class="sec-tag">Who We Work With</p>
-    <h2 class="sec-title" data-i18n="s3-title">The institutions we are looking for</h2>
+    <h2 class="sec-title">The institutions we are looking for</h2>
     <p class="sec-intro">We work with a limited number of clients at any one time. The institutions best suited to engage with Post Oak Labs share a specific profile, not by size alone. Readiness, positioning, and strategic intent matter more.</p>
 
     <div class="criteria-row">
@@ -629,10 +600,10 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <section>
   <div class="container">
     <div class="highlight-block" style="border-left-color:var(--accent);margin-top:0;">
-      <p>Post Oak Labs consultants have built production tokenized payment infrastructure, led blockchain payment programs at the senior level inside major global banking and technology institutions, and advised central banks on CBDC design and deployment. The A2A advisory practice comes directly out of that. <a href="blockchain-advisory.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">See the full advisory track record →</a></p>
+      <p>The people behind this advisory practice have built production tokenized payment infrastructure, run blockchain payment programs at the senior level inside major global banking and technology institutions, and advised central banks on CBDC design and deployment. That track record is what this practice is built on. <a href="blockchain-advisory.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">See the full advisory track record →</a></p>
     </div>
     <div class="cta-block" style="margin-top:1.5rem;">
-      <h3 data-i18n="cta-h">Let's talk</h3>
+      <h3>Let's talk</h3>
       <p>If your institution is evaluating tokenized A2A infrastructure, stablecoin integration, or blockchain payment strategy, and you recognize your market in the signals above, we are glad to have a direct conversation about fit.</p>
       <a href="mailto:contact@postoaklabs.com" class="btn-primary">contact@postoaklabs.com</a>
     </div>
@@ -665,12 +636,8 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   <div class="footer-inner footer-grid">
 
     <div class="footer-col footer-brand-col">
-      <div class="footer-brand">Post Oak <span>Labs</span></div>
-      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
-      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
-      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
-      <p class="footer-copy" style="margin-top:0.3rem;">
-        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+      <p class="footer-copy">
+        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
         &nbsp;&middot;&nbsp;
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
       </p>
@@ -681,7 +648,6 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <a href="a2a-payments.html">Market coverage</a>
       <a href="a2a-workflow.html">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
       <a href="iso20022-a2a.html">ISO 20022 alignment</a>
       <a href="tmmf-a2a.html">tMMF on A2A rails</a>
     </div>
@@ -714,39 +680,24 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
   </div>
 
-  <div class="footer-meta">
-    <p class="footer-copy" style="opacity:0.7;">
-      Last revised May 2026.
-      Content licensed CC BY 4.0 unless otherwise noted.
-      &nbsp;&middot;&nbsp;
-      <a href="llms.txt">llms.txt</a>
-    </p>
-  </div>
 </footer>
 
 <script>
-const i18n = {
-  en: {"hero-h1": "Institutional infrastructure for the next layer of global payments", "hero-sub": "Post Oak Labs works with commercial banks, central banks, and large corporates to design, evaluate, and deploy tokenized account-to-account payment rails, the bank-grade settlement layer that operates above consumer fast-payment systems and below traditional correspondent banking. Our team has direct production experience in this space, led blockchain payment programs at the senior level inside major global institutions, and advised central banks directly on digital currency infrastructure. The advisory practice comes out of that operational experience directly.", "hero-cta-primary": "Start a conversation", "s1-title": "What we look for in a market", "s2-title": "Where we focus, and why", "s3-title": "The institutions we are looking for", "cta-h": "Let's talk"},
-  es: {"hero-h1": "Infraestructura institucional para la próxima capa de pagos globales", "hero-sub": "Post Oak Labs trabaja con bancos comerciales, bancos centrales y grandes corporativos para diseñar, evaluar y desplegar rieles de pago tokenizados de cuenta a cuenta, la capa de liquidación bancaria que opera por encima de los sistemas de pago rápido para consumidores y por debajo de la banca corresponsal tradicional.", "hero-cta-primary": "Iniciar una conversación", "s1-title": "Las condiciones que crean la oportunidad", "s2-title": "Dónde nos enfocamos y por qué", "s3-title": "Las instituciones que buscamos", "cta-h": "Hablemos"},
-  fr: {"hero-h1": "Infrastructure institutionnelle pour la prochaine couche des paiements mondiaux", "hero-sub": "Post Oak Labs travaille avec des banques commerciales, des banques centrales et de grandes entreprises pour concevoir, évaluer et déployer des rails de paiement tokenisés de compte à compte, la couche de règlement bancaire qui opère au-dessus des systèmes de paiement rapide et en dessous de la banque correspondante traditionnelle.", "hero-cta-primary": "Démarrer une conversation", "s1-title": "Les conditions qui créent l'opportunité", "s2-title": "Notre focus et pourquoi", "s3-title": "Les institutions que nous recherchons", "cta-h": "Parlons-en"},
-  ar: {"hero-h1": "بنية تحتية مؤسسية للطبقة التالية من المدفوعات العالمية", "hero-sub": "تعمل Post Oak Labs مع البنوك التجارية والبنوك المركزية والشركات الكبرى لتصميم وتقييم ونشر قضبان الدفع المرمّزة من حساب إلى حساب، وهي طبقة التسوية المصرفية التي تعمل فوق أنظمة الدفع السريع للمستهلكين وأسفل المصرفية المراسلة التقليدية.", "hero-cta-primary": "ابدأ محادثة", "s1-title": "الظروف التي تُولّد الفرصة", "s2-title": "أين نُركّز ولماذا", "s3-title": "المؤسسات التي نبحث عنها", "cta-h": "لنتحدث"},
-  pt: {"hero-h1": "Infraestrutura institucional para a próxima camada dos pagamentos globais", "hero-sub": "O Post Oak Labs trabalha com bancos comerciais, bancos centrais e grandes corporativos para projetar, avaliar e implantar trilhos de pagamento tokenizados de conta a conta, a camada de liquidação bancária que opera acima dos sistemas de pagamento rápido ao consumidor e abaixo do banco correspondente tradicional.", "hero-cta-primary": "Iniciar uma conversa", "s1-title": "As condições que criam oportunidade", "s2-title": "Onde focamos e por quê", "s3-title": "As instituições que procuramos", "cta-h": "Vamos conversar"},
-  zh: {"hero-h1": "面向全球支付下一层级的机构基础设施", "hero-sub": "Post Oak Labs与商业银行、中央银行及大型企业合作，设计、评估和部署代币化账户间支付轨道——这一银行级结算层位于消费者即时支付系统（如Pix、FedNow、UPI）之上，传统代理行银行业务之下，专为高价值B2B跨境支付而设计。", "hero-cta-primary": "开始对话", "s1-title": "创造机会的条件", "s2-title": "我们的聚焦方向及原因", "s3-title": "我们寻求合作的机构", "cta-h": "欢迎洽谈"}
-};
-function setLang(lang) {
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  const btn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
-  if (btn) btn.classList.add('active');
-  const t = (typeof i18n !== 'undefined') ? i18n[lang] : undefined;
-  if (t) {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (t[key] !== undefined) el.innerHTML = t[key];
-    });
+(function(){
+  var nav = document.querySelector('nav[role="navigation"]');
+  var hero = document.querySelector('.hero, .showcase-hero');
+  if(!nav || !hero) return;
+  function onScroll(){
+    var threshold = hero.offsetHeight * 0.6;
+    if(window.scrollY > threshold){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   }
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-}
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
 </script>
 </body>
 </html>
