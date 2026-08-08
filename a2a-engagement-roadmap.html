@@ -76,41 +76,30 @@ h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-hei
 a { color: inherit; text-decoration: none; }
 .container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
 
-/* ── LANGUAGE BAR ── */
-.lang-bar { background: var(--deep); border-bottom: 1px solid var(--edge); padding: 0.45rem 0; }
-.lang-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: flex-end; gap: 0.25rem; }
-.lang-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; border: 1px solid var(--edge); color: var(--muted); cursor: pointer; background: transparent; transition: all 0.2s; }
-.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
-
 /* ── NAV ── */
 nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; }
-.nav-logo span { color: var(--gold); }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: color 0.2s; text-decoration: none; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); }
-.nav-cta { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
-.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
+.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
+.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
+nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
+.nav-links { display: flex; gap: 0.6rem; align-items: center; }
+.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
+.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
 
 /* ── FOOTER ── */
 footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 .footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-brand { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem; }
-.footer-brand span { color: var(--gold); }
 .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
 .footer-copy a { color: var(--accent-lt); text-decoration: none; }
 .footer-copy a:hover { text-decoration: underline; }
 .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
-.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--accent-lt); }
 
 /* ── HERO ── */
 .hero { padding: 4rem 0 3.5rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
 .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
 .hero-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 1.25rem; }
 .hero h1 { font-size: clamp(2rem, 4vw, 3rem); color: var(--white); max-width: 660px; margin-bottom: 1.25rem; }
-.hero h1 em { color: var(--gold-lt); font-style: normal; }
 .hero-sub { font-size: 0.95rem; color: var(--body); max-width: 560px; line-height: 1.85; margin-bottom: 2rem; }
 .hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
@@ -239,13 +228,18 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
 .footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
 .footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
 .footer-col > a:hover { color: var(--accent-lt); }
-.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
 </style>
 <link rel="me" href="https://ainumbers.co">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -301,30 +295,22 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
 </head>
 <body>
 
-<!-- ── LANGUAGE BAR ── -->
-<div class="lang-bar">
-  <div class="lang-inner">
-    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
-    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
-    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
-    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
-    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
-  </div>
-</div>
-
-<!-- ── NAV ── -->
 <nav role="navigation" aria-label="Primary">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
+    </a>
     <div class="nav-links">
-      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
-      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
-      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
-      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
-      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
-      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
-      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Talk to us</a>
+      <a href="index.html">Home</a>
+      <a href="demos/">Scenarios</a>
     </div>
   </div>
 </nav>
@@ -334,7 +320,7 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
   <div class="container">
     <p class="hero-tag">A2A Engagement · Readiness Diagnostic · Phased Deployment</p>
     <h1>From evaluation to production: a structured path for institutional A2A deployment</h1>
-    <p class="hero-sub">This is not a pitch page — it's a working tool. Treasury teams and ALCO leads can run a diagnostic, receive a readiness score across five dimensions, and see exactly what a Phase 1 scoping engagement looks like before committing budget. No ambiguity about what happens next.</p>
+    <p class="hero-sub">Treasury teams and ALCO leads can run the diagnostic below, get a readiness score across five dimensions, and see exactly what a Phase 1 scoping engagement looks like, before committing any budget. You'll know precisely what happens next.</p>
     <div class="hero-cta-row">
       <a href="#diagnostic" class="btn-primary">Run the Readiness Diagnostic</a>
       <a href="#phases" class="btn-outline">View Engagement Phases</a>
@@ -556,7 +542,7 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
     </table>
 
     <div class="callout-block">
-      <p>Same regulatory perimeter your board already understands. Same deposit franchise. The tokenization layer sits inside existing infrastructure, not alongside it.</p>
+      <p>It's the same regulatory perimeter your board already understands and the same deposit franchise you already run, the tokenization layer sits inside your existing infrastructure, not bolted on next to it.</p>
       <div class="callout-links">
         <a href="faq.html">→ Regulatory FAQ</a>
         <a href="iso20022-a2a.html">→ ISO 20022 Compliance Alignment</a>
@@ -572,7 +558,7 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
   <div class="container">
     <p class="sec-tag">Module 05 · Begin Engagement</p>
     <h2 class="sec-title">What happens when you reach out</h2>
-    <p class="sec-intro">No RFP process, no 6-week scoping discovery call. Phase 1 starts with a 30-minute treasury review to confirm corridor fit and jurisdiction coverage. From there, the memo and risk register take 4–6 weeks.</p>
+    <p class="sec-intro">You skip the RFP process and the six-week scoping discovery call entirely. Phase 1 starts with a 30-minute treasury review to confirm corridor fit and jurisdiction coverage, from there, the memo and risk register take 4–6 weeks.</p>
 
     <div class="list-block">
       <div class="list-item">
@@ -622,12 +608,8 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
   <div class="footer-inner footer-grid">
 
     <div class="footer-col footer-brand-col">
-      <div class="footer-brand">Post Oak <span>Labs</span></div>
-      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
-      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
-      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
-      <p class="footer-copy" style="margin-top:0.3rem;">
-        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+      <p class="footer-copy">
+        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
         &nbsp;&middot;&nbsp;
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
       </p>
@@ -638,7 +620,6 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
       <a href="a2a-payments.html">Market coverage</a>
       <a href="a2a-workflow.html">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
       <a href="iso20022-a2a.html">ISO 20022 alignment</a>
       <a href="tmmf-a2a.html">tMMF on A2A rails</a>
     </div>
@@ -671,25 +652,9 @@ hr.rule { border: none; border-top: 1px solid var(--edge); }
 
   </div>
 
-  <div class="footer-meta">
-    <p class="footer-copy" style="opacity:0.7;">
-      Last revised May 2026.
-      Content licensed CC BY 4.0 unless otherwise noted.
-      &nbsp;&middot;&nbsp;
-      <a href="llms.txt">llms.txt</a>
-    </p>
-  </div>
 </footer>
 
 <script>
-// ── LANGUAGE SWITCHER (stub v1) ──
-function setLang(lang) {
-  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    if (btn.textContent.trim().toLowerCase() === lang) btn.classList.add('active');
-  });
-}
-
 // ── ISO STATUS → SCORE MAP ──
 const isoScoreMap = {
   'not_started':   15,
@@ -739,6 +704,23 @@ function setDimBar(barId, scoreId, pct) {
   if (score) score.textContent = pct + '%';
 }
 
+</script>
+<script>
+(function(){
+  var nav = document.querySelector('nav[role="navigation"]');
+  var hero = document.querySelector('.hero, .showcase-hero');
+  if(!nav || !hero) return;
+  function onScroll(){
+    var threshold = hero.offsetHeight * 0.6;
+    if(window.scrollY > threshold){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
 </script>
 </body>
 </html>

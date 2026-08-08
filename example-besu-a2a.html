@@ -108,8 +108,8 @@ pre .fn  { color: var(--bright); }
 
 /* ── TOP BANNER ── */
 .top-banner {
-  background: var(--accent-dim);
-  border-bottom: 1px solid var(--accent);
+  background: var(--gold-dim);
+  border-bottom: 1px solid var(--gold);
   padding: 0.5rem 0;
 }
 .top-banner-inner {
@@ -117,7 +117,7 @@ pre .fn  { color: var(--bright); }
   display: flex; align-items: center; gap: 1rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--accent-lt);
+  color: var(--gold-lt);
 }
 
 /* ── NAV ── */
@@ -131,28 +131,24 @@ nav {
 .nav-inner {
   max-width: 1040px; margin: 0 auto; height: 100%;
   display: flex; align-items: center; justify-content: space-between;
+  gap: 20px;
 }
 .nav-logo {
   font-family: 'DM Serif Display', serif;
   font-size: 1rem; color: var(--bright); font-weight: 400;
+  display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
 }
-.nav-logo span { color: var(--gold); }
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-logo-mark { height: 20px; width: auto; flex-shrink: 0; display: block; }
+.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
+nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
+.nav-links { display: flex; gap: 0.6rem; align-items: center; }
 .nav-links a {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase;
-  color: var(--muted); transition: color 0.2s;
+  color: var(--muted); transition: all 0.2s;
+  border: 1px solid var(--edge); padding: 0.35rem 0.75rem; text-decoration: none;
 }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); text-decoration: none; }
-.nav-cta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.57rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--white); background: var(--accent);
-  border: 1px solid var(--accent); padding: 0.28rem 0.8rem;
-  transition: all 0.2s;
-}
-.nav-cta:hover { background: var(--accent-lt); border-color: var(--accent-lt); text-decoration: none; }
-
+.nav-links a:hover, .nav-links a.active-page { color: var(--gold-lt); border-color: var(--gold); text-decoration: none; }
 /* ── HERO ── */
 .hero {
   padding: 5.5rem 0 5rem;
@@ -162,24 +158,17 @@ nav {
 .hero::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-lt), var(--gold-lt), transparent);
-}
-.hero::after {
-  content: '';
-  position: absolute; top: -200px; right: -300px;
-  width: 900px; height: 900px;
-  background: radial-gradient(ellipse, rgba(26,122,136,0.06) 0%, transparent 60%);
-  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--gold-lt), transparent);
 }
 .hero-eyebrow {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--accent-lt); margin-bottom: 1.5rem;
+  font-size: 0.76rem; letter-spacing: 0.02em;
+  color: var(--gold-lt); margin-bottom: 1.5rem;
   display: flex; align-items: center; gap: 0.75rem;
 }
 .hero-eyebrow::before {
   content: ''; display: block;
-  width: 32px; height: 1px; background: var(--accent);
+  width: 32px; height: 1px; background: var(--gold);
 }
 .hero h1 {
   font-size: clamp(2rem, 4.5vw, 3.6rem);
@@ -458,24 +447,11 @@ footer {
   display: flex; justify-content: space-between;
   align-items: flex-start; flex-wrap: wrap; gap: 1rem;
 }
-.footer-brand {
-  font-family: 'DM Serif Display', serif;
-  font-size: 0.95rem; color: var(--bright); margin-bottom: 0.4rem;
-}
-.footer-brand span { color: var(--gold-lt); }
 .footer-copy {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7;
 }
-.footer-copy a { color: var(--accent-lt); }
-.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
-.footer-links a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); transition: color 0.2s;
-}
-.footer-links a:hover { color: var(--accent-lt); }
-
+.footer-copy a { color: var(--gold-lt); }
 /* ── RESPONSIVE ── */
 @media (max-width: 800px) {
   .overview-box { grid-template-columns: 1fr; }
@@ -491,46 +467,26 @@ footer {
 /* Section anchors below sticky nav */
 [id] { scroll-margin-top: 70px; }
 
-/* ── LANGUAGE TOGGLE ── */
-.lang-bar {
-  background: var(--deep);
-  border-bottom: 1px solid var(--edge);
-  padding: 0.45rem 0;
-}
-.lang-inner {
-  max-width: 1040px; margin: 0 auto; padding: 0 2rem;
-  display: flex; justify-content: flex-end; gap: 0.25rem;
-}
-.lang-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.65rem;
-  border: 1px solid var(--edge);
-  color: var(--muted);
-  cursor: pointer;
-  background: transparent;
-  transition: all 0.2s;
-}
-.lang-btn.active, .lang-btn:hover { border-color: var(--accent); color: var(--accent-lt); }
 /* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
 .site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
 .footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
 .footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
 .footer-brand-col { gap: 0.4rem; }
-.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
 .footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
 .footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
-.footer-col > a:hover { color: var(--accent-lt); }
-.footer-meta { max-width: 980px; margin: 1.75rem auto 0; padding-top: 1.25rem; border-top: 1px solid var(--edge); }
+.footer-col > a:hover { color: var(--gold-lt); }
 @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
 </style>
 <link rel="me" href="https://ainumbers.co">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a1828">
-<link rel="canonical" href="https://postoaklabs.com/example-besu-a2a.html">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hyperledger Besu A2A Tokenization (Adhara): Europe–Middle East Cross-Border Settlement Architecture | Post Oak Labs">
@@ -624,29 +580,23 @@ footer {
 </script>
 </head>
 <body>
-<div class="lang-bar">
-  <div class="lang-inner">
-    <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
-    <button class="lang-btn" onclick="setLang('es')" data-lang="es">ES</button>
-    <button class="lang-btn" onclick="setLang('fr')" data-lang="fr">FR</button>
-    <button class="lang-btn" onclick="setLang('ar')" data-lang="ar">AR</button>
-    <button class="lang-btn" onclick="setLang('pt')" data-lang="pt">PT</button>
-    <button class="lang-btn" onclick="setLang('zh')" data-lang="zh">中文</button>
-  </div>
-</div>
 
 <nav role="navigation" aria-label="Primary">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">Post Oak <span>Labs</span></a>
+    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
+    </a>
     <div class="nav-links">
-      <a href="a2a-payments.html" data-i18n="nav-a2a">A2A Payments</a>
-      <a href="a2a-workflow.html" data-i18n="nav-workflow">How It Works</a>
-      <a href="a2a-comparison.html" data-i18n="nav-comparison">Comparison</a>
-      <a href="blockchain-advisory.html" data-i18n="nav-advisory">Advisory</a>
-      <a href="enterprise-blockchain.html" data-i18n="nav-enterprise">Enterprise Blockchain</a>
-      <a href="glossary.html" data-i18n="nav-glossary">Glossary</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener" data-i18n="nav-tools">Tools&nbsp;↗</a>
-      <a href="contact.html" class="nav-cta" data-i18n="nav-contact">Talk to us</a>
+      <a href="index.html">Home</a>
+      <a href="demos/">Scenarios</a>
     </div>
   </div>
 </nav>
@@ -654,9 +604,9 @@ footer {
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
   <div class="container">
-    <p class="hero-eyebrow">Technical Deep-Dive · Hyperledger Besu · Adhara SILVER Pattern · Cross-Border Settlement</p>
-    <h1 data-i18n="hero-h1">A2A tokenization on Hyperledger Besu: two European banks, one Saudi bank</h1>
-    <p class="hero-sub" data-i18n="hero-sub">
+    <p class="hero-eyebrow">Technical deep-dive · Hyperledger Besu, Adhara SILVER pattern, cross-border settlement</p>
+    <h1>A2A tokenization on Hyperledger Besu: two European banks, one Saudi bank</h1>
+    <p class="hero-sub">
       A minute-detail walkthrough of how Hyperledger Besu, deployed using the Adhara SILVER (Settlement, Issuance, Liquidity and Velocity Enhancement Rail) pattern proven in Project Khokha 2 and the Euro Cyber Resilience Board sandbox, enables tokenized account-to-account settlement across a three-bank EVM network: a French commercial bank (Paris), a Spanish commercial bank (Madrid), and a Saudi commercial bank (Riyadh). Every layer covered: validator topology, smart-contract architecture, token lifecycle, on-chain FX, privacy via Tessera, ISO 20022 integration, and the applicable regulatory frameworks on both sides of the corridor.
     </p>
 
@@ -709,7 +659,7 @@ footer {
       <li><a href="#regulatory"><span class="toc-num">09</span>Regulatory framework: EU (MiCA/DORA) and Saudi Arabia</a></li>
       <li><a href="#settlement"><span class="toc-num">10</span>RTGS net settlement and liquidity management</a></li>
       <li><a href="#risks"><span class="toc-num">11</span>Operational risks and governance design</a></li>
-      <li><a href="#references"><span class="toc-num">—</span>References and source notes</a></li>
+      <li><a href="#references"><span class="toc-num">·</span>References and source notes</a></li>
     </ul>
   </div>
 </div>
@@ -717,15 +667,15 @@ footer {
 <!-- ═══════════ SECTION 1: BACKGROUND ═══════════ -->
 <section id="background">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_01">Section 01</p>
-    <h2 class="sec-title" data-i18n="t-why_this_corridor__and_why">Why this corridor, and why Besu + Adhara is the right infrastructure choice</h2>
+    <p class="sec-kicker">Section 01</p>
+    <h2 class="sec-title">Why this corridor, and why Besu + Adhara is the right infrastructure choice</h2>
     <p class="sec-lead">
       The EUR–SAR trade corridor is a high-priority cross-border route that has not yet been served by a production tokenized A2A network. EU–Saudi bilateral trade exceeded €80 billion in 2024, dominated by energy, capital goods, infrastructure procurement, and Vision 2030 mega-project financing. Payment volumes are concentrated in transactions large enough that the all-in cost of correspondent banking (typically 150–350 basis points) represents tens of millions of euros in foregone economic value annually for a single mid-sized European exporter book.
     </p>
 
     <p>The case for tokenized infrastructure on this corridor is structural. European banks operating under MiCA and DORA face mounting compliance costs on legacy payment chains. The Saudi Central Bank (SAMA) has, since 2019, run direct cross-border DLT-based settlement experimentation through Project Aber (with the CBUAE) and is a participant in Project mBridge, the multi-central-bank wholesale CBDC network. Both regulatory environments are compatible with permissioned EVM settlement on a private chain.</p>
 
-    <p>Hyperledger Besu is the technically appropriate choice for this three-bank network for four reasons. First, Besu is an Apache 2.0-licensed, EVM-compatible client maintained under the Linux Foundation's Hyperledger umbrella. The same EVM execution semantics mean the global pool of Solidity developers (~23,000) can build business logic without learning a new language or VM. Second, Besu's QBFT (Quorum Byzantine Fault Tolerant) consensus delivers instant deterministic finality at the block level, with no probabilistic reorg window — a precondition for legal payment-system designation. Third, Besu has the deepest production deployment record of any EVM-based permissioned platform in regulated financial infrastructure: the Bank of Thailand's Project Inthanon, the South African Reserve Bank's Project Khokha (1 and 2), the Banque de France's wholesale CBDC experiments, the EU's Eurosystem exploratory work, and Onyx by J.P. Morgan (whose Liink and Coin Systems platforms run on a Besu fork).<sup><a href="#fn1">[1]</a></sup> Fourth, Adhara (a UK fintech from the ConsenSys/Quorum lineage) provides the SILVER (Settlement, Issuance, Liquidity and Velocity Enhancement Rail) engine, a production-tested settlement layer that sits on top of Besu and provides exactly the primitives this network needs: tokenized commercial bank money, on-chain PvP, on-chain liquidity-saving netting, and an oracle/FX layer. Adhara's SILVER engine was the settlement core for Project Khokha 2 (the South African Reserve Bank's wholesale tokenization pilot, completed 2022) and is the commercial engine behind Project Atlas (with Investec, Citi, Standard Bank, and Absa).<sup><a href="#fn7">[7]</a></sup></p>
+    <p>Hyperledger Besu is the technically appropriate choice for this three-bank network for four reasons. First, Besu is an Apache 2.0-licensed, EVM-compatible client maintained under the Linux Foundation's Hyperledger umbrella. The same EVM execution semantics mean the global pool of Solidity developers (~23,000) can build business logic without learning a new language or VM. Second, Besu's QBFT (Quorum Byzantine Fault Tolerant) consensus delivers instant deterministic finality at the block level, with no probabilistic reorg window, a precondition for legal payment-system designation. Third, Besu has the deepest production deployment record of any EVM-based permissioned platform in regulated financial infrastructure: the Bank of Thailand's Project Inthanon, the South African Reserve Bank's Project Khokha (1 and 2), the Banque de France's wholesale CBDC experiments, the EU's Eurosystem exploratory work, and Onyx by J.P. Morgan (whose Liink and Coin Systems platforms run on a Besu fork).<sup><a href="#fn1">[1]</a></sup> Fourth, Adhara (a UK fintech from the ConsenSys/Quorum lineage) provides the SILVER (Settlement, Issuance, Liquidity and Velocity Enhancement Rail) engine, a production-tested settlement layer that sits on top of Besu and provides exactly the primitives this network needs: tokenized commercial bank money, on-chain PvP, on-chain liquidity-saving netting, and an oracle/FX layer. Adhara's SILVER engine was the settlement core for Project Khokha 2 (the South African Reserve Bank's wholesale tokenization pilot, completed 2022) and is the commercial engine behind Project Atlas (with Investec, Citi, Standard Bank, and Absa).<sup><a href="#fn7">[7]</a></sup></p>
 
     <div class="callout gold">
       <p class="callout-label">On the Khokha 2 precedent</p>
@@ -737,8 +687,8 @@ footer {
 <!-- ═══════════ SECTION 2: ARCHITECTURE ═══════════ -->
 <section id="architecture">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_02">Section 02</p>
-    <h2 class="sec-title" data-i18n="t-network_topology_and_valid">Network topology and validator architecture</h2>
+    <p class="sec-kicker">Section 02</p>
+    <h2 class="sec-title">Network topology and validator architecture</h2>
     <p class="sec-lead">
       The three-bank network consists of five Besu nodes (three validator nodes, one per bank, plus two non-validator observer/RPC nodes operated jointly), a Tessera private-transaction manager paired with each validator, and bridge connectors to TARGET2 (EUR) and SARIE (SAR) for end-of-cycle net settlement. Each bank operates its own Besu validator inside its own data center or regulated private cloud. No single party controls block production; QBFT requires a 2-of-3 supermajority for finality.
     </p>
@@ -859,7 +809,7 @@ footer {
     <div class="node-grid">
       <div class="node-card euro-a">
         <p class="node-type">Validator 1 · Originating Bank</p>
-        <h3>BankFR — Paris</h3>
+        <h3>BankFR · Paris</h3>
         <p>French commercial bank. Licensed under the ACPR (Autorité de contrôle prudentiel et de résolution), subject to MiCA as an issuer of e-money tokens under Title III where applicable, and DORA-compliant from January 2025 for all critical ICT services. Operates a Hyperledger Besu 24.x validator node in its Paris data center. Acts as the EUR token issuer in this network: it mints <code>EurDepositToken</code> (ERC-20) against its own fiat reserves on behalf of corporate clients and burns them on redemption.</p>
         <ul>
           <li>Node identity: enode + X.509 cert</li>
@@ -872,7 +822,7 @@ footer {
       </div>
       <div class="node-card euro-b">
         <p class="node-type">Validator 2 · Liquidity / FX Oracle</p>
-        <h3>BankES — Madrid</h3>
+        <h3>BankES · Madrid</h3>
         <p>Spanish commercial bank. Licensed under Banco de España, subject to MiCA and DORA. Participates primarily as an EUR liquidity provider and as the FX oracle operator. It does not originate payments in this scenario, but holds surplus EUR token balances that can be used for intraday liquidity provision and operates a signed-data oracle smart contract (<code>FXOracle.sol</code>) that supplies EUR/SAR spot rates to the SILVER PvP engine.</p>
         <ul>
           <li>Node identity: enode + X.509 cert</li>
@@ -885,7 +835,7 @@ footer {
       </div>
       <div class="node-card sa">
         <p class="node-type">Validator 3 · Receiving Bank</p>
-        <h3>BankSA — Riyadh</h3>
+        <h3>BankSA · Riyadh</h3>
         <p>Saudi Arabian commercial bank. Licensed by the Saudi Central Bank (SAMA) under the Banking Control Law (1966) and the Banks Control Law as updated. Subject to SAMA's Open Banking Framework (Phase II in force 2024), the SAMA Cyber Security Framework, and the SAMA Cloud Computing Regulatory Framework. SAMA is a participant in Project mBridge (multi-central-bank wholesale CBDC network). Acts as the SAR token issuer and redeemer at the receiving end. SAR is pegged to USD at 3.7500.</p>
         <ul>
           <li>Node identity: enode + X.509 cert</li>
@@ -908,13 +858,13 @@ footer {
 <!-- ═══════════ SECTION 3: SMART CONTRACTS ═══════════ -->
 <section id="contracts">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_03">Section 03</p>
-    <h2 class="sec-title" data-i18n="t-smart_contract_structure">Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle</h2>
+    <p class="sec-kicker">Section 03</p>
+    <h2 class="sec-title">Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle</h2>
     <p class="sec-lead">
       The on-chain logic for this network is organised into three Solidity contract groups. Deposit-token contracts (one per currency, ERC-20-compliant with extensions) issued by the relevant bank. The Adhara SILVER engine (a set of contracts that bundle PvP atomic settlement, liquidity-saving netting, and obligation tracking). And the supporting infrastructure contracts (FX oracle, validator registry, compliance attestation registry). All contracts compile with Solidity 0.8.x, are deployed once via a permissioned deployer key, and are upgraded via an on-chain governance vote (UUPS proxy pattern, 2-of-3 validator approval + 14-day timelock).
     </p>
 
-    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1 — Deposit-token contracts</h3>
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">3.1 · Deposit-token contracts</h3>
     <p>Each currency has its own ERC-20 contract, deployed and exclusively minted by the issuing bank. The contract extends standard ERC-20 with a permissioned <code>mint</code>/<code>burn</code>, a freeze function for compliance holds, and a hash-binding to the off-chain ISO 20022 payload:</p>
 
     <pre><code><span class="cm">// SPDX-License-Identifier: Apache-2.0</span>
@@ -968,7 +918,7 @@ footer {
 
     <p>The same template is deployed by BankSA as <code>SarDepositToken</code> (decimals = 2, conventional for SAR ledger units; or 18 if the network adopts an internal scaling convention).</p>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.2 — The Adhara SILVER PvP settlement contract</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.2 · The Adhara SILVER PvP settlement contract</h3>
     <p>The SILVER engine's core innovation is its conditional atomic settlement primitive. A single transaction either moves both legs (EUR debit at BankFR address, SAR credit to the Riyadh beneficiary's intermediary) or it reverts entirely. There is no partial-settlement state. The same contract also exposes a netting cycle that allows multiple in-cycle obligations to be netted before final transfer:</p>
 
     <pre><code><span class="kw">contract</span> <span class="ty">SilverPvPSettlement</span> <span class="kw">is</span> <span class="ty">AccessControl</span>, <span class="ty">ReentrancyGuard</span> {
@@ -1015,7 +965,7 @@ footer {
     }
 }</code></pre>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.3 — Key contracts deployed on the network</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">3.3 · Key contracts deployed on the network</h3>
 
     <div class="detail-table-wrap">
       <table class="detail-table">
@@ -1079,8 +1029,8 @@ footer {
 <!-- ═══════════ SECTION 4: LIFECYCLE ═══════════ -->
 <section id="lifecycle">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_04">Section 04</p>
-    <h2 class="sec-title" data-i18n="t-full_transaction_lifecycle">Full transaction lifecycle: 16 steps end-to-end</h2>
+    <p class="sec-kicker">Section 04</p>
+    <h2 class="sec-title">Full transaction lifecycle: 16 steps end-to-end</h2>
     <p class="sec-lead">
       A complete EUR→SAR cross-border payment from a Paris corporate client to a Riyadh supplier moves through 16 distinct steps across three Besu validators, the Tessera private-transaction layer, the SILVER smart-contract suite, two RTGS systems, and two core banking integrations. The on-chain portion (steps 1–11) completes in under 30 seconds under normal network conditions; QBFT instant finality at 2-second block intervals makes the PvP transaction final at block inclusion. Steps 12–16 involve off-chain RTGS net settlement, which occurs intraday or end-of-day depending on the configured netting cycle.
     </p>
@@ -1252,13 +1202,13 @@ footer {
 <!-- ═══════════ SECTION 5: FX ═══════════ -->
 <section id="fx">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_05">Section 05</p>
-    <h2 class="sec-title" data-i18n="t-fx_handling__eur_sar_conve">FX handling: EUR/SAR conversion on the Besu chain</h2>
+    <p class="sec-kicker">Section 05</p>
+    <h2 class="sec-title">FX handling: EUR/SAR conversion on the Besu chain</h2>
     <p class="sec-lead">
       Foreign exchange conversion is the most technically nuanced element of a multi-currency Besu A2A deployment. The EUR/SAR pair is not a freely traded interbank pair with deep liquidity at all hours: the SAR is pegged to USD at 3.7500, so EUR/SAR fluctuates with EUR/USD. This creates specific requirements for how rates are sourced, how they are committed on-chain, and how FX risk between origination and settlement is managed.
     </p>
 
-    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">5.1 — The on-chain oracle pattern</h3>
+    <h3 style="font-size:1.1rem;margin-bottom:0.75rem;color:var(--bright);">5.1 · The on-chain oracle pattern</h3>
     <p>Besu handles non-deterministic external data (like FX rates) through a signed-data oracle smart contract. In this network, BankES operates the <code>FXOracle</code> contract: it sources EUR/SAR mid-market rates from its treasury FX system (connected to Bloomberg or Refinitiv), constructs a signed quote object, and posts it on-chain via a permissioned <code>postQuote</code> function gated to BankES's HSM-held oracle key. Every consumer reads from the same contract; rate disputes are impossible because every transaction in a settlement window references a specific oracle quote ID and the oracle's signature is verifiable by any party.</p>
 
     <pre><code><span class="kw">contract</span> <span class="ty">FXOracle</span> <span class="kw">is</span> <span class="ty">AccessControl</span> {
@@ -1301,10 +1251,10 @@ footer {
     }
 }</code></pre>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">5.2 — Revenue capture: where the FX spread goes</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">5.2 · Revenue capture: where the FX spread goes</h3>
     <p>In correspondent banking, the FX spread on EUR/SAR conversions is captured by the intermediary correspondent chain, not by BankFR (which has the direct client relationship). On the Besu A2A rail, FX conversion occurs on-chain at the moment of PvP settlement. BankSA applies a spread over the oracle mid-rate (its institutional EUR/SAR dealing rate, typically 10–20 bps for wholesale flows), and this spread is revenue for BankSA (which has the direct Riyadh corporate client relationship). BankFR captures the fee income on the EUR origination leg (typically 5 bps flat). Neither bank pays the correspondent chain. The total FX economics shift from intermediaries to the institutions with direct customer relationships.</p>
 
-    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">5.3 — Settlement risk: PvP eliminates principal risk by construction</h3>
+    <h3 style="font-size:1.1rem;margin:2rem 0 0.75rem;color:var(--bright);">5.3 · Settlement risk: PvP eliminates principal risk by construction</h3>
     <p>In a conventional FX settlement, the EUR leg and the SAR leg settle in different RTGS systems, at different times, creating a principal risk window during which one party has delivered and the other has not. The BIS CPMI has documented that roughly one-third of global FX transactions still settle without PvP arrangements, exposing the market to Herstatt-style risk.<sup><a href="#fn2">[2]</a></sup> The SILVER atomic transaction model makes PvP the architectural default: the EUR token transfer and the SAR token mint are encoded in a single EVM transaction that either succeeds completely or fails completely. The EVM's transactional revert semantics make this absolute: no intermediate state exists on-chain. This is the same mechanism CLS Bank achieves for the major currency pairs through its multi-currency cash account structure, but implemented as smart-contract logic on a permissioned chain.</p>
 
     <div class="callout teal">
@@ -1317,8 +1267,8 @@ footer {
 <!-- ═══════════ SECTION 6: PRIVACY ═══════════ -->
 <section id="privacy">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_06">Section 06</p>
-    <h2 class="sec-title" data-i18n="t-privacy__tessera__private">Privacy: Tessera, private state, and zero-knowledge options</h2>
+    <p class="sec-kicker">Section 06</p>
+    <h2 class="sec-title">Privacy: Tessera, private state, and zero-knowledge options</h2>
     <p class="sec-lead">
       The Besu permissioned model has a privacy model fundamentally different from Corda's. By default, every validator sees every transaction in the block. The Adhara SILVER pattern addresses this through three layers: (1) only hashes (never the underlying ISO 20022 XML or KYC VC payload) are committed to public state; (2) the full payloads travel through Tessera, a peer-to-peer encrypted messaging layer that delivers the payload only to the parties named in the transaction; (3) for sensitive use cases, additional zero-knowledge proof patterns (e.g., zk-SNARKs to prove a payment is below a regulatory threshold without revealing the amount) can be layered on top.
     </p>
@@ -1337,8 +1287,8 @@ footer {
 <!-- ═══════════ SECTION 7: ISO 20022 ═══════════ -->
 <section id="iso20022">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_07">Section 07</p>
-    <h2 class="sec-title" data-i18n="t-iso_20022_payload_binding">ISO 20022 payload binding: what travels and why it matters</h2>
+    <p class="sec-kicker">Section 07</p>
+    <h2 class="sec-title">ISO 20022 payload binding: what travels and why it matters</h2>
     <p class="sec-lead">
       One of the most practically important features of this architecture is that the ISO 20022 pacs.008 (Customer Credit Transfer Initiation) payload is hash-bound to the on-chain token state from the moment of minting. The full XML travels through Tessera between BankFR and BankSA. The keccak256 hash of the canonical XML is committed to public state, providing non-repudiation: BankFR cannot later claim a different payload was associated with the UETR, and BankSA cannot deny receipt of the specific payload it acknowledged.
     </p>
@@ -1395,8 +1345,8 @@ footer {
 <!-- ═══════════ SECTION 8: KYC/AML ═══════════ -->
 <section id="kyc-aml">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_08">Section 08</p>
-    <h2 class="sec-title" data-i18n="t-kyc_aml_compliance_and_the">KYC/AML compliance and the Travel Rule across two jurisdictions</h2>
+    <p class="sec-kicker">Section 08</p>
+    <h2 class="sec-title">KYC/AML compliance and the Travel Rule across two jurisdictions</h2>
     <p class="sec-lead">
       AML compliance in a cross-jurisdiction Besu network operates at two layers simultaneously: each bank independently meets its own jurisdiction's AML requirements (ACPR/Banco de España for the EU side; SAMA for BankSA), and the network's shared attestation architecture satisfies the FATF Travel Rule requirements that apply when value moves between regulated payment institutions.
     </p>
@@ -1442,7 +1392,7 @@ footer {
           </tr>
           <tr>
             <td class="lbl">DORA (Digital Operational Resilience)</td>
-            <td>EU — in force Jan 17, 2025</td>
+            <td>EU, in force Jan 17, 2025</td>
             <td>BankFR and BankES must classify the Besu node as a critical ICT service under DORA. Incident reporting to ACPR/BdE within 4 hours of major incident; resilience testing (TLPT for systemic firms); third-party risk management for Adhara as ICT provider for the SILVER engine.</td>
           </tr>
           <tr>
@@ -1459,15 +1409,15 @@ footer {
 <!-- ═══════════ SECTION 9: REGULATORY ═══════════ -->
 <section id="regulatory">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_09">Section 09</p>
-    <h2 class="sec-title" data-i18n="t-regulatory_framework__mica">Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)</h2>
+    <p class="sec-kicker">Section 09</p>
+    <h2 class="sec-title">Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)</h2>
     <p class="sec-lead">
       The EUR–SAR Besu network sits at the intersection of two distinct regulatory regimes. The EU's MiCA regulation (in full effect December 2024) provides a comprehensive crypto-asset regulation with specific carve-outs for bank-issued deposit tokens. Saudi Arabia does not have a discrete digital-asset regime analogous to MiCA; SAMA regulates digital settlement infrastructure under the existing Banking Control Law and its updated supervisory rulebooks. SAMA's stated direction (per Project Aber, Project Agorá, and FinTech Saudi initiatives) is to integrate tokenized wholesale payments within the existing banking-supervisory structure rather than create a separate crypto regime.
     </p>
 
     <div class="reg-grid">
       <div class="reg-cell">
-        <p class="reg-header">European Union — MiCA + DORA</p>
+        <p class="reg-header">European Union, MiCA + DORA</p>
         <h4>BankFR (ACPR) · BankES (Banco de España)</h4>
         <ul class="reg-list">
           <li><strong>Token classification:</strong> EUR deposit tokens issued by BankFR are bank liabilities regulated under existing banking law (CRD VI / CRR) and the EBA's December 2024 Report on Tokenised Deposits. They are not e-money tokens under MiCA Title III, because they are issued by a licensed credit institution and remain on the bank's balance sheet. This avoids the €150M issuance cap and monthly transaction limits that apply to large EMT issuers under MiCA Articles 23–24.</li>
@@ -1478,7 +1428,7 @@ footer {
         </ul>
       </div>
       <div class="reg-cell">
-        <p class="reg-header">Saudi Arabia — SAMA + SAFIU</p>
+        <p class="reg-header">Saudi Arabia, SAMA + SAFIU</p>
         <h4>BankSA (SAMA · Saudi Central Bank)</h4>
         <ul class="reg-list">
           <li><strong>Banking Control Law (1966, amended):</strong> The primary law governing commercial banking activity in Saudi Arabia. Issued by SAMA, supplemented by the SAMA rulebook on capital adequacy, liquidity, and cross-border activity. BankSA's tokenized deposit activity is regulated as deposit-taking under this regime; the SAR token is a digital representation of an existing bank deposit liability, not a new asset class.</li>
@@ -1502,8 +1452,8 @@ footer {
 <!-- ═══════════ SECTION 10: SETTLEMENT ═══════════ -->
 <section id="settlement">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_10">Section 10</p>
-    <h2 class="sec-title" data-i18n="t-rtgs_net_settlement_and_li">RTGS net settlement and liquidity management</h2>
+    <p class="sec-kicker">Section 10</p>
+    <h2 class="sec-title">RTGS net settlement and liquidity management</h2>
     <p class="sec-lead">
       The Besu on-chain layer handles real-time token transfer and atomic PvP settlement. The RTGS layer handles final settlement in central bank money. Understanding how these two layers interact is essential for treasury teams evaluating the liquidity implications of this architecture.
     </p>
@@ -1556,8 +1506,8 @@ footer {
 <!-- ═══════════ SECTION 11: RISKS ═══════════ -->
 <section id="risks">
   <div class="container">
-    <p class="sec-kicker" data-i18n="kicker-section_11">Section 11</p>
-    <h2 class="sec-title" data-i18n="t-operational_risks_and_gove">Operational risks and governance design</h2>
+    <p class="sec-kicker">Section 11</p>
+    <h2 class="sec-title">Operational risks and governance design</h2>
     <p class="sec-lead">
       The architecture described is technically sound and has direct precedent in multiple production deployments. The risks that matter most are governance, legal, and operational, not technical. Banks evaluating this model for the EUR–SAR corridor should stress-test the following before committing architecture.
     </p>
@@ -1661,12 +1611,8 @@ footer {
   <div class="footer-inner footer-grid">
 
     <div class="footer-col footer-brand-col">
-      <div class="footer-brand">Post Oak <span>Labs</span></div>
-      <p class="footer-tag">Tokenized payment infrastructure for institutions that operate where it matters most.</p>
-      <p class="footer-copy">&copy; 2026 Post Oak Labs</p>
-      <p class="footer-copy"><a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
-      <p class="footer-copy" style="margin-top:0.3rem;">
-        <a href="https://x.com/postoaklabs" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+      <p class="footer-copy">
+        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
         &nbsp;&middot;&nbsp;
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
       </p>
@@ -1677,7 +1623,6 @@ footer {
       <a href="a2a-payments.html">Market coverage</a>
       <a href="a2a-workflow.html">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
       <a href="iso20022-a2a.html">ISO 20022 alignment</a>
       <a href="tmmf-a2a.html">tMMF on A2A rails</a>
     </div>
@@ -1709,38 +1654,10 @@ footer {
     </div>
 
   </div>
-
-  <div class="footer-meta">
-    <p class="footer-copy" style="opacity:0.7;">
-      Last revised May 2026.
-      Content licensed CC BY 4.0 unless otherwise noted.
-      &nbsp;&middot;&nbsp;
-      <a href="llms.txt">llms.txt</a>
-    </p>
-  </div>
 </footer>
 
 <script>
-const i18n = {
-  en: {"hero-h1": "A2A tokenization on Hyperledger Besu: two European banks, one Saudi bank", "hero-sub": "A minute-detail walkthrough of how Hyperledger Besu, deployed using the Adhara SILVER (Settlement, Issuance, Liquidity and Velocity Enhancement Rail) pattern proven in Project Khokha 2 and the Euro Cyber Resilience Board sandbox, enables tokenized account-to-account settlement across a three-bank EVM network: a French commercial bank (Paris), a Spanish commercial bank (Madrid), and a Saudi commercial bank (Riyadh). Every layer covered: validator topology, smart-contract architecture, token lifecycle, on-chain FX, privacy via Tessera, ISO 20022 integration, and the applicable regulatory frameworks on both sides of the corridor.", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Besu + Adhara is the right infrastructure choice", "t-network_topology_and_valid": "Network topology and validator architecture", "t-smart_contract_structure": "Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle", "t-full_transaction_lifecycle": "Full transaction lifecycle: 16 steps end-to-end", "t-fx_handling__eur_sar_conve": "FX handling: EUR/SAR conversion on the Besu chain", "t-privacy__tessera__private": "Privacy: Tessera, private state, and zero-knowledge options", "t-iso_20022_payload_binding": "ISO 20022 payload binding: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
-  es: {"hero-h1": "Tokenización A2A en Hyperledger Besu: dos bancos europeos, un banco saudí", "hero-sub": "Guía técnica detallada de cómo Hyperledger Besu permite la liquidación A2A tokenizada en una red de tres bancos.", "kicker-section_01": "Sección 01", "kicker-section_02": "Sección 02", "kicker-section_03": "Sección 03", "kicker-section_04": "Sección 04", "kicker-section_05": "Sección 05", "kicker-section_06": "Sección 06", "kicker-section_07": "Sección 07", "kicker-section_08": "Sección 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Besu + Adhara is the right infrastructure choice", "t-network_topology_and_valid": "Network topology and validator architecture", "t-smart_contract_structure": "Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle", "t-full_transaction_lifecycle": "Full transaction lifecycle: 16 steps end-to-end", "t-fx_handling__eur_sar_conve": "FX handling: EUR/SAR conversion on the Besu chain", "t-privacy__tessera__private": "Privacy: Tessera, private state, and zero-knowledge options", "t-iso_20022_payload_binding": "ISO 20022 payload binding: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
-  fr: {"hero-h1": "Tokenisation A2A sur Hyperledger Besu : deux banques européennes, une banque saoudienne", "hero-sub": "Présentation technique détaillée de Hyperledger Besu pour la liquidation A2A tokenisée dans un réseau de trois banques.", "kicker-section_01": "Section 01", "kicker-section_02": "Section 02", "kicker-section_03": "Section 03", "kicker-section_04": "Section 04", "kicker-section_05": "Section 05", "kicker-section_06": "Section 06", "kicker-section_07": "Section 07", "kicker-section_08": "Section 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Besu + Adhara is the right infrastructure choice", "t-network_topology_and_valid": "Network topology and validator architecture", "t-smart_contract_structure": "Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle", "t-full_transaction_lifecycle": "Full transaction lifecycle: 16 steps end-to-end", "t-fx_handling__eur_sar_conve": "FX handling: EUR/SAR conversion on the Besu chain", "t-privacy__tessera__private": "Privacy: Tessera, private state, and zero-knowledge options", "t-iso_20022_payload_binding": "ISO 20022 payload binding: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
-  ar: {"hero-h1": "التوكينزيشن A2A على Hyperledger Besu: بنكان أوروبيان وبنك سعودي", "hero-sub": "جولة تقنية تفصيلية حول Hyperledger Besu لتسوية A2A المرمّزة عبر شبكة ثلاثة بنوك.", "kicker-section_01": "القسم 01", "kicker-section_02": "القسم 02", "kicker-section_03": "القسم 03", "kicker-section_04": "القسم 04", "kicker-section_05": "القسم 05", "kicker-section_06": "القسم 06", "kicker-section_07": "القسم 07", "kicker-section_08": "القسم 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Besu + Adhara is the right infrastructure choice", "t-network_topology_and_valid": "Network topology and validator architecture", "t-smart_contract_structure": "Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle", "t-full_transaction_lifecycle": "Full transaction lifecycle: 16 steps end-to-end", "t-fx_handling__eur_sar_conve": "FX handling: EUR/SAR conversion on the Besu chain", "t-privacy__tessera__private": "Privacy: Tessera, private state, and zero-knowledge options", "t-iso_20022_payload_binding": "ISO 20022 payload binding: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
-  pt: {"hero-h1": "Tokenização A2A no Hyperledger Besu: dois bancos europeus, um banco saudita", "hero-sub": "Apresentação técnica detalhada do Hyperledger Besu para liquidação A2A tokenizada em uma rede de três bancos.", "kicker-section_01": "Seção 01", "kicker-section_02": "Seção 02", "kicker-section_03": "Seção 03", "kicker-section_04": "Seção 04", "kicker-section_05": "Seção 05", "kicker-section_06": "Seção 06", "kicker-section_07": "Seção 07", "kicker-section_08": "Seção 08", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Besu + Adhara is the right infrastructure choice", "t-network_topology_and_valid": "Network topology and validator architecture", "t-smart_contract_structure": "Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle", "t-full_transaction_lifecycle": "Full transaction lifecycle: 16 steps end-to-end", "t-fx_handling__eur_sar_conve": "FX handling: EUR/SAR conversion on the Besu chain", "t-privacy__tessera__private": "Privacy: Tessera, private state, and zero-knowledge options", "t-iso_20022_payload_binding": "ISO 20022 payload binding: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"},
-  zh: {"hero-h1": "基于Hyperledger Besu的A2A代币化：两家欧洲银行，一家沙特银行", "hero-sub": "关于Hyperledger Besu实现三行网络代币化A2A结算的详细技术演练。", "kicker-section_01": "第01节", "kicker-section_02": "第02节", "kicker-section_03": "第03节", "kicker-section_04": "第04节", "kicker-section_05": "第05节", "kicker-section_06": "第06节", "kicker-section_07": "第07节", "kicker-section_08": "第08节", "kicker-section_09": "Section 09", "kicker-section_10": "Section 10", "kicker-section_11": "Section 11", "t-why_this_corridor__and_why": "Why this corridor, and why Besu + Adhara is the right infrastructure choice", "t-network_topology_and_valid": "Network topology and validator architecture", "t-smart_contract_structure": "Smart contract structure: deposit tokens, the SILVER PvP engine, and the FX oracle", "t-full_transaction_lifecycle": "Full transaction lifecycle: 16 steps end-to-end", "t-fx_handling__eur_sar_conve": "FX handling: EUR/SAR conversion on the Besu chain", "t-privacy__tessera__private": "Privacy: Tessera, private state, and zero-knowledge options", "t-iso_20022_payload_binding": "ISO 20022 payload binding: what travels and why it matters", "t-kyc_aml_compliance_and_the": "KYC/AML compliance and the Travel Rule across two jurisdictions", "t-regulatory_framework__mica": "Regulatory framework: MiCA + DORA (EU) and SAMA Banking Control Law (Saudi Arabia)", "t-rtgs_net_settlement_and_li": "RTGS net settlement and liquidity management", "t-operational_risks_and_gove": "Operational risks and governance design"}
-};
 
-function setLang(lang) {
-  document.querySelectorAll(".lang-btn").forEach(b => {
-    b.classList.remove("active");
-    const oc = b.getAttribute("onclick") || "";
-    if (oc.includes("'" + lang + "'") || oc.includes('"' + lang + '"')) {
-      b.classList.add("active");
-    }
-  });
-  document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-}
 
 // Smooth active section highlighting in TOC
 const sections = document.querySelectorAll('section[id]');
@@ -1755,6 +1672,23 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.2 });
 sections.forEach(s => observer.observe(s));
+</script>
+<script>
+(function(){
+  var nav = document.querySelector('nav[role="navigation"]');
+  var hero = document.querySelector('.hero, .showcase-hero');
+  if(!nav || !hero) return;
+  function onScroll(){
+    var threshold = hero.offsetHeight * 0.6;
+    if(window.scrollY > threshold){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
 </script>
 </body>
 </html>

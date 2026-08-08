@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintech Intelligence Showcase — Post Oak Labs</title>
+<title>Fintech Intelligence Showcase, Post Oak Labs</title>
 
 <meta name="description" content="Advisory scenarios and corridor case studies from Post Oak Labs. Client-side, zero PII, AP2-exportable, MCP-native. Five buyer-archetype hubs linking into the AINumbers tool catalog.">
 <meta name="author" content="Post Oak Labs">
@@ -15,6 +15,15 @@
 <meta property="og:image" content="https://postoaklabs.com/demos/og/index.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@PostOakLabs">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0a1828">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+<link rel="apple-touch-icon" sizes="64x64" href="/favicon-64.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,12 +131,12 @@
   --body: #7090b0;
   --text: #d8e4f0;
   --muted: #5a7a95;
-  --bright: #ffffff;
+  --bright: #d0e4f4;
   --white: #ffffff;
-  --accent: #2a7fc0;
-  --accent-lt: #4a9fdf;
+  --accent: var(--gold);
+  --accent-lt: var(--gold-lt);
   --gold: #c09040;
-  --gold-lt: #d0a050;
+  --gold-lt: #d8b060;
   --success: #10b981;
   --cat-agentic: #4a9fdf;
   --cat-regtech: #a78bfa;
@@ -164,32 +173,25 @@ nav.pol-nav .nav-inner {
   display: flex; align-items: center; justify-content: space-between;
   gap: 1.5rem; flex-wrap: wrap;
 }
-nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; }
-nav.pol-nav .nav-logo span { color: var(--gold); }
-nav.pol-nav .nav-links { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+nav.pol-nav .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 0.55rem; }
+nav.pol-nav .nav-logo-mark { height: 24px; width: auto; flex-shrink: 0; display: block; }
+nav.pol-nav .nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
+nav.pol-nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
+nav.pol-nav .nav-links { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 nav.pol-nav .nav-links a {
   color: var(--body); text-decoration: none;
   font-size: 0.86rem; font-weight: 400;
-  transition: color 0.15s;
+  transition: all 0.15s;
+  border: 1px solid var(--edge); padding: 0.4rem 0.85rem;
 }
-nav.pol-nav .nav-links a:hover { color: #fff; }
-nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); }
-nav.pol-nav .nav-links a.nav-cta {
-  background: var(--accent);
-  color: #fff !important;
-  padding: 0.4rem 0.95rem;
-  border-radius: 4px;
-}
-nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
+nav.pol-nav .nav-links a:hover { color: #fff; border-color: var(--accent); }
+nav.pol-nav .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
 
 /* ═══ HERO ═══ */
 .showcase-hero {
   padding: 4rem 0 3rem;
   border-bottom: 1px solid var(--edge);
-  background:
-    radial-gradient(60% 80% at 20% 0%, rgba(42,127,192,0.07) 0%, transparent 70%),
-    radial-gradient(40% 60% at 90% 30%, rgba(192,144,64,0.06) 0%, transparent 65%),
-    var(--ink);
+  background: var(--ink);
 }
 .hero-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
 .hero-eyebrow-top {
@@ -237,16 +239,14 @@ nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
   border-radius: 3px;
   background: rgba(20, 37, 64, 0.5);
 }
-.hero-trust-pill.accent { color: var(--accent-lt); border-color: rgba(42,127,192,0.4); }
+.hero-trust-pill.accent { color: var(--accent-lt); border-color: rgba(192,144,64,0.4); }
 .hero-trust-pill.gold { color: var(--gold-lt); border-color: rgba(192,144,64,0.4); }
 
 /* ═══ HUB STRIP (buyer-archetype hubs) ═══ */
 .hubs-strip {
   padding: 3rem 0 2.5rem;
   border-bottom: 1px solid var(--edge);
-  background:
-    radial-gradient(50% 80% at 50% 100%, rgba(192,144,64,0.04) 0%, transparent 70%),
-    var(--ink);
+  background: var(--deep);
 }
 .hubs-strip-inner { max-width: 1240px; margin: 0 auto; padding: 0 2rem; }
 .hubs-strip-head { margin-bottom: 1.5rem; }
@@ -383,8 +383,8 @@ nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
 }
 .card-status.ext {
   color: var(--accent-lt);
-  background: rgba(42,127,192,0.08);
-  border: 1px solid rgba(42,127,192,0.3);
+  background: rgba(192,144,64,0.08);
+  border: 1px solid rgba(192,144,64,0.3);
 }
 .card-title {
   font-family: 'DM Serif Display', serif;
@@ -428,33 +428,36 @@ nav.pol-nav .nav-links a.nav-cta:hover { background: var(--accent-lt); }
   text-transform: uppercase; color: var(--gold); margin-bottom: 0.9rem; font-weight: 500;
 }
 .faq-section h2 { font-size: clamp(1.4rem, 2.5vw, 2rem); color: #fff; margin-bottom: 1.75rem; line-height: 1.3; }
-.faq-item { border-bottom: 1px solid var(--edge); padding: 1.1rem 0; }
-.faq-item h3 {
+.faq-item { border-bottom: 1px solid var(--edge); }
+.faq-item details { padding: 1.1rem 0; }
+.faq-item summary {
   font-family: 'DM Serif Display', serif; font-size: 1.08rem; color: var(--text);
-  margin-bottom: 0.5rem; line-height: 1.35;
+  line-height: 1.35; cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
-.faq-item p { font-size: 0.9rem; color: var(--body); line-height: 1.7; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::marker { content: ''; }
+.faq-item summary .faq-toggle-icon {
+  font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: var(--gold);
+  flex-shrink: 0; transition: transform 0.2s ease;
+}
+.faq-item details[open] summary .faq-toggle-icon { transform: rotate(45deg); }
+.faq-item summary:hover { color: #fff; }
+.faq-item details p { font-size: 0.9rem; color: var(--body); line-height: 1.7; margin-top: 0.75rem; }
 
-/* ═══ POL FOOTER ═══ */
-footer.pol-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.25rem 0 2.5rem; }
-footer.pol-footer .footer-inner {
-  max-width: 1240px; margin: 0 auto; padding: 0 2rem;
-  display: flex; justify-content: space-between; align-items: flex-start;
-  flex-wrap: wrap; gap: 1.5rem;
-}
-footer.pol-footer .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #fff; }
-footer.pol-footer .footer-copy {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.78rem;
-  color: var(--body);
-  line-height: 1.65;
-  margin-top: 0.35rem;
-}
-footer.pol-footer .footer-copy a { color: var(--body); text-decoration: underline; }
-footer.pol-footer .footer-copy a:hover { color: var(--accent-lt); }
-footer.pol-footer .footer-links { display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.85rem; }
-footer.pol-footer .footer-links a { color: var(--body); text-decoration: none; }
-footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
+/* ═══ STANDARD SITE FOOTER ═══ */
+.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
+.footer-copy a { color: var(--accent-lt); text-decoration: none; }
+.footer-copy a:hover { text-decoration: underline; }
+.site-footer { background: var(--ink); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
+.footer-grid { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-brand-col { gap: 0.4rem; }
+.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
+.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
+.footer-col > a:hover { color: var(--accent-lt); }
+@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -470,18 +473,19 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
 <nav class="pol-nav" role="navigation" aria-label="Primary">
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Post Oak Labs — Home">
-      Post Oak <span>Labs</span>
+      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
+<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
+      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
     </a>
     <div class="nav-links">
-      <a href="/a2a-payments.html">A2A Payments</a>
-      <a href="/a2a-workflow.html">How It Works</a>
-      <a href="/a2a-comparison.html">Comparison</a>
-      <a href="/blockchain-advisory.html">Advisory</a>
-      <a href="/enterprise-blockchain.html">Enterprise Blockchain</a>
-      <a href="/glossary.html">Glossary</a>
+      <a href="/">Home</a>
       <a href="/demos/" class="active-page">Scenarios</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener">Tools&nbsp;↗</a>
-      <a href="/contact.html" class="nav-cta">Talk to us</a>
     </div>
   </div>
 </nav>
@@ -492,7 +496,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     <span class="hero-eyebrow-top">Post Oak Labs Showcase</span>
     <h1>Fintech Intelligence Showcase.</h1>
     <p class="hero-sub">
-      Advisory scenarios and corridor case studies from Post Oak Labs —
+      Advisory scenarios and corridor case studies from Post Oak Labs,
       client-side, zero PII, AP2-exportable, MCP-native.
       The full tool library (500+ tools, 300+ chains) lives at
       <strong><a href="https://ainumbers.co/" target="_blank" rel="noopener" style="color:var(--gold-lt)">AINumbers.co</a></strong>.
@@ -529,7 +533,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
       <a class="hub-card" href="/demos/regtech/" data-cat="regtech">
         <span class="hub-card-arch">RegTech</span>
         <span class="hub-card-name">Five enforcement clocks, one schema</span>
-        <p class="hub-card-claim">DORA, NIS2, MiCA, EU AI Act, CFPB §1033 — advisory on compliance programme design with dual- and triple-regime overlap.</p>
+        <p class="hub-card-claim">DORA, NIS2, MiCA, EU AI Act, CFPB §1033, advisory on compliance programme design with dual- and triple-regime overlap.</p>
         <div class="hub-card-meta"><span>ComplyAdvantage · Sumsub</span></div>
         <span class="hub-card-cta">Explore hub →</span>
       </a>
@@ -545,7 +549,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
       <a class="hub-card" href="/demos/processors/" data-cat="processors">
         <span class="hub-card-arch">Processors</span>
         <span class="hub-card-name">Card economics, A2A migration, ISO cutover</span>
-        <p class="hub-card-claim">14 Nov 2026 CBPR+ structured-address deadline, FCA DPC, FX netting, real-time fraud at FedNow speed — advisory and gap analysis.</p>
+        <p class="hub-card-claim">14 Nov 2026 CBPR+ structured-address deadline, FCA DPC, FX netting, real-time fraud at FedNow speed, advisory and gap analysis.</p>
         <div class="hub-card-meta"><span>Stripe · Adyen · Worldpay</span></div>
         <span class="hub-card-cta">Explore hub →</span>
       </a>
@@ -553,7 +557,7 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
       <a class="hub-card" href="/demos/stablecoin-issuer/" data-cat="stablecoin">
         <span class="hub-card-arch">Stablecoin Issuer</span>
         <span class="hub-card-name">Issuer-grade readiness advisory</span>
-        <p class="hub-card-claim">MiCA Title III / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA — reserve architecture and regulatory positioning.</p>
+        <p class="hub-card-claim">MiCA Title III / GENIUS Act readiness, FATF R.16 Travel Rule, tokenized RWA, reserve architecture and regulatory positioning.</p>
         <div class="hub-card-meta"><span>Paxos · Circle · Bridge · Anchorage</span></div>
         <span class="hub-card-cta">Explore hub →</span>
       </a>
@@ -588,33 +592,9 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
         <span class="card-title">West Africa Digital Currency Corridor</span>
         <span class="card-status live">POL</span>
       </div>
-      <p class="card-desc">CBDC and stablecoin settlement across West Africa — Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/BCEAO (WAEMU). Settlement economics vs correspondent banking, FATF compliance overlay.</p>
+      <p class="card-desc">CBDC and stablecoin settlement across West Africa, Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/BCEAO (WAEMU). Settlement economics vs correspondent banking, FATF compliance overlay.</p>
       <div class="card-meta">
         <span class="chip">eNaira · cNGN · e-Cedi</span><span class="chip">FATF R.16</span><span class="chip">ECOWAS</span>
-      </div>
-    </a>
-
-    <a class="demo-card" href="https://ainumbers.co/tools/17-instant-payment-limits.html" data-cat="processors" target="_blank" rel="noopener" style="text-decoration:none;">
-      <span class="card-cat cat-processors">Payments / Treasury</span>
-      <div class="card-head">
-        <span class="card-title">Instant Payment Limits + Rail Comparator</span>
-        <span class="card-status ext">AINumbers ↗</span>
-      </div>
-      <p class="card-desc">Compare FedNow, RTP, ACH, Faster Payments, SEPA Instant, PIX, UPI, PayID, and Zengin on limits, cut-off times, availability, and rules. Side-by-side, any combination.</p>
-      <div class="card-meta">
-        <span class="chip">9 rails</span><span class="chip">ISO 20022</span><span class="chip">Run on AINumbers</span>
-      </div>
-    </a>
-
-    <a class="demo-card" href="https://ainumbers.co/tools/328-genius-act-reserve-optimizer.html" data-cat="stablecoin" target="_blank" rel="noopener" style="text-decoration:none;">
-      <span class="card-cat cat-stablecoin">Stablecoin &amp; Tokenization</span>
-      <div class="card-head">
-        <span class="card-title">GENIUS Act Reserve Composition Optimizer</span>
-        <span class="card-status ext">AINumbers ↗</span>
-      </div>
-      <p class="card-desc">Validate payment stablecoin reserve composition against GENIUS Act requirements (effective Jan 2027): 1:1 backing, UST ≤93-day caps, Fed deposits, segregation, monthly disclosure, AML/BSA. Policy Mandate export.</p>
-      <div class="card-meta">
-        <span class="chip">Jan 2027</span><span class="chip">1:1 backing · UST ≤93d</span><span class="chip">Run on AINumbers</span>
       </div>
     </a>
 
@@ -627,28 +607,40 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     <div class="faq-eyebrow">FAQ</div>
     <h2>Frequently asked questions</h2>
     <div class="faq-item">
-      <h3>What is the Post Oak Labs Fintech Intelligence Showcase?</h3>
-      <p>A set of advisory scenarios and corridor case studies drawn from Post Oak Labs practice and the AINumbers.co tool library. Every page runs entirely client-side, stores zero PII, exports Policy Mandate v1 mandates, and is discoverable over MCP.</p>
+      <details>
+        <summary>What is the Post Oak Labs Fintech Intelligence Showcase?<span class="faq-toggle-icon">+</span></summary>
+        <p>A set of advisory scenarios and corridor case studies drawn from Post Oak Labs practice and the AINumbers.co tool library. Every page runs entirely client-side, stores zero PII, exports Policy Mandate v1 mandates, and is discoverable over MCP.</p>
+      </details>
     </div>
     <div class="faq-item">
-      <h3>Are the scenarios free, and do they store my data?</h3>
-      <p>Yes. All scenarios are free and open-licensed under CC BY 4.0. They are entirely client-side: no data leaves your browser and no PII is collected or transmitted.</p>
+      <details>
+        <summary>Are the scenarios free, and do they store my data?<span class="faq-toggle-icon">+</span></summary>
+        <p>Yes. All scenarios are free and open-licensed under CC BY 4.0. They are entirely client-side: no data leaves your browser and no PII is collected or transmitted.</p>
+      </details>
     </div>
     <div class="faq-item">
-      <h3>What is AP2 and why do the scenarios export it?</h3>
-      <p>AP2 is Google's Agent Payments Protocol (v0.2.0), a standard for expressing payment policies that AI agents can execute. Each scenario exports its result as a Policy Mandate (schema: @postoaklabs.com/policy-mandate-v1) so the output can be consumed by AP2-capable agents, replayed by an agent runtime, or reviewed by an audit team.</p>
+      <details>
+        <summary>What is AP2 and why do the scenarios export it?<span class="faq-toggle-icon">+</span></summary>
+        <p>AP2 is Google's Agent Payments Protocol (v0.2.0), a standard for expressing payment policies that AI agents can execute. Each scenario exports its result as a Policy Mandate (schema: @postoaklabs.com/policy-mandate-v1) so the output can be consumed by AP2-capable agents, replayed by an agent runtime, or reviewed by an audit team.</p>
+      </details>
     </div>
     <div class="faq-item">
-      <h3>What is MCP and how do these tools use it?</h3>
-      <p>MCP (Model Context Protocol) is an open standard for exposing tools to large language models. The AINumbers tool catalog is MCP-native, so models such as Claude can call the tools directly and receive Policy Mandates in response.</p>
+      <details>
+        <summary>What is MCP and how do these tools use it?<span class="faq-toggle-icon">+</span></summary>
+        <p>MCP (Model Context Protocol) is an open standard for exposing tools to large language models. The AINumbers tool catalog is MCP-native, so models such as Claude can call the tools directly and receive Policy Mandates in response.</p>
+      </details>
     </div>
     <div class="faq-item">
-      <h3>Which regulatory regimes do the scenarios cover?</h3>
-      <p>Across the catalog the scenarios cover DORA, NIS2, MiCA, the EU AI Act, CFPB §1033, FATF Recommendation 16 (Travel Rule), Basel III/IV, BIS 239, FCA DPC, ISO 20022 / CBPR+ (14 November 2026 structured-address deadline; MT/MX coexistence ended 22 November 2025), and the US GENIUS Act.</p>
+      <details>
+        <summary>Which regulatory regimes do the scenarios cover?<span class="faq-toggle-icon">+</span></summary>
+        <p>Across the catalog the scenarios cover DORA, NIS2, MiCA, the EU AI Act, CFPB §1033, FATF Recommendation 16 (Travel Rule), Basel III/IV, BIS 239, FCA DPC, ISO 20022 / CBPR+ (14 November 2026 structured-address deadline; MT/MX coexistence ended 22 November 2025), and the US GENIUS Act.</p>
+      </details>
     </div>
     <div class="faq-item">
-      <h3>Who builds these scenarios and how do I go deeper?</h3>
-      <p>They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with advisory on production deployments across frontier markets. Explore the full AINumbers tool catalog at <a href="https://ainumbers.co/" target="_blank" rel="noopener">ainumbers.co</a>, or browse by buyer archetype through the five hubs.</p>
+      <details>
+        <summary>Who builds these scenarios and how do I go deeper?<span class="faq-toggle-icon">+</span></summary>
+        <p>They are built by Post Oak Labs, a firm specializing in tokenized payment infrastructure with advisory on production deployments across frontier markets. Explore the full AINumbers tool catalog at <a href="https://ainumbers.co/" target="_blank" rel="noopener">ainumbers.co</a>, or browse by buyer archetype through the five hubs.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -659,33 +651,81 @@ footer.pol-footer .footer-links a:hover { color: var(--accent-lt); }
     <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#c09040;margin-bottom:0.7rem;font-weight:500;">Fintech Intelligence Showcase</div>
     <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">These scenarios demonstrate capability.</h2>
     <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">Behind every tool is a team that has built and integrated production tokenized payment systems. If one maps to a problem you are facing, let us talk.</p>
-    <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#2a7fc0;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
+    <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#c09040;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
     <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · emerging and frontier markets worldwide</div>
   </div>
 </section>
 
-<!-- ═══════════════ POL DARK FOOTER ═══════════════ -->
-<footer class="pol-footer">
-  <div class="footer-inner">
-    <div>
-      <div class="footer-brand">Post Oak <span style="color:var(--gold)">Labs</span></div>
-      <p class="footer-copy">&copy; 2026 Post Oak Labs &nbsp;·&nbsp; <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a></p>
-      <p class="footer-copy">Built by Post Oak Labs &nbsp;·&nbsp; <a href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></p>
+<!-- ═══════════════ STANDARD SITE FOOTER ═══════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner footer-grid">
+
+    <div class="footer-col footer-brand-col">
+      <p class="footer-copy">
+        <a href="https://postoaklabs.com/llms.txt">llms.txt</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://postoaklabs.com/llms-full.txt">llms-full.txt</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
+        &nbsp;&middot;&nbsp;
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+      </p>
     </div>
-    <div class="footer-links">
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener">AINumbers.co — full tool catalog ↗</a>
-      <a href="/demos/agentic-runtime/">Agentic Runtime hub</a>
-      <a href="/demos/regtech/">RegTech hub</a>
-      <a href="/demos/baas/">BaaS hub</a>
-      <a href="/demos/processors/">Processors hub</a>
-      <a href="/demos/stablecoin-issuer/">Stablecoin Issuer hub</a>
+
+    <div class="footer-col">
+      <h4 class="footer-h">A2A Payments</h4>
+      <a href="/a2a-payments.html">Market coverage</a>
+      <a href="/a2a-workflow.html">How it works</a>
+      <a href="/a2a-comparison.html">Comparison framework</a>
+      <a href="/iso20022-a2a.html">ISO 20022 alignment</a>
+      <a href="/tmmf-a2a.html">tMMF on A2A rails</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Enterprise Blockchain</h4>
+      <a href="/enterprise-blockchain.html">Market briefing</a>
+      <a href="/example-besu-a2a.html">Hyperledger Besu</a>
+      <a href="/example-canton-a2a.html">Canton / Daml</a>
+      <a href="/example-corda-a2a.html">R3 Corda</a>
+      <a href="/example-fabric-a2a.html">Hyperledger Fabric</a>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-h">About &amp; Advisory</h4>
+      <a href="/blockchain-advisory.html">Advisory track record</a>
       <a href="/contact.html">Contact</a>
+      <a href="/a2a-engagement-roadmap.html">Engagement roadmap</a>
     </div>
-    <div class="footer-copy" style="text-align:right;">
-      <span>No data leaves your browser &nbsp;·&nbsp; Client-side only &nbsp;·&nbsp; CC BY 4.0</span>
+
+    <div class="footer-col">
+      <h4 class="footer-h">Resources</h4>
+      <a href="/demos/">Demos</a>
+      <a href="/glossary.html">Glossary</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/sitemap.html">Sitemap</a>
+      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
+      <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub&nbsp;&#8599;</a>
     </div>
+
   </div>
 </footer>
 
+<script>
+(function(){
+  var nav = document.querySelector('nav[role="navigation"]');
+  var hero = document.querySelector('.hero, .showcase-hero');
+  if(!nav || !hero) return;
+  function onScroll(){
+    var threshold = hero.offsetHeight * 0.6;
+    if(window.scrollY > threshold){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
 </body>
 </html>
