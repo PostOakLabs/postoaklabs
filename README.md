@@ -15,7 +15,7 @@ Source for **[postoaklabs.com](https://postoaklabs.com)** — institutional advi
 - **Stablecoin & CBDC strategy** — MiCA / GENIUS Act issuer readiness, tokenized RWA compliance, cross-border settlement
 - **Regulatory intelligence** — DORA, Basel IV, FAPI, CFPB 1033, EU AI Act, FATF sanctions, KYB/AML, VASP Travel Rule
 - **Agentic payment policy (AP2)** — mandate builder, guardrail designer, BaaS infrastructure policy, AML rule builder
-- **Interactive demos** — 35+ browser-based tools covering FX netting, fraud risk, nostro optimization, embedded lending, VRP sweep logic, and more
+- **Interactive demos** — a curated post-reorientation showcase: 2 interactive advisory scenarios + 2 corridor case studies (the earlier 27+ tool demos 301-redirect to their canonical AINumbers.co homes; see `demos/REDIRECT-MAP.md`)
 
 ---
 
@@ -25,7 +25,7 @@ Source for **[postoaklabs.com](https://postoaklabs.com)** — institutional advi
 postoaklabs/
 ├── index.html              ← Homepage
 ├── *.html                  ← Site pages (A2A, blockchain, advisory, glossary, …)
-├── demos/                  ← 35+ self-contained interactive tools
+├── demos/                  ← 2 advisory scenarios + 2 corridor case studies (+ redirect stubs to ainumbers.co)
 ├── sitemap.xml             ← XML sitemap
 ├── robots.txt              ← Crawler directives
 ├── llms.txt                ← LLM-readable site summary
