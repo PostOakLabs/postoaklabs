@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2A on Enterprise Ledgers | Post Oak Labs</title>
+<meta name="description" content="Reference architectures for tokenized account-to-account settlement on Hyperledger Besu, Canton, R3 Corda and Hyperledger Fabric: topology, contract code, transaction lifecycles, FX, privacy, ISO 20022 binding and regulation.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/a2a-ledgers.html">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#eef4f2">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="A2A on Enterprise Ledgers | Post Oak Labs">
+<meta property="og:description" content="Tokenized account-to-account settlement on Besu, Canton, Corda and Fabric, compared layer by layer.">
+<meta property="og:url" content="https://postoaklabs.com/a2a-ledgers.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "A2A on Enterprise Ledgers: Besu, Canton, Corda and Fabric",
+  "description": "Reference architectures for tokenized account-to-account settlement on Hyperledger Besu, Canton, R3 Corda and Hyperledger Fabric.",
+  "url": "https://postoaklabs.com/a2a-ledgers.html",
+  "mainEntityOfPage": "https://postoaklabs.com/a2a-ledgers.html",
+  "author": {"@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com"},
+  "publisher": {"@type": "Organization", "@id": "https://postoaklabs.com/#organization", "name": "Post Oak Labs", "logo": {"@type": "ImageObject", "url": "https://postoaklabs.com/icon-512.png"}},
+  "inLanguage": "en",
+  "about": ["Account-to-account payments", "Tokenized deposits", "Hyperledger Besu", "Canton Network", "R3 Corda", "Hyperledger Fabric", "ISO 20022"],
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+/* Mist palette (POL-REDESIGN-SPEC_2026-10-08 §1). Copy this token block into every page; no shared CSS file. */
+:root{
+  --bg:#eef4f2;      /* page ground */
+  --band:#e2ece9;    /* alternate section band */
+  --card:#f8fbfa;    /* cards, panels */
+  --ink:#102a27;     /* headings, primary text */
+  --soft:#3f5652;    /* body text, secondary */
+  --line:#cfdeda;    /* borders, rules */
+  --teal:#0b7a70;    /* labels, numbers, links */
+  --ring:#0e9c9c;    /* logo O only */
+  --cyan:#0a6f86;    /* MCP request arrows, rotating word */
+  --amber:#a8650f;   /* MCP response arrows, rotating word */
+  --gold:#c9861f;    /* primary button fill, logo L */
+  --gold-ink:#1a1408;/* text on gold */
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
+
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
+
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot .brand{display:block;line-height:0}
+.site-foot .brand svg{height:28px;width:143px}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
+
+/* page: A2A on enterprise ledgers */
+.doc{overflow-wrap:anywhere}
+.doc-head .wrap{padding-block:clamp(40px,7vw,80px) clamp(24px,4vw,40px);display:grid;gap:18px}
+.doc-head h1{margin:0;max-width:22ch;font-weight:600;font-size:clamp(2rem,5.4vw,3.4rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.doc-head p{margin:0;max-width:68ch;font-size:1.06rem;font-weight:300;color:var(--soft)}
+.doc section{border-top:1px solid var(--line)}
+.doc section.band{background:var(--band)}
+.doc section>.wrap{padding-block:clamp(32px,5vw,56px);display:grid;gap:16px;min-width:0}
+.doc h2{margin:0;max-width:30ch;font-weight:600;font-size:clamp(1.45rem,3.2vw,2rem);line-height:1.18;letter-spacing:-.02em;text-wrap:balance}
+.doc h3{margin:18px 0 0;font-weight:600;font-size:1.16rem;line-height:1.3;color:var(--ink)}
+.doc h4{margin:6px 0 0;font-weight:600;font-size:.98rem;color:var(--ink)}
+.doc p,.doc li{font-weight:300;color:var(--soft)}
+.doc p{margin:0;max-width:68ch}
+.doc ul,.doc ol{margin:0;padding-left:1.25em;max-width:68ch;display:grid;gap:6px}
+.doc li::marker{color:var(--teal)}
+.doc a{color:var(--teal)}
+.doc code{font-family:var(--f-mono);font-size:.84em;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 .25em}
+.doc pre{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;max-width:100%;font-family:var(--f-mono);font-size:.76rem;line-height:1.5;color:var(--ink);overflow-wrap:normal}
+.doc pre code{background:none;border:0;padding:0;font-size:inherit}
+.k{color:var(--ink);font-weight:400}
+.num{font-family:var(--f-mono);color:var(--teal);font-weight:500}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none;max-width:none}
+.tags li{font-family:var(--f-mono);font-size:.7rem;color:var(--teal);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:10px;max-width:760px}
+.toc ol{gap:4px}
+.toc ol ol{margin-top:4px;padding-left:1.1em;font-size:.9rem}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:10px;padding:14px 16px;max-width:76ch;display:grid;gap:6px}
+.note .label{font-size:.66rem}
+.note.warn{border-left-color:var(--amber)}
+.tbl{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.tbl table{border-collapse:collapse;width:100%;min-width:560px;font-size:.84rem}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;overflow-wrap:normal}
+.tbl th{background:var(--card);font-weight:600;color:var(--ink)}
+.tbl td{font-weight:300;color:var(--soft)}
+.tbl tbody th{font-weight:600;font-size:.82rem;white-space:normal}
+.tbl tr:last-child td,.tbl tr:last-child th{border-bottom:0}
+.tbl.wide table{min-width:820px}
+.nodes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.node{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.node h4{margin:0;font-size:1.02rem}
+.node p{font-size:.88rem}
+.node dl{margin:2px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:.8rem}
+.node dt{font-family:var(--f-mono);font-size:.7rem;color:var(--teal);font-weight:500;padding-top:2px}
+.node dd{margin:0;color:var(--soft);font-weight:300;min-width:0}
+.steps td:first-child,.steps th:first-child{font-family:var(--f-mono);color:var(--teal);white-space:nowrap}
+.steps td:last-child{white-space:nowrap;font-family:var(--f-mono);font-size:.74rem}
+.refs{font-size:.86rem}
+.plat-head{display:grid;gap:10px}
+.back{font-family:var(--f-mono);font-size:.74rem}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- POL mark: P teal, tree-ring O, L gold, wordmark. Vector redraw of the 2026 logo for light grounds. -->
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="library.html">Library</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="btn pri small" href="contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="doc">
+
+<div class="doc-head">
+  <div class="wrap">
+    <span class="label">Library</span>
+    <h1>A2A on enterprise ledgers</h1>
+    <p>Four reference architectures for tokenized account-to-account settlement between regulated institutions, one per permissioned ledger. Hyperledger Besu, R3 Corda and Hyperledger Fabric each carry a three-bank payment corridor from the euro area to Saudi Arabia or the UAE; Canton links four financial market infrastructures in a single atomic collateral trade. Each section covers topology, contract code, the full transaction lifecycle, FX, privacy, ISO 20022 binding, compliance and regulation. The shared flow is described once, up front.</p>
+  </div>
+</div>
+
+<section aria-labelledby="toc-h">
+  <div class="wrap">
+    <nav class="toc" aria-labelledby="toc-h">
+      <span class="label" id="toc-h">Contents</span>
+      <ol>
+        <li><a href="#compare">The four ledgers compared</a></li>
+        <li><a href="#pattern">The shared A2A pattern</a></li>
+        <li><a href="#besu">Hyperledger Besu: EUR/SAR with Adhara SILVER</a>
+          <ol><li><a href="#besu-topology">Topology</a> · <a href="#besu-contracts">Contracts</a> · <a href="#besu-lifecycle">Lifecycle</a> · <a href="#besu-fx">FX</a> · <a href="#besu-privacy">Privacy</a> · <a href="#besu-reg">Regulation</a> · <a href="#besu-settlement">Settlement</a> · <a href="#besu-risks">Risks</a></li></ol></li>
+        <li><a href="#canton">Canton: four FMIs, one atomic transaction</a>
+          <ol><li><a href="#canton-topology">Topology</a> · <a href="#canton-daml">Daml</a> · <a href="#canton-privacy">Privacy</a> · <a href="#canton-lifecycle">Lifecycle</a> · <a href="#canton-cash">Cash leg</a> · <a href="#canton-reg">Regulation</a> · <a href="#canton-risks">Risks</a></li></ol></li>
+        <li><a href="#corda">R3 Corda: EUR/AED</a>
+          <ol><li><a href="#corda-topology">Topology</a> · <a href="#corda-cordapp">CorDapp</a> · <a href="#corda-lifecycle">Lifecycle</a> · <a href="#corda-fx">FX</a> · <a href="#corda-notary">Notary</a> · <a href="#corda-reg">Regulation</a> · <a href="#corda-risks">Risks</a></li></ol></li>
+        <li><a href="#fabric">Hyperledger Fabric: EUR/SAR</a>
+          <ol><li><a href="#fabric-topology">Topology</a> · <a href="#fabric-identity">Identity</a> · <a href="#fabric-channels">Channels</a> · <a href="#fabric-chaincode">Chaincode</a> · <a href="#fabric-lifecycle">Lifecycle</a> · <a href="#fabric-reg">Regulation</a> · <a href="#fabric-risks">Risks</a></li></ol></li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================== COMPARE ============================== -->
+<section id="compare" class="band" aria-labelledby="compare-h">
+  <div class="wrap">
+    <span class="label">At a glance</span>
+    <h2 id="compare-h">The four ledgers compared</h2>
+    <p>Every cell below comes from the platform sections that follow.</p>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th scope="col">Layer</th><th scope="col">Hyperledger Besu</th><th scope="col">Canton</th><th scope="col">R3 Corda</th><th scope="col">Hyperledger Fabric</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Scenario</th><td>BankFR (Paris), BankES (Madrid), BankSA (Riyadh); EUR/SAR payment</td><td>Clearstream D7, DTCC ComposerX, Broadridge DLR, Euroclear D-FMI; intraday repo and collateral DvP</td><td>BankFR (Frankfurt), BankNL (Amsterdam), BankAE (Dubai, ADGM); EUR/AED payment</td><td>Bayerische Handelsbank (Munich), Banque Méridienne (Paris), Bank Al-Madinah (Riyadh); EUR/SAR payment</td></tr>
+          <tr><th scope="row">Privacy model</th><td>Every validator sees public state. Only hashes go on-chain; ISO 20022 and KYC payloads travel through Tessera to named parties. Zero-knowledge proofs optional.</td><td>Sub-transaction privacy: each participant receives only its encrypted view; the Global Synchronizer orders and confirms without reading content.</td><td>Point-to-point AMQP: only transaction parties see the states. The notary sees state references only.</td><td>One corridor channel plus three bilateral channels; Travel Rule data in a private data collection with only its hash on the channel ledger. Amounts visible to channel members (fabtoken).</td></tr>
+          <tr><th scope="row">Consensus and finality</th><td>QBFT, one validator per bank, 2-of-3 commit, 2-second blocks, instant deterministic finality.</td><td>13 Super Validators run Tendermint-style BFT ordering (under 500 ms); mediator runs two-phase commit across participants.</td><td>BFT notary cluster (BFT-SMaRt variant), 3-of-5 signatures, checks uniqueness of consumed states.</td><td>Five-node etcd/Raft ordering (crash fault tolerant, quorum 3), 2-of-3 endorsement, MVCC validation. SmartBFT planned for Fabric 3.x.</td></tr>
+          <tr><th scope="row">Token or asset model</th><td>ERC-20 deposit tokens (<code>EurDepositToken</code>, <code>SarDepositToken</code>), 1:1 claims on bank reserves.</td><td>Daml contracts as registered digital twins of custodied securities (Treasuries, EUR commercial paper, gilts). Canton Coin pays fees only.</td><td>Corda Token SDK <code>FungibleToken</code> states, consumed and replaced on each transfer.</td><td>Fabric Token SDK UTXO notes (fabtoken driver): EUR-CBM and SAR-CBM commercial bank money tokens.</td></tr>
+          <tr><th scope="row">Contract language</th><td>Solidity 0.8 on the EVM</td><td>Daml 3.x</td><td>Kotlin CorDapps on the JVM</td><td>Go chaincode (contract-api-go)</td></tr>
+          <tr><th scope="row">Identity</th><td>enode plus X.509 certificate per node; HSM-held ISSUER_ROLE keys; EIP-712 signatures.</td><td>Daml parties hosted on participant nodes; topology manager publishes party-to-participant mapping.</td><td>X.509 legal identities (O, L, C) published through the network map service.</td><td>Per-bank Fabric CA and MSP; X.509 with OU and attribute roles (treasury, gateway, compliance, audit).</td></tr>
+          <tr><th scope="row">Settlement pattern</th><td>Atomic PvP in one EVM transaction (Adhara SILVER); 4-hour netting; TARGET2 and SARIE in central bank money.</td><td>Atomic DvP across four FMI applications; cash via Fedwire (USD) and TARGET2 (EUR) RTGS.</td><td>Atomic PvP in one notarised transaction; 4-hour netting; TARGET2 and UAE RTGS.</td><td>Atomic swap inside one read-write set; daily netting at 17:00 CET; TARGET2 and SARIE.</td></tr>
+          <tr><th scope="row">On-ledger time</th><td>Steps 1–11 under 30 seconds; PvP well under 10 seconds</td><td>About 6 seconds to atomic commit</td><td>Steps 1–11 under 60 seconds</td><td>Under 1 second</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== PATTERN ============================== -->
+<section id="pattern" aria-labelledby="pattern-h">
+  <div class="wrap">
+    <span class="label">Shared pattern</span>
+    <h2 id="pattern-h">The shared A2A pattern</h2>
+    <p>All four designs move value between identified, supervised institutions on a permissioned ledger. Each bank or FMI runs its own node in its own data center or regulated cloud, holds signing keys in FIPS 140-2 Level 3 HSMs, and keeps authoritative control of its own liabilities or asset register. The three payment corridors (Besu, Corda, Fabric) settle tokenized commercial bank money and follow the same ten-stage flow. Canton applies the same atomic-settlement idea to securities and collateral.</p>
+    <ol>
+      <li><span class="k">Instruction.</span> The corporate client submits an ISO 20022 pacs.008 instruction; the originating bank checks balance, AML risk score and transaction limits.</li>
+      <li><span class="k">Screening and Travel Rule.</span> Sanctions screening runs on structured name and LEI fields. Originator and beneficiary banks exchange FATF Recommendation 16 data (IVMS-101 format) as a Verifiable Credential or private payload; only its hash reaches shared state. The beneficiary bank checks the originator LEI against GLEIF.</li>
+      <li><span class="k">FX quote.</span> A liquidity bank runs the FX oracle and signs a mid, bid and ask quote from its treasury feed (Bloomberg or Refinitiv) valid for 90 seconds. One signed rate for everyone removes disputes about which rate governs the conversion; the network participation agreement names the oracle.</li>
+      <li><span class="k">Atomic exchange.</span> Both currency legs settle in a single ledger transaction that commits completely or reverts completely (payment versus payment). No partial-settlement state can exist, so principal risk is removed by construction.</li>
+      <li><span class="k">Credit.</span> The receiving bank's integration layer picks up the ledger event and credits the beneficiary's account in core banking in real time, before the RTGS cycle settles.</li>
+      <li><span class="k">Audit trail.</span> Each party holds an immutable, signed, timestamped record that ties the payload hash, KYC attestation hash, FX quote and signatures to the payment reference (UETR). Regulatory reporting is generated from it with no post-hoc reconstruction.</li>
+      <li><span class="k">Netting.</span> A netting cycle computes net interbank positions: every 4 hours, or on demand above €50M, in the Besu and Corda designs; once a day at 17:00 CET on Fabric.</li>
+      <li><span class="k">RTGS settlement.</span> Net positions settle in central bank money. For EUR that is TARGET2, the ECB's RTGS, on ISO 20022 since the March 2023 T2 migration, with pacs.009 instructions and settlement in claims on the ECB itself. The local leg uses SARIE (SAMA) or UAE RTGS (CBUAE).</li>
+      <li><span class="k">Burn.</span> Once both RTGS confirmations arrive, the tokens covering the settled amounts are burned, so on-ledger supply always equals the unsettled portion of obligations.</li>
+      <li><span class="k">Reconciliation.</span> The structured ISO 20022 data (invoice references, purpose codes, LEIs) stays bound to the payment, so both banks reconcile straight through. The designs target an exception rate under 2%; early ISO 20022 adoption cohorts report 20–30% fewer payment exceptions than MT workflows.</li>
+    </ol>
+
+    <h3>Why the pattern pays</h3>
+    <ul>
+      <li>Netting replaces pre-funded nostro balances with just-in-time central bank money settlement.</li>
+      <li>FX conversion happens on the ledger, so the spread moves from the correspondent chain to the banks that hold the client relationships. In the Besu and Corda examples the originating bank earns a flat 5 bp on the EUR leg.</li>
+      <li>BIS CPMI (2022) found roughly one-third of global FX transactions, about $2.2 trillion in daily settlement value, still settle without PvP and so carry Herstatt-style risk. The 1974 Herstatt failure remains the canonical case.</li>
+      <li>Structured ISO 20022 fields let banks screen against legal entity registries instead of free text. SWIFT's ISO 20022 Migration Progress Report (2024) and Accenture's "Transforming Financial Crime Compliance with AI and ISO 20022" (2023) document 30–50% fewer false positives than MT formats, which also shortens manual review queues.</li>
+    </ul>
+
+    <h3>EU rules common to the three payment corridors</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Rule</th><th scope="col">Effect on a bank-issued deposit token corridor</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">EBA Report on Tokenised Deposits (EBA/REP/2024/24, Dec 2024)</th><td>Distinguishes bearer and non-bearer tokenised deposits. Non-bearer tokens issued by a credit institution stay on its balance sheet and are regulated under CRD/CRR banking law instead of MiCA Title III, so issuance needs no e-money token authorization and avoids the €150M issuance cap and monthly transaction limits for large EMT issuers under MiCA Articles 23–24. The EBA also favours public token state on permissioned chains with personal data kept off-chain.</td></tr>
+          <tr><th scope="row">MiCA (Reg. 2023/1114, full effect Dec 2024)</th><td>Titles III and IV govern stablecoins from non-bank issuers. Art. 2(4)(a) excludes deposits. MiCA would apply if a bank issued a retail e-money token.</td></tr>
+          <tr><th scope="row">Transfer of Funds Regulation (Reg. 2023/1113)</th><td>In force 30 December 2024 with no grace period. Originator and beneficiary data must accompany every transfer regardless of amount, including transfers between two regulated banks.</td></tr>
+          <tr><th scope="row">DORA (Reg. 2022/2554, in force 17 Jan 2025)</th><td>The ledger node is a critical ICT system. Requires resilience testing (TLPT for systemic institutions), major-incident reporting to the supervisor within 4 hours, and third-party risk management that gives the bank contractual resilience guarantees and audit rights over the platform vendor.</td></tr>
+          <tr><th scope="row">AMLD6, EU Sanctions Regulation, GDPR</th><td>Each bank screens independently; personal data stays out of shared ledger state.</td></tr>
+          <tr><th scope="row">Settlement Finality Directive</th><td>Legal finality protection applies only to designated payment systems; none of these corridors is designated yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Risks common to every design</h3>
+    <ul>
+      <li><span class="k">Consortium governance.</span> Contour (trade finance, built on Corda), we.trade and Marco Polo failed on governance: commercial incentives among competing bank shareholders could not be kept aligned. The participation agreement must say who pays for maintenance when year-one volumes disappoint, who controls the upgrade roadmap, what happens if a bank exits, and who is liable for a settlement failure caused by a bug in shared code.</li>
+      <li><span class="k">Legal finality.</span> Ledger finality is technical. Legal finality, the right to retain funds against counterparty insolvency, depends on the legal regime. Fnality's Sterling Fnality Payment System (£FnPS) received Bank of England Settlement Finality Designation in 2024, the first DLT-based payment system to do so. Equivalent engagement for these corridors is an 18–36 month regulatory process.</li>
+      <li><span class="k">Mint-key compromise.</span> Whoever holds the issuer's minting key can create unbacked tokens. The standard mitigation is M-of-N HSM multi-signature minting split across treasury, compliance and technology teams, with disaster recovery for key material tested before production.</li>
+      <li><span class="k">Regulatory sequencing.</span> EU-side banks should seek informal supervisor guidance, file a DORA ICT risk assessment covering the node, pilot with synthetic transactions, seek payment-system authorization (or a sandbox or SFD designation pathway), and only then go live bilaterally. Compressing this sequence is the most common error and adds 12–24 months.</li>
+    </ul>
+
+    <div class="note">
+      <span class="label">Shared precedent: Project Aber</span>
+      <p>The Saudi Central Bank (SAMA) and the Central Bank of the UAE (CBUAE) ran Project Aber (2019; joint report "A Joint Digital Currency and Infrastructure Initiative", 2020) with six commercial banks across both countries, evaluating R3 Corda for cross-border, dual-issued digital currency settlement. It confirmed technical viability and showed that DLT lets central banks operate domestic and cross-border payment systems from the same infrastructure. Aber used a CBDC model; the corridors on this page use deposit tokens issued directly by commercial banks, a related but distinct model. Aber is the supervisory precedent behind the Saudi and UAE legs below.</p>
+    </div>
+
+    <p>Background reading: <a href="a2a-guide.html#overview">A2A payments overview</a>, <a href="a2a-guide.html#workflow">the A2A workflow</a>, <a href="a2a-guide.html#iso20022">ISO 20022 in A2A</a>, <a href="a2a-comparison.html">comparison framework</a>, <a href="enterprise-blockchain.html">enterprise blockchain briefing</a> and the <a href="glossary.html">glossary</a>.</p>
+
+    <p class="refs">Shared sources: BIS CPMI, "PvP arrangements and the case for greater adoption", 2022, <a href="https://www.bis.org/cpmi/publ/d208.htm">bis.org/cpmi/publ/d208.htm</a>. SWIFT ISO 20022 and CBPR+, <a href="https://www.swift.com/standards/iso-20022">swift.com/standards/iso-20022</a>. ISO 20022 schemas, <a href="https://www.iso20022.org/">iso20022.org</a>. EBA/REP/2024/24. FATF Recommendation 16 (Wire Transfers). Bank of England Financial Market Infrastructure Annual Report 2024; <a href="https://www.fnality.org">fnality.org</a>.</p>
+  </div>
+</section>
+
+<!-- ============================== BESU ============================== -->
+<section id="besu" class="band" aria-labelledby="besu-h">
+  <div class="wrap">
+    <div class="plat-head">
+      <span class="label">Hyperledger Besu · EUR/SAR</span>
+      <h2 id="besu-h">Hyperledger Besu: two European banks and a Saudi bank</h2>
+      <p>A French corporate pays a Riyadh supplier. BankFR (Paris) originates and issues EUR tokens. BankES (Madrid) is the EUR liquidity validator and on-chain FX market maker. BankSA (Riyadh) receives and redeems in SAR. The network uses Besu with the Adhara SILVER (Settlement, Issuance, Liquidity and Velocity Enhancement Rail) pattern proven in Project Khokha 2 and the Euro Cyber Resilience Board sandbox. The ISO 20022 pacs.008 is hashed on-chain with the encrypted payload kept off-chain, and there is no nostro pre-funding.</p>
+      <ul class="tags"><li>Besu 24.x</li><li>Adhara SILVER</li><li>QBFT</li><li>Solidity 0.8 / EVM</li><li>Tessera</li><li>pacs.008</li><li>MiCA</li><li>SAMA Open Banking</li><li>DORA</li></ul>
+    </div>
+
+    <h3>Why this corridor and this stack</h3>
+    <p>No production tokenized A2A network yet serves EUR/SAR. EU–Saudi bilateral trade exceeded €80 billion in 2024, led by energy, capital goods, infrastructure procurement and Vision 2030 mega-project financing. Payments are large enough that correspondent banking's all-in cost (typically 150–350 bp) costs a single mid-sized European exporter book tens of millions of euros a year. SAMA has run DLT cross-border settlement experiments since 2019 (Project Aber) and participates in Project mBridge, the multi-central-bank wholesale CBDC network.</p>
+    <ul>
+      <li>Besu is an Apache 2.0, EVM-compatible client maintained under the Linux Foundation's Hyperledger umbrella since 2019, so the pool of about 23,000 Solidity developers can build on it without a new language or VM.</li>
+      <li>QBFT gives instant deterministic finality per block with no reorg window, a precondition for legal payment-system designation.</li>
+      <li>It has the deepest production record of any permissioned EVM platform in regulated infrastructure: Bank of Thailand's Project Inthanon, SARB's Project Khokha 1 and 2, Banque de France wholesale CBDC experiments, Eurosystem exploratory work, and Onyx by J.P. Morgan, whose Liink and JPM Coin systems run on a Besu-derived stack.</li>
+      <li>Adhara, a UK fintech founded in 2018 from the ConsenSys/Quorum lineage, supplies SILVER: tokenized commercial bank money, on-chain PvP, liquidity-saving netting and an oracle/FX layer. SILVER was the settlement core of Khokha 2 and is the engine behind Project Atlas (Investec, Citi, Standard Bank, Absa). Adhara is also the technology provider for £FnPS.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Khokha 2 precedent</span>
+      <p>The South African Reserve Bank ran Project Khokha 2 with Absa, FirstRand, Investec, Nedbank and Standard Bank, completing it in 2022. It used SILVER on a Besu-derived network to settle tokenized wholesale CBDC and tokenized debentures with on-chain PvP and DvP, and showed intraday liquidity savings of 60–80% against gross RTGS.</p>
+    </div>
+
+    <h3 id="besu-topology">Topology and validators</h3>
+    <p>Five Besu nodes: three validators (one per bank) and two non-validator observer/RPC nodes operated jointly. Each validator is paired with a Tessera private-transaction manager, and bridge connectors link to TARGET2 and SARIE. All contracts sit in a shared Adhara SILVER layer (<code>EurDepositToken</code>, <code>SarDepositToken</code>, PvP settlement, <code>FXOracle</code>, netting).</p>
+    <div class="nodes">
+      <article class="node">
+        <span class="label">Validator 1 · originating bank</span>
+        <h4>BankFR · Paris</h4>
+        <p>Licensed by the ACPR; within MiCA where it issues e-money tokens under Title III; DORA-compliant for critical ICT since January 2025. Mints <code>EurDepositToken</code> against its own reserves for corporate clients and burns on redemption.</p>
+        <dl><dt>Identity</dt><dd>enode + X.509 cert</dd><dt>HSM</dt><dd>Thales Luna 7</dd><dt>Privacy</dt><dd>Tessera payload manager</dd><dt>Consensus</dt><dd>Round-robin QBFT proposer, vote weight 1</dd><dt>RTGS</dt><dd>TARGET2 bridge</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Validator 2 · liquidity and FX oracle</span>
+        <h4>BankES · Madrid</h4>
+        <p>Licensed by Banco de España; MiCA and DORA. Originates nothing here; holds surplus EUR tokens for intraday liquidity and runs <code>FXOracle.sol</code>, the signed EUR/SAR feed for the PvP engine.</p>
+        <dl><dt>Identity</dt><dd>enode + X.509 cert</dd><dt>HSM</dt><dd>Utimaco SecurityServer</dd><dt>Privacy</dt><dd>Tessera payload manager</dd><dt>RTGS</dt><dd>TARGET2 net settlement</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Validator 3 · receiving bank</span>
+        <h4>BankSA · Riyadh</h4>
+        <p>Licensed by SAMA under the Banking Control Law (1966, as updated); subject to the SAMA Open Banking Framework (Phase II in force 2024), Cyber Security Framework and Cloud Computing Regulatory Framework. Issues and redeems <code>SarDepositToken</code>, crediting SAR on-chain at the oracle rate. SAR is pegged to USD at 3.7500.</p>
+        <dl><dt>Identity</dt><dd>enode + X.509 cert</dd><dt>HSM</dt><dd>AWS CloudHSM</dd><dt>Privacy</dt><dd>Tessera payload manager</dd><dt>RTGS</dt><dd>SARIE (SAMA)</dd></dl>
+      </article>
+    </div>
+    <p>QBFT rotates the block proposer round-robin and needs a 2-of-3 commit signature on every block. Block time is 2 seconds, so end-to-end PvP takes well under 10 seconds. One observer belongs to an independent regulator-facing trust that publishes a permissioned reporting feed to the ACPR, Banco de España and SAMA; the other belongs to an independent auditor (the Deloitte/PwC pattern used in Khokha 2). Observers read public-state events through permissioned RPC, produce no blocks and cannot see Tessera payloads. An on-chain <code>ValidatorRegistry</code> governs the validator set: changes need a 2-of-3 vote plus a 14-day delay, the pattern used by Onyx and Khokha 2.</p>
+
+    <h3 id="besu-contracts">Contracts: deposit tokens, SILVER PvP, FX oracle</h3>
+    <p>Three Solidity 0.8.x contract groups: one ERC-20 deposit token per currency, the SILVER engine (PvP atomic settlement, liquidity-saving netting, obligation tracking), and infrastructure contracts (FX oracle, validator registry, compliance registry). All are deployed once by a permissioned deployer key and upgraded through UUPS proxies with 2-of-3 validator approval and a 14-day timelock. The token adds permissioned mint and burn, a compliance freeze, and a hash binding to the off-chain pacs.008.</p>
+<pre><code>// SPDX-License-Identifier: Apache-2.0
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+
+contract EurDepositToken is ERC20, AccessControl {
+    bytes32 public constant ISSUER_ROLE   = keccak256("ISSUER_ROLE");
+    bytes32 public constant COMPLIANCE_ROLE = keccak256("COMPLIANCE_ROLE");
+
+    // Binds each minted batch to its ISO 20022 pacs.008 payload (kept off-chain
+    // in Tessera, hash committed on-chain for non-repudiation).
+    mapping(bytes32 =&gt; PaymentMeta) public meta;
+    struct PaymentMeta {
+        bytes32 iso20022Hash;     // keccak256 of pacs.008 XML
+        bytes32 kycAttestationHash; // keccak256 of Travel Rule VC
+        uint256 amount;
+        address beneficiaryBank; // e.g. BankSA address
+        uint64  uetrTimestamp;   // block timestamp
+    }
+
+    event PaymentMinted(bytes32 indexed uetr, uint256 amount, address beneficiary);
+    event PaymentBurned(bytes32 indexed uetr, uint256 amount);
+
+    function mintForPayment(
+        bytes32 uetr,
+        address to,
+        uint256 amount,
+        bytes32 iso20022Hash,
+        bytes32 kycAttestationHash,
+        address beneficiaryBank
+    ) external onlyRole(ISSUER_ROLE) {
+        require(meta[uetr].amount == 0, "UETR exists");
+        require(iso20022Hash != bytes32(0), "pacs.008 required");
+        require(kycAttestationHash != bytes32(0), "KYC VC required");
+        meta[uetr] = PaymentMeta(iso20022Hash, kycAttestationHash, amount,
+                                  beneficiaryBank, uint64(block.timestamp));
+        _mint(to, amount);
+        emit PaymentMinted(uetr, amount, to);
+    }
+
+    function burnForRedemption(bytes32 uetr, uint256 amount)
+        external onlyRole(ISSUER_ROLE)
+    {
+        _burn(msg.sender, amount);
+        emit PaymentBurned(uetr, amount);
+    }
+}</code></pre>
+    <p>BankSA deploys the same template as <code>SarDepositToken</code> with 2 decimals (the SAR ledger convention), or 18 if the network adopts internal scaling. SILVER's core primitive is conditional atomic settlement: one transaction moves both legs or reverts.</p>
+<pre><code>contract SilverPvPSettlement is AccessControl, ReentrancyGuard {
+    EurDepositToken public immutable eur;
+    SarDepositToken public immutable sar;
+    FXOracle        public immutable fxOracle;
+
+    struct SettlementInstruction {
+        bytes32 uetr;
+        address payerBank;          // BankFR address
+        address payeeBank;          // BankSA address
+        uint256 eurAmount;
+        uint256 sarAmount;          // derived from oracle rate * eurAmount
+        bytes32 oracleQuoteId;      // signed FX rate reference
+        uint64  validUntil;         // e.g. block.timestamp + 90s
+    }
+
+    event PvPSettled(bytes32 indexed uetr, uint256 eurAmount,
+                       uint256 sarAmount, uint256 rateScaled);
+
+    // Atomic PvP: EUR debit + SAR credit in a single tx; reverts on any failure.
+    function settlePvP(
+        SettlementInstruction calldata ins,
+        bytes calldata payerSig,    // EIP-712 signed by BankFR
+        bytes calldata payeeSig     // EIP-712 signed by BankSA
+    ) external nonReentrant {
+        require(block.timestamp &lt;= ins.validUntil, "Quote expired");
+        require(_verifySig(ins, payerSig, ins.payerBank), "Bad payer sig");
+        require(_verifySig(ins, payeeSig, ins.payeeBank), "Bad payee sig");
+
+        // Validate the oracle-signed rate matches the instruction
+        (uint256 rateScaled, uint64 ts) = fxOracle.getQuote(ins.oracleQuoteId);
+        require(block.timestamp - ts &lt;= 90, "Stale FX");
+        require(ins.sarAmount == (ins.eurAmount * rateScaled) / 1e8, "Bad SAR calc");
+
+        // Atomic legs: both succeed or whole tx reverts
+        eur.transferFrom(ins.payerBank, ins.payeeBank, ins.eurAmount);
+        sar.mintForPayment(ins.uetr, ins.payeeBank, ins.sarAmount,
+                            /* iso20022Hash */ bytes32(ins.uetr),
+                            /* kycHash      */ bytes32(ins.uetr),
+                            ins.payeeBank);
+
+        emit PvPSettled(ins.uetr, ins.eurAmount, ins.sarAmount, rateScaled);
+    }
+}</code></pre>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Contract</th><th scope="col">Deployed by</th><th scope="col">Privacy</th><th scope="col">Purpose</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">EurDepositToken</th><td>BankFR</td><td>Public state</td><td>ERC-20, 1:1 claim on EUR reserves at BankFR; mint and burn limited to BankFR's HSM-protected ISSUER_ROLE address.</td></tr>
+          <tr><th scope="row">SarDepositToken</th><td>BankSA</td><td>Public state</td><td>ERC-20, 1:1 claim on SAR reserves at BankSA; mint and burn limited to BankSA's ISSUER_ROLE address.</td></tr>
+          <tr><th scope="row">SilverPvPSettlement</th><td>Adhara (network deployer)</td><td>Public state</td><td>Atomic PvP engine; verifies both banks' EIP-712 signatures and a fresh FX quote.</td></tr>
+          <tr><th scope="row">SilverNetting</th><td>Adhara</td><td>Public state</td><td>Accumulates obligations over a window (e.g. 4 hours), computes the multilateral net and triggers PvP for net positions only; replicates the Khokha 2 liquidity-saving mechanism.</td></tr>
+          <tr><th scope="row">FXOracle</th><td>BankES</td><td>Public state</td><td>EUR/SAR mid, bid and ask quotes signed by BankES's node key, each valid 90 seconds and referenced by ID.</td></tr>
+          <tr><th scope="row">ComplianceRegistry</th><td>Joint</td><td>Tessera private group</td><td>Hashes of the Travel Rule Verifiable Credentials for each transaction; full VCs travel through Tessera.</td></tr>
+          <tr><th scope="row">ValidatorRegistry</th><td>Joint</td><td>Public state</td><td>Validator-set governance: 2-of-3 vote plus 14-day timelock (Onyx and Khokha 2 pattern).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="besu-lifecycle">Transaction lifecycle: 16 steps</h3>
+    <p>The on-chain portion (steps 1–11) completes in under 30 seconds; with 2-second QBFT blocks the PvP transaction is final at inclusion. Steps 12–16 run intraday or end-of-day depending on the netting cycle.</p>
+    <div class="tbl wide steps">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Step</th><th scope="col">Besu-specific detail</th><th scope="col">Timing</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><th scope="row">Instruction</th><td>pacs.008 via BankFR's corporate API: Paris IBAN, Riyadh supplier IBAN, EUR amount, value date, beneficiary, LEI, purpose code.</td><td>&lt;1 s</td></tr>
+          <tr><td>02</td><th scope="row">Travel Rule</th><td>BankFR sends the VC (originator LEI, jurisdiction, risk tier, sanctions-clear attestation) as a private Tessera transaction to BankSA's key and calls <code>ComplianceRegistry.recordAttestation(uetr, vcHash)</code>. BankSA validates the LEI against GLEIF and returns a counter-VC the same way.</td><td>1–3 s</td></tr>
+          <tr><td>03</td><th scope="row">FX rate</th><td><code>FXOracle.getLatestQuote("EUR","SAR")</code>. BankES posts signed quotes every 30 seconds; BankFR receives a quote ID and rate (e.g. 4.1287).</td><td>&lt;1 s</td></tr>
+          <tr><td>04</td><th scope="row">Signed instruction</th><td>BankFR builds the <code>SettlementInstruction</code>, hashes it under EIP-712 and signs with its HSM key, then sends it over Tessera. BankSA re-derives the SAR amount, verifies the quote and the pacs.008 against its XSD, and countersigns. No on-chain state change yet.</td><td>1–2 s, no gas</td></tr>
+          <tr><td>05</td><th scope="row">Mint</th><td><code>EurDepositToken.mintForPayment(...)</code> under ISSUER_ROLE records the payload and KYC hashes against the UETR and emits <code>PaymentMinted</code>, visible to all validators and observers. The XML never leaves BankFR.</td><td>2–4 s, 1 block</td></tr>
+          <tr><td>06</td><th scope="row">Allowance</th><td><code>approve(silverPvPSettlement, amount)</code>. Production banks pre-approve a working credit line (e.g. €100M) at setup to keep this off the critical path.</td><td>2 s</td></tr>
+          <tr><td>07</td><th scope="row">Atomic PvP</th><td><code>settlePvP</code> checks both signatures, quote age under 90 s and SAR = EUR × rate, then runs <code>transferFrom</code> (EUR leg) and <code>mintForPayment</code> (SAR leg). Any failure reverts both.</td><td>2–4 s, ~250,000 gas</td></tr>
+          <tr><td>08</td><th scope="row">Beneficiary credit</th><td>BankSA's integration layer sees <code>PvPSettled</code> with the matching UETR and credits the supplier's local IBAN account.</td><td>1–2 s</td></tr>
+          <tr><td>09</td><th scope="row">Originator status</th><td>BankFR pushes a pacs.002 with status ACSC (AcceptedSettlementCompleted), the strongest positive ISO 20022 status, and the client's ERP marks the payment settled.</td><td>&lt;1 s</td></tr>
+          <tr><td>10</td><th scope="row">Finality</th><td>2-of-3 QBFT commit makes the block final. Ethereum mainnet's probabilistic finality (about 12 minutes to economic finality after the merge) would not support payment-system designation.</td><td>At inclusion</td></tr>
+          <tr><td>11</td><th scope="row">Audit trail</th><td>Transaction hash, payload hash, KYC hash, quote ID and EIP-712 signatures are bound to the UETR on all five nodes. The regulator observer produces feeds for the ACPR, Banco de España and SAMA; the auditor observer's trail supports SOC 1/SOC 2 attestation.</td><td>Automated</td></tr>
+          <tr><td>12</td><th scope="row">Netting</th><td><code>SilverNetting</code> aggregates <code>PvPSettled</code> events and computes net EUR obligations between each bank pair and net SAR positions.</td><td>Every 4 h or on demand</td></tr>
+          <tr><td>13</td><th scope="row">TARGET2</th><td>BankFR and BankES submit the net pacs.009; BankES's bridge writes confirmation back via <code>SilverNetting.confirmRtgsSettlement(cycleId, eurNetSettled)</code>.</td><td>TARGET2 hours</td></tr>
+          <tr><td>14</td><th scope="row">SARIE</th><td>BankSA settles net SAR through SARIE, operating since 1997, in a direct liability of SAMA. SAMA gets the netting summary from the regulator observer.</td><td>07:30–16:30 AST</td></tr>
+          <tr><td>15</td><th scope="row">Burn</th><td>BankFR calls <code>burnForRedemption(uetr, amount)</code> on the EUR tokens BankSA holds (BankSA approves the burn in the cycle workflow); BankSA burns the SAR tokens redeemed to the supplier.</td><td>Post-RTGS</td></tr>
+          <tr><td>16</td><th scope="row">Reconciliation</th><td>The Besu integration layer feeds both core banking systems; the Tessera-held pacs.008, hash-bound since step 5, drives matching.</td><td>&lt;2% exceptions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="besu-fx">FX: EUR/SAR on-chain</h3>
+    <p>Because SAR is pegged to USD at 3.7500, EUR/SAR moves with EUR/USD and is thin at some hours, which shapes how rates are sourced and committed. BankES posts quotes through a <code>postQuote</code> function gated to its HSM-held oracle key; every transaction in a window references a quote ID whose signature any party can verify.</p>
+<pre><code>contract FXOracle is AccessControl {
+    bytes32 public constant ORACLE_ROLE = keccak256("ORACLE_ROLE");
+
+    struct Quote {
+        bytes32 base;          // "EUR"
+        bytes32 quote;         // "SAR"
+        uint256 midScaled;     // e.g. 412870000 = 4.1287 * 1e8
+        uint256 bidScaled;
+        uint256 askScaled;
+        uint64  postedAt;      // block.timestamp at posting
+        uint64  validUntil;    // postedAt + 90 seconds
+        address oracle;        // BankES address (msg.sender)
+    }
+
+    mapping(bytes32 =&gt; Quote) public quotes;
+    bytes32 public latestEurSarQuoteId;
+
+    event QuotePosted(bytes32 indexed id, uint256 midScaled, uint64 postedAt);
+
+    function postQuote(bytes32 base, bytes32 quote,
+                       uint256 midScaled, uint256 bidScaled, uint256 askScaled)
+        external onlyRole(ORACLE_ROLE)
+        returns (bytes32 id)
+    {
+        id = keccak256(abi.encode(base, quote, block.timestamp, msg.sender));
+        quotes[id] = Quote(base, quote, midScaled, bidScaled, askScaled,
+                           uint64(block.timestamp), uint64(block.timestamp) + 90,
+                           msg.sender);
+        if (base == "EUR" &amp;&amp; quote == "SAR") latestEurSarQuoteId = id;
+        emit QuotePosted(id, midScaled, uint64(block.timestamp));
+    }
+
+    function getQuote(bytes32 id) external view
+        returns (uint256 midScaled, uint64 postedAt)
+    {
+        Quote storage q = quotes[id];
+        return (q.midScaled, q.postedAt);
+    }
+}</code></pre>
+    <p>BankSA charges its institutional dealing spread over the oracle mid (typically 10–20 bp for wholesale flows) and keeps it as revenue; BankFR earns 5 bp flat on origination. The EVM's revert semantics make PvP the default: the same outcome CLS Bank achieves for major currency pairs through multi-currency cash accounts, implemented here as contract logic.</p>
+    <div class="note">
+      <span class="label">Worked example</span>
+      <p>A €5,000,000 payment. Oracle mid 4.1287 (posted 30 seconds earlier, valid 60 more). BankSA spread 12 bp gives a dealing rate of 4.1287 × 1.0012 = 4.1337, so the supplier receives SAR 20,668,500. BankSA FX revenue is SAR 24,772 (about €6,000 at mid); BankFR's fee is €2,500. All-in cost to the corporate is about 12 bp, against roughly 1.8–3.5% through correspondents (bank-published EUR/SAR retail-to-wholesale spreads). At €4 billion of annual corridor flow, about €5–8 million of extra margin stays with BankFR and BankSA.</p>
+    </div>
+
+    <h3 id="besu-privacy">Privacy: Tessera, private state and zero-knowledge options</h3>
+    <p>By default every Besu validator sees every transaction, so SILVER layers privacy: only hashes reach public state; full payloads travel peer-to-peer through Tessera to the named parties; and zero-knowledge proofs (for example a zk-SNARK showing a payment is under a regulatory threshold without revealing the amount) can be added for sensitive cases. Personal data (originator name, IBAN, supplier identity, invoice references) therefore never enters public state, meeting GDPR and SAMA Cyber Security Framework residency and confidentiality rules; payloads sit only on the two parties' Tessera nodes in their own data centers.</p>
+    <p>Tessera adapts the Quorum private-transaction pattern. Besu's original native private-transaction implementation (the Orion predecessor and early Tessera integration, later the Privacy Group API) was deprecated in Besu 22.x; GoQuorum-compatible private transactions follow the EEA Client Specification v8 (2024), which Besu, GoQuorum and Hyperledger Burrow implement. Production deployments in 2025–26 use one of three patterns: hash-binding with off-chain payload (SILVER, the most mature and the Khokha 2 choice), a Tessera-compatible companion deployment, or zero-knowledge shielding of sensitive fields (Aztec Connect-style designs adapted to permissioned Besu). Adhara recommends hash-binding for greenfield deployments in 2026 as simpler and more auditable, in line with the EBA's December 2024 view.</p>
+
+    <h3>ISO 20022 binding</h3>
+    <p>The keccak256 hash of the canonical pacs.008 XML is committed to <code>EurDepositToken.meta[uetr].iso20022Hash</code> at mint (example value <code>0x9a3f4b21d8e7c0a2f6b5e9...</code>) while the XML travels through Tessera. BankFR cannot later claim a different payload belonged to the UETR, and BankSA cannot deny receiving the one it acknowledged. The message carries the originator's full legal name, structured address, LEI, IBAN, purpose code (TRPT for trade, SCTL for securities settlement), structured remittance data, reporting codes and the UETR. The sample message (structure shown in the <a href="#fabric-iso">Fabric section</a>) uses pacs.008.001.08, settlement method INDA, MsgId <code>BANKFR-20260415-00098765</code>, created 2026-04-15T10:14:32Z, UETR <code>7c9e6679-7425-40de-944b-e07fc1f90ae7</code>, EUR 5,000,000.00 from Paris Industrial Equipment SAS (Avenue des Champs-Élysées 88, Paris; LEI <code>969500N1B7PI4F1V2N06</code>) to Riyadh Construction Holdings Ltd (LEI <code>5586009OOKK7HZJL8Z51</code>), invoice INV-2026-RUH-2287, which BankSA's receivables system matches automatically.</p>
+
+    <h3>KYC, AML and the Travel Rule</h3>
+    <p>Each bank meets its own regime (ACPR and Banco de España; SAMA for BankSA) while the shared attestation flow satisfies the Travel Rule. Saudi AML/CFT is administered by SAMA and the Saudi Financial Investigation Unit (SAFIU) and is broadly FATF-aligned; Saudi Arabia has been a full FATF member since 2019. SAMA requires AML/CFT documentation for cross-border SAR payments above SAR 60,000 (about $16,000).</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Requirement</th><th scope="col">Jurisdiction</th><th scope="col">Handling on Besu</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">AML/CFT screening</th><td>EU (AMLD6), SAMA AML</td><td>Structured name and LEI fed to each bank's engine for the originator (step 1) and the beneficiary (BankSA, before countersigning).</td></tr>
+          <tr><th scope="row">Travel Rule (FATF R.16)</th><td>EU TFR, SAMA</td><td>Tessera VC exchange at step 2; VC hashes in <code>ComplianceRegistry</code>; IVMS-101 format.</td></tr>
+          <tr><th scope="row">Sanctions</th><td>EU Sanctions Regulation; UN and Saudi lists</td><td>Independent checks on LEI and structured name; the Saudi list is maintained by SAFIU.</td></tr>
+          <tr><th scope="row">Transaction reporting</th><td>ECB, ACPR, BdE; SAMA</td><td>Automated feeds from the regulator observer; SAMA reporting follows Banking Control Law cross-border rules.</td></tr>
+          <tr><th scope="row">Data residency</th><td>GDPR; SAMA CSF</td><td>Personal data only in Tessera payloads at BankFR and BankSA, invisible to BankES and observers.</td></tr>
+          <tr><th scope="row">DORA</th><td>EU</td><td>BankFR and BankES treat the Besu node and SILVER as critical ICT; Adhara is managed as an ICT third-party provider.</td></tr>
+          <tr><th scope="row">SAMA Cloud Computing Framework</th><td>Saudi Arabia</td><td>BankSA's node runs in a SAMA-approved zone (typically AWS Bahrain or a Saudi-resident data center); SAMA pre-approval is needed for any cloud deployment handling customer data.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="besu-reg">Regulation: EU and Saudi Arabia</h3>
+    <p>BankFR's token is a bank liability under CRD VI/CRR and the EBA report; DORA, TFR and TARGET2 rules apply as described in the <a href="#pattern">shared pattern</a>, with Adhara owing DORA resilience guarantees and audit rights. Saudi Arabia has no MiCA-style digital-asset regime: SAMA supervises digital settlement under the Banking Control Law and its rulebooks, and its stated direction (Aber, Agorá-related work, FinTech Saudi) is to fold tokenized wholesale payments into existing supervision.</p>
+    <ul>
+      <li><span class="k">Banking Control Law</span> (Royal Decree M/5, 1966, as amended), supplemented by SAMA rulebooks on capital adequacy, liquidity and cross-border activity. BankSA's token activity is deposit-taking: the SAR token represents an existing deposit liability.</li>
+      <li><span class="k">SAMA Open Banking Framework</span> (Phase II, 2024): API-based interbank data sharing with strong consent and security; SAMA's preference for supervisor-visible architecture matches the observer-node design.</li>
+      <li><span class="k">SAMA Cyber Security Framework</span> (2017, current version 2023): mandatory for supervised entities; covers the Besu node, Tessera and HSMs. Any new core-banking-adjacent system, including the Besu integration, needs SAMA pre-approval.</li>
+      <li><span class="k">SAMA Cloud Computing Regulatory Framework</span> (2023): residency rules apply to Tessera payloads.</li>
+      <li><span class="k">Project Aber and Project Agorá.</span> Agorá, announced by the BIS in April 2024, joins seven central banks (Bank of France for the Eurosystem, Bank of Japan, Bank of Korea, Bank of Mexico, Swiss National Bank, Bank of England, Federal Reserve Bank of New York) with private banks convened by the Institute of International Finance, testing tokenized wholesale central bank money and tokenized deposits on a shared programmable platform with a permissioned EVM-style stack among the candidates. SAMA takes part in adjacent BIS work programmes.</li>
+      <li><span class="k">Vision 2030 and FinTech Saudi</span> (SAMA with the Capital Market Authority): tokenization is a modernization priority; the FinTech Saudi sandbox and the Regulatory Sandbox for Innovation allow supervised live-money testing. AML/CFT supervision is shared by SAMA, SAFIU and the CMA.</li>
+    </ul>
+    <div class="note">
+      <span class="label">Compatibility finding</span>
+      <p>Both jurisdictions classify the on-chain instrument as a bank deposit liability under standard prudential supervision, so no novel cross-border legal mechanism is needed and regulatory risk is well below that of a non-bank stablecoin network on the same corridor. Remaining risk sits in future SFD designation and in SAMA's explicit no-objection for production cross-border flows beyond the sandbox.</p>
+    </div>
+
+    <h3 id="besu-settlement">RTGS net settlement and liquidity</h3>
+    <p>Through correspondents, a €5M EUR→SAR payment needs €5M (or the SAR equivalent) pre-funded in nostros. Here the corporate is debited at once, the supplier is credited within seconds, and RTGS later settles only net positions. If in one 4-hour cycle BankFR sends €30M to Riyadh and BankSA sends €18M to Paris, the net obligation is €12M against €48M gross; at 5%, that frees about €1.8M a year in foregone yield for a single 4-hour cycle.</p>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th scope="col">Layer</th><th scope="col">Mechanism</th><th scope="col">Asset</th><th scope="col">Timing</th><th scope="col">Finality</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">On-chain (SILVER)</th><td>Atomic PvP, QBFT</td><td>EUR deposit token (BankFR liability) against SAR deposit token (BankSA liability)</td><td>&lt;10 s</td><td>Technical finality at block inclusion; legal finality on RTGS confirmation</td></tr>
+          <tr><th scope="row">TARGET2</th><td>Intraday net, pacs.009</td><td>ECB reserves</td><td>Every 4 h in the TARGET2 window</td><td>Final in ECB money</td></tr>
+          <tr><th scope="row">SARIE</th><td>Intraday net, SARIE format</td><td>SAMA reserves</td><td>07:30–16:30 AST</td><td>Final in SAMA money</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>TARGET2 runs on CET/CEST and SARIE on Arabia Standard Time (UTC+3, no daylight saving). Both are open roughly 09:00–14:30 CET (11:00–16:30 AST); cycles outside that window queue SARIE instructions for the next AST business day. Saudi banks work Sunday to Thursday, so Friday cycles cannot settle the SAR leg until Sunday morning and Sunday EUR cycles wait for Monday. Intraday cycles are therefore scheduled in the overlap on the four common days, Monday to Thursday.</p>
+
+    <h3 id="besu-risks">Besu-specific risks</h3>
+    <ul>
+      <li><span class="k">Governance.</span> Beyond the shared questions: who holds the UUPS upgrade keys for SILVER and the token contracts. The Adhara/Khokha 2 model places them, with the operating contract, in a Mauritius- or Luxembourg-based SPV; that is the commonest structure but not the only one.</li>
+      <li><span class="k">Legal finality.</span> Requires ECB/ACPR engagement on the EU side and SAMA on the Saudi side.</li>
+      <li><span class="k">Two key classes.</span> A compromised ISSUER_ROLE key mints unbacked tokens. One compromised QBFT validator key gives an attacker 1 of 3 votes, too few to forge a block, but costs the bank its consensus contribution; two compromised keys allow forged blocks. Keep validator keys HSM-resident in physically separate data centers, with timelocked rotation through <code>ValidatorRegistry</code>.</li>
+      <li><span class="k">Smart-contract bugs.</span> The dominant operational risk: an exploitable Solidity bug can drain or freeze tokens, whereas a bug in a Kotlin CorDapp typically makes transactions fail verification. Require audits by at least two independent firms (e.g. ChainSecurity, OpenZeppelin, Trail of Bits) with formal verification of PvP atomicity, a continuous bug bounty, UUPS upgrades with a 14-day minimum timelock, and insurance (the Lloyd's syndicate market for permissioned DLT contract cover is small but functional as of 2026). Solidity buys a far larger developer pool and toolset at the cost of a more attack-prone primitive.</li>
+      <li><span class="k">Vendor concentration.</span> SILVER is Adhara proprietary IP. Mitigate with source-code escrow at a regulated trust, contractual rights to fork on insolvency or material breach, DORA critical-ICT classification, and a migration path to open-source options (Hyperledger Cacti or Fabric Token SDK patterns). The exposure resembles R3 vendor risk on Corda.</li>
+      <li><span class="k">Sequencing for BankSA.</span> SAMA no-objection under the Cyber Security and Cloud Computing Frameworks, the FinTech Saudi sandbox with synthetic transactions, explicit SAMA approval for production cross-border tokenized SAR, then go-live. EU banks follow the shared sequence with ACPR or Banco de España and a DORA assessment covering SILVER. SAMA's Aber and Agorá-related familiarity shortens supervisory engagement without removing it.</li>
+    </ul>
+    <p class="refs">Besu sources: <a href="https://besu.hyperledger.org/">besu.hyperledger.org</a> (QBFT documentation); EEA Client Specification v8 (2024); <a href="https://www.jpmorgan.com/onyx">jpmorgan.com/onyx</a>; SARB Project Khokha 2 final report (2022) and <a href="https://adhara.io">adhara.io</a>; <a href="https://www.bis.org/about/bisih/topics/fmis/agora.htm">BIS Project Agorá</a>; <a href="https://www.sama.gov.sa">sama.gov.sa</a>; <a href="https://fintechsaudi.com">fintechsaudi.com</a>.</p>
+    <a class="back" href="#compare">Back to comparison</a>
+  </div>
+</section>
+
+<!-- ============================== CANTON ============================== -->
+<section id="canton" aria-labelledby="canton-h">
+  <div class="wrap">
+    <div class="plat-head">
+      <span class="label">Canton Network · Daml · four FMIs</span>
+      <h2 id="canton-h">Canton: four FMIs settled in one atomic transaction</h2>
+      <p>A US asset manager pledges DTCC-custodied tokenized US Treasuries through Broadridge DLR as intraday repo collateral against tokenized euro commercial paper held at Clearstream D7, with end-of-day mobilization into Euroclear's D-FMI for cross-border redeployment. Each FMI runs its own Canton participant node and Daml application. Treasuries, EUR commercial paper, gilts and Eurobonds settle atomically in one Daml transaction spanning all four applications with no bilateral reconciliation; cash legs settle in TARGET2 (EUR) and Fedwire (USD) at end of cycle.</p>
+      <ul class="tags"><li>Canton Network</li><li>Daml 3.x</li><li>Sub-transaction privacy</li><li>Atomic DvP/PvP</li><li>ISO 20022 / ISO 11179</li><li>CSDR / MiCA / DORA</li><li>SEC Rule 17Ad-22</li><li>UK FMI rules</li><li>NBB / FSMA</li></ul>
+    </div>
+
+    <h3>Why these FMIs and why Canton</h3>
+    <p>These four touch most of the world's settled securities flow. Clearstream and Euroclear together hold roughly EUR 80 trillion in custody; DTCC clears and settles about USD 2.5 quadrillion of US securities transactions a year; Broadridge DLR, live on Canton since June 2021, has processed more than USD 1.5 trillion of intraday repo, with peak days above USD 50 billion. Each has committed production infrastructure to Canton.</p>
+    <p>Canton's distinguishing property is privacy-preserving atomic composability. One transaction can span independently operated applications, each running its own Daml logic on its own participant, while all sub-transactions commit together or none do and each party sees only what it is authorized to see. A bond settlement at Clearstream and a Treasury delivery at DTCC can settle as one event without either seeing the other's contract. Other enterprise ledgers force a trade-off: a shared global ledger (Ethereum, Besu, Quorum) where everyone sees all data unless zero-knowledge proofs are added at real cost, or bilateral partitioning (Corda) that cannot compose atomically beyond the parties to a single transaction. That is why four institutions whose competitive position depends on confidentiality chose Canton.</p>
+    <p>The four FMIs also map to four asset classes and regimes. Clearstream's D7 DLT went live in November 2025 issuing EUR debt under the German Electronic Securities Act (eWpG) and EU CSDR. DTCC's ComposerX targets Q2 2026 production for tokenized DTC-custodied Treasuries under SEC Rule 17Ad-22 and CFTC rules. Broadridge DLR is regulated as a US transfer agent and broker-dealer service. Euroclear, a Canton Foundation member and Super Validator, has tokenized gilts, Eurobonds and gold for collateral mobility under NBB supervision and, where applicable, the Luxembourg DLT Pilot Regime. Today, mobilizing Treasury collateral against a euro obligation needs triparty agents, several correspondent legs and hours or days; on Canton it settles in seconds, with each FMI keeping control of its own register.</p>
+
+    <h3 id="canton-topology">Topology: participants and the Global Synchronizer</h3>
+    <p>A Canton network is a federation of participant nodes, each owned by a legal entity and storing only contracts on which its hosted parties are stakeholders. Synchronizers order messages and provide finality but only ever handle encrypted payloads addressed to the relevant participants. Regulators (BaFin, SEC, FCA, NBB, ESMA) hold read-only Daml party rights, with a DORA-compliant audit trail and GDPR data minimization.</p>
+    <div class="nodes">
+      <article class="node">
+        <span class="label">Participant 1 · EUR debt CSD</span>
+        <h4>Deutsche Börse · Clearstream D7</h4>
+        <p>German CSD supervised by BaFin and the Bundesbank, with ICSD operations under Luxembourg's CSSF. Supplies tokenized EUR commercial paper and short-term debt as collateral and settlement medium. App: <code>ClearstreamD7</code>, Frankfurt/Luxembourg.</p>
+        <dl><dt>Party</dt><dd>clearstream-d7::1220a8f...</dd><dt>Assets</dt><dd>EUR commercial paper, structured notes</dd><dt>Cash leg</dt><dd>TARGET2 / T2S settlement bank</dd><dt>Role</dt><dd>Participant, observer of cross-app DvP</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Participant 2 · US securities CSD</span>
+        <h4>DTCC · ComposerX</h4>
+        <p>Central US post-trade FMI: DTC is the national CSD, NSCC the equities CCP, FICC the fixed-income CCP. ComposerX, built with Digital Asset, supplies tokenized Treasuries as high-quality collateral. App: <code>DtccComposerX</code>, Jersey City/Tampa.</p>
+        <dl><dt>Party</dt><dd>dtcc-composerx::1220c4b...</dd><dt>Assets</dt><dd>Treasury notes, bonds, bills</dd><dt>Regulator</dt><dd>SEC (Rule 17Ad-22), CFTC, FRBNY</dd><dt>Cash leg</dt><dd>Fedwire / NSS settlement bank</dd><dt>Role</dt><dd>Participant, Super Validator candidate</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Participant 3 · repo platform</span>
+        <h4>Broadridge · Distributed Ledger Repo</h4>
+        <p>NYSE-listed (BR) post-trade processor. Orchestrates the repo itself: agreement template, term, haircut, substitution rights and unwind. App: <code>BroadridgeDLR</code>, New York.</p>
+        <dl><dt>Party</dt><dd>broadridge-dlr::1220e7f...</dd><dt>Regulator</dt><dd>SEC (transfer agent), FINRA</dd><dt>Counterparties</dt><dd>Goldman Sachs, JPMorgan, BNY, Citi and others</dd><dt>Role</dt><dd>Participant, registry for repo terms</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Participant 4 · EU/UK collateral CSD</span>
+        <h4>Euroclear · D-FMI</h4>
+        <p>Euroclear Bank (Brussels), the largest ICSD by assets under custody, is supervised by the NBB and FSMA; Euroclear UK &amp; International (formerly CREST) is the UK CSD under FCA and Bank of England oversight. D-FMI tokenizes gilts, Eurobonds and gold. App: <code>EuroclearDFMI</code>.</p>
+        <dl><dt>Party</dt><dd>euroclear-dfmi::12203a2...</dd><dt>Assets</dt><dd>Gilts, Eurobonds, allocated gold</dd><dt>Cash leg</dt><dd>TARGET2, T2S, CHAPS settlement bank</dd><dt>Role</dt><dd>Participant, Super Validator, Foundation member</dd></dl>
+      </article>
+    </div>
+    <p>The Global Synchronizer is run by 13 Super Validators (as of 2026), including Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, SBI Digital Markets, Tradeweb and Cumberland Labs, under the Global Synchronizer Foundation, a non-profit independent of any participant. It has three components: a sequencer that orders encrypted messages, a mediator that coordinates two-phase commit, and a topology manager that publishes the party-to-participant mapping. Consensus is Tendermint-style BFT with deterministic finality at the sequencer, and a global timestamp. Validator selection, rotation and slashing are governed on-chain through the Canton Coin governance module. An FMI can also run a local synchronizer for intra-application traffic (for example internal D7 settlement) and use the Global Synchronizer only for cross-FMI transactions, keeping control of its own latency, fees and governance.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Counterparty</th><th scope="col">Role</th><th scope="col">Hosted on</th><th scope="col">Function</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">AssetMgrUS LLC</th><td>US asset manager</td><td>Goldman Sachs DAP participant</td><td>Repo cash provider; pledges nothing, receives EUR commercial paper as a cash equivalent.</td></tr>
+          <tr><th scope="row">EuroDealer SA</th><td>European broker-dealer</td><td>BNP Paribas participant</td><td>Collateral provider; pledges Treasuries (at DTCC) and gilts (at Euroclear) and borrows EUR commercial paper for intraday liquidity.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="canton-daml">Daml templates, choices and parties</h3>
+    <p>Solidity describes computation on a replicated state machine and Corda's Kotlin contracts verify state transitions; Daml, created by Digital Asset, describes the rights and obligations of named parties. Each template names signatories (whose authority creates the contract), observers (who see but cannot act) and controllers (who may exercise a given choice). Clauses become choices, signature requirements become signatories, information rights become observer disclosures. At DTCC, <code>UsTreasuryToken</code> is a registered representation of a security that stays in DTC custody under the existing legal structure and the DTCC tokenization rulebook.</p>
+<pre><code>-- Daml 3.x: UsTreasuryToken.daml
+module DtccComposerX.UsTreasuryToken where
+
+template UsTreasuryToken
+  with
+    issuer        : Party           -- DTCC
+    holder        : Party           -- current beneficial owner
+    cusip         : Text            -- CUSIP identifier
+    faceAmount    : Decimal         -- USD face value
+    maturity      : Date            -- maturity date
+    couponRate    : Decimal         -- annualized coupon
+    custodian     : Party           -- always DTC
+    rulebookHash  : Text            -- SHA-256 of governing rulebook
+    regulators    : [Party]         -- SEC, FRBNY observers
+  where
+    signatory issuer, holder
+    observer  custodian, regulators
+
+    key (issuer, cusip, holder) : (Party, Text, Party)
+    maintainer key._1
+
+    -- Transfer of beneficial ownership; new holder must authorize
+    choice Transfer : ContractId UsTreasuryToken
+      with newHolder : Party
+      controller holder, newHolder
+      do create this with holder = newHolder
+
+    -- Pledge to a Broadridge DLR repo contract; non-consuming so the
+    -- token continues to exist but is encumbered by the pledge ref.
+    nonconsuming choice PledgeToRepo : ContractId Pledge
+      with
+        repoCid : ContractId BroadridgeDLR.RepoAgreement
+        pledgee : Party
+      controller holder
+      do create Pledge with
+           collateral = self
+           pledgor    = holder
+           pledgee    = pledgee
+           repoRef    = repoCid
+           released   = False</code></pre>
+    <p>Clearstream's template encodes both the security and its issuance and transfer rules under eWpG.</p>
+<pre><code>-- ClearstreamD7.EurCommercialPaper.daml
+template EurCommercialPaper
+  with
+    issuer        : Party           -- corporate issuer
+    csd           : Party           -- Clearstream Banking AG
+    holder        : Party
+    isin          : Text            -- ISIN under eWpG registry
+    faceAmount    : Decimal         -- EUR face value
+    maturity      : Date
+    eWpGRegistry  : Text            -- crypto-securities registry ref
+    payloadHash   : Text            -- ISO 20022 seev.031 hash
+    regulators    : [Party]
+  where
+    signatory issuer, csd, holder
+    observer  regulators
+
+    key (csd, isin, holder) : (Party, Text, Party)
+    maintainer key._1
+
+    choice Transfer : ContractId EurCommercialPaper
+      with newHolder : Party
+      controller holder, csd, newHolder
+      do create this with holder = newHolder
+
+    -- Atomic DvP: deliver this CP against a UsTreasuryToken pledge
+    -- spans Clearstream + DTCC + Broadridge in a single Daml tx
+    choice DeliverAgainstTreasuryPledge : ContractId EurCommercialPaper
+      with
+        newHolder      : Party
+        treasuryPledge : ContractId DtccComposerX.Pledge
+        repoAgreement  : ContractId BroadridgeDLR.RepoAgreement
+      controller holder, newHolder
+      do
+        -- exercise verifies the pledge exists and matches the repo
+        pledge &lt;- fetch treasuryPledge
+        repo   &lt;- fetch repoAgreement
+        assertMsg "pledge must back this repo"
+          (pledge.repoRef == repoAgreement)
+        create this with holder = newHolder</code></pre>
+    <p>Broadridge holds the repo contract (agreement, term, haircut, repurchase price, substitution and unwind) and references collateral on the other three FMIs by ContractId without copying their state.</p>
+<pre><code>-- BroadridgeDLR.RepoAgreement.daml
+template RepoAgreement
+  with
+    cashProvider    : Party         -- AssetMgrUS
+    collProvider    : Party         -- EuroDealer SA
+    operator        : Party         -- Broadridge
+    cashAmount      : Decimal       -- USD cash leg
+    cashCurrency    : Text          -- "USD"
+    haircut         : Decimal       -- e.g. 0.02 = 2%
+    repoRate        : Decimal       -- annualized %
+    openTime        : Time
+    closeTime       : Time          -- intraday close
+    collateralRefs  : [AnyContractId] -- pledged tokens (DTCC, EUC)
+    masterAgreement : Text          -- GMRA 2011 reference + hash
+    regulators      : [Party]
+  where
+    signatory cashProvider, collProvider, operator
+    observer  regulators
+
+    -- Substitute one collateral piece for another, mid-term
+    choice Substitute : ContractId RepoAgreement
+      with
+        oldRef : AnyContractId
+        newRef : AnyContractId
+      controller collProvider, operator
+      do create this with
+           collateralRefs =
+             newRef :: filter (/= oldRef) collateralRefs
+
+    -- Unwind: release collateral, return cash + interest
+    choice Unwind : ()
+      controller cashProvider, collProvider, operator
+      do return ()</code></pre>
+    <p>Euroclear's D-FMI re-pledges a gilt or Eurobond across jurisdictions while the asset record stays on Euroclear's ledger; <code>MobiliseToTriparty</code> does the work.</p>
+<pre><code>-- EuroclearDFMI.CollateralMobility.daml
+template TokenizedGilt
+  with
+    csd           : Party           -- Euroclear UK &amp; International
+    holder        : Party
+    isin          : Text
+    faceAmount    : Decimal         -- GBP face value
+    maturity      : Date
+    regulators    : [Party]         -- FCA, BoE, NBB
+  where
+    signatory csd, holder
+    observer  regulators
+
+    choice MobiliseToTriparty : ContractId TripartyAllocation
+      with
+        triparty   : Party         -- Euroclear acting as triparty agent
+        receiver   : Party         -- collateral receiver
+        repoRef    : ContractId BroadridgeDLR.RepoAgreement
+      controller holder, triparty
+      do create TripartyAllocation with
+           gilt = self
+           giver    = holder
+           receiver = receiver
+           agent    = triparty
+           repoRef  = repoRef
+           releasedAt = None</code></pre>
+    <div class="note">
+      <span class="label">Authority model</span>
+      <p><code>DeliverAgainstTreasuryPledge</code> fetches a contract from the DTCC package. Fetching requires the fetcher to be an observer or stakeholder, and the fetched contract's signatories grant no transitive authority. Cross-FMI atomicity comes from Canton's two-phase commit at the synchronizer, so each FMI's code stays independently auditable and under its own control.</p>
+    </div>
+
+    <h3 id="canton-privacy">Sub-transaction privacy</h3>
+    <p>When a transaction is submitted, the participant runtime splits it into a tree of sub-transactions, each with its informees (the parties that must see it to validate or be informed). It builds a per-participant view containing only the sub-transactions whose informees it hosts and encrypts each view under the receiving participant's key. The sequencer orders the encrypted blobs and the mediator coordinates commit without decrypting any of them, which is how DTCC, Clearstream and Euroclear settle one operation without seeing each other's books.</p>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th scope="col">Sub-transaction</th><th scope="col">Informees</th><th scope="col">Visible to participants</th><th scope="col">Hidden from</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">UsTreasuryToken.PledgeToRepo</th><td>EuroDealer, Broadridge, DTCC, SEC observer</td><td>BNP Paribas, Broadridge, DTCC</td><td>Clearstream, Euroclear, AssetMgrUS</td></tr>
+          <tr><th scope="row">RepoAgreement (create)</th><td>AssetMgrUS, EuroDealer, Broadridge, SEC, FCA</td><td>Goldman Sachs DAP, BNP Paribas, Broadridge</td><td>DTCC, Clearstream, Euroclear (linked refs only)</td></tr>
+          <tr><th scope="row">EurCommercialPaper.DeliverAgainstTreasuryPledge</th><td>AssetMgrUS, EuroDealer, Clearstream, BaFin observer</td><td>Goldman Sachs DAP, BNP Paribas, Clearstream</td><td>DTCC, Broadridge, Euroclear (opaque commit only)</td></tr>
+          <tr><th scope="row">TokenizedGilt.MobiliseToTriparty</th><td>EuroDealer, Euroclear, FCA, BoE, NBB observers</td><td>BNP Paribas, Euroclear</td><td>DTCC, Clearstream, Broadridge, AssetMgrUS</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="canton-lifecycle">Transaction lifecycle: 18 steps</h3>
+    <p>An intraday repo opens in the morning: USD 250 million face of Treasuries pledged through DTCC plus GBP 50 million of gilts mobilized through Euroclear, against EUR 230 million of commercial paper delivered from Clearstream. It unwinds at end of day after a mid-cycle substitution.</p>
+    <div class="tbl wide steps">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Phase</th><th scope="col">What happens</th><th scope="col">Clock</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><th scope="row">Negotiation</th><td>EuroDealer and AssetMgrUS agree terms on Tradeweb: USD 250M cash, 2% haircut, 5.32% annualized, open 09:30 ET, close 15:30 ET, basket of Treasuries and UK gilts; matched and confirmed.</td><td>T+0s</td></tr>
+          <tr><td>02</td><th scope="row">Negotiation</th><td>Tradeweb posts an ISO 20022 trea.001 confirmation through its Canton API connector to Broadridge, with the GMRA 2011 reference, economics and Daml party IDs.</td><td>T+1s</td></tr>
+          <tr><td>03</td><th scope="row">Pre-settlement</th><td>Broadridge proposes the <code>RepoAgreement</code> with signatories AssetMgrUS, EuroDealer and Broadridge; Goldman DAP and BNP nodes authorize automatically within pre-set trading limits.</td><td>T+2s</td></tr>
+          <tr><td>04</td><th scope="row">Pre-settlement</th><td>Eligibility choice fetches read-only projections of the Treasury and gilt contracts: rating AA or better, maturity 30 years or less, daily price within 0.5% of indicative.</td><td>T+3s</td></tr>
+          <tr><td>05</td><th scope="row">Pre-settlement</th><td>KYC VCs from LSEG Risk Intelligence (US side) and Fenergo (European side) attach as hashes; full VCs travel off-ledger through the Canton Operator API.</td><td>T+3s</td></tr>
+          <tr><td>06</td><th scope="row">Atomic settlement</th><td>BNP's node, for EuroDealer, authors one command with four choices: <code>PledgeToRepo</code> (DTCC), <code>MobiliseToTriparty</code> (Euroclear), <code>DeliverAgainstTreasuryPledge</code> (Clearstream), <code>RepoAgreement.Activate</code> (Broadridge).</td><td>T+4s</td></tr>
+          <tr><td>07</td><th scope="row">Atomic settlement</th><td>BNP splits the transaction into per-informee views, encrypts each under the recipient's TLS-pinned public key and sends one signed message to the sequencer.</td><td>T+4.1s</td></tr>
+          <tr><td>08</td><th scope="row">Atomic settlement</th><td>Sequencer assigns a global sequence number and broadcasts; BFT ordering finality in under 500 ms.</td><td>T+4.5s</td></tr>
+          <tr><td>09</td><th scope="row">Atomic settlement</th><td>DTCC, Clearstream, Broadridge and Euroclear decrypt their views and validate in parallel: authorization, haircut math, eligibility, signatures, business rules.</td><td>T+5s</td></tr>
+          <tr><td>10</td><th scope="row">Atomic settlement</th><td>Participants return signed confirmations to the mediator within the timeout (default 30 s; 5 s here). All positive gives a commit Result; any rejection or timeout rolls everything back.</td><td>T+5.5s</td></tr>
+          <tr><td>11</td><th scope="row">Atomic settlement</th><td>Each participant applies its view: DTCC records the pledge, Clearstream the CP transfer, Euroclear the gilt mobilization, Broadridge the active repo. The four ledgers agree by construction.</td><td>T+6s</td></tr>
+          <tr><td>12</td><th scope="row">Cash leg</th><td>AssetMgrUS's custodian BNY Mellon receives an instruction through Broadridge's US payment gateway and sends USD 250M by Fedwire to EuroDealer's USD nostro at JPMorgan Chase; the securities leg is already irrevocable.</td><td>T+30s</td></tr>
+          <tr><td>13</td><th scope="row">Substitution</th><td>At 12:15 ET EuroDealer needs its USD 100M 4.25% 2034 note and exercises <code>Substitute</code>, swapping in USD 102M of the 4.50% 2032 note (post-haircut); one atomic transaction across DTCC and Broadridge.</td><td>T+2h45m</td></tr>
+          <tr><td>14</td><th scope="row">Unwind</th><td>At 15:30 ET <code>closeTime</code> triggers an unwind proposal that returns the CP, releases the Treasury and gilt pledges, and closes the repo.</td><td>T+6h</td></tr>
+          <tr><td>15</td><th scope="row">Unwind</th><td>Same projection-and-confirm flow across all four ledgers, about 1.5 seconds end to end.</td><td>T+6h+1.5s</td></tr>
+          <tr><td>16</td><th scope="row">Cash settle</th><td>EuroDealer wires USD 250M plus interest (250M × 5.32% × 6/24/365 ≈ USD 9,110) by Fedwire; the GMRA repo is closed operationally and legally.</td><td>T+6h+30s</td></tr>
+          <tr><td>17</td><th scope="row">Reporting</th><td>Reports derive from on-ledger events: ESMA SFTR for the European leg via DTCC's GTR, SEC Rule 10c-1a for the US leg.</td><td>T+6h+5m</td></tr>
+          <tr><td>18</td><th scope="row">Reconciliation</th><td>Each FMI reconciles against its legacy DTC, Clearstream, Euroclear and Broadridge books; every change was atomic and signed by all stakeholders, so zero breaks.</td><td>EOD</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The step 06 command composes the four choices into one tree. Either all commit or none do; rollback is at tree level, and no FMI needs to trust another's middleware. Each FMI's Daml package is independently signed and version-pinned in the topology manager, and cross-package fetches require observer status.</p>
+<pre><code>-- Authored on BNP's participant on behalf of EuroDealer.
+-- Single Daml command, four choices, four FMIs, one atomic commit.
+submitMulti [eurodealer, assetMgr] [-- read-as: Broadridge regulators] do
+
+  -- (1) Pledge USD 250M Treasury at DTCC
+  pledgeCid &lt;- exerciseCmd treasuryCid PledgeToRepo with
+                  repoCid = repoProposalCid
+                  pledgee = broadridgeParty
+
+  -- (2) Mobilise GBP 50M gilts at Euroclear
+  tripCid   &lt;- exerciseCmd giltCid    MobiliseToTriparty with
+                  triparty = euroclearTripartyParty
+                  receiver = broadridgeParty
+                  repoRef  = repoProposalCid
+
+  -- (3) Deliver EUR 230M CP at Clearstream against the Treasury pledge
+  newCpCid  &lt;- exerciseCmd cpCid      DeliverAgainstTreasuryPledge with
+                  newHolder      = eurodealer
+                  treasuryPledge = pledgeCid
+                  repoAgreement  = repoProposalCid
+
+  -- (4) Activate the repo at Broadridge: only signs if 1-3 succeed
+  activeRepoCid &lt;- exerciseCmd repoProposalCid Activate with
+                      treasuryPledgeRef = pledgeCid
+                      giltAllocationRef = tripCid
+                      cpDeliveryRef     = newCpCid
+
+  return activeRepoCid</code></pre>
+    <p>Today the same flow needs a tri-party agent (BNY Mellon or JPMorgan), bilateral SWIFT confirmations among four institutions, several end-of-day reconciliations and a settlement window of hours, with failed substitutions and breaks adding risk and capital cost. Canton compresses it into one atomic operation of about 6 seconds.</p>
+
+    <h3 id="canton-cash">Cash leg and Canton Coin</h3>
+    <p>Cash uses conventional RTGS (Fedwire for USD, TARGET2 for EUR) because deposit-token and CBDC infrastructure is still in pilot in both jurisdictions. A dedicated <code>CashToken</code> Daml application on the same network would later make the whole DvP intra-ledger. Canton Coin (CC), the Global Synchronizer's native asset, only meters and pays for sequencing, mediation and storage. Fees are computed deterministically from transaction size and complexity and paid by the submitting participant; Super Validators earn CC for correct validation. The Foundation governs supply on-chain: minting tied to usage growth, burning of unused balances, capped issuance. The FMIs hold CC only as operating reserves for fees, much like a SWIFT membership pre-fund; it is not a settlement asset.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Currency</th><th scope="col">Today</th><th scope="col">2026 path</th><th scope="col">2027+ path</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">USD</th><td>Fedwire RTGS bridge</td><td>FedNow API for sub-RTGS values</td><td>Wholesale CBDC pilot or tokenized bank deposits as a Daml CashToken</td></tr>
+          <tr><th scope="row">EUR</th><td>TARGET2 RTGS bridge</td><td>ECB wholesale digital euro pilot (Eurosystem TIPS extension)</td><td>Tokenized euro deposit token under MiCA Title III, or wholesale CBDC</td></tr>
+          <tr><th scope="row">GBP</th><td>CHAPS RTGS bridge</td><td>BoE RTGS Renewal Programme ISO 20022 link</td><td>Tokenized sterling (BoE wholesale CBDC pilot, Project Rosalind)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>ISO 20022 inside Daml contracts</h3>
+    <p>Each contract stores the SHA-256 hash of a canonicalized ISO 20022 payload held off-ledger in the FMI's message store, so T+1 SFTR, MiFIR and CSDR reporting comes from the same source as the settlement record and the trade-versus-reporting reconciliation disappears.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Daml field</th><th scope="col">ISO 20022 message</th><th scope="col">Purpose</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">RepoAgreement.payloadHash</th><td>trea.001 trade confirmation</td><td>Canonical trade economics for SFTR</td></tr>
+          <tr><th scope="row">UsTreasuryToken.payloadHash</th><td>seev.031 securities settlement</td><td>Settlement instruction binding for DTC books</td></tr>
+          <tr><th scope="row">EurCommercialPaper.payloadHash</th><td>seev.031 + seev.039</td><td>Settlement and corporate action notification</td></tr>
+          <tr><th scope="row">TripartyAllocation.payloadHash</th><td>colr.016 triparty collateral</td><td>Allocation under the triparty agreement</td></tr>
+          <tr><th scope="row">CashLeg.payloadHash</th><td>pacs.009 FI-to-FI credit transfer</td><td>RTGS cash settlement instruction</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>KYC, AML and the Travel Rule</h3>
+    <p>AML duties stay with each FMI: DTCC under the FinCEN Bank Secrecy Act, Clearstream under Germany's GwG and the EU AMLR (in force July 2027), Euroclear under Belgian AML law and the AMLR, Broadridge under FinCEN transfer-agent rules. Each FMI keeps a <code>KycAttestation</code> template signed by its compliance party and the counterparty, held privately on its participant. A cross-FMI proposal exercises the non-consuming <code>VerifyAttestation</code> choice, which returns only a boolean. Travel Rule data moves off-ledger through the Operator API in a Travel Rule Protocol envelope (e.g. TRISA, OpenVASP); its SHA-256 hash is bound to the settlement, and regulators with observer rights can request the envelope through supervision channels and check it against the hash.</p>
+
+    <h3 id="canton-reg">Regulation: EU, US, Belgium and the UK</h3>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th scope="col">Jurisdiction</th><th scope="col">Entities</th><th scope="col">Rules</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">European Union</th><td>Clearstream Banking AG (CSD under CSDR, Reg. 909/2014; BaFin and Bundesbank); D7 runs in the eWpG crypto-securities registry (eWpG of June 2021)</td><td>CSDR and RTS 2017/389 (settlement discipline, reconciliation, finality); eWpG registry obligations; MiCA only where ARTs or EMTs are touched (pure securities are out of scope); DORA; EU AMLR (2024/1624, July 2027); DLT Pilot Regime sandbox (LU)</td></tr>
+          <tr><th scope="row">United States</th><td>DTC (registered clearing agency under Rule 17Ad-22 and Exchange Act §17A); FICC (Treasury and MBS CCP); Broadridge (SEC transfer agent, SEC/FINRA broker-dealer channels)</td><td>Rule 17Ad-22 standards including segregation; Treasury clearing mandate (Rule 17ad-22(e)(18), final rule 13 December 2023, phased through 2026); Rule 10c-1a securities loan reporting (compliance January 2026); BSA/FinCEN with SAR filings; OFAC screening at issuance and transfer; Reg SHO where applicable</td></tr>
+          <tr><th scope="row">Belgium</th><td>Euroclear Bank (credit institution and CSD; NBB prudential, FSMA conduct)</td><td>NBB/FSMA prudential rules; CSDR with T+1 from October 2027; Belgian AML Law (2017) until replaced by the AMLR in July 2027; Banking Act (2014) recovery and resolution; DORA</td></tr>
+          <tr><th scope="row">United Kingdom</th><td>Gilt leg via Euroclear UK &amp; International</td><td>Bank of England FMI rules; FCA CSDR-equivalent rules retained after Brexit; Uncertificated Securities Regulations 2001 as amended for digital securities; FMI Digital Securities Sandbox; UK MLR 2017; Project Rosalind (BoE/BIS wholesale CBDC API design)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Each regulator holds Daml observer rights over contracts in its perimeter: real-time, read-only, integrity-guaranteed visibility of the same state the supervised entity sees. That is stronger than today's T+1 reporting feeds and answers a long-standing ESMA and SEC concern about post-trade data integrity. No FMI cedes supervisory authority and no party sees data outside its lawful basis.</p>
+
+    <h3>Governance</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Body</th><th scope="col">Domicile</th><th scope="col">Scope</th><th scope="col">Members (selected)</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Global Synchronizer Foundation</th><td>Switzerland (non-profit)</td><td>Synchronizer protocol, fees, validator slashing</td><td>13 Super Validators including Goldman, DTCC, Broadridge, Euroclear, BNP, SBI, Tradeweb, Cumberland</td></tr>
+          <tr><th scope="row">Canton Foundation</th><td>Switzerland</td><td>Network standards, Daml package signing, interoperability, Canton Coin parameters</td><td>Goldman Sachs, DTCC, Broadridge, Euroclear, BNP Paribas, Deutsche Börse, Digital Asset</td></tr>
+          <tr><th scope="row">Per-application governance</th><td>Each FMI's home</td><td>Application rulebook, asset registries</td><td>Clearstream, DTCC, Broadridge, Euroclear</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Super Validator selection, parameter changes and protocol upgrades are voted through on-chain governance contracts written in Daml.</p>
+
+    <h3 id="canton-risks">Canton-specific risks</h3>
+    <ul>
+      <li><span class="k">Synchronizer outage.</span> If BFT quorum is lost (more than f Byzantine failures among the 13), nothing new commits. Local synchronizers keep intra-application flows running; cross-FMI flows pause but cannot half-settle. Foundation SLA target: 99.95% per quarter.</li>
+      <li><span class="k">Participant compromise.</span> Keys are rotated and revoked through the topology manager with multi-signature approval from the FMI's governance and the Canton Foundation; affected contracts can be quarantined by a choice that needs the regulator observer's signature.</li>
+      <li><span class="k">Package version skew.</span> Transactions are pinned to package hashes, so every affected participant must install an upgrade before old contracts retire; the Canton Foundation runs the upgrade ceremony.</li>
+      <li><span class="k">Stuck in flight.</span> A mediator timeout rolls the transaction back; pending items such as pledges can be released by a time-bounded <code>Cancel</code> choice after a 24-hour expiry with no counterparty action.</li>
+      <li><span class="k">Recovery and resolution.</span> DTCC stays under Title VIII of Dodd-Frank, Clearstream and Euroclear under the EU CCPR/CSDR resolution regime, Broadridge under SEC Reg SCI as a critical service provider. Observer rights give resolution authorities a real-time authoritative book of positions.</li>
+    </ul>
+    <p class="refs">Canton sources: Canton institutional partner registry (canton.wiki/learn/canton-institutional-partners) and Foundation member list (canton.network), retrieved April 2026; Broadridge DLR statements and Q4 2025 earnings disclosures; Digital Asset, "Canton Network Architecture Whitepaper" (2024) and Daml documentation (docs.digitalasset.com/build/3.5); Clearstream, "D7 DLT: Clearstream Launches Tokenized Securities Platform", 4 November 2025; Canton Network, "DTCC and Digital Asset Partner to Tokenize DTC-Custodied U.S. Treasury Securities on the Canton Network", 17 December 2025; Digital Asset and Euroclear, "Unlocking Collateral Mobility through Tokenization: Gilts, Eurobonds and Gold" (2024 pilot whitepaper) and "Digital Asset and Euroclear Start First Project Phase", 25 February 2025; Global Synchronizer Foundation governance documentation (2025–2026; Super Validator list as of Q1 2026) and Canton Coin economic specification v1.x (2024–2026). The Daml shown is illustrative and simplified; production code adds substantially more validation, error handling and upgrade scaffolding, and real deployments differ by each FMI's architecture, rulebook and supervisor.</p>
+    <a class="back" href="#compare">Back to comparison</a>
+  </div>
+</section>
+
+<!-- ============================== CORDA ============================== -->
+<section id="corda" class="band" aria-labelledby="corda-h">
+  <div class="wrap">
+    <div class="plat-head">
+      <span class="label">R3 Corda · EUR/AED</span>
+      <h2 id="corda-h">R3 Corda: two European banks and a UAE bank</h2>
+      <p>A German corporate pays a Dubai supplier. BankFR (Frankfurt) originates and issues EUR tokens, BankNL (Amsterdam) is the EUR liquidity node and FX oracle, and BankAE (Dubai, ADGM) receives and redeems in AED. Three participant nodes and a BFT notary cluster run Corda 4.x/5.x Enterprise with Corda Token SDK <code>FungibleToken</code> states, Kotlin CorDapps and AMQP point-to-point messaging, with the pacs.008 carried inside token metadata.</p>
+      <ul class="tags"><li>Corda Enterprise</li><li>Corda Token SDK</li><li>CorDapp / Kotlin</li><li>pacs.008</li><li>MiCA</li><li>CBUAE PTSR</li><li>ADGM FSRA</li><li>DORA</li></ul>
+    </div>
+
+    <h3>Why this corridor and Corda</h3>
+    <p>EUR/AED is one of the largest routes with no production tokenized A2A network. Europe–UAE trade exceeded $50 billion a year as of 2024, concentrated in energy, real estate, logistics and professional services, on correspondent rails that are costly, slow and squeezed by de-risking at both ends. UAE banks have explicit licensing paths for deposit-token infrastructure under the CBUAE Payment Token Services Regulation (PTSR, issued June 2024, in force August 2025) and ADGM FSRA frameworks; the UAE regime is designed around programmable settlement on permissioned ledgers.</p>
+    <ul>
+      <li>AMQP point-to-point messaging means each bank sees only the states it is party to. Bilateral privacy is a legal requirement under GDPR and MiCA confidentiality obligations in the EU and ADGM data protection rules in the UAE.</li>
+      <li>Kotlin/JVM CorDapps map onto deposit-token payment semantics: explicit authorization by all signers, deterministic finality once the notary signs, and X.509 legal-entity identity.</li>
+      <li>Corda has the widest documented production record in regulated networks: SIX Digital Exchange, HQLAx, the UK Regulated Liability Network, and wholesale CBDC pilots including Project Aber.</li>
+      <li>R3's European footprint (SDX under the Swiss DLT Act, Euroclear D-FMI, the UK RLN pilot with Barclays, HSBC, Lloyds and others) and its work with CBUAE, ADGM FSRA and DFSA sandboxes shorten approval for new corridors.</li>
+    </ul>
+
+    <h3 id="corda-topology">Topology and nodes</h3>
+    <p>Four Corda nodes (three participants and a notary cluster), a shared network map service (X.509 identity registry and CorDapp versions), and optional bridges to SWIFT and to TARGET2/UAE RTGS. No bank is hosted by R3 or any single third party.</p>
+    <div class="nodes">
+      <article class="node">
+        <span class="label">Node A · originating bank</span>
+        <h4>BankFR · Frankfurt</h4>
+        <p>Licensed by BaFin; within MiCA where it issues e-money tokens under Title III; DORA-compliant since January 2025. Runs Corda Enterprise 4.x in Frankfurt and mints EUR <code>FungibleToken</code> states against its reserves.</p>
+        <dl><dt>X.509</dt><dd>O=BankFR, L=Frankfurt, C=DE</dd><dt>Vault</dt><dd>EUR FungibleToken</dd><dt>HSM</dt><dd>Thales Luna 7</dd><dt>DB</dt><dd>PostgreSQL 14</dd><dt>AMQP</dt><dd>Apache Artemis (in-node)</dd><dt>CorDapps</dt><dd>PaymentInitiatorFlow, AMLComplianceCorDapp</dd><dt>Links</dt><dd>BaFin reporting gateway, TARGET2</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Node B · liquidity node</span>
+        <h4>BankNL · Amsterdam</h4>
+        <p>Licensed by De Nederlandsche Bank; MiCA and DORA. Originates nothing here; holds surplus EUR token positions for intraday liquidity and hosts the FX oracle CorDapp.</p>
+        <dl><dt>X.509</dt><dd>O=BankNL, L=Amsterdam, C=NL</dd><dt>Vault</dt><dd>EUR FungibleToken (liquidity pool)</dd><dt>CorDapp</dt><dd>FXOracleResponder (EUR/AED spot)</dd><dt>DB</dt><dd>PostgreSQL 14</dd><dt>Links</dt><dd>ECB/DNB reporting, TARGET2</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Node C · receiving bank</span>
+        <h4>BankAE · Dubai (ADGM)</h4>
+        <p>Incorporated in ADGM and licensed by the FSRA as a Deposit-Taking Institution with digital asset permissions; also holds a CBUAE Payment Token Services licence for dirham payment tokens under the PTSR. Issues and redeems AED tokens, crediting AED on-ledger at the spot rate.</p>
+        <dl><dt>X.509</dt><dd>O=BankAE, L=Dubai, C=AE</dd><dt>Vault</dt><dd>AED FungibleToken</dd><dt>HSM</dt><dd>AWS CloudHSM</dd><dt>DB</dt><dd>PostgreSQL 14</dd><dt>CorDapps</dt><dd>PaymentResponderFlow, FXConversionCorDapp</dd><dt>Links</dt><dd>UAE RTGS (CBUAE)</dd></dl>
+      </article>
+    </div>
+    <p>The notary cluster is Corda's only consensus mechanism. It confirms that the input states a transaction consumes are unspent and issues a timestamped signature that makes the transaction irrevocable, seeing only state references and identifiers. Five nodes run a BFT-SMaRt variant with a 3-of-5 quorum, tolerating one Byzantine fault: two in EU-regulated cloud zones, two in UAE zones, one in a neutral location such as Switzerland. The operator must be jurisdictionally neutral or jointly governed, typically a consortium entity (as SDX runs its own notary), a joint venture or a regulated trust service provider.</p>
+
+    <h3 id="corda-cordapp">CorDapp: states, contracts and flows</h3>
+    <p>The payment CorDapp has three modules (states and contracts, workflows, and compliance for KYC attestation checks and ISO 20022 validation), packaged as JVM <code>.jar</code> files deployed identically to every node. A state is an immutable shared fact; it is never modified, only consumed and replaced.</p>
+<pre><code>// EUR deposit token: issued by BankFR, owned by BankAE after transfer
+data class EurDepositToken(
+    override val amount: Amount&lt;IssuedTokenType&gt;,   // e.g. 5,000,000 EUR, issued by BankFR
+    override val holder: AbstractParty,              // current holder (changes on transfer)
+    val iso20022Payload: String,                     // pacs.008 XML payload (base64 encoded)
+    val kycAttestation: SecureHash,                  // hash of originator KYC attestation VC
+    val paymentReference: UniqueIdentifier,           // end-to-end payment reference (UETR)
+    val settlementCycle: String,                     // "INTRADAY" or "EOD"
+    override val participants: List&lt;AbstractParty&gt;
+) : FungibleToken
+
+// FX obligation: created when BankAE commits to deliver AED against EUR
+data class FxObligationState(
+    val eurAmount: Amount&lt;IssuedTokenType&gt;,           // EUR leg
+    val aedAmount: Amount&lt;IssuedTokenType&gt;,           // AED leg (calculated from oracle rate)
+    val fxRate: BigDecimal,                          // EUR/AED spot rate from oracle
+    val rateTimestamp: Instant,                      // when rate was signed by oracle
+    val obligor: Party,                               // BankAE (owes AED)
+    val beneficiary: Party,                           // BankFR (receives AED equivalent)
+    val linearId: UniqueIdentifier,
+    override val participants: List&lt;AbstractParty&gt;
+) : LinearState</code></pre>
+    <p>Every node verifies contract rules locally before signing.</p>
+<pre><code>class EurDepositTokenContract : Contract {
+    companion object { const val ID = "com.postoaklabs.a2a.contracts.EurDepositTokenContract" }
+
+    override fun verify(tx: LedgerTransaction) {
+        val cmd = tx.commands.requireSingleCommand&lt;Commands&gt;()
+        when (cmd.value) {
+            is Commands.Issue -&gt; {
+                // Only the issuer bank (BankFR) can mint tokens
+                require(tx.inputs.isEmpty()) { "Issue: no inputs" }
+                require(tx.outputs.size == 1) { "Issue: exactly one output" }
+                val out = tx.outputsOfType&lt;EurDepositToken&gt;().single()
+                require(out.amount.quantity &gt; 0) { "Issue: positive amount" }
+                require(cmd.signers.contains(out.amount.token.issuer.party.owningKey))
+                    { "Issue: signed by issuer" }
+                require(out.iso20022Payload.isNotBlank()) { "Issue: pacs.008 payload required" }
+                require(out.kycAttestation != SecureHash.zeroHash) { "Issue: KYC attestation required" }
+            }
+            is Commands.Move -&gt; {
+                // Holder signs the move; input and output amounts must balance
+                val inputs  = tx.inputsOfType&lt;EurDepositToken&gt;()
+                val outputs = tx.outputsOfType&lt;EurDepositToken&gt;()
+                require(inputs.sumTokenStateAndRefs() == outputs.sumTokenStates())
+                    { "Move: amounts balance" }
+                require(cmd.signers.containsAll(inputs.map { it.holder.owningKey }))
+                    { "Move: signed by holder" }
+            }
+            is Commands.Redeem -&gt; {
+                // Redemption burns the token; signed by both holder and issuer
+                require(tx.outputs.isEmpty()) { "Redeem: no outputs" }
+                require(cmd.signers.containsAll(
+                    tx.inputsOfType&lt;EurDepositToken&gt;().flatMap {
+                        listOf(it.holder.owningKey, it.amount.token.issuer.party.owningKey)
+                    }
+                )) { "Redeem: signed by holder and issuer" }
+            }
+        }
+    }
+    interface Commands : CommandData {
+        class Issue   : Commands
+        class Move    : Commands
+        class Redeem  : Commands
+    }
+}</code></pre>
+    <p>Flows orchestrate each protocol over encrypted point-to-point AMQP; no other node sees flow messages.</p>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th scope="col">Flow</th><th scope="col">Initiator</th><th scope="col">Responders</th><th scope="col">Purpose</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">PaymentInitiatorFlow</th><td>BankFR</td><td>BankAE, notary</td><td>Mints EUR token with ISO 20022 payload and KYC attestation; starts transfer to BankAE.</td></tr>
+          <tr><th scope="row">FXOracleQueryFlow</th><td>BankFR</td><td>BankNL (oracle)</td><td>Requests a signed EUR/AED spot rate.</td></tr>
+          <tr><th scope="row">FxObligationCreateFlow</th><td>BankFR</td><td>BankAE, notary</td><td>Creates the <code>FxObligationState</code> committing BankAE to deliver AED at the oracle rate.</td></tr>
+          <tr><th scope="row">AtomicPvPSettlementFlow</th><td>BankFR</td><td>BankAE, notary</td><td>One notary-approved transaction moving EUR (BankFR to BankAE) and AED (BankAE to the beneficiary account).</td></tr>
+          <tr><th scope="row">TokenRedemptionFlow</th><td>BankAE</td><td>BankFR (issuer), notary</td><td>Burns transferred EUR tokens after RTGS net settlement; BankAE credits local AED.</td></tr>
+          <tr><th scope="row">ComplianceAttestationFlow</th><td>BankFR</td><td>BankAE</td><td>Exchanges originator and beneficiary VCs before any token is minted (FATF R.16).</td></tr>
+          <tr><th scope="row">RtgsConfirmationFlow</th><td>BankNL</td><td>BankFR, BankAE</td><td>Announces TARGET2 and UAE RTGS confirmations at cycle end; triggers vault cleanup.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="corda-lifecycle">Transaction lifecycle: 16 steps</h3>
+    <p>Steps 1–11 complete on-ledger in under 60 seconds; steps 12–16 run intraday or end-of-day.</p>
+    <div class="tbl wide steps">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Step</th><th scope="col">Corda-specific detail</th><th scope="col">Timing</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><th scope="row">Instruction</th><td>pacs.008 via BankFR's corporate API: Frankfurt debit account, Dubai supplier credit account, EUR amount, value date, beneficiary, purpose code.</td><td>&lt;1 s</td></tr>
+          <tr><td>02</td><th scope="row">Travel Rule</th><td>BankFR's compliance CorDapp screens, then <code>ComplianceAttestationFlow</code> sends a VC (LEI, jurisdiction, risk tier, sanctions-clear) over AMQP; BankAE replies with a beneficiary VC. Satisfies EU TFR and CBUAE AML/CFT.</td><td>1–3 s</td></tr>
+          <tr><td>03</td><th scope="row">FX rate</th><td><code>FXOracleQueryFlow</code> to BankNL, which builds a signed <code>FXRateState</code> from its Bloomberg/Reuters feed with a 90-second window; BankFR verifies the signature.</td><td>0.5–2 s</td></tr>
+          <tr><td>04</td><th scope="row">FX commitment</th><td><code>FxObligationCreateFlow</code> puts an <code>FxObligationState</code> in both vaults; BankAE signs in <code>FxObligationResponderFlow</code> and the notary finalizes. Both banks now hold a binding on-ledger commitment before either leg settles.</td><td>2–5 s</td></tr>
+          <tr><td>05</td><th scope="row">Mint</th><td>Token SDK <code>IssueTokens</code> creates <code>EurDepositToken</code> (e.g. EUR 5,000,000; issuer and initial holder BankFR) with the base64 pacs.008 and the VC hash, signed by BankFR's HSM key. The fiat stays in BankFR's reserve account.</td><td>1–2 s</td></tr>
+          <tr><td>06</td><th scope="row">Proposal</th><td>BankFR builds one transaction moving EUR to BankAE and AED from BankAE to the recipient account, sent over AMQP to BankAE only.</td><td>&lt;1 s</td></tr>
+          <tr><td>07</td><th scope="row">Counterparty check</th><td>BankAE's <code>PaymentResponderFlow</code> runs <code>EurDepositTokenContract</code> and <code>FxObligationContract</code> itself: payload validates against the pacs.008 XSD, KYC hash matches step 2, rate is from the oracle and in window, amounts match the obligation. Then BankAE signs.</td><td>1–3 s</td></tr>
+          <tr><td>08</td><th scope="row">Notarisation</th><td>BankFR submits to the notary, which checks that the EUR token, AED token and FX obligation are unconsumed, seeing only state hashes; 3 of 5 sign in one round of BFT-SMaRt communication.</td><td>1–4 s</td></tr>
+          <tr><td>09</td><th scope="row">Finality</th><td>BankFR distributes the notarised transaction; both vaults update together (EUR consumed at BankFR, new EUR held by BankAE, AED consumed, obligation settled). Irrevocable.</td><td>&lt;1 s after signature</td></tr>
+          <tr><td>10</td><th scope="row">Beneficiary credit</th><td>Corda RPC delivers the pacs.008 to core banking middleware (e.g. Temenos T24 or Oracle FLEXCUBE), which posts the AED credit directly against the open invoice.</td><td>1–5 s</td></tr>
+          <tr><td>11</td><th scope="row">Audit trail</th><td>Payload, KYC hash, oracle rate and notary signature live in both vaults. BankFR's compliance module reports to BaFin and for ECB statistics; BankAE's to the CBUAE and ADGM FSRA.</td><td>Automated</td></tr>
+          <tr><td>12</td><th scope="row">Netting</th><td>BankNL's liquidity coordination CorDapp nets EUR between BankFR and BankNL and the AED position between BankAE and the EUR-side banks.</td><td>Every 4 h or on demand</td></tr>
+          <tr><td>13</td><th scope="row">TARGET2</th><td>BankFR and BankNL settle net EUR; BankNL's <code>RtgsConfirmationFlow</code> broadcasts the confirmation.</td><td>TARGET2 hours</td></tr>
+          <tr><td>14</td><th scope="row">UAE RTGS</th><td>BankAE settles net AED in dirham central bank money, a direct CBUAE liability; final legal settlement of the AED obligations.</td><td>UAE RTGS hours</td></tr>
+          <tr><td>15</td><th scope="row">Redemption</th><td>BankFR runs <code>TokenRedemptionFlow</code> on the EUR tokens held by BankAE; states are consumed with no outputs.</td><td>Post-RTGS</td></tr>
+          <tr><td>16</td><th scope="row">Reconciliation</th><td>The pacs.008 travelled inside the token from step 5, so both core systems match straight through.</td><td>&lt;2% exceptions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="corda-fx">FX: EUR/AED on-ledger</h3>
+    <p>The AED is pegged to USD at 3.6725, so EUR/AED tracks EUR/USD and is not deep at all hours. Corda handles external data through the oracle pattern: BankNL signs the rate, the signature is embedded in the transaction, and any node can verify which rate was attested and when.</p>
+<pre><code>// FX Oracle data structure: signed by BankNL
+data class SignedFXRate(
+    val base: Currency,              // EUR
+    val quote: Currency,             // AED
+    val mid: BigDecimal,             // e.g. 3.9412 (EUR/AED mid at time of signing)
+    val bid: BigDecimal,             // buy side
+    val ask: BigDecimal,             // sell side
+    val timestamp: Instant,          // oracle signing time (UTC)
+    val validUntil: Instant,         // timestamp + 90 seconds validity window
+    val oracleSignature: DigitalSignature  // BankNL node key signature over above
+)</code></pre>
+    <p>Conversion happens on-ledger at redemption by BankAE, which keeps its dealing spread over the oracle mid; BankFR keeps the origination fee.</p>
+    <div class="note">
+      <span class="label">Worked example</span>
+      <p>A €5,000,000 payment. Oracle mid 3.9412; BankAE spread 15 bp gives 3.9412 × 1.0015 = 3.9471, so the supplier receives AED 19,735,500. BankAE FX revenue is AED 29,250 (about €7,411 at mid); BankFR's fee is €2,500 (5 bp). All-in cost to the corporate is about 12.5 bp against roughly 2.5–3.5% through correspondents.</p>
+    </div>
+
+    <h3 id="corda-notary">Notary design for cross-jurisdiction finality</h3>
+    <p>In one country the network operator or a market infrastructure usually runs the notary. Across the EU and UAE, governance must stop either jurisdiction from unilaterally halting or reversing transactions while meeting both legal finality regimes. With 3-of-5 and a 2/2/1 geographic split, one node can be offline, compromised or under a single jurisdiction's order and the other four still reach quorum. Likely operators: a jointly governed consortium vehicle (like SDX's notary for Swiss DLT Act settlements), a trust service provider licensed in both the EU (eIDAS-qualified) and the UAE (ADGM), or R3 notary-as-a-service under agreements stating when a jurisdiction may exercise authority.</p>
+    <div class="note warn">
+      <span class="label">Governance constraint</span>
+      <p>Because the notary sees only state hashes, an order directed at it cannot extract transaction data; at most it can stop the notary signing new transactions. The participation agreement must define what counts as a lawful order to cease operating and what happens to in-flight transactions during an outage. This is legal drafting work and must be settled before deployment.</p>
+    </div>
+
+    <h3>ISO 20022 inside the token</h3>
+    <p>The pacs.008 travels inside the token state from minting. An MT103 degrades along the correspondent chain and truncates names to 35 characters; here the XML is cryptographically bound to the token and arrives at BankAE intact and machine-readable, already in its vault when the token lands. BankAE validates it against the XSD at step 7 before signing. The sample uses pacs.008.001.08, settlement method INDA (instructed agent), MsgId <code>BANKFR-20260415-00012345</code>, created 2026-04-15T09:32:11Z, UETR <code>550e8400-e29b-41d4-a716-446655440000</code>, EUR 5,000,000.00 from Frankfurt Machinery GmbH (Mainzer Landstrasse 58, Frankfurt am Main; LEI <code>5299000CRDX2KFHPD419</code>) to Dubai Trading LLC (LEI <code>984500E8MRZXBX7V1G62</code>), purpose TRPT, invoice INV-2026-DXB-4471, which feeds BankAE's receivables matching. Both LEIs resolve against GLEIF.</p>
+
+    <h3>KYC, AML and the Travel Rule</h3>
+    <p>BankFR answers to BaFin and the ECB, BankAE to the ADGM FSRA and CBUAE. <code>ComplianceAttestationFlow</code> uses the W3C Verifiable Credentials model: BankFR's VC (name, address, LEI, risk tier, sanctions status) is signed with its node key; BankAE's <code>ComplianceAttestationResponderFlow</code> checks the signature and the LEI at GLEIF and replies. Both VC hashes sit in the token state, proving Travel Rule data was exchanged before minting.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Requirement</th><th scope="col">Jurisdiction</th><th scope="col">Handling on Corda</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">AML/CFT screening</th><td>EU (AMLD6), CBUAE AML</td><td>Structured name and LEI screened at step 1 (originator) and step 7 (beneficiary).</td></tr>
+          <tr><th scope="row">Travel Rule</th><td>EU TFR, CBUAE/ADGM</td><td>VC exchange at step 2; hashes in token state; IVMS-101.</td></tr>
+          <tr><th scope="row">Sanctions</th><td>EU Sanctions Regulation; UN and UAE lists</td><td>Independent checks on LEI and structured name.</td></tr>
+          <tr><th scope="row">Reporting</th><td>ECB, CBUAE</td><td>Each bank's compliance module reports from the vault record with the full pacs.008.</td></tr>
+          <tr><th scope="row">Data residency</th><td>GDPR, ADGM Data Protection</td><td>Personal data moves only between BankFR and BankAE; each stores vault data in its own regulated zone.</td></tr>
+          <tr><th scope="row">DORA</th><td>EU</td><td>BankFR and BankNL classify the node as critical ICT; R3 must meet DORA ICT third-party requirements.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="corda-reg">Regulation: EU and UAE</h3>
+    <p>MiCA and the PTSR are broadly compatible (1:1 reserve backing, at-par redemption, AML/CFT) but differ in implementation details that shape the CorDapp. On the EU side BankFR's token falls under CRD/CRR per the EBA report, with DORA reporting to BaFin or DNB and R3 owing resilience guarantees and audit rights (see <a href="#pattern">shared rules</a>).</p>
+    <ul>
+      <li><span class="k">CBUAE PTSR</span> (June 2024; in force August 2025): only licensed Dirham Payment Tokens may be used for domestic payments in the UAE, outside free zones. BankAE needs a PTSR licence; the rules require 1:1 AED reserves, redemption at par on demand and AML/BSA compliance.</li>
+      <li><span class="k">ADGM FSRA</span>: BankAE holds digital asset permissions under the Financial Services and Markets Regulations. ADGM applies English common law, giving strong enforceability for CorDapp-governed obligations, and runs the RegLab sandbox, which has worked with blockchain payment infrastructure. A bank in Dubai's DIFC would instead fall under the DFSA, with comparable but distinct requirements; the CBUAE regulates onshore.</li>
+      <li><span class="k">FX controls</span>: cross-border AED payments need CBUAE authorization and FX reporting. The CBUAE FIT (Financial Infrastructure Transformation) Programme, launched February 2023 and 85% complete by January 2025, includes a wholesale CBDC programme; the first cross-border Digital Dirham payment (AED 50 million via mBridge, with China) took place in January 2024.</li>
+      <li><span class="k">UAE RTGS</span>: the CBUAE rulebook, Chapter 3 (Cross-Border Payments), requires AML/CFT documentation for every transaction above AED 3,500 (about $950).</li>
+    </ul>
+    <div class="note">
+      <span class="label">Compatibility finding</span>
+      <p>Both regimes require 1:1 fiat backing, at-par redemption, AML/CFT and prudential supervision. The EUR token is a bank deposit token under EU banking law and BankAE's AED activity is PTSR-licensed, so the design meets all four on both sides, creates no new regulatory category, and falls under no stablecoin regulation.</p>
+    </div>
+
+    <h3>RTGS net settlement and liquidity</h3>
+    <p>A €5M correspondent payment needs €5M pre-funded along the Frankfurt–Dubai chain. Here the supplier is credited within 60 seconds and RTGS settles only the net. If BankFR sends €20M to Dubai and BankAE sends €12M to Frankfurt in a 4-hour cycle, the net is €8M against €32M gross; at 5%, about €1.2M a year in foregone nostro yield is freed.</p>
+    <div class="tbl wide">
+      <table>
+        <thead><tr><th scope="col">Layer</th><th scope="col">Mechanism</th><th scope="col">Asset</th><th scope="col">Timing</th><th scope="col">Finality</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">On-ledger (Corda)</th><td>Atomic PvP, notary-finalized</td><td>EUR deposit token (BankFR liability) against AED deposit token (BankAE liability)</td><td>&lt;60 s</td><td>Technical finality immediately; legal finality on RTGS confirmation</td></tr>
+          <tr><th scope="row">TARGET2</th><td>Intraday net, pacs.009</td><td>ECB reserves</td><td>Every 4 h in the TARGET2 window</td><td>Final in ECB money</td></tr>
+          <tr><th scope="row">UAE RTGS</th><td>Intraday net, CBUAE format</td><td>CBUAE reserves</td><td>UAE RTGS window</td><td>Final in CBUAE money</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>UAE RTGS runs on Gulf Standard Time (UTC+4). The two systems overlap for 3–4 hours (about 07:00–10:00 CET, 10:00–13:00 GST); the settlement CorDapp queues UAE RTGS instructions to the next GST business day when a cycle falls outside it, and intraday cycles are normally scheduled inside the overlap.</p>
+
+    <h3 id="corda-risks">Corda-specific risks</h3>
+    <ul>
+      <li><span class="k">Governance.</span> The shared questions apply to the payment CorDapp's upgrade roadmap and liability for its bugs.</li>
+      <li><span class="k">Legal finality.</span> Corda networks are not yet SFD-designated; the corridor needs engagement in both the EU and UAE.</li>
+      <li><span class="k">Mint key.</span> BankFR's minting HSM is the single highest-value target; physical security at the Frankfurt and Dubai data centers must meet FIPS 140-2 Level 3, and multi-signature minting adds operational complexity.</li>
+      <li><span class="k">Developer talent.</span> About 2,500 Corda developers have production financial-services experience, against roughly 23,000 EVM/Solidity and 8,000 Fabric developers. Senior Corda engineers cost $150,000–$300,000 a year; a three-bank network needs 3–5 per bank plus 2–3 shared network engineers over a 24–36 month build and stabilization period.</li>
+      <li><span class="k">Sequencing for BankAE.</span> Confirm the PTSR licence covers AED deposit-token issuance and cross-border tokenized settlement, engage the ADGM FSRA on the CorDapp architecture, complete CBUAE FIT Programme integration, then go live. EU banks follow the shared sequence with BaFin or DNB.</li>
+    </ul>
+    <p class="refs">Corda sources: R3 CBDC hub, <a href="https://digital-currencies-hub.r3.com/cbdcs/">digital-currencies-hub.r3.com/cbdcs</a>; CBUAE rulebook, <a href="https://rulebook.centralbank.ae">rulebook.centralbank.ae</a>; TRM Labs, "Global Crypto Policy Review Outlook 2025/26"; Global Government Finance, "UAE aims to launch retail CBDC this year" (April 2025); Ledger Insights, "UAE to launch CBDC in Q4 2025" (March 2025); Chambers Practice Guides, "Fintech 2025, UAE"; Middle East Briefing, "UAE Fintech 2025 Regulatory Review"; R3 documentation, <a href="https://docs.r3.com/en/platform/corda/5.2/key-concepts/cordapp-dev.html">docs.r3.com</a>; Xoriant, "Understanding Corda Architecture" (March 2026); <a href="https://github.com/corda/token-sdk/blob/master/design/design.md">Corda Token SDK design</a>; R3 on 20+ regulated TradFi networks live with over $10 billion in on-chain RWAs, <a href="https://r3.com/corda/">r3.com/corda</a> (press release February 2025); Brenden, "R3 Corda Settler Tutorial" (2019), <a href="https://github.com/corda/corda-settler">github.com/corda/corda-settler</a>, whose XRP settlement reference is adapted here for bank-to-RTGS settlement. Further Corda deployments: HQLAx (backed by BNP Paribas, Goldman Sachs, HSBC, JPMorgan, UBS), the UK RLN pilot (2023), Wells Fargo Coin (internal USD deposit token), Progmat Coin (MUFG, Japan) and the World Bank's 2023 digital bond settled on Corda via Euroclear D-FMI; Blockchainmagazine.com (May 2025) aggregates examples and should be checked against primary sources.</p>
+    <a class="back" href="#compare">Back to comparison</a>
+  </div>
+</section>
+
+<!-- ============================== FABRIC ============================== -->
+<section id="fabric" aria-labelledby="fabric-h">
+  <div class="wrap">
+    <div class="plat-head">
+      <span class="label">Hyperledger Fabric · EUR/SAR</span>
+      <h2 id="fabric-h">Hyperledger Fabric: two European banks and a Saudi bank</h2>
+      <p>A German mid-market maker of precision machine tools pays EUR 4,820,000 to a contracting authority in Riyadh for a desalination project milestone. Its Munich house bank has no direct SAR correspondent account, so it relies on a Paris affiliate that runs a SAR nostro at the Riyadh receiver; all three are members of one permissioned Fabric 2.5 LTS network with a five-node Raft ordering service, four channels, Go chaincode, the Fabric Token SDK, CouchDB world state and FIPS 140-2 HSMs. SAR has been pegged at 3.75 per USD since 1986 and EUR/SAR derives from the ECB euro reference rate against the dollar. At an indicative mid of 4.0825 with a 6 bp spread to the taker, the SAR notional is about SAR 19,683,765.</p>
+      <ul class="tags"><li>Fabric 2.5 LTS</li><li>Fabric Token SDK</li><li>Go chaincode</li><li>Raft</li><li>pacs.008</li><li>MiCA</li><li>SAMA AML/CFT</li><li>DORA</li><li>TFR 2023/1113</li></ul>
+    </div>
+    <p>Very few EU institutions hold direct riyal accounts and bilateral nostros are costly, so the EU–GCC relationship is structurally underbanked. A permissioned corridor lets a small group of correspondents net continuously and settle once a day without public-network infrastructure and without exposing counterparty identity outside the consortium.</p>
+
+    <h3 id="fabric-topology">Organizations, peers and orderers</h3>
+    <div class="nodes">
+      <article class="node">
+        <span class="label">Originator · Org1MSP · Munich</span>
+        <h4>Bayerische Handelsbank AG</h4>
+        <p>House bank of the payer. Holds EUR commercial bank money on-ledger as EUR-CBM tokens, debits the corporate in core banking and submits the proposal.</p>
+        <dl><dt>Identity</dt><dd>Org1MSP · BIC BHDLDE2M</dd><dt>Nodes</dt><dd>peer0.de · peer1.de · ca.de</dd><dt>HSM</dt><dd>Thales Luna 7</dd><dt>RTGS</dt><dd>TARGET2 (Bundesbank)</dd><dt>Reg</dt><dd>BaFin · MiCA · DORA</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Liquidity · Org2MSP · Paris</span>
+        <h4>Banque Méridienne SA</h4>
+        <p>Pan-European correspondent. Runs the SAR nostro at the receiver, quotes EUR/SAR into the oracle and endorses both legs as liquidity counterparty.</p>
+        <dl><dt>Identity</dt><dd>Org2MSP · BIC BMRDFRPP</dd><dt>Nodes</dt><dd>peer0.fr · peer1.fr · ca.fr</dd><dt>HSM</dt><dd>Utimaco SecurityServer</dd><dt>RTGS</dt><dd>TARGET2 (Banque de France)</dd><dt>Reg</dt><dd>ACPR · MiCA · DORA</dd></dl>
+      </article>
+      <article class="node">
+        <span class="label">Beneficiary · Org3MSP · Riyadh</span>
+        <h4>Bank Al-Madinah</h4>
+        <p>Issues SAR-CBM tokens backed one-for-one by SAMA settlement balances, credits the beneficiary on final commit and sends the MT/MX confirmation upstream.</p>
+        <dl><dt>Identity</dt><dd>Org3MSP · BIC ALMDSARI</dd><dt>Nodes</dt><dd>peer0.sa · peer1.sa · ca.sa</dd><dt>HSM</dt><dd>IBM Crypto Express CCA</dd><dt>RTGS</dt><dd>SARIE (SAMA)</dd><dt>Reg</dt><dd>SAMA AML/CFT · PSP Regulations</dd></dl>
+      </article>
+    </div>
+    <p>Each bank runs one organization with two endorsing peers (active/standby) and one Fabric CA; peers expose Fabric Gateway over mTLS to the bank's payment hub and keep world state in CouchDB for rich JSON queries on payment metadata. The deployment runs Fabric 2.5.x LTS, maintained by IBM and the Linux Foundation. Container images are pinned by sha256 digest and signed with cosign; chaincode ships as a lifecycle v2 external-builder artefact approved under the channel's lifecycle endorsement policy.</p>
+    <p>The etcd/Raft ordering cluster has five nodes so no jurisdiction can censor the channel alone: orderer0.de, orderer1.fr and orderer2.sa (one per bank) plus orderer3.tech-fra and orderer4.tech-bah, run by an independent technical operator in a Frankfurt colocation facility and a Bahrain regional data centre. It is configured with quorum 3 (labelled f=1); as a crash-fault protocol, five Raft nodes keep making progress with up to two down. Logs are mirrored to WORM storage at each site. Block cutting: <code>BatchTimeout=200ms</code>, <code>BatchSize.MaxMessageCount=500</code>, <code>BatchSize.AbsoluteMaxBytes=10MB</code>.</p>
+
+    <h3 id="fabric-identity">Identity and MSP</h3>
+    <p>Every peer, orderer, client and chaincode caller authenticates with an X.509 certificate from an organization's Membership Service Provider. Each bank runs an isolated CA whose root sits in the channel MSP stanza; there is no cross-signed root, and revocations propagate through periodic CRL updates committed by channel admins via <code>UpdateConfig</code>. Identities are partitioned by Organizational Unit, with a custom <code>treasury</code> attribute gating <code>Mint</code> and <code>Redeem</code> and a <code>role=approver</code> attribute driving dual control.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Identity</th><th scope="col">OU / attributes</th><th scope="col">Permitted actions</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">peer</th><td>OU=peer</td><td>Endorse, gossip, commit blocks</td></tr>
+          <tr><th scope="row">orderer</th><td>OU=orderer</td><td>Sequence and cut blocks (Raft)</td></tr>
+          <tr><th scope="row">treasury operator</th><td>OU=client, treasury=true, role=approver</td><td>Mint, Redeem; second signature on settlement window</td></tr>
+          <tr><th scope="row">payment gateway</th><td>OU=client, gateway=true</td><td>Submit Transfer, query world state</td></tr>
+          <tr><th scope="row">compliance officer</th><td>OU=client, compliance=true</td><td>Read the Travel Rule private data collection</td></tr>
+          <tr><th scope="row">auditor (regulator)</th><td>OU=client, audit=true, jurisdiction=DE/FR/SA</td><td>Read-only on the bank's namespace</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Keys live in FIPS 140-2 Level 3 HSMs reached through the PKCS#11 BCCSP. Treasury operators use smart-card-backed certificates valid for 12 hours, reissued by an online enrolment service that checks the bank's identity and access management directory first.</p>
+
+    <h3 id="fabric-channels">Channels and private data collections</h3>
+    <p>Channels are independent ledgers ordered by the same orderers but isolated at the gossip layer. The shared <code>eursar-corridor</code> channel carries the token, FX oracle and netting contracts. Three bilateral channels (<code>de-fr-bilateral</code>, <code>fr-sa-bilateral</code>, <code>de-sa-bilateral</code>) carry position reconciliation and bilateral repo traffic hidden from the third bank. On the corridor channel, Travel Rule data and the ISO 20022 body sit in a private data collection visible only to the originating and beneficiary banks; its hash goes on the channel ledger so the liquidity bank can verify integrity.</p>
+<pre><code># collections_config.json: registered at chaincode install
+[
+  {
+    "name": "PDC_TR_DE_SA",
+    "policy": "OR('Org1MSP.member','Org3MSP.member')",
+    "requiredPeerCount": 1,
+    "maxPeerCount": 2,
+    "blockToLive": 1095,           # ~3 years; AML retention minimum
+    "memberOnlyRead": true,
+    "memberOnlyWrite": true,
+    "endorsementPolicy": {
+      "signaturePolicy": "AND('Org1MSP.peer','Org3MSP.peer')"
+    }
+  }
+]</code></pre>
+    <p>The token contract's endorsement policy is <code>AND(OutOf(2,'Org1MSP.peer','Org2MSP.peer','Org3MSP.peer'))</code>: any two of three banks must endorse. The Validation System Chaincode enforces it at commit, after the orderer cuts the block and before peers update world state.</p>
+
+    <h3 id="fabric-chaincode">Go chaincode and atomicity</h3>
+    <p>Three chaincodes run on the corridor channel, written in Go on contract-api-go: <code>cbm-token</code> (per-currency commercial bank money), <code>fx-oracle</code> (EUR/SAR mids signed by the liquidity provider) and <code>a2a-router</code> (the atomic construct tying a debit in one currency to a credit in the other).</p>
+<pre><code>// cbm-token/contract.go: relevant excerpts
+
+type TokenContract struct { contractapi.Contract }
+
+type Account struct {
+    Owner    string  `json:"owner"`     // MSP-id::CN
+    Currency string  `json:"ccy"`       // "EUR" | "SAR"
+    Balance  uint64  `json:"bal"`       // minor units
+    Frozen   bool    `json:"frozen"`
+}
+
+func (t *TokenContract) Transfer(
+    ctx contractapi.TransactionContextInterface,
+    from, to, ccy string, amount uint64, ref string,
+) error {
+
+    // 1. caller must own the debit account
+    caller, _ := cid.GetID(ctx.GetClientIdentity())
+    if caller != from &amp;&amp; !hasAttr(ctx, "treasury") {
+        return errors.New("unauthorized debit")
+    }
+
+    // 2. travel-rule witness must be present in transient map
+    tMap, _ := ctx.GetStub().GetTransient()
+    trHash, ok := tMap["travel_rule_hash"]
+    if !ok { return errors.New("missing travel-rule witness") }
+
+    // 3. atomic debit/credit against world state
+    src, _ := getAccount(ctx, from, ccy)
+    dst, _ := getAccount(ctx, to,   ccy)
+    if src.Frozen || dst.Frozen { return errors.New("frozen") }
+    if src.Balance &lt; amount   { return errors.New("insufficient") }
+    src.Balance -= amount; dst.Balance += amount
+    putAccount(ctx, src); putAccount(ctx, dst)
+
+    // 4. emit event for off-chain payment hub
+    ev := TransferEvent{From: from, To: to, Ccy: ccy, Amt: amount,
+        Ref: ref, TRHash: hex.EncodeToString(trHash)}
+    payload, _ := json.Marshal(ev)
+    return ctx.GetStub().SetEvent("Transfer", payload)
+}</code></pre>
+    <p><code>a2a-router</code> puts a EUR <code>Transfer</code> and a SAR <code>Transfer</code> in one proposal, both conditional on an <code>fx-oracle</code> reading less than 90 seconds old. Fabric applies each transaction atomically against the read-write set from the endorsing peers, so both legs commit or neither does.</p>
+    <div class="note">
+      <span class="label">Atomicity through MVCC</span>
+      <p>Fabric runs no two-phase commit. Both writes sit in one transaction's read-write set; if the orderer sequences a conflicting write first, validation marks the transaction <code>MVCC_READ_CONFLICT</code> and discards both legs, and the hub resubmits. Sub-second resubmission succeeds in more than 99.7% of cases at the target 40 TPS per channel.</p>
+    </div>
+
+    <h3>Token model: Fabric Token SDK</h3>
+    <p>A minimal account model keeps one composite key per (owner, ccy) and serializes all transfers from an account, which becomes a contention bottleneck. The corridor instead uses IBM Research's Fabric Token SDK, a UTXO-style token: each EUR-CBM note is an unspent output bound to its owner by a Pedersen commitment, and transfers consume notes and create new ones. The consortium runs the plaintext <code>fabtoken</code> driver, accepting that amounts are visible to all three members in return for simpler audit; the <code>zkat</code> driver (Idemix and bulletproofs, hiding amounts and owners) is held back for when more banks join and amount confidentiality becomes commercially necessary.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Property</th><th scope="col">Account model</th><th scope="col">Token SDK (fabtoken)</th><th scope="col">Token SDK (zkat)</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">State shape</th><td>Balance per (owner, ccy)</td><td>Set of UTXO notes</td><td>Set of Pedersen-committed notes</td></tr>
+          <tr><th scope="row">Parallelism</th><td>Serialized per account</td><td>Parallel across notes</td><td>Parallel across notes</td></tr>
+          <tr><th scope="row">Amount privacy</th><td>Visible in world state</td><td>Visible to all channel members</td><td>Hidden; balance proven in zero knowledge</td></tr>
+          <tr><th scope="row">Auditability</th><td>Direct read</td><td>Auditor view via Token SDK role</td><td>Auditor view via selective disclosure</td></tr>
+          <tr><th scope="row">Deployed here</th><td>No</td><td>Yes (corridor channel)</td><td>No (future expansion)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="fabric-lifecycle">Transaction lifecycle: 16 steps</h3>
+    <p>The on-ledger portion completes in under one second; steps 15–16 are the end-of-day RTGS cycle.</p>
+    <div class="tbl wide steps">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Step</th><th scope="col">Fabric-specific detail</th><th scope="col">Clock (CET)</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><th scope="row">Instruction</th><td>SEPA-instant-style instruction through the online portal; IBAN mod-97, BIC ALMDSARI and sanctions checks; internal reference PAY-IN-2026-04-21-887412.</td><td>10:14:02.118</td></tr>
+          <tr><td>02</td><th scope="row">Travel Rule witness</th><td>Hub builds pacs.008.001.10 with originator and beneficiary name, address, account and BIC, and SHA-256-hashes the body into a witness for the transient map, which never lands on the public ledger.</td><td>10:14:02.244</td></tr>
+          <tr><td>03</td><th scope="row">FX quote</th><td><code>EvaluateTransaction</code> on <code>fx-oracle</code> returns mid 4.0825 and ask 4.0833 (6 bp), signed by Org2's treasury identity, timestamped by the last block, valid 90 s.</td><td>10:14:02.281</td></tr>
+          <tr><td>04</td><th scope="row">Proposal</th><td>Fabric Gateway builds one <code>a2a-router:AtomicSwap</code> proposal with both legs and the quote; the Travel Rule hash rides in the transient map, gossiped only between Org1 and Org3 peers.</td><td>10:14:02.310</td></tr>
+          <tr><td>05</td><th scope="row">Endorsement</th><td>peer0.de then peer0.sa simulate and return signed read-write sets; Org2 is asked in parallel for resilience, though two endorsements satisfy the policy.</td><td>10:14:02.387</td></tr>
+          <tr><td>06</td><th scope="row">Private data</th><td>During simulation the full pacs.008 is written to <code>PDC_TR_DE_SA</code>; only its SHA-256 enters the block, enough for Org2's nostro reconciliation.</td><td>10:14:02.388</td></tr>
+          <tr><td>07</td><th scope="row">Ordering</th><td>Gateway submits over gRPC; the Raft leader (orderer1.fr) appends and replicates to four followers and schedules the entry on quorum (3).</td><td>10:14:02.401</td></tr>
+          <tr><td>08</td><th scope="row">Block cut</th><td>Block 884,213 cut at 200 ms or 500 transactions, signed by the leader and gossiped to one peer per organization, which fans out.</td><td>10:14:02.508</td></tr>
+          <tr><td>09</td><th scope="row">VSCC</th><td>Signature check, 2-of-3 endorsement check and MVCC check on read versions (under 50 ms per block); both legs marked VALID.</td><td>10:14:02.531</td></tr>
+          <tr><td>10</td><th scope="row">Commit</th><td>CouchDB updates atomically: Org1 EUR −4,820,000.00, Org2 EUR +4,820,000.00, Org2 SAR −19,683,765.00, Org3 SAR +19,683,765.00; block hash to the channel's LevelDB ledger store. Irrevocable.</td><td>10:14:02.547</td></tr>
+          <tr><td>11</td><th scope="row">Events</th><td><code>Transfer</code> events reach each hub through the block-listener API; hubs match by reference and move the instruction from SUBMITTED to SETTLED-ON-LEDGER.</td><td>10:14:02.549</td></tr>
+          <tr><td>12</td><th scope="row">Debit</th><td>Core banking debits the corporate EUR account 4,820,000.00 against a suspense account mirroring token holdings; reference PAY-IN-2026-04-21-887412 / FBR-884213.</td><td>10:14:02.612</td></tr>
+          <tr><td>13</td><th scope="row">Credit</th><td>Bank Al-Madinah credits SAR 19,683,765.00, reduces its intraday position against Banque Méridienne in the nostro reconciliation tab, and pushes a SARIE-formatted advice to online banking and SMS.</td><td>10:14:02.681</td></tr>
+          <tr><td>14</td><th scope="row">Audit trail</th><td>Org1 and Org3 hold the record from block 884,213; the pacs.008 is kept in the PDC for three years; BaFin/ACPR and SAMA records generate automatically.</td><td>Automated</td></tr>
+          <tr><td>15</td><th scope="row">Netting</th><td>The <code>netting</code> chaincode produces a triangular net per pair; for 21 April 2026, Org1 owes Org2 EUR 12,440,118 and Org2 owes Org3 SAR 8,206,040.</td><td>17:00:00</td></tr>
+          <tr><td>16</td><th scope="row">RTGS and burn</th><td>Net amounts settle in TARGET2 and SARIE; after SAMA and Bundesbank confirm, each hub submits a coordinated <code>Burn</code>, restoring each bank's issuance to its net opening position.</td><td>17:14 / 18:14 AST</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Ordering: Raft now, SmartBFT later</h3>
+    <p>Raft tolerates crashes but not Byzantine behaviour: a malicious orderer could withhold or reorder transactions within the batch timeout, though it cannot forge endorsements or alter committed state. Orderers are therefore spread across three bank sites (Munich, Paris, Riyadh) and two independent operators, with WORM-mirrored logs. Fabric 3.x adds the SmartBFT plug-in (SBFT-CHS) for full Byzantine tolerance; the consortium will migrate once Fabric 3.x reaches IBM enterprise support GA and a six-month parallel run on a staging channel completes. Raft is acceptable meanwhile because the threat model assumes Byzantine endorsing peers, and the 2-of-3 bank endorsement policy is the cryptographic anchor.</p>
+    <div class="note warn">
+      <span class="label">Caveat: Raft assumes honest orderers</span>
+      <p>A coordinated take-over of Raft leadership could censor or reorder transactions within <code>BatchTimeout</code>. Mitigations: jurisdictional diversity of operators, cryptographic chain of custody on orderer logs, and a runbook hot-swap that rebuilds a degraded cluster from any majority subset within 30 minutes.</p>
+    </div>
+
+    <h3 id="fabric-iso">ISO 20022 pacs.008 in chaincode state</h3>
+    <p>The corridor speaks ISO 20022 internally; both sides are moving cross-border traffic to MX ahead of SWIFT's MT discontinuation milestones. The full pacs.008.001.10 lives in the private data collection so compliance and auditors at the two end banks can reconstruct the payment context; the corridor ledger holds only the hash.</p>
+<pre><code>&lt;!-- pacs.008.001.10: abbreviated --&gt;
+&lt;FIToFICstmrCdtTrf&gt;
+  &lt;GrpHdr&gt;
+    &lt;MsgId&gt;BHDLDE2M-20260421-887412&lt;/MsgId&gt;
+    &lt;CreDtTm&gt;2026-04-21T10:14:02.244+02:00&lt;/CreDtTm&gt;
+    &lt;NbOfTxs&gt;1&lt;/NbOfTxs&gt;
+    &lt;SttlmInf&gt;&lt;SttlmMtd&gt;CLRG&lt;/SttlmMtd&gt;
+      &lt;ClrSys&gt;&lt;Prtry&gt;FABRIC-EURSAR-CORRIDOR&lt;/Prtry&gt;&lt;/ClrSys&gt;
+    &lt;/SttlmInf&gt;
+  &lt;/GrpHdr&gt;
+  &lt;CdtTrfTxInf&gt;
+    &lt;PmtId&gt;&lt;EndToEndId&gt;PAY-IN-2026-04-21-887412&lt;/EndToEndId&gt;
+            &lt;UETR&gt;5e9c4e8a-2f1b-4b3a-9d0e-1c8f4a7b6d52&lt;/UETR&gt;&lt;/PmtId&gt;
+    &lt;IntrBkSttlmAmt Ccy="EUR"&gt;4820000.00&lt;/IntrBkSttlmAmt&gt;
+    &lt;ChrgBr&gt;SHAR&lt;/ChrgBr&gt;
+    &lt;Dbtr&gt;&lt;Nm&gt;Präzision Werkzeug GmbH&lt;/Nm&gt;
+          &lt;PstlAdr&gt;&lt;Ctry&gt;DE&lt;/Ctry&gt;&lt;/PstlAdr&gt;&lt;/Dbtr&gt;
+    &lt;DbtrAcct&gt;&lt;Id&gt;&lt;IBAN&gt;DE89370400440532013000&lt;/IBAN&gt;&lt;/Id&gt;&lt;/DbtrAcct&gt;
+    &lt;DbtrAgt&gt;&lt;FinInstnId&gt;&lt;BICFI&gt;BHDLDE2M&lt;/BICFI&gt;&lt;/FinInstnId&gt;&lt;/DbtrAgt&gt;
+    &lt;CdtrAgt&gt;&lt;FinInstnId&gt;&lt;BICFI&gt;ALMDSARI&lt;/BICFI&gt;&lt;/FinInstnId&gt;&lt;/CdtrAgt&gt;
+    &lt;Cdtr&gt;&lt;Nm&gt;Saudi Water Authority&lt;/Nm&gt;
+          &lt;PstlAdr&gt;&lt;Ctry&gt;SA&lt;/Ctry&gt;&lt;/PstlAdr&gt;&lt;/Cdtr&gt;
+    &lt;CdtrAcct&gt;&lt;Id&gt;&lt;Othr&gt;&lt;Id&gt;SA0380000000608010167519&lt;/Id&gt;&lt;/Othr&gt;&lt;/Id&gt;&lt;/CdtrAcct&gt;
+    &lt;RmtInf&gt;&lt;Ustrd&gt;Desalination plant, milestone 3 of 7&lt;/Ustrd&gt;&lt;/RmtInf&gt;
+  &lt;/CdtTrfTxInf&gt;
+&lt;/FIToFICstmrCdtTrf&gt;</code></pre>
+    <p>The hub canonicalizes the XML with W3C Canonical XML 1.1 and hashes it with SHA-256; the 32-byte result is the <code>trHash</code> field of the transfer event. Any dispute is settled by replaying the private data from either bank's PDC and re-canonicalizing; a mismatch flags tampering.</p>
+
+    <h3>KYC, AML, sanctions and the Travel Rule</h3>
+    <p>Each bank runs KYC and CDD under its home regime (BaFin GwG, ACPR/AMF, SAMA AML/CFT Rules) and keeps identity in its own KYC vault. The ledger guarantees only that an authenticated gateway with a valid MSP identity attested, at submission, that the customer was screened. The Travel Rule, transposed through the TFR and Article 17 of the SAMA AML/CFT Rules, requires originator name, account, address and identifier plus beneficiary name and account; storing the full pacs.008 in the bilateral PDC satisfies it while Org2 sees only the block and the hash. Gateways screen against their own lists (EU Consolidated List, OFAC SDN where applicable, UN Security Council list, SAMA's domestic list) and assert the result in the transient map as a signed JSON Web Token whose subject is the customer's hashed identifier. The chaincode does not validate the JWT, which would mean sharing keys across the consortium, but rejects any transfer missing the witness and preserves it in the PDC.</p>
+
+    <h3 id="fabric-reg">Regulation: EU and Saudi Arabia</h3>
+    <p>Neither side mandates daily on-ledger reporting, but each bank's auditor identity reads the corridor channel and its bilateral PDC. EU rules common to the corridors are in the <a href="#pattern">shared pattern</a>; Fabric adds:</p>
+    <ul>
+      <li><span class="k">DORA:</span> each bank lists its Fabric node in its register of ICT third-party providers, and IBM as platform vendor signs a DORA-compliant contractual addendum.</li>
+      <li><span class="k">BaFin:</span> supervises Bayerische Handelsbank under the KWG; the tokenisation activity is notified under §32 KWG following BaFin's 2024 Merkblatt on crypto-securities business (DLT-based financial infrastructure).</li>
+      <li><span class="k">ACPR:</span> approved the corridor for Banque Méridienne as a service ancillary to credit institution activity under Art. L.311-2 of the Code monétaire et financier.</li>
+      <li><span class="k">SAMA:</span> Rules for Bank Account Opening (2023) govern onboarding, CDD and beneficial ownership; under the Payment Services Provider Regulations the corridor counts as ancillary to licensed banking rather than a stand-alone PSP service; the AML/CFT Rules' three-year retention matches the PDC's <code>blockToLive</code>; the Open Banking Framework is not invoked, though the gateway API uses OAuth 2.0 / FAPI 2.0 to ease future integration; Aber informs SAMA's view of permissioned ledgers as viable settlement infrastructure; SARIE provides the central bank money leg.</li>
+    </ul>
+
+    <h3>Net settlement against TARGET2 and SARIE</h3>
+    <p>On-ledger tokens are liabilities of the issuing bank and are not legally final until central bank money moves. At 17:00 CET the netting chaincode produces a multilateral position per currency per bank. For 21 April 2026:</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Pair</th><th scope="col">Currency</th><th scope="col">Direction</th><th scope="col">Net amount</th><th scope="col">Venue</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Org1 → Org2</th><td>EUR</td><td>Org1 pays Org2</td><td>12,440,118.42</td><td>TARGET2</td></tr>
+          <tr><th scope="row">Org2 → Org3</th><td>SAR</td><td>Org2 pays Org3</td><td>8,206,040.05</td><td>SARIE</td></tr>
+          <tr><th scope="row">Org3 → Org1</th><td>EUR</td><td>Org3 pays Org1</td><td>1,217,330.18</td><td>TARGET2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Bayerische Handelsbank sends an MT 202 / pacs.009 to the TARGET2-Bundesbank component for Banque Méridienne's PM account, final on Eurosystem books at 17:14 CET. Banque Méridienne instructs its Riyadh nostro provider to settle through SARIE to Bank Al-Madinah's SAMA settlement account, final at 18:14 AST (15:14 UTC). After both confirmations each hub submits a <code>Burn</code> for the settled amounts, and the next cycle starts at 17:00:01 CET. Gross RTGS settlement of each transfer would defeat the corridor: SARIE and TARGET2 fees and the mismatch in operating hours would make small payments uneconomic. Netting keeps on-ledger speed and finality while cutting central bank transactions to one per bank per currency per day.</p>
+
+    <h3 id="fabric-risks">Fabric-specific risks</h3>
+    <ul>
+      <li><span class="k">Orderer compromise:</span> a compromised majority could censor within <code>BatchTimeout</code>; mitigated by five jurisdictionally diverse orderers, WORM logs and the planned SmartBFT move.</li>
+      <li><span class="k">HSM key compromise:</span> a stolen treasury credential could mint or burn unbacked tokens; mitigated by dual-control endorsement (two approvers), 12-hour treasury certificates and a real-time issuance cap monitored off-chain against core banking.</li>
+      <li><span class="k">FX oracle staleness:</span> if the oracle stops, swaps fail; if it misprices, the liquidity provider gains or loses. Chaincode rejects quotes older than 90 seconds and a circuit-breaker disables swaps if the oracle drifts more than 25 bp from the ECB reference rate.</li>
+      <li><span class="k">MVCC contention:</span> heavy traffic on the same keys raises <code>MVCC_READ_CONFLICT</code>; the UTXO Token SDK spreads load across notes.</li>
+      <li><span class="k">Settlement failure:</span> if a bank's RTGS leg misses cycle close, no <code>Burn</code> is sent and the tokens remain as a visible obligation; per-bank limits cap the build-up and the next day's cycle absorbs the carry.</li>
+      <li><span class="k">Chaincode upgrades:</span> lifecycle v2 needs per-organization approval; every upgrade soaks 30 days on a sandbox channel and is gated on a notarised release attestation signed by the consortium technical committee.</li>
+    </ul>
+    <p class="refs">Fabric sources: Hyperledger Fabric v2.5 LTS documentation, <a href="https://hyperledger-fabric.readthedocs.io/en/release-2.5/">hyperledger-fabric.readthedocs.io</a>; Androulaki et al., "Hyperledger Fabric: A Distributed Operating System for Permissioned Blockchains", EuroSys '18; IBM Research, Fabric Token SDK, <a href="https://github.com/hyperledger-labs/fabric-token-sdk">github.com/hyperledger-labs/fabric-token-sdk</a>; Ongaro and Ousterhout, "In Search of an Understandable Consensus Algorithm (Raft)", USENIX ATC 2014; SAMA AML/CFT Rules and PSP Regulations, <a href="https://www.sama.gov.sa/en-US/Pages/sama-rules.aspx">sama.gov.sa</a>; BaFin Merkblatt zum Tatbestand des Kryptowertpapiergeschäfts (2024).</p>
+    <a class="back" href="#compare">Back to comparison</a>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="next-h">
+  <div class="wrap">
+    <h2 id="next-h">Planning a corridor of your own</h2>
+    <p>Post Oak Labs advises banks and market infrastructures on ledger selection, corridor design and the regulatory sequence. See <a href="services.html#blockchain">blockchain advisory</a>, the <a href="a2a-guide.html#roadmap">engagement roadmap</a> and the <a href="a2a-guide.html#tmmf">tokenized money market fund</a> guide, or browse the <a href="library.html">library</a>.</p>
+    <div><a class="btn pri" href="contact.html">Talk to us</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+          <li><a href="https://www.linkedin.com/in/timswanson">Tim Swanson on LinkedIn ↗</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

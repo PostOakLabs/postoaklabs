@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sitemap | Post Oak Labs</title>
-<meta name="description" content="Every page on postoaklabs.com: the core pages, the library, case studies, the Autonity archive, live products and affiliate partners.">
+<title>Services | Post Oak Labs</title>
+<meta name="description" content="AI tools and agents, MCP enablement, payments, stablecoin and CBDC advisory, and institutional blockchain advisory from Post Oak Labs.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://postoaklabs.com/sitemap.html">
+<link rel="canonical" href="https://postoaklabs.com/services.html">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#eef4f2">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,13 +15,13 @@
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sitemap | Post Oak Labs">
-<meta property="og:description" content="Every page on postoaklabs.com: the core pages, the library, case studies, the Autonity archive, live products and affiliate partners.">
-<meta property="og:url" content="https://postoaklabs.com/sitemap.html">
+<meta property="og:title" content="Services | Post Oak Labs">
+<meta property="og:description" content="AI tools and agents, MCP enablement, payments, stablecoin and CBDC advisory, and institutional blockchain advisory from Post Oak Labs.">
+<meta property="og:url" content="https://postoaklabs.com/services.html">
 <meta property="og:image" content="https://postoaklabs.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Sitemap","url":"https://postoaklabs.com/sitemap.html","publisher":{"@id":"https://postoaklabs.com/#organization"}}
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Post Oak Labs","url":"https://postoaklabs.com/services.html","provider":{"@id":"https://postoaklabs.com/#organization"},"areaServed":["Latin America","Africa","Caribbean","South Asia","Global"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"AI tools and agents"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"MCP enablement"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Payments, stablecoin and CBDC advisory"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Institutional blockchain advisory"}}]}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -196,7 +196,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
     <nav aria-label="Main">
       <ul>
         <li><a href="work.html">Work</a></li>
-        <li><a href="services.html">Services</a></li>
+        <li><a href="services.html" aria-current="page">Services</a></li>
         <li><a href="library.html">Library</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
@@ -209,75 +209,90 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
 <main>
   <section class="page-head" aria-labelledby="page-h">
     <div class="wrap">
-      <span class="label">Sitemap</span>
-      <h1 id="page-h">Every page on this site.</h1>
+      <span class="label">Services</span>
+      <h1 id="page-h">What we build and advise on.</h1>
+      <p>We build things and we advise on things, and we know the difference between the two. Most engagements start with an institution that needs one and discovers it needs both. We work with a limited number of institutions at a time.</p>
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="core-h">
+  <section class="sec band" id="ai-tools" aria-labelledby="ai-h">
     <div class="wrap two">
-      <div class="prose"><h2 id="core-h">Core pages</h2></div>
-      <ul class="linklist">
-        <li><a href="./">Home</a><span>What we build, the MCP server and the live products.</span></li>
-        <li><a href="work.html">Work</a><span>AINumbers, ApexLogics and the Omega Centauri Society in detail.</span></li>
-        <li><a href="services.html">Services</a><span>AI tools and agents, MCP enablement, payments advisory and blockchain advisory.</span></li>
-        <li><a href="library.html">Library</a><span>Guides, briefings, reference and case studies.</span></li>
-        <li><a href="about.html">About</a><span>Founder, track record and publications.</span></li>
-        <li><a href="contact.html">Contact</a><span>How to reach us.</span></li>
+      <div class="prose">
+        <span class="label">Build</span>
+        <h2 id="ai-h">AI tools and agents</h2>
+        <p>Browser-only calculators, policy engines and agent workflows built to your rules. Each tool computes on the user's device, keeps no personal data, and returns results an auditor can recompute. This is how we built <a href="work.html#ainumbers">AINumbers</a> and <a href="work.html#apexlogics">ApexLogics</a>.</p>
+      </div>
+      <ul class="prose">
+        <li>Deterministic calculators and rule engines for finance, compliance and operations</li>
+        <li>Agent workflows that chain tools, with each result linked to the last by its hash</li>
+        <li>Policy Mandate exports that carry a scenario from one tool to the next</li>
       </ul>
     </div>
   </section>
 
-  <section class="sec band" aria-labelledby="lib-h">
+  <section class="sec" id="mcp" aria-labelledby="mcp-h">
     <div class="wrap two">
-      <div class="prose"><h2 id="lib-h">Library</h2></div>
-      <ul class="linklist">
-        <li><a href="a2a-guide.html">A2A payments guide</a><span>Overview, workflow, ISO 20022, tokenized MMFs and engagement roadmap.</span></li>
-        <li><a href="a2a-ledgers.html">A2A on enterprise ledgers</a><span>Hyperledger Besu, Canton, R3 Corda and Hyperledger Fabric.</span></li>
-        <li><a href="a2a-comparison.html">A2A, stablecoins and correspondent banking compared</a><span>A comparison framework for institutions.</span></li>
-        <li><a href="enterprise-blockchain.html">Enterprise permissioned blockchain briefing</a><span>Market sizing, deployment data and use-case guidance.</span></li>
-        <li><a href="glossary.html">Glossary</a><span>Plain-language definitions.</span></li>
-        <li><a href="faq.html">FAQ</a><span>Common questions on tokenized payments, stablecoins and CBDCs.</span></li>
-        <li><a href="demos/timor-leste-bangladesh-stablecoin-settlement.html">Case study: Timor-Leste and Bangladesh stablecoin settlement</a><span>A USD-pegged settlement bridge between a dollarised economy and BDT rails.</span></li>
-        <li><a href="demos/west-africa-digital-currency-corridor.html">Case study: West Africa digital currency corridor</a><span>Digital currency flows across Nigeria, Ghana and the WAEMU zone.</span></li>
+      <div class="prose">
+        <span class="label">Build</span>
+        <h2 id="mcp-h">MCP enablement</h2>
+        <p>Publish your products to AI assistants through an MCP server like ours. We operate one of the largest public MCP servers in finance, with about 730 tools on one endpoint, so we know what agents need from a tool list and what breaks at scale.</p>
+      </div>
+      <ul class="prose">
+        <li>MCP server design, tool naming and schemas</li>
+        <li>WebMCP registration so in-browser agents can call your pages</li>
+        <li>Verifiable receipts, including ZK-proven workflows</li>
+        <li>Testing and usage tracking without collecting personal data</li>
       </ul>
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="aut-h">
-    <div class="wrap two">
-      <div class="prose"><h2 id="aut-h">Autonity Track A archive</h2><p>Seven pages reconstructing the Autonity EVM L1 blockchain and its Forecastathon forecast-futures project. Museum mode: nothing connects to mainnet.</p></div>
-      <ul class="linklist">
-        <li><a href="autonity/">Archive hub</a></li>
-        <li><a href="autonity/autonity-page1-protocol.html">01 Protocol</a></li>
-        <li><a href="autonity/autonity-page2-money.html">02 Money</a></li>
-        <li><a href="autonity/autonity-page3-afp.html">03 Autonomous Futures Protocol</a></li>
-        <li><a href="autonity/autonity-page4-clearing.html">04 Clearing vs. trading</a></li>
-        <li><a href="autonity/autonity-page5-autex.html">05 AutEx</a></li>
-        <li><a href="autonity/autonity-page6-forecastathon.html">06 Forecastathon</a></li>
-        <li><a href="autonity/autonity-page7-endogenous-collateral.html">07 Endogenous collateral (speculative)</a></li>
-      </ul>
+  <section class="sec band" id="payments" aria-labelledby="pay-h">
+    <div class="wrap">
+      <div class="prose">
+        <span class="label">Advise</span>
+        <h2 id="pay-h">Payments, stablecoin and CBDC advisory</h2>
+        <p>For commercial banks, central banks and large corporates, with a primary focus on Latin America, Africa, the Caribbean and South Asia. We have advised on and supported production deployments across frontier markets.</p>
+      </div>
+      <div class="tiles">
+        <article class="tile"><span class="label">Tokenized payments</span><h3>Tokenized A2A cross-border payments</h3><p>Design and integration of tokenized account-to-account rails for B2B and B2C cross-border transactions and remittances. See the <a href="a2a-guide.html">A2A payments guide</a>.</p></article>
+        <article class="tile"><span class="label">Stablecoin</span><h3>Stablecoin strategy and integration</h3><p>Issuance architecture, reserve management structure and regulatory positioning for commercial and central banks, fitted to institutional context and jurisdiction.</p></article>
+        <article class="tile"><span class="label">CBDC</span><h3>CBDC integration and architecture</h3><p>Central bank digital currency design and deployment: interoperability with existing payment systems, integration with private-sector infrastructure, and the structural questions central bank teams face.</p></article>
+        <article class="tile"><span class="label">Tokenized MMF</span><h3>Tokenized money market funds</h3><p>Standardized tokenized MMFs in local currency. Tokenized USD funds already exist; the gap is local-currency equivalents for non-dollarized economies, which banks can offer corporate clients as a differentiated product.</p></article>
+      </div>
+      <div class="tiles">
+        <article class="tile"><span class="label">Primary · highest near-term opportunity</span><h3>Latin America</h3><p>High remittance volumes, regulatory openness in key markets, and banking sectors modernizing cross-border infrastructure.</p></article>
+        <article class="tile"><span class="label">High growth · regulatory momentum</span><h3>Africa</h3><p>Mobile money penetration and CBDC experimentation, especially for corridors that are expensive and slow today.</p></article>
+        <article class="tile"><span class="label">Production deployments</span><h3>Caribbean</h3><p>Direct experience of the region's regulation, correspondent banking constraints and remittance dynamics.</p></article>
+        <article class="tile"><span class="label">Production deployments</span><h3>South Asia</h3><p>Remittance volumes, regulatory structure and a commercial banking sector with ongoing opportunity as tokenized infrastructure matures.</p></article>
+      </div>
     </div>
   </section>
 
-  <section class="sec band" aria-labelledby="ext-h">
-    <div class="wrap two">
-      <div class="prose"><h2 id="ext-h">Live products</h2></div>
-      <ul class="linklist">
-        <li><a href="https://ainumbers.co/">AINumbers ↗</a><span>590 browser tools for finance and a public MCP server.</span></li>
-        <li><a href="https://apexlogics.org/">ApexLogics ↗</a><span>Decision tools for education and careers.</span></li>
-        <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a><span>Interactive research on the Omega Centauri cluster.</span></li>
-      </ul>
+  <section class="sec" id="blockchain" aria-labelledby="bc-h">
+    <div class="wrap">
+      <div class="prose">
+        <span class="label">Advise</span>
+        <h2 id="bc-h">Institutional blockchain advisory</h2>
+        <p>The team has advised and built products across more than 20 institutional blockchain projects, from layer-1 infrastructure to DeFi, enterprise ledgers, agentic AI trading and tokenized finance. Some engagements were advisory and research; others were direct product development and deployment. Client names are not listed; get in touch to discuss experience relevant to a mandate.</p>
+      </div>
+      <div class="tiles">
+        <article class="tile"><h3>Prediction and forecast markets</h3><p>Market design, market making, resolution mechanisms, and economic forecast markets treated as financial instruments. Example: <a href="https://docs.canonicals.co">Canonicals ↗</a></p></article>
+        <article class="tile"><h3>Agentic AI trading</h3><p>Autonomous trading agents for decentralized protocols: factor research, multi-factor strategies, realistic backtesting and non-custodial execution on perpetuals and prediction markets. Example: <a href="https://banzhuan.ai/faq">BanZhuan ↗</a></p></article>
+        <article class="tile"><h3>Stablecoin infrastructure</h3><p>Design, issuance, reserve structure and regulatory strategy, including stability mechanisms for algorithmic and collateralized models. Example: <a href="https://docs.autonity.org/concepts/asm/">Auton ↗</a></p></article>
+        <article class="tile"><h3>Layer-1 infrastructure</h3><p>Public and permissioned layer-1 projects: consensus design, tokenomics, validator economics and go-to-market positioning.</p></article>
+        <article class="tile"><h3>Enterprise and permissioned ledgers</h3><p>Interbank settlement, trade finance and cross-border payments on permissioned platforms. See the <a href="enterprise-blockchain.html">enterprise blockchain briefing</a> and <a href="a2a-ledgers.html">A2A on enterprise ledgers</a>.</p></article>
+        <article class="tile"><h3>DeFi and liquidity protocols</h3><p>From early development to institutional integration: liquidity mechanisms, governance and risk models, and AMM fee structures, capital efficiency and impermanent loss.</p></article>
+        <article class="tile"><h3>Perpetuals and derivatives</h3><p>Onchain perpetual protocols, margin systems, oracle design and liquidation mechanics, and how they hold up in regulated contexts.</p></article>
+        <article class="tile"><h3>Digital ownership</h3><p>NFT infrastructure for digital IP, onchain provenance and royalties, plus token economies and ownership structures for decentralized networks.</p></article>
+        <article class="tile"><h3>Identity, analytics and compliance</h3><p>Verifiable credentials and self-sovereign identity, plus blockchain analytics for bank compliance teams: transaction tracing, entity identification and AML tooling.</p></article>
+      </div>
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="part-h">
-    <div class="wrap two">
-      <div class="prose"><h2 id="part-h">Affiliate partners</h2></div>
-      <ul class="linklist">
-        <li><a href="https://meridiancapital.me/">Meridian Capital Advisory ↗</a><span>Liquidity management, capital adequacy, Basel III/IV regulatory reporting, ILAAP/ICAAP and FP&amp;A advisory for banks.</span></li>
-        <li><a href="https://apexadvisory.site/">Apex Advisory &amp; Education ↗</a><span>MBA admissions consulting, online tutoring in economics, history, business and finance, TOEFL preparation and TEFL coaching.</span></li>
-      </ul>
+  <section class="cta-band band" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div><h2 id="cta-h">Discuss a mandate</h2><p>Tell us what you are evaluating and we will say plainly whether we can help.</p></div>
+      <a class="btn pri" href="contact.html">Talk to us</a>
     </div>
   </section>
 </main>

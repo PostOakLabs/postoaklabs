@@ -121,4 +121,25 @@ Targets confirmed live before redirecting; files pulled from live index and stag
 
 ---
 
-*Phase 2: Hub rewrites (pending Tim brand voice sign-off)*
+*Phase 2: Hub rewrites (pending Tim brand voice sign-off)* Superseded 2026-10-08: the hubs were retired in the redesign below instead of rewritten.
+
+## 2026-10 redesign (POL-REDESIGN-SPEC_2026-10-08 §4)
+
+Implemented as exact-match `RewriteRule ... [R=301,NE,L]` in `.htaccess` (exact match so `/demos/` does not swallow the corridor pages; `NE` keeps the `#fragment`). Source files deleted from the repo in the same PR.
+
+| Old URL | New URL |
+|---|---|
+| /a2a-payments.html | /a2a-guide.html |
+| /a2a-workflow.html | /a2a-guide.html#workflow |
+| /iso20022-a2a.html | /a2a-guide.html#iso20022 |
+| /tmmf-a2a.html | /a2a-guide.html#tmmf |
+| /a2a-engagement-roadmap.html | /a2a-guide.html#roadmap |
+| /example-besu-a2a.html | /a2a-ledgers.html#besu |
+| /example-canton-a2a.html | /a2a-ledgers.html#canton |
+| /example-corda-a2a.html | /a2a-ledgers.html#corda |
+| /example-fabric-a2a.html | /a2a-ledgers.html#fabric |
+| /blockchain-advisory.html | /services.html#blockchain |
+| /demos/ and /demos/index.html | /library.html |
+| /demos/{agentic-runtime,baas,processors,regtech,stablecoin-issuer}/ | /services.html |
+
+The two corridor case studies stay at their `/demos/` URLs and are linked from `/library.html`.
