@@ -11,7 +11,7 @@
 
 ## About Post Oak Labs
 
-Post Oak Labs is an AI consultancy founded by Tim Swanson (https://www.linkedin.com/in/timswanson). It designs, builds and keeps running its own AI products, and advises institutions on AI tools and agents, MCP, payments and digital assets.
+Post Oak Labs is an AI consultancy founded by Tim Swanson (https://www.linkedin.com/in/timswanson). It designs, builds and keeps running its own AI products (more than 1,200 tools and workflows across AINumbers, ApexLogics and the Omega Centauri Society), and advises institutions on AI tools and agents, MCP, payments and digital assets.
 
 The products share one approach: tools compute in the reader's browser, store no personal data, and publish the same logic to AI agents over MCP and WebMCP.
 
