@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2A Payments Guide | Post Oak Labs</title>
+<meta name="description" content="A reference guide to tokenized account-to-account (A2A) payment rails for banks, central banks and large corporates: target markets, transaction lifecycle and economics, ISO 20022 alignment, local-currency tokenized money market funds and a phased engagement roadmap.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Post Oak Labs">
+<link rel="canonical" href="https://postoaklabs.com/a2a-guide.html">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#eef4f2">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="A2A Payments Guide | Post Oak Labs">
+<meta property="og:description" content="Tokenized account-to-account payment rails: markets, lifecycle, economics, ISO 20022, tokenized money market funds and a phased deployment path.">
+<meta property="og:url" content="https://postoaklabs.com/a2a-guide.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@PostOakLabs">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A2A Payments Guide: tokenized account-to-account rails for institutions",
+  "description": "Target markets, transaction lifecycle and economics, ISO 20022 alignment, local-currency tokenized money market funds and a phased engagement roadmap for tokenized A2A payment infrastructure.",
+  "url": "https://postoaklabs.com/a2a-guide.html",
+  "mainEntityOfPage": "https://postoaklabs.com/a2a-guide.html",
+  "author": {"@type": "Organization", "name": "Post Oak Labs", "url": "https://postoaklabs.com"},
+  "publisher": {"@type": "Organization", "@id": "https://postoaklabs.com/#organization", "name": "Post Oak Labs", "logo": {"@type": "ImageObject", "url": "https://postoaklabs.com/icon-512.png"}},
+  "image": "https://postoaklabs.com/og-image.png",
+  "inLanguage": "en"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+/* Mist palette (POL-REDESIGN-SPEC_2026-10-08 §1). Copy this token block into every page; no shared CSS file. */
+:root{
+  --bg:#eef4f2;      /* page ground */
+  --band:#e2ece9;    /* alternate section band */
+  --card:#f8fbfa;    /* cards, panels */
+  --ink:#102a27;     /* headings, primary text */
+  --soft:#3f5652;    /* body text, secondary */
+  --line:#cfdeda;    /* borders, rules */
+  --teal:#0b7a70;    /* labels, numbers, links */
+  --ring:#0e9c9c;    /* logo O only */
+  --cyan:#0a6f86;    /* MCP request arrows, rotating word */
+  --amber:#a8650f;   /* MCP response arrows, rotating word */
+  --gold:#c9861f;    /* primary button fill, logo L */
+  --gold-ink:#1a1408;/* text on gold */
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
+
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
+
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot .brand{display:block;line-height:0}
+.site-foot .brand svg{height:28px;width:143px}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
+
+/* ---- a2a-guide page styles (tokens only) ---- */
+html{scroll-behavior:smooth}
+.page-head .wrap{padding-block:clamp(40px,7vw,80px) clamp(24px,4vw,40px);display:grid;gap:16px}
+.page-head h1{margin:0;max-width:22ch;font-weight:600;font-size:clamp(2rem,5vw,3.2rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.lede{margin:0;max-width:68ch;font-size:1.06rem;font-weight:300;color:var(--soft)}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;max-width:68ch}
+.toc ol{margin:8px 0 0;padding-left:1.3em;display:grid;gap:4px;font-size:.95rem}
+.toc a{color:var(--teal);text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.guide section{border-top:1px solid var(--line);scroll-margin-top:12px}
+.guide section:nth-of-type(even){background:var(--band)}
+.guide section > .wrap{padding-block:clamp(36px,5vw,60px);display:grid;gap:14px;min-width:0}
+.guide section > .wrap > *{min-width:0} /* let wide tables scroll inside .tw instead of stretching the grid column */
+.guide h2{margin:0;max-width:30ch;font-weight:600;font-size:clamp(1.5rem,3vw,2rem);line-height:1.18;letter-spacing:-.02em;text-wrap:balance}
+.guide h3{margin:18px 0 0;max-width:46ch;font-weight:600;font-size:1.14rem;line-height:1.3;color:var(--ink)}
+.guide h4{margin:8px 0 0;font-weight:600;font-size:.98rem;color:var(--ink)}
+.guide p,.guide li,.guide dd{font-weight:300;color:var(--soft)}
+.guide p{margin:0;max-width:68ch}
+.guide ul,.guide ol{margin:0;padding-left:1.25em;max-width:68ch;display:grid;gap:6px}
+.guide a{color:var(--teal)}
+.term{font-weight:600;color:var(--ink)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--teal);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:4px 0 0;padding:0;list-style:none;max-width:none}
+.stats li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:.88rem;display:grid;gap:4px;align-content:start}
+.stats .num{font-size:1.35rem;line-height:1.1}
+.callout{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:14px 18px;max-width:68ch}
+.callout p{max-width:none}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.tw table{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem;font-variant-numeric:tabular-nums}
+.tw.narrow table{min-width:420px}
+.tw th,.tw td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+.tw th:last-child,.tw td:last-child{border-right:0}
+.tw tr:last-child td{border-bottom:0}
+.tw thead th{background:var(--card);color:var(--ink);font-weight:600;font-size:.8rem}
+.tw tbody th{font-weight:600;color:var(--ink);background:var(--card)}
+.tw td{font-weight:300;color:var(--soft)}
+.tw caption{caption-side:bottom;text-align:left;padding:8px 12px;font-size:.78rem;color:var(--soft);font-weight:300}
+.steps{counter-reset:s;list-style:none;padding-left:0 !important}
+.steps > li{counter-increment:s;position:relative;padding-left:2.6em}
+.steps > li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.05em;font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
+.timing{display:block;font-family:var(--f-mono);font-size:.74rem;color:var(--amber);margin-top:2px}
+.defs{margin:0;display:grid;gap:12px;max-width:68ch}
+.defs dt{font-weight:600;color:var(--ink)}
+.defs dd{margin:2px 0 0}
+.tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-left:6px;font-weight:500}
+.refs{font-size:.82rem;gap:8px !important}
+.refs li{overflow-wrap:anywhere}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+@media (max-width:480px){.tw table{font-size:.82rem}.tw th,.tw td{padding:8px 9px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- POL mark: P teal, tree-ring O, L gold, wordmark. Vector redraw of the 2026 logo for light grounds. -->
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="library.html">Library</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="btn pri small" href="contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="guide">
+  <div class="page-head">
+    <div class="wrap">
+      <span class="label">Library</span>
+      <h1>Tokenized A2A payments for banks and large corporates</h1>
+      <p class="lede">Tokenized account-to-account (A2A) rails are the bank-grade settlement layer that sits above consumer fast-payment systems and below correspondent banking. Post Oak Labs works with commercial banks, central banks and large corporates to design, evaluate and deploy them; our team has run blockchain payment programs at a senior level inside major global institutions and advised central banks directly on digital currency infrastructure. This guide collects that work in five parts.</p>
+      <nav class="toc" aria-label="Contents">
+        <span class="label">Contents</span>
+        <ol>
+          <li><a href="#overview">Overview: markets and clients</a></li>
+          <li><a href="#workflow">How tokenized A2A works</a></li>
+          <li><a href="#iso20022">ISO 20022 migration and A2A readiness</a></li>
+          <li><a href="#tmmf">Local-currency tokenized money market funds</a></li>
+          <li><a href="#roadmap">Engagement roadmap</a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ===================== 1. OVERVIEW (from a2a-payments.html) ===================== -->
+  <section id="overview" aria-labelledby="overview-h">
+    <div class="wrap">
+      <span class="label">01 · Overview</span>
+      <h2 id="overview-h">Markets, signals and the institutions we work with</h2>
+      <ul class="stats">
+        <li><span class="num">70–80%</span>Fee reduction in selected B2B corridors versus correspondent banking<sup><a href="#ov-n1">1</a></sup></li>
+        <li><span class="num">$50B+</span>Projected savings for business customers from tokenized payment infrastructure by 2030<sup><a href="#ov-n2">2</a></sup></li>
+        <li><span class="num">$280B</span>Cross-border payment revenues by 2030, total market across all rails<sup><a href="#ov-n3">3</a></sup></li>
+        <li><span class="num">$27T</span>Estimated nostro/vostro pre-funding trapped in correspondent banking globally<sup><a href="#ov-n4">4</a></sup></li>
+      </ul>
+
+      <h3 id="market-signals">What we look for in a market</h3>
+      <p>Two signals predict near-term deployment fit more reliably than any others. The first is nascent fast-payment infrastructure at the institutional level: payments exist, but no mature B2B incumbent does, so A2A complements the market instead of competing with an established scheme. The second is an active institutional money market fund operation at the bank. Banks with live fund platforms already have the liquidity management infrastructure tokenized A2A requires, and across our engagements this has been the strongest single predictor of deployment readiness.</p>
+      <p>Four supporting signals:</p>
+      <ul>
+        <li><span class="term">Active CBDC programs or regulatory sandboxes.</span> Live CBDCs and sandboxes give institutional A2A a base infrastructure layer to run on. We track CBDC deployment status across all target regions.</li>
+        <li><span class="term">Documented fintech partnership appetite.</span> Public MoUs, sandbox participation and recent digital asset product launches separate banks that are deploying from banks that are exploring.</li>
+        <li><span class="term">High cross-border volume and friction.</span> Remittance-heavy economies, intense trade corridors and deep correspondent banking dependency create demand for faster, cheaper institutional settlement.</li>
+        <li><span class="term">Regulatory modernization inflection points.</span> Payment system launches, SEPA accession and AML upgrades open a window when the institution is already building, before a second project gets deprioritized. That is when we engage.</li>
+      </ul>
+
+      <h3 id="regions">Target geographies</h3>
+      <p>We publish this research because these are the regions where the B2B tokenized layer is still open.</p>
+      <dl class="defs">
+        <dt>Latin America <span class="tag">Primary · near-term</span></dt>
+        <dd>Colombia, Peru, Argentina, Venezuela, Ecuador. Colombia's national instant-payment system launched in mid-2025, and major banks are seeking fintech partners for B2B. Peru has regulated mutual fund platforms and active blockchain programs. Argentina's QR-based infrastructure and regulatory support for digital payments create demand for a more capable settlement layer. Venezuela's largest private banks, reachable through international subsidiaries, offer a B2B entry point with minimal incumbent competition. Fully dollarized Ecuador is a greenfield case for tokenized rails to non-dollarized neighbors.</dd>
+        <dt>Central America <span class="tag">High priority</span></dt>
+        <dd>Guatemala, Costa Rica, Honduras, El Salvador, Nicaragua. One of the most underserved fintech regions globally. Guatemala has no formal open-banking regulation; Honduras and El Salvador have minimal fast-payment competition. Costa Rica's instant payment system is expanding regionally, and its investment fund distribution infrastructure fits the institutional case directly. El Salvador's Bitcoin legal tender framework signals openness to digital asset infrastructure. The largest multi-country bank group, present in five non-dollarized markets, is the highest-value entry point: one partnership, several countries.</dd>
+        <dt>Caribbean <span class="tag">Active · production</span></dt>
+        <dd>Jamaica, Dominican Republic, Trinidad &amp; Tobago, Bahamas, Eastern Caribbean. We have active production deployments here. The region has the highest concentration of live retail CBDCs globally (three jurisdictions) and is launching a regional settlement system to cut dependence on US correspondent banks. Trinidad &amp; Tobago's central bank openly welcomes fintech partnerships. The Eastern Caribbean Currency Union has one currency across eleven countries, a live CBDC and no unified commercial bank tokenized A2A layer. Our knowledge of Caribbean regulation, correspondent constraints and remittance dynamics is direct and current.</dd>
+        <dt>Africa <span class="tag">High growth</span></dt>
+        <dd>Nigeria, South Africa, Kenya, Egypt and pan-African networks. The fastest-growing fintech region by revenue trajectory, with an almost undeveloped B2B institutional layer: mobile money dominates consumer payments, and nobody has built the equivalent for tokenized transfers between banks, central banks and corporates. PAPSS, under AfCFTA, already enables cross-border local-currency settlement at the infrastructure level; our advisory operates above it. Several major Nigerian banks run nodes on a regulated blockchain network for real-time interbank settlement, and some also run large money market mutual funds, a dual qualification we rarely see. Africa is the most active CBDC continent, with 25 countries exploring or deploying.</dd>
+        <dt>Southeast Europe <span class="tag">Inflection point</span></dt>
+        <dd>Serbia, Romania, Bulgaria, Greece, Western Balkans. Serbia joins SEPA in May 2026, driving ISO 20022 and instant payment demand across the Western Balkans. Romania's instant payment system covers most of the market, its major banks lead EU Digital Wallet adoption, and digital commerce grows 30–40% a year. Romania and Bulgaria have among the EU's lowest digital banking penetration (Eurostat), so tokenized A2A can leapfrog legacy card infrastructure. Greece and Bulgaria have institutional money market funds distributed through major banks, and the largest bank groups run asset management arms in several markets.</dd>
+        <dt>South Asia <span class="tag">Active · production</span></dt>
+        <dd>Tokenized payment systems are live in production in South Asia. Remittance volumes, the regulatory structure and the commercial banking environment present ongoing opportunity, and our operational experience there shapes how we approach comparable markets.</dd>
+      </dl>
+      <p>The strongest targets combine signals: a bank with an active blockchain program and an existing money market fund platform, or a central bank deploying a CBDC in a market with no incumbent fast-payment scheme. These dual qualifications are our primary filter.</p>
+
+      <h3 id="ideal-client">Who we work with</h3>
+      <p>We work with a limited number of clients at a time. Readiness, positioning and strategic intent matter more than size.</p>
+      <ol class="steps">
+        <li><span class="term">Commercial banks with digital transformation mandates.</span> Tier-1 and Tier-2 banks in our target regions with public fintech partnership programs, sandbox participation or documented blockchain initiatives, seeking help moving from exploration to deployment.</li>
+        <li><span class="term">Banks with fund management arms.</span> Institutions running regulated money market or collective investment fund platforms alongside active digital or blockchain programs.</li>
+        <li><span class="term">Central banks evaluating CBDC or digital infrastructure.</span> Central banks with live CBDCs, pilots or in-progress evaluation of tokenized settlement. We advise on both the central bank architecture layer and the commercial bank overlay products above it.</li>
+        <li><span class="term">Large corporates with high cross-border volumes.</span> Multinational and regional corporates with significant B2B cross-border flows, especially in corridors with high correspondent costs, long settlement times or material FX friction.</li>
+        <li><span class="term">Pan-regional banks and financial groups.</span> Multi-country footprints where one deployment serves several markets and cross-border network effects compound across a captive franchise.</li>
+        <li><span class="term">Institutions at regulatory inflection points.</span> Banks facing SEPA accession, ISO 20022 migration, open banking mandates or AML system upgrades, where the modernization work is a natural window to architect for tokenized payments instead of patching legacy systems.</li>
+      </ol>
+      <p>The people behind this practice have built production tokenized payment infrastructure, run blockchain payment programs at a senior level in major banking and technology institutions, and advised central banks on CBDC design and deployment. <a href="services.html#blockchain">See the advisory track record</a>. If you are also choosing the permissioned ledger beneath the rail, the <a href="enterprise-blockchain.html">Enterprise Blockchain Market Briefing</a> covers R3 Corda, Hyperledger Fabric, Besu and Canton with deployment data and a due diligence checklist.</p>
+
+      <h3>Notes</h3>
+      <ol class="refs">
+        <li id="ov-n1"><span class="term">70–80% cross-border fee reduction.</span> SQ Magazine ("Blockchain in Financial Services Statistics 2026," Nov. 2025) puts 2025 blockchain cross-border fees 70–80% below correspondent fees in selected corridors; other models report fees as low as 0.5%, and one study cites up to ~78% faster processing. McKinsey (Global Payments Report 2023) documents correspondent fees of 2–5% of value against 0.1–0.3% for direct tokenized settlement. High-volume corridors (US–Mexico, UK–India) sit at the lower end; low-volume or de-risked corridors (sub-Saharan Africa, Pacific islands) show larger gross reductions. Baseline: total corridor cost including correspondent fees, FX spread and compliance overhead. Legacy context: World Bank (Q3 2025) average remittance cost ~6.4%; BIS (2024) ~6% for $200 remittances. Directional for some wholesale corridors; realized savings depend on size, corridor and architecture. Post Oak Labs' production benchmark sits in this range.</li>
+        <li id="ov-n2"><span class="term">$50B+ business savings by 2030.</span> Deloitte, "Tokenization of Real-World Assets" (2025). The estimate covers eliminated nostro pre-funding cost, lower correspondent fees and reduced reconciliation overhead across B2B cross-border flows only, excluding consumer remittances. It assumes meaningful institutional adoption in major trade corridors by 2030, which carries implementation and regulatory risk; treat it as a scenario estimate.</li>
+        <li id="ov-n3"><span class="term">$280B cross-border revenues by 2030.</span> Convera Global Payments Report (2024). Total revenue across correspondent banking, card networks and emerging tokenized rails; it defines the pool tokenized A2A can take a growing share of as adoption matures. McKinsey (2023) projects a similar $250–300B by 2027 on an earlier baseline, with cross-border flows growing about 5% CAGR.</li>
+        <li id="ov-n4"><span class="term">$27T nostro/vostro pre-funding.</span> Industry estimate (OpenDue 2025, Keyrock 2025, The GCC Edge March 2026); no BIS, IMF or central bank publishes it officially. McKinsey (2016) reported nostro balances above $27 trillion at end-2015; some 2025 sources cite nearer $28 trillion. It is peak intraday and pre-funded liquidity in correspondent banking. At a Fed Funds Rate of 3.50–3.75% (March 2026) the annual carry cost is roughly $945B–$1.01T, spread across thousands of institutions and partly offset where balances earn yield. At a 3.625% midpoint, $1B in a nostro account forgoes about $36M a year (opendue.com).</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== 2. WORKFLOW (from a2a-workflow.html) ===================== -->
+  <section id="workflow" aria-labelledby="workflow-h">
+    <div class="wrap">
+      <span class="label">02 · How it works</span>
+      <h2 id="workflow-h">How tokenized A2A moves money</h2>
+      <div class="callout"><p><span class="term">Scope of the term.</span> Here "A2A" means account-to-account: institutional, bank-account-based payment rails using tokenized settlement. It is a different thing from LLM "agent-to-agent" protocols, consumer P2P payments (Venmo, PayPal) and general asset tokenization (real estate, securities).</p></div>
+
+      <h3 id="what-is-a2a">Where tokenized A2A sits in the payment stack</h3>
+      <p>Tokenized A2A occupies one layer. It does not replace RTGS underneath it, and it differs from the consumer systems beside it. Every implementation conversation should start from this map.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Layer</th><th scope="col">What it covers</th><th scope="col">Role</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Correspondent banking / SWIFT / RTGS</th><td>3–5 intermediary hops, 2–5 day settlement, high pre-funding, limited data fields</td><td>Legacy rails</td></tr>
+            <tr><th scope="row">Tokenized A2A institutional rails</th><td>Account-to-account tokenized settlement, 1–2 direct fees, near-instant finality, ISO 20022 data. Uses: B2B cross-border, corporate treasury, interbank settlement, tokenized MMF distribution</td><td>The layer this guide covers</td></tr>
+            <tr><th scope="row">CBDC and stablecoin infrastructure</th><td>Central bank digital currency, private stablecoin rails, reserve management, programmable money</td><td>Enabling layer</td></tr>
+            <tr><th scope="row">Consumer fast payment systems</th><td>Pix (Brazil), SPEI (Mexico), FedNow (US), UPI (India), FPS (UK); consumer and retail P2P</td><td>Outside A2A scope</td></tr>
+            <tr><th scope="row">Settlement ledger and blockchain infrastructure</th><td>Permissioned DLT, L1 blockchains, central bank RTGS, Corda, Hyperledger, EVM-compatible chains</td><td>Base layer</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="architecture">Correspondent banking and tokenized A2A side by side</h3>
+      <p>Beyond speed, what changes is how many actors touch a payment, what each hop costs, how much data travels and how much control the sender keeps. In the legacy path a sender bank passes value through correspondent bank A, correspondent bank B and onward, paying a fee at each hop. In the tokenized path the sender bank mints a token, the settlement ledger moves it for one fee, and the receiver bank redeems it.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Dimension</th><th scope="col">Correspondent banking (legacy)</th><th scope="col">Tokenized A2A rails</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Settlement speed</th><td>2–5 business days (SWIFT gpi median under 2h in-network; final credit 2+ days)</td><td>Seconds to minutes; under 10s demonstrated in multi-CBDC corridors<sup><a href="#wf-n5">5</a></sup></td></tr>
+            <tr><th scope="row">Fee structure</th><td>3–5 intermediary fees: SWIFT, correspondent, FX spread, nostro maintenance</td><td>1–2 direct fees: ~0.2% direct settlement, FX captured on-ledger</td></tr>
+            <tr><th scope="row">Total cost</th><td>2.5–5% plus FX spread, including reconciliation labor</td><td>~0.2% direct settlement fee<sup><a href="#wf-n7">7</a></sup></td></tr>
+            <tr><th scope="row">Pre-funding</th><td>$27T trapped globally in nostro/vostro balances across corridors</td><td>Near zero; just-in-time settlement frees capital</td></tr>
+            <tr><th scope="row">Data per transaction</th><td>Fewer than 10 fields in MT messages; manual reconciliation</td><td>200+ structured ISO 20022 fields; automated reconciliation, ~30% fewer exceptions</td></tr>
+            <tr><th scope="row">Programmability</th><td>None; static instructions</td><td>Full conditional logic: escrow, milestone payment, trade finance automation</td></tr>
+            <tr><th scope="row">Transparency</th><td>No real-time visibility until the correspondent confirms</td><td>Real-time status for all participants across the lifecycle</td></tr>
+            <tr><th scope="row">KYC/AML overhead</th><td>Repeated at each hop by each correspondent</td><td>Shared attestation; graduated KYC tiers across participants</td></tr>
+            <tr><th scope="row">FX cost</th><td>Opaque spread at each hop, kept by the correspondent</td><td>Real-time on-ledger FX; originating bank keeps the spread</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>The four-corner model</h3>
+      <p>The four-corner model defines who owns the fiat at each step, where the token lives and how settlement happens without moving correspondent balances.</p>
+      <ul>
+        <li><span class="term">Corporate sender.</span> Initiates the payment instruction; its fiat stays at its bank.</li>
+        <li><span class="term">Corner 1, sender bank.</span> Holds the fiat and issues the token liability on its own ledger. Runs sender KYC/AML.</li>
+        <li><span class="term">Tokenization layer, settlement ledger.</span> The token exists here as a claim on the sender bank's fiat reserves (permissioned DLT or CBDC rail).</li>
+        <li><span class="term">Corner 2, receiver bank.</span> Redeems the token and credits the customer account. Runs receiver KYC/AML.</li>
+        <li><span class="term">Corporate receiver.</span> Receives settlement, credited locally in fiat.</li>
+      </ul>
+      <p>Fiat never moves between banks during the transaction. The token is a transferable claim on the sender bank's reserves, and interbank settlement happens later by off-ledger netting or RTGS.</p>
+
+      <h3 id="lifecycle">Transaction lifecycle in seven phases</h3>
+      <ol class="steps">
+        <li><span class="term">KYC/AML pre-screening.</span> The sending institution screens the sender. Graduated tiers match checks to value: low-value remittances share attestation across participants, high-value B2B triggers full due diligence, with full compliance visibility.<span class="timing">Real-time, automated; ISO 20022 data feeds compliance directly</span></li>
+        <li><span class="term">Payment instruction.</span> The corporate submits by API or portal; the bank validates details, confirms liquidity and routes to tokenized rail, ACH, RTP or other mechanism by corridor, amount and speed.<span class="timing">Under 1 second; routing pre-configured</span></li>
+        <li><span class="term">Token minting.</span> The sending bank creates a token on the shared ledger representing a claim on its fiat reserves; the amount stays on its balance sheet. The token carries the full ISO 20022 payload (200+ fields) for automated reconciliation at the receiver. HSM-secured keys govern minting authority.<span class="timing">Seconds; signed and ledger-recorded</span></li>
+        <li><span class="term">On-ledger transfer.</span> The token moves across the permissioned ledger to the receiving bank's address with no correspondent in between. Programmable conditions (delivery confirmation in trade finance, milestones in supply chain) can gate the transfer. Atomic settlement means the full transfer completes or nothing moves.<span class="timing">Seconds to minutes; final on confirmation, no rollback</span></li>
+        <li><span class="term">Token redemption.</span> The receiving bank validates and redeems the token and credits the corporate in local currency, converting FX at real-time on-ledger rates and keeping spread a correspondent used to take. It never sees the original account data.<span class="timing">Near-instant; local currency credit</span></li>
+        <li><span class="term">Off-ledger settlement.</span> Intraday or at end of day, positions are netted across participants and settled by RTGS or bilateral agreement, the same way card networks clear. Gross settlement volume and pre-funding fall sharply compared with payment-by-payment SWIFT instructions.<span class="timing">Intraday or end-of-day; net exposure far below gross</span></li>
+        <li><span class="term">Core banking reconciliation.</span> ISO 20022 data reconciles automatically with core systems (Temenos, Finacle and others) through a middleware API, without core replacement. Exceptions fall about 30% against MT messages. The immutable on-ledger audit trail meets regulatory reporting needs, and PCI scope shrinks because account data never transits the rail.<span class="timing">Automated; audit trail immutable from phase 03</span></li>
+      </ol>
+      <div class="callout"><p><span class="term">Compliance.</span> The audit trail is timestamped from minting through settlement. AML, sanctions screening and transaction reporting can sit at the ledger layer instead of being reconstructed from several systems afterwards, cutting cost and improving accuracy, with more data per transaction than any MT workflow.</p></div>
+
+      <h3 id="cost">The economics of switching</h3>
+      <p>The cost case rests on industry research and documented deployments. For treasury teams, the time value of faster settlement alone can justify the infrastructure.</p>
+      <div class="tw narrow">
+        <table>
+          <caption>Transaction fee by rail type.</caption>
+          <thead><tr><th scope="col">Rail</th><th scope="col">Typical fee</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Credit card</th><td>~2.5%</td></tr>
+            <tr><th scope="row">Debit card</th><td>~1.5%</td></tr>
+            <tr><th scope="row">ACH / SEPA</th><td>Flat fee, $0.20–$1.50 per transaction<sup><a href="#wf-n6">6</a></sup></td></tr>
+            <tr><th scope="row">Tokenized A2A</th><td>~0.2%<sup><a href="#wf-n7">7</a></sup></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tw narrow">
+        <table>
+          <caption>Reported efficiency gains from tokenized A2A adoption. Where a source reports a range, the full range is shown.</caption>
+          <thead><tr><th scope="col">Dimension</th><th scope="col">Gain</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Cross-border cost, by 2030, via A2A disintermediation</th><td>12%+ reduction<sup><a href="#wf-n1">1</a></sup></td></tr>
+            <tr><th scope="row">Manual KYC review time with AI-integrated tokenized workflows</th><td>40–60% reduction<sup><a href="#wf-n2">2</a></sup></td></tr>
+            <tr><th scope="row">Exception rate, ISO 20022 versus MT</th><td>20–30% lower<sup><a href="#wf-n3">3</a></sup></td></tr>
+            <tr><th scope="row">Cost per transaction, recurring payments versus card networks</th><td>~70% lower<sup><a href="#wf-n4">4</a></sup></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="revenue">Revenue lines a correspondent model does not offer</h3>
+      <dl class="defs">
+        <dt>Tokenized FX</dt>
+        <dd>The originating bank captures the FX margin on real-time on-ledger conversion in multi-currency corridors, a spread that previously went entirely to intermediaries.</dd>
+        <dt>Bank-issued stablecoin</dt>
+        <dd>A bank-branded stablecoin backed by customer deposits earns float on reserves, redemption fees and API access fees from fintechs building on the bank's rail, positioning the bank as an infrastructure provider.</dd>
+        <dt>Local-currency tokenized MMFs</dt>
+        <dd>The rail becomes a distribution channel for money market funds denominated in local currency. Tokenized USD MMFs exist; the gap is local-currency equivalents for non-dollarized economies. Revenue is a distribution and management fee share on top of existing fund operations (see <a href="#tmmf">section 4</a>).</dd>
+        <dt>White-label rail licensing</dt>
+        <dd>License the rail to smaller banks, payment service providers and fintechs. Post Oak Labs projects that about 64% of banks will act as tokenization service providers by 2030<sup><a href="#wf-n8">8</a></sup>; early movers earn platform fees from latecomers.</dd>
+        <dt>Programmable trade finance</dt>
+        <dd>Smart-contract letters of credit and supply chain finance cut LC processing from 20–30 days to hours, so documentary credit fees arrive far sooner. Early-payment programs on tokenized purchase orders yield 3–8% annualized for liquidity providers.</dd>
+        <dt>Payment intelligence</dt>
+        <dd>ISO 20022's 200+ fields, aggregated across the network, support privacy-preserving analytics sold by subscription: supply chain payment visibility, cash flow forecasting and working capital tools.</dd>
+      </dl>
+      <div class="callout"><p><span class="term">The arbitrage.</span> A bank that pays 2.5% on a cross-border corridor today can offer the same corridor at 1.5% on tokenized A2A and keep 1.2% as network fee income. FX spread, tokenized MMF distribution and rail licensing stack on top. Early movers in markets with immature tokenized infrastructure hold a structural, time-limited advantage.</p></div>
+
+      <h3 id="best-practices">What separates banks that deploy from those that keep evaluating</h3>
+      <p>This guidance comes from building and deploying production tokenized payment systems. These decisions determine whether a project reaches production or stalls in design.</p>
+      <dl class="defs">
+        <dt>ISO 20022 first</dt>
+        <dd>ISO 20022 messaging is the foundation for any deployment. Early adopters get faster settlement access and 20–30% lower exception handling costs; institutions that defer become structurally incompatible with the rail they want to join (see <a href="#iso20022">section 3</a>).</dd>
+        <dt>Build, join or hybrid</dt>
+        <dd>Build a proprietary rail if volume exceeds threshold and regulation is clear; join an existing network if the corridor is served and speed matters; go hybrid if both partly apply. Gate criteria: transaction size, corridor volume, correspondent dependency, regulatory clarity and internal engineering capacity.</dd>
+        <dt>Regulatory sequencing</dt>
+        <dd>Sandbox approval → internal corporate pilots → payment system operator status application → public node deployment. Compressing this order typically causes regulatory friction that sets a project back 12–18 months.</dd>
+        <dt>Key management and custody</dt>
+        <dd>HSM architecture and multi-signature schemes for minting authority are required. Key-material disaster recovery must be documented and tested before production. Custody should be transparent and auditable; opacity is a red flag for regulators.</dd>
+        <dt>Avoid vendor lock-in</dt>
+        <dd>One token provider means compounding dependency. Use network-agnostic or proprietary token vaults with data portability, open token standards compatible with future CBDC interoperability, and a middleware API that abstracts the ledger.</dd>
+        <dt>Liquidity management</dt>
+        <dd>Build pre-funding optimization and intraday stress testing in from day one. Without an intraday liquidity model, teams over-fund or hit constraints at peak volume. The liquidity model should precede the technical build.</dd>
+        <dt>KYC at the network layer</dt>
+        <dd>Graduated KYC tiers with attestation shared across participants replace duplicate checks on the same counterparties. In Caribbean and South Asian deployments, data locality rules interact with cross-border sharing, so local regulatory counsel must join at architecture design.</dd>
+        <dt>Core integration without core replacement</dt>
+        <dd>The rail does not require replacing core systems (Temenos, Finacle, Flexcube). A middleware API feeds ISO 20022 data into existing reconciliation and reporting. Assuming otherwise is the most common reason cost estimates inflate and executive sign-off stalls.</dd>
+      </dl>
+
+      <h3>Notes</h3>
+      <ol class="refs">
+        <li id="wf-n1"><span class="term">12%+ cross-border cost reduction by 2030.</span> Deloitte, "Tokenization of Real-World Assets" (2025): meaningful institutional adoption across major corridors could cut total cross-border payment costs about 12.5% by 2030, the basis of the $50B+ figure in <a href="#ov-n2">section 1</a>. It measures total corridor cost, includes expected adoption curves and does not assume full penetration. We consider it conservative next to per-corridor implementations (see <a href="#ov-n1">note 1 in section 1</a>).</li>
+        <li id="wf-n2"><span class="term">40–60% less manual KYC review time.</span> Accenture Banking Technology Vision (2024) and SWIFT "AI in Financial Crime Compliance" (2024). Upper end: institutions with strong KYC data; lower end: those leaving fragmented databases. Structured data cuts manual exceptions; the KYC standard is unchanged. Applies to AI-assisted compliance generally; not audited in a tokenized A2A context.</li>
+        <li id="wf-n3"><span class="term">20–30% fewer payment exceptions.</span> SWIFT "ISO 20022 Migration Progress Report" (2024) and a BIS working paper on payment data richness (2023). Structured names, addresses, LEIs and purpose codes replace MT free text that caused false positives. Depends on implementation and counterparty adoption.</li>
+        <li id="wf-n4"><span class="term">~70% lower cost per recurring transaction.</span> Visa and Mastercard interchange (1.5–2.5% for recurring commercial payments) against A2A direct debit in UK Open Banking and EU SEPA Instant (0.1–0.5% including scheme fees). Recurring flows only (subscriptions, trade payables); single-use consumer card payments keep dispute and fraud protections A2A does not yet match at scale.</li>
+        <li id="wf-n5"><span class="term">Sub-10-second settlement.</span> Project mBridge (BIS Innovation Hub with the Hong Kong Monetary Authority, Bank of Thailand, Digital Currency Institute of the People's Bank of China and Central Bank of the UAE) and Jasper–Ubin (Bank of Canada and Monetary Authority of Singapore). Proof-of-concept results under controlled conditions; production timelines and performance at scale depend on regulatory, interoperability and governance decisions.</li>
+        <li id="wf-n6"><span class="term">ACH / SEPA fees.</span> US ACH is flat-fee, typically $0.20–$1.50 per transaction at institutional and bank-direct rates and free at many major banks; some processors add a 0.5–1.5% markup of their own. Treating ACH as a percentage fee misleads for B2B, where it is near zero per transaction at scale. SEPA Credit Transfer is similarly flat or zero-fee in the euro area.</li>
+        <li id="wf-n7"><span class="term">~0.2% tokenized A2A fee.</span> Post Oak Labs' benchmark (settlement plus platform overhead) from production deployments in targeted B2B corridors, excluding FX captured at redemption, which is revenue to the originating bank. Context: Noda (2024) 0.1–0.8% for merchant-facing B2C A2A; FSB G20 Roadmap target well below 1% for retail cross-border; OpenDue (2025) 1–4% all-in for many correspondent corridors.</li>
+        <li id="wf-n8"><span class="term">64% of banks as tokenization providers by 2030.</span> A Post Oak Labs projection from BIS and World Bank tokenization roadmaps, announced pilots in Latin America, South Asia and Southeast Asia, and regulatory pace in target markets. Assumes continued regulatory progress, critical mass in two to three major emerging-market corridors by 2028 and no major reversal. Directional; timing and penetration are uncertain.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== 3. ISO 20022 (from iso20022-a2a.html) ===================== -->
+  <section id="iso20022" aria-labelledby="iso-h">
+    <div class="wrap">
+      <span class="label">03 · ISO 20022</span>
+      <h2 id="iso-h">ISO 20022 migration and A2A readiness are one project</h2>
+      <p>Banks spending engineering effort on mandatory ISO 20022 migration are working on the same infrastructure layer that tokenized A2A rails use. The firms advising on migration and the firms advising on tokenized infrastructure are almost entirely separate, which leaves a gap most institutions notice only after they have built technical debt they must unwind. See also <a href="glossary.html#a2a">ISO 20022 in the glossary</a>.</p>
+      <ul class="stats">
+        <li><span class="num">200+</span>Structured fields per ISO 20022 MX message, against under 10 in MT<sup><a href="#iso-n1">1</a></sup></li>
+        <li><span class="num">20–30%</span>Fewer payment exceptions in early migration cohorts<sup><a href="#iso-n2">2</a></sup></li>
+        <li><span class="num">11,500+</span>Institutions on SWIFT, all affected by the cross-border MX migration<sup><a href="#iso-n3">3</a></sup></li>
+        <li><span class="num">Nov 2025</span>End of the SWIFT MT/MX coexistence period for cross-border payments<sup><a href="#iso-n4">4</a></sup></li>
+      </ul>
+
+      <h3 id="what">MX carries about 20 times the structured data of MT</h3>
+      <p>Most teams treat migration as a mandatory standard change. Fewer see that its data makes tokenized A2A economically viable. MT103 and MT202 carry fewer than 10 meaningful fields; names, addresses and purpose are often truncated or missing, screening throws high false positives, and exception handlers clear thousands of payments a day by hand, with every correspondent working from the same degraded data. MX (structured XML) makes 200+ fields available, with mandatory population varying by message type: full legal name, structured address, LEI, purpose code, regulatory reporting codes, creditor reference and more. The same payload travels on tokenized A2A rails with no conversion. Field counts show relative capacity and are not a literal schema tally.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Data element</th><th scope="col">MT103 (legacy SWIFT)</th><th scope="col">ISO 20022 MX (pacs.008)</th><th scope="col">A2A token payload</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Beneficiary name</th><td>35-character free text, often truncated</td><td>Full legal name, up to 140 characters, structured</td><td>Identical to MX; no conversion</td></tr>
+            <tr><th scope="row">Beneficiary address</th><td>Optional, unstructured, often omitted</td><td>Structured postal address (street, city, country, postcode)</td><td>Carried natively in token metadata</td></tr>
+            <tr><th scope="row">Legal Entity Identifier</th><td>Not supported</td><td>Mandatory for financial institutions; available for corporates</td><td>Embedded in the token identity layer</td></tr>
+            <tr><th scope="row">Purpose code</th><td>Not supported in most MT formats</td><td>Structured code (SALA, TRPT, INSU, etc.) for automated classification</td><td>Smart contract logic can gate on it</td></tr>
+            <tr><th scope="row">Remittance information</th><td>140-character unstructured field</td><td>Structured: invoice references, line items, amounts</td><td>Automated accounts payable matching at receiver</td></tr>
+            <tr><th scope="row">Sanctions screening</th><td>Free-text match; high false positives</td><td>Structured name, LEI and address; materially fewer false positives<sup><a href="#iso-n2">2</a></sup></td><td>Check embedded at token minting</td></tr>
+            <tr><th scope="row">Regulatory reporting</th><td>Manual reconstruction from several fields</td><td>Purpose codes and structured fields enable automated filing</td><td>Immutable on-ledger record meets audit needs directly</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="timeline">Where the mandatory migration stands</h3>
+      <p>The SWIFT cross-border deadline passed in November 2025. Banks still non-compliant or running MT/MX coexistence workarounds carry a compliance liability and technical debt that grows as A2A-capable competitors move ahead.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">When</th><th scope="col">Milestone</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">March 2023</th><td>SWIFT begins mandatory MT-to-MX migration for cross-border correspondent payments, with a coexistence period for sending and receiving both formats.<sup><a href="#iso-n4">4</a></sup></td></tr>
+            <tr><th scope="row">March 2023</th><td>ECB migrates TARGET2 to ISO 20022 in the T2 consolidation; EURO1 (Euro Banking Association) follows. Any institution with euro flows or European correspondents is in scope.<sup><a href="#iso-n6">6</a></sup></td></tr>
+            <tr><th scope="row">July 14, 2025</th><td>Federal Reserve migrates Fedwire Funds Service to ISO 20022, covering all US dollar RTGS transactions. Any institution with dollar correspondent relationships or cross-border dollar flows is in scope.<sup><a href="#iso-n5">5</a></sup></td></tr>
+            <tr><th scope="row">November 2025</th><td>Cross-border coexistence ends. Institutions not on MX face processing degradation and may use SWIFT translation as a stopgap, at extra cost and with data loss.<sup><a href="#iso-n4">4</a></sup></td></tr>
+            <tr><th scope="row">Ongoing</th><td>Domestic RTGS migrations: CHAPS (UK), HVPS+ (China) and LYNX (Canada) have adopted or committed to ISO 20022. Each modernization puts alignment pressure on commercial banks in that jurisdiction.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Exposure concentrates in mid-tier correspondent banks in emerging markets, especially Latin America, the Caribbean and sub-Saharan Africa, that lack internal ISO 20022 processing and rely on SWIFT's translation layer or correspondent workarounds. That is the profile we work with, and for them compliance pressure and the A2A opportunity are the same conversation.</p>
+
+      <h3 id="alignment">One build that satisfies both requirements</h3>
+      <p>Tokenized A2A rails use ISO 20022 MX structures as their data layer. A bank that builds structured data handling, LEI resolution and automated reconciliation into its migration has built most of the data infrastructure A2A participation needs.</p>
+      <p><span class="term">The common mistake: parallel projects.</span> Technology and operations own migration as compliance; innovation or strategy owns tokenized payments; the teams rarely talk. The migration meets the standard without the data handling, API layer or identity infrastructure A2A needs, so A2A later means a second major build on the first, doubling cost and debt.</p>
+      <p><span class="term">The unified architecture.</span> A migration designed for A2A builds native MX data handling; an API gateway that accepts and emits ISO 20022 for SWIFT and tokenized rail participants alike; LEI resolution serving both compliance and token identity; and reconciliation for 200+ field messages (where counterparties populate optional fields, an adoption quality issue separate from compliance). That is the A2A on-ramp at no incremental infrastructure cost. The window is during the build, which is why we advise on migration and the A2A layer together.</p>
+
+      <h3 id="migration">Five decisions that avoid A2A technical debt</h3>
+      <p>At each fork the right choice costs no more than the wrong one; the consequences diverge over time.</p>
+      <ol class="steps">
+        <li><span class="term">Build a structured data layer instead of a translation layer.</span> The cheapest route is a gateway converting MX to MT for internal systems and back. It meets the SWIFT requirement and keeps legacy data poverty inside the bank. Process MX natively with a layer that handles structured fields, LEI resolution and purpose codes directly.</li>
+        <li><span class="term">Design the API gateway for future participants.</span> A gateway built only to current SWIFT correspondent specifications must be rebuilt to add tokenized rail participants. Extensible onboarding, including permissioned ledger endpoints, costs marginally more upfront and avoids the rebuild.</li>
+        <li><span class="term">Run LEI resolution as a shared service.</span> LEI resolution is required for ISO 20022 and is also the identity layer for institutions on tokenized networks. Embedded as a point solution in the SWIFT pipeline, it must be reimplemented for A2A.</li>
+        <li><span class="term">Reconcile on structured fields.</span> Logic built around invoice references, remittance information and purpose codes works identically on tokenized A2A transactions, because the token carries the same payload. Logic that reconstructs message content does not.</li>
+        <li><span class="term">Bring in your permissioned ledger vendor during migration.</span> If you intend to deploy on a permissioned DLT (Corda, Hyperledger Fabric and others), the vendor should review the migration architecture before it is final. Every major platform supports ISO 20022 natively, but integration patterns vary.</li>
+      </ol>
+
+      <h3 id="ams">Compliance gains on A2A rails</h3>
+      <p>The compliance benefits of ISO 20022 are well documented. They compound on tokenized rails, where compliance logic can sit at the ledger layer.</p>
+      <dl class="defs">
+        <dt>AML and sanctions screening</dt>
+        <dd>Truncated MT names match patterns across sanctioned and clean entities. Structured names, LEIs and addresses let screening match legal entity registries; early cohorts show 30–50% fewer false positives (SWIFT and vendor data)<sup><a href="#iso-n2">2</a></sup>. On tokenized A2A, screening runs once at minting, before the payment enters the network, in place of a check at each hop.</dd>
+        <dt>Reconciliation</dt>
+        <dd>Manual matching of under-documented payments is the largest operations cost in correspondent banking. Structured remittance data (invoice number, line items, creditor reference) allows straight-through reconciliation in the receiver's accounts payable. On tokenized rails the data arrives with the token before redemption, enabling pre-crediting and same-day accounts payable closure.</dd>
+        <dt>Regulatory reporting</dt>
+        <dd>Many jurisdictions require cross-border payments reported by category (salary, trade, investment, remittance) for balance of payments, capital flow monitoring and tax. Purpose codes replace manual MT classification, and the immutable on-ledger record serves as the audit trail without reconstruction.</dd>
+        <dt>FATF Recommendation 16 (Travel Rule)</dt>
+        <dd>Originator and beneficiary data must accompany wire transfers. MT often truncates it; ISO 20022's mandatory structured fields meet the rule more completely and more auditably. This matters where grey-listing is a risk or recent history, including Nigeria (exited in 2023) and markets under CFATF review.</dd>
+      </dl>
+
+      <h3 id="examples">Two institutional scenarios</h3>
+      <p><span class="term">Caribbean commercial bank, mid-migration.</span> A mid-tier Jamaican bank is 12 months into a SWIFT MX project and has built a gateway translating MX to MT for internal systems: compliant, without native structured data handling. Our architecture review found that the translation approach closes off A2A readiness. Revised scope replaced the gateway with a native MX processing layer and an extensible API gateway. Incremental cost was modest; the alternative was a full rebuild in 24–36 months once A2A was required. The bank now has a compliant migration and an on-ramp to the JAM-DEX-compatible A2A layer the Bank of Jamaica is developing.</p>
+      <p><span class="term">Colombian regional bank, pre-migration.</span> A regional bank choosing ISO 20022 vendors also has a board mandate to evaluate tokenized cross-border payments for its remittance-heavy US–Colombia corridor. We built A2A alignment criteria into the RFP: native MX processing, LEI resolution as a shared service, API gateway extensibility for non-SWIFT participants and a DLT compatibility review. The bank picked a vendor that met them, and migration and A2A pilot now run as one program, with a projected 30–40% reduction in combined infrastructure cost.</p>
+      <p>Every in-progress migration we review shows the same gap: the team solves for SWIFT compliance, nobody asked it to solve for A2A, and the choices that close off A2A are defaults. The fix is inexpensive and needs both conversations in one room. A team 12 months in with a translation gateway can still correct course cheaply; after completion, we can map the on-ramp from where you are. For how the rails compare with correspondent banking and stablecoins, see <a href="a2a-comparison.html">A2A vs. correspondent banking</a>.</p>
+
+      <h3>Notes</h3>
+      <ol class="refs">
+        <li id="iso-n1"><span class="term">Field count.</span> The ISO 20022 Message Definition Report for pacs.008 documents 200+ available data elements; MT103 carries fewer than 10 mandatory or commonly used structured fields in practice, with most optional fields free text. Not every MX field is mandatory in every context. See <a href="https://www.iso20022.org">iso20022.org</a> and <a href="https://www.swift.com/standards/iso-20022">swift.com/standards/iso-20022</a>.</li>
+        <li id="iso-n2"><span class="term">Exceptions and false positives.</span> SWIFT's ISO 20022 Programme Migration Progress Update (2024) documents exception reductions in early cohorts, corroborated by BIS Working Paper No. 1114 (2023). For screening, SWIFT's Financial Crime Compliance whitepaper (2024) and Accenture compliance research (2023) cite 30–50% false-positive reduction in structured-data environments. Results depend on implementation and screening system quality; treat as directional.</li>
+        <li id="iso-n3"><span class="term">SWIFT network size.</span> Per the 2024 annual report, SWIFT connects 11,500+ institutions in 200+ countries. See <a href="https://www.swift.com/about-us/discover-swift/facts-figures">swift.com</a>.</li>
+        <li id="iso-n4"><span class="term">SWIFT cross-border timeline.</span> Migration began March 2023 with coexistence; CBPR+ coexistence ended November 2025. Non-migrated institutions may use SWIFT's translation service, with data quality loss. Guidance at <a href="https://www.swift.com/standards/iso-20022/iso-20022-programme">swift.com/standards/iso-20022/iso-20022-programme</a>.</li>
+        <li id="iso-n5"><span class="term">Fedwire.</span> The Federal Reserve migrated Fedwire Funds Service, one of the largest high-value systems by volume, on July 14, 2025. Details at <a href="https://www.frbservices.org/financial-services/funds/iso20022.html">frbservices.org</a>.</li>
+        <li id="iso-n6"><span class="term">TARGET2.</span> The ECB consolidated TARGET2 into T2 in March 2023 and migrated to ISO 20022 as part of it. See <a href="https://www.ecb.europa.eu/paym/target/target2/html/index.en.html">ecb.europa.eu</a>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== 4. tMMF (from tmmf-a2a.html) ===================== -->
+  <section id="tmmf" aria-labelledby="tmmf-h">
+    <div class="wrap">
+      <span class="label">04 · Tokenized MMFs</span>
+      <h2 id="tmmf-h">Local-currency tokenized money market funds on A2A rails</h2>
+      <p>USD tokenized money market funds (tMMFs) are real, funded and growing. As far as Post Oak Labs is aware, no institutional-grade equivalent exists for corporate treasurers in non-dollarized markets: the same short-duration yield and overnight liquidity, denominated in COP, NGN or JMD. This section describes that combined product. See also <a href="glossary.html">tMMF in the glossary</a>.</p>
+      <ul class="stats">
+        <li><span class="num">$1B+</span>BlackRock BUIDL AUM, reached within its first year<sup><a href="#tm-n1">1</a></sup></li>
+        <li><span class="num">$9T+</span>Global MMF AUM, almost all in USD and major currencies; local-currency emerging-market tMMFs are near zero<sup><a href="#tm-n2">2</a></sup></li>
+        <li><span class="num">T+0</span>Redemption for tMMF units on A2A rails, against T+1 or T+2 for traditional funds</li>
+        <li><span class="num">6–26%+</span>Overnight rate range in target markets, enough to matter on operating balances above $1M<sup><a href="#tm-n3">3</a></sup></li>
+      </ul>
+
+      <h3 id="rates-chart">The yield gap</h3>
+      <p>A treasurer holding idle COP, NGN or JMD forgoes a far higher overnight yield than a USD tMMF offers, and the gap costs basis points every day.</p>
+      <div class="tw narrow">
+        <table>
+          <caption>Illustrative overnight-rate benchmarks. These are policy or overnight rates; tMMF net yield would run below them. Sources in note 3.</caption>
+          <thead><tr><th scope="col">Benchmark</th><th scope="col">Rate</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">USD tMMF</th><td>≈5%</td></tr>
+            <tr><th scope="row">Jamaica</th><td>6.5–7%</td></tr>
+            <tr><th scope="row">Colombia</th><td>9.75%</td></tr>
+            <tr><th scope="row">Nigeria</th><td>26.25%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="why">Why the product is missing in non-dollarized economies</h3>
+      <p>A Bogotá treasurer with excess COP faces the same problem as a New York treasurer with excess USD: idle cash earns nothing. The New York treasurer has BUIDL and a dozen equivalents. The Bogotá treasurer's options are limited, slow or unavailable in the functional currency, for three reasons.</p>
+      <dl class="defs">
+        <dt>FX exposure</dt>
+        <dd>A company with COP revenues and payables parking cash in a USD fund pays a round-trip FX cost of typically 1–2%, erasing the yield on positions under 30 days. It needs a COP short-duration fund with T+0 redemption, structured like BUIDL; none exists in Colombian institutional banking. Yield assumptions in this section: COP policy rate about 9.75% (Banco de la República, Q1 2026), 20bps management fee and ~0.2% A2A settlement fee, giving about 8.8–9.0% annualized net. Rates have moved a lot since 2022; verify before modelling.</dd>
+        <dt>Capital controls</dt>
+        <dd>Nigeria's CBN FX rules, Jamaica's historical FX framework and similar regimes add overhead and a 1–5 business day delay to USD access, which rules out overnight positions. A local-currency tMMF on a domestically regulated ledger involves no cross-border capital movement.</dd>
+        <dt>Redemption mechanics</dt>
+        <dd>Overnight rates in Colombia (7–8% in 2024–2025), Nigeria (22–26% policy context) and Jamaica (6–7%) are worth capturing above $1M, but T+1 or T+2 redemption, minimums and manual subscription make daily sweeps impractical. Same-day A2A redemption lets treasury sweep in each evening and redeem each morning. 100bp annualized on $10M is $100K, unreachable at T+1.</dd>
+      </dl>
+
+      <h3 id="existing">What exists and what does not</h3>
+      <p>The opportunity lies in the market USD tMMFs structurally cannot serve. BUIDL, Franklin Templeton's BENJI, Ondo Finance's OUSG and others give well-executed institutional tokenized exposure to US Treasury bills and money market instruments. The equivalent for local-currency treasurers in non-dollarized emerging markets did not exist in institutional-grade tokenized form anywhere we were aware of as of early 2026.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Product</th><th scope="col">Issuer</th><th scope="col">Currency</th><th scope="col">Underlying</th><th scope="col">AUM (approx.)</th><th scope="col">Redemption</th><th scope="col">Serves local-currency treasurers</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">BUIDL</th><td>BlackRock / Securitize</td><td>USD</td><td>US Treasuries, repo</td><td>$1B+ (2024)<sup><a href="#tm-n1">1</a></sup></td><td>T+0 on-chain, T+1 off-chain</td><td>No: USD only</td></tr>
+            <tr><th scope="row">BENJI</th><td>Franklin Templeton</td><td>USD</td><td>US Government MMF</td><td>$400–500M (2024)<sup><a href="#tm-n4">4</a></sup></td><td>T+1 (Benji app)</td><td>No: USD only</td></tr>
+            <tr><th scope="row">OUSG</th><td>Ondo Finance</td><td>USD</td><td>BUIDL and other tokenized government-securities vehicles (restructured Mar 2024)</td><td>$200M+ (2024)</td><td>T+0 on-chain instant redemption</td><td>No: USD only, DeFi-native</td></tr>
+            <tr><th scope="row">Local-currency tMMF on A2A</th><td>Originating commercial bank (to be built)</td><td>COP / NGN / JMD / others</td><td>Local short-duration sovereign instruments, bank deposits, CDs</td><td>Not yet in market</td><td>T+0 via A2A rail</td><td>Yes: the architecture described here</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="tmmf-architecture">Product architecture</h3>
+      <p>The originating bank probably already has both components. The work is connecting them on one ledger.</p>
+      <dl class="defs">
+        <dt>Layer 1: fund vehicle</dt>
+        <dd>A locally regulated collective investment scheme (CIS), managed by the bank or its asset management arm, holding treasury bills, central bank repos or equivalents, bank CDs and high-grade local commercial paper. CIS licensing is the requirement that varies most by market. It is a traditional money market fund; tokenization sits above it and leaves it unchanged.</dd>
+        <dt>Layer 2: token layer</dt>
+        <dd>Each fund unit or fraction is a token on the same permissioned ledger as the A2A rail. Legally the instrument is the fund unit; the token is the bearer mechanism for the claim. Tokens mint when a corporate moves funds in by A2A instruction and burn on redemption as fiat is credited back, both in real time.</dd>
+        <dt>Layer 3: A2A distribution rail</dt>
+        <dd>The rail carries both subscription and redemption. With operating balance and position on one ledger, both are atomic with no settlement risk, no T+1 window and no wire or manual step. Treasury runs it from the bank's existing digital banking interface.</dd>
+        <dt>Custody layer</dt>
+        <dd>The most jurisdiction-sensitive element. Assets sit with the bank's custody subsidiary, a third-party custodian or the central bank depository where available. In most target markets (Colombia, Nigeria, Jamaica) they must be in a segregated account legally separate from the bank's own assets, protecting investors if the bank fails. The token represents the custodied unit; the legal structure runs through the custody arrangement.</dd>
+      </dl>
+
+      <h3 id="daily-flow">The overnight cycle for a treasury client</h3>
+      <p>Treasury works only with the bank's familiar payment and account tools and never with the fund directly.</p>
+      <ol class="steps">
+        <li><span class="term">End of day: sweep.</span> Through the portal or automated cash rules, treasury moves cash not needed overnight into the tMMF. The rail mints tokens and debits the account in real time, in under 30 seconds.</li>
+        <li><span class="term">Overnight: accrual.</span> Yield on the fund's bills, repos and CDs accrues pro rata, either in NAV per token (accumulating) or as a separate yield token or account credit (distributing); the choice has jurisdiction-specific regulatory and tax effects.</li>
+        <li><span class="term">Morning: redemption.</span> Before market open the rail burns the tokens, redeems the units and credits principal plus overnight yield less fees, restoring working capital with no manual step, T+1 delay or FX conversion.</li>
+      </ol>
+      <div class="callout"><p><span class="term">What it produces.</span> A company with a $10M COP-equivalent balance at a 7% overnight rate (approximate Colombian 2024 policy environment) earns about $700K a year by sweeping idle cash overnight. A traditional MMF with T+1 redemption captures about 70% of that because settlement delays lose part of the cycle; a tMMF on A2A rails with T+0 redemption captures close to 100%. Across a bank's commercial book, this makes overnight yield practical for many corporate clients who currently earn nothing on idle balances.</p></div>
+
+      <h3 id="tmmf-revenue">Three revenue streams for the originating bank</h3>
+      <p>Together the streams give better economics than the fund or the rail alone.</p>
+      <dl class="defs">
+        <dt>Management fee on tMMF AUM <span class="tag">15–30bps a year</span></dt>
+        <dd>The standard institutional local-currency MMF fee, earned by the bank's fund arm. At $500M AUM, 20bps is $1M a year of recurring, low-cost fee income with no added credit risk on the balance sheet.</dd>
+        <dt>Spread between fund yield and token yield <span class="tag">25–75bps typical</span></dt>
+        <dd>Holders receive net yield after fees and any retained spread. At 6–8% policy rates, a 50–100bps spread on large AUM is meaningful income; it must be disclosed and meet local CIS fee transparency rules, as is standard in MMF economics. Capture depends on jurisdiction and competition.</dd>
+        <dt>FX on cross-border flows <span class="tag">0.5–1.5% of converted volume</span></dt>
+        <dd>A corporate redeems tokens, converts at the bank's on-ledger rate and pays cross-border in one atomic transaction; the bank keeps the whole FX margin that used to go to correspondents. For heavy cross-border clients this can be the largest stream.</dd>
+      </dl>
+
+      <h3 id="regulatory">Regulatory considerations</h3>
+      <p>Local CIS regulation drives the requirements, more than digital asset or CBDC rules. In most target jurisdictions the tMMF is regulated as a money market fund with a digital distribution mechanism; tokenization creates no new regulatory category, and the fund wrapper is what counts.</p>
+      <div class="callout"><p><span class="term">Not legal advice.</span> This summarizes publicly available requirements as of early 2026. CIS rules are jurisdiction-specific and change often. Engage in-country counsel before any launch or registration. Post Oak Labs advises on product architecture and regulatory strategy and does not give legal opinions.</p></div>
+      <dl class="defs">
+        <dt>Colombia</dt>
+        <dd>Decreto 2555 (2010) and SFC guidelines. Pooled vehicles need Superintendencia Financiera de Colombia (SFC) authorization as a Fondo de Inversión Colectiva (FIC); money market FICs carry short-duration limits, daily liquidity requirements and maximum WAM limits in line with international MMF standards. Tokenized distribution leaves FIC classification unchanged. SFC Circular 014 (2021) gives initial tokenization guidance; expect SFC consultation and likely a formal guidance request before launch.</dd>
+        <dt>Nigeria</dt>
+        <dd>SEC Nigeria under the Investments and Securities Act (ISA) 2024. A tMMF would register as a unit trust, disclosing the tokenization mechanism in the trust deed and offering memorandum. The 2022 SEC Digital Assets Rules cover tokenized products partially and tokenized CIS not at all. Pre-filing consultation is strongly recommended.</dd>
+        <dt>Jamaica</dt>
+        <dd>Securities Act (2013), Financial Services Commission (FSC Jamaica); MMFs are established categories. The Bank of Jamaica's JAM-DEX CBDC infrastructure and the FSC sandbox make a relatively favorable pilot setting, and a tMMF pilot on A2A rails would likely qualify for sandbox treatment before full registration (process at fscjamaica.org).</dd>
+        <dt>Custody, all markets</dt>
+        <dd>Every target-market CIS framework requires fund assets in ring-fenced custody, separate from the manager's assets, with an authorized custodian or the central bank depository. Legal chain: corporate holds token → token represents fund unit → unit is custodied → custodian holds the instruments. Each link must be documented and meet local CIS and custody rules.</dd>
+      </dl>
+      <p>For an institution with an existing fund business and corporate clients losing yield to FX friction or settlement delay, this is a tractable product build, and a licensing path exists in each market above.</p>
+
+      <h3>Notes</h3>
+      <ol class="refs">
+        <li id="tm-n1"><span class="term">BUIDL.</span> BlackRock's USD Institutional Digital Liquidity Fund, issued on Ethereum via Securitize, passed $1B AUM in early 2024 as the largest tokenized Treasury fund and remained among the largest in early 2026. It is for qualified institutional investors in the US and select jurisdictions; a COP, NGN or JMD treasurer must convert to USD, reintroducing FX exposure. BlackRock / Securitize release (March 2024); Financial Times, Bloomberg, CoinDesk.</li>
+        <li id="tm-n2"><span class="term">Global MMF AUM.</span> ICI Global Fact Book (2024, year-end 2023 data): about $9.3 trillion globally, about $6 trillion in the US, with the US, Europe and China over 95% combined. Local-currency emerging-market MMFs are a small fraction. The near-absence of local-currency tokenized MMFs in Colombia, Nigeria, Jamaica and the Caribbean was confirmed by review of fund registration databases as of early 2026.</li>
+        <li id="tm-n3"><span class="term">Policy rates, early 2026.</span> Banco de la República de Colombia about 9.75% (cutting from a 13.25% peak in 2023–2024); Central Bank of Nigeria MPR about 26.25% (as of early 2025, after aggressive tightening); Bank of Jamaica about 6.5–7.0% (down from its 2022–2023 peak). Short-duration yields available to managers typically run 25–100bps below policy rates; check current rates before design decisions. In Nigeria, inflation makes real yields at a 26%+ MPR materially lower than the headline, which matters for positioning and client communication.</li>
+        <li id="tm-n4"><span class="term">BENJI.</span> Franklin Templeton's OnChain US Government Money Fund launched in 2021 on Stellar, later expanded to Polygon, and grew past $400–500M AUM through 2024, one of the earliest and largest tokenized government securities products (Franklin Templeton materials; Bloomberg, April 2024). It is USD-denominated for US-regulated investors.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== 5. ROADMAP (from a2a-engagement-roadmap.html) ===================== -->
+  <section id="roadmap" aria-labelledby="roadmap-h">
+    <div class="wrap">
+      <span class="label">05 · Roadmap</span>
+      <h2 id="roadmap-h">From evaluation to production in four phases</h2>
+      <p>Treasury teams and ALCO leads can assess readiness across five dimensions and see what a Phase 1 scoping engagement involves before committing budget.</p>
+      <ul class="stats">
+        <li><span class="num">5</span>Readiness dimensions scored</li>
+        <li><span class="num">4</span>Time-boxed phases</li>
+        <li><span class="num">T+0</span>Sub-second finality, pilot target</li>
+        <li><span class="num">~4.5%</span>tMMF yield recovery on a $50M nostro equivalent</li>
+      </ul>
+
+      <h3 id="diagnostic">Readiness diagnostic</h3>
+      <p>The diagnostic takes three inputs (monthly cross-border volume, primary corridors and ISO 20022 migration status) and estimates annual nostro float drag as monthly volume × 12 × 4.5%. It scores five dimensions:</p>
+      <dl class="defs">
+        <dt>ISO 20022 alignment</dt>
+        <dd>Migration status is the main driver of Phase 1 timeline; institutions already in progress can shorten Phase 1 by 2–3 weeks. The diagnostic scores not started at 15%, in assessment 35%, in progress 65% and completed 90%.</dd>
+        <dt>Liquidity model fit</dt>
+        <dd>Corridor volume sets potential tMMF yield recovery; higher monthly volume strengthens the case for redesigning the liquidity model.</dd>
+        <dt>Regulatory posture</dt>
+        <dd>Tokenized deposits operate within your existing banking license. Phase 1 mapping surfaces jurisdiction-specific issues before architecture starts.</dd>
+        <dt>Technical capacity</dt>
+        <dd>Core integration paths vary by vendor; the architecture phase identifies options that need no core changes where available.</dd>
+        <dt>Corridor economics</dt>
+        <dd>Corridor FX spread, settlement lag and correspondent dependency set the net benefit of an A2A deployment.</dd>
+      </dl>
+
+      <h3 id="phases">A time-boxed, reversible path</h3>
+      <p>Each phase ends with a Go/No-Go gate, keeps budget approvals within ALCO norms and delivers standalone value. Nothing requires a multi-year commitment upfront.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Phase</th><th scope="col">Duration</th><th scope="col">Scope</th><th scope="col">Deliverable and gate</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">01 Feasibility and regulatory mapping</th><td>4–6 weeks</td><td>Use-case validation, jurisdiction scan, ISO 20022 readiness against your active corridors (<a href="#iso20022">section 3</a>)</td><td>Board-ready memo and risk register scoped to your balance sheet. Gate: Go/No-Go to architecture</td></tr>
+            <tr><th scope="row">02 Architecture and platform selection</th><td>6–8 weeks</td><td>DLT platform selection, node topology design, counterparty onboarding plan (see <a href="a2a-ledgers.html#corda">Corda architecture</a> and the <a href="a2a-comparison.html">platform comparison matrix</a>)</td><td>Technical design document and RFP criteria for platform vendors. Gate: Go/No-Go to pilot budget</td></tr>
+            <tr><th scope="row">03 Pilot scope and sandbox build</th><td>8–10 weeks</td><td>Limited live pilot across 2 corridors; smart contract configuration, compliance integration, operational runbook; production-equivalent test environment with full audit trail</td><td>Gate: Go/No-Go to production</td></tr>
+            <tr><th scope="row">04 Production scaling</th><td>Ongoing</td><td>Full corridor deployment, liquidity provisioning, tMMF integration for nostro yield recovery (<a href="#tmmf">section 4</a>), TARGET2/SARIE hook configuration where applicable</td><td>Live rails and an internal handoff kit for operations</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Phase 1 is the only required commitment, and most ALCO committees can authorize it without board sign-off. Each later phase is approved independently.</p>
+
+      <h3 id="roadmap-regulatory">Tokenized deposits and third-party stablecoins</h3>
+      <p>For compliance teams and board risk committees: the liability structure, capital treatment and regulatory perimeter of tokenized deposits differ fundamentally from third-party stablecoins. See the <a href="faq.html">regulatory FAQ</a> for more.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th scope="col">Dimension</th><th scope="col">Tokenized deposit</th><th scope="col">Third-party stablecoin</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Liability holder</th><td>Issuing bank (you)</td><td>Stablecoin issuer (third party)</td></tr>
+            <tr><th scope="row">Basel III capital</th><td>Standard deposit treatment</td><td>Potentially 1250% risk weight (crypto exposure)</td></tr>
+            <tr><th scope="row">Deposit insurance</th><td>Eligible (jurisdiction-dependent)</td><td>Not eligible</td></tr>
+            <tr><th scope="row">Core system audit</th><td>Native integration path</td><td>Requires reconciliation bridge</td></tr>
+            <tr><th scope="row">Regulatory perimeter</th><td>Existing banking license</td><td>New licensing regime in most jurisdictions</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Tokenized deposits stay inside the regulatory perimeter your board already understands and the deposit franchise you already run; the tokenization layer sits within existing infrastructure.</p>
+
+      <h3 id="engage">What happens when you reach out</h3>
+      <p>There is no RFP process and no six-week discovery phase. Phase 1 starts with a 30-minute treasury review confirming corridor fit, jurisdiction coverage and ISO readiness; the memo and risk register follow within 4–6 weeks, and starting Phase 1 needs no budget commitment. Before Phase 2 you can compare DLT platforms, corridor economics and settlement topology in the <a href="a2a-comparison.html">architecture matrix</a>, which covers Corda, DAML, Hyperledger Fabric and hybrid approaches across jurisdiction classes. Platforms we work across: R3 Corda, Digital Asset DAML and Hyperledger Fabric.</p>
+      <p>We take on a limited number of institutions at a time. For a live corridor problem, a direct conversation is fastest.</p>
+      <div class="cta"><a class="btn pri" href="contact.html">Begin Phase 1 scoping</a><a class="btn sec" href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+          <li><a href="https://www.linkedin.com/in/timswanson">Tim Swanson on LinkedIn ↗</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

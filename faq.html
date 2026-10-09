@@ -533,7 +533,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     </a>
     <div class="nav-links">
       <a href="index.html">Home</a>
-      <a href="demos/">Scenarios</a>
+      <a href="library.html">Scenarios</a>
     </div>
   </div>
 </nav>
@@ -608,7 +608,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </button>
         <div class="faq-a">
           <p>A <strong>wholesale CBDC</strong> is a central bank digital currency restricted to regulated financial institutions (banks, payment service providers, and financial market infrastructures) for use in interbank settlement, securities settlement, and cross-border payment operations. It is the digital equivalent of reserves held at the central bank and is the CBDC design most relevant to institutional payment infrastructure.</p>
-          <p>A <strong>retail CBDC</strong> is made available directly to the general public as a digital form of cash, carrying the same sovereign guarantee as banknotes. Retail CBDCs raise complex design questions around financial privacy, bank disintermediation, and the future of physical cash; wholesale CBDCs largely avoid these. Post Oak Labs' advisory work focuses on wholesale CBDC architecture and its integration with tokenized A2A rails; see our <a href="a2a-payments.html">A2A Payments</a> page for deployment context.</p>
+          <p>A <strong>retail CBDC</strong> is made available directly to the general public as a digital form of cash, carrying the same sovereign guarantee as banknotes. Retail CBDCs raise complex design questions around financial privacy, bank disintermediation, and the future of physical cash; wholesale CBDCs largely avoid these. Post Oak Labs' advisory work focuses on wholesale CBDC architecture and its integration with tokenized A2A rails; see our <a href="a2a-guide.html">A2A Payments</a> page for deployment context.</p>
         </div>
       </div>
 
@@ -693,7 +693,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </button>
         <div class="faq-a">
           <p>ISO 20022 is the global standard for financial messaging, replacing the older SWIFT MT format with richly structured XML or JSON messages. Unlike legacy MT messages (which truncate beneficiary names, addresses, and purpose codes), ISO 20022 MX messages carry complete structured data, enabling automated sanctions screening, straight-through processing, and richer AML analytics. SWIFT completed mandatory migration to ISO 20022 for cross-border payments in stages through 2025. The US Federal Reserve also migrated Fedwire Funds Service (the largest RTGS system in the world by transaction value) to ISO 20022 on July 14, 2025.</p>
-          <p>The connection to tokenized A2A is direct: ISO 20022-formatted data travels <strong>inside the payment token on the ledger</strong>, so every transaction carries complete structured information at the point of settlement, where a legacy transfer would carry only a degraded routing instruction across multiple correspondent hops. This eliminates the data loss that occurs across the correspondent chain and gives every participating institution simultaneous access to the same compliance-relevant data. See the <a href="iso20022-a2a.html">ISO 20022 page</a> for a full technical treatment.</p>
+          <p>The connection to tokenized A2A is direct: ISO 20022-formatted data travels <strong>inside the payment token on the ledger</strong>, so every transaction carries complete structured information at the point of settlement, where a legacy transfer would carry only a degraded routing instruction across multiple correspondent hops. This eliminates the data loss that occurs across the correspondent chain and gives every participating institution simultaneous access to the same compliance-relevant data. See the <a href="a2a-guide.html#iso20022">ISO 20022 page</a> for a full technical treatment.</p>
         </div>
       </div>
 
@@ -785,7 +785,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
               <text x="390" y="214" text-anchor="middle" fill="#4a6a8a" font-size="8" letter-spacing="1">Net interbank positions settle via RTGS at end-of-cycle · No correspondent chain</text>
             </svg>
           </div>
-          <p style="font-size:0.76rem;color:var(--muted);margin-top:0.5rem;">See the <a href="a2a-workflow.html">A2A Tokenization Explained</a> page for a full technical walkthrough of the transaction lifecycle. For the underlying infrastructure vocabulary, see the <a href="glossary.html#mint-transfer-redeem">Glossary entry on the Mint-Transfer-Redeem Cycle</a>.</p>
+          <p style="font-size:0.76rem;color:var(--muted);margin-top:0.5rem;">See the <a href="a2a-guide.html#workflow">A2A Tokenization Explained</a> page for a full technical walkthrough of the transaction lifecycle. For the underlying infrastructure vocabulary, see the <a href="glossary.html#mint-transfer-redeem">Glossary entry on the Mint-Transfer-Redeem Cycle</a>.</p>
         </div>
       </div>
 
@@ -908,7 +908,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </button>
         <div class="faq-a">
           <p>Post Oak Labs focuses on the <strong>Global South</strong> (primarily Latin America, the Caribbean, Africa, and South Asia) where correspondent banking de-risking has been most acute, remittance costs highest, and the structural demand for alternative institutional settlement infrastructure most evident.</p>
-          <p>Within those regions, the firm has active advisory and integration engagements in the <strong>Caribbean</strong>, where three jurisdictions have launched live retail CBDCs and the Eastern Caribbean Currency Union represents a unique multi-jurisdictional opportunity: a single currency, eleven countries, a live CBDC infrastructure, and no unified commercial bank tokenized A2A layer on top of it yet. <strong>South Asia</strong> is a second active focus given the scale of inbound remittance flows. Advisory work also covers trade-corridor engagements in Africa and Latin America. See the <a href="a2a-payments.html">A2A Payments page</a> for regional detail.</p>
+          <p>Within those regions, the firm has active advisory and integration engagements in the <strong>Caribbean</strong>, where three jurisdictions have launched live retail CBDCs and the Eastern Caribbean Currency Union represents a unique multi-jurisdictional opportunity: a single currency, eleven countries, a live CBDC infrastructure, and no unified commercial bank tokenized A2A layer on top of it yet. <strong>South Asia</strong> is a second active focus given the scale of inbound remittance flows. Advisory work also covers trade-corridor engagements in Africa and Latin America. See the <a href="a2a-guide.html">A2A Payments page</a> for regional detail.</p>
         </div>
       </div>
 
@@ -1023,7 +1023,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </button>
         <div class="faq-a">
           <p>A <strong>tokenized money market fund (tMMF)</strong> is a traditional money market fund whose units are represented as digital tokens on a distributed ledger, enabling near-instant subscription and redemption, 24/7 transferability, and use as on-chain collateral. USD-denominated tMMFs already have substantial institutional traction: BlackRock's BUIDL fund surpassed $1 billion AUM in 2024, and Franklin Templeton's BENJI fund has operated on public blockchain infrastructure since 2021.<sup><a href="#faq-fn4">[fn4]</a></sup></p>
-          <p>On A2A rails, a local-currency tMMF can serve as a yield-bearing settlement asset: corporate treasurers park surplus liquidity in a tMMF at end of day and redeem it intraday for settlement, eliminating the opportunity cost of holding non-earning settlement balances. The effect is strongest in emerging markets where local-currency instruments with same-day liquidity are scarce. See <a href="tmmf-a2a.html">Tokenized Money Market Funds on A2A Rails</a> for Post Oak Labs' full architecture treatment.</p>
+          <p>On A2A rails, a local-currency tMMF can serve as a yield-bearing settlement asset: corporate treasurers park surplus liquidity in a tMMF at end of day and redeem it intraday for settlement, eliminating the opportunity cost of holding non-earning settlement balances. The effect is strongest in emerging markets where local-currency instruments with same-day liquidity are scarce. See <a href="a2a-guide.html#tmmf">Tokenized Money Market Funds on A2A Rails</a> for Post Oak Labs' full architecture treatment.</p>
         </div>
       </div>
 
@@ -1042,7 +1042,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </button>
         <div class="faq-a">
           <p>Each participating institution remains independently responsible for its own AML obligations under the law of its jurisdiction. A shared ledger does not transfer regulatory liability; it provides richer data to discharge it. The compliance architecture in a well-designed tokenized A2A network typically has three layers:</p>
-          <p><strong>(1) On-boarding / identity layer:</strong> KYC and beneficial ownership verification is performed by each bank for its own customers; the attestation is cryptographically signed and travels with the payment token, reducing re-verification burden at each hop. <strong>(2) Transaction monitoring:</strong> each institution runs its own transaction monitoring software against the on-ledger data it can see; the richer ISO 20022 structured data substantially reduces false positives compared to legacy MT message screening.<sup><a href="#faq-fn5">[fn5]</a></sup> <strong>(3) Network-level governance:</strong> the consortium governance agreement typically requires all participants to maintain FATF-compliant AML programs and grants the network operator authority to suspend participants that lose regulatory standing. See <a href="a2a-workflow.html">A2A Tokenization Explained</a> for the compliance layer architecture.</p>
+          <p><strong>(1) On-boarding / identity layer:</strong> KYC and beneficial ownership verification is performed by each bank for its own customers; the attestation is cryptographically signed and travels with the payment token, reducing re-verification burden at each hop. <strong>(2) Transaction monitoring:</strong> each institution runs its own transaction monitoring software against the on-ledger data it can see; the richer ISO 20022 structured data substantially reduces false positives compared to legacy MT message screening.<sup><a href="#faq-fn5">[fn5]</a></sup> <strong>(3) Network-level governance:</strong> the consortium governance agreement typically requires all participants to maintain FATF-compliant AML programs and grants the network operator authority to suspend participants that lose regulatory standing. See <a href="a2a-guide.html#workflow">A2A Tokenization Explained</a> for the compliance layer architecture.</p>
         </div>
       </div>
 
@@ -1119,7 +1119,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <strong>Tokenized MMF adoption:</strong> BlackRock BUIDL fund AUM figures: Bloomberg, "BlackRock's Tokenized Fund Surpasses $1 Billion," April 2024. Franklin Templeton BENJI: Franklin Templeton, "Franklin OnChain US Government Money Fund (FOBXX)," live on Stellar and Polygon since 2021. Figures cited reflect publicly available data as of mid-2024; readers should verify current AUM directly with fund administrators.
         </li>
         <li id="faq-fn5" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>ISO 20022 and false positive reduction:</strong> SWIFT, "ISO 20022 migration hub," <a href="https://www.swift.com/standards/iso-20022" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">swift.com/standards/iso-20022</a>. SWIFT and industry practitioners have cited approximately 30% fewer payment exceptions in ISO 20022 enriched-data corridors compared to MT-format equivalents; this figure is directional and corridor-dependent. See also <a href="iso20022-a2a.html" style="color:var(--accent-lt);">ISO 20022 &amp; Tokenized A2A</a> on this site.
+          <strong>ISO 20022 and false positive reduction:</strong> SWIFT, "ISO 20022 migration hub," <a href="https://www.swift.com/standards/iso-20022" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">swift.com/standards/iso-20022</a>. SWIFT and industry practitioners have cited approximately 30% fewer payment exceptions in ISO 20022 enriched-data corridors compared to MT-format equivalents; this figure is directional and corridor-dependent. See also <a href="a2a-guide.html#iso20022" style="color:var(--accent-lt);">ISO 20022 &amp; Tokenized A2A</a> on this site.
         </li>
         <li id="faq-fn6" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
           <strong>Operational resilience in tokenized networks:</strong> BIS CPMI–IOSCO, "Principles for Financial Market Infrastructures (PFMIs)," 2012, updated 2023, <a href="https://www.bis.org/cpmi/publ/d101a.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/cpmi/publ/d101a.htm</a>. Tokenized payment networks that qualify as financial market infrastructures (FMIs) are subject to the PFMIs, which set standards for operational resilience, default management, and recovery planning.
@@ -1158,32 +1158,32 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
     <div class="footer-col">
       <h4 class="footer-h">A2A Payments</h4>
-      <a href="a2a-payments.html">Market coverage</a>
-      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-guide.html">Market coverage</a>
+      <a href="a2a-guide.html#workflow">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
-      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+      <a href="a2a-guide.html#iso20022">ISO 20022 alignment</a>
+      <a href="a2a-guide.html#tmmf">tMMF on A2A rails</a>
     </div>
 
     <div class="footer-col">
       <h4 class="footer-h">Enterprise Blockchain</h4>
       <a href="enterprise-blockchain.html">Market briefing</a>
-      <a href="example-besu-a2a.html">Hyperledger Besu</a>
-      <a href="example-canton-a2a.html">Canton / Daml</a>
-      <a href="example-corda-a2a.html">R3 Corda</a>
-      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+      <a href="a2a-ledgers.html#besu">Hyperledger Besu</a>
+      <a href="a2a-ledgers.html#canton">Canton / Daml</a>
+      <a href="a2a-ledgers.html#corda">R3 Corda</a>
+      <a href="a2a-ledgers.html#fabric">Hyperledger Fabric</a>
     </div>
 
     <div class="footer-col">
       <h4 class="footer-h">About &amp; Advisory</h4>
-      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="services.html#blockchain">Advisory track record</a>
       <a href="contact.html">Contact</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="a2a-guide.html#roadmap">Engagement roadmap</a>
     </div>
 
     <div class="footer-col">
       <h4 class="footer-h">Resources</h4>
-      <a href="demos/">Demos</a>
+      <a href="library.html">Demos</a>
       <a href="glossary.html">Glossary</a>
       <a href="faq.html">FAQ</a>
       <a href="sitemap.html">Sitemap</a>

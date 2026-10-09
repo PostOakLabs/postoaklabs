@@ -144,6 +144,32 @@ Redirect 301 /demos/demo-40-basel-iii-endgame-capital-lab.html    /demos/basel-i
 Redirect 301 /demos/demo-41-psd3-psr2-transition-readiness.html   /demos/psd3-psr2-transition-readiness.html
 
 # ─────────────────────────────────────────────────────────────────
+# 301 redirects: 2026-10 redesign (POL-REDESIGN-SPEC_2026-10-08 §4)
+# RewriteRule, not Redirect: these need exact matches (Redirect is a
+# prefix match, so "Redirect /demos/" would swallow the corridor pages),
+# and NE stops Apache escaping the # in fragment targets to %23.
+# ─────────────────────────────────────────────────────────────────
+# Five A2A pages merged into one guide
+RewriteRule ^a2a-payments\.html$            /a2a-guide.html [R=301,L]
+RewriteRule ^a2a-workflow\.html$            /a2a-guide.html#workflow [R=301,NE,L]
+RewriteRule ^iso20022-a2a\.html$            /a2a-guide.html#iso20022 [R=301,NE,L]
+RewriteRule ^tmmf-a2a\.html$                /a2a-guide.html#tmmf [R=301,NE,L]
+RewriteRule ^a2a-engagement-roadmap\.html$  /a2a-guide.html#roadmap [R=301,NE,L]
+
+# Four ledger examples merged into one page
+RewriteRule ^example-besu-a2a\.html$        /a2a-ledgers.html#besu [R=301,NE,L]
+RewriteRule ^example-canton-a2a\.html$      /a2a-ledgers.html#canton [R=301,NE,L]
+RewriteRule ^example-corda-a2a\.html$       /a2a-ledgers.html#corda [R=301,NE,L]
+RewriteRule ^example-fabric-a2a\.html$      /a2a-ledgers.html#fabric [R=301,NE,L]
+
+# Advisory history folded into Services
+RewriteRule ^blockchain-advisory\.html$     /services.html#blockchain [R=301,NE,L]
+
+# Demos index and the five buyer-archetype hubs retired
+RewriteRule ^demos/?(index\.html)?$         /library.html [R=301,L]
+RewriteRule ^demos/(agentic-runtime|baas|processors|regtech|stablecoin-issuer)/?(index\.html)?$  /services.html [R=301,L]
+
+# ─────────────────────────────────────────────────────────────────
 # Security headers
 # ─────────────────────────────────────────────────────────────────
 

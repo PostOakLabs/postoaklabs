@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sitemap | Post Oak Labs</title>
-<meta name="description" content="Every page on postoaklabs.com: the core pages, the library, case studies, the Autonity archive, live products and affiliate partners.">
+<title>Work | Post Oak Labs</title>
+<meta name="description" content="The AI products Post Oak Labs designs, builds and runs: AINumbers and its public MCP server, ApexLogics and the Omega Centauri Society.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://postoaklabs.com/sitemap.html">
+<link rel="canonical" href="https://postoaklabs.com/work.html">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#eef4f2">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -15,13 +15,13 @@
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sitemap | Post Oak Labs">
-<meta property="og:description" content="Every page on postoaklabs.com: the core pages, the library, case studies, the Autonity archive, live products and affiliate partners.">
-<meta property="og:url" content="https://postoaklabs.com/sitemap.html">
+<meta property="og:title" content="Work | Post Oak Labs">
+<meta property="og:description" content="The AI products Post Oak Labs designs, builds and runs: AINumbers and its public MCP server, ApexLogics and the Omega Centauri Society.">
+<meta property="og:url" content="https://postoaklabs.com/work.html">
 <meta property="og:image" content="https://postoaklabs.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Sitemap","url":"https://postoaklabs.com/sitemap.html","publisher":{"@id":"https://postoaklabs.com/#organization"}}
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Work","url":"https://postoaklabs.com/work.html","publisher":{"@id":"https://postoaklabs.com/#organization"},"hasPart":[{"@type":"WebSite","name":"AINumbers","url":"https://ainumbers.co/"},{"@type":"WebSite","name":"ApexLogics","url":"https://apexlogics.org/"},{"@type":"WebSite","name":"Omega Centauri Society","url":"https://omegacentauri.me/"}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -195,7 +195,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
     <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
     <nav aria-label="Main">
       <ul>
-        <li><a href="work.html">Work</a></li>
+        <li><a href="work.html" aria-current="page">Work</a></li>
         <li><a href="services.html">Services</a></li>
         <li><a href="library.html">Library</a></li>
         <li><a href="about.html">About</a></li>
@@ -209,75 +209,70 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
 <main>
   <section class="page-head" aria-labelledby="page-h">
     <div class="wrap">
-      <span class="label">Sitemap</span>
-      <h1 id="page-h">Every page on this site.</h1>
+      <span class="label">Work</span>
+      <h1 id="page-h">Products we design, build and keep running.</h1>
+      <p>Every product here is live and open to use. They share one approach: tools run in the reader's browser, store no personal data, and publish the same logic to AI agents. Client engagements start from the same method.</p>
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="core-h">
+  <section class="sec band" id="ainumbers" aria-labelledby="ain-h">
     <div class="wrap two">
-      <div class="prose"><h2 id="core-h">Core pages</h2></div>
-      <ul class="linklist">
-        <li><a href="./">Home</a><span>What we build, the MCP server and the live products.</span></li>
-        <li><a href="work.html">Work</a><span>AINumbers, ApexLogics and the Omega Centauri Society in detail.</span></li>
-        <li><a href="services.html">Services</a><span>AI tools and agents, MCP enablement, payments advisory and blockchain advisory.</span></li>
-        <li><a href="library.html">Library</a><span>Guides, briefings, reference and case studies.</span></li>
-        <li><a href="about.html">About</a><span>Founder, track record and publications.</span></li>
-        <li><a href="contact.html">Contact</a><span>How to reach us.</span></li>
-      </ul>
+      <div class="prose">
+        <span class="label">Fintech · MCP server</span>
+        <h2 id="ain-h">AINumbers</h2>
+        <p>AINumbers is a library of finance calculators, validators and policy tools. Each tool is one page that computes in the browser, so inputs never reach a server. The same tools are published on a public MCP server, where AI assistants call them as structured functions with no account or sign-in.</p>
+        <p>Tools chain into workflows: each result carries an execution hash, and the next call in a workflow carries the previous hash as its parent. Anyone holding a result can recompute and check it. Hundreds of these workflows are ZK-proven, and most of the estate is WebMCP-conformant, so agents running inside a browser can call the tools on the page directly.</p>
+        <p>The first of these tools were built on postoaklabs.com and later moved to their own home at ainumbers.co.</p>
+        <p><a href="https://ainumbers.co/">ainumbers.co ↗</a> · <a href="https://ainumbers.co/chaingraph/mcp-workflow-explainer.html">How MCP runs one workflow ↗</a></p>
+      </div>
+      <dl class="stats">
+        <div><dt>590</dt><dd>browser tools</dd></div>
+        <div><dt>≈730</dt><dd>MCP tools on one endpoint</dd></div>
+        <div><dt>0</dt><dd>servers holding user data</dd></div>
+        <div><dt>CC BY 4.0</dt><dd>open licence</dd></div>
+      </dl>
     </div>
   </section>
 
-  <section class="sec band" aria-labelledby="lib-h">
+  <section class="sec" id="apexlogics" aria-labelledby="apex-h">
     <div class="wrap two">
-      <div class="prose"><h2 id="lib-h">Library</h2></div>
-      <ul class="linklist">
-        <li><a href="a2a-guide.html">A2A payments guide</a><span>Overview, workflow, ISO 20022, tokenized MMFs and engagement roadmap.</span></li>
-        <li><a href="a2a-ledgers.html">A2A on enterprise ledgers</a><span>Hyperledger Besu, Canton, R3 Corda and Hyperledger Fabric.</span></li>
-        <li><a href="a2a-comparison.html">A2A, stablecoins and correspondent banking compared</a><span>A comparison framework for institutions.</span></li>
-        <li><a href="enterprise-blockchain.html">Enterprise permissioned blockchain briefing</a><span>Market sizing, deployment data and use-case guidance.</span></li>
-        <li><a href="glossary.html">Glossary</a><span>Plain-language definitions.</span></li>
-        <li><a href="faq.html">FAQ</a><span>Common questions on tokenized payments, stablecoins and CBDCs.</span></li>
-        <li><a href="demos/timor-leste-bangladesh-stablecoin-settlement.html">Case study: Timor-Leste and Bangladesh stablecoin settlement</a><span>A USD-pegged settlement bridge between a dollarised economy and BDT rails.</span></li>
-        <li><a href="demos/west-africa-digital-currency-corridor.html">Case study: West Africa digital currency corridor</a><span>Digital currency flows across Nigeria, Ghana and the WAEMU zone.</span></li>
-      </ul>
+      <div class="prose">
+        <span class="label">Education · careers</span>
+        <h2 id="apex-h">ApexLogics</h2>
+        <p>ApexLogics is a set of rule-based decision engines for students, career changers, working professionals, counselors and workforce boards. It covers education return on investment, compensation offers, career transitions and automation risk.</p>
+        <p>There are no accounts and no servers: everything computes in the browser. Every tool ships a manifest for MCP agent discovery and a Policy Mandate export, so a scenario built in one tool can be handed to the next.</p>
+        <p><a href="https://apexlogics.org/">apexlogics.org ↗</a></p>
+      </div>
+      <dl class="stats">
+        <div><dt>185</dt><dd>browser tools</dd></div>
+        <div><dt>41</dt><dd>guided workflows</dd></div>
+        <div><dt>111</dt><dd>cross-industry exemplars</dd></div>
+        <div><dt>0</dt><dd>personal data collected</dd></div>
+      </dl>
     </div>
   </section>
 
-  <section class="sec" aria-labelledby="aut-h">
+  <section class="sec band" id="ocs" aria-labelledby="ocs-h">
     <div class="wrap two">
-      <div class="prose"><h2 id="aut-h">Autonity Track A archive</h2><p>Seven pages reconstructing the Autonity EVM L1 blockchain and its Forecastathon forecast-futures project. Museum mode: nothing connects to mainnet.</p></div>
-      <ul class="linklist">
-        <li><a href="autonity/">Archive hub</a></li>
-        <li><a href="autonity/autonity-page1-protocol.html">01 Protocol</a></li>
-        <li><a href="autonity/autonity-page2-money.html">02 Money</a></li>
-        <li><a href="autonity/autonity-page3-afp.html">03 Autonomous Futures Protocol</a></li>
-        <li><a href="autonity/autonity-page4-clearing.html">04 Clearing vs. trading</a></li>
-        <li><a href="autonity/autonity-page5-autex.html">05 AutEx</a></li>
-        <li><a href="autonity/autonity-page6-forecastathon.html">06 Forecastathon</a></li>
-        <li><a href="autonity/autonity-page7-endogenous-collateral.html">07 Endogenous collateral (speculative)</a></li>
-      </ul>
+      <div class="prose">
+        <span class="label">Astronomy · research</span>
+        <h2 id="ocs-h">Omega Centauri Society</h2>
+        <p>The Omega Centauri Society is an interactive research site about NGC 5139, a 12-billion-year-old globular cluster about 17,900 light-years away that hosts a strong intermediate-mass black hole candidate. It treats the cluster as a case study for advanced civilization and extreme computation.</p>
+        <p>The site pairs long-form research with explorers built on published data: a colour-magnitude diagram explorer, a cluster comparator, velocity dispersion and black hole timeline views, stellar population plots and a dark matter flux model.</p>
+        <p><a href="https://omegacentauri.me/">omegacentauri.me ↗</a></p>
+      </div>
+      <dl class="stats">
+        <div><dt>~10M</dt><dd>stars in the cluster</dd></div>
+        <div><dt>8,200+</dt><dd>solar-mass black hole candidate</dd></div>
+        <div><dt>12 Gyr</dt><dd>cluster age</dd></div>
+      </dl>
     </div>
   </section>
 
-  <section class="sec band" aria-labelledby="ext-h">
-    <div class="wrap two">
-      <div class="prose"><h2 id="ext-h">Live products</h2></div>
-      <ul class="linklist">
-        <li><a href="https://ainumbers.co/">AINumbers ↗</a><span>590 browser tools for finance and a public MCP server.</span></li>
-        <li><a href="https://apexlogics.org/">ApexLogics ↗</a><span>Decision tools for education and careers.</span></li>
-        <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a><span>Interactive research on the Omega Centauri cluster.</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="sec" aria-labelledby="part-h">
-    <div class="wrap two">
-      <div class="prose"><h2 id="part-h">Affiliate partners</h2></div>
-      <ul class="linklist">
-        <li><a href="https://meridiancapital.me/">Meridian Capital Advisory ↗</a><span>Liquidity management, capital adequacy, Basel III/IV regulatory reporting, ILAAP/ICAAP and FP&amp;A advisory for banks.</span></li>
-        <li><a href="https://apexadvisory.site/">Apex Advisory &amp; Education ↗</a><span>MBA admissions consulting, online tutoring in economics, history, business and finance, TOEFL preparation and TEFL coaching.</span></li>
-      </ul>
+  <section class="cta-band" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div><h2 id="cta-h">Want something like this for your institution?</h2><p>We build browser-first AI tools and MCP servers for clients, using the same method.</p></div>
+      <a class="btn pri" href="contact.html">Talk to us</a>
     </div>
   </section>
 </main>

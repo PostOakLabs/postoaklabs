@@ -329,7 +329,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
     </a>
     <div class="nav-links">
       <a href="index.html">Home</a>
-      <a href="demos/">Scenarios</a>
+      <a href="library.html">Scenarios</a>
     </div>
   </div>
 </nav>
@@ -433,7 +433,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       </table>
       <p class="platform-body"><strong>Notable deployments.</strong> IBM Food Trust (food-safety provenance; Walmart and its supplier network) and TradeLens (container logistics; 42M+ shipments tracked across 300+ organisations before wind-down) are the most-cited examples.<sup><a href="#fn8">[8]</a></sup> TradeLens is a structural lesson: technically functional, commercially unsustainable. Thirteen CBDC initiatives were identified using Hyperledger frameworks as of 2021; production status of most remains unclear.<sup><a href="#fn10">[10]</a></sup> IBM Research published Fabric-X enhancements in May 2025 targeting regulated digital asset use cases.</p>
       <p class="platform-note">Developer community: Stack Overflow activity for Fabric has declined since 2024. Developers have migrated to private Discord/Slack channels and AI-assisted tooling, a shift that complicates traditional community-health metrics.</p>
-      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-fabric-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Hyperledger Fabric A2A Tokenization: Europe–Saudi Arabia Settlement Corridor. Channel design, Go chaincode, Fabric Token SDK, ISO 20022 embedding, and net settlement against TARGET2 and SARIE.</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="a2a-ledgers.html#fabric" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Hyperledger Fabric A2A Tokenization: Europe–Saudi Arabia Settlement Corridor. Channel design, Go chaincode, Fabric Token SDK, ISO 20022 embedding, and net settlement against TARGET2 and SARIE.</p>
     </div>
 
     <!-- CORDA -->
@@ -456,7 +456,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <p class="platform-body"><strong>Notable live deployments:</strong> SIX Digital Exchange (SDX), Euroclear D-FMI (used by the World Bank for its 2023 digital bond issuance),<sup><a href="#fn12">[12]</a></sup> HQLAx (collateral mobility), Wells Fargo Coin, Progmat Coin, and the UK Regulated Liability Network (Barclays, Citi, HSBC, Lloyds, and others). R3 reported tokenisation of $17B in RWAs by late 2025.</p>
       <p class="platform-body"><strong>Ecosystem volatility note:</strong> Contour, a Corda-based trade finance network backed by eight major banks including BNP Paribas, HSBC, ING, and Standard Chartered, went live in October 2020 but ceased operations permanently in November 2023 after failing to secure further funding from its bank shareholders - despite reducing LC processing times from ten days to under twenty-four hours in live trades.<sup><a href="#fn9">[9]</a></sup> The platform was subsequently acquired by XDC Ventures in 2025 for a restructured relaunch. Contour is the canonical cautionary case for this market: technically sound, commercially unsustainable. Network sustainability requires more than sound technology; it requires durable commercial incentives across all consortium members and a governance model that survives the departure of any one of them.</p>
       <p class="platform-note">Talent: Corda's Kotlin/JVM developer pool is estimated at ~2,500 specialists globally, thin relative to deployment ambition. Senior Corda developers command $150K–$300K in consulting rates.</p>
-      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-corda-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Corda A2A Tokenization: Europe–Middle East Cross-Border Settlement. Node topology, CorDapp flows, FX handling, notary design, and regulatory framework (MiCA + CBUAE).</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="a2a-ledgers.html#corda" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Corda A2A Tokenization: Europe–Middle East Cross-Border Settlement. Node topology, CorDapp flows, FX handling, notary design, and regulatory framework (MiCA + CBUAE).</p>
     </div>
 
     <!-- BESU -->
@@ -470,7 +470,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <p class="platform-body">Key deployments include Nigeria's eNaira CBDC<sup><a href="#fn10">[10]</a></sup> and institutional tokenisation work by Citi. Approximately 31% of enterprises now run multiple DLT protocols concurrently, e.g., Fabric alongside Besu, reflecting pragmatic multi-platform reality rather than platform exclusivity.<sup><a href="#fn6">[6]</a></sup></p>
       <p class="platform-body"><strong>Critical migration alert:</strong> Tessera, the original Quorum private transaction manager, was deprecated in early 2026, with GitHub archival set for <strong>June 1, 2026</strong>. Any enterprise running Tessera should have migration plans in place.<sup><a href="#fn13">[13]</a></sup></p>
       <p class="platform-note">ConsenSys company-wide revenue was somewhere around $90M in 2025 by one estimate, though the figure is unaudited. Primary sources: MetaMask, Infura, Linea, and enterprise tools, no Besu-specific revenue figure is disclosed.<sup><a href="#fn3">[3]</a></sup></p>
-      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-besu-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Hyperledger Besu A2A Tokenization (Adhara): Europe–Middle East Cross-Border Settlement. QBFT consensus, smart contract architecture, FX handling, privacy layers, and regulatory framework (MiCA + SAMA).</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="a2a-ledgers.html#besu" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Hyperledger Besu A2A Tokenization (Adhara): Europe–Middle East Cross-Border Settlement. QBFT consensus, smart contract architecture, FX handling, privacy layers, and regulatory framework (MiCA + SAMA).</p>
     </div>
 
     <!-- CANTON -->
@@ -483,7 +483,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <p class="platform-body">Canton is purpose-built for capital markets with privacy-by-design guarantees derived from the Daml smart contract language. Digital Asset raised $135M in 2025 from Goldman Sachs, BNP Paribas, DTCC, and Tradeweb, among others, and claims ~400 ecosystem participants.<sup><a href="#fn14">[14]</a></sup> Notable deployments include Goldman Sachs' Digital Asset Platform, HSBC Orion (compressing fixed-income settlement from T+5 toward near-T+1), and DTCC tokenisation of U.S. Treasury securities (production launch 2026).</p>
       <p class="platform-body">Revenue is not publicly disclosed. The claim of 'trillions of dollars in RWAs' on Canton networks in company press materials is aspirational rather than audited.<sup><a href="#fn14">[14]</a></sup></p>
       <p class="platform-note">Daml is a purpose-designed smart contract language, not Solidity or JVM, which has both technical advantages for regulated workflows and a correspondingly narrow developer pool.</p>
-      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="example-canton-a2a.html" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture. Synchronizer topology, Daml templates, sub-transaction privacy, atomic DvP, across Deutsche Börse / Clearstream D7, DTCC ComposerX, Broadridge DLR, and Euroclear D-FMI.</p>
+      <p class="platform-note" style="margin-top:0.75rem;border-top:1px solid var(--edge);padding-top:0.75rem;"><a href="a2a-ledgers.html#canton" style="color:var(--accent-lt);border-bottom:1px solid var(--rim);">Worked example →</a>&ensp;Canton / Daml A2A Tokenization: Four-FMI Settlement Architecture. Synchronizer topology, Daml templates, sub-transaction privacy, atomic DvP, across Deutsche Börse / Clearstream D7, DTCC ComposerX, Broadridge DLR, and Euroclear D-FMI.</p>
     </div>
 
   </div>
@@ -669,7 +669,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <a class="btn-primary" href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a>
       <a class="btn-secondary" href="faq.html">FAQ &rarr;</a>
       <a class="btn-secondary" href="a2a-comparison.html">A2A vs. Correspondent Banking →</a>
-      <a class="btn-secondary" href="a2a-payments.html">Market Coverage →</a>
+      <a class="btn-secondary" href="a2a-guide.html">Market Coverage →</a>
     </div>
   </div>
 </section>
@@ -771,32 +771,32 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
     <div class="footer-col">
       <h4 class="footer-h">A2A Payments</h4>
-      <a href="a2a-payments.html">Market coverage</a>
-      <a href="a2a-workflow.html">How it works</a>
+      <a href="a2a-guide.html">Market coverage</a>
+      <a href="a2a-guide.html#workflow">How it works</a>
       <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="iso20022-a2a.html">ISO 20022 alignment</a>
-      <a href="tmmf-a2a.html">tMMF on A2A rails</a>
+      <a href="a2a-guide.html#iso20022">ISO 20022 alignment</a>
+      <a href="a2a-guide.html#tmmf">tMMF on A2A rails</a>
     </div>
 
     <div class="footer-col">
       <h4 class="footer-h">Enterprise Blockchain</h4>
       <a href="enterprise-blockchain.html">Market briefing</a>
-      <a href="example-besu-a2a.html">Hyperledger Besu</a>
-      <a href="example-canton-a2a.html">Canton / Daml</a>
-      <a href="example-corda-a2a.html">R3 Corda</a>
-      <a href="example-fabric-a2a.html">Hyperledger Fabric</a>
+      <a href="a2a-ledgers.html#besu">Hyperledger Besu</a>
+      <a href="a2a-ledgers.html#canton">Canton / Daml</a>
+      <a href="a2a-ledgers.html#corda">R3 Corda</a>
+      <a href="a2a-ledgers.html#fabric">Hyperledger Fabric</a>
     </div>
 
     <div class="footer-col">
       <h4 class="footer-h">About &amp; Advisory</h4>
-      <a href="blockchain-advisory.html">Advisory track record</a>
+      <a href="services.html#blockchain">Advisory track record</a>
       <a href="contact.html">Contact</a>
-      <a href="a2a-engagement-roadmap.html">Engagement roadmap</a>
+      <a href="a2a-guide.html#roadmap">Engagement roadmap</a>
     </div>
 
     <div class="footer-col">
       <h4 class="footer-h">Resources</h4>
-      <a href="demos/">Demos</a>
+      <a href="library.html">Demos</a>
       <a href="glossary.html">Glossary</a>
       <a href="faq.html">FAQ</a>
       <a href="sitemap.html">Sitemap</a>
