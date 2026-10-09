@@ -19,134 +19,208 @@
 <meta name="twitter:site" content="@PostOakLabs">
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a1828">
-<!-- Favicon -->
+<meta name="theme-color" content="#eef4f2">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
-<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --ink:      #050c15;
-  --deep:     #0a1628;
-  --navy:     #0e1e35;
-  --panel:    #142540;
-  --edge:     #1e3454;
-  --rim:      #2a4a70;
-  --muted:    #4a6a8a;
-  --body:     #7090b0;
-  --text:     #a8c0d8;
-  --bright:   #d0e4f4;
-  --white:    #ecf4fc;
-  --gold:     #c09040;
-  --gold-lt:  #d8b060;
-  --accent:   var(--gold);
-  --accent-lt:var(--gold-lt);
+/* Mist palette (POL-REDESIGN-SPEC_2026-10-08 §1). Copy this token block into every page; no shared CSS file. */
+:root{
+  --bg:#eef4f2;      /* page ground */
+  --band:#e2ece9;    /* alternate section band */
+  --card:#f8fbfa;    /* cards, panels */
+  --ink:#102a27;     /* headings, primary text */
+  --soft:#3f5652;    /* body text, secondary */
+  --line:#cfdeda;    /* borders, rules */
+  --teal:#0b7a70;    /* labels, numbers, links */
+  --ring:#0e9c9c;    /* logo O only */
+  --cyan:#0a6f86;    /* MCP request arrows, rotating word */
+  --amber:#a8650f;   /* MCP response arrows, rotating word */
+  --gold:#c9861f;    /* primary button fill, logo L */
+  --gold-ink:#1a1408;/* text on gold */
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--ink); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.7; }
-h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
-a { color: inherit; text-decoration: none; }
-.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
 
-/* Nav */
-nav { border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); height: 52px; }
-.nav-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
-.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
-nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
-.nav-links { display: flex; gap: 0.6rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
 
-/* Hero */
-.hero { padding: 4.5rem 0 3rem; border-bottom: 1px solid var(--edge); position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
-.hero-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.02em; color: var(--accent-lt); margin-bottom: 1.25rem; }
-.hero h1 { font-size: clamp(2rem, 4.5vw, 3rem); color: var(--white); max-width: 620px; margin-bottom: 1.1rem; }
-.hero-sub { font-size: 0.93rem; color: var(--body); max-width: 560px; line-height: 1.85; }
-
-/* Main content */
-.contact-wrap { padding: 4rem 0 5rem; }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
-
-/* Form */
-.form-block { }
-.field { margin-bottom: 1.5rem; }
-.field label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
-.field input,
-.field select,
-.field textarea { width: 100%; background: var(--deep); border: 1px solid var(--edge); color: var(--bright); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 0.9rem; padding: 0.7rem 0.9rem; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
-.field input:focus,
-.field select:focus,
-.field textarea:focus { outline: none; border-color: var(--accent); }
-.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a6a8a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
-.field select option { background: var(--deep); color: var(--bright); }
-.field textarea { resize: vertical; min-height: 130px; }
-.field input::placeholder,
-.field textarea::placeholder { color: var(--muted); }
-
-.submit-btn { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); background: var(--accent); border: 1px solid var(--accent); padding: 0.75rem 2rem; cursor: pointer; transition: all 0.2s; width: 100%; text-align: center; }
-.submit-btn:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
-
-.form-note { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; color: var(--muted); margin-top: 1rem; line-height: 1.7; }
-.form-note a { color: var(--accent-lt); }
-
-/* Success state */
-.form-success { display: none; background: var(--deep); border: 1px solid var(--edge); padding: 2rem; text-align: center; }
-.form-success h3 { font-family: 'DM Serif Display', serif; color: var(--white); margin-bottom: 0.75rem; font-size: 1.4rem; }
-.form-success p { font-size: 0.88rem; color: var(--body); }
-
-/* Sidebar info */
-.contact-info { }
-.info-block { margin-bottom: 2.5rem; }
-.info-label { font-family: 'JetBrains Mono', monospace; font-size: 0.53rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-lt); margin-bottom: 0.75rem; }
-.info-text { font-size: 0.88rem; color: var(--body); line-height: 1.8; }
-.info-text strong { color: var(--text); font-weight: 400; }
-.info-email { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--gold-lt); letter-spacing: 0.04em; display: block; margin-top: 0.5rem; }
-.info-email:hover { color: var(--white); }
-
-.info-divider { border: none; border-top: 1px solid var(--edge); margin: 2rem 0; }
-
-.scope-list { list-style: none; }
-.scope-list li { font-size: 0.85rem; color: var(--body); padding: 0.45rem 0; border-bottom: 1px solid var(--edge); display: flex; align-items: baseline; gap: 0.65rem; }
-.scope-list li:last-child { border-bottom: none; }
-.scope-list li::before { content: '—'; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; flex-shrink: 0; }
-
-/* Footer */
-footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
-.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
-.footer-copy a { color: var(--accent-lt); text-decoration: none; }
-.footer-copy a:hover { text-decoration: underline; }
-.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
-.footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--accent-lt); }
-
-/* Responsive */
-@media (max-width: 700px) {
-  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .nav-links { display: none; }
+/* hero */
+.hero .wrap{padding-block:clamp(48px,8vw,96px) clamp(40px,6vw,64px);display:grid;gap:22px}
+.hero h1{margin:0;max-width:16ch;font-weight:600;font-size:clamp(2.3rem,6vw,4rem);line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero p{margin:0;max-width:60ch;font-size:1.08rem;font-weight:300;color:var(--soft)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.rot{display:inline-block;position:relative;white-space:nowrap;transition:color .3s}
+.rot::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.09em;border-radius:2px;background:var(--gold);opacity:.8}
+.rot[data-set="field"]{color:var(--teal)}
+.rot[data-set="who"]{color:var(--amber)}
+@media (prefers-reduced-motion:no-preference){
+  .rot.out{animation:flickOut .32s steps(4,end) forwards}
+  .rot.in{animation:flickIn .42s steps(5,end)}
 }
-/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
-.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
-.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
-.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
-.footer-brand-col { gap: 0.4rem; }
-.footer-tag { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--body); line-height: 1.55; margin: 0.3rem 0 0.6rem; max-width: 220px; }
-.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
-.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
-.footer-col > a:hover { color: var(--accent-lt); }
-@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
-@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+@keyframes flickOut{0%{opacity:1}25%{opacity:.2}50%{opacity:.8}75%{opacity:.1}100%{opacity:0}}
+@keyframes flickIn{0%{opacity:0}20%{opacity:.7}40%{opacity:.15}60%{opacity:.9}80%{opacity:.4}100%{opacity:1}}
+
+/* MCP spotlight */
+.band{background:var(--band);border-block:1px solid var(--line)}
+.spot{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,44px);align-items:center;padding-block:clamp(36px,5vw,56px)}
+@media (max-width:760px){.spot{grid-template-columns:1fr}}
+.spot-copy{display:grid;gap:14px;min-width:0}
+.spot h2{margin:0;max-width:24ch;font-weight:600;font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.spot p{margin:0;max-width:62ch;font-weight:300;color:var(--soft)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.82rem}
+.facts .n{font-family:var(--f-mono);font-weight:500;color:var(--teal)}
+.seq{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;min-width:0}
+.seq svg{width:100%;height:auto;display:block}
+.seq figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.seq figcaption .step-name{font-weight:600;font-size:.88rem}
+.seq figcaption a{font-family:var(--f-mono);font-size:.72rem;white-space:nowrap}
+
+/* live products */
+.live .wrap{padding-block:clamp(40px,5vw,60px);display:grid;gap:22px}
+.live-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.live h2{margin:0;font-weight:600;font-size:1.6rem;letter-spacing:-.02em}
+.livepill{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.livepill i{width:7px;height:7px;border-radius:50%;background:#1fa36a}
+@media (prefers-reduced-motion:no-preference){.livepill i{animation:pulse 2.4s ease-in-out infinite}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(31,163,106,.5)}50%{box-shadow:0 0 0 5px rgba(31,163,106,0)}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start;min-width:0}
+.card .label{font-size:.68rem}
+.card h3{margin:0;font-size:1.18rem;font-weight:600}
+.card p{margin:0;font-size:.92rem;font-weight:300;color:var(--soft)}
+.card dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.84rem}
+.card dt{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--teal);font-weight:500}
+.card dd{margin:0;color:var(--soft)}
+.card .out{font-family:var(--f-mono);font-size:.78rem;margin-top:4px}
+
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot .brand{display:block;line-height:0}
+.site-foot .brand svg{height:28px;width:143px}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
+
+/* inner pages: header band, prose, section grid (POL-REDESIGN-SPEC §2) */
+.site-nav ul a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:6px;text-decoration-thickness:2px}
+.page-head .wrap{padding-block:clamp(40px,6vw,72px) clamp(28px,4vw,44px);display:grid;gap:16px}
+.page-head h1{margin:0;max-width:22ch;font-weight:600;font-size:clamp(2rem,4.6vw,3rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.page-head p{margin:0;max-width:62ch;font-size:1.06rem;font-weight:300;color:var(--soft)}
+.sec .wrap{padding-block:clamp(32px,4.5vw,52px);display:grid;gap:18px}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec.band + .sec,.sec + .sec.band{border-top:0}
+.sec h2{margin:0;max-width:30ch;font-weight:600;font-size:clamp(1.35rem,2.6vw,1.75rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.sec h3{margin:0;font-weight:600;font-size:1.06rem}
+.prose{display:grid;gap:12px;max-width:68ch}
+.prose p,.sec .lede{margin:0;font-weight:300;color:var(--soft)}
+.prose ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-weight:300;color:var(--soft)}
+.prose a,.card a:not(.out),.tile a{color:var(--teal);text-underline-offset:3px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.tile h3{font-size:1rem}
+.tile p{margin:0;font-size:.9rem;font-weight:300;color:var(--soft)}
+.tile .label{font-size:.66rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:2px}
+.stats dt{font-family:var(--f-mono);font-weight:500;font-size:1.7rem;color:var(--teal);font-variant-numeric:tabular-nums}
+.stats dd{margin:0;font-size:.86rem;color:var(--soft)}
+.person{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:720px}
+.person .mono{width:64px;height:64px;border-radius:50%;background:var(--band);border:1px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:1.3rem;color:var(--teal);flex:none}
+.person div{display:grid;gap:4px;min-width:0}
+.person h3{font-size:1.2rem}
+.person p{margin:0;font-weight:300;color:var(--soft)}
+.person a{font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
+.linklist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.linklist li{display:grid;gap:2px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.linklist li:last-child{border-bottom:0}
+.linklist a{font-weight:600;color:var(--ink);text-decoration:none}
+.linklist a:hover{color:var(--teal);text-decoration:underline}
+.linklist span{font-size:.9rem;font-weight:300;color:var(--soft)}
+.mail{font-family:var(--f-mono);font-size:.9rem;color:var(--teal)}
+.cta-band .wrap{padding-block:clamp(32px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.cta-band h2{margin:0;font-weight:600;font-size:1.4rem;letter-spacing:-.02em}
+.cta-band p{margin:4px 0 0;font-weight:300;color:var(--soft)}
+
+/* page: shared briefing rules (Mist tokens only) */
+.kicker,.page-head .kicker{margin:0;font-family:var(--f-mono);font-size:.78rem;color:var(--soft);font-weight:500}
+.em{font-weight:600;color:var(--ink)}
+sup a{color:var(--teal);text-decoration:none;font-size:.72em;font-family:var(--f-display)}
+sup a:hover{text-decoration:underline}
+.brief a:not(.btn){color:var(--teal);text-underline-offset:3px}
+.brief .btn.sec{background:transparent}
+.brief .btn.pri{color:var(--gold-ink)}
+.brief .btn.sec{color:var(--ink)}
+.table-wrap,.comparison-table-wrap,.compare-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--bg);max-width:100%}
+.brief table{width:100%;border-collapse:collapse;font-size:.86rem;line-height:1.55}
+.brief th{background:var(--card);color:var(--ink);font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.brief td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--soft);font-weight:300}
+.brief tr:last-child td{border-bottom:0}
+.brief td + td,.brief th + th{border-left:1px solid var(--line)}
+
+/* page: contact form */
+.contact-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start}
+.contact-grid > *{min-width:0}
+@media (max-width:760px){.contact-grid{grid-template-columns:1fr}}
+.form-block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,28px)}
+.field{display:grid;gap:6px;margin-bottom:18px}
+.field label{font-size:.88rem;font-weight:600;color:var(--ink)}
+.field input,.field select,.field textarea{width:100%;font-family:var(--f-display);font-size:1rem;font-weight:300;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;appearance:none;-webkit-appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233f5652' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+.field textarea{resize:vertical;min-height:130px}
+.field input::placeholder,.field textarea::placeholder{color:var(--soft);opacity:.75}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--soft)}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-color:var(--teal)}
+.submit-btn{width:100%;border:0;cursor:pointer;font-family:var(--f-display);font-size:1rem;text-align:center}
+.form-note{margin:14px 0 0;font-size:.86rem;font-weight:300;color:var(--soft)}
+.form-note a,.form-success a{color:var(--teal);text-underline-offset:3px}
+.form-success{display:none;padding:8px 4px;text-align:center}
+.form-success h3{margin:0 0 8px;font-size:1.3rem;font-weight:600;color:var(--ink)}
+.form-success p{margin:0;font-weight:300;color:var(--soft)}
+.contact-info{display:grid;gap:0}
+.info-block{display:grid;gap:8px}
+.info-label{margin:0;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
+.info-text{margin:0;font-weight:300;color:var(--soft)}
+.info-email{font-family:var(--f-mono);font-size:.95rem;color:var(--teal);text-underline-offset:3px;justify-self:start}
+.info-divider{border:0;border-top:1px solid var(--line);margin:24px 0}
+.scope-list{list-style:none;margin:0;padding:0}
+.scope-list li{display:flex;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem;font-weight:300;color:var(--soft)}
+.scope-list li:last-child{border-bottom:0}
+.scope-list li::before{content:"";flex:none;width:10px;height:2px;background:var(--gold);transform:translateY(-4px)}
 </style>
 <script type="application/ld+json">
 {
@@ -207,36 +281,50 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
 </head>
 <body>
 
-<nav role="navigation" aria-label="Primary">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
-      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
-<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
-      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
-    </a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="library.html">Scenarios</a>
-    </div>
-  </div>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- POL mark: P teal, tree-ring O, L gold, wordmark. Vector redraw of the 2026 logo for light grounds. -->
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
 
-<section class="hero">
-  <div class="container">
-    <p class="hero-tag">Get in touch · institutional inquiries</p>
-    <h1>Let's talk</h1>
-    <p class="hero-sub">We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, use the form below to start a direct conversation.</p>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="library.html">Library</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" aria-current="page">Contact</a></li>
+        <li><a class="btn pri small" href="contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="brief">
+
+<section class="page-head" aria-labelledby="page-h">
+  <div class="wrap">
+    <span class="label">Contact</span>
+    <p class="kicker">Get in touch · institutional inquiries</p>
+    <h1 id="page-h">Let's talk</h1>
+    <p>We work with a limited number of institutions at a time. If you are evaluating tokenized payment infrastructure, stablecoin integration, or CBDC strategy, use the form below to start a direct conversation.</p>
   </div>
 </section>
 
-<div class="contact-wrap">
-  <div class="container">
+<section class="sec contact-wrap" aria-label="Inquiry form and direct contact">
+  <div class="wrap">
     <div class="contact-grid">
 
       <!-- Form -->
@@ -287,10 +375,10 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
 
           <div class="field">
             <label for="message"><span>Message  (optional)</span></label>
-            <textarea id="message" name="message" placeholder="Brief context on your mandate or what you are evaluating — optional but helpful"></textarea>
+            <textarea id="message" name="message" placeholder="Brief context on your mandate or what you are evaluating, optional but helpful"></textarea>
           </div>
 
-          <button type="submit" class="submit-btn"><span>Send inquiry →</span></button>
+          <button type="submit" class="btn pri submit-btn"><span>Send inquiry →</span></button>
 
           <p class="form-note">
             We respond to all institutional inquiries directly.<br>
@@ -342,54 +430,37 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); }
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<footer class="site-footer">
-  <div class="footer-inner footer-grid">
+</main>
 
-    <div class="footer-col footer-brand-col">
-      <p class="footer-copy">
-        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
-        &nbsp;&middot;&nbsp;
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
-      </p>
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
     </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">A2A Payments</h4>
-      <a href="a2a-guide.html">Market coverage</a>
-      <a href="a2a-guide.html#workflow">How it works</a>
-      <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-guide.html#iso20022">ISO 20022 alignment</a>
-      <a href="a2a-guide.html#tmmf">tMMF on A2A rails</a>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+          <li><a href="https://www.linkedin.com/in/timswanson">Tim Swanson on LinkedIn ↗</a></li>
+        </ul>
+      </div>
     </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">Enterprise Blockchain</h4>
-      <a href="enterprise-blockchain.html">Market briefing</a>
-      <a href="a2a-ledgers.html#besu">Hyperledger Besu</a>
-      <a href="a2a-ledgers.html#canton">Canton / Daml</a>
-      <a href="a2a-ledgers.html#corda">R3 Corda</a>
-      <a href="a2a-ledgers.html#fabric">Hyperledger Fabric</a>
-    </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">About &amp; Advisory</h4>
-      <a href="services.html#blockchain">Advisory track record</a>
-      <a href="contact.html">Contact</a>
-      <a href="a2a-guide.html#roadmap">Engagement roadmap</a>
-    </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">Resources</h4>
-      <a href="library.html">Demos</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="faq.html">FAQ</a>
-      <a href="sitemap.html">Sitemap</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
-      <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub&nbsp;&#8599;</a>
-    </div>
-
   </div>
 </footer>
 
@@ -443,29 +514,12 @@ async function handleSubmit(e) {
   success.innerHTML =
     '<h3>Opening your email client…</h3>' +
     '<p>If it did not open, email us directly at ' +
-    '<a href="mailto:contact@postoaklabs.com" style="color:var(--accent-lt)">' +
-    'contact@postoaklabs.com</a> — we respond to all institutional inquiries ' +
+    '<a href="mailto:contact@postoaklabs.com" style="color:var(--teal)">' +
+    'contact@postoaklabs.com</a>. We respond to all institutional inquiries ' +
     'directly.</p>';
   success.style.display = 'block';
 }
 
-</script>
-<script>
-(function(){
-  var nav = document.querySelector('nav[role="navigation"]');
-  var hero = document.querySelector('.hero, .showcase-hero');
-  if(!nav || !hero) return;
-  function onScroll(){
-    var threshold = hero.offsetHeight * 0.6;
-    if(window.scrollY > threshold){
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
-})();
 </script>
 </body>
 </html>

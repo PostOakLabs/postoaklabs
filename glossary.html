@@ -12,13 +12,13 @@
 <link rel="alternate" hreflang="x-default" href="https://postoaklabs.com/glossary.html">
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a1828">
+<meta name="theme-color" content="#eef4f2">
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
-<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
@@ -233,168 +233,247 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --ink:     #050c15;
-  --deep:    #0a1628;
-  --navy:    #0e1e35;
-  --panel:   #142540;
-  --edge:    #1e3454;
-  --rim:     #2a4a70;
-  --muted:   #4a6a8a;
-  --body:    #7090b0;
-  --text:    #a8c0d8;
-  --bright:  #d0e4f4;
-  --white:   #ecf4fc;
-  --gold:    #c09040;
-  --gold-lt: #d8b060;
-  --accent:  var(--gold);
-  --accent-lt:var(--gold-lt);
+/* Mist palette (POL-REDESIGN-SPEC_2026-10-08 §1). Copy this token block into every page; no shared CSS file. */
+:root{
+  --bg:#eef4f2;      /* page ground */
+  --band:#e2ece9;    /* alternate section band */
+  --card:#f8fbfa;    /* cards, panels */
+  --ink:#102a27;     /* headings, primary text */
+  --soft:#3f5652;    /* body text, secondary */
+  --line:#cfdeda;    /* borders, rules */
+  --teal:#0b7a70;    /* labels, numbers, links */
+  --ring:#0e9c9c;    /* logo O only */
+  --cyan:#0a6f86;    /* MCP request arrows, rotating word */
+  --amber:#a8650f;   /* MCP response arrows, rotating word */
+  --gold:#c9861f;    /* primary button fill, logo L */
+  --gold-ink:#1a1408;/* text on gold */
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--ink);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  line-height: 1.7;
-  font-size: 16px;
-}
-h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
-a { color: inherit; text-decoration: none; }
-.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
 
-/* ── HERO ── */
-.page-hero {
-  padding: 3.5rem 0 2.5rem;
-  border-bottom: 1px solid var(--edge);
-  position: relative; overflow: hidden;
-}
-.page-hero::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-}
-.hero-tag {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--accent-lt); margin-bottom: 1rem;
-}
-.page-hero h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); color: var(--white); max-width: 700px; margin-bottom: 1rem; }
-.page-hero p.intro { font-size: 0.92rem; color: var(--body); max-width: 600px; line-height: 1.85; }
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
 
-/* ── FILTER / TOC BAR ── */
-.filter-bar {
-  position: sticky; top: 62px; z-index: 80;
-  background: rgba(5,12,21,0.97); border-bottom: 1px solid var(--edge);
-  padding: 0.6rem 0;
+/* hero */
+.hero .wrap{padding-block:clamp(48px,8vw,96px) clamp(40px,6vw,64px);display:grid;gap:22px}
+.hero h1{margin:0;max-width:16ch;font-weight:600;font-size:clamp(2.3rem,6vw,4rem);line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero p{margin:0;max-width:60ch;font-size:1.08rem;font-weight:300;color:var(--soft)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.rot{display:inline-block;position:relative;white-space:nowrap;transition:color .3s}
+.rot::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.09em;border-radius:2px;background:var(--gold);opacity:.8}
+.rot[data-set="field"]{color:var(--teal)}
+.rot[data-set="who"]{color:var(--amber)}
+@media (prefers-reduced-motion:no-preference){
+  .rot.out{animation:flickOut .32s steps(4,end) forwards}
+  .rot.in{animation:flickIn .42s steps(5,end)}
 }
-.filter-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
-.filter-label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 0.5rem; }
-.filter-btn {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 0.22rem 0.7rem; border: 1px solid var(--edge); color: var(--muted);
-  cursor: pointer; background: transparent; transition: all 0.2s;
-}
-.filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent-lt); background: rgba(192,144,64,0.06); }
+@keyframes flickOut{0%{opacity:1}25%{opacity:.2}50%{opacity:.8}75%{opacity:.1}100%{opacity:0}}
+@keyframes flickIn{0%{opacity:0}20%{opacity:.7}40%{opacity:.15}60%{opacity:.9}80%{opacity:.4}100%{opacity:1}}
 
-/* ── GLOSSARY BODY ── */
-.glossary-section { padding: 3rem 0 1rem; }
-.section-anchor { display: block; height: 1px; margin-top: -80px; padding-top: 80px; visibility: hidden; }
-.group-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: 0.75rem; padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--edge);
-}
+/* MCP spotlight */
+.band{background:var(--band);border-block:1px solid var(--line)}
+.spot{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,44px);align-items:center;padding-block:clamp(36px,5vw,56px)}
+@media (max-width:760px){.spot{grid-template-columns:1fr}}
+.spot-copy{display:grid;gap:14px;min-width:0}
+.spot h2{margin:0;max-width:24ch;font-weight:600;font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.spot p{margin:0;max-width:62ch;font-weight:300;color:var(--soft)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.82rem}
+.facts .n{font-family:var(--f-mono);font-weight:500;color:var(--teal)}
+.seq{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;min-width:0}
+.seq svg{width:100%;height:auto;display:block}
+.seq figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.seq figcaption .step-name{font-weight:600;font-size:.88rem}
+.seq figcaption a{font-family:var(--f-mono);font-size:.72rem;white-space:nowrap}
 
-/* ── TERM ENTRIES ── */
-.term-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-bottom: 2.5rem; }
-.term-entry {
-  background: var(--deep); padding: 1.4rem 1.75rem 1.4rem 1.75rem;
-  display: grid; grid-template-columns: 220px 1fr;
-  gap: 1.5rem; align-items: start; transition: background 0.2s;
-}
-.term-entry:hover { background: var(--navy); }
-.term-name {
-  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
-  color: var(--bright); line-height: 1.3;
-}
-.term-abbr {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em;
-  color: var(--accent-lt); display: block; margin-top: 0.2rem;
-}
-.term-def { font-size: 0.83rem; color: var(--body); line-height: 1.82; }
-.term-def strong { color: var(--text); font-weight: 500; }
-.term-def a { color: var(--accent-lt); text-decoration: underline; text-underline-offset: 3px; }
+/* live products */
+.live .wrap{padding-block:clamp(40px,5vw,60px);display:grid;gap:22px}
+.live-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.live h2{margin:0;font-weight:600;font-size:1.6rem;letter-spacing:-.02em}
+.livepill{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.livepill i{width:7px;height:7px;border-radius:50%;background:#1fa36a}
+@media (prefers-reduced-motion:no-preference){.livepill i{animation:pulse 2.4s ease-in-out infinite}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(31,163,106,.5)}50%{box-shadow:0 0 0 5px rgba(31,163,106,0)}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start;min-width:0}
+.card .label{font-size:.68rem}
+.card h3{margin:0;font-size:1.18rem;font-weight:600}
+.card p{margin:0;font-size:.92rem;font-weight:300;color:var(--soft)}
+.card dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.84rem}
+.card dt{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--teal);font-weight:500}
+.card dd{margin:0;color:var(--soft)}
+.card .out{font-family:var(--f-mono);font-size:.78rem;margin-top:4px}
 
-/* ── CBDC STATS BOX ── */
-.cbdc-stat-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 1px; background: var(--edge); border: 1px solid var(--rim);
-  margin: 1rem 0 0.75rem;
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot .brand{display:block;line-height:0}
+.site-foot .brand svg{height:28px;width:143px}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
+
+/* inner pages: header band, prose, section grid (POL-REDESIGN-SPEC §2) */
+.site-nav ul a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:6px;text-decoration-thickness:2px}
+.page-head .wrap{padding-block:clamp(40px,6vw,72px) clamp(28px,4vw,44px);display:grid;gap:16px}
+.page-head h1{margin:0;max-width:22ch;font-weight:600;font-size:clamp(2rem,4.6vw,3rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.page-head p{margin:0;max-width:62ch;font-size:1.06rem;font-weight:300;color:var(--soft)}
+.sec .wrap{padding-block:clamp(32px,4.5vw,52px);display:grid;gap:18px}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec.band + .sec,.sec + .sec.band{border-top:0}
+.sec h2{margin:0;max-width:30ch;font-weight:600;font-size:clamp(1.35rem,2.6vw,1.75rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.sec h3{margin:0;font-weight:600;font-size:1.06rem}
+.prose{display:grid;gap:12px;max-width:68ch}
+.prose p,.sec .lede{margin:0;font-weight:300;color:var(--soft)}
+.prose ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-weight:300;color:var(--soft)}
+.prose a,.card a:not(.out),.tile a{color:var(--teal);text-underline-offset:3px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.tile h3{font-size:1rem}
+.tile p{margin:0;font-size:.9rem;font-weight:300;color:var(--soft)}
+.tile .label{font-size:.66rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:2px}
+.stats dt{font-family:var(--f-mono);font-weight:500;font-size:1.7rem;color:var(--teal);font-variant-numeric:tabular-nums}
+.stats dd{margin:0;font-size:.86rem;color:var(--soft)}
+.person{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:720px}
+.person .mono{width:64px;height:64px;border-radius:50%;background:var(--band);border:1px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:1.3rem;color:var(--teal);flex:none}
+.person div{display:grid;gap:4px;min-width:0}
+.person h3{font-size:1.2rem}
+.person p{margin:0;font-weight:300;color:var(--soft)}
+.person a{font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
+.linklist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.linklist li{display:grid;gap:2px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.linklist li:last-child{border-bottom:0}
+.linklist a{font-weight:600;color:var(--ink);text-decoration:none}
+.linklist a:hover{color:var(--teal);text-decoration:underline}
+.linklist span{font-size:.9rem;font-weight:300;color:var(--soft)}
+.mail{font-family:var(--f-mono);font-size:.9rem;color:var(--teal)}
+.cta-band .wrap{padding-block:clamp(32px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.cta-band h2{margin:0;font-weight:600;font-size:1.4rem;letter-spacing:-.02em}
+.cta-band p{margin:4px 0 0;font-weight:300;color:var(--soft)}
+
+
+/* reference pages (glossary, FAQ): page-specific rules, Mist tokens only */
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+main [id]{scroll-margin-top:76px}
+.b{font-weight:600;color:var(--ink)}
+.xref-term{color:var(--ink);font-weight:400}
+.section-anchor{display:block;height:0}
+
+/* sticky filter / jump bar */
+.filter-bar,.cat-bar{position:sticky;top:0;z-index:20;background:var(--bg);border-block:1px solid var(--line)}
+.filter-inner,.cat-inner{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding-block:10px}
+.filter-label,.cat-label{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500;margin-right:4px}
+.filter-btn,.cat-btn{font-family:var(--f-display);font-size:.8rem;line-height:1.3;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--soft);cursor:pointer;text-decoration:none;display:inline-block}
+.filter-btn:hover,.cat-btn:hover{color:var(--ink);border-color:var(--teal)}
+.filter-btn.active{background:var(--teal);border-color:var(--teal);color:var(--card)}
+
+/* callout + promo */
+.callout{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:20px 22px;display:grid;gap:8px;max-width:820px;margin-bottom:16px}
+.callout p{margin:0;font-weight:300;color:var(--soft);font-size:.95rem}
+.callout .callout-h{font-weight:500;color:var(--teal);font-size:.72rem;margin-bottom:4px}
+.callout .callout-note{margin-top:6px;font-size:.9rem}
+.promo{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:24px 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.promo-copy{flex:1 1 240px;min-width:0;display:grid;gap:2px}
+.promo-copy p{margin:0;font-size:.9rem;font-weight:300;color:var(--soft)}
+.promo-copy .promo-h{font-weight:600;color:var(--ink)}
+.promo .btn{white-space:nowrap}
+
+/* glossary */
+.glossary-section .wrap{padding-block:clamp(28px,4vw,44px) 8px}
+.glossary-intro .wrap{padding-bottom:clamp(20px,3vw,32px)}
+.group-label,.section-label{margin:28px 0 12px;font-weight:600;font-size:clamp(1.2rem,2.2vw,1.45rem);line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
+.section-anchor + .group-label,.section-anchor + .section-label{margin-top:8px}
+.term-list{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:28px;overflow:hidden}
+.term-entry{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:8px 28px;align-items:start;padding:20px 24px;border-top:1px solid var(--line)}
+.term-entry:first-child{border-top:0}
+.term-entry > *{min-width:0}
+.term-entry.hidden,[hidden]{display:none}
+.term-name{display:block;font-weight:600;font-size:1rem;line-height:1.3;color:var(--ink)}
+.term-abbr{display:inline-block;margin-top:6px;font-family:var(--f-mono);font-size:.7rem;font-weight:500;letter-spacing:.06em;color:var(--teal);overflow-wrap:anywhere}
+.term-def{margin:0;max-width:68ch;font-size:.95rem;font-weight:300;line-height:1.65;color:var(--soft);overflow-wrap:break-word}
+.term-def + .term-def{margin-top:10px}
+.term-def a,.term-see-also a,.cbdc-source a,.region-body a,.faq-a a,.page-head a,.callout a,.fn-list a,.note a{color:var(--teal);text-decoration:underline;text-underline-offset:3px}
+.term-see-also{margin:10px 0 0;max-width:68ch;font-size:.85rem;font-weight:300;color:var(--soft)}
+.term-entry.term-wide{grid-template-columns:minmax(0,1fr)}
+.term-entry.term-wide .term-name-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.term-entry.term-wide .term-abbr{margin-top:0}
+.term-entry.term-wide .term-def{max-width:76ch}
+.cbdc-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 8px}
+.cbdc-stat-cell{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:4px;text-align:center}
+.cbdc-stat-num{font-family:var(--f-mono);font-weight:500;font-size:1.7rem;line-height:1;color:var(--teal);font-variant-numeric:tabular-nums}
+.cbdc-stat-lbl{font-size:.78rem;line-height:1.4;color:var(--soft)}
+.cbdc-source{margin:8px 0 0;font-family:var(--f-mono);font-size:.72rem;line-height:1.6;color:var(--soft)}
+.funnel{display:block;width:100%;max-width:560px;height:auto;margin-top:12px;font-family:var(--f-mono)}
+.region-list{display:grid;gap:14px;margin:18px 0 8px}
+.region{background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}
+.region-head{padding:10px 18px;background:var(--band);border-bottom:1px solid var(--line)}
+.region-name{font-weight:600;font-size:1.02rem;color:var(--ink)}
+.region-body{margin:0;padding:14px 18px;max-width:76ch;font-size:.9rem;font-weight:300;line-height:1.65;color:var(--soft);overflow-wrap:break-word}
+
+/* FAQ */
+.faq-section .wrap{padding-block:clamp(28px,4vw,44px) 16px}
+.faq-list{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:28px;overflow:hidden}
+.faq-item{border-top:1px solid var(--line)}
+.faq-item:first-child{border-top:0}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 22px;background:transparent;border:0;cursor:pointer;text-align:left;font-family:var(--f-display);font-size:1rem;font-weight:600;line-height:1.4;color:var(--ink)}
+.faq-q:hover,.faq-q.open{color:var(--teal)}
+.faq-chevron{flex:none;font-size:1.15rem;color:var(--teal);line-height:1.2}
+@media (prefers-reduced-motion:no-preference){.faq-chevron{transition:transform .2s}}
+.faq-q.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 22px 20px;min-width:0}
+.faq-a.open{display:grid;gap:12px}
+.faq-a > *{min-width:0}
+.faq-a p{margin:0;max-width:68ch;font-size:.95rem;font-weight:300;line-height:1.65;color:var(--soft);overflow-wrap:break-word}
+.faq-a ul,.faq-a ol{margin:0;max-width:68ch;padding-left:1.2em;display:grid;gap:6px;font-size:.95rem;font-weight:300;color:var(--soft)}
+.diagram{overflow-x:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px}
+.diagram svg{display:block;width:100%;min-width:520px;height:auto;font-family:var(--f-mono)}
+.faq-a .note{font-size:.85rem}
+.footnotes{border-top:1px solid var(--line);padding-top:24px;margin-top:8px;display:grid;gap:12px}
+.footnotes h3{margin:0}
+.fn-list{margin:0;padding-left:1.3em;display:grid;gap:10px;max-width:90ch}
+.fn-list li{font-family:var(--f-mono);font-size:.74rem;line-height:1.65;color:var(--soft);overflow-wrap:anywhere}
+.fn-list .b{color:var(--ink)}
+.cta-band .cta-btns{display:flex;flex-wrap:wrap;gap:10px}
+.cta-band p{max-width:60ch}
+
+@media (max-width:700px){
+  .term-entry{grid-template-columns:minmax(0,1fr);padding:16px 18px}
+  .cbdc-stat-grid{grid-template-columns:minmax(0,1fr)}
+  .faq-q{padding:16px 18px;font-size:.95rem}
+  .faq-a{padding:0 18px 18px}
+  .filter-bar,.cat-bar{position:static}
 }
-.cbdc-stat-cell { background: var(--panel); padding: 1rem 1.25rem; text-align: center; }
-.cbdc-stat-num { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--accent-lt); display: block; line-height: 1; margin-bottom: 0.25rem; }
-.cbdc-stat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); line-height: 1.5; }
-.cbdc-source { font-family: 'JetBrains Mono', monospace; font-size: 0.5rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.5rem; }
-.cbdc-source a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-
-/* ── TERM ENTRY with stats (full-width) ── */
-.term-entry.term-wide {
-  grid-template-columns: 1fr;
-}
-.term-entry.term-wide .term-name-row {
-  display: flex; align-items: baseline; gap: 1rem; margin-bottom: 0.75rem;
-}
-
-/* ── FOOTER ── (handled by canonical block below) ── */
-
-/* ── RTL ── */
-html[lang="ar"] body { direction: rtl; text-align: right; }
-html[lang="ar"] .nav-inner { flex-direction: row-reverse; }
-
-/* ── HIDDEN ENTRIES ── */
-.term-entry.hidden { display: none; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 700px) {
-  .term-entry { grid-template-columns: 1fr; gap: 0.4rem; }
-  .cbdc-stat-grid { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  .filter-inner { gap: 0.3rem; }
-}
-
-/* ═══ CANONICAL FOOTER GRID — added May 2026 ═══ */
-.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
-.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
-.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
-.footer-brand-col { gap: 0.4rem; }
-.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
-.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
-.footer-col > a:hover { color: var(--accent-lt); }
-@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
-@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
-/* ═══ CANONICAL NAV/FOOTER — site-wide standard ═══ */
-nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
-.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
-nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
-.nav-links { display: flex; gap: 0.6rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
-.nav-back { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--edge); padding: 0.3rem 0.8rem; transition: all 0.2s; text-decoration: none; white-space: nowrap; }
-.nav-back:hover { border-color: var(--accent); color: var(--accent-lt); }
-footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
-.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
-.footer-copy a { color: var(--accent-lt); text-decoration: none; }
-.footer-copy a:hover { text-decoration: underline; }
-.xref-term { font-style: italic; }
-/* ══════════════════════════════════════════════════ */
 </style>
 
 
@@ -453,72 +532,85 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <body>
 
 
-<nav role="navigation" aria-label="Primary">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
-      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
-<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
-      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
-    </a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="library.html">Scenarios</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- POL mark: P teal, tree-ring O, L gold, wordmark. Vector redraw of the 2026 logo for light grounds. -->
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="library.html" aria-current="page">Library</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="btn pri small" href="contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-head" aria-labelledby="page-h">
+    <div class="wrap">
+      <span class="label">Library</span>
+      <h1 id="page-h">Tokenized Payments &amp; CBDC Glossary</h1>
+      <p>Plain-language definitions of the terminology used across Post Oak Labs' advisory work, covering A2A payment infrastructure, stablecoin and CBDC architecture, liquidity regulation, and relevant market context. Written for treasury officers, central bank economists, and corporate finance teams who need precision without jargon.</p>
     </div>
-  </div>
-</nav>
-
-<div class="page-hero">
-  <div class="container">
-    <p class="hero-tag">Reference · Definitions · Domain Vocabulary</p>
-    <h1>Tokenized Payments &amp; CBDC Glossary</h1>
-    <p class="intro">Plain-language definitions of the terminology used across Post Oak Labs' advisory work, covering A2A payment infrastructure, stablecoin and CBDC architecture, liquidity regulation, and relevant market context. Written for treasury officers, central bank economists, and corporate finance teams who need precision without jargon.</p>
-  </div>
-</div>
+  </section>
 
 
-<div class="glossary-section" style="padding-bottom:0;">
-  <div class="container">
-    <div style="border:2px solid var(--gold);background:var(--navy);padding:1.5rem;margin-bottom:2rem;">
-      <p style="font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:0.85rem;font-weight:700;letter-spacing:0.04em;margin-bottom:0.8rem;">WHAT WE SPECIALIZE IN, THREE LAYERS OF THE INSTITUTIONAL PAYMENT STACK</p>
-      <p style="margin-bottom:0.5rem;font-size:0.88rem;"><strong>Layer 1, Consumer Fast Payments (Pix, FedNow, UPI):</strong> retail rail; domestic; consumer-to-merchant; single country</p>
-      <p style="margin-bottom:0.5rem;font-size:0.88rem;"><strong>Layer 2, Stablecoin / CBDC Infrastructure:</strong> monetary instrument layer; digital money issuance and distribution</p>
-      <p style="margin-bottom:0.5rem;font-size:0.88rem;"><strong>Layer 3, Tokenized A2A Institutional Rails:</strong> cross-border interbank settlement; B2B; permissioned ledgers between financial institutions</p>
-      <p style="margin-top:0.8rem;font-size:0.88rem;color:var(--muted);">Post Oak Labs operates exclusively at Layer 3. Layers 1 and 2 are complementary systems serving different market segments with different technical architectures, not competitor products.</p>
+<div class="glossary-section glossary-intro">
+  <div class="wrap">
+    <div class="callout">
+      <p class="label callout-h">WHAT WE SPECIALIZE IN, THREE LAYERS OF THE INSTITUTIONAL PAYMENT STACK</p>
+      <p><span class="b">Layer 1, Consumer Fast Payments (Pix, FedNow, UPI):</span> retail rail; domestic; consumer-to-merchant; single country</p>
+      <p><span class="b">Layer 2, Stablecoin / CBDC Infrastructure:</span> monetary instrument layer; digital money issuance and distribution</p>
+      <p><span class="b">Layer 3, Tokenized A2A Institutional Rails:</span> cross-border interbank settlement; B2B; permissioned ledgers between financial institutions</p>
+      <p class="callout-note">Post Oak Labs operates exclusively at Layer 3. Layers 1 and 2 are complementary systems serving different market segments with different technical architectures, not competitor products.</p>
     </div>
   </div>
 </div>
 
 <div class="filter-bar">
-  <div class="filter-inner">
+  <div class="wrap filter-inner">
     <span class="filter-label">Filter:</span>
-    <button class="filter-btn active" onclick="filterGroup('all')">All</button>
-    <button class="filter-btn" onclick="filterGroup('a2a')">Rails &amp; Settlement</button>
-    <button class="filter-btn" onclick="filterGroup('token')">Instruments</button>
-    <button class="filter-btn" onclick="filterGroup('reg')">Regulatory &amp; Capital</button>
-    <button class="filter-btn" onclick="filterGroup('market')">Markets &amp; Geography</button>
-    <button class="filter-btn" onclick="filterGroup('identity')">Identity &amp; Compliance</button>
+    <button class="filter-btn active" aria-pressed="true" onclick="filterGroup('all', this)">All</button>
+    <button class="filter-btn" aria-pressed="false" onclick="filterGroup('a2a', this)">Rails &amp; Settlement</button>
+    <button class="filter-btn" aria-pressed="false" onclick="filterGroup('token', this)">Instruments</button>
+    <button class="filter-btn" aria-pressed="false" onclick="filterGroup('reg', this)">Regulatory &amp; Capital</button>
+    <button class="filter-btn" aria-pressed="false" onclick="filterGroup('market', this)">Markets &amp; Geography</button>
+    <button class="filter-btn" aria-pressed="false" onclick="filterGroup('identity', this)">Identity &amp; Compliance</button>
   </div>
 </div>
 
 
+<div class="wrap">
     <!-- P4: AINumbers tools CTA banner -->
-    <div style="background:rgba(20,184,166,0.07);border:1px solid rgba(20,184,166,0.25);border-radius:6px;padding:1rem 1.4rem;margin:1.8rem 0;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
-      <span style="font-size:1.2rem;"></span>
-      <div style="flex:1;min-width:200px;">
-        <p style="margin:0 0 0.25rem;font-size:0.88rem;font-weight:600;color:var(--bright,#f1f5f9);">Free Fintech Tools, now at AINumbers.co</p>
-        <p style="margin:0;font-size:0.82rem;color:var(--body,#94a3b8);">A2A fee routing, ISO 20022 message builder, fraud score simulator, compliance checklist, IBAN/BIC validator, and more, all browser-based, no install.</p>
+    <div class="promo">
+      <div class="promo-copy">
+        <p class="promo-h">Free Fintech Tools, now at AINumbers.co</p>
+        <p>A2A fee routing, ISO 20022 message builder, fraud score simulator, compliance checklist, IBAN/BIC validator, and more, all browser-based, no install.</p>
       </div>
-      <a href="https://ainumbers.co" target="_blank" rel="noopener noreferrer" style="white-space:nowrap;background:var(--teal,#14b8a6);color:#0f172a;padding:0.45rem 1rem;border-radius:4px;font-size:0.82rem;font-weight:700;text-decoration:none;">Open Tools ↗</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener noreferrer" class="btn pri small">Open Tools ↗</a>
     </div>
+</div>
 
 <div class="glossary-section">
-  <div class="container">
+  <div class="wrap">
 
     <!-- ── A2A & PAYMENT INFRASTRUCTURE ── -->
     <span class="section-anchor" id="a2a"></span>
@@ -530,7 +622,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Account-to-Account (A2A) Payment</span>
           <span class="term-abbr">A2A</span>
         </div>
-        <p class="term-def">A transfer of funds that moves directly from one bank account to another without passing through an intermediary card network or cash system. In cross-border contexts, tokenized A2A rails use distributed ledger technology to settle the obligation instantly and atomically, removing the need for nostro pre-funding and the correspondent chain. A2A is distinct from card-based payments (which flow through card networks), from cash, and from the LLM "Agent-to-Agent" AI protocol that shares the same initialism; this glossary covers the institutional payment infrastructure definition only. <strong>The three layers practitioners most often conflate:</strong> (1) Consumer fast-payment systems (Pix, FedNow, UPI): retail A2A for individual end-users, not the institutional layer; (2) Stablecoin infrastructure: the monetary instrument, what the digital money is; (3) Tokenized A2A institutional rails: the institutional rail, how regulated banks move it at scale. These are complementary layers of one stack, not competing alternatives. For a full technical treatment of what A2A tokenization actually is at the infrastructure level, see the entry for <span class="xref-term">Account-to-Account (A2A) Tokenization</span>.</p>
+        <p class="term-def">A transfer of funds that moves directly from one bank account to another without passing through an intermediary card network or cash system. In cross-border contexts, tokenized A2A rails use distributed ledger technology to settle the obligation instantly and atomically, removing the need for nostro pre-funding and the correspondent chain. A2A is distinct from card-based payments (which flow through card networks), from cash, and from the LLM "Agent-to-Agent" AI protocol that shares the same initialism; this glossary covers the institutional payment infrastructure definition only. <span class="b">The three layers practitioners most often conflate:</span> (1) Consumer fast-payment systems (Pix, FedNow, UPI): retail A2A for individual end-users, not the institutional layer; (2) Stablecoin infrastructure: the monetary instrument, what the digital money is; (3) Tokenized A2A institutional rails: the institutional rail, how regulated banks move it at scale. These are complementary layers of one stack, not competing alternatives. For a full technical treatment of what A2A tokenization actually is at the infrastructure level, see the entry for <span class="xref-term">Account-to-Account (A2A) Tokenization</span>.</p>
       </div>
 
       <div class="term-entry" id="nostro-account" data-group="a2a">
@@ -545,7 +637,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Nostro Pre-Funding</span>
         </div>
         <p class="term-def">The practice by which a correspondent bank must park liquidity in advance in a foreign-currency nostro account so that it can settle payment instructions without delay. Pre-funded balances are idle capital that earns little or nothing and ties up significant liquidity, particularly consequential under Basel III/IV constraints (see LCR and NSFR). Tokenized payment rails can significantly reduce the need for pre-funding (residual liquidity requirements remain for intraday buffers, smart contract collateral, and central bank settlement account balances) by enabling atomic delivery-versus-payment settlement in real time.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#correspondent-banking" style="color:var(--accent-lt);">Correspondent Banking</a>, <a href="#four-corner-model" style="color:var(--accent-lt);">Four-Corner Model</a>, <a href="#iso-20022" style="color:var(--accent-lt);">Just-in-Time Settlement</a>, <a href="#a2a" style="color:var(--accent-lt);">DLT-Based Net Settlement</a>, <a href="#a2a" style="color:var(--accent-lt);">Intraday Repo / Tokenized Collateral</a></p>
+        <p class="term-see-also">See also: <a href="#correspondent-banking">Correspondent Banking</a>, <a href="#four-corner-model">Four-Corner Model</a>, <a href="#iso-20022">Just-in-Time Settlement</a>, <a href="#a2a">DLT-Based Net Settlement</a>, <a href="#a2a">Intraday Repo / Tokenized Collateral</a></p>
       </div>
 
       <div class="term-entry" id="vostro-account" data-group="a2a">
@@ -575,7 +667,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-abbr">Society for Worldwide Interbank Financial Telecommunication</span>
         </div>
         <p class="term-def">The global messaging network that banks use to securely exchange payment instructions and financial transaction information. SWIFT does not move money itself, it carries the instruction, and the actual settlement happens through correspondent banking relationships. The SWIFT network connects over 11,500+ institutions in more than 200 countries. SWIFT has been undergoing a major migration from its legacy MT messaging format to the richer ISO 20022 data standard, completing mandatory adoption in stages through 2025. SWIFT has begun active engagement with tokenized network interoperability: its partnership with Chainlink CCIP provides a cross-chain interoperability layer; DLT network connections are in development. Notable PoCs include HSBC-Ant International tokenized deposit settlement (December 2025) and Citi-USDC settlement (November 2025). SWIFT's evolving role is as a compatibility and messaging layer connecting legacy correspondent infrastructure to tokenized settlement rails: not a replacement, but an integration layer.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#a2a" style="color:var(--accent-lt);">Settlement Layer vs. Communication Layer</a>, <a href="#a2a" style="color:var(--accent-lt);">Interoperability Protocol / Bridge</a>, <a href="#iso-20022" style="color:var(--accent-lt);">ISO 20022</a></p>
+        <p class="term-see-also">See also: <a href="#a2a">Settlement Layer vs. Communication Layer</a>, <a href="#a2a">Interoperability Protocol / Bridge</a>, <a href="#iso-20022">ISO 20022</a></p>
       </div>
 
       <div class="term-entry" id="iso-20022" data-group="a2a">
@@ -583,7 +675,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">ISO 20022</span>
         </div>
         <p class="term-def">A global standard for financial messaging that replaces older, data-poor formats (like SWIFT MT messages) with richly structured XML or JSON messages. The standard enables payment instructions to carry far more information, full legal entity names, purpose codes, structured address data, and compliance-relevant fields, which improves straight-through processing, reduces sanctions screening false positives, and enables better AML/KYC automation. Mandatory for SWIFT cross-border payments, and increasingly adopted by domestic RTGS systems globally.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#swift" style="color:var(--accent-lt);">SWIFT</a>, <a href="#correspondent-banking" style="color:var(--accent-lt);">Correspondent Banking</a>, <a href="#a2a" style="color:var(--accent-lt);">Settlement Layer vs. Communication Layer</a></p>
+        <p class="term-see-also">See also: <a href="#swift">SWIFT</a>, <a href="#correspondent-banking">Correspondent Banking</a>, <a href="#a2a">Settlement Layer vs. Communication Layer</a></p>
       </div>
 
       <div class="term-entry" id="rtgs" data-group="a2a">
@@ -599,14 +691,14 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Settlement Finality</span>
         </div>
         <p class="term-def">The point at which a payment becomes irrevocable and unconditional, the moment when a transfer of funds is legally and operationally complete and cannot be unwound. Achieving finality quickly is critical for managing counterparty risk. In traditional correspondent banking, finality may take one to three business days. Tokenized payment systems designed on distributed ledger infrastructure can achieve finality in seconds, provided the underlying ledger and legal framework both support finality.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#atomic-settlement" style="color:var(--accent-lt);">Atomic Settlement</a>, <a href="#rtgs" style="color:var(--accent-lt);">RTGS</a>, <a href="#a2a" style="color:var(--accent-lt);">DLT-Based Net Settlement</a></p>
+        <p class="term-see-also">See also: <a href="#atomic-settlement">Atomic Settlement</a>, <a href="#rtgs">RTGS</a>, <a href="#a2a">DLT-Based Net Settlement</a></p>
       </div>
 
       <div class="term-entry" data-group="a2a">
         <div>
           <span class="term-name">Intraday Liquidity &amp; Daylight Overdraft</span>
         </div>
-        <p class="term-def">The funds a bank needs during the business day to meet payment obligations as they arise, before end-of-day netting and settlement. Managing intraday liquidity is operationally demanding: banks must hold more liquid assets than their end-of-day position would require and must forecast cash flows precisely to avoid intraday overdrafts. The Basel III intraday liquidity monitoring framework (BCBS 248) requires banks to monitor and report intraday positions. A <strong>daylight overdraft</strong> is short-term credit extended by a central bank or settlement bank to allow a participant to make payments before incoming funds have settled on the same day. In RTGS systems, daylight overdrafts smooth payment flows by allowing banks to settle gross obligations without requiring sufficient overnight balances at market open; they are typically collateralised and subject to per-institution caps, with some central banks charging usage fees. Tokenized A2A infrastructure with intraday netting cycles reduces reliance on both pre-funded nostro balances and daylight overdraft by compressing the settlement cycle: net positions at each cycle are smaller and more predictable than gross intraday positions, reducing peak credit demand and eliminating the batching gap that forces excess intraday liquidity holdings. See also: <span class="xref-term">RTGS</span>, <span class="xref-term">Nostro Pre-Funding</span>, <span class="xref-term">Just-in-Time Settlement</span>, <span class="xref-term">DLT-Based Net Settlement</span>.</p>
+        <p class="term-def">The funds a bank needs during the business day to meet payment obligations as they arise, before end-of-day netting and settlement. Managing intraday liquidity is operationally demanding: banks must hold more liquid assets than their end-of-day position would require and must forecast cash flows precisely to avoid intraday overdrafts. The Basel III intraday liquidity monitoring framework (BCBS 248) requires banks to monitor and report intraday positions. A <span class="b">daylight overdraft</span> is short-term credit extended by a central bank or settlement bank to allow a participant to make payments before incoming funds have settled on the same day. In RTGS systems, daylight overdrafts smooth payment flows by allowing banks to settle gross obligations without requiring sufficient overnight balances at market open; they are typically collateralised and subject to per-institution caps, with some central banks charging usage fees. Tokenized A2A infrastructure with intraday netting cycles reduces reliance on both pre-funded nostro balances and daylight overdraft by compressing the settlement cycle: net positions at each cycle are smaller and more predictable than gross intraday positions, reducing peak credit demand and eliminating the batching gap that forces excess intraday liquidity holdings. See also: <span class="xref-term">RTGS</span>, <span class="xref-term">Nostro Pre-Funding</span>, <span class="xref-term">Just-in-Time Settlement</span>, <span class="xref-term">DLT-Based Net Settlement</span>.</p>
       </div>
 
       <div class="term-entry" data-group="a2a">
@@ -628,15 +720,15 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Account-to-Account (A2A) Tokenization</span>
           <span class="term-abbr">A2A Tokenization</span>
         </div>
-        <p class="term-def"><strong>What it is:</strong> A software and infrastructure layer in which institutional payment obligations are represented as digital tokens on a permissioned distributed ledger, enabling banks and large corporates to settle cross-border B2B payments directly without routing through a correspondent chain. It is not an app, not an NFT, and not a single product you install: it is a layered infrastructure stack deployed by regulated financial institutions. <strong>The technical architecture:</strong> A2A tokenization infrastructure consists of (1) a permissioned blockchain network running on bank-operated or cloud-hosted validator nodes (Hyperledger Fabric, Hyperledger Besu, or R3 Corda are common choices); (2) a smart contract layer encoding the <span id="mint-transfer-redeem"></span>mint-transfer-redeem cycle; (3) an integration API layer connecting to existing core banking systems; and (4) an identity and compliance layer handling KYC attestations and sanctions screening. <strong>Is it an NFT?</strong> No. A2A payment tokens are fungible: each unit of currency is interchangeable with any other of the same denomination on the same ledger, like digital banknotes. NFTs (non-fungible tokens) are unique, non-interchangeable digital assets used for art or collectibles. They are an entirely different instrument class. <strong>Where does it live?</strong> On physical servers, typically inside bank data centers or on regulated private cloud infrastructure. In a permissioned consortium network, each participating bank runs one or more validator nodes that collectively maintain the shared ledger. Unlike public blockchains, these nodes are operated by known, regulated entities in known locations. <strong>Real-world example:</strong> JPMorgan's Kinexys Digital Payments (formerly Onyx) uses a permissioned ledger on which JPM Coin (now JPMD), a bank-issued deposit token, moves between institutional clients. The Kinexys platform also connected to public blockchain markets in 2024 to complete cross-chain Delivery versus Payment (DvP) settlement of tokenized US Treasuries against USD deposits in real time, one of the clearest live examples of A2A tokenization in production. See also: <span class="xref-term">Deposit Token</span>, <span class="xref-term">Mint-Transfer-Redeem Cycle</span>, <span class="xref-term">Validator Node</span>, <span class="xref-term">Consortium Ledger</span>.</p>
+        <p class="term-def"><span class="b">What it is:</span> A software and infrastructure layer in which institutional payment obligations are represented as digital tokens on a permissioned distributed ledger, enabling banks and large corporates to settle cross-border B2B payments directly without routing through a correspondent chain. It is not an app, not an NFT, and not a single product you install: it is a layered infrastructure stack deployed by regulated financial institutions. <span class="b">The technical architecture:</span> A2A tokenization infrastructure consists of (1) a permissioned blockchain network running on bank-operated or cloud-hosted validator nodes (Hyperledger Fabric, Hyperledger Besu, or R3 Corda are common choices); (2) a smart contract layer encoding the <span id="mint-transfer-redeem"></span>mint-transfer-redeem cycle; (3) an integration API layer connecting to existing core banking systems; and (4) an identity and compliance layer handling KYC attestations and sanctions screening. <span class="b">Is it an NFT?</span> No. A2A payment tokens are fungible: each unit of currency is interchangeable with any other of the same denomination on the same ledger, like digital banknotes. NFTs (non-fungible tokens) are unique, non-interchangeable digital assets used for art or collectibles. They are an entirely different instrument class. <span class="b">Where does it live?</span> On physical servers, typically inside bank data centers or on regulated private cloud infrastructure. In a permissioned consortium network, each participating bank runs one or more validator nodes that collectively maintain the shared ledger. Unlike public blockchains, these nodes are operated by known, regulated entities in known locations. <span class="b">Real-world example:</span> JPMorgan's Kinexys Digital Payments (formerly Onyx) uses a permissioned ledger on which JPM Coin (now JPMD), a bank-issued deposit token, moves between institutional clients. The Kinexys platform also connected to public blockchain markets in 2024 to complete cross-chain Delivery versus Payment (DvP) settlement of tokenized US Treasuries against USD deposits in real time, one of the clearest live examples of A2A tokenization in production. See also: <span class="xref-term">Deposit Token</span>, <span class="xref-term">Mint-Transfer-Redeem Cycle</span>, <span class="xref-term">Validator Node</span>, <span class="xref-term">Consortium Ledger</span>.</p>
       </div>
 
       <div class="term-entry" data-group="a2a">
         <div>
           <span class="term-name">Mint-Transfer-Redeem Cycle</span>
         </div>
-        <p class="term-def">One common architecture for tokenized A2A settlement (not the only model). Variants include: gross-on-ledger settlement (each transaction settles individually without netting), intraday RTGS settlement (net positions settle multiple times per day rather than end-of-cycle), and hybrid models combining elements. The DLT netting layer + RTGS end-of-cycle architecture described here is the most widely deployed pattern in current institutional networks. The core transaction lifecycle on a tokenized A2A payment rail. <strong>Mint:</strong> the sender's bank creates (mints) a digital token representing a claim against its fiat reserves; the fiat stays on the bank's balance sheet, now represented on-ledger. <strong>Transfer:</strong> the token is transferred on the permissioned ledger to the receiver's bank, with the transfer being validated by the network's validator nodes and the compliance layer confirming KYC and sanctions attestations. <strong>Redeem:</strong> the receiver's bank burns (retires) the token and credits the equivalent local-currency value to the recipient's account, with FX conversion occurring at the redemption point. Net positions between participating banks settle via RTGS at end-of-cycle, preserving the existing central bank settlement backbone while eliminating the correspondent intermediary chain. The integrity of this cycle (particularly the 1:1 correspondence between minted tokens and reserved fiat) is the primary focus of auditors and regulators in tokenized payment infrastructure.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#a2a" style="color:var(--accent-lt);">Deposit Token / Tokenized Deposit</a>, <a href="#a2a" style="color:var(--accent-lt);">Validator Node</a>, <a href="#settlement-finality" style="color:var(--accent-lt);">Settlement Finality</a>, <a href="#a2a" style="color:var(--accent-lt);">DLT-Based Net Settlement</a></p>
+        <p class="term-def">One common architecture for tokenized A2A settlement (not the only model). Variants include: gross-on-ledger settlement (each transaction settles individually without netting), intraday RTGS settlement (net positions settle multiple times per day rather than end-of-cycle), and hybrid models combining elements. The DLT netting layer + RTGS end-of-cycle architecture described here is the most widely deployed pattern in current institutional networks. The core transaction lifecycle on a tokenized A2A payment rail. <span class="b">Mint:</span> the sender's bank creates (mints) a digital token representing a claim against its fiat reserves; the fiat stays on the bank's balance sheet, now represented on-ledger. <span class="b">Transfer:</span> the token is transferred on the permissioned ledger to the receiver's bank, with the transfer being validated by the network's validator nodes and the compliance layer confirming KYC and sanctions attestations. <span class="b">Redeem:</span> the receiver's bank burns (retires) the token and credits the equivalent local-currency value to the recipient's account, with FX conversion occurring at the redemption point. Net positions between participating banks settle via RTGS at end-of-cycle, preserving the existing central bank settlement backbone while eliminating the correspondent intermediary chain. The integrity of this cycle (particularly the 1:1 correspondence between minted tokens and reserved fiat) is the primary focus of auditors and regulators in tokenized payment infrastructure.</p>
+        <p class="term-see-also">See also: <a href="#a2a">Deposit Token / Tokenized Deposit</a>, <a href="#a2a">Validator Node</a>, <a href="#settlement-finality">Settlement Finality</a>, <a href="#a2a">DLT-Based Net Settlement</a></p>
       </div>
 
       <div class="term-entry" data-group="a2a">
@@ -657,7 +749,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Deposit Token / Tokenized Deposit</span>
         </div>
-        <p class="term-def"><strong>Tokenized deposit:</strong> a digital representation of a traditional bank deposit on a shared core ledger; the underlying liability structure is unchanged. <strong>Deposit token:</strong> a bearer instrument issued natively on DLT as a bank liability. Both are bank liabilities under prudential supervision, eligible for deposit insurance, and distinct from stablecoins (non-bank issued) and CBDCs (sovereign issued). JPMorgan's JPMD is the leading live deposit token example. On-chain balance sheet representation: the fiat remains on the bank's balance sheet; only ownership/transfer instructions move on-ledger, not leaving the bank balance sheet. Because the underlying liability is a bank deposit, deposit tokens remain within the regulated banking system, preserve deposit insurance eligibility where applicable, and stay on the issuing bank's balance sheet. Deposit tokens are the primary instrument type used in bank-operated tokenized A2A payment systems, and their legal treatment under existing bank licensing rules is generally clearer than that of stablecoins, making them the preferred instrument for regulated institutional deployments.</p>
+        <p class="term-def"><span class="b">Tokenized deposit:</span> a digital representation of a traditional bank deposit on a shared core ledger; the underlying liability structure is unchanged. <span class="b">Deposit token:</span> a bearer instrument issued natively on DLT as a bank liability. Both are bank liabilities under prudential supervision, eligible for deposit insurance, and distinct from stablecoins (non-bank issued) and CBDCs (sovereign issued). JPMorgan's JPMD is the leading live deposit token example. On-chain balance sheet representation: the fiat remains on the bank's balance sheet; only ownership/transfer instructions move on-ledger, not leaving the bank balance sheet. Because the underlying liability is a bank deposit, deposit tokens remain within the regulated banking system, preserve deposit insurance eligibility where applicable, and stay on the issuing bank's balance sheet. Deposit tokens are the primary instrument type used in bank-operated tokenized A2A payment systems, and their legal treatment under existing bank licensing rules is generally clearer than that of stablecoins, making them the preferred instrument for regulated institutional deployments.</p>
       </div>
       <div class="term-entry" data-group="token">
         <div>
@@ -671,7 +763,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Project Agorá</span>
         </div>
         <p class="term-def">A wholesale cross-border payment research initiative led by the Bank for International Settlements (BIS) in collaboration with seven major central banks (the Federal Reserve Bank of New York, Bank of England, Bank of Japan, Bank of Korea, Banque de France, Bank of Mexico, and Swiss National Bank) together with a private sector group of financial institutions. Project Agorá explores how tokenized commercial bank deposits and central bank reserves could be integrated on a common programmable platform to improve the efficiency of cross-border payments. It is a research and proof-of-concept program, not a live production system. Its multi-central-bank scope makes it one of the most significant institutional signals that tokenized A2A settlement using deposit tokens is on the long-term roadmap of the world's major central banking systems.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#a2a" style="color:var(--accent-lt);">Unified Ledger</a>, <a href="#a2a" style="color:var(--accent-lt);">CBDC</a>, <a href="#a2a" style="color:var(--accent-lt);">Deposit Token / Tokenized Deposit</a>, <a href="#a2a" style="color:var(--accent-lt);">Project mBridge</a></p>
+        <p class="term-see-also">See also: <a href="#a2a">Unified Ledger</a>, <a href="#a2a">CBDC</a>, <a href="#a2a">Deposit Token / Tokenized Deposit</a>, <a href="#a2a">Project mBridge</a></p>
       </div>
 
       <div class="term-entry" data-group="a2a">
@@ -775,7 +867,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Permissioned Ledger</span>
         </div>
-        <p class="term-def">Not every institution that needs DLT access should be on a public blockchain. A permissioned ledger restricts read, write, and validation rights to a defined set of known participants, making it suitable for regulated institutions requiring privacy, compliance controls, and identifiable counterparties. Leading permissioned ledger platforms used in institutional finance include R3 Corda, Hyperledger Fabric, and ConsenSys Quorum. For a candid, practitioner-authored assessment of these platforms, including market share data, deployment realities, revenue transparency, and vendor dependency risks, see the <a href="enterprise-blockchain.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">Post Oak Labs Enterprise Blockchain Market Briefing →</a></p>
+        <p class="term-def">Not every institution that needs DLT access should be on a public blockchain. A permissioned ledger restricts read, write, and validation rights to a defined set of known participants, making it suitable for regulated institutions requiring privacy, compliance controls, and identifiable counterparties. Leading permissioned ledger platforms used in institutional finance include R3 Corda, Hyperledger Fabric, and ConsenSys Quorum. For a candid, practitioner-authored assessment of these platforms, including market share data, deployment realities, revenue transparency, and vendor dependency risks, see the <a href="enterprise-blockchain.html">Post Oak Labs Enterprise Blockchain Market Briefing →</a></p>
       </div>
 
       <div class="term-entry" id="atomic-settlement" data-group="token">
@@ -784,14 +876,14 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-abbr">DvP / PvP</span>
         </div>
         <p class="term-def">A settlement mechanism in which two legs of a transaction, such as the transfer of an asset and the transfer of payment, occur simultaneously and indivisibly. Either both legs succeed or neither does, eliminating principal risk during settlement. Also described as Delivery versus Payment (DvP) in securities contexts, or Payment versus Payment (PvP) in FX and cross-border payment contexts. Atomic settlement on a shared ledger is one of the most significant structural advantages of tokenized payment rails over traditional correspondent banking. Note: technical finality (ledger commit) and legal finality (contractual/regulatory irrevocability) are distinct. Both must be present for full institutional risk reduction. Finality timing varies depending on consensus mechanism and network configuration.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#a2a" style="color:var(--accent-lt);">Payment versus Payment (PvP)</a>, <a href="#a2a" style="color:var(--accent-lt);">Delivery versus Payment (DvP)</a>, <a href="#a2a" style="color:var(--accent-lt);">Smart Contract</a>, <a href="#settlement-finality" style="color:var(--accent-lt);">Settlement Finality</a></p>
+        <p class="term-see-also">See also: <a href="#a2a">Payment versus Payment (PvP)</a>, <a href="#a2a">Delivery versus Payment (DvP)</a>, <a href="#a2a">Smart Contract</a>, <a href="#settlement-finality">Settlement Finality</a></p>
       </div>
 
       <div class="term-entry" data-group="token">
         <div>
           <span class="term-name">Smart Contract</span>
         </div>
-        <p class="term-def">When specified conditions are met on a distributed ledger, a smart contract executes automatically, without human intervention or a central intermediary. In payments, smart contracts can automate escrow releases, conditional payments, recurring transfers, and compliance checks. The concept was coined by Nick Szabo in the 1990s and became practically deployable with Ethereum's programmable blockchain from 2015 onward. <strong>A2A-specific example:</strong> a smart contract on a permissioned A2A ledger can automatically trigger the redemption of a payment token and credit the receiver's bank account the moment a defined set of conditions are simultaneously confirmed on-chain: counterparty identity verified, FX rate locked, compliance attestation present, and trade finance milestone achieved. This programmability compresses what previously required multi-day manual coordination across a correspondent chain into a single atomic event.</p>
+        <p class="term-def">When specified conditions are met on a distributed ledger, a smart contract executes automatically, without human intervention or a central intermediary. In payments, smart contracts can automate escrow releases, conditional payments, recurring transfers, and compliance checks. The concept was coined by Nick Szabo in the 1990s and became practically deployable with Ethereum's programmable blockchain from 2015 onward. <span class="b">A2A-specific example:</span> a smart contract on a permissioned A2A ledger can automatically trigger the redemption of a payment token and credit the receiver's bank account the moment a defined set of conditions are simultaneously confirmed on-chain: counterparty identity verified, FX rate locked, compliance attestation present, and trade finance milestone achieved. This programmability compresses what previously required multi-day manual coordination across a correspondent chain into a single atomic event.</p>
       </div>
 
       <div class="term-entry" data-group="token">
@@ -819,11 +911,11 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="term-entry term-wide" data-group="token">
         <div class="term-name-row">
           <span class="term-name">CBDC, Central Bank Digital Currency</span>
-          <span class="term-abbr" style="margin-top:0;">CBDC</span>
+          <span class="term-abbr">CBDC</span>
         </div>
-        <p class="term-def">The digital form of a country's sovereign currency, issued and backed directly by the central bank, making it a direct liability of the state, unlike commercial bank deposits or privately issued stablecoins. CBDCs can be <strong>retail</strong> (accessible to the general public as a digital cash equivalent) or <strong>wholesale</strong> (restricted to banks and financial institutions for interbank settlement). Retail CBDCs offer financial inclusion and monetary policy transmission benefits; wholesale CBDCs are primarily a tool for improving interbank settlement efficiency, reducing nostro pre-funding requirements, and enabling programmable monetary operations.</p>
+        <p class="term-def">The digital form of a country's sovereign currency, issued and backed directly by the central bank, making it a direct liability of the state, unlike commercial bank deposits or privately issued stablecoins. CBDCs can be <span class="b">retail</span> (accessible to the general public as a digital cash equivalent) or <span class="b">wholesale</span> (restricted to banks and financial institutions for interbank settlement). Retail CBDCs offer financial inclusion and monetary policy transmission benefits; wholesale CBDCs are primarily a tool for improving interbank settlement efficiency, reducing nostro pre-funding requirements, and enabling programmable monetary operations.</p>
 
-        <div class="cbdc-stat-grid" style="margin-top:1rem;">
+        <div class="cbdc-stat-grid">
           <div class="cbdc-stat-cell">
             <span class="cbdc-stat-num">137</span>
             <span class="cbdc-stat-lbl">Countries &amp; currency unions<br>exploring a CBDC</span>
@@ -839,27 +931,27 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </div>
         <p class="cbdc-source">Source: <a href="https://www.atlanticcouncil.org/cbdctracker/" target="_blank" rel="noopener noreferrer">Atlantic Council CBDC Tracker</a>, last updated July 2025. The 137 countries represent 98% of global GDP. In May 2020, only 35 countries were exploring a CBDC.</p>
 
-        <svg viewBox="0 0 700 165" style="width:100%;max-width:560px;height:auto;font-family:'JetBrains Mono',monospace;margin-top:0.75rem;" role="img" aria-label="Funnel chart: 137 countries exploring a CBDC, narrowing to 49 active pilots, narrowing to 3 fully launched retail CBDCs">
-          <text x="0" y="24" fill="var(--text)" font-size="12">Exploring</text>
-          <rect x="150" y="10" width="536" height="20" fill="rgba(192,144,64,0.15)"/>
+        <svg class="funnel" viewBox="0 0 700 165" role="img" aria-label="Funnel chart: 137 countries exploring a CBDC, narrowing to 49 active pilots, narrowing to 3 fully launched retail CBDCs">
+          <text x="0" y="24" fill="var(--soft)" font-size="12">Exploring</text>
+          <rect x="150" y="10" width="536" height="20" fill="var(--band)"/>
           <rect x="150" y="10" width="536" height="20" fill="none" stroke="var(--gold)" stroke-width="1"/>
-          <text x="695" y="25" fill="var(--gold-lt)" font-size="13" font-weight="600" text-anchor="end">137</text>
+          <text x="695" y="25" fill="var(--teal)" font-size="13" font-weight="600" text-anchor="end">137</text>
 
-          <text x="0" y="74" fill="var(--text)" font-size="12">Active pilots</text>
-          <rect x="150" y="60" width="192" height="20" fill="rgba(192,144,64,0.15)"/>
+          <text x="0" y="74" fill="var(--soft)" font-size="12">Active pilots</text>
+          <rect x="150" y="60" width="192" height="20" fill="var(--band)"/>
           <rect x="150" y="60" width="192" height="20" fill="none" stroke="var(--gold)" stroke-width="1"/>
-          <text x="352" y="75" fill="var(--gold-lt)" font-size="13" font-weight="600">49</text>
+          <text x="352" y="75" fill="var(--teal)" font-size="13" font-weight="600">49</text>
 
-          <text x="0" y="124" fill="var(--text)" font-size="12">Fully launched</text>
-          <rect x="150" y="110" width="12" height="20" fill="rgba(192,144,64,0.15)"/>
+          <text x="0" y="124" fill="var(--soft)" font-size="12">Fully launched</text>
+          <rect x="150" y="110" width="12" height="20" fill="var(--band)"/>
           <rect x="150" y="110" width="12" height="20" fill="none" stroke="var(--gold)" stroke-width="1"/>
-          <text x="172" y="125" fill="var(--gold-lt)" font-size="13" font-weight="600">3</text>
+          <text x="172" y="125" fill="var(--teal)" font-size="13" font-weight="600">3</text>
 
-          <line x1="150" y1="0" x2="150" y2="140" stroke="var(--edge)" stroke-width="1"/>
+          <line x1="150" y1="0" x2="150" y2="140" stroke="var(--line)" stroke-width="1"/>
         </svg>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">Technical issuance (launch) is a small fraction of exploration; adoption drop-off is the norm, not the exception, across sovereign CBDC programs to date.</p>
+        <p class="term-see-also">Technical issuance (launch) is a small fraction of exploration; adoption drop-off is the norm, not the exception, across sovereign CBDC programs to date.</p>
 
-        <p class="term-def" style="margin-top:0.9rem;">As of early 2025, 3 countries have fully launched retail CBDCs (Bahamas, Jamaica, Nigeria) (Atlantic Council CBDC Tracker). The most relevant to Post Oak Labs' focus regions are the <strong>Bahamas Sand Dollar</strong>, <strong>Jamaica JAM-DEX</strong>, and <strong>Nigeria eNaira</strong> (launched October 2021; wallet dormancy exceeded 98% within the first year, and adoption has remained far below CBN targets (approximately 0.5% of population by 2024). Active wallet users doubled from approximately 5 million (2023) to 10 million (2024), a meaningful uptick from a low base that complicates a simple 'failed adoption' narrative while still confirming that technical issuance does not guarantee mass-market demand). The largest active pilot by transaction volume is China's <strong>digital yuan (e-CNY)</strong>, which reached cumulative transaction volume of over 7 trillion yuan ($986 billion) as of June 2024, and had accelerated to over 14.2 trillion yuan by September 2025 per People's Bank of China reporting. India's <strong>Digital Rupee (e-Rupee)</strong> has two distinct components: the <strong>wholesale CBDC (wCBDC)</strong> used for interbank government securities settlement, and the <strong>retail pilot (rCBDC)</strong>. The RBI set a target of 1 million daily retail transactions for the rCBDC; as of late 2023/early 2024 that target was not being met, with daily volumes reported in the tens of thousands, a demand-side adoption challenge separate from the technical infrastructure, which has operated without major incident. Total e-Rupee in circulation had grown to ₹10.16 billion as of March 2025 (wholesale and retail combined; figure subject to change). Total e-Rupee in circulation grew from ₹103 crore (December 2023) to ₹1,016 crore (March 2025), approximately 10× growth over 15 months. An October 2025 retail CBDC sandbox launch accelerated this trajectory. India's e-Rupee represents one of the faster-growing CBDC adoption curves globally, even if still far below the RBI's daily transaction targets. The <strong>ECB's digital euro</strong> pilot is advancing with a stated aim of strengthening the euro's international role. The <strong>US is an outlier</strong>: In early 2025, an executive order (EO 14178) directed a pause on federal retail CBDC development; wholesale CBDC research was not explicitly prohibited, which is why the US continues to participate in Project Agorá alongside six other major central banks. There is no inconsistency between the EO and US wholesale participation. Cross-border wholesale CBDC projects have more than doubled since 2022, with 13 active projects including <strong>Project mBridge</strong> (By 2025–2026, mBridge had processed in excess of $55 billion in transaction volume across participant central banks, making it one of the most mature wholesale CBDC deployments globally, despite the BIS Innovation Hub stepping back in October 2024. Participant central banks continue operations under evolving governance. Best cited as: an active multi-central-bank wholesale CBDC network in a governance transition, not an inactive or cancelled project), which connects central banks in China, Thailand, the UAE, Hong Kong, and Saudi Arabia. <strong>Note on DCash:</strong> The Eastern Caribbean Central Bank's DCash, a retail CBDC across eight Caribbean currency union territories, was one of the world's first live retail CBDCs when it launched in March 2021, and is directly relevant to Post Oak Labs' Caribbean deployment focus. DCash also experienced a significant technical outage in February 2022 that took the system offline for approximately two months, providing an important operational resilience lesson for retail CBDC deployments. However, the ECCB concluded the DCash pilot in January 2024 and shut it down; as of early 2025 the ECCB confirmed it does not currently operate a digital currency. A successor programme, DCash 2.0, is in preliminary planning but has not launched. DCash is therefore counted as a completed pilot rather than a currently live CBDC.</p>
+        <p class="term-def">As of early 2025, 3 countries have fully launched retail CBDCs (Bahamas, Jamaica, Nigeria) (Atlantic Council CBDC Tracker). The most relevant to Post Oak Labs' focus regions are the <span class="b">Bahamas Sand Dollar</span>, <span class="b">Jamaica JAM-DEX</span>, and <span class="b">Nigeria eNaira</span> (launched October 2021; wallet dormancy exceeded 98% within the first year, and adoption has remained far below CBN targets (approximately 0.5% of population by 2024). Active wallet users doubled from approximately 5 million (2023) to 10 million (2024), a meaningful uptick from a low base that complicates a simple 'failed adoption' narrative while still confirming that technical issuance does not guarantee mass-market demand). The largest active pilot by transaction volume is China's <span class="b">digital yuan (e-CNY)</span>, which reached cumulative transaction volume of over 7 trillion yuan ($986 billion) as of June 2024, and had accelerated to over 14.2 trillion yuan by September 2025 per People's Bank of China reporting. India's <span class="b">Digital Rupee (e-Rupee)</span> has two distinct components: the <span class="b">wholesale CBDC (wCBDC)</span> used for interbank government securities settlement, and the <span class="b">retail pilot (rCBDC)</span>. The RBI set a target of 1 million daily retail transactions for the rCBDC; as of late 2023/early 2024 that target was not being met, with daily volumes reported in the tens of thousands, a demand-side adoption challenge separate from the technical infrastructure, which has operated without major incident. Total e-Rupee in circulation had grown to ₹10.16 billion as of March 2025 (wholesale and retail combined; figure subject to change). Total e-Rupee in circulation grew from ₹103 crore (December 2023) to ₹1,016 crore (March 2025), approximately 10× growth over 15 months. An October 2025 retail CBDC sandbox launch accelerated this trajectory. India's e-Rupee represents one of the faster-growing CBDC adoption curves globally, even if still far below the RBI's daily transaction targets. The <span class="b">ECB's digital euro</span> pilot is advancing with a stated aim of strengthening the euro's international role. The <span class="b">US is an outlier</span>: In early 2025, an executive order (EO 14178) directed a pause on federal retail CBDC development; wholesale CBDC research was not explicitly prohibited, which is why the US continues to participate in Project Agorá alongside six other major central banks. There is no inconsistency between the EO and US wholesale participation. Cross-border wholesale CBDC projects have more than doubled since 2022, with 13 active projects including <span class="b">Project mBridge</span> (By 2025–2026, mBridge had processed in excess of $55 billion in transaction volume across participant central banks, making it one of the most mature wholesale CBDC deployments globally, despite the BIS Innovation Hub stepping back in October 2024. Participant central banks continue operations under evolving governance. Best cited as: an active multi-central-bank wholesale CBDC network in a governance transition, not an inactive or cancelled project), which connects central banks in China, Thailand, the UAE, Hong Kong, and Saudi Arabia. <span class="b">Note on DCash:</span> The Eastern Caribbean Central Bank's DCash, a retail CBDC across eight Caribbean currency union territories, was one of the world's first live retail CBDCs when it launched in March 2021, and is directly relevant to Post Oak Labs' Caribbean deployment focus. DCash also experienced a significant technical outage in February 2022 that took the system offline for approximately two months, providing an important operational resilience lesson for retail CBDC deployments. However, the ECCB concluded the DCash pilot in January 2024 and shut it down; as of early 2025 the ECCB confirmed it does not currently operate a digital currency. A successor programme, DCash 2.0, is in preliminary planning but has not launched. DCash is therefore counted as a completed pilot rather than a currently live CBDC.</p>
       </div>
 
       <div class="term-entry" data-group="token">
@@ -867,7 +959,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Tokenized Money Market Fund</span>
           <span class="term-abbr">tMMF</span>
         </div>
-        <p class="term-def">A traditional money market fund whose shares or units are represented as digital tokens on a distributed ledger, enabling near-instant redemption, 24/7 transferability, and use as high-quality collateral in tokenized payment and settlement networks. USD-denominated tMMFs already exist and have attracted significant institutional adoption, BlackRock's BUIDL fund is a leading example, with over $1 billion in assets within its first year. The gap in emerging and frontier markets is local-currency tMMFs: products that would allow corporates in non-dollarized economies to hold short-duration local-currency instruments with same-day liquidity, rather than being forced into USD instruments or leaving cash idle. <a href="a2a-guide.html#tmmf" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">See the tMMF product architecture →</a></p>
+        <p class="term-def">A traditional money market fund whose shares or units are represented as digital tokens on a distributed ledger, enabling near-instant redemption, 24/7 transferability, and use as high-quality collateral in tokenized payment and settlement networks. USD-denominated tMMFs already exist and have attracted significant institutional adoption, BlackRock's BUIDL fund is a leading example, with over $1 billion in assets within its first year. The gap in emerging and frontier markets is local-currency tMMFs: products that would allow corporates in non-dollarized economies to hold short-duration local-currency instruments with same-day liquidity, rather than being forced into USD instruments or leaving cash idle. <a href="a2a-guide.html#tmmf">See the tMMF product architecture →</a></p>
       </div>
 
       <div class="term-entry" data-group="token">
@@ -876,7 +968,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-abbr">formerly Onyx</span>
         </div>
         <p class="term-def">JPMorgan's blockchain-based wholesale payment and settlement platform, the most prominent live example of institutional A2A tokenization in production. Originally launched as Onyx in 2020 (following the introduction of JPM Coin in 2019), rebranded as Kinexys Digital Payments in 2024. The platform operates a permissioned blockchain ledger on which JPMD (formerly JPM Coin), a bank-issued deposit token, moves between JPMorgan institutional clients for 24/7 cross-border B2B settlement. By 2024, Kinexys was processing in excess of $2 billion in average daily transaction volume, with total cumulative volume exceeding $7 billion since inception. The platform aims to scale toward $10 billion in daily volume; citing any single daily figure in isolation is misleading; average daily volume has grown approximately 3× year-on-year. Kinexys also hosts the Tokenized Collateral Network (TCN), which enables near-real-time transfer of tokenized MMF share ownership for use as collateral in short-term financing. In a landmark 2024 demonstration, Kinexys Digital Payments connected its permissioned ledger to public blockchain markets, completing cross-chain Delivery versus Payment (DvP) settlement of tokenized US Treasuries against USD deposits, demonstrating interoperability between permissioned institutional infrastructure and public blockchain infrastructure. Kinexys is the canonical reference for banks evaluating what production-scale A2A tokenization infrastructure looks like operationally. In January 2026, JPMorgan deployed JPM Coin on the Canton Network (Digital Asset's Daml-based smart contract platform) and on Base (Coinbase's Ethereum L2), making JPMD the first major bank-issued deposit token on public blockchain infrastructure with permissioned access controls. In November 2025, DBS and Kinexys launched a cross-blockchain payment bridge. Kinexys represents the clearest live example of the emerging hybrid architecture: permissioned settlement rails coexisting with regulated public L2 deployment.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#a2a" style="color:var(--accent-lt);">Deposit Token / Tokenized Deposit</a>, <a href="#a2a" style="color:var(--accent-lt);">Canton Network</a>, <a href="#a2a" style="color:var(--accent-lt);">Tokenized Collateral Network (TCN)</a>, <a href="#a2a" style="color:var(--accent-lt);">Partior</a></p>
+        <p class="term-see-also">See also: <a href="#a2a">Deposit Token / Tokenized Deposit</a>, <a href="#a2a">Canton Network</a>, <a href="#a2a">Tokenized Collateral Network (TCN)</a>, <a href="#a2a">Partior</a></p>
       </div>
 
       <div class="term-entry" data-group="token">
@@ -956,7 +1048,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">CPMI G20 Cross-Border Payments Roadmap</span>
         </div>
-        <p class="term-def">The BIS Committee on Payments and Market Infrastructures (CPMI) three-phase plan (2021–2027) mandated by G20 finance ministers to enhance cross-border payments: targets include reducing average remittance cost to below 3%, ensuring cross-border payments are available 24/7, and improving payment transparency and traceability. Tokenized A2A infrastructure is one technical approach explicitly aligned with the Roadmap's goals, particularly for improving speed, reducing cost, and enabling richer data to travel with payments. The Roadmap provides institutional legitimacy to the A2A thesis: multilateral policy endorsement signals that the problem A2A solves is recognized at the highest level of global financial governance. Source: BIS CPMI, G20 Roadmap for Enhancing Cross-Border Payments (<a href="https://www.bis.org/cpmi" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/cpmi</a>).</p>
+        <p class="term-def">The BIS Committee on Payments and Market Infrastructures (CPMI) three-phase plan (2021–2027) mandated by G20 finance ministers to enhance cross-border payments: targets include reducing average remittance cost to below 3%, ensuring cross-border payments are available 24/7, and improving payment transparency and traceability. Tokenized A2A infrastructure is one technical approach explicitly aligned with the Roadmap's goals, particularly for improving speed, reducing cost, and enabling richer data to travel with payments. The Roadmap provides institutional legitimacy to the A2A thesis: multilateral policy endorsement signals that the problem A2A solves is recognized at the highest level of global financial governance. Source: BIS CPMI, G20 Roadmap for Enhancing Cross-Border Payments (<a href="https://www.bis.org/cpmi" target="_blank" rel="noopener noreferrer">bis.org/cpmi</a>).</p>
       </div>
 
       <div class="term-entry" data-group="reg">
@@ -977,7 +1069,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">ECB Digital Euro / Pontes &amp; Appia</span>
         </div>
-        <p class="term-def">The European Central Bank's dual-track approach to tokenized finance infrastructure. <strong>Pontes</strong> (launching Q3 2026): enables DLT-based settlement in central bank money, providing a wholesale CBDC settlement mechanism for tokenized asset transactions within the European financial system. <strong>Appia</strong> (roadmap published March 2026): a longer-horizon plan for tokenized European finance, connecting CBDCs, tokenized deposits, regulated stablecoins, and tokenized assets on interoperable infrastructure. The ECB has explicitly stated that tokenized deposits and regulated stablecoins will play a 'complementary role' alongside central bank money, validating the deposit-token A2A architecture as compatible with European monetary policy. The ECB digital euro retail pilot is also advancing, aimed at strengthening the euro's international role. Relevant to institutions operating EUR-denominated A2A corridors and those evaluating MiCA-compliant stablecoin integration.</p>
+        <p class="term-def">The European Central Bank's dual-track approach to tokenized finance infrastructure. <span class="b">Pontes</span> (launching Q3 2026): enables DLT-based settlement in central bank money, providing a wholesale CBDC settlement mechanism for tokenized asset transactions within the European financial system. <span class="b">Appia</span> (roadmap published March 2026): a longer-horizon plan for tokenized European finance, connecting CBDCs, tokenized deposits, regulated stablecoins, and tokenized assets on interoperable infrastructure. The ECB has explicitly stated that tokenized deposits and regulated stablecoins will play a 'complementary role' alongside central bank money, validating the deposit-token A2A architecture as compatible with European monetary policy. The ECB digital euro retail pilot is also advancing, aimed at strengthening the euro's international role. Relevant to institutions operating EUR-denominated A2A corridors and those evaluating MiCA-compliant stablecoin integration.</p>
       </div>
 
     </div>
@@ -1062,86 +1154,86 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         </div>
         <p class="term-def">A treasury officer evaluating whether to deploy tokenized A2A payment infrastructure in a given market needs to understand two distinct regulatory layers: the payment systems law that governs how value moves, and the digital asset or CBDC rules that govern whether tokenized instruments are legally recognized. These layers are frequently misaligned. A market with a progressive CBDC program may have a restrictive payment systems licensing regime, and vice versa. Below is a reference summary for the markets where Post Oak Labs is most active. This is not legal advice; in-country counsel is required before any deployment decision.</p>
 
-        <div style="display:flex;flex-direction:column;gap:1.5rem;margin:1.25rem 0 0.5rem;">
+        <div class="region-list">
 
           <!-- COLOMBIA -->
-          <div style="border:1px solid var(--edge);background:var(--navy);">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Colombia</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Colombia</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Law 1735 (2014) governs electronic payments. Banco de la Republica oversees national payment infrastructure. ACH Colombia operates the domestic instant payment scheme (PSE). Fintech regulation consolidated under Decree 2443 (2018) framework. <strong style="color:var(--text);">PSP Licensing:</strong> Sociedades Especializadas en Depositos y Pagos Electronicos (SEDPE) license required for non-bank PSPs. Administered by Superfinanciera (SFC). License conditions include minimum capital, AML program, and technology risk standards. <strong style="color:var(--text);">AML Supervisor:</strong> UIAF (Unidad de Informacion y Analisis Financiero). FATF-compliant. SFC supervises AML compliance for regulated entities. Colombia is a FATF member in good standing as of 2025. <strong style="color:var(--text);">Open Banking:</strong> SFC issued open banking guidelines in 2022. Implementation is voluntary and API-based. Adoption among mid-tier banks remains uneven. No mandatory PSD2-equivalent framework yet. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> Banco de la Republica completed a wholesale CBDC pilot in 2023. No retail CBDC launched. Digital assets regulated under SFC Circular 029 (2018) as high-risk instruments; commercial bank digital asset products require SFC authorization. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">Moderate-High. Regulatory framework is increasingly coherent; wholesale CBDC work creates institutional familiarity. SEDPE licensing pathway for tokenized rail operators is established but requires sustained SFC engagement.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Law 1735 (2014) governs electronic payments. Banco de la Republica oversees national payment infrastructure. ACH Colombia operates the domestic instant payment scheme (PSE). Fintech regulation consolidated under Decree 2443 (2018) framework. <span class="b">PSP Licensing:</span> Sociedades Especializadas en Depositos y Pagos Electronicos (SEDPE) license required for non-bank PSPs. Administered by Superfinanciera (SFC). License conditions include minimum capital, AML program, and technology risk standards. <span class="b">AML Supervisor:</span> UIAF (Unidad de Informacion y Analisis Financiero). FATF-compliant. SFC supervises AML compliance for regulated entities. Colombia is a FATF member in good standing as of 2025. <span class="b">Open Banking:</span> SFC issued open banking guidelines in 2022. Implementation is voluntary and API-based. Adoption among mid-tier banks remains uneven. No mandatory PSD2-equivalent framework yet. <span class="b">CBDC / Digital Asset:</span> Banco de la Republica completed a wholesale CBDC pilot in 2023. No retail CBDC launched. Digital assets regulated under SFC Circular 029 (2018) as high-risk instruments; commercial bank digital asset products require SFC authorization. <span class="b">A2A Readiness:</span> <span>Moderate-High. Regulatory framework is increasingly coherent; wholesale CBDC work creates institutional familiarity. SEDPE licensing pathway for tokenized rail operators is established but requires sustained SFC engagement.</span></p>
           </div>
 
           <!-- NIGERIA -->
-          <div style="border:1px solid var(--edge);background:var(--navy);">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Nigeria</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Nigeria</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Central Bank of Nigeria Act (2007) and Banks and Other Financial Institutions Act (BOFIA) 2020. CBN Payment System Vision 2025 framework governs digital payment infrastructure. NIBSS operates national interbank settlement. Foreign exchange controls under CBN FX regulations create a material constraint on cross-border tokenized flows. <strong style="color:var(--text);">PSP Licensing:</strong> Payment Service Provider (PSP) license issued by CBN. Tiered system: switching companies, payment solution service providers (PSSPs), super-agents, payment terminal service providers. Non-bank operators require CBN authorization before any tokenized payment deployment. <strong style="color:var(--text);">AML Supervisor:</strong> Nigerian Financial Intelligence Unit (NFIU), established under Money Laundering Prohibition Act 2022. FATF grey-listed Nigeria in February 2023; exited the grey list in October 2023 following remediation actions. This recent history requires careful due diligence on AML compliance posture for any institution transacting in the Nigeria corridor. <strong style="color:var(--text);">Open Banking:</strong> CBN Open Banking Framework issued 2021, with mandatory API standards for Tier 1 and Tier 2 banks. Implementation phased; most large banks have sandbox-level compliance. Open banking creates a natural data layer for institutional A2A products. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> eNaira (retail CBDC) launched October 2021; one of 11 fully launched retail CBDCs globally (Atlantic Council, early 2025). Adoption has been slower than CBN targets (approximately 0.5% of population by 2024). CBN issued Virtual Assets Service Providers (VASP) regulations in 2023 providing a partial framework for digital asset operators. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">Moderate. eNaira provides institutional familiarity but FX controls and recent FATF grey-listing require additional diligence. CBN engagement is essential prior to any institutional A2A deployment. Correspondent de-risking pressure is elevated in the Nigeria corridor.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Central Bank of Nigeria Act (2007) and Banks and Other Financial Institutions Act (BOFIA) 2020. CBN Payment System Vision 2025 framework governs digital payment infrastructure. NIBSS operates national interbank settlement. Foreign exchange controls under CBN FX regulations create a material constraint on cross-border tokenized flows. <span class="b">PSP Licensing:</span> Payment Service Provider (PSP) license issued by CBN. Tiered system: switching companies, payment solution service providers (PSSPs), super-agents, payment terminal service providers. Non-bank operators require CBN authorization before any tokenized payment deployment. <span class="b">AML Supervisor:</span> Nigerian Financial Intelligence Unit (NFIU), established under Money Laundering Prohibition Act 2022. FATF grey-listed Nigeria in February 2023; exited the grey list in October 2023 following remediation actions. This recent history requires careful due diligence on AML compliance posture for any institution transacting in the Nigeria corridor. <span class="b">Open Banking:</span> CBN Open Banking Framework issued 2021, with mandatory API standards for Tier 1 and Tier 2 banks. Implementation phased; most large banks have sandbox-level compliance. Open banking creates a natural data layer for institutional A2A products. <span class="b">CBDC / Digital Asset:</span> eNaira (retail CBDC) launched October 2021; one of 11 fully launched retail CBDCs globally (Atlantic Council, early 2025). Adoption has been slower than CBN targets (approximately 0.5% of population by 2024). CBN issued Virtual Assets Service Providers (VASP) regulations in 2023 providing a partial framework for digital asset operators. <span class="b">A2A Readiness:</span> <span>Moderate. eNaira provides institutional familiarity but FX controls and recent FATF grey-listing require additional diligence. CBN engagement is essential prior to any institutional A2A deployment. Correspondent de-risking pressure is elevated in the Nigeria corridor.</span></p>
           </div>
 
           <!-- JAMAICA -->
-          <div style="border:1px solid var(--edge);background:var(--navy);">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Jamaica</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Jamaica</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Banking Services Act (2014) and Bank of Jamaica Act govern the payments sector. BOJ operates the Jamaica Automated Clearing House (JACH) and the RTGS. Payment systems oversight is active and progressive; BOJ has been a notable early adopter of CBDC infrastructure. <strong style="color:var(--text);">PSP Licensing:</strong> Payment service providers must be authorized by BOJ under the Bank of Jamaica (Amendment) Act 2022. Sandbox framework (BOJ Fintech Regulatory Sandbox) available for novel payment architectures. Jamaica is a relatively approachable jurisdiction for institutional innovation given BOJ's digital currency track record. <strong style="color:var(--text);">AML Supervisor:</strong> Financial Investigations Division (FID) and Bank of Jamaica. FATF-compliant. Jamaica updated its AML/CFT framework significantly in 2022 following a period of enhanced follow-up with CFATF (Caribbean FATF). Current FATF status: compliant, not listed. <strong style="color:var(--text);">Open Banking:</strong> No formal open banking mandate as of 2025. BOJ has consulted on open banking standards as part of its broader payments modernization agenda. Implementation remains voluntary and early-stage. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> JAM-DEX (Jamaican Dollar CBDC) launched May 2022, one of 11 fully launched retail CBDCs globally (Atlantic Council, early 2025). Issued by BOJ; distributed through NCB (National Commercial Bank) and Scotiabank Jamaica. JAM-DEX is a liability of the central bank, not commercial banks, and structurally distinct from a bank-issued digital currency product. As of end-2025, JAM-DEX in circulation represents less than 0.1% of banknotes and coins; slow merchant onboarding remains the persistent constraint. Jamaica confirms that a technically sound CBDC issuance does not automatically translate to adoption without active merchant and consumer incentive programs. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">High. BOJ's proactive digital currency stance and sandbox framework make Jamaica one of the more receptive Caribbean jurisdictions for institutional A2A deployment. Correspondent de-risking is a structural concern for the Jamaica corridor (US-Jamaica remittance dependence) and creates demand urgency.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Banking Services Act (2014) and Bank of Jamaica Act govern the payments sector. BOJ operates the Jamaica Automated Clearing House (JACH) and the RTGS. Payment systems oversight is active and progressive; BOJ has been a notable early adopter of CBDC infrastructure. <span class="b">PSP Licensing:</span> Payment service providers must be authorized by BOJ under the Bank of Jamaica (Amendment) Act 2022. Sandbox framework (BOJ Fintech Regulatory Sandbox) available for novel payment architectures. Jamaica is a relatively approachable jurisdiction for institutional innovation given BOJ's digital currency track record. <span class="b">AML Supervisor:</span> Financial Investigations Division (FID) and Bank of Jamaica. FATF-compliant. Jamaica updated its AML/CFT framework significantly in 2022 following a period of enhanced follow-up with CFATF (Caribbean FATF). Current FATF status: compliant, not listed. <span class="b">Open Banking:</span> No formal open banking mandate as of 2025. BOJ has consulted on open banking standards as part of its broader payments modernization agenda. Implementation remains voluntary and early-stage. <span class="b">CBDC / Digital Asset:</span> JAM-DEX (Jamaican Dollar CBDC) launched May 2022, one of 11 fully launched retail CBDCs globally (Atlantic Council, early 2025). Issued by BOJ; distributed through NCB (National Commercial Bank) and Scotiabank Jamaica. JAM-DEX is a liability of the central bank, not commercial banks, and structurally distinct from a bank-issued digital currency product. As of end-2025, JAM-DEX in circulation represents less than 0.1% of banknotes and coins; slow merchant onboarding remains the persistent constraint. Jamaica confirms that a technically sound CBDC issuance does not automatically translate to adoption without active merchant and consumer incentive programs. <span class="b">A2A Readiness:</span> <span>High. BOJ's proactive digital currency stance and sandbox framework make Jamaica one of the more receptive Caribbean jurisdictions for institutional A2A deployment. Correspondent de-risking is a structural concern for the Jamaica corridor (US-Jamaica remittance dependence) and creates demand urgency.</span></p>
           </div>
 
           <!-- COSTA RICA -->
-          <div style="border:1px solid var(--edge);background:var(--navy);">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Costa Rica</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Costa Rica</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Law 7558 (Organic Law of the Banco Central de Costa Rica) governs the payment system. BCCR operates SINPE (Sistema Nacional de Pagos Electronicos), one of the most developed real-time domestic payment systems in Central America, supporting interbank transfers, FX transactions, and securities settlement. SINPE's maturity is both an opportunity and a competitive benchmark for tokenized infrastructure. <strong style="color:var(--text);">PSP Licensing:</strong> Non-bank payment service providers are regulated under SUGEF (Superintendencia General de Entidades Financieras) and the CONASSIF (National Council of Financial System Supervision). Licensing requirements vary by product; electronic money issuers require specific authorization. <strong style="color:var(--text);">AML Supervisor:</strong> ICD (Inteligencia Financiera) under the Ministry of Finance, with SUGEF supervising AML at the institutional level. FATF-compliant; Costa Rica is a GAFILAT (Latin American FATF-style body) member in good standing. <strong style="color:var(--text);">Open Banking:</strong> No open banking mandate as of 2025. BCCR has published research on open banking compatibility with SINPE infrastructure. Costa Rica's relatively advanced digital banking sector creates conditions for voluntary open banking adoption. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> BCCR exploring digital currency options as of 2024 but no CBDC pilot announced. Bitcoin is not legal tender (unlike neighboring El Salvador). Digital asset regulation remains a legal gray area without specific enabling legislation. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">Moderate-High. SINPE's maturity means the domestic payment problem is largely solved; the opportunity is cross-border institutional settlement and treasury optimization, particularly for the substantial US-Costa Rica commercial corridor. Regulatory approach is stable and institutional.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Law 7558 (Organic Law of the Banco Central de Costa Rica) governs the payment system. BCCR operates SINPE (Sistema Nacional de Pagos Electronicos), one of the most developed real-time domestic payment systems in Central America, supporting interbank transfers, FX transactions, and securities settlement. SINPE's maturity is both an opportunity and a competitive benchmark for tokenized infrastructure. <span class="b">PSP Licensing:</span> Non-bank payment service providers are regulated under SUGEF (Superintendencia General de Entidades Financieras) and the CONASSIF (National Council of Financial System Supervision). Licensing requirements vary by product; electronic money issuers require specific authorization. <span class="b">AML Supervisor:</span> ICD (Inteligencia Financiera) under the Ministry of Finance, with SUGEF supervising AML at the institutional level. FATF-compliant; Costa Rica is a GAFILAT (Latin American FATF-style body) member in good standing. <span class="b">Open Banking:</span> No open banking mandate as of 2025. BCCR has published research on open banking compatibility with SINPE infrastructure. Costa Rica's relatively advanced digital banking sector creates conditions for voluntary open banking adoption. <span class="b">CBDC / Digital Asset:</span> BCCR exploring digital currency options as of 2024 but no CBDC pilot announced. Bitcoin is not legal tender (unlike neighboring El Salvador). Digital asset regulation remains a legal gray area without specific enabling legislation. <span class="b">A2A Readiness:</span> <span>Moderate-High. SINPE's maturity means the domestic payment problem is largely solved; the opportunity is cross-border institutional settlement and treasury optimization, particularly for the substantial US-Costa Rica commercial corridor. Regulatory approach is stable and institutional.</span></p>
           </div>
 
           <!-- TRINIDAD AND TOBAGO -->
-          <div style="border:1px solid var(--edge);background:var(--navy);">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Trinidad and Tobago</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Trinidad and Tobago</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Central Bank of Trinidad and Tobago Act and the Financial Institutions Act (2008) govern the payment system. CBTT oversees TTFS (Trinidad and Tobago Financial System) payment infrastructure. ACH operations and EFT standards are managed through the Bankers Association of T&T. The jurisdiction benefits from a relatively sophisticated financial sector by Caribbean standards. <strong style="color:var(--text);">PSP Licensing:</strong> Payment service providers regulated by CBTT under the Financial Institutions Act. CBTT has issued guidance on electronic money and digital payment products. Fintech sandbox framework under development as of 2025. <strong style="color:var(--text);">AML Supervisor:</strong> Financial Intelligence Unit of Trinidad and Tobago (FIUTT). CFATF member. T&T has faced correspondent de-risking pressure historically; major correspondent relationships with US banks have been reduced, creating documented demand for alternative cross-border settlement solutions. <strong style="color:var(--text);">Open Banking:</strong> No formal open banking framework. CBTT and the banking sector are at early consultation stage as of 2025. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> CBTT conducted a CBDC feasibility study and consultation in 2022-2023. No CBDC pilot launched as of early 2026. Digital assets not specifically regulated but treated as unregulated instruments under general securities and financial services law. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">Moderate. Correspondent de-risking creates genuine demand urgency. Regulatory framework is evolving but not yet fully enabling for tokenized infrastructure. CBTT engagement is required; the institution has demonstrated openness to digital finance innovation without having yet built a formal enabling framework.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Central Bank of Trinidad and Tobago Act and the Financial Institutions Act (2008) govern the payment system. CBTT oversees TTFS (Trinidad and Tobago Financial System) payment infrastructure. ACH operations and EFT standards are managed through the Bankers Association of T&T. The jurisdiction benefits from a relatively sophisticated financial sector by Caribbean standards. <span class="b">PSP Licensing:</span> Payment service providers regulated by CBTT under the Financial Institutions Act. CBTT has issued guidance on electronic money and digital payment products. Fintech sandbox framework under development as of 2025. <span class="b">AML Supervisor:</span> Financial Intelligence Unit of Trinidad and Tobago (FIUTT). CFATF member. T&T has faced correspondent de-risking pressure historically; major correspondent relationships with US banks have been reduced, creating documented demand for alternative cross-border settlement solutions. <span class="b">Open Banking:</span> No formal open banking framework. CBTT and the banking sector are at early consultation stage as of 2025. <span class="b">CBDC / Digital Asset:</span> CBTT conducted a CBDC feasibility study and consultation in 2022-2023. No CBDC pilot launched as of early 2026. Digital assets not specifically regulated but treated as unregulated instruments under general securities and financial services law. <span class="b">A2A Readiness:</span> <span>Moderate. Correspondent de-risking creates genuine demand urgency. Regulatory framework is evolving but not yet fully enabling for tokenized infrastructure. CBTT engagement is required; the institution has demonstrated openness to digital finance innovation without having yet built a formal enabling framework.</span></p>
           </div>
 
         </div>
 
-          <div style="border:1px solid var(--edge);border-radius:6px;overflow:hidden;margin-bottom:0.75rem;">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Panama</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Panama</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Law 130 of 2013 (Sistema de Pago). Superintendencia de Bancos de Panamá (SBP) governs. Panama uses USD natively, so there is no FX conversion risk for USD-denominated A2A flows. <strong style="color:var(--text);">PSP Licensing:</strong> Strong fintech regulatory sandbox framework. Payment service providers require SBP authorization. <strong style="color:var(--text);">AML Supervisor:</strong> Unidad de Análisis Financiero (UAF). FATF-compliant. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> No retail CBDC launched. Digital asset legislation passed in 2022 (Law 129) providing a partial legal framework for crypto asset service providers. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">High for USD corridors given dollarized economy, with no FX conversion layer required. Primary consideration is SBP approval for DLT infrastructure and AML framework extension to tokenized rails.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Law 130 of 2013 (Sistema de Pago). Superintendencia de Bancos de Panamá (SBP) governs. Panama uses USD natively, so there is no FX conversion risk for USD-denominated A2A flows. <span class="b">PSP Licensing:</span> Strong fintech regulatory sandbox framework. Payment service providers require SBP authorization. <span class="b">AML Supervisor:</span> Unidad de Análisis Financiero (UAF). FATF-compliant. <span class="b">CBDC / Digital Asset:</span> No retail CBDC launched. Digital asset legislation passed in 2022 (Law 129) providing a partial legal framework for crypto asset service providers. <span class="b">A2A Readiness:</span> <span>High for USD corridors given dollarized economy, with no FX conversion layer required. Primary consideration is SBP approval for DLT infrastructure and AML framework extension to tokenized rails.</span></p>
           </div>
 
-          <div style="border:1px solid var(--edge);border-radius:6px;overflow:hidden;margin-bottom:0.75rem;">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Dominican Republic</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Dominican Republic</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Ley Monetaria y Financiera (Ley 183-02) and Reglamento de Sistemas de Pago govern payment infrastructure. Banco Central de la República Dominicana (BCRD) operates LBTR (real-time gross settlement) and SIPARD (automated clearing house). <strong style="color:var(--text);">PSP Licensing:</strong> Non-bank payment service providers regulated under Ley 249-17 on the Securities Market, and Ley 155-17 on AML. BCRD issues authorizations for payment system participants. <strong style="color:var(--text);">AML Supervisor:</strong> Unidad de Análisis Financiero (UAF-RD). FATF-compliant; GAFILAT member. Dominican Republic completed a successful FATF mutual evaluation in 2018 with ongoing improvement. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> BCRD published a CBDC research paper in 2022; no pilot launched as of 2026. Digital assets regulated under Circular BCR-SBIF-2021 as high-risk instruments requiring enhanced due diligence. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">Moderate. The Dominican Republic is the largest Caribbean economy by GDP and a major US remittance destination. BCRD's active CBDC research and maturing regulatory framework create conditions for institutional A2A engagement, subject to BCRD authorization.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Ley Monetaria y Financiera (Ley 183-02) and Reglamento de Sistemas de Pago govern payment infrastructure. Banco Central de la República Dominicana (BCRD) operates LBTR (real-time gross settlement) and SIPARD (automated clearing house). <span class="b">PSP Licensing:</span> Non-bank payment service providers regulated under Ley 249-17 on the Securities Market, and Ley 155-17 on AML. BCRD issues authorizations for payment system participants. <span class="b">AML Supervisor:</span> Unidad de Análisis Financiero (UAF-RD). FATF-compliant; GAFILAT member. Dominican Republic completed a successful FATF mutual evaluation in 2018 with ongoing improvement. <span class="b">CBDC / Digital Asset:</span> BCRD published a CBDC research paper in 2022; no pilot launched as of 2026. Digital assets regulated under Circular BCR-SBIF-2021 as high-risk instruments requiring enhanced due diligence. <span class="b">A2A Readiness:</span> <span>Moderate. The Dominican Republic is the largest Caribbean economy by GDP and a major US remittance destination. BCRD's active CBDC research and maturing regulatory framework create conditions for institutional A2A engagement, subject to BCRD authorization.</span></p>
           </div>
 
-          <div style="border:1px solid var(--edge);border-radius:6px;overflow:hidden;margin-bottom:0.75rem;">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Barbados</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Barbados</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Payment Systems Act (Cap. 322A) and the Central Bank of Barbados Act govern the payment system. Central Bank of Barbados (CBB) operates the Real Time Gross Settlement (RTGS) system and oversees the automated clearing house. <strong style="color:var(--text);">PSP Licensing:</strong> Payment service providers require authorization from the CBB. Barbados has a relatively progressive regulatory posture for the Eastern Caribbean, having engaged actively with digital finance policy at CARICOM level. <strong style="color:var(--text);">AML Supervisor:</strong> Financial Intelligence Unit (FIU) Barbados. CFATF member. FATF-compliant as of 2024. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> No CBDC launched. CBB has participated in regional CBDC research. Digital assets not specifically legislated; treated under existing financial services law. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">Moderate-High. Barbados benefits from a stable regulatory environment and is positioned as a regional financial services center. Correspondent de-risking has affected the Barbados corridor, creating institutional demand for alternative settlement. CBB engagement required for any tokenized rail deployment.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Payment Systems Act (Cap. 322A) and the Central Bank of Barbados Act govern the payment system. Central Bank of Barbados (CBB) operates the Real Time Gross Settlement (RTGS) system and oversees the automated clearing house. <span class="b">PSP Licensing:</span> Payment service providers require authorization from the CBB. Barbados has a relatively progressive regulatory posture for the Eastern Caribbean, having engaged actively with digital finance policy at CARICOM level. <span class="b">AML Supervisor:</span> Financial Intelligence Unit (FIU) Barbados. CFATF member. FATF-compliant as of 2024. <span class="b">CBDC / Digital Asset:</span> No CBDC launched. CBB has participated in regional CBDC research. Digital assets not specifically legislated; treated under existing financial services law. <span class="b">A2A Readiness:</span> <span>Moderate-High. Barbados benefits from a stable regulatory environment and is positioned as a regional financial services center. Correspondent de-risking has affected the Barbados corridor, creating institutional demand for alternative settlement. CBB engagement required for any tokenized rail deployment.</span></p>
           </div>
 
-          <div style="border:1px solid var(--edge);border-radius:6px;overflow:hidden;margin-bottom:0.75rem;">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Mexico</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Mexico</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Ley del Banco de México and Ley de Instituciones de Tecnología Financiera (Fintech Law, 2018), one of the most thorough fintech regulatory frameworks in Latin America. Banco de México (Banxico) operates SPEI (Sistema de Pagos Electrónicos Interbancarios), a real-time interbank settlement system processing millions of transactions daily. <strong style="color:var(--text);">PSP Licensing:</strong> Instituciones de Fondos de Pago Electrónico (IFPEs) and Instituciones de Financiamiento Colectivo (IFCs) licensed by CNBV (Comisión Nacional Bancaria y de Valores). Mexico was one of the first countries to create a dedicated fintech licensing framework. <strong style="color:var(--text);">AML Supervisor:</strong> Unidad de Inteligencia Financiera (UIF-Mexico). FATF member in good standing. Mexico's AML framework is advanced, with strict beneficial ownership requirements. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> Banxico completed exploratory CBDC research; no retail CBDC launched as of 2026. Virtual assets regulated under the Fintech Law; licensed entities may offer crypto services with Banxico and CNBV approval. <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">High. Mexico is the second-largest remittance recipient globally (after India) and the US-Mexico corridor is the world's largest bilateral remittance corridor by volume. SPEI's maturity provides a strong domestic settlement backbone; cross-border institutional B2B settlement remains a significant opportunity. The Fintech Law's virtual asset provisions provide a licensing pathway for tokenized rail operators.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Ley del Banco de México and Ley de Instituciones de Tecnología Financiera (Fintech Law, 2018), one of the most thorough fintech regulatory frameworks in Latin America. Banco de México (Banxico) operates SPEI (Sistema de Pagos Electrónicos Interbancarios), a real-time interbank settlement system processing millions of transactions daily. <span class="b">PSP Licensing:</span> Instituciones de Fondos de Pago Electrónico (IFPEs) and Instituciones de Financiamiento Colectivo (IFCs) licensed by CNBV (Comisión Nacional Bancaria y de Valores). Mexico was one of the first countries to create a dedicated fintech licensing framework. <span class="b">AML Supervisor:</span> Unidad de Inteligencia Financiera (UIF-Mexico). FATF member in good standing. Mexico's AML framework is advanced, with strict beneficial ownership requirements. <span class="b">CBDC / Digital Asset:</span> Banxico completed exploratory CBDC research; no retail CBDC launched as of 2026. Virtual assets regulated under the Fintech Law; licensed entities may offer crypto services with Banxico and CNBV approval. <span class="b">A2A Readiness:</span> <span>High. Mexico is the second-largest remittance recipient globally (after India) and the US-Mexico corridor is the world's largest bilateral remittance corridor by volume. SPEI's maturity provides a strong domestic settlement backbone; cross-border institutional B2B settlement remains a significant opportunity. The Fintech Law's virtual asset provisions provide a licensing pathway for tokenized rail operators.</span></p>
           </div>
 
-          <div style="border:1px solid var(--edge);border-radius:6px;overflow:hidden;margin-bottom:0.75rem;">
-            <div style="padding:0.75rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--edge);">
-              <span style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--white);">Bahamas</span>
+          <div class="region">
+            <div class="region-head">
+              <span class="region-name">Bahamas</span>
             </div>
-            <p style="padding:1.1rem 1.4rem;font-size:0.82rem;color:var(--body);line-height:1.85;"><strong style="color:var(--text);">Payment Systems Law:</strong> Central Bank of The Bahamas Act and Payment Systems Act govern payment infrastructure. The Central Bank of The Bahamas (CBB) is both the monetary authority and payment systems regulator. <strong style="color:var(--text);">PSP Licensing:</strong> Payment service providers authorized by CBB. Bahamas has positioned itself as a progressive digital asset jurisdiction, having enacted the Digital Assets and Registered Exchanges (DARE) Act in 2020. <strong style="color:var(--text);">AML Supervisor:</strong> Financial Intelligence Unit (FIU Bahamas). CFATF member. FATF-compliant. <strong style="color:var(--text);">CBDC / Digital Asset:</strong> Sand Dollar, the world's first live retail CBDC, launched in October 2020. Issued by the Central Bank of The Bahamas; distributed through authorized financial institutions. Sand Dollar demonstrates central bank digital currency infrastructure readiness at the sovereign level; commercial bank tokenized A2A layer not yet deployed above it. One of 11 fully launched retail CBDCs globally (Atlantic Council, early 2025). <strong style="color:var(--accent-lt);">A2A Readiness:</strong> <span style="color:var(--accent-lt);">High. Sand Dollar infrastructure demonstrates that The Bahamas has the regulatory and technical foundation for digital currency deployment. The opportunity is building a tokenized A2A institutional layer above the Sand Dollar CBDC foundation for cross-border interbank settlement, the commercial bank overlay that the Sand Dollar alone does not provide.</span></p>
+            <p class="region-body"><span class="b">Payment Systems Law:</span> Central Bank of The Bahamas Act and Payment Systems Act govern payment infrastructure. The Central Bank of The Bahamas (CBB) is both the monetary authority and payment systems regulator. <span class="b">PSP Licensing:</span> Payment service providers authorized by CBB. Bahamas has positioned itself as a progressive digital asset jurisdiction, having enacted the Digital Assets and Registered Exchanges (DARE) Act in 2020. <span class="b">AML Supervisor:</span> Financial Intelligence Unit (FIU Bahamas). CFATF member. FATF-compliant. <span class="b">CBDC / Digital Asset:</span> Sand Dollar, the world's first live retail CBDC, launched in October 2020. Issued by the Central Bank of The Bahamas; distributed through authorized financial institutions. Sand Dollar demonstrates central bank digital currency infrastructure readiness at the sovereign level; commercial bank tokenized A2A layer not yet deployed above it. One of 11 fully launched retail CBDCs globally (Atlantic Council, early 2025). <span class="b">A2A Readiness:</span> <span>High. Sand Dollar infrastructure demonstrates that The Bahamas has the regulatory and technical foundation for digital currency deployment. The opportunity is building a tokenized A2A institutional layer above the Sand Dollar CBDC foundation for cross-border interbank settlement, the commercial bank overlay that the Sand Dollar alone does not provide.</span></p>
           </div>
 
-        <p class="cbdc-source" style="margin-top:0.75rem;">Sources: Central bank regulatory publications, FATF mutual evaluation reports, Atlantic Council CBDC Tracker, World Bank Remittance Prices Worldwide, CFATF evaluations. This table reflects publicly available regulatory information as of April 2026. Regulatory frameworks change; consult in-country legal counsel before any deployment decision. This table does not constitute legal or regulatory advice.</p>
+        <p class="cbdc-source">Sources: Central bank regulatory publications, FATF mutual evaluation reports, Atlantic Council CBDC Tracker, World Bank Remittance Prices Worldwide, CFATF evaluations. This table reflects publicly available regulatory information as of April 2026. Regulatory frameworks change; consult in-country legal counsel before any deployment decision. This table does not constitute legal or regulatory advice.</p>
       </div>
 
       <div class="term-entry" data-group="market">
@@ -1170,7 +1262,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Dollarization / De-Dollarization</span>
         </div>
-        <p class="term-def"><strong>Dollarization</strong> is the adoption of the US dollar (or another foreign currency) as legal tender alongside or instead of a local currency, either formally by government policy (as in Ecuador and El Salvador) or informally through market behavior in high-inflation environments, and is directly relevant to A2A infrastructure design because heavily dollarized economies present different dynamics for local-currency tokenized rails than economies with stable, widely used domestic currencies, even while demand for efficient dollar-denominated cross-border settlement remains strong in both cases. <strong>De-dollarization</strong> refers to efforts by countries or trade blocs to reduce dependence on the USD in international trade, reserves, and payments by settling more transactions in local currencies or alternative reserve assets; it is a direct motivating factor behind cross-border wholesale CBDC initiatives such as Project mBridge, which enables participating central banks to settle trade obligations without routing through USD, and is closely watched by central bank advisors and treasury teams operating in the corridors Post Oak Labs targets.</p>
+        <p class="term-def"><span class="b">Dollarization</span> is the adoption of the US dollar (or another foreign currency) as legal tender alongside or instead of a local currency, either formally by government policy (as in Ecuador and El Salvador) or informally through market behavior in high-inflation environments, and is directly relevant to A2A infrastructure design because heavily dollarized economies present different dynamics for local-currency tokenized rails than economies with stable, widely used domestic currencies, even while demand for efficient dollar-denominated cross-border settlement remains strong in both cases. <span class="b">De-dollarization</span> refers to efforts by countries or trade blocs to reduce dependence on the USD in international trade, reserves, and payments by settling more transactions in local currencies or alternative reserve assets; it is a direct motivating factor behind cross-border wholesale CBDC initiatives such as Project mBridge, which enables participating central banks to settle trade obligations without routing through USD, and is closely watched by central bank advisors and treasury teams operating in the corridors Post Oak Labs targets.</p>
       </div>
 
       <div class="term-entry" data-group="market">
@@ -1196,7 +1288,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Wholesale CBDC vs. Retail CBDC</span>
         </div>
-        <p class="term-def"><strong>Wholesale CBDC</strong> is a central bank digital currency restricted to regulated financial institutions (banks, payment service providers, and financial market infrastructures) for use in interbank settlement, securities settlement, and cross-border payment operations. It is the digital equivalent of reserves held at the central bank and is the primary CBDC design relevant to institutional payment infrastructure. <strong>Retail CBDC</strong> is a digital currency made available directly to the general public as a digital form of cash, carrying the same sovereign guarantee as banknotes. The design choices are fundamentally different: retail CBDCs raise financial inclusion, privacy, and bank disintermediation questions that wholesale CBDCs do not. Post Oak Labs' advisory focus is on wholesale CBDC architecture and its intersection with tokenized A2A institutional rails, not retail distribution infrastructure.</p>
+        <p class="term-def"><span class="b">Wholesale CBDC</span> is a central bank digital currency restricted to regulated financial institutions (banks, payment service providers, and financial market infrastructures) for use in interbank settlement, securities settlement, and cross-border payment operations. It is the digital equivalent of reserves held at the central bank and is the primary CBDC design relevant to institutional payment infrastructure. <span class="b">Retail CBDC</span> is a digital currency made available directly to the general public as a digital form of cash, carrying the same sovereign guarantee as banknotes. The design choices are fundamentally different: retail CBDCs raise financial inclusion, privacy, and bank disintermediation questions that wholesale CBDCs do not. Post Oak Labs' advisory focus is on wholesale CBDC architecture and its intersection with tokenized A2A institutional rails, not retail distribution infrastructure.</p>
       </div>
 
       <div class="term-entry" data-group="infra">
@@ -1211,7 +1303,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Payment versus Payment (PvP)</span>
           <span class="term-abbr">PvP</span>
         </div>
-        <p class="term-def">A settlement mechanism in which both currency legs of a foreign exchange transaction are settled simultaneously and conditionally: neither leg completes unless both do. PvP eliminates the <span class="xref-term">principal risk</span> window that exists in traditional FX settlement, where one counterparty may deliver its currency and then suffer default by the other party before receiving the counter-currency. The BIS Committee on Payments and Market Infrastructures (CPMI) has documented that roughly one-third of the $6.6 trillion daily FX market in global FX transactions still settle without PvP arrangements, creating systemic exposure. Tokenized A2A rails using atomic settlement implement PvP by design. See: BIS CPMI, "PvP arrangements and the case for greater adoption," 2022 (<a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/cpmi/publ/d208.htm</a>). See also: <span class="xref-term">Atomic Settlement</span>, <span class="xref-term">Delivery versus Payment (DvP)</span>, <span class="xref-term">Settlement Finality</span>.</p>
+        <p class="term-def">A settlement mechanism in which both currency legs of a foreign exchange transaction are settled simultaneously and conditionally: neither leg completes unless both do. PvP eliminates the <span class="xref-term">principal risk</span> window that exists in traditional FX settlement, where one counterparty may deliver its currency and then suffer default by the other party before receiving the counter-currency. The BIS Committee on Payments and Market Infrastructures (CPMI) has documented that roughly one-third of the $6.6 trillion daily FX market in global FX transactions still settle without PvP arrangements, creating systemic exposure. Tokenized A2A rails using atomic settlement implement PvP by design. See: BIS CPMI, "PvP arrangements and the case for greater adoption," 2022 (<a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener noreferrer">bis.org/cpmi/publ/d208.htm</a>). See also: <span class="xref-term">Atomic Settlement</span>, <span class="xref-term">Delivery versus Payment (DvP)</span>, <span class="xref-term">Settlement Finality</span>.</p>
       </div>
 
       <div class="term-entry" data-group="infra">
@@ -1226,15 +1318,15 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Project mBridge</span>
         </div>
-        <p class="term-def">A multi-central-bank wholesale CBDC cross-border payment initiative originally co-developed with the BIS Innovation Hub, the Hong Kong Monetary Authority, the Bank of Thailand, the Digital Currency Institute of the People's Bank of China, the Central Bank of the UAE, and later the Saudi Central Bank. mBridge demonstrated cross-border settlement using wholesale CBDCs with sub-10-second finality under proof-of-concept conditions, making it one of the most-cited benchmarks for tokenized settlement speed. The BIS Innovation Hub stepped back from the project in October 2024, describing this as the project reaching operational maturity and transitioning governance to the participant central banks. The remaining participant central banks continue development under their own governance. mBridge is best described as an ongoing multi-central-bank pilot under a governance structure that is still evolving, and its current status, roadmap, and institutional backing should be verified directly with the participant central banks before citation. References: BIS, "Project mBridge: connecting economies through CBDC," (<a href="https://www.bis.org/about/bisih/topics/cbdc/mcbdc_bridge.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org</a>). See also: <span class="xref-term">Wholesale CBDC vs. Retail CBDC</span>, <span class="xref-term">Project Agorá</span>, <span class="xref-term">Atomic Settlement</span>.</p>
+        <p class="term-def">A multi-central-bank wholesale CBDC cross-border payment initiative originally co-developed with the BIS Innovation Hub, the Hong Kong Monetary Authority, the Bank of Thailand, the Digital Currency Institute of the People's Bank of China, the Central Bank of the UAE, and later the Saudi Central Bank. mBridge demonstrated cross-border settlement using wholesale CBDCs with sub-10-second finality under proof-of-concept conditions, making it one of the most-cited benchmarks for tokenized settlement speed. The BIS Innovation Hub stepped back from the project in October 2024, describing this as the project reaching operational maturity and transitioning governance to the participant central banks. The remaining participant central banks continue development under their own governance. mBridge is best described as an ongoing multi-central-bank pilot under a governance structure that is still evolving, and its current status, roadmap, and institutional backing should be verified directly with the participant central banks before citation. References: BIS, "Project mBridge: connecting economies through CBDC," (<a href="https://www.bis.org/about/bisih/topics/cbdc/mcbdc_bridge.htm" target="_blank" rel="noopener noreferrer">bis.org</a>). See also: <span class="xref-term">Wholesale CBDC vs. Retail CBDC</span>, <span class="xref-term">Project Agorá</span>, <span class="xref-term">Atomic Settlement</span>.</p>
       </div>
 
       <div class="term-entry" data-group="infra">
         <div>
           <span class="term-name">Partior</span>
         </div>
-        <p class="term-def">A Singapore-based blockchain settlement network backed by JPMorgan, DBS Bank, and Temasek, established in 2021 and expanded with Standard Chartered joining in 2023. Partior operates a permissioned distributed ledger for multi-currency wholesale payment settlement between financial institutions, allowing participating banks to settle in USD, SGD, EUR, and additional currencies without relying on the traditional correspondent chain. Partior is one of the most-cited live institutional examples of tokenized A2A wholesale settlement infrastructure at the consortium level. Unlike proof-of-concept initiatives, Partior operates in production with real transaction flows. Deutsche Bank joined as strategic investor and Euro settlement bank in late 2024. Fintech PSP Nium joined the network in 2025, extending reach to non-bank payment service providers. Strategic alliances in Japan (SBI) and Korea (NongHyup) expand the Asia corridor footprint. Partior is operationally live with real transaction flows in USD, SGD, and EUR, making it one of the most advanced multi-institution consortium A2A deployments globally. References: Partior, <a href="https://www.partior.com" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">partior.com</a>; see also the <a href="a2a-comparison.html" style="color:var(--accent-lt);">A2A Comparison page</a> for context on live network deployments. See also: <span class="xref-term">Consortium Ledger</span>, <span class="xref-term">Deposit Token</span>, <span class="xref-term">JPMorgan Kinexys</span>.</p>
-        <p class="term-see-also" style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem;">See also: <a href="#a2a" style="color:var(--accent-lt);">Consortium Ledger</a>, <a href="#a2a" style="color:var(--accent-lt);">JPMorgan Kinexys</a>, <a href="#a2a" style="color:var(--accent-lt);">Fnality</a></p>
+        <p class="term-def">A Singapore-based blockchain settlement network backed by JPMorgan, DBS Bank, and Temasek, established in 2021 and expanded with Standard Chartered joining in 2023. Partior operates a permissioned distributed ledger for multi-currency wholesale payment settlement between financial institutions, allowing participating banks to settle in USD, SGD, EUR, and additional currencies without relying on the traditional correspondent chain. Partior is one of the most-cited live institutional examples of tokenized A2A wholesale settlement infrastructure at the consortium level. Unlike proof-of-concept initiatives, Partior operates in production with real transaction flows. Deutsche Bank joined as strategic investor and Euro settlement bank in late 2024. Fintech PSP Nium joined the network in 2025, extending reach to non-bank payment service providers. Strategic alliances in Japan (SBI) and Korea (NongHyup) expand the Asia corridor footprint. Partior is operationally live with real transaction flows in USD, SGD, and EUR, making it one of the most advanced multi-institution consortium A2A deployments globally. References: Partior, <a href="https://www.partior.com" target="_blank" rel="noopener noreferrer">partior.com</a>; see also the <a href="a2a-comparison.html">A2A Comparison page</a> for context on live network deployments. See also: <span class="xref-term">Consortium Ledger</span>, <span class="xref-term">Deposit Token</span>, <span class="xref-term">JPMorgan Kinexys</span>.</p>
+        <p class="term-see-also">See also: <a href="#a2a">Consortium Ledger</a>, <a href="#a2a">JPMorgan Kinexys</a>, <a href="#a2a">Fnality</a></p>
       </div>
 
       <div class="term-entry" data-group="reg">
@@ -1242,14 +1334,14 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">FATF (Financial Action Task Force)</span>
           <span class="term-abbr">FATF</span>
         </div>
-        <p class="term-def">An intergovernmental body that sets international standards for combating money laundering, terrorist financing, and proliferation financing. FATF's 40 Recommendations form the global AML/CFT framework that most jurisdictions incorporate into domestic law; FATF conducts mutual evaluations of member countries and publishes grey and black lists of jurisdictions with strategic deficiencies. For tokenized payment infrastructure, FATF is directly relevant in two ways: (1) FATF's 2019 guidance on virtual assets and virtual asset service providers (VASPs) introduced the "Travel Rule" requirement that VASPs share originator and beneficiary information for transactions above thresholds, which applies to some stablecoin and digital asset platforms; (2) FATF compliance status of a jurisdiction is a primary determinant of whether global correspondent banks will maintain relationships, which is the de-risking dynamic driving demand for alternative A2A infrastructure. References: <a href="https://www.fatf-gafi.org" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">fatf-gafi.org</a>. See also: <span class="xref-term">AML</span>, <span class="xref-term">KYC</span>, <span class="xref-term">Travel Rule</span>.</p>
+        <p class="term-def">An intergovernmental body that sets international standards for combating money laundering, terrorist financing, and proliferation financing. FATF's 40 Recommendations form the global AML/CFT framework that most jurisdictions incorporate into domestic law; FATF conducts mutual evaluations of member countries and publishes grey and black lists of jurisdictions with strategic deficiencies. For tokenized payment infrastructure, FATF is directly relevant in two ways: (1) FATF's 2019 guidance on virtual assets and virtual asset service providers (VASPs) introduced the "Travel Rule" requirement that VASPs share originator and beneficiary information for transactions above thresholds, which applies to some stablecoin and digital asset platforms; (2) FATF compliance status of a jurisdiction is a primary determinant of whether global correspondent banks will maintain relationships, which is the de-risking dynamic driving demand for alternative A2A infrastructure. References: <a href="https://www.fatf-gafi.org" target="_blank" rel="noopener noreferrer">fatf-gafi.org</a>. See also: <span class="xref-term">AML</span>, <span class="xref-term">KYC</span>, <span class="xref-term">Travel Rule</span>.</p>
       </div>
 
       <div class="term-entry" data-group="identity">
         <div>
           <span class="term-name">Travel Rule (FATF Recommendation 16)</span>
         </div>
-        <p class="term-def">A FATF requirement (originally applied to wire transfers and extended to virtual assets in FATF's 2019 guidance) that obligates payment service providers and virtual asset service providers (VASPs) to collect, verify, and transmit originator and beneficiary information alongside fund transfers above a threshold (USD/EUR 1,000 in the standard). The Travel Rule is one of the most operationally complex AML requirements for tokenized payment networks: information must travel with the payment token across institutional boundaries, requiring interoperable identity infrastructure and cross-border data-sharing agreements. Several industry consortia (including IVMS 101, developed by the Global Digital Finance standards body) have developed data formats for Travel Rule compliance in digital asset contexts. References: FATF, "Updated Guidance for a Risk-Based Approach: Virtual Assets and Virtual Asset Service Providers," 2021 (<a href="https://www.fatf-gafi.org/en/publications/Fatfrecommendations/Guidance-rba-virtual-assets-2021.html" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">fatf-gafi.org</a>). See also: <span class="xref-term">FATF</span>, <span class="xref-term">AML</span>, <span class="xref-term">KYC</span>, <span class="xref-term">Verifiable Credential (VC)</span>.</p>
+        <p class="term-def">A FATF requirement (originally applied to wire transfers and extended to virtual assets in FATF's 2019 guidance) that obligates payment service providers and virtual asset service providers (VASPs) to collect, verify, and transmit originator and beneficiary information alongside fund transfers above a threshold (USD/EUR 1,000 in the standard). The Travel Rule is one of the most operationally complex AML requirements for tokenized payment networks: information must travel with the payment token across institutional boundaries, requiring interoperable identity infrastructure and cross-border data-sharing agreements. Several industry consortia (including IVMS 101, developed by the Global Digital Finance standards body) have developed data formats for Travel Rule compliance in digital asset contexts. References: FATF, "Updated Guidance for a Risk-Based Approach: Virtual Assets and Virtual Asset Service Providers," 2021 (<a href="https://www.fatf-gafi.org/en/publications/Fatfrecommendations/Guidance-rba-virtual-assets-2021.html" target="_blank" rel="noopener noreferrer">fatf-gafi.org</a>). See also: <span class="xref-term">FATF</span>, <span class="xref-term">AML</span>, <span class="xref-term">KYC</span>, <span class="xref-term">Verifiable Credential (VC)</span>.</p>
       </div>
 
       <div class="term-entry" id="swift-gpi" data-group="a2a">
@@ -1257,7 +1349,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">SWIFT gpi (Global Payments Innovation)</span>
           <span class="term-abbr">gpi</span>
         </div>
-        <p class="term-def">A SWIFT initiative launched in 2017 that adds a tracking layer, same-day credit commitments, and fee transparency to traditional correspondent banking payments. Under SWIFT gpi, participating banks commit to same-day credit of funds to the next institution in the chain, and a unique end-to-end transaction reference (UETR) allows the originating bank to track the payment's progress. As of 2024–2025, SWIFT reports that approximately 60% of gpi payments are credited to the end beneficiary within 30 minutes, and nearly all within 24 hours on connected routes. gpi represents a meaningful improvement over pre-gpi correspondent banking, but it does not change the fundamental architecture: funds still flow through correspondent chains, pre-funding requirements remain, and settlement finality is still 1–3 days. gpi is a compatibility-layer improvement, not a structural replacement. References: SWIFT, "SWIFT gpi," <a href="https://www.swift.com/our-solutions/swift-gpi" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">swift.com/our-solutions/swift-gpi</a>. See also: <span class="xref-term">SWIFT</span>, <span class="xref-term">ISO 20022</span>, <span class="xref-term">Correspondent Banking</span>.</p>
+        <p class="term-def">A SWIFT initiative launched in 2017 that adds a tracking layer, same-day credit commitments, and fee transparency to traditional correspondent banking payments. Under SWIFT gpi, participating banks commit to same-day credit of funds to the next institution in the chain, and a unique end-to-end transaction reference (UETR) allows the originating bank to track the payment's progress. As of 2024–2025, SWIFT reports that approximately 60% of gpi payments are credited to the end beneficiary within 30 minutes, and nearly all within 24 hours on connected routes. gpi represents a meaningful improvement over pre-gpi correspondent banking, but it does not change the fundamental architecture: funds still flow through correspondent chains, pre-funding requirements remain, and settlement finality is still 1–3 days. gpi is a compatibility-layer improvement, not a structural replacement. References: SWIFT, "SWIFT gpi," <a href="https://www.swift.com/our-solutions/swift-gpi" target="_blank" rel="noopener noreferrer">swift.com/our-solutions/swift-gpi</a>. See also: <span class="xref-term">SWIFT</span>, <span class="xref-term">ISO 20022</span>, <span class="xref-term">Correspondent Banking</span>.</p>
       </div>
 
       <div class="term-entry" data-group="token">
@@ -1273,7 +1365,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Proof of Reserves</span>
         </div>
-        <p class="term-def">A mechanism for verifying that a stablecoin or crypto exchange issuer holds the assets it claims to hold. The spectrum runs from weakest to strongest: <strong>Self-attestation:</strong> the issuer publishes reserve composition unilaterally with no independent verification. <strong>Third-party attestation:</strong> an accounting firm reviews reserves at a point in time and publishes a letter confirming what the issuer reported; this is not a full audit and auditors confirm what they were shown, not that reserves are unencumbered. <strong>Full audit:</strong> auditors independently verify reserve existence, composition, and legal ownership; rare in the stablecoin industry. <strong>Cryptographic proof of reserves:</strong> a Merkle tree-based approach allowing on-chain verification of reserve claims without revealing individual account details; more common in crypto exchanges than stablecoin issuers. Circle (USDC) provides monthly attestations; Tether (USDT) has historically provided attestations rather than full audits, a continuing subject of regulatory concern. Tokenized deposits issued by banks do not require proof-of-reserves mechanisms; they are bank liabilities subject to full prudential banking supervision, regulatory capital requirements, and deposit insurance. The GENIUS Act (US) and MiCA (EU) raise the floor by requiring licensed stablecoin issuers to undergo third-party audits. See also: <span class="xref-term">Stablecoin</span>, <span class="xref-term">GENIUS Act</span>, <span class="xref-term">Deposit Token</span>.</p>
+        <p class="term-def">A mechanism for verifying that a stablecoin or crypto exchange issuer holds the assets it claims to hold. The spectrum runs from weakest to strongest: <span class="b">Self-attestation:</span> the issuer publishes reserve composition unilaterally with no independent verification. <span class="b">Third-party attestation:</span> an accounting firm reviews reserves at a point in time and publishes a letter confirming what the issuer reported; this is not a full audit and auditors confirm what they were shown, not that reserves are unencumbered. <span class="b">Full audit:</span> auditors independently verify reserve existence, composition, and legal ownership; rare in the stablecoin industry. <span class="b">Cryptographic proof of reserves:</span> a Merkle tree-based approach allowing on-chain verification of reserve claims without revealing individual account details; more common in crypto exchanges than stablecoin issuers. Circle (USDC) provides monthly attestations; Tether (USDT) has historically provided attestations rather than full audits, a continuing subject of regulatory concern. Tokenized deposits issued by banks do not require proof-of-reserves mechanisms; they are bank liabilities subject to full prudential banking supervision, regulatory capital requirements, and deposit insurance. The GENIUS Act (US) and MiCA (EU) raise the floor by requiring licensed stablecoin issuers to undergo third-party audits. See also: <span class="xref-term">Stablecoin</span>, <span class="xref-term">GENIUS Act</span>, <span class="xref-term">Deposit Token</span>.</p>
       </div>
 
       <div class="term-entry" id="hsm" data-group="infra">
@@ -1288,7 +1380,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">LCR Nostro Treatment</span>
         </div>
-        <p class="term-def">Under Basel III's Liquidity Coverage Ratio (LCR), banks must hold High Quality Liquid Assets (HQLA) to cover 30-day net cash outflows under a stress scenario. The treatment of nostro balances for LCR purposes depends on currency, counterparty, and whether the balance can be freely withdrawn within 30 days: foreign-currency nostro balances held at foreign central banks may qualify as Level 1 HQLA in that currency; nostro balances held at commercial bank correspondents generally do not qualify as HQLA. Tokenized A2A infrastructure reduces nostro pre-funding requirements: a bank settling via A2A maintains fewer correspondent account balances, reducing the LCR drag from non-HQLA nostro positions and freeing high-quality liquid assets for their intended purpose. For specialist advisory on LCR optimization at the institutional level, see <a href="https://meridiancapital.me/" target="_blank" rel="noopener" style="color:var(--accent-lt);">Meridian Capital Advisory</a>. See also: <span class="xref-term">Nostro Pre-Funding</span>, <span class="xref-term">NSFR</span>, <span class="xref-term">Basel III</span>.</p>
+        <p class="term-def">Under Basel III's Liquidity Coverage Ratio (LCR), banks must hold High Quality Liquid Assets (HQLA) to cover 30-day net cash outflows under a stress scenario. The treatment of nostro balances for LCR purposes depends on currency, counterparty, and whether the balance can be freely withdrawn within 30 days: foreign-currency nostro balances held at foreign central banks may qualify as Level 1 HQLA in that currency; nostro balances held at commercial bank correspondents generally do not qualify as HQLA. Tokenized A2A infrastructure reduces nostro pre-funding requirements: a bank settling via A2A maintains fewer correspondent account balances, reducing the LCR drag from non-HQLA nostro positions and freeing high-quality liquid assets for their intended purpose. For specialist advisory on LCR optimization at the institutional level, see <a href="https://meridiancapital.me/" target="_blank" rel="noopener">Meridian Capital Advisory</a>. See also: <span class="xref-term">Nostro Pre-Funding</span>, <span class="xref-term">NSFR</span>, <span class="xref-term">Basel III</span>.</p>
       </div>
 
       <div class="term-entry" id="nsfr-interbank" data-group="reg">
@@ -1310,7 +1402,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">DvP Models 1, 2, and 3</span>
         </div>
-        <p class="term-def">The BIS Committee on Payments and Market Infrastructures (then CPSS) classified securities settlement delivery-versus-payment arrangements into three models in its 1992 report "Delivery versus Payment in Securities Settlement Systems": <strong>Model 1:</strong> simultaneous gross settlement of both securities and funds (highest settlement finality, highest intraday liquidity requirement). <strong>Model 2:</strong> gross securities settlement with net funds settlement at end of cycle (lower intraday liquidity requirement, but net funds exposure during the day). <strong>Model 3:</strong> net settlement of both securities and funds at end of cycle (lowest liquidity requirement, highest replacement cost risk during the cycle). Tokenized A2A institutional rails typically implement the equivalent of Model 1, settling both legs atomically and simultaneously, eliminating the replacement cost risk window that Models 2 and 3 carry, one of the primary safety arguments for tokenized settlement infrastructure relative to conventional central securities depository models. See also: <span class="xref-term">Atomic Settlement</span>, <span class="xref-term">Settlement Finality</span>, <span class="xref-term">Delivery versus Payment</span>.</p>
+        <p class="term-def">The BIS Committee on Payments and Market Infrastructures (then CPSS) classified securities settlement delivery-versus-payment arrangements into three models in its 1992 report "Delivery versus Payment in Securities Settlement Systems": <span class="b">Model 1:</span> simultaneous gross settlement of both securities and funds (highest settlement finality, highest intraday liquidity requirement). <span class="b">Model 2:</span> gross securities settlement with net funds settlement at end of cycle (lower intraday liquidity requirement, but net funds exposure during the day). <span class="b">Model 3:</span> net settlement of both securities and funds at end of cycle (lowest liquidity requirement, highest replacement cost risk during the cycle). Tokenized A2A institutional rails typically implement the equivalent of Model 1, settling both legs atomically and simultaneously, eliminating the replacement cost risk window that Models 2 and 3 carry, one of the primary safety arguments for tokenized settlement infrastructure relative to conventional central securities depository models. See also: <span class="xref-term">Atomic Settlement</span>, <span class="xref-term">Settlement Finality</span>, <span class="xref-term">Delivery versus Payment</span>.</p>
       </div>
 
       <div class="term-entry" id="lei" data-group="identity">
@@ -1318,7 +1410,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
           <span class="term-name">Legal Entity Identifier (LEI)</span>
           <span class="term-abbr">LEI</span>
         </div>
-        <p class="term-def">A 20-character alphanumeric code issued under the ISO 17442 standard, uniquely identifying legal entities participating in financial transactions. Administered by the Global Legal Entity Identifier Foundation (GLEIF) via a network of Local Operating Units (LOUs) globally. ISO 20022 cross-border payment rules (CBPR+) increasingly require LEI for originator and beneficiary identification: the who behind a payment instruction, beyond an account number. In tokenized A2A infrastructure, LEI resolution is part of the identity layer: participating institutions' LEIs are verified at network onboarding and travel with payment tokens, satisfying FATF Recommendation 16 (the Travel Rule) requirements in a machine-readable form. Implementing LEI as a shared service available to all payment channels, rather than a point solution embedded in a single pipeline is a key architectural recommendation for banks preparing for both ISO 20022 compliance and A2A network participation. Free LEI lookup: <a href="https://www.gleif.org" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">gleif.org</a>. See also: <span class="xref-term">ISO 20022</span>, <span class="xref-term">Four-Corner Model</span>.</p>
+        <p class="term-def">A 20-character alphanumeric code issued under the ISO 17442 standard, uniquely identifying legal entities participating in financial transactions. Administered by the Global Legal Entity Identifier Foundation (GLEIF) via a network of Local Operating Units (LOUs) globally. ISO 20022 cross-border payment rules (CBPR+) increasingly require LEI for originator and beneficiary identification: the who behind a payment instruction, beyond an account number. In tokenized A2A infrastructure, LEI resolution is part of the identity layer: participating institutions' LEIs are verified at network onboarding and travel with payment tokens, satisfying FATF Recommendation 16 (the Travel Rule) requirements in a machine-readable form. Implementing LEI as a shared service available to all payment channels, rather than a point solution embedded in a single pipeline is a key architectural recommendation for banks preparing for both ISO 20022 compliance and A2A network participation. Free LEI lookup: <a href="https://www.gleif.org" target="_blank" rel="noopener noreferrer">gleif.org</a>. See also: <span class="xref-term">ISO 20022</span>, <span class="xref-term">Four-Corner Model</span>.</p>
       </div>
 
       <div class="term-entry" id="daml" data-group="infra">
@@ -1333,7 +1425,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div>
           <span class="term-name">Consortium Governance Failure</span>
         </div>
-        <p class="term-def">A recurring pattern in institutional blockchain history in which technically sound infrastructure fails to achieve commercial traction due to governance and incentive design failures rather than technical problems. Documented cases: <strong>we.trade</strong> (trade finance consortium backed by major European banks, collapsed 2020): misaligned commercial incentives between bank shareholders; no single institution willing to subsidise network growth. <strong>Marco Polo</strong> (trade finance, 2023 insolvency of operator): governance complexity and inability to agree on data-sharing standards across competing institutions. <strong>Voltron / Contour</strong> (letters of credit, 2023 shutdown): underestimated the difficulty of achieving critical mass of bank participation; high implementation cost per bank. <strong>Batavia</strong> (IBM / UBS trade finance, wound down 2018): failed to achieve commercial traction despite working technology. Common failure patterns: governance that gives no single participant sufficient incentive to drive adoption; data-sharing agreements that stall over competitive concerns; underestimating onboarding friction for smaller banks; building for the consortium rather than for the end client. Post Oak Labs treats governance design, alongside technical architecture, as a first-order consideration in institutional blockchain advisory. See the <a href="enterprise-blockchain.html" style="color:var(--accent-lt);">Enterprise Blockchain Market Briefing</a> for the full analysis. See also: <span class="xref-term">Payment System Operator</span>.</p>
+        <p class="term-def">A recurring pattern in institutional blockchain history in which technically sound infrastructure fails to achieve commercial traction due to governance and incentive design failures rather than technical problems. Documented cases: <span class="b">we.trade</span> (trade finance consortium backed by major European banks, collapsed 2020): misaligned commercial incentives between bank shareholders; no single institution willing to subsidise network growth. <span class="b">Marco Polo</span> (trade finance, 2023 insolvency of operator): governance complexity and inability to agree on data-sharing standards across competing institutions. <span class="b">Voltron / Contour</span> (letters of credit, 2023 shutdown): underestimated the difficulty of achieving critical mass of bank participation; high implementation cost per bank. <span class="b">Batavia</span> (IBM / UBS trade finance, wound down 2018): failed to achieve commercial traction despite working technology. Common failure patterns: governance that gives no single participant sufficient incentive to drive adoption; data-sharing agreements that stall over competitive concerns; underestimating onboarding friction for smaller banks; building for the consortium rather than for the end client. Post Oak Labs treats governance design, alongside technical architecture, as a first-order consideration in institutional blockchain advisory. See the <a href="enterprise-blockchain.html">Enterprise Blockchain Market Briefing</a> for the full analysis. See also: <span class="xref-term">Payment System Operator</span>.</p>
       </div>
 
       <div class="term-entry" id="correspondent-banking-de-risking" data-group="market">
@@ -1348,95 +1440,58 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
   </div>
 </div>
 
-<footer class="site-footer">
-  <div class="footer-inner footer-grid">
+</main>
 
-    <div class="footer-col footer-brand-col">
-      <p class="footer-copy">
-        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
-        &nbsp;&middot;&nbsp;
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
-      </p>
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
     </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">A2A Payments</h4>
-      <a href="a2a-guide.html">Market coverage</a>
-      <a href="a2a-guide.html#workflow">How it works</a>
-      <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-guide.html#iso20022">ISO 20022 alignment</a>
-      <a href="a2a-guide.html#tmmf">tMMF on A2A rails</a>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+          <li><a href="https://www.linkedin.com/in/timswanson">Tim Swanson on LinkedIn ↗</a></li>
+        </ul>
+      </div>
     </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">Enterprise Blockchain</h4>
-      <a href="enterprise-blockchain.html">Market briefing</a>
-      <a href="a2a-ledgers.html#besu">Hyperledger Besu</a>
-      <a href="a2a-ledgers.html#canton">Canton / Daml</a>
-      <a href="a2a-ledgers.html#corda">R3 Corda</a>
-      <a href="a2a-ledgers.html#fabric">Hyperledger Fabric</a>
-    </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">About &amp; Advisory</h4>
-      <a href="services.html#blockchain">Advisory track record</a>
-      <a href="contact.html">Contact</a>
-      <a href="a2a-guide.html#roadmap">Engagement roadmap</a>
-    </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">Resources</h4>
-      <a href="library.html">Demos</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="faq.html">FAQ</a>
-      <a href="sitemap.html">Sitemap</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
-      <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub&nbsp;&#8599;</a>
-    </div>
-
   </div>
 </footer>
 
 <script>
-function filterGroup(group) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.querySelectorAll('.term-entry').forEach(entry => {
-    if (group === 'all' || entry.dataset.group === group) {
-      entry.classList.remove('hidden');
-    } else {
-      entry.classList.add('hidden');
-    }
+// Category filter: shows only term entries whose data-group matches; hides empty lists and their labels.
+function filterGroup(group, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function (b) {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
   });
-  // Hide/show section headings and lists
-  document.querySelectorAll('.term-list').forEach(list => {
-    const visible = list.querySelectorAll('.term-entry:not(.hidden)');
-    list.style.display = visible.length ? '' : 'none';
+  if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true'); }
+  document.querySelectorAll('.term-entry').forEach(function (entry) {
+    entry.classList.toggle('hidden', !(group === 'all' || entry.dataset.group === group));
   });
-  document.querySelectorAll('.group-label').forEach(lbl => {
-    const nextList = lbl.nextElementSibling.nextElementSibling;
-    lbl.style.display = (nextList && nextList.style.display === 'none') ? 'none' : '';
+  document.querySelectorAll('.term-list').forEach(function (list) {
+    list.hidden = !list.querySelector('.term-entry:not(.hidden)');
+  });
+  document.querySelectorAll('.group-label').forEach(function (lbl) {
+    var el = lbl.nextElementSibling;
+    while (el && !el.classList.contains('term-list')) el = el.nextElementSibling;
+    lbl.hidden = !!(el && el.hidden);
   });
 }
-
-
-</script>
-<script>
-(function(){
-  var nav = document.querySelector('nav[role="navigation"]');
-  var hero = document.querySelector('.hero, .showcase-hero');
-  if(!nav || !hero) return;
-  function onScroll(){
-    var threshold = hero.offsetHeight * 0.6;
-    if(window.scrollY > threshold){
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
-})();
 </script>
 </body>
 </html>
