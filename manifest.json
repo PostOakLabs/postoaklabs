@@ -1,12 +1,12 @@
 {
   "name": "Post Oak Labs",
   "short_name": "Post Oak Labs",
-  "description": "Tokenized payment infrastructure, stablecoin strategy, and CBDC advisory for institutions across Latin America, Africa, the Caribbean, and South Asia.",
+  "description": "AI consultancy that builds and runs its own AI products, including AINumbers and one of the largest public MCP servers in finance.",
   "start_url": "/",
   "scope": "/",
   "display": "browser",
-  "background_color": "#0a1828",
-  "theme_color": "#0a1828",
+  "background_color": "#eef4f2",
+  "theme_color": "#0b7a70",
   "lang": "en",
   "icons": [
     {
