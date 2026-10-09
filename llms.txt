@@ -26,6 +26,7 @@ Live products:
 
 - AI tools and agents: browser-only calculators, policy engines and agent workflows built to client rules.
 - MCP enablement: MCP server design, WebMCP registration, verifiable receipts including ZK-proven workflows.
+- Research and technical writing: AI-assisted research with disclosed LLM use, including an erratum to the jerk noise-floor constant in Prager et al. (2017) (https://omegacentauri.me/omega-centauri-xi-erratum.html) and ten Omega Centauri preprints (https://omegacentauri.me/paper.html). Objective LLM and MCP benchmarks are launching shortly.
 - Payments, stablecoin and CBDC advisory: tokenized A2A cross-border payments, stablecoin strategy, CBDC architecture and local-currency tokenized money market funds, for commercial banks, central banks and large corporates. Primary focus: Latin America, Africa, the Caribbean and South Asia.
 - Institutional blockchain advisory: 20+ institutional blockchain projects across layer-1, DeFi, enterprise ledgers, agentic AI trading, prediction markets, stablecoins and identity.
 

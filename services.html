@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://postoaklabs.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfessionalService","name":"Post Oak Labs","url":"https://postoaklabs.com/services.html","provider":{"@id":"https://postoaklabs.com/#organization"},"areaServed":["Latin America","Africa","Caribbean","South Asia","Global"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"AI tools and agents"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"MCP enablement"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Payments, stablecoin and CBDC advisory"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Institutional blockchain advisory"}}]}}
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Post Oak Labs","url":"https://postoaklabs.com/services.html","provider":{"@id":"https://postoaklabs.com/#organization"},"areaServed":["Latin America","Africa","Caribbean","South Asia","Global"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"AI tools and agents"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"MCP enablement"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Research and technical writing"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Payments, stablecoin and CBDC advisory"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Institutional blockchain advisory"}}]}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -170,6 +170,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
 .mail{font-family:var(--f-mono);font-size:.9rem;color:var(--teal)}
 .cta-band .wrap{padding-block:clamp(32px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
 .cta-band h2{margin:0;font-weight:600;font-size:1.4rem;letter-spacing:-.02em}
+.mono{font-family:var(--f-mono);font-size:.92em;color:var(--ink)}
 .cta-band p{margin:4px 0 0;font-weight:300;color:var(--soft)}
 </style>
 </head>
@@ -215,37 +216,66 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
   </section>
 
   <section class="sec band" id="ai-tools" aria-labelledby="ai-h">
-    <div class="wrap two">
-      <div class="prose">
-        <span class="label">Build</span>
-        <h2 id="ai-h">AI tools and agents</h2>
-        <p>Browser-only calculators, policy engines and agent workflows built to your rules. Each tool computes on the user's device, keeps no personal data, and returns results an auditor can recompute. This is how we built <a href="work.html#ainumbers">AINumbers</a> and <a href="work.html#apexlogics">ApexLogics</a>.</p>
+    <div class="wrap">
+      <div class="two">
+        <div class="prose">
+          <span class="label">Build</span>
+          <h2 id="ai-h">AI tools and agents</h2>
+          <p>Browser-only calculators, policy engines and agent workflows built to your rules. Each tool computes on the user's device, keeps no personal data, and returns results an auditor can recompute. This is how we built <a href="work.html#ainumbers">AINumbers</a> and <a href="work.html#apexlogics">ApexLogics</a>.</p>
+        </div>
+        <ul class="prose">
+          <li>Deterministic calculators and rule engines for finance, compliance and operations</li>
+          <li>Agent workflows that chain tools, with each result linked to the last by its hash</li>
+          <li>Policy Mandate exports that carry a scenario from one tool to the next</li>
+        </ul>
       </div>
-      <ul class="prose">
-        <li>Deterministic calculators and rule engines for finance, compliance and operations</li>
-        <li>Agent workflows that chain tools, with each result linked to the last by its hash</li>
-        <li>Policy Mandate exports that carry a scenario from one tool to the next</li>
-      </ul>
+      <div class="tiles">
+        <article class="tile"><span class="label">Proof · verification ladder</span><h3>Every claim sits on a stated rung</h3><p>A property-test floor on every live kernel, exhaustive enumeration and property testing on named kernels, a machine-checked Dafny and Z3 proof, and contract checks across every workflow. Known debt is published as shrink-only baselines. <a href="https://ainumbers.co/fv-explainer.html">How it works ↗</a></p></article>
+        <article class="tile"><span class="label">Proof · a real bug</span><h3>Found by proof, missed by every worked example</h3><p>The Dafny proof of a Reg Z Appendix J APR kernel showed it compounds interest where the regulation prescribes simple interest, while it still matched all four of the regulator's worked examples. We disclosed it and track the repair. <a href="https://ainumbers.co/guides/formal-verification-evidence.html">The finding ↗</a></p></article>
+        <article class="tile"><span class="label">Proof · open specification</span><h3>OpenChainGraph</h3><p>Our workflows follow OpenChainGraph, the open specification we wrote for hash-linked agent decisions, now at v0.8.13 after a series of public releases. Every result carries a SHA-256 execution hash anyone can recompute. <a href="https://ainumbers.co/chaingraph/openchain-graph-spec.html">Read the spec ↗</a></p></article>
+      </div>
     </div>
   </section>
 
   <section class="sec" id="mcp" aria-labelledby="mcp-h">
-    <div class="wrap two">
-      <div class="prose">
-        <span class="label">Build</span>
-        <h2 id="mcp-h">MCP enablement</h2>
-        <p>Publish your products to AI assistants through an MCP server like ours. We operate one of the largest public MCP servers in finance, with about 730 tools on one endpoint, so we know what agents need from a tool list and what breaks at scale.</p>
+    <div class="wrap">
+      <div class="two">
+        <div class="prose">
+          <span class="label">Build</span>
+          <h2 id="mcp-h">MCP enablement</h2>
+          <p>Publish your products to AI assistants through an MCP server like ours. We operate one of the largest public MCP servers in finance: more than 730 tools on one endpoint, listed in the official MCP registry as <span class="mono">co.ainumbers/tools</span>. We know what agents need from a tool list and what breaks at scale.</p>
+        </div>
+        <ul class="prose">
+          <li>MCP server design, tool naming and schemas</li>
+          <li>WebMCP registration so in-browser agents can call your pages</li>
+          <li>Verifiable receipts, including ZK-proven workflows</li>
+          <li>Testing and usage tracking without collecting personal data</li>
+        </ul>
       </div>
-      <ul class="prose">
-        <li>MCP server design, tool naming and schemas</li>
-        <li>WebMCP registration so in-browser agents can call your pages</li>
-        <li>Verifiable receipts, including ZK-proven workflows</li>
-        <li>Testing and usage tracking without collecting personal data</li>
-      </ul>
+      <div class="tiles">
+        <article class="tile"><span class="label">Proof · zero-knowledge</span><h3>More than 670 ZK-proven nodes</h3><p>More than 670 deterministic nodes carry a risc0 Groth16 zero-knowledge proof of execution. New nodes are usually proved within a few days to a week of going live. <a href="https://ainumbers.co/">AINumbers ↗</a></p></article>
+        <article class="tile"><span class="label">Proof · one server per product</span><h3>Three live MCP servers</h3><p>Besides AINumbers, ApexLogics runs its own MCP server with a hash-verification tool, and the Omega Centauri Society runs an 11-tool science server. <a href="https://omegacentauri.me/mcp.html">OCS server ↗</a></p></article>
+        <article class="tile"><span class="label">Proof · in the browser</span><h3>WebMCP</h3><p>Our browser pages register the same tools through WebMCP, so an agent running in the browser can call them on the page itself, with nothing sent to a server.</p></article>
+      </div>
     </div>
   </section>
 
-  <section class="sec band" id="payments" aria-labelledby="pay-h">
+  <section class="sec band" id="research" aria-labelledby="res-h">
+    <div class="wrap">
+      <div class="prose">
+        <span class="label">Research</span>
+        <h2 id="res-h">Research and technical writing</h2>
+        <p>We draft, check and publish technical research with AI assistance, disclosed on every paper. The derivation and verification habits we apply to code carry over to the literature.</p>
+      </div>
+      <div class="tiles">
+        <article class="tile"><span class="label">Proof · erratum</span><h3>A 12 per cent error in a published constant</h3><p>While implementing the formalism of Prager et al. (2017, ApJ 845:148) for an Omega Centauri study, we found its jerk noise-floor constant, printed as 3.04 and adopted by later work, evaluates to 3.4596. Five independent evaluations and two Monte Carlo simulations reject the printed value. Published as a preprint. <a href="https://omegacentauri.me/omega-centauri-xi-erratum.html">The erratum ↗</a></p></article>
+        <article class="tile"><span class="label">Proof · preprints</span><h3>Ten research preprints</h3><p>The Omega Centauri Society has published ten working-draft preprints, from a pre-registered analysis of the cluster's central dark mass to a residual census of its X-ray sources. <a href="https://omegacentauri.me/paper.html">The papers ↗</a></p></article>
+        <article class="tile"><span class="label">Coming soon</span><h3>LLM and MCP benchmarks</h3><p>Objective, openly run benchmarks for language models and MCP servers go live in the coming days.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="payments" aria-labelledby="pay-h">
     <div class="wrap">
       <div class="prose">
         <span class="label">Advise</span>
@@ -267,7 +297,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
     </div>
   </section>
 
-  <section class="sec" id="blockchain" aria-labelledby="bc-h">
+  <section class="sec band" id="blockchain" aria-labelledby="bc-h">
     <div class="wrap">
       <div class="prose">
         <span class="label">Advise</span>
@@ -288,7 +318,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offse
     </div>
   </section>
 
-  <section class="cta-band band" aria-labelledby="cta-h">
+  <section class="cta-band" aria-labelledby="cta-h">
     <div class="wrap">
       <div><h2 id="cta-h">Discuss a mandate</h2><p>Tell us what you are evaluating and we will say plainly whether we can help.</p></div>
       <a class="btn pri" href="contact.html">Talk to us</a>
