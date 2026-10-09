@@ -290,184 +290,257 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --ink:     #050c15;
-  --deep:    #0a1628;
-  --navy:    #0e1e35;
-  --panel:   #142540;
-  --edge:    #1e3454;
-  --rim:     #2a4a70;
-  --muted:   #4a6a8a;
-  --body:    #7090b0;
-  --text:    #a8c0d8;
-  --bright:  #d0e4f4;
-  --white:   #ecf4fc;
-  --gold:    #c09040;
-  --gold-lt: #d8b060;
-  --accent:  var(--gold);
-  --accent-lt:var(--gold-lt);
+/* Mist palette (POL-REDESIGN-SPEC_2026-10-08 §1). Copy this token block into every page; no shared CSS file. */
+:root{
+  --bg:#eef4f2;      /* page ground */
+  --band:#e2ece9;    /* alternate section band */
+  --card:#f8fbfa;    /* cards, panels */
+  --ink:#102a27;     /* headings, primary text */
+  --soft:#3f5652;    /* body text, secondary */
+  --line:#cfdeda;    /* borders, rules */
+  --teal:#0b7a70;    /* labels, numbers, links */
+  --ring:#0e9c9c;    /* logo O only */
+  --cyan:#0a6f86;    /* MCP request arrows, rotating word */
+  --amber:#a8650f;   /* MCP response arrows, rotating word */
+  --gold:#c9861f;    /* primary button fill, logo L */
+  --gold-ink:#1a1408;/* text on gold */
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--ink);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  line-height: 1.7;
-  font-size: 16px;
-}
-h1,h2,h3,h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.15; }
-a { color: inherit; text-decoration: none; }
-.container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
 
-/* ── PAGE HERO ── */
-.page-hero {
-  padding: 3.5rem 0 2.5rem;
-  border-bottom: 1px solid var(--edge);
-  position: relative; overflow: hidden;
-}
-.page-hero::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-}
-.hero-tag {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; letter-spacing: 0.02em;
-  color: var(--accent-lt); margin-bottom: 1rem;
-}
-.page-hero h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); color: var(--white); max-width: 700px; margin-bottom: 1rem; }
-.page-hero p.intro { font-size: 0.92rem; color: var(--body); max-width: 620px; line-height: 1.85; }
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
 
-/* ── CATEGORY NAV ── */
-.cat-bar {
-  position: sticky; top: 52px; z-index: 80;
-  background: rgba(5,12,21,0.97); border-bottom: 1px solid var(--edge);
-  padding: 0.6rem 0;
+/* hero */
+.hero .wrap{padding-block:clamp(48px,8vw,96px) clamp(40px,6vw,64px);display:grid;gap:22px}
+.hero h1{margin:0;max-width:16ch;font-weight:600;font-size:clamp(2.3rem,6vw,4rem);line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero p{margin:0;max-width:60ch;font-size:1.08rem;font-weight:300;color:var(--soft)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.rot{display:inline-block;position:relative;white-space:nowrap;transition:color .3s}
+.rot::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.09em;border-radius:2px;background:var(--gold);opacity:.8}
+.rot[data-set="field"]{color:var(--teal)}
+.rot[data-set="who"]{color:var(--amber)}
+@media (prefers-reduced-motion:no-preference){
+  .rot.out{animation:flickOut .32s steps(4,end) forwards}
+  .rot.in{animation:flickIn .42s steps(5,end)}
 }
-.cat-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
-.cat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 0.5rem; }
-.cat-btn {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 0.22rem 0.7rem; border: 1px solid var(--edge); color: var(--muted);
-  cursor: pointer; background: transparent; transition: all 0.2s; text-decoration: none; display: inline-block;
-}
-.cat-btn:hover { border-color: var(--accent); color: var(--accent-lt); background: rgba(192,144,64,0.06); }
+@keyframes flickOut{0%{opacity:1}25%{opacity:.2}50%{opacity:.8}75%{opacity:.1}100%{opacity:0}}
+@keyframes flickIn{0%{opacity:0}20%{opacity:.7}40%{opacity:.15}60%{opacity:.9}80%{opacity:.4}100%{opacity:1}}
 
-/* ── FAQ SECTIONS ── */
-.faq-section { padding: 3rem 0 1rem; }
-.section-anchor { display: block; height: 1px; margin-top: -90px; padding-top: 90px; visibility: hidden; }
-.section-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: 0.75rem; padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--edge);
-}
+/* MCP spotlight */
+.band{background:var(--band);border-block:1px solid var(--line)}
+.spot{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,44px);align-items:center;padding-block:clamp(36px,5vw,56px)}
+@media (max-width:760px){.spot{grid-template-columns:1fr}}
+.spot-copy{display:grid;gap:14px;min-width:0}
+.spot h2{margin:0;max-width:24ch;font-weight:600;font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.spot p{margin:0;max-width:62ch;font-weight:300;color:var(--soft)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.82rem}
+.facts .n{font-family:var(--f-mono);font-weight:500;color:var(--teal)}
+.seq{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;min-width:0}
+.seq svg{width:100%;height:auto;display:block}
+.seq figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.seq figcaption .step-name{font-weight:600;font-size:.88rem}
+.seq figcaption a{font-family:var(--f-mono);font-size:.72rem;white-space:nowrap}
 
-/* ── FAQ ITEMS ── */
-.faq-list { display: flex; flex-direction: column; gap: 1px; background: var(--edge); border: 1px solid var(--edge); margin-bottom: 2.5rem; }
-.faq-item {
-  background: var(--deep);
-  transition: background 0.2s;
-}
-.faq-item:hover { background: var(--navy); }
-.faq-q {
-  width: 100%; text-align: left;
-  padding: 1.25rem 1.75rem;
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;
-  cursor: pointer; background: transparent; border: none;
-  font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 500;
-  color: var(--bright); line-height: 1.45;
-}
-.faq-q:hover { color: var(--white); }
-.faq-q.open { color: var(--accent-lt); }
-.faq-chevron {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-  color: var(--muted); flex-shrink: 0; margin-top: 0.1rem;
-  transition: transform 0.2s;
-}
-.faq-q.open .faq-chevron { transform: rotate(180deg); color: var(--accent-lt); }
-.faq-a {
-  display: none;
-  padding: 0 1.75rem 1.4rem 1.75rem;
-  font-size: 0.84rem; color: var(--body); line-height: 1.85;
-}
-.faq-a.open { display: block; }
-.faq-a strong { color: var(--text); font-weight: 500; }
-.faq-a a { color: var(--accent-lt); text-decoration: underline; text-underline-offset: 3px; }
-.faq-a p + p { margin-top: 0.9rem; }
+/* live products */
+.live .wrap{padding-block:clamp(40px,5vw,60px);display:grid;gap:22px}
+.live-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.live h2{margin:0;font-weight:600;font-size:1.6rem;letter-spacing:-.02em}
+.livepill{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.livepill i{width:7px;height:7px;border-radius:50%;background:#1fa36a}
+@media (prefers-reduced-motion:no-preference){.livepill i{animation:pulse 2.4s ease-in-out infinite}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(31,163,106,.5)}50%{box-shadow:0 0 0 5px rgba(31,163,106,0)}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start;min-width:0}
+.card .label{font-size:.68rem}
+.card h3{margin:0;font-size:1.18rem;font-weight:600}
+.card p{margin:0;font-size:.92rem;font-weight:300;color:var(--soft)}
+.card dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.84rem}
+.card dt{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--teal);font-weight:500}
+.card dd{margin:0;color:var(--soft)}
+.card .out{font-family:var(--f-mono);font-size:.78rem;margin-top:4px}
 
-/* ── CONTACT CTA ── */
-.cta-band {
-  margin: 3rem 0 4rem;
-  padding: 2.25rem 2rem;
-  border: 1px solid var(--edge);
-  background: var(--deep);
-  display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap;
-}
-.cta-band h3 { font-size: 1.3rem; color: var(--bright); margin-bottom: 0.4rem; }
-.cta-band p { font-size: 0.84rem; color: var(--body); max-width: 500px; line-height: 1.75; }
-.btn-primary {
-  display: inline-block; padding: 0.7rem 1.75rem;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  background: var(--accent); color: var(--white);
-  border: 1px solid var(--accent); transition: all 0.2s; white-space: nowrap;
-}
-.btn-primary:hover { background: var(--accent-lt); border-color: var(--accent-lt); }
-.btn-outline {
-  display: inline-block; padding: 0.7rem 1.75rem;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  border: 1px solid var(--edge); color: var(--muted);
-  transition: all 0.2s; white-space: nowrap;
-}
-.btn-outline:hover { border-color: var(--accent); color: var(--accent-lt); }
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot .brand{display:block;line-height:0}
+.site-foot .brand svg{height:28px;width:143px}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
 
-/* ── CANONICAL NAV/FOOTER ── */
-nav { padding: 0 2rem; height: 52px; border-bottom: 1px solid var(--edge); background: rgba(5,12,21,0.97); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.nav-inner { max-width: 980px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--bright); letter-spacing: 0.02em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-.nav-logo-mark { height: 22px; width: auto; flex-shrink: 0; display: block; }
-.nav-logo-text { transition: opacity 0.2s ease, max-width 0.2s ease; opacity: 1; max-width: 200px; overflow: hidden; white-space: nowrap; }
-nav.scrolled .nav-logo-text { opacity: 0; max-width: 0; }
-.nav-links { display: flex; gap: 0.6rem; align-items: center; }
-.nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); transition: all 0.2s; text-decoration: none; border: 1px solid var(--edge); padding: 0.35rem 0.75rem; }
-.nav-links a:hover, .nav-links a.active-page { color: var(--accent-lt); border-color: var(--accent); }
-footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
-.footer-inner { max-width: 980px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; }
-.footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--muted); line-height: 1.7; }
-.footer-copy a { color: var(--accent-lt); text-decoration: none; }
-.footer-copy a:hover { text-decoration: underline; }
-/* ── RESPONSIVE ── */
-@media (max-width: 700px) {
-  .nav-links { display: none; }
-  .faq-q { font-size: 0.84rem; padding: 1rem 1.25rem; }
-  .faq-a { padding: 0 1.25rem 1.2rem 1.25rem; }
-  .cta-band { flex-direction: column; }
-}
+/* inner pages: header band, prose, section grid (POL-REDESIGN-SPEC §2) */
+.site-nav ul a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:6px;text-decoration-thickness:2px}
+.page-head .wrap{padding-block:clamp(40px,6vw,72px) clamp(28px,4vw,44px);display:grid;gap:16px}
+.page-head h1{margin:0;max-width:22ch;font-weight:600;font-size:clamp(2rem,4.6vw,3rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.page-head p{margin:0;max-width:62ch;font-size:1.06rem;font-weight:300;color:var(--soft)}
+.sec .wrap{padding-block:clamp(32px,4.5vw,52px);display:grid;gap:18px}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec.band + .sec,.sec + .sec.band{border-top:0}
+.sec h2{margin:0;max-width:30ch;font-weight:600;font-size:clamp(1.35rem,2.6vw,1.75rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.sec h3{margin:0;font-weight:600;font-size:1.06rem}
+.prose{display:grid;gap:12px;max-width:68ch}
+.prose p,.sec .lede{margin:0;font-weight:300;color:var(--soft)}
+.prose ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-weight:300;color:var(--soft)}
+.prose a,.card a:not(.out),.tile a{color:var(--teal);text-underline-offset:3px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.tile h3{font-size:1rem}
+.tile p{margin:0;font-size:.9rem;font-weight:300;color:var(--soft)}
+.tile .label{font-size:.66rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:2px}
+.stats dt{font-family:var(--f-mono);font-weight:500;font-size:1.7rem;color:var(--teal);font-variant-numeric:tabular-nums}
+.stats dd{margin:0;font-size:.86rem;color:var(--soft)}
+.person{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:720px}
+.person .mono{width:64px;height:64px;border-radius:50%;background:var(--band);border:1px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:1.3rem;color:var(--teal);flex:none}
+.person div{display:grid;gap:4px;min-width:0}
+.person h3{font-size:1.2rem}
+.person p{margin:0;font-weight:300;color:var(--soft)}
+.person a{font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
+.linklist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.linklist li{display:grid;gap:2px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.linklist li:last-child{border-bottom:0}
+.linklist a{font-weight:600;color:var(--ink);text-decoration:none}
+.linklist a:hover{color:var(--teal);text-decoration:underline}
+.linklist span{font-size:.9rem;font-weight:300;color:var(--soft)}
+.mail{font-family:var(--f-mono);font-size:.9rem;color:var(--teal)}
+.cta-band .wrap{padding-block:clamp(32px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.cta-band h2{margin:0;font-weight:600;font-size:1.4rem;letter-spacing:-.02em}
+.cta-band p{margin:4px 0 0;font-weight:300;color:var(--soft)}
 
-.site-footer { background: var(--deep); border-top: 1px solid var(--edge); padding: 2.5rem 2rem 1.5rem; margin-top: 4rem; }
-.footer-grid { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 1.5rem 2rem; align-items: flex-start; }
-.footer-col { display: flex; flex-direction: column; gap: 0.35rem; }
-.footer-brand-col { gap: 0.4rem; }
-.footer-h { font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.55rem; font-weight: 400; }
-.footer-col > a { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--text); text-decoration: none; transition: color 0.2s; line-height: 1.55; }
-.footer-col > a:hover { color: var(--accent-lt); }
-@media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } .footer-brand-col { grid-column: 1 / -1; } }
-@media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+
+/* reference pages (glossary, FAQ): page-specific rules, Mist tokens only */
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+main [id]{scroll-margin-top:76px}
+.b{font-weight:600;color:var(--ink)}
+.xref-term{color:var(--ink);font-weight:400}
+.section-anchor{display:block;height:0}
+
+/* sticky filter / jump bar */
+.filter-bar,.cat-bar{position:sticky;top:0;z-index:20;background:var(--bg);border-block:1px solid var(--line)}
+.filter-inner,.cat-inner{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding-block:10px}
+.filter-label,.cat-label{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500;margin-right:4px}
+.filter-btn,.cat-btn{font-family:var(--f-display);font-size:.8rem;line-height:1.3;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--soft);cursor:pointer;text-decoration:none;display:inline-block}
+.filter-btn:hover,.cat-btn:hover{color:var(--ink);border-color:var(--teal)}
+.filter-btn.active{background:var(--teal);border-color:var(--teal);color:var(--card)}
+
+/* callout + promo */
+.callout{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:20px 22px;display:grid;gap:8px;max-width:820px;margin-bottom:16px}
+.callout p{margin:0;font-weight:300;color:var(--soft);font-size:.95rem}
+.callout .callout-h{font-weight:500;color:var(--teal);font-size:.72rem;margin-bottom:4px}
+.callout .callout-note{margin-top:6px;font-size:.9rem}
+.promo{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:24px 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.promo-copy{flex:1 1 240px;min-width:0;display:grid;gap:2px}
+.promo-copy p{margin:0;font-size:.9rem;font-weight:300;color:var(--soft)}
+.promo-copy .promo-h{font-weight:600;color:var(--ink)}
+.promo .btn{white-space:nowrap}
+
+/* glossary */
+.glossary-section .wrap{padding-block:clamp(28px,4vw,44px) 8px}
+.glossary-intro .wrap{padding-bottom:clamp(20px,3vw,32px)}
+.group-label,.section-label{margin:28px 0 12px;font-weight:600;font-size:clamp(1.2rem,2.2vw,1.45rem);line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
+.section-anchor + .group-label,.section-anchor + .section-label{margin-top:8px}
+.term-list{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:28px;overflow:hidden}
+.term-entry{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:8px 28px;align-items:start;padding:20px 24px;border-top:1px solid var(--line)}
+.term-entry:first-child{border-top:0}
+.term-entry > *{min-width:0}
+.term-entry.hidden,[hidden]{display:none}
+.term-name{display:block;font-weight:600;font-size:1rem;line-height:1.3;color:var(--ink)}
+.term-abbr{display:inline-block;margin-top:6px;font-family:var(--f-mono);font-size:.7rem;font-weight:500;letter-spacing:.06em;color:var(--teal);overflow-wrap:anywhere}
+.term-def{margin:0;max-width:68ch;font-size:.95rem;font-weight:300;line-height:1.65;color:var(--soft);overflow-wrap:break-word}
+.term-def + .term-def{margin-top:10px}
+.term-def a,.term-see-also a,.cbdc-source a,.region-body a,.faq-a a,.page-head a,.callout a,.fn-list a,.note a{color:var(--teal);text-decoration:underline;text-underline-offset:3px}
+.term-see-also{margin:10px 0 0;max-width:68ch;font-size:.85rem;font-weight:300;color:var(--soft)}
+.term-entry.term-wide{grid-template-columns:minmax(0,1fr)}
+.term-entry.term-wide .term-name-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.term-entry.term-wide .term-abbr{margin-top:0}
+.term-entry.term-wide .term-def{max-width:76ch}
+.cbdc-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 8px}
+.cbdc-stat-cell{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:4px;text-align:center}
+.cbdc-stat-num{font-family:var(--f-mono);font-weight:500;font-size:1.7rem;line-height:1;color:var(--teal);font-variant-numeric:tabular-nums}
+.cbdc-stat-lbl{font-size:.78rem;line-height:1.4;color:var(--soft)}
+.cbdc-source{margin:8px 0 0;font-family:var(--f-mono);font-size:.72rem;line-height:1.6;color:var(--soft)}
+.funnel{display:block;width:100%;max-width:560px;height:auto;margin-top:12px;font-family:var(--f-mono)}
+.region-list{display:grid;gap:14px;margin:18px 0 8px}
+.region{background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}
+.region-head{padding:10px 18px;background:var(--band);border-bottom:1px solid var(--line)}
+.region-name{font-weight:600;font-size:1.02rem;color:var(--ink)}
+.region-body{margin:0;padding:14px 18px;max-width:76ch;font-size:.9rem;font-weight:300;line-height:1.65;color:var(--soft);overflow-wrap:break-word}
+
+/* FAQ */
+.faq-section .wrap{padding-block:clamp(28px,4vw,44px) 16px}
+.faq-list{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:28px;overflow:hidden}
+.faq-item{border-top:1px solid var(--line)}
+.faq-item:first-child{border-top:0}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 22px;background:transparent;border:0;cursor:pointer;text-align:left;font-family:var(--f-display);font-size:1rem;font-weight:600;line-height:1.4;color:var(--ink)}
+.faq-q:hover,.faq-q.open{color:var(--teal)}
+.faq-chevron{flex:none;font-size:1.15rem;color:var(--teal);line-height:1.2}
+@media (prefers-reduced-motion:no-preference){.faq-chevron{transition:transform .2s}}
+.faq-q.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 22px 20px;min-width:0}
+.faq-a.open{display:grid;gap:12px}
+.faq-a > *{min-width:0}
+.faq-a p{margin:0;max-width:68ch;font-size:.95rem;font-weight:300;line-height:1.65;color:var(--soft);overflow-wrap:break-word}
+.faq-a ul,.faq-a ol{margin:0;max-width:68ch;padding-left:1.2em;display:grid;gap:6px;font-size:.95rem;font-weight:300;color:var(--soft)}
+.diagram{overflow-x:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px}
+.diagram svg{display:block;width:100%;min-width:520px;height:auto;font-family:var(--f-mono)}
+.faq-a .note{font-size:.85rem}
+.footnotes{border-top:1px solid var(--line);padding-top:24px;margin-top:8px;display:grid;gap:12px}
+.footnotes h3{margin:0}
+.fn-list{margin:0;padding-left:1.3em;display:grid;gap:10px;max-width:90ch}
+.fn-list li{font-family:var(--f-mono);font-size:.74rem;line-height:1.65;color:var(--soft);overflow-wrap:anywhere}
+.fn-list .b{color:var(--ink)}
+.cta-band .cta-btns{display:flex;flex-wrap:wrap;gap:10px}
+.cta-band p{max-width:60ch}
+
+@media (max-width:700px){
+  .term-entry{grid-template-columns:minmax(0,1fr);padding:16px 18px}
+  .cbdc-stat-grid{grid-template-columns:minmax(0,1fr)}
+  .faq-q{padding:16px 18px;font-size:.95rem}
+  .faq-a{padding:0 18px 18px}
+  .filter-bar,.cat-bar{position:static}
+}
 </style>
 <link rel="me" href="https://ainumbers.co">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a1828">
+<meta name="theme-color" content="#eef4f2">
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
-<link rel="apple-touch-icon" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -518,38 +591,49 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <body>
 
 
-<nav role="navigation" aria-label="Primary">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Post Oak Labs — Home">
-      <svg class="nav-logo-mark" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M130.2,70.0 L130.4,74.2 L129.5,78.4 L126.8,82.1 L123.2,85.3 L120.6,88.4 L120.1,92.3 L120.9,97.1 L120.8,101.7 L118.5,105.2 L114.7,107.5 L110.9,109.5 L107.7,111.9 L104.8,114.5 L101.4,116.6 L97.9,118.3 L94.7,120.7 L91.8,123.9 L88.6,127.3 L84.8,129.4 L80.7,130.4 L76.5,131.4 L72.2,133.3 L67.7,135.1 L63.2,134.6 L59.3,130.9 L56.1,125.6 L53.4,121.0 L50.6,118.1 L47.3,116.5 L43.9,115.3 L40.2,114.2 L35.9,113.6 L31.3,112.9 L27.5,111.0 L25.5,107.3 L24.9,102.7 L24.1,98.7 L21.4,95.9 L17.1,93.5 L13.2,90.7 L11.0,86.9 L10.0,82.8 L9.3,78.5 L8.7,74.3 L9.0,70.0 L10.7,65.9 L13.1,62.0 L14.6,58.2 L15.4,54.3 L16.4,50.5 L18.6,47.1 L21.3,44.1 L22.8,40.5 L22.7,35.7 L22.4,30.1 L23.7,25.3 L27.2,22.4 L32.0,21.3 L36.9,21.0 L41.6,20.7 L46.0,20.8 L50.2,21.1 L53.9,20.5 L57.0,18.0 L60.2,14.5 L63.9,12.0 L68.0,12.2 L71.9,14.4 L75.6,16.4 L79.4,16.6 L83.5,15.7 L87.9,15.1 L92.1,15.4 L96.3,16.0 L100.9,16.4 L105.6,17.3 L109.5,19.4 L112.3,23.0 L114.5,27.0 L117.0,30.6 L119.5,34.1 L120.7,38.3 L120.0,43.4 L118.4,48.5 L118.0,52.5 L120.0,55.7 L123.7,58.6 L127.1,62.0 L129.2,65.9 L130.2,70.0 Z" stroke="#02c1c1" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
-<circle cx="70" cy="70" r="47" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="38" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="30" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="22" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="16" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="11" stroke="#02c1c1" stroke-width="3.2" fill="none"/>
-<circle cx="70" cy="70" r="3.5" fill="#02c1c1"/></svg>
-      <span class="nav-logo-text" style="color: #4a9fd8;">Post Oak Labs</span>
-    </a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="library.html">Scenarios</a>
-    </div>
-  </div>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- POL mark: P teal, tree-ring O, L gold, wordmark. Vector redraw of the 2026 logo for light grounds. -->
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
 
-<!-- ── HERO ── -->
-<section class="page-hero">
-  <div class="container">
-    <p class="hero-tag">Post Oak Labs · frequently asked questions</p>
-    <h1>Frequently Asked Questions</h1>
-    <p class="intro">Plain answers to the questions banks, central banks, and large corporates ask most often about tokenized A2A infrastructure, stablecoins, CBDCs, and the institutional payment landscape. For deeper treatment of any term, see the <a href="glossary.html" style="color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;">Glossary</a>.</p>
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="library.html" aria-current="page">Library</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="btn pri small" href="contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
   </div>
-</section>
+</header>
+
+<main>
+  <section class="page-head" aria-labelledby="page-h">
+    <div class="wrap">
+      <span class="label">Library</span>
+      <h1 id="page-h">Frequently Asked Questions</h1>
+      <p>Plain answers to the questions banks, central banks, and large corporates ask most often about tokenized A2A infrastructure, stablecoins, CBDCs, and the institutional payment landscape. For deeper treatment of any term, see the <a href="glossary.html">Glossary</a>.</p>
+    </div>
+  </section>
 
 <!-- ── CATEGORY BAR ── -->
 <div class="cat-bar">
-  <div class="cat-inner">
+  <div class="wrap cat-inner">
     <span class="cat-label">Jump to ·</span>
     <a class="cat-btn" href="#instruments">Instruments</a>
     <a class="cat-btn" href="#infrastructure">Infrastructure</a>
@@ -563,14 +647,14 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
 <!-- ── MAIN CONTENT ── -->
 <div class="faq-section">
-  <div class="container">
+  <div class="wrap">
 
-    <div style="border:2px solid var(--gold);background:var(--navy);padding:1.5rem;margin-bottom:2rem;">
-      <p style="font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:0.85rem;font-weight:700;letter-spacing:0.04em;margin-bottom:0.8rem;">WHAT WE SPECIALIZE IN, THREE LAYERS OF THE INSTITUTIONAL PAYMENT STACK</p>
-      <p style="margin-bottom:0.5rem;font-size:0.88rem;"><strong>Layer 1, Consumer Fast Payments (Pix, FedNow, UPI):</strong> retail rail; domestic; consumer-to-merchant; single country</p>
-      <p style="margin-bottom:0.5rem;font-size:0.88rem;"><strong>Layer 2, Stablecoin / CBDC Infrastructure:</strong> monetary instrument layer; digital money issuance and distribution</p>
-      <p style="margin-bottom:0.5rem;font-size:0.88rem;"><strong>Layer 3, Tokenized A2A Institutional Rails:</strong> cross-border interbank settlement; B2B; permissioned ledgers between financial institutions</p>
-      <p style="margin-top:0.8rem;font-size:0.88rem;color:var(--muted);">Post Oak Labs operates exclusively at Layer 3. Layers 1 and 2 are complementary systems serving different market segments with different technical architectures, not competitor products.</p>
+    <div class="callout">
+      <p class="label callout-h">WHAT WE SPECIALIZE IN, THREE LAYERS OF THE INSTITUTIONAL PAYMENT STACK</p>
+      <p><span class="b">Layer 1, Consumer Fast Payments (Pix, FedNow, UPI):</span> retail rail; domestic; consumer-to-merchant; single country</p>
+      <p><span class="b">Layer 2, Stablecoin / CBDC Infrastructure:</span> monetary instrument layer; digital money issuance and distribution</p>
+      <p><span class="b">Layer 3, Tokenized A2A Institutional Rails:</span> cross-border interbank settlement; B2B; permissioned ledgers between financial institutions</p>
+      <p class="callout-note">Post Oak Labs operates exclusively at Layer 3. Layers 1 and 2 are complementary systems serving different market segments with different technical architectures, not competitor products.</p>
     </div>
 
     <!-- INSTRUMENTS -->
@@ -579,13 +663,12 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
     
     <!-- P4: AINumbers tools CTA banner -->
-    <div style="background:rgba(20,184,166,0.07);border:1px solid rgba(20,184,166,0.25);border-radius:6px;padding:1rem 1.4rem;margin:1.8rem 0;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
-      <span style="font-size:1.2rem;"></span>
-      <div style="flex:1;min-width:200px;">
-        <p style="margin:0 0 0.25rem;font-size:0.88rem;font-weight:600;color:var(--bright,#f1f5f9);">33 Free Fintech Tools, now at AINumbers.co</p>
-        <p style="margin:0;font-size:0.82rem;color:var(--body,#94a3b8);">A2A fee routing, ISO 20022 message builder, fraud score simulator, compliance checklist, IBAN/BIC validator, and more; all browser-based, no install.</p>
+    <div class="promo">
+      <div class="promo-copy">
+        <p class="promo-h">Free Fintech Tools, now at AINumbers.co</p>
+        <p>A2A fee routing, ISO 20022 message builder, fraud score simulator, compliance checklist, IBAN/BIC validator, and more; all browser-based, no install.</p>
       </div>
-      <a href="https://ainumbers.co" target="_blank" rel="noopener noreferrer" style="white-space:nowrap;background:var(--teal,#14b8a6);color:#0f172a;padding:0.45rem 1rem;border-radius:4px;font-size:0.82rem;font-weight:700;text-decoration:none;">Open Tools ↗</a>
+      <a href="https://ainumbers.co" target="_blank" rel="noopener noreferrer" class="btn pri small">Open Tools ↗</a>
     </div>
 
     <div class="faq-list">
@@ -593,32 +676,32 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is the difference between a tokenized deposit and a stablecoin?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>A <strong>tokenized deposit</strong> is a digital token issued by a regulated commercial bank representing a claim on fiat reserves held at that bank. It remains a bank liability, is subject to deposit insurance requirements and prudential supervision, and can only be issued by a licensed institution. JPMorgan's JPMD (formerly JPM Coin) is the most prominent live example.</p>
-          <p>A <strong>stablecoin</strong> is a digital token whose value is pegged to a reference asset, typically the US dollar, issued by a non-bank or specialized payment institution, backed by reserves held outside the traditional banking system. The key distinction is who bears the liability and who supervises it. Tokenized deposits sit inside the existing bank regulatory perimeter; stablecoins create an adjacent category that regulators are still calibrating under the GENIUS Act (US) and MiCA (EU).</p>
+          <p>A <span class="b">tokenized deposit</span> is a digital token issued by a regulated commercial bank representing a claim on fiat reserves held at that bank. It remains a bank liability, is subject to deposit insurance requirements and prudential supervision, and can only be issued by a licensed institution. JPMorgan's JPMD (formerly JPM Coin) is the most prominent live example.</p>
+          <p>A <span class="b">stablecoin</span> is a digital token whose value is pegged to a reference asset, typically the US dollar, issued by a non-bank or specialized payment institution, backed by reserves held outside the traditional banking system. The key distinction is who bears the liability and who supervises it. Tokenized deposits sit inside the existing bank regulatory perimeter; stablecoins create an adjacent category that regulators are still calibrating under the GENIUS Act (US) and MiCA (EU).</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is the difference between wholesale CBDC and retail CBDC?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>A <strong>wholesale CBDC</strong> is a central bank digital currency restricted to regulated financial institutions (banks, payment service providers, and financial market infrastructures) for use in interbank settlement, securities settlement, and cross-border payment operations. It is the digital equivalent of reserves held at the central bank and is the CBDC design most relevant to institutional payment infrastructure.</p>
-          <p>A <strong>retail CBDC</strong> is made available directly to the general public as a digital form of cash, carrying the same sovereign guarantee as banknotes. Retail CBDCs raise complex design questions around financial privacy, bank disintermediation, and the future of physical cash; wholesale CBDCs largely avoid these. Post Oak Labs' advisory work focuses on wholesale CBDC architecture and its integration with tokenized A2A rails; see our <a href="a2a-guide.html">A2A Payments</a> page for deployment context.</p>
+          <p>A <span class="b">wholesale CBDC</span> is a central bank digital currency restricted to regulated financial institutions (banks, payment service providers, and financial market infrastructures) for use in interbank settlement, securities settlement, and cross-border payment operations. It is the digital equivalent of reserves held at the central bank and is the CBDC design most relevant to institutional payment infrastructure.</p>
+          <p>A <span class="b">retail CBDC</span> is made available directly to the general public as a digital form of cash, carrying the same sovereign guarantee as banknotes. Retail CBDCs raise complex design questions around financial privacy, bank disintermediation, and the future of physical cash; wholesale CBDCs largely avoid these. Post Oak Labs' advisory work focuses on wholesale CBDC architecture and its integration with tokenized A2A rails; see our <a href="a2a-guide.html">A2A Payments</a> page for deployment context.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Can A2A rails carry CBDCs, stablecoins, and tokenized deposits, or only one type of asset?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>A well-designed tokenized A2A rail is <strong>asset-agnostic at the protocol level</strong>: the settlement logic, atomic swap mechanism, and compliance layer operate independently of which monetary instrument is being transferred. In practice, institutional A2A rails are most commonly built around tokenized commercial bank deposits, which fit naturally inside the existing bank regulatory perimeter.</p>
+          <p>A well-designed tokenized A2A rail is <span class="b">asset-agnostic at the protocol level</span>: the settlement logic, atomic swap mechanism, and compliance layer operate independently of which monetary instrument is being transferred. In practice, institutional A2A rails are most commonly built around tokenized commercial bank deposits, which fit naturally inside the existing bank regulatory perimeter.</p>
           <p>They can also carry wholesale CBDC where a central bank has issued one and integrated with the network, and stablecoins where they are issued by licensed entities under applicable regulation. The practical constraint is not technical but legal and governance: each instrument type requires specific reserve verification, regulatory treatment, and participation agreements. Multi-asset rails are feasible but require careful upfront governance design.</p>
         </div>
       </div>
@@ -626,7 +709,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is Project mBridge and is it still active?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Project mBridge was a multi-central-bank wholesale CBDC initiative originally developed in collaboration with the BIS Innovation Hub, the Hong Kong Monetary Authority, the Bank of Thailand, the Digital Currency Institute of the People's Bank of China, the Central Bank of the UAE, and later the Saudi Central Bank. It demonstrated cross-border settlement using wholesale CBDCs with sub-10-second finality under proof-of-concept conditions, one of the most cited benchmarks for tokenized settlement speed.</p>
@@ -645,21 +728,21 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How do reserve audits work for stablecoins and tokenized deposits, and how reliable are they?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>Reserve verification sits on a spectrum from weakest to strongest: <strong>(1) Self-attestation:</strong> the issuer publishes reserve composition unilaterally with no independent verification, the weakest form, historically associated with reserve quality concerns in some issuers. <strong>(2) Third-party attestation:</strong> an accounting firm reviews reserves at a point in time and confirms what the issuer reported, not a full audit; auditors confirm what they were shown, not that the reserve actually exists and is unencumbered. Circle (USDC) publishes monthly attestations of this type. <strong>(3) Full audit:</strong> auditors independently verify reserve existence, composition, and legal ownership. Rare in the stablecoin industry. <strong>(4) Cryptographic proof of reserves:</strong> a Merkle tree-based approach allowing on-chain verification that a claimed reserve balance is backed, without revealing individual account details. More common in crypto exchanges than stablecoin issuers.</p>
-          <p>Tether (USDT) has historically provided attestations rather than full audits, which remains a subject of regulatory concern. The GENIUS Act (US) and MiCA (EU) both require licensed issuers to maintain high-quality liquid reserves and undergo third-party audits, raising the floor for regulated issuers. <strong>Tokenized deposits are different:</strong> they are bank liabilities, not stablecoin claims. They do not require proof-of-reserves mechanisms: the bank's entire balance sheet is subject to standard prudential banking supervision, deposit insurance requirements, and regulatory capital requirements. Tokenized deposits are therefore considered lower risk than most stablecoin instruments for institutional settlement purposes.</p>
+          <p>Reserve verification sits on a spectrum from weakest to strongest: <span class="b">(1) Self-attestation:</span> the issuer publishes reserve composition unilaterally with no independent verification, the weakest form, historically associated with reserve quality concerns in some issuers. <span class="b">(2) Third-party attestation:</span> an accounting firm reviews reserves at a point in time and confirms what the issuer reported, not a full audit; auditors confirm what they were shown, not that the reserve actually exists and is unencumbered. Circle (USDC) publishes monthly attestations of this type. <span class="b">(3) Full audit:</span> auditors independently verify reserve existence, composition, and legal ownership. Rare in the stablecoin industry. <span class="b">(4) Cryptographic proof of reserves:</span> a Merkle tree-based approach allowing on-chain verification that a claimed reserve balance is backed, without revealing individual account details. More common in crypto exchanges than stablecoin issuers.</p>
+          <p>Tether (USDT) has historically provided attestations rather than full audits, which remains a subject of regulatory concern. The GENIUS Act (US) and MiCA (EU) both require licensed issuers to maintain high-quality liquid reserves and undergo third-party audits, raising the floor for regulated issuers. <span class="b">Tokenized deposits are different:</span> they are bank liabilities, not stablecoin claims. They do not require proof-of-reserves mechanisms: the bank's entire balance sheet is subject to standard prudential banking supervision, deposit insurance requirements, and regulatory capital requirements. Tokenized deposits are therefore considered lower risk than most stablecoin instruments for institutional settlement purposes.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Does tokenized A2A replace SWIFT or work alongside it?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>Tokenized A2A works <strong>alongside SWIFT</strong>. It does not replace it. SWIFT is a messaging network; it carries payment instructions but does not itself move money. Tokenized A2A is a settlement layer: it handles the actual transfer of value between participating institutions on a shared permissioned ledger. RTGS systems (operated by central banks) remain the final settlement backbone; A2A abstracts over them and uses them more efficiently via end-of-cycle net settlement.</p>
+          <p>Tokenized A2A works <span class="b">alongside SWIFT</span>. It does not replace it. SWIFT is a messaging network; it carries payment instructions but does not itself move money. Tokenized A2A is a settlement layer: it handles the actual transfer of value between participating institutions on a shared permissioned ledger. RTGS systems (operated by central banks) remain the final settlement backbone; A2A abstracts over them and uses them more efficiently via end-of-cycle net settlement.</p>
           <p>SWIFT's 11,000-plus member network also represents global reach that tokenized A2A networks are still building toward. For corridors not yet served by A2A participants, SWIFT and correspondent banking remain the only viable option. The practical near-term vision is hybrid: A2A for corridors where network participants exist, correspondent banking for the rest.</p>
         </div>
       </div>
@@ -667,136 +750,136 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is nostro/vostro pre-funding and why does it matter to treasury teams?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>Nostro and vostro accounts are foreign-currency accounts that correspondent banks must <strong>pre-fund</strong> in advance, so they can settle cross-border payment instructions without delay. A nostro account is held at a foreign bank (from the Latin "ours"); a vostro account is the same relationship seen from the foreign bank's perspective ("yours").</p>
-          <p>The problem for treasury teams is that this pre-funded capital sits <strong>idle between uses</strong>, earning little or nothing, while simultaneously consuming regulatory liquidity buffers under Basel III's LCR and NSFR. Industry estimates place total trapped capital globally at approximately $27 trillion (McKinsey, 2016 estimate; no industry-wide restatement has since been published, though some 2025 sources cite figures closer to $28 trillion). Tokenized A2A infrastructure replaces pre-funding with just-in-time settlement via netting cycles, freeing that capital for productive use. See the <a href="a2a-comparison.html#fn2">Comparison page footnote 2</a> for full source notes on the $27T estimate.</p>
+          <p>Nostro and vostro accounts are foreign-currency accounts that correspondent banks must <span class="b">pre-fund</span> in advance, so they can settle cross-border payment instructions without delay. A nostro account is held at a foreign bank (from the Latin "ours"); a vostro account is the same relationship seen from the foreign bank's perspective ("yours").</p>
+          <p>The problem for treasury teams is that this pre-funded capital sits <span class="b">idle between uses</span>, earning little or nothing, while simultaneously consuming regulatory liquidity buffers under Basel III's LCR and NSFR. Industry estimates place total trapped capital globally at approximately $27 trillion (McKinsey, 2016 estimate; no industry-wide restatement has since been published, though some 2025 sources cite figures closer to $28 trillion). Tokenized A2A infrastructure replaces pre-funding with just-in-time settlement via netting cycles, freeing that capital for productive use. See the <a href="a2a-comparison.html#fn2">Comparison page footnote 2</a> for full source notes on the $27T estimate.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does a four-corner settlement model differ from correspondent banking?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>The <strong>four-corner model</strong> describes the minimal architecture for an interbank payment: the payer, the payer's bank, the payee's bank, and the payee. Tokenized A2A infrastructure operates at this level: the two commercial banks settle directly on a shared ledger with no intermediaries between them.</p>
-          <p>Traditional correspondent banking expands this to six, eight, or more participants by inserting correspondent banks between the originating and receiving institutions. Each added correspondent adds cost (wire fees, FX spread), processing time (batch windows, cut-off times), opacity (the payer cannot track funds in transit), and counterparty risk. The compression back to a true four-corner model is the central structural advantage of tokenized A2A rails, but it requires both institutions to be participants on the same network, which is why <strong>network reach remains A2A's primary current limitation</strong>.</p>
+          <p>The <span class="b">four-corner model</span> describes the minimal architecture for an interbank payment: the payer, the payer's bank, the payee's bank, and the payee. Tokenized A2A infrastructure operates at this level: the two commercial banks settle directly on a shared ledger with no intermediaries between them.</p>
+          <p>Traditional correspondent banking expands this to six, eight, or more participants by inserting correspondent banks between the originating and receiving institutions. Each added correspondent adds cost (wire fees, FX spread), processing time (batch windows, cut-off times), opacity (the payer cannot track funds in transit), and counterparty risk. The compression back to a true four-corner model is the central structural advantage of tokenized A2A rails, but it requires both institutions to be participants on the same network, which is why <span class="b">network reach remains A2A's primary current limitation</span>.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is ISO 20022 and how does it relate to tokenized A2A infrastructure?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>ISO 20022 is the global standard for financial messaging, replacing the older SWIFT MT format with richly structured XML or JSON messages. Unlike legacy MT messages (which truncate beneficiary names, addresses, and purpose codes), ISO 20022 MX messages carry complete structured data, enabling automated sanctions screening, straight-through processing, and richer AML analytics. SWIFT completed mandatory migration to ISO 20022 for cross-border payments in stages through 2025. The US Federal Reserve also migrated Fedwire Funds Service (the largest RTGS system in the world by transaction value) to ISO 20022 on July 14, 2025.</p>
-          <p>The connection to tokenized A2A is direct: ISO 20022-formatted data travels <strong>inside the payment token on the ledger</strong>, so every transaction carries complete structured information at the point of settlement, where a legacy transfer would carry only a degraded routing instruction across multiple correspondent hops. This eliminates the data loss that occurs across the correspondent chain and gives every participating institution simultaneous access to the same compliance-relevant data. See the <a href="a2a-guide.html#iso20022">ISO 20022 page</a> for a full technical treatment.</p>
+          <p>The connection to tokenized A2A is direct: ISO 20022-formatted data travels <span class="b">inside the payment token on the ledger</span>, so every transaction carries complete structured information at the point of settlement, where a legacy transfer would carry only a degraded routing instruction across multiple correspondent hops. This eliminates the data loss that occurs across the correspondent chain and gives every participating institution simultaneous access to the same compliance-relevant data. See the <a href="a2a-guide.html#iso20022">ISO 20022 page</a> for a full technical treatment.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is the difference between Hyperledger Fabric, Hyperledger Besu, and R3 Corda, and which is right for our use case?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>All three are permissioned distributed ledger platforms used in institutional finance, but they differ in architecture and privacy model.</p>
-          <p><strong>Hyperledger Fabric</strong> uses a channel-based privacy model: transactions are only shared with nodes in a specific channel, making it well-suited for multi-party supply chain and trade finance applications requiring bilateral confidentiality between specific subsets of participants. <strong>Hyperledger Besu</strong> is an Ethereum-compatible permissioned chain using EVM smart contracts, best suited for deployments where Ethereum ecosystem tooling and future public-chain interoperability are priorities. <strong>R3 Corda</strong> is specifically designed for financial bilateral contracts: transactions are shared only on a strict need-to-know basis, with only the parties directly involved seeing the details.</p>
-          <p>For a candid, practitioner-authored comparison covering deployment data, market sizing, and due diligence guidance, see the <a href="enterprise-blockchain.html">Post Oak Labs Enterprise Blockchain Market Briefing</a>. <strong>Post Oak Labs does not endorse any specific blockchain or distributed ledger technology.</strong> Platform selection is a governance, regulatory, and ecosystem question as much as a technical one; the right answer depends on your institution's specific architecture, jurisdiction, and strategic objectives.</p>
+          <p><span class="b">Hyperledger Fabric</span> uses a channel-based privacy model: transactions are only shared with nodes in a specific channel, making it well-suited for multi-party supply chain and trade finance applications requiring bilateral confidentiality between specific subsets of participants. <span class="b">Hyperledger Besu</span> is an Ethereum-compatible permissioned chain using EVM smart contracts, best suited for deployments where Ethereum ecosystem tooling and future public-chain interoperability are priorities. <span class="b">R3 Corda</span> is specifically designed for financial bilateral contracts: transactions are shared only on a strict need-to-know basis, with only the parties directly involved seeing the details.</p>
+          <p>For a candid, practitioner-authored comparison covering deployment data, market sizing, and due diligence guidance, see the <a href="enterprise-blockchain.html">Post Oak Labs Enterprise Blockchain Market Briefing</a>. <span class="b">Post Oak Labs does not endorse any specific blockchain or distributed ledger technology.</span> Platform selection is a governance, regulatory, and ecosystem question as much as a technical one; the right answer depends on your institution's specific architecture, jurisdiction, and strategic objectives.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does tokenized A2A handle FX conversion in cross-border corridors?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>In the tokenized A2A <strong>mint-transfer-redeem cycle</strong>, FX conversion happens at the point of redemption by the receiving bank, not at each intermediary hop as in correspondent banking. The originating bank mints a token representing a claim in the sending currency; the token transfers across the ledger; the receiving bank redeems it and credits the recipient's account in local currency, applying the FX rate at that moment.</p>
-          <p>The originating bank or its designated FX provider captures the conversion spread, rather than losing it to correspondent intermediaries who take a cut at each hop. The effect is a <strong>commercial redistribution of FX revenue</strong>, not an elimination of FX costs. It typically results in more transparent, tighter spreads for the end client, and moves the FX economics from the correspondent chain back to the institutions that have the direct customer relationship.</p>
+          <p>In the tokenized A2A <span class="b">mint-transfer-redeem cycle</span>, FX conversion happens at the point of redemption by the receiving bank, not at each intermediary hop as in correspondent banking. The originating bank mints a token representing a claim in the sending currency; the token transfers across the ledger; the receiving bank redeems it and credits the recipient's account in local currency, applying the FX rate at that moment.</p>
+          <p>The originating bank or its designated FX provider captures the conversion spread, rather than losing it to correspondent intermediaries who take a cut at each hop. The effect is a <span class="b">commercial redistribution of FX revenue</span>, not an elimination of FX costs. It typically results in more transparent, tighter spreads for the end client, and moves the FX economics from the correspondent chain back to the institutions that have the direct customer relationship.</p>
           <!-- Mint-Transfer-Redeem cycle diagram -->
-          <div style="margin:1.4rem 0 0.5rem;overflow-x:auto;">
-            <svg viewBox="0 0 780 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;font-family:'JetBrains Mono',monospace;" aria-label="Mint-Transfer-Redeem cycle flow diagram">
+          <div class="diagram">
+            <svg viewBox="0 0 780 230" xmlns="http://www.w3.org/2000/svg" aria-label="Mint-Transfer-Redeem cycle flow diagram">
               <defs>
                 <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                  <polygon points="0 0, 8 3, 0 6" fill="#d8b060"/>
+                  <polygon points="0 0, 8 3, 0 6" fill="var(--amber)"/>
                 </marker>
                 <marker id="arr2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                  <polygon points="0 0, 8 3, 0 6" fill="#c09040"/>
+                  <polygon points="0 0, 8 3, 0 6" fill="var(--gold)"/>
                 </marker>
               </defs>
               <!-- Background boxes -->
               <!-- Step 1: MINT -->
-              <rect x="8" y="40" width="168" height="148" rx="3" fill="#0a1628" stroke="#1e3454" stroke-width="1"/>
-              <rect x="8" y="40" width="168" height="4" rx="3" fill="#c09040"/>
-              <text x="92" y="64" text-anchor="middle" fill="#d8b060" font-size="8.5" letter-spacing="2" font-weight="400">STEP 1</text>
-              <text x="92" y="82" text-anchor="middle" fill="#ecf4fc" font-size="13" letter-spacing="1">Mint</text>
-              <text x="92" y="104" text-anchor="middle" fill="#7090b0" font-size="8.5" xml:space="preserve">Sender's bank creates</text>
-              <text x="92" y="118" text-anchor="middle" fill="#7090b0" font-size="8.5">a deposit token (1:1</text>
-              <text x="92" y="132" text-anchor="middle" fill="#7090b0" font-size="8.5">vs. fiat reserves)</text>
+              <rect x="8" y="40" width="168" height="148" rx="3" fill="var(--card)" stroke="var(--line)" stroke-width="1"/>
+              <rect x="8" y="40" width="168" height="4" rx="3" fill="var(--gold)"/>
+              <text x="92" y="64" text-anchor="middle" fill="var(--amber)" font-size="8.5" letter-spacing="2" font-weight="400">STEP 1</text>
+              <text x="92" y="82" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1">Mint</text>
+              <text x="92" y="104" text-anchor="middle" fill="var(--soft)" font-size="8.5" xml:space="preserve">Sender's bank creates</text>
+              <text x="92" y="118" text-anchor="middle" fill="var(--soft)" font-size="8.5">a deposit token (1:1</text>
+              <text x="92" y="132" text-anchor="middle" fill="var(--soft)" font-size="8.5">vs. fiat reserves)</text>
               <!-- Token icon -->
-              <circle cx="92" cy="162" r="14" fill="#142540" stroke="#c09040" stroke-width="1.5"/>
-              <text x="92" y="167" text-anchor="middle" fill="#d8b060" font-size="11">⬡</text>
+              <circle cx="92" cy="162" r="14" fill="var(--band)" stroke="var(--gold)" stroke-width="1.5"/>
+              <text x="92" y="167" text-anchor="middle" fill="var(--amber)" font-size="11">⬡</text>
 
               <!-- Arrow 1 -->
-              <line x1="180" y1="114" x2="294" y2="114" stroke="#d8b060" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
-              <text x="237" y="107" text-anchor="middle" fill="#4a6a8a" font-size="8">Token on ledger</text>
+              <line x1="180" y1="114" x2="294" y2="114" stroke="var(--amber)" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+              <text x="237" y="107" text-anchor="middle" fill="var(--soft)" font-size="8">Token on ledger</text>
 
               <!-- Step 2: TRANSFER -->
-              <rect x="298" y="40" width="184" height="148" rx="3" fill="#0a1628" stroke="#1e3454" stroke-width="1"/>
-              <rect x="298" y="40" width="184" height="4" rx="3" fill="#c09040"/>
-              <text x="390" y="64" text-anchor="middle" fill="#d8b060" font-size="8.5" letter-spacing="2">STEP 2</text>
-              <text x="390" y="82" text-anchor="middle" fill="#ecf4fc" font-size="13" letter-spacing="1">Transfer</text>
-              <text x="390" y="104" text-anchor="middle" fill="#7090b0" font-size="8.5">Token moves across the</text>
-              <text x="390" y="118" text-anchor="middle" fill="#7090b0" font-size="8.5">permissioned ledger.</text>
-              <text x="390" y="132" text-anchor="middle" fill="#7090b0" font-size="8.5">KYC/sanctions checks</text>
-              <text x="390" y="146" text-anchor="middle" fill="#7090b0" font-size="8.5">validated on-chain</text>
+              <rect x="298" y="40" width="184" height="148" rx="3" fill="var(--card)" stroke="var(--line)" stroke-width="1"/>
+              <rect x="298" y="40" width="184" height="4" rx="3" fill="var(--gold)"/>
+              <text x="390" y="64" text-anchor="middle" fill="var(--amber)" font-size="8.5" letter-spacing="2">STEP 2</text>
+              <text x="390" y="82" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1">Transfer</text>
+              <text x="390" y="104" text-anchor="middle" fill="var(--soft)" font-size="8.5">Token moves across the</text>
+              <text x="390" y="118" text-anchor="middle" fill="var(--soft)" font-size="8.5">permissioned ledger.</text>
+              <text x="390" y="132" text-anchor="middle" fill="var(--soft)" font-size="8.5">KYC/sanctions checks</text>
+              <text x="390" y="146" text-anchor="middle" fill="var(--soft)" font-size="8.5">validated on-chain</text>
               <!-- Node icons -->
-              <circle cx="358" cy="168" r="9" fill="#142540" stroke="#2a4a70" stroke-width="1"/>
-              <text x="358" y="172" text-anchor="middle" fill="#7090b0" font-size="8">N</text>
-              <circle cx="390" cy="163" r="9" fill="#142540" stroke="#c09040" stroke-width="1.5"/>
-              <text x="390" y="167" text-anchor="middle" fill="#d8b060" font-size="8">⬡</text>
-              <circle cx="422" cy="168" r="9" fill="#142540" stroke="#2a4a70" stroke-width="1"/>
-              <text x="422" y="172" text-anchor="middle" fill="#7090b0" font-size="8">N</text>
-              <line x1="367" y1="168" x2="381" y2="165" stroke="#2a4a70" stroke-width="1"/>
-              <line x1="399" y1="165" x2="413" y2="168" stroke="#2a4a70" stroke-width="1"/>
+              <circle cx="358" cy="168" r="9" fill="var(--band)" stroke="var(--soft)" stroke-width="1"/>
+              <text x="358" y="172" text-anchor="middle" fill="var(--soft)" font-size="8">N</text>
+              <circle cx="390" cy="163" r="9" fill="var(--band)" stroke="var(--gold)" stroke-width="1.5"/>
+              <text x="390" y="167" text-anchor="middle" fill="var(--amber)" font-size="8">⬡</text>
+              <circle cx="422" cy="168" r="9" fill="var(--band)" stroke="var(--soft)" stroke-width="1"/>
+              <text x="422" y="172" text-anchor="middle" fill="var(--soft)" font-size="8">N</text>
+              <line x1="367" y1="168" x2="381" y2="165" stroke="var(--soft)" stroke-width="1"/>
+              <line x1="399" y1="165" x2="413" y2="168" stroke="var(--soft)" stroke-width="1"/>
 
               <!-- Arrow 2 -->
-              <line x1="486" y1="114" x2="596" y2="114" stroke="#d8b060" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
-              <text x="541" y="107" text-anchor="middle" fill="#4a6a8a" font-size="8">Token burned</text>
+              <line x1="486" y1="114" x2="596" y2="114" stroke="var(--amber)" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+              <text x="541" y="107" text-anchor="middle" fill="var(--soft)" font-size="8">Token burned</text>
 
               <!-- Step 3: REDEEM -->
-              <rect x="600" y="40" width="172" height="148" rx="3" fill="#0a1628" stroke="#1e3454" stroke-width="1"/>
-              <rect x="600" y="40" width="172" height="4" rx="3" fill="#c09040"/>
-              <text x="686" y="64" text-anchor="middle" fill="#d8b060" font-size="8.5" letter-spacing="2">STEP 3</text>
-              <text x="686" y="82" text-anchor="middle" fill="#ecf4fc" font-size="13" letter-spacing="1">Redeem</text>
-              <text x="686" y="104" text-anchor="middle" fill="#7090b0" font-size="8.5">Receiving bank burns</text>
-              <text x="686" y="118" text-anchor="middle" fill="#7090b0" font-size="8.5">token; credits local-</text>
-              <text x="686" y="132" text-anchor="middle" fill="#7090b0" font-size="8.5">currency value. FX rate</text>
-              <text x="686" y="146" text-anchor="middle" fill="#7090b0" font-size="8.5">applied at this point.</text>
+              <rect x="600" y="40" width="172" height="148" rx="3" fill="var(--card)" stroke="var(--line)" stroke-width="1"/>
+              <rect x="600" y="40" width="172" height="4" rx="3" fill="var(--gold)"/>
+              <text x="686" y="64" text-anchor="middle" fill="var(--amber)" font-size="8.5" letter-spacing="2">STEP 3</text>
+              <text x="686" y="82" text-anchor="middle" fill="var(--ink)" font-size="13" letter-spacing="1">Redeem</text>
+              <text x="686" y="104" text-anchor="middle" fill="var(--soft)" font-size="8.5">Receiving bank burns</text>
+              <text x="686" y="118" text-anchor="middle" fill="var(--soft)" font-size="8.5">token; credits local-</text>
+              <text x="686" y="132" text-anchor="middle" fill="var(--soft)" font-size="8.5">currency value. FX rate</text>
+              <text x="686" y="146" text-anchor="middle" fill="var(--soft)" font-size="8.5">applied at this point.</text>
               <!-- FX icon -->
-              <rect x="666" y="154" width="40" height="22" rx="2" fill="#142540" stroke="#c09040" stroke-width="1"/>
-              <text x="686" y="169" text-anchor="middle" fill="#d8b060" font-size="9">FX ✓</text>
+              <rect x="666" y="154" width="40" height="22" rx="2" fill="var(--band)" stroke="var(--gold)" stroke-width="1"/>
+              <text x="686" y="169" text-anchor="middle" fill="var(--amber)" font-size="9">FX ✓</text>
 
               <!-- Bottom caption -->
-              <text x="390" y="214" text-anchor="middle" fill="#4a6a8a" font-size="8" letter-spacing="1">Net interbank positions settle via RTGS at end-of-cycle · No correspondent chain</text>
+              <text x="390" y="214" text-anchor="middle" fill="var(--soft)" font-size="8" letter-spacing="1">Net interbank positions settle via RTGS at end-of-cycle · No correspondent chain</text>
             </svg>
           </div>
-          <p style="font-size:0.76rem;color:var(--muted);margin-top:0.5rem;">See the <a href="a2a-guide.html#workflow">A2A Tokenization Explained</a> page for a full technical walkthrough of the transaction lifecycle. For the underlying infrastructure vocabulary, see the <a href="glossary.html#mint-transfer-redeem">Glossary entry on the Mint-Transfer-Redeem Cycle</a>.</p>
+          <p class="note">See the <a href="a2a-guide.html#workflow">A2A Tokenization Explained</a> page for a full technical walkthrough of the transaction lifecycle. For the underlying infrastructure vocabulary, see the <a href="glossary.html#mint-transfer-redeem">Glossary entry on the Mint-Transfer-Redeem Cycle</a>.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What does "settlement finality" mean in practice, and why does it matter for cross-border payments?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>Settlement finality is the point at which a payment becomes <strong>legally irrevocable and unconditional</strong>: the transfer of funds is complete and cannot be unwound, reversed, or reclaimed by any party. In practice it matters because until finality is achieved, both counterparties carry principal risk: if the paying institution fails after initiating a transfer but before finality, the receiving institution may be unable to recover the funds.</p>
-          <p>In traditional correspondent banking, final settlement may take one to three business days, meaning open exposure persists for the duration. On tokenized A2A rails using atomic settlement, both legs of a transaction settle simultaneously and instantly: either both complete or neither does, eliminating the principal risk window. Note that <strong>legal finality must accompany technical finality</strong>: the contractual and regulatory framework backing irrevocability is as important as the technical mechanism. Both must be present for the risk reduction to be real.</p>
+          <p>Settlement finality is the point at which a payment becomes <span class="b">legally irrevocable and unconditional</span>: the transfer of funds is complete and cannot be unwound, reversed, or reclaimed by any party. In practice it matters because until finality is achieved, both counterparties carry principal risk: if the paying institution fails after initiating a transfer but before finality, the receiving institution may be unable to recover the funds.</p>
+          <p>In traditional correspondent banking, final settlement may take one to three business days, meaning open exposure persists for the duration. On tokenized A2A rails using atomic settlement, both legs of a transaction settle simultaneously and instantly: either both complete or neither does, eliminating the principal risk window. Note that <span class="b">legal finality must accompany technical finality</span>: the contractual and regulatory framework backing irrevocability is as important as the technical mechanism. Both must be present for the risk reduction to be real.</p>
         </div>
       </div>
 
@@ -809,13 +892,13 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How do Partior, Fnality, and Kinexys differ, and which is right for our use case?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Three different production architectures, each with different target use cases and governance models.</p>
-          <p><strong>JPMorgan Kinexys:</strong> single-bank-issued deposit token (JPMD) on a JPMorgan-operated permissioned ledger; clients are JPMorgan's institutional counterparties; expanding to Canton Network and Base (public L2) as of January 2026. Strengths: deepest production maturity, largest daily volume, JPMorgan credit backing. Limitation: single-bank issuer model; counterparties must be JPMorgan clients or network participants.</p>
-          <p><strong>Partior:</strong> multi-bank consortium ledger (JPMorgan, DBS, Temasek, Standard Chartered, Deutsche Bank); multi-currency settlement (USD, SGD, EUR); Asia corridor focus; open to non-bank PSPs (Nium joined 2025). Strengths: genuine multi-institution ownership; no single-bank dependency; active production flows.</p>
-          <p><strong>Fnality:</strong> bank-funded consortium; member banks hold accounts directly at relevant central banks; tokenized representations settle against actual central bank money (£FnPS has Bank of England Settlement Finality Designation; $FnPS in development). Strengths: strongest legal finality protections; direct central bank money backing. Status: £FnPS live; $FnPS pending Federal Reserve approval.</p>
+          <p><span class="b">JPMorgan Kinexys:</span> single-bank-issued deposit token (JPMD) on a JPMorgan-operated permissioned ledger; clients are JPMorgan's institutional counterparties; expanding to Canton Network and Base (public L2) as of January 2026. Strengths: deepest production maturity, largest daily volume, JPMorgan credit backing. Limitation: single-bank issuer model; counterparties must be JPMorgan clients or network participants.</p>
+          <p><span class="b">Partior:</span> multi-bank consortium ledger (JPMorgan, DBS, Temasek, Standard Chartered, Deutsche Bank); multi-currency settlement (USD, SGD, EUR); Asia corridor focus; open to non-bank PSPs (Nium joined 2025). Strengths: genuine multi-institution ownership; no single-bank dependency; active production flows.</p>
+          <p><span class="b">Fnality:</span> bank-funded consortium; member banks hold accounts directly at relevant central banks; tokenized representations settle against actual central bank money (£FnPS has Bank of England Settlement Finality Designation; $FnPS in development). Strengths: strongest legal finality protections; direct central bank money backing. Status: £FnPS live; $FnPS pending Federal Reserve approval.</p>
           <p>For most Global South institutional deployments, Post Oak Labs architects for a multi-institution consortium model similar to Partior's architecture, not dependent on a single bank's infrastructure.</p>
         </div>
       </div>
@@ -824,7 +907,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What role do central bank settlement accounts play in tokenized A2A?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Central bank settlement accounts are the ultimate liquidity backstop for tokenized A2A networks. In a DLT-based net settlement model, banks settle token-layer obligations in central bank money at periodic intervals. The RTGS is not eliminated; it is made more efficient. In Fnality's model, member banks hold segregated accounts at the Bank of England (for £FnPS) or the Federal Reserve (for $FnPS once approved), with token balances representing claims on those accounts. In consortium models using commercial bank deposit tokens, central bank settlement accounts fund net positions at end-of-cycle.</p>
@@ -836,7 +919,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Will SWIFT become an interoperability layer for tokenized A2A networks?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>SWIFT is actively pursuing an interoperability layer role. Its partnership with Chainlink CCIP provides a mechanism for SWIFT payment instructions to trigger cross-chain token movements. DLT network connections are in development. SWIFT's 11,000+ member institution reach is a significant asset that tokenized A2A networks are still building toward.</p>
@@ -861,7 +944,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does open banking regulation (PSD2, etc.) relate to tokenized A2A infrastructure?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Open banking regulation (PSD2 in the EU, with equivalents in the UK, Australia, and parts of Asia) creates API access obligations for retail banking data and payment initiation at the consumer account level. Tokenized A2A operates at a different layer: institutional interbank settlement, not retail account access. The two are complementary, not the same thing.</p>
@@ -871,10 +954,10 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
         <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does the GENIUS Act affect stablecoin issuance for US-regulated banks?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>The <strong>GENIUS Act</strong> (Guiding and Establishing National Innovation for US Stablecoins Act), enacted in 2025, is the first dedicated federal framework for payment stablecoins in the United States. It requires US-regulated stablecoin issuers to maintain 1:1 reserve backing in US dollars or short-term Treasuries, prohibits algorithmic stablecoins, and subjects issuers to Bank Secrecy Act and AML obligations. Banks with federal charters can issue payment stablecoins under OCC oversight; non-bank issuers above $10 billion in outstanding stablecoins fall under federal supervision, while smaller issuers may operate under state charters.</p>
+          <p>The <span class="b">GENIUS Act</span> (Guiding and Establishing National Innovation for US Stablecoins Act), enacted in 2025, is the first dedicated federal framework for payment stablecoins in the United States. It requires US-regulated stablecoin issuers to maintain 1:1 reserve backing in US dollars or short-term Treasuries, prohibits algorithmic stablecoins, and subjects issuers to Bank Secrecy Act and AML obligations. Banks with federal charters can issue payment stablecoins under OCC oversight; non-bank issuers above $10 billion in outstanding stablecoins fall under federal supervision, while smaller issuers may operate under state charters.</p>
           <p>The Act broadly aligns US stablecoin regulation with the EU's MiCA framework for e-money tokens and brings significant legal clarity for banks evaluating stablecoin programs. The GENIUS Act was signed into law on July 18, 2025; its requirements take effect on January 18, 2027.</p>
         </div>
       </div>
@@ -882,11 +965,11 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What regulatory approvals does a bank need to participate in a tokenized A2A network?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Requirements vary by jurisdiction but typically include:</p>
-          <p><strong>(1) Primary regulator approval</strong> to operate distributed ledger infrastructure and issue or hold digital payment tokens. This may require a DLT sandbox approval, no-action letter, or amendment to the bank's operating license. <strong>(2) AML/BSA compliance program</strong> extensions covering on-chain transaction monitoring and the shared identity attestation architecture. <strong>(3) Data protection compliance</strong> (GDPR in Europe, equivalent regimes elsewhere) for cross-border sharing of KYC attestations. <strong>(4) Central bank approval</strong> in some jurisdictions to participate in any payment system that touches central bank settlement accounts.</p>
+          <p><span class="b">(1) Primary regulator approval</span> to operate distributed ledger infrastructure and issue or hold digital payment tokens. This may require a DLT sandbox approval, no-action letter, or amendment to the bank's operating license. <span class="b">(2) AML/BSA compliance program</span> extensions covering on-chain transaction monitoring and the shared identity attestation architecture. <span class="b">(3) Data protection compliance</span> (GDPR in Europe, equivalent regimes elsewhere) for cross-border sharing of KYC attestations. <span class="b">(4) Central bank approval</span> in some jurisdictions to participate in any payment system that touches central bank settlement accounts.</p>
           <p>The technology readiness and regulatory readiness must advance in parallel. Post Oak Labs advises on regulatory sequencing as a core part of every engagement. Mapping the approval path before infrastructure build work begins is a material time and cost saver.</p>
         </div>
       </div>
@@ -904,11 +987,11 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Which corridors and regions does Post Oak Labs focus on, and why?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>Post Oak Labs focuses on the <strong>Global South</strong> (primarily Latin America, the Caribbean, Africa, and South Asia) where correspondent banking de-risking has been most acute, remittance costs highest, and the structural demand for alternative institutional settlement infrastructure most evident.</p>
-          <p>Within those regions, the firm has active advisory and integration engagements in the <strong>Caribbean</strong>, where three jurisdictions have launched live retail CBDCs and the Eastern Caribbean Currency Union represents a unique multi-jurisdictional opportunity: a single currency, eleven countries, a live CBDC infrastructure, and no unified commercial bank tokenized A2A layer on top of it yet. <strong>South Asia</strong> is a second active focus given the scale of inbound remittance flows. Advisory work also covers trade-corridor engagements in Africa and Latin America. See the <a href="a2a-guide.html">A2A Payments page</a> for regional detail.</p>
+          <p>Post Oak Labs focuses on the <span class="b">Global South</span> (primarily Latin America, the Caribbean, Africa, and South Asia) where correspondent banking de-risking has been most acute, remittance costs highest, and the structural demand for alternative institutional settlement infrastructure most evident.</p>
+          <p>Within those regions, the firm has active advisory and integration engagements in the <span class="b">Caribbean</span>, where three jurisdictions have launched live retail CBDCs and the Eastern Caribbean Currency Union represents a unique multi-jurisdictional opportunity: a single currency, eleven countries, a live CBDC infrastructure, and no unified commercial bank tokenized A2A layer on top of it yet. <span class="b">South Asia</span> is a second active focus given the scale of inbound remittance flows. Advisory work also covers trade-corridor engagements in Africa and Latin America. See the <a href="a2a-guide.html">A2A Payments page</a> for regional detail.</p>
         </div>
       </div>
 
@@ -923,7 +1006,7 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does Post Oak Labs' work relate to de-dollarization trends in emerging markets?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>De-dollarization (the trend of reducing dependence on the US dollar in trade settlement and reserves) is a structural driver of demand for local-currency payment infrastructure in Post Oak Labs' target markets. Several governments and central banks in Latin America, Africa, and South Asia are actively seeking to reduce dollar dependency, and tokenized local-currency infrastructure is one of the tools available to them.</p>
@@ -934,22 +1017,22 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           At what transaction volume does A2A infrastructure become cost-competitive with correspondent banking?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>The crossover point depends on the specific corridor, the bank's existing correspondent banking costs, and the fixed costs of joining or building the A2A network. As a directional benchmark: Post Oak Labs' corridor analysis demonstrates approximately <strong>0.2% in direct settlement fees</strong> in selected B2B corridors where Post Oak Labs has advised on infrastructure design (excludes FX conversion fees, which are captured as originating bank revenue) via tokenized A2A, against a 2.5–5%+ total cost in comparable correspondent banking corridors (inclusive of wire fees, FX spread, and nostro maintenance). At that differential, the per-transaction economics favor A2A from relatively modest volumes.</p>
-          <p>The more important threshold is <strong>network investment recovery</strong>: deploying integration infrastructure, meeting compliance requirements, and obtaining regulatory approvals for A2A participation requires upfront investment that typically needs $50–200M+ in annual corridor volume to recover within a reasonable timeframe, depending on implementation complexity. For institutions already operating high-volume B2B corridors, the case is strong. For low-volume corridors, a shared-network model with other corridor participants typically improves the economics materially. <a href="contact.html">Contact us</a> for a corridor-specific analysis.</p>
+          <p>The crossover point depends on the specific corridor, the bank's existing correspondent banking costs, and the fixed costs of joining or building the A2A network. As a directional benchmark: Post Oak Labs' corridor analysis demonstrates approximately <span class="b">0.2% in direct settlement fees</span> in selected B2B corridors where Post Oak Labs has advised on infrastructure design (excludes FX conversion fees, which are captured as originating bank revenue) via tokenized A2A, against a 2.5–5%+ total cost in comparable correspondent banking corridors (inclusive of wire fees, FX spread, and nostro maintenance). At that differential, the per-transaction economics favor A2A from relatively modest volumes.</p>
+          <p>The more important threshold is <span class="b">network investment recovery</span>: deploying integration infrastructure, meeting compliance requirements, and obtaining regulatory approvals for A2A participation requires upfront investment that typically needs $50–200M+ in annual corridor volume to recover within a reasonable timeframe, depending on implementation complexity. For institutions already operating high-volume B2B corridors, the case is strong. For low-volume corridors, a shared-network model with other corridor participants typically improves the economics materially. <a href="contact.html">Contact us</a> for a corridor-specific analysis.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does tokenized A2A handle liquidity pre-funding compared to correspondent banking?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Correspondent banking requires institutions to maintain pre-funded nostro balances in every active corridor. That capital sits idle between uses, earning below-market returns and consuming Basel III liquidity buffers. Industry estimates put total globally trapped nostro/vostro capital at approximately $27 trillion (McKinsey, 2016 estimate; no industry-wide restatement has since been published).</p>
-          <p>Tokenized A2A infrastructure enables <strong>just-in-time settlement</strong> via intraday netting cycles: participating institutions submit payment obligations to the shared ledger throughout the day, and net positions settle against central bank reserves at end-of-cycle via RTGS. This significantly reduces the need for pre-funded corridor balances (residual liquidity requirements remain for intraday buffers and central bank settlement account balances), freeing that capital for productive use while maintaining the central bank settlement backbone. The shift from pre-funding to JIT settlement is one of the primary capital efficiency arguments for institutional tokenized payment rails.</p>
+          <p>Tokenized A2A infrastructure enables <span class="b">just-in-time settlement</span> via intraday netting cycles: participating institutions submit payment obligations to the shared ledger throughout the day, and net positions settle against central bank reserves at end-of-cycle via RTGS. This significantly reduces the need for pre-funded corridor balances (residual liquidity requirements remain for intraday buffers and central bank settlement account balances), freeing that capital for productive use while maintaining the central bank settlement backbone. The shift from pre-funding to JIT settlement is one of the primary capital efficiency arguments for institutional tokenized payment rails.</p>
         </div>
       </div>
 
@@ -965,17 +1048,17 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What integration work is required to join a tokenized A2A network?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>No core banking replacement is required. The integration architecture has four components: (1) <strong>API gateway:</strong> translates your core's internal data model into ISO 20022-structured messages compatible with the A2A rail; typically built on your existing API management infrastructure. (2) <strong>Tokenization module:</strong> mints settlement tokens against core balances at the point of outgoing payment; redeems tokens and credits core on receipt; can be a bank-built module or a vendor-supplied SDK depending on platform. (3) <strong>Token custody interface:</strong> manages private key infrastructure for signing on-chain transactions; requires HSM (hardware security module, FIPS 140-2 Level 3 or equivalent) for production deployment. (4) <strong>Reconciliation and reporting:</strong> ensures DLT state and core ledger state remain synchronized; feeds into existing regulatory reporting. Integration timeline in Post Oak Labs' advisory engagements has ranged from 4–9 months depending on core banking platform and regulatory sequencing. No existing infrastructure is decommissioned.</p>
+          <p>No core banking replacement is required. The integration architecture has four components: (1) <span class="b">API gateway:</span> translates your core's internal data model into ISO 20022-structured messages compatible with the A2A rail; typically built on your existing API management infrastructure. (2) <span class="b">Tokenization module:</span> mints settlement tokens against core balances at the point of outgoing payment; redeems tokens and credits core on receipt; can be a bank-built module or a vendor-supplied SDK depending on platform. (3) <span class="b">Token custody interface:</span> manages private key infrastructure for signing on-chain transactions; requires HSM (hardware security module, FIPS 140-2 Level 3 or equivalent) for production deployment. (4) <span class="b">Reconciliation and reporting:</span> ensures DLT state and core ledger state remain synchronized; feeds into existing regulatory reporting. Integration timeline in Post Oak Labs' advisory engagements has ranged from 4–9 months depending on core banking platform and regulatory sequencing. No existing infrastructure is decommissioned.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Does implementing tokenized A2A require replacing our core banking system?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>No. Tokenized A2A sits above the core banking system as a settlement and messaging layer. It integrates via APIs and does not require core replacement. Banks connect their existing core (Temenos, Finastra, Oracle FSS, Mambu, or any other) to the A2A network through an integration layer. The core continues to hold the books of record and manage customer accounts; the A2A network handles interbank settlement messaging and token lifecycle.</p>
@@ -986,43 +1069,43 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is Project Agorá and how does it differ from Project mBridge?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p><strong>Project Agorá</strong> is a BIS Innovation Hub research initiative involving seven major central banks (the Federal Reserve Bank of New York, Bank of England, Bank of Japan, Bank of Korea, Banque de France, Monetary Authority of Singapore, and Swiss National Bank) together with a private sector cohort of commercial banks. It explores whether tokenized commercial bank deposits and wholesale central bank reserves can be integrated on a unified programmable platform to make cross-border payments faster and cheaper. Agorá is a proof-of-concept program, not a live production system, and its multi-central-bank backing makes it one of the most significant institutional signals that deposit-token-based A2A settlement is on the long-term horizon. See: <a href="https://www.bis.org/about/bisih/topics/fmis/agora.htm" target="_blank" rel="noopener noreferrer">BIS Project Agorá overview</a>.<sup><a href="#faq-fn1">[fn1]</a></sup></p>
-          <p><strong>Project mBridge</strong> was a multi-CBDC cross-border settlement pilot originally co-developed with the BIS Innovation Hub and four central banks. The BIS Innovation Hub stepped back in October 2024, describing this as the project reaching operational maturity; the remaining central banks continue development independently. Unlike Agorá (which uses tokenized commercial bank deposits alongside central bank reserves), mBridge was built around wholesale CBDC as the primary settlement instrument. The two projects represent different architectural philosophies for the same end goal. See the <a href="glossary.html">Glossary entries</a> for Project Agorá and Project mBridge for more detail.</p>
+          <p><span class="b">Project Agorá</span> is a BIS Innovation Hub research initiative involving seven major central banks (the Federal Reserve Bank of New York, Bank of England, Bank of Japan, Bank of Korea, Banque de France, Monetary Authority of Singapore, and Swiss National Bank) together with a private sector cohort of commercial banks. It explores whether tokenized commercial bank deposits and wholesale central bank reserves can be integrated on a unified programmable platform to make cross-border payments faster and cheaper. Agorá is a proof-of-concept program, not a live production system, and its multi-central-bank backing makes it one of the most significant institutional signals that deposit-token-based A2A settlement is on the long-term horizon. See: <a href="https://www.bis.org/about/bisih/topics/fmis/agora.htm" target="_blank" rel="noopener noreferrer">BIS Project Agorá overview</a>.<sup><a href="#faq-fn1">[fn1]</a></sup></p>
+          <p><span class="b">Project mBridge</span> was a multi-CBDC cross-border settlement pilot originally co-developed with the BIS Innovation Hub and four central banks. The BIS Innovation Hub stepped back in October 2024, describing this as the project reaching operational maturity; the remaining central banks continue development independently. Unlike Agorá (which uses tokenized commercial bank deposits alongside central bank reserves), mBridge was built around wholesale CBDC as the primary settlement instrument. The two projects represent different architectural philosophies for the same end goal. See the <a href="glossary.html">Glossary entries</a> for Project Agorá and Project mBridge for more detail.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is atomic settlement (DvP / PvP) and why does it matter for institutional payments?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p><strong>Atomic settlement</strong> means both legs of a transaction settle simultaneously and indivisibly on the ledger. Either both succeed or neither does. There is no window between delivery and payment during which one party holds the asset and the other has not yet received funds.</p>
-          <p>In payment contexts, the relevant form is <strong>Payment versus Payment (PvP)</strong>: both currency legs of an FX transaction settle atomically. In securities contexts, it is <strong>Delivery versus Payment (DvP)</strong>. The institutional significance is the elimination of principal risk: the risk that a counterparty fails after delivering its leg but before receiving the other. In traditional correspondent banking, that exposure window is material: payments may take 1–3 days to achieve finality. See BIS CPMI guidance on PvP:<sup><a href="#faq-fn2">[fn2]</a></sup> <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener noreferrer">Strategies for achieving a safer, faster, and cheaper cross-border payments</a>. See also the <a href="glossary.html">Glossary entry on Atomic Settlement</a>.</p>
+          <p><span class="b">Atomic settlement</span> means both legs of a transaction settle simultaneously and indivisibly on the ledger. Either both succeed or neither does. There is no window between delivery and payment during which one party holds the asset and the other has not yet received funds.</p>
+          <p>In payment contexts, the relevant form is <span class="b">Payment versus Payment (PvP)</span>: both currency legs of an FX transaction settle atomically. In securities contexts, it is <span class="b">Delivery versus Payment (DvP)</span>. The institutional significance is the elimination of principal risk: the risk that a counterparty fails after delivering its leg but before receiving the other. In traditional correspondent banking, that exposure window is material: payments may take 1–3 days to achieve finality. See BIS CPMI guidance on PvP:<sup><a href="#faq-fn2">[fn2]</a></sup> <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener noreferrer">Strategies for achieving a safer, faster, and cheaper cross-border payments</a>. See also the <a href="glossary.html">Glossary entry on Atomic Settlement</a>.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does privacy work on a permissioned institutional ledger, can all participants see every transaction?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>No. Privacy architecture is one of the defining design decisions in permissioned institutional ledgers, and different platforms take different approaches.</p>
-          <p><strong>R3 Corda</strong> is the most restrictive: transactions are shared only with the parties directly involved (on a need-to-know basis). A bank on the same Corda network cannot see the transactions of two other banks unless it is a party to them. <strong>Hyperledger Fabric</strong> uses channels: a subset of participants can share a private ledger within a broader network. <strong>Hyperledger Besu</strong> supports private transactions via the Tessera privacy manager, but its EVM base means more visibility by default unless explicitly restricted. In all cases, a notary or ordering service may see transaction metadata (if not the full content) to prevent double-spend; this is a privacy boundary that requires careful governance design.<sup><a href="#faq-fn3">[fn3]</a></sup> See the <a href="enterprise-blockchain.html">Enterprise Blockchain Market Briefing</a> for a platform-by-platform privacy comparison.</p>
+          <p><span class="b">R3 Corda</span> is the most restrictive: transactions are shared only with the parties directly involved (on a need-to-know basis). A bank on the same Corda network cannot see the transactions of two other banks unless it is a party to them. <span class="b">Hyperledger Fabric</span> uses channels: a subset of participants can share a private ledger within a broader network. <span class="b">Hyperledger Besu</span> supports private transactions via the Tessera privacy manager, but its EVM base means more visibility by default unless explicitly restricted. In all cases, a notary or ordering service may see transaction metadata (if not the full content) to prevent double-spend; this is a privacy boundary that requires careful governance design.<sup><a href="#faq-fn3">[fn3]</a></sup> See the <a href="enterprise-blockchain.html">Enterprise Blockchain Market Briefing</a> for a platform-by-platform privacy comparison.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is a tokenized money market fund (tMMF) and how does it sit on A2A rails?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>A <strong>tokenized money market fund (tMMF)</strong> is a traditional money market fund whose units are represented as digital tokens on a distributed ledger, enabling near-instant subscription and redemption, 24/7 transferability, and use as on-chain collateral. USD-denominated tMMFs already have substantial institutional traction: BlackRock's BUIDL fund surpassed $1 billion AUM in 2024, and Franklin Templeton's BENJI fund has operated on public blockchain infrastructure since 2021.<sup><a href="#faq-fn4">[fn4]</a></sup></p>
+          <p>A <span class="b">tokenized money market fund (tMMF)</span> is a traditional money market fund whose units are represented as digital tokens on a distributed ledger, enabling near-instant subscription and redemption, 24/7 transferability, and use as on-chain collateral. USD-denominated tMMFs already have substantial institutional traction: BlackRock's BUIDL fund surpassed $1 billion AUM in 2024, and Franklin Templeton's BENJI fund has operated on public blockchain infrastructure since 2021.<sup><a href="#faq-fn4">[fn4]</a></sup></p>
           <p>On A2A rails, a local-currency tMMF can serve as a yield-bearing settlement asset: corporate treasurers park surplus liquidity in a tMMF at end of day and redeem it intraday for settlement, eliminating the opportunity cost of holding non-earning settlement balances. The effect is strongest in emerging markets where local-currency instruments with same-day liquidity are scarce. See <a href="a2a-guide.html#tmmf">Tokenized Money Market Funds on A2A Rails</a> for Post Oak Labs' full architecture treatment.</p>
         </div>
       </div>
@@ -1038,39 +1121,39 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           How does AML transaction monitoring work on a shared ledger, who is responsible?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Each participating institution remains independently responsible for its own AML obligations under the law of its jurisdiction. A shared ledger does not transfer regulatory liability; it provides richer data to discharge it. The compliance architecture in a well-designed tokenized A2A network typically has three layers:</p>
-          <p><strong>(1) On-boarding / identity layer:</strong> KYC and beneficial ownership verification is performed by each bank for its own customers; the attestation is cryptographically signed and travels with the payment token, reducing re-verification burden at each hop. <strong>(2) Transaction monitoring:</strong> each institution runs its own transaction monitoring software against the on-ledger data it can see; the richer ISO 20022 structured data substantially reduces false positives compared to legacy MT message screening.<sup><a href="#faq-fn5">[fn5]</a></sup> <strong>(3) Network-level governance:</strong> the consortium governance agreement typically requires all participants to maintain FATF-compliant AML programs and grants the network operator authority to suspend participants that lose regulatory standing. See <a href="a2a-guide.html#workflow">A2A Tokenization Explained</a> for the compliance layer architecture.</p>
+          <p><span class="b">(1) On-boarding / identity layer:</span> KYC and beneficial ownership verification is performed by each bank for its own customers; the attestation is cryptographically signed and travels with the payment token, reducing re-verification burden at each hop. <span class="b">(2) Transaction monitoring:</span> each institution runs its own transaction monitoring software against the on-ledger data it can see; the richer ISO 20022 structured data substantially reduces false positives compared to legacy MT message screening.<sup><a href="#faq-fn5">[fn5]</a></sup> <span class="b">(3) Network-level governance:</span> the consortium governance agreement typically requires all participants to maintain FATF-compliant AML programs and grants the network operator authority to suspend participants that lose regulatory standing. See <a href="a2a-guide.html#workflow">A2A Tokenization Explained</a> for the compliance layer architecture.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What happens to a payment on a tokenized A2A network if a participating bank fails mid-transaction?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Atomic settlement eliminates the most dangerous failure scenario in traditional correspondent banking: one bank delivers its leg and then fails before the counterparty delivers theirs. On a tokenized A2A network using atomic settlement, there is no exposed window: the transaction either completes entirely or is rolled back entirely by the ledger's consensus mechanism. The receiving bank never holds an asset for which it has not yet been paid, and vice versa.</p>
-          <p>The residual failure risks on a tokenized network are different in nature: <strong>pre-minting exposure</strong> (a bank mints tokens against fiat reserves that are subsequently frozen by a regulator) and <strong>network access failure</strong> (a bank's validator node going offline). These are addressed through consortium governance provisions (participant collateral requirements, network failover design, and orderly exit procedures) rather than through the atomic settlement mechanism itself. Operational resilience requirements for participating institutions are typically specified in the network participation agreement.<sup><a href="#faq-fn6">[fn6]</a></sup></p>
+          <p>The residual failure risks on a tokenized network are different in nature: <span class="b">pre-minting exposure</span> (a bank mints tokens against fiat reserves that are subsequently frozen by a regulator) and <span class="b">network access failure</span> (a bank's validator node going offline). These are addressed through consortium governance provisions (participant collateral requirements, network failover design, and orderly exit procedures) rather than through the atomic settlement mechanism itself. Operational resilience requirements for participating institutions are typically specified in the network participation agreement.<sup><a href="#faq-fn6">[fn6]</a></sup></p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Does correspondent banking de-risking affect tokenized A2A networks the same way it affects traditional rails?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p><strong>Correspondent banking de-risking</strong> (the withdrawal of global correspondent banks from serving smaller or higher-risk jurisdictions) is one of the primary drivers of demand for tokenized A2A infrastructure. The World Bank, BIS, and FSB have all documented the decline in active correspondent banking relationships since 2011, with the sharpest concentration in the Caribbean, Pacific Islands, and parts of Africa.<sup><a href="#faq-fn7">[fn7]</a></sup></p>
+          <p><span class="b">Correspondent banking de-risking</span> (the withdrawal of global correspondent banks from serving smaller or higher-risk jurisdictions) is one of the primary drivers of demand for tokenized A2A infrastructure. The World Bank, BIS, and FSB have all documented the decline in active correspondent banking relationships since 2011, with the sharpest concentration in the Caribbean, Pacific Islands, and parts of Africa.<sup><a href="#faq-fn7">[fn7]</a></sup></p>
           <p>Tokenized A2A networks are not immune to the same dynamic, but the structure is different. Rather than a large correspondent bank making a binary decision to exit all respondent banks in a jurisdiction, an A2A consortium can set risk-tiered participation criteria and require participating banks to maintain FATF-compliant programs, without one participant's risk assessment determining another's access. The governance design of an A2A consortium is therefore directly relevant to whether smaller or frontier-market institutions can access the network. The outcome depends on design choices, not on an inherent property of the technology.</p>
         </div>
       </div>
         <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is the CPMI G20 Cross-Border Payments Roadmap and how does tokenized A2A fit?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>The G20 Cross-Border Payments Roadmap, managed by the BIS Committee on Payments and Market Infrastructures (CPMI), is the multilateral policy framework driving global improvement in cross-border payment speed, cost, transparency, and access. Its targets: reduce average retail remittance cost below 3%; make cross-border payments available 24/7; eliminate payment opacity.</p>
@@ -1080,21 +1163,21 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           Why use a permissioned ledger rather than a public blockchain for institutional payments?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
-          <p>Four reasons: <strong>(1) Privacy.</strong> Public chains expose transaction data to all participants and observers; permissioned ledgers restrict data visibility to the parties directly involved in a transaction. An interbank payment should not be readable by every other participant on the network. <strong>(2) Finality.</strong> Public proof-of-work and proof-of-stake chains have probabilistic finality: a transaction can technically be reversed while the chain reorganises. Permissioned ledgers (Corda, Hyperledger Fabric, Canton) offer deterministic finality: once committed, a transaction cannot be reversed. Settlement risk requires deterministic finality. <strong>(3) Regulatory accountability.</strong> Permissioned networks require KYC and legal entity verification for node participation; public chains do not. Institutional payment infrastructure must know who its counterparties are. <strong>(4) Performance and cost predictability.</strong> Permissioned ledgers can handle institutional throughput without mempool congestion, gas fee volatility, or block time uncertainty.</p>
+          <p>Four reasons: <span class="b">(1) Privacy.</span> Public chains expose transaction data to all participants and observers; permissioned ledgers restrict data visibility to the parties directly involved in a transaction. An interbank payment should not be readable by every other participant on the network. <span class="b">(2) Finality.</span> Public proof-of-work and proof-of-stake chains have probabilistic finality: a transaction can technically be reversed while the chain reorganises. Permissioned ledgers (Corda, Hyperledger Fabric, Canton) offer deterministic finality: once committed, a transaction cannot be reversed. Settlement risk requires deterministic finality. <span class="b">(3) Regulatory accountability.</span> Permissioned networks require KYC and legal entity verification for node participation; public chains do not. Institutional payment infrastructure must know who its counterparties are. <span class="b">(4) Performance and cost predictability.</span> Permissioned ledgers can handle institutional throughput without mempool congestion, gas fee volatility, or block time uncertainty.</p>
           <p>Public chains are not without institutional applications. Tokenized MMF products like BlackRock BUIDL and Franklin Templeton BENJI use public chain infrastructure for token issuance and secondary transfer. But the settlement layer for institutional A2A cross-border payments uses permissioned infrastructure for the reasons above.</p>
         </div>
       </div>
 <div class="faq-item">
         <button class="faq-q" onclick="toggle(this)">
           What is programmable money and what can it actually do in an institutional payment context?
-          <span class="faq-chevron">▾</span>
+          <span class="faq-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="faq-a">
           <p>Programmable money is a digital monetary asset whose transfer is governed by embedded logic: conditions that must be satisfied before the payment executes or releases. In practice this means payment instructions can carry rules that execute automatically on the ledger, without manual intervention or reliance on a third-party escrow agent.</p>
-          <p>Concrete institutional examples: <strong>(1) Conditional cross-border payment</strong> that auto-executes on delivery confirmation, enabling delivery-versus-payment for trade finance without a letter of credit intermediary. <strong>(2) Tokenized MMF redemption</strong> automatically triggered when a corporate treasury balance falls below a defined threshold, keeping the treasurer fully invested up to the moment liquidity is needed. <strong>(3) Supplier payment</strong> released upon receipt of a third-party quality attestation from a certified inspection body, providing contractual certainty without manual approval queues. <strong>(4) Scheduled FX hedging</strong> executed atomically at a pre-agreed rate on a specific date, eliminating settlement risk on the FX leg.</p>
+          <p>Concrete institutional examples: <span class="b">(1) Conditional cross-border payment</span> that auto-executes on delivery confirmation, enabling delivery-versus-payment for trade finance without a letter of credit intermediary. <span class="b">(2) Tokenized MMF redemption</span> automatically triggered when a corporate treasury balance falls below a defined threshold, keeping the treasurer fully invested up to the moment liquidity is needed. <span class="b">(3) Supplier payment</span> released upon receipt of a third-party quality attestation from a certified inspection body, providing contractual certainty without manual approval queues. <span class="b">(4) Scheduled FX hedging</span> executed atomically at a pre-agreed rate on a specific date, eliminating settlement risk on the FX leg.</p>
           <p>Importantly, institutional programmable money use cases are typically simple, auditable conditionals, not the complex protocol logic seen in DeFi. Simpler logic means smaller attack surface, easier audit, and more predictable regulatory treatment.</p>
         </div>
       </div>
@@ -1103,141 +1186,93 @@ footer { padding: 2rem 0; border-top: 1px solid var(--edge); margin-top: 0; }
 
 
         <!-- FOOTNOTES -->
-    <div style="border-top:1px solid var(--edge);padding:2rem 0 1rem;margin-top:1rem;">
-      <h3 style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:400;">Footnotes &amp; References</h3>
-      <ol style="padding-left:1.3rem;display:flex;flex-direction:column;gap:0.7rem;">
-        <li id="faq-fn1" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>Project Agorá:</strong> BIS Innovation Hub, "Project Agorá," <a href="https://www.bis.org/about/bisih/topics/fmis/agora.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/about/bisih/topics/fmis/agora.htm</a>. Announced March 2024. Private sector cohort announced September 2024. Status: active proof-of-concept. Readers should verify current phase directly with the BIS, as the project roadmap evolves.
+    <div class="footnotes">
+      <h3 class="label">Footnotes &amp; References</h3>
+      <ol class="fn-list">
+        <li id="faq-fn1">
+          <span class="b">Project Agorá:</span> BIS Innovation Hub, "Project Agorá," <a href="https://www.bis.org/about/bisih/topics/fmis/agora.htm" target="_blank" rel="noopener noreferrer">bis.org/about/bisih/topics/fmis/agora.htm</a>. Announced March 2024. Private sector cohort announced September 2024. Status: active proof-of-concept. Readers should verify current phase directly with the BIS, as the project roadmap evolves.
         </li>
-        <li id="faq-fn2" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>Atomic settlement / PvP:</strong> BIS Committee on Payments and Market Infrastructures (CPMI), "Extending and aligning payment system operating hours for cross-border payments," March 2023, <a href="https://www.bis.org/cpmi/publ/d214.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/cpmi/publ/d214.htm</a>; CPMI, "PvP arrangements and the case for greater adoption," 2022, <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/cpmi/publ/d208.htm</a>.
+        <li id="faq-fn2">
+          <span class="b">Atomic settlement / PvP:</span> BIS Committee on Payments and Market Infrastructures (CPMI), "Extending and aligning payment system operating hours for cross-border payments," March 2023, <a href="https://www.bis.org/cpmi/publ/d214.htm" target="_blank" rel="noopener noreferrer">bis.org/cpmi/publ/d214.htm</a>; CPMI, "PvP arrangements and the case for greater adoption," 2022, <a href="https://www.bis.org/cpmi/publ/d208.htm" target="_blank" rel="noopener noreferrer">bis.org/cpmi/publ/d208.htm</a>.
         </li>
-        <li id="faq-fn3" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>Permissioned ledger privacy models:</strong> R3, "Corda Network Privacy," <a href="https://docs.r3.com" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">docs.r3.com</a>; Hyperledger Foundation, "Hyperledger Fabric Private Data," <a href="https://hyperledger-fabric.readthedocs.io" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">hyperledger-fabric.readthedocs.io</a>. For a platform comparison, see the <a href="enterprise-blockchain.html" style="color:var(--accent-lt);">Post Oak Labs Enterprise Blockchain Market Briefing</a>. Post Oak Labs does not endorse any specific platform.
+        <li id="faq-fn3">
+          <span class="b">Permissioned ledger privacy models:</span> R3, "Corda Network Privacy," <a href="https://docs.r3.com" target="_blank" rel="noopener noreferrer">docs.r3.com</a>; Hyperledger Foundation, "Hyperledger Fabric Private Data," <a href="https://hyperledger-fabric.readthedocs.io" target="_blank" rel="noopener noreferrer">hyperledger-fabric.readthedocs.io</a>. For a platform comparison, see the <a href="enterprise-blockchain.html">Post Oak Labs Enterprise Blockchain Market Briefing</a>. Post Oak Labs does not endorse any specific platform.
         </li>
-        <li id="faq-fn4" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>Tokenized MMF adoption:</strong> BlackRock BUIDL fund AUM figures: Bloomberg, "BlackRock's Tokenized Fund Surpasses $1 Billion," April 2024. Franklin Templeton BENJI: Franklin Templeton, "Franklin OnChain US Government Money Fund (FOBXX)," live on Stellar and Polygon since 2021. Figures cited reflect publicly available data as of mid-2024; readers should verify current AUM directly with fund administrators.
+        <li id="faq-fn4">
+          <span class="b">Tokenized MMF adoption:</span> BlackRock BUIDL fund AUM figures: Bloomberg, "BlackRock's Tokenized Fund Surpasses $1 Billion," April 2024. Franklin Templeton BENJI: Franklin Templeton, "Franklin OnChain US Government Money Fund (FOBXX)," live on Stellar and Polygon since 2021. Figures cited reflect publicly available data as of mid-2024; readers should verify current AUM directly with fund administrators.
         </li>
-        <li id="faq-fn5" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>ISO 20022 and false positive reduction:</strong> SWIFT, "ISO 20022 migration hub," <a href="https://www.swift.com/standards/iso-20022" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">swift.com/standards/iso-20022</a>. SWIFT and industry practitioners have cited approximately 30% fewer payment exceptions in ISO 20022 enriched-data corridors compared to MT-format equivalents; this figure is directional and corridor-dependent. See also <a href="a2a-guide.html#iso20022" style="color:var(--accent-lt);">ISO 20022 &amp; Tokenized A2A</a> on this site.
+        <li id="faq-fn5">
+          <span class="b">ISO 20022 and false positive reduction:</span> SWIFT, "ISO 20022 migration hub," <a href="https://www.swift.com/standards/iso-20022" target="_blank" rel="noopener noreferrer">swift.com/standards/iso-20022</a>. SWIFT and industry practitioners have cited approximately 30% fewer payment exceptions in ISO 20022 enriched-data corridors compared to MT-format equivalents; this figure is directional and corridor-dependent. See also <a href="a2a-guide.html#iso20022">ISO 20022 &amp; Tokenized A2A</a> on this site.
         </li>
-        <li id="faq-fn6" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>Operational resilience in tokenized networks:</strong> BIS CPMI–IOSCO, "Principles for Financial Market Infrastructures (PFMIs)," 2012, updated 2023, <a href="https://www.bis.org/cpmi/publ/d101a.htm" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">bis.org/cpmi/publ/d101a.htm</a>. Tokenized payment networks that qualify as financial market infrastructures (FMIs) are subject to the PFMIs, which set standards for operational resilience, default management, and recovery planning.
+        <li id="faq-fn6">
+          <span class="b">Operational resilience in tokenized networks:</span> BIS CPMI–IOSCO, "Principles for Financial Market Infrastructures (PFMIs)," 2012, updated 2023, <a href="https://www.bis.org/cpmi/publ/d101a.htm" target="_blank" rel="noopener noreferrer">bis.org/cpmi/publ/d101a.htm</a>. Tokenized payment networks that qualify as financial market infrastructures (FMIs) are subject to the PFMIs, which set standards for operational resilience, default management, and recovery planning.
         </li>
-        <li id="faq-fn7" style="font-size:0.68rem;color:var(--muted);line-height:1.65;font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">
-          <strong>Correspondent banking de-risking:</strong> Financial Stability Board (FSB), "FSB correspondent banking data report," annual series, <a href="https://www.fsb.org/work-of-the-fsb/financial-innovation-and-structural-change/correspondent-banking/" target="_blank" rel="noopener noreferrer" style="color:var(--accent-lt);">fsb.org</a>; World Bank, "Withdrawal from Correspondent Banking: Where, Why, and What to Do About It," November 2015, updated series; BIS CPMI, "Correspondent banking," July 2016. The FSB's annual data reports document the multi-year trend of declining active correspondent relationships, with the Caribbean and Pacific Islands among the most affected regions.
+        <li id="faq-fn7">
+          <span class="b">Correspondent banking de-risking:</span> Financial Stability Board (FSB), "FSB correspondent banking data report," annual series, <a href="https://www.fsb.org/work-of-the-fsb/financial-innovation-and-structural-change/correspondent-banking/" target="_blank" rel="noopener noreferrer">fsb.org</a>; World Bank, "Withdrawal from Correspondent Banking: Where, Why, and What to Do About It," November 2015, updated series; BIS CPMI, "Correspondent banking," July 2016. The FSB's annual data reports document the multi-year trend of declining active correspondent relationships, with the Caribbean and Pacific Islands among the most affected regions.
         </li>
       </ol>
-    </div>
-
-    <!-- CTA BAND -->
-    <div class="cta-band">
-      <div>
-        <h3>Have a question not covered here?</h3>
-        <p>Post Oak Labs works directly with commercial banks, central banks, and large corporates on tokenized payment infrastructure. If your institution is evaluating A2A architecture, stablecoin strategy, or CBDC integration, we are happy to discuss your specific situation.</p>
-      </div>
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-        <a href="contact.html" class="btn-primary">Get in Touch</a>
-        <a href="glossary.html" class="btn-outline">Full Glossary</a>
-      </div>
     </div>
 
   </div>
 </div>
 
-<footer class="site-footer">
-  <div class="footer-inner footer-grid">
-
-    <div class="footer-col footer-brand-col">
-      <p class="footer-copy">
-        <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub</a>
-        &nbsp;&middot;&nbsp;
-        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
-      </p>
+  <section class="cta-band band" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div><h2 id="cta-h">Have a question not covered here?</h2><p>Post Oak Labs works directly with commercial banks, central banks, and large corporates on tokenized payment infrastructure. If your institution is evaluating A2A architecture, stablecoin strategy, or CBDC integration, we are happy to discuss your specific situation.</p></div>
+      <div class="cta-btns"><a class="btn pri" href="contact.html">Get in Touch</a><a class="btn sec" href="glossary.html">Full Glossary</a></div>
     </div>
+  </section>
 
-    <div class="footer-col">
-      <h4 class="footer-h">A2A Payments</h4>
-      <a href="a2a-guide.html">Market coverage</a>
-      <a href="a2a-guide.html#workflow">How it works</a>
-      <a href="a2a-comparison.html">Comparison framework</a>
-      <a href="a2a-guide.html#iso20022">ISO 20022 alignment</a>
-      <a href="a2a-guide.html#tmmf">tMMF on A2A rails</a>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
     </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">Enterprise Blockchain</h4>
-      <a href="enterprise-blockchain.html">Market briefing</a>
-      <a href="a2a-ledgers.html#besu">Hyperledger Besu</a>
-      <a href="a2a-ledgers.html#canton">Canton / Daml</a>
-      <a href="a2a-ledgers.html#corda">R3 Corda</a>
-      <a href="a2a-ledgers.html#fabric">Hyperledger Fabric</a>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+          <li><a href="https://www.linkedin.com/in/timswanson">Tim Swanson on LinkedIn ↗</a></li>
+        </ul>
+      </div>
     </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">About &amp; Advisory</h4>
-      <a href="services.html#blockchain">Advisory track record</a>
-      <a href="contact.html">Contact</a>
-      <a href="a2a-guide.html#roadmap">Engagement roadmap</a>
-    </div>
-
-    <div class="footer-col">
-      <h4 class="footer-h">Resources</h4>
-      <a href="library.html">Demos</a>
-      <a href="glossary.html">Glossary</a>
-      <a href="faq.html">FAQ</a>
-      <a href="sitemap.html">Sitemap</a>
-      <a href="https://ainumbers.co/" target="_blank" rel="noopener noreferrer">Tools&nbsp;&#8599;</a>
-      <a href="https://github.com/PostOakLabs/postoaklabs" target="_blank" rel="noopener noreferrer">GitHub&nbsp;&#8599;</a>
-    </div>
-
   </div>
 </footer>
 
 <script>
-function toggle(btn) {
-  const answer = btn.nextElementSibling;
-  const isOpen = btn.classList.contains('open');
-  // Close all
-  document.querySelectorAll('.faq-q.open').forEach(b => {
-    b.classList.remove('open');
-    b.nextElementSibling.classList.remove('open');
-  });
-  // Open this one if it was closed
-  if (!isOpen) {
-    btn.classList.add('open');
-    answer.classList.add('open');
-  }
+// Accordion: one answer open at a time; aria-expanded mirrors state.
+function setOpen(btn, open) {
+  btn.classList.toggle('open', open);
+  btn.nextElementSibling.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
-
-
-
-// Auto-open if hash matches a section
-window.addEventListener('DOMContentLoaded', () => {
+function toggle(btn) {
+  var isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-q.open').forEach(function (b) { setOpen(b, false); });
+  if (!isOpen) setOpen(btn, true);
+}
+window.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.faq-q').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
   // Open first item in landing view
-  const firstBtn = document.querySelector('.faq-q');
-  if (firstBtn && !window.location.hash) {
-    firstBtn.classList.add('open');
-    firstBtn.nextElementSibling.classList.add('open');
-  }
+  var firstBtn = document.querySelector('.faq-q');
+  if (firstBtn && !window.location.hash) setOpen(firstBtn, true);
 });
-</script>
-<script>
-(function(){
-  var nav = document.querySelector('nav[role="navigation"]');
-  var hero = document.querySelector('.hero, .showcase-hero');
-  if(!nav || !hero) return;
-  function onScroll(){
-    var threshold = hero.offsetHeight * 0.6;
-    if(window.scrollY > threshold){
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
-})();
 </script>
 </body>
 </html>

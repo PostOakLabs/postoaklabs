@@ -6,16 +6,21 @@
 <title>West Africa Digital Currency Corridor · Post Oak Labs</title>
 <meta name="description" content="Model cross-border digital currency flows across West Africa — Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, and ECCU DCash. Settlement economics, compliance overlay, and Policy Mandate export. Browser-based, zero PII.">
 <meta name="author" content="Post Oak Labs">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#eef4f2">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="../favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="../icon-192.png">
 <meta property="og:title" content="West Africa Digital Currency Corridor — Post Oak Labs">
 <meta property="og:description" content="Model cross-border CBDC and stablecoin settlement across West Africa corridors. Architecture viability, settlement economics, compliance overlay, Policy Mandate export.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://postoaklabs.com/demos/west-africa-digital-currency-corridor.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@PostOakLabs">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <script type="application/ld+json">
 {
@@ -39,397 +44,487 @@
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
+/* Mist palette (POL-REDESIGN-SPEC_2026-10-08 §1). Copy this token block into every page; no shared CSS file. */
 :root{
-  --ink:#050c15;--ink-2:#0a1628;--ink-3:#0f1e38;--ink-b:#1a2e4a;
-  --green:#16a34a;--green-lt:#22c55e;--green-dim:rgba(22,163,74,.12);
-  --gold:#D4A847;--gold-dim:rgba(212,168,71,.1);
-  --teal:#14B8A6;--teal-lt:#2DD4BF;
-  --blue:#2a7fc0;--blue-lt:#4a9fdf;
-  --warn:#F59E0B;--warn-dim:rgba(245,158,11,.1);
-  --red:#EF4444;--red-dim:rgba(239,68,68,.1);
-  --purple:#9B72F5;
-  --canvas:#ffffff;--canvas-2:#f5f7fa;--canvas-3:#edf0f5;
-  --ct:#1a2a3e;--ct-2:#3a5270;--ct-3:#6b7a8d;--cb:#d0d8e4;--cb-2:#e6eaf0;
+  --bg:#eef4f2;      /* page ground */
+  --band:#e2ece9;    /* alternate section band */
+  --card:#f8fbfa;    /* cards, panels */
+  --ink:#102a27;     /* headings, primary text */
+  --soft:#3f5652;    /* body text, secondary */
+  --line:#cfdeda;    /* borders, rules */
+  --teal:#0b7a70;    /* labels, numbers, links */
+  --ring:#0e9c9c;    /* logo O only */
+  --cyan:#0a6f86;    /* MCP request arrows, rotating word */
+  --amber:#a8650f;   /* MCP response arrows, rotating word */
+  --gold:#c9861f;    /* primary button fill, logo L */
+  --gold-ink:#1a1408;/* text on gold */
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--ink);color:#a8c4de;font-family:'Sora',sans-serif;font-weight:300;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.15}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;font-family:inherit}
-.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
 
-/* ── POL Nav ── */
-.pol-nav{background:var(--ink-2);border-bottom:1px solid var(--ink-b);padding:0 2rem;height:54px;display:flex;align-items:center;position:sticky;top:0;z-index:300;backdrop-filter:blur(10px)}
-.pol-nav-inner{max-width:1100px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
-.pol-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.pol-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--green),#15803d);border-radius:7px;display:flex;align-items:center;justify-content:center}
-.pol-logo-text{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;color:#d4e8f8}
-.pol-logo-sub{font-size:.58rem;color:#3a5270}
-.pol-nav-links{display:flex;gap:1.5rem;align-items:center}
-.pol-nav-links a{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:#3a5270;transition:color .2s}
-.pol-nav-links a:hover{color:var(--green-lt)}
-.pol-nav-cta{background:var(--green)!important;color:#fff!important;padding:.28rem .85rem!important;border-radius:4px!important;font-weight:500!important}
-.pol-nav-cta:hover{background:var(--green-lt)!important}
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
 
-/* ── Tool strip ── */
-.tool-strip{background:var(--ink-3);border-bottom:1px solid var(--ink-b);padding:.55rem 2rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
-.tool-strip-label{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:#3a5270;white-space:nowrap}
-.tool-chip{display:inline-flex;align-items:center;gap:.35rem;font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:#6888a8;border:1px solid var(--ink-b);padding:.22rem .6rem;border-radius:3px;text-decoration:none;transition:all .18s}
-.tool-chip:hover{border-color:var(--green);color:var(--green-lt)}
-.tool-chip-dot{width:5px;height:5px;border-radius:50%;background:var(--green);opacity:.6}
+/* hero */
+.hero .wrap{padding-block:clamp(48px,8vw,96px) clamp(40px,6vw,64px);display:grid;gap:22px}
+.hero h1{margin:0;max-width:16ch;font-weight:600;font-size:clamp(2.3rem,6vw,4rem);line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero p{margin:0;max-width:60ch;font-size:1.08rem;font-weight:300;color:var(--soft)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.rot{display:inline-block;position:relative;white-space:nowrap;transition:color .3s}
+.rot::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.09em;border-radius:2px;background:var(--gold);opacity:.8}
+.rot[data-set="field"]{color:var(--teal)}
+.rot[data-set="who"]{color:var(--amber)}
+@media (prefers-reduced-motion:no-preference){
+  .rot.out{animation:flickOut .32s steps(4,end) forwards}
+  .rot.in{animation:flickIn .42s steps(5,end)}
+}
+@keyframes flickOut{0%{opacity:1}25%{opacity:.2}50%{opacity:.8}75%{opacity:.1}100%{opacity:0}}
+@keyframes flickIn{0%{opacity:0}20%{opacity:.7}40%{opacity:.15}60%{opacity:.9}80%{opacity:.4}100%{opacity:1}}
 
-/* ── Hero ── */
-.pol-hero{padding:3.5rem 0 3rem;position:relative;overflow:hidden}
-.pol-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(22,163,74,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(22,163,74,.02) 1px,transparent 1px);background-size:52px 52px;pointer-events:none}
-.pol-hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
-.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--green-lt);margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
-.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--green)}
-.pol-hero h1{font-size:clamp(1.9rem,3.5vw,3rem);color:#eef6fd;max-width:760px;margin-bottom:.85rem}
-.pol-hero h1 em{font-style: normal;color:var(--gold)}
-.pol-hero p{font-size:.92rem;color:#6888a8;max-width:620px;line-height:1.85;margin-bottom:1.5rem}
-.hero-badges{display:flex;gap:.6rem;flex-wrap:wrap}
-.hbadge{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .65rem;border:1px solid;border-radius:2px}
-.hbadge-green{color:var(--green-lt);border-color:rgba(22,163,74,.3)}
-.hbadge-gold{color:var(--gold);border-color:rgba(212,168,71,.3)}
-.hbadge-muted{color:#3a5270;border-color:var(--ink-b)}
+/* MCP spotlight */
+.band{background:var(--band);border-block:1px solid var(--line)}
+.spot{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,44px);align-items:center;padding-block:clamp(36px,5vw,56px)}
+@media (max-width:760px){.spot{grid-template-columns:1fr}}
+.spot-copy{display:grid;gap:14px;min-width:0}
+.spot h2{margin:0;max-width:24ch;font-weight:600;font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.spot p{margin:0;max-width:62ch;font-weight:300;color:var(--soft)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.82rem}
+.facts .n{font-family:var(--f-mono);font-weight:500;color:var(--teal)}
+.seq{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;min-width:0}
+.seq svg{width:100%;height:auto;display:block}
+.seq figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.seq figcaption .step-name{font-weight:600;font-size:.88rem}
+.seq figcaption a{font-family:var(--f-mono);font-size:.72rem;white-space:nowrap}
 
-/* ── Demo canvas (light) ── */
-.demo-canvas{background:var(--canvas);color:var(--ct)}
-.demo-canvas-inner{max-width:1100px;margin:0 auto;padding:2rem 2rem 4rem}
+/* live products */
+.live .wrap{padding-block:clamp(40px,5vw,60px);display:grid;gap:22px}
+.live-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.live h2{margin:0;font-weight:600;font-size:1.6rem;letter-spacing:-.02em}
+.livepill{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.livepill i{width:7px;height:7px;border-radius:50%;background:#1fa36a}
+@media (prefers-reduced-motion:no-preference){.livepill i{animation:pulse 2.4s ease-in-out infinite}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(31,163,106,.5)}50%{box-shadow:0 0 0 5px rgba(31,163,106,0)}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start;min-width:0}
+.card .label{font-size:.68rem}
+.card h3{margin:0;font-size:1.18rem;font-weight:600}
+.card p{margin:0;font-size:.92rem;font-weight:300;color:var(--soft)}
+.card dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.84rem}
+.card dt{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--teal);font-weight:500}
+.card dd{margin:0;color:var(--soft)}
+.card .out{font-family:var(--f-mono);font-size:.78rem;margin-top:4px}
 
-/* ── Step tabs ── */
-.step-nav{display:flex;border-bottom:2px solid var(--canvas-3);margin-bottom:2.5rem;overflow-x:auto;gap:0}
-.step-tab{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ct-3);padding:1.1rem 1.4rem;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s;cursor:pointer}
-.step-tab:hover{color:var(--ct-2)}
-.step-tab.active{color:var(--green);border-bottom-color:var(--green)}
-.step-tab.done .step-num{background:var(--green-lt)!important;color:#fff!important}
-.step-num{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--canvas-3);color:var(--ct-3);font-size:.48rem;text-align:center;line-height:18px;margin-right:.4rem;transition:all .2s}
-.step-tab.active .step-num{background:var(--green);color:#fff}
-.step-panel{display:none}
-.step-panel.active{display:block}
-.step-h{padding:1.5rem 0 1.25rem;border-bottom:1px solid var(--canvas-3);margin-bottom:2rem}
-.step-h h2{font-size:1.45rem;color:var(--ct);margin-bottom:.35rem}
-.step-h p{font-size:.87rem;color:var(--ct-3);line-height:1.65}
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot .brand{display:block;line-height:0}
+.site-foot .brand svg{height:28px;width:143px}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
 
-/* ── Form elements ── */
-.field-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-bottom:1.75rem}
-.field{display:flex;flex-direction:column;gap:.4rem}
-.field label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);font-weight:500}
-.field select,.field input{border:1px solid var(--cb);border-radius:4px;padding:.6rem .85rem;font-family:'Sora',sans-serif;font-size:.88rem;color:var(--ct);background:#fff;transition:border-color .18s;outline:none}
-.field select:focus,.field input:focus{border-color:var(--green)}
-.field-note{font-size:.75rem;color:var(--ct-3);margin-top:.15rem}
-
-/* ── Buttons ── */
-.btn{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:4px;border:none;cursor:pointer;font-weight:500;transition:all .18s}
-.btn-green{background:var(--green);color:#fff}
-.btn-green:hover{background:var(--green-lt)}
-.btn-gold{background:var(--gold);color:#fff}
-.btn-gold:hover{opacity:.9}
-.btn-ghost{background:transparent;color:var(--ct-2);border:1px solid var(--cb)}
-.btn-ghost:hover{border-color:var(--ct-2);color:var(--ct)}
-.btn-row{display:flex;gap:.75rem;margin-top:2rem;flex-wrap:wrap;align-items:center}
-
-/* ── Data tables ── */
-.data-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:1.5rem}
-.data-table th{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);border-bottom:2px solid var(--canvas-3);padding:.65rem 1rem;text-align:left;background:var(--canvas-2)}
-.data-table td{padding:.7rem 1rem;border-bottom:1px solid var(--canvas-3);color:var(--ct);vertical-align:top}
-.data-table tr:last-child td{border-bottom:none}
-.data-table .val-good{color:#15803d;font-weight:500}
-.data-table .val-warn{color:var(--warn);font-weight:500}
-.data-table .val-bad{color:var(--red);font-weight:500}
-.data-table .val-strong{font-weight:600;color:var(--ct)}
-
-/* ── Stat cards ── */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:2rem}
-.stat-card{background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1.1rem 1.25rem}
-.stat-label{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ct-3);margin-bottom:.4rem}
-.stat-val{font-size:1.55rem;font-family:'DM Serif Display',serif;color:var(--ct);line-height:1.1}
-.stat-val.good{color:#15803d}
-.stat-val.warn{color:var(--warn)}
-.stat-sub{font-size:.72rem;color:var(--ct-3);margin-top:.2rem}
-
-/* ── Badges ── */
-.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:2px;font-weight:500}
-.badge-live{background:rgba(22,163,74,.1);color:#15803d;border:1px solid rgba(22,163,74,.3)}
-.badge-pilot{background:rgba(245,158,11,.08);color:#b45309;border:1px solid rgba(245,158,11,.3)}
-.badge-paused{background:rgba(239,68,68,.08);color:#b91c1c;border:1px solid rgba(239,68,68,.3)}
-.badge-research{background:rgba(107,114,128,.08);color:#374151;border:1px solid rgba(107,114,128,.3)}
-
-/* ── Status cards ── */
-.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
-.status-card{background:var(--canvas-2);border:1px solid var(--canvas-3);border-radius:6px;padding:1.1rem 1.25rem;display:flex;flex-direction:column;gap:.5rem}
-.status-card-name{font-weight:500;color:var(--ct);font-size:.9rem}
-.status-card-currency{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ct-3)}
-.status-card-detail{font-size:.78rem;color:var(--ct-3);line-height:1.55}
-
-/* ── Mandate section ── */
-.mandate-box{background:var(--canvas-2);border:1px solid var(--canvas-3);border-left:3px solid var(--green);border-radius:6px;padding:1.5rem 1.75rem;margin-bottom:1.5rem}
-.mandate-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:.6rem;font-weight:500}
-.mandate-preview{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--ct-2);line-height:1.7;background:var(--canvas);border:1px solid var(--canvas-3);border-radius:4px;padding:1rem 1.25rem;margin-bottom:1rem;overflow:auto;max-height:220px;white-space:pre-wrap}
-.export-row{display:flex;gap:.75rem;flex-wrap:wrap}
+/* inner pages: header band, prose, section grid (POL-REDESIGN-SPEC §2) */
+.site-nav ul a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:6px;text-decoration-thickness:2px}
+.page-head .wrap{padding-block:clamp(40px,6vw,72px) clamp(28px,4vw,44px);display:grid;gap:16px}
+.page-head h1{margin:0;max-width:22ch;font-weight:600;font-size:clamp(2rem,4.6vw,3rem);line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+.page-head p{margin:0;max-width:62ch;font-size:1.06rem;font-weight:300;color:var(--soft)}
+.sec .wrap{padding-block:clamp(32px,4.5vw,52px);display:grid;gap:18px}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec.band + .sec,.sec + .sec.band{border-top:0}
+.sec h2{margin:0;max-width:30ch;font-weight:600;font-size:clamp(1.35rem,2.6vw,1.75rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.sec h3{margin:0;font-weight:600;font-size:1.06rem}
+.prose{display:grid;gap:12px;max-width:68ch}
+.prose p,.sec .lede{margin:0;font-weight:300;color:var(--soft)}
+.prose ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-weight:300;color:var(--soft)}
+.prose a,.card a:not(.out),.tile a{color:var(--teal);text-underline-offset:3px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.tile h3{font-size:1rem}
+.tile p{margin:0;font-size:.9rem;font-weight:300;color:var(--soft)}
+.tile .label{font-size:.66rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:2px}
+.stats dt{font-family:var(--f-mono);font-weight:500;font-size:1.7rem;color:var(--teal);font-variant-numeric:tabular-nums}
+.stats dd{margin:0;font-size:.86rem;color:var(--soft)}
+.person{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:720px}
+.person .mono{width:64px;height:64px;border-radius:50%;background:var(--band);border:1px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:1.3rem;color:var(--teal);flex:none}
+.person div{display:grid;gap:4px;min-width:0}
+.person h3{font-size:1.2rem}
+.person p{margin:0;font-weight:300;color:var(--soft)}
+.person a{font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
+.linklist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.linklist li{display:grid;gap:2px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.linklist li:last-child{border-bottom:0}
+.linklist a{font-weight:600;color:var(--ink);text-decoration:none}
+.linklist a:hover{color:var(--teal);text-decoration:underline}
+.linklist span{font-size:.9rem;font-weight:300;color:var(--soft)}
+.mail{font-family:var(--f-mono);font-size:.9rem;color:var(--teal)}
+.cta-band .wrap{padding-block:clamp(32px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.cta-band h2{margin:0;font-weight:600;font-size:1.4rem;letter-spacing:-.02em}
+.cta-band p{margin:4px 0 0;font-weight:300;color:var(--soft)}
+</style>
+<style>
+/* Corridor case-study page rules (Mist tokens only) */
+.back{font-family:var(--f-mono);font-size:.76rem;color:var(--teal);text-decoration:none;justify-self:start}
+.back:hover{text-decoration:underline;text-underline-offset:3px}
+.page-head a{color:var(--teal);text-underline-offset:3px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.pills li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;color:var(--soft)}
+.callout{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:12px;padding:14px 18px;max-width:68ch;font-size:.92rem;font-weight:300;color:var(--soft)}
+.callout svg{flex:none;margin-top:3px;color:var(--teal)}
+.callout a{color:var(--teal);text-underline-offset:3px}
+.sec-head{display:grid;gap:8px}
+.sec .sub{margin:0;max-width:68ch;font-size:.9rem;font-weight:300;color:var(--soft)}
+.good{color:var(--teal);font-weight:400}
+.warn{color:var(--amber);font-weight:400}
+.bad{color:var(--amber);font-weight:600}
+/* status cards */
+.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.status > *{min-width:0}
+.status .cur{font-family:var(--f-mono);font-size:.72rem;color:var(--soft)}
+.badges{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.badge{display:inline-block;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
+.badge.live{color:var(--teal);border-color:var(--teal)}
+.badge.pilot{color:var(--amber);border-color:var(--amber)}
+.badge.paused{color:var(--amber);border-color:var(--amber);font-weight:600}
+.badge.research{color:var(--soft)}
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);max-width:100%}
+.tbl table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:620px}
+.tbl th{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--ink);background:var(--band);text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--line);color:var(--soft);font-weight:300;vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td.good{color:var(--teal);font-weight:400}
+.tbl td.warn{color:var(--amber);font-weight:400}
+.tbl td.bad{color:var(--amber);font-weight:600}
+.tbl .nm{font-weight:600;color:var(--ink)}
+.tbl .small{font-size:.78rem}
+.tbl-note{margin:0;max-width:68ch;font-size:.86rem;font-weight:300;color:var(--soft)}
+/* corridor pair stats */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0}
+.kpis > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:2px;align-content:start;min-width:0}
+.kpis dt{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);font-weight:500}
+.kpis dd{margin:0}
+.kpis .v{font-family:var(--f-mono);font-weight:500;font-size:1.3rem;font-variant-numeric:tabular-nums;line-height:1.25}
+.kpis .note{font-size:.8rem;font-weight:300;color:var(--soft)}
+/* panels */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:grid;gap:10px;align-content:start;min-width:0}
+.panel h3{margin:0}
+.panel p{margin:0;font-weight:300;color:var(--soft)}
+.panel .linklist a{font-weight:400}
 </style>
 </head>
 <body>
 
-<!-- ══ POL NAV ══ -->
-<nav class="pol-nav">
-  <div class="pol-nav-inner">
-    <a href="/" class="pol-logo" aria-label="Post Oak Labs — Home">
-      <div class="pol-logo-mark">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- POL mark: P teal, tree-ring O, L gold, wordmark. Vector redraw of the 2026 logo for light grounds. -->
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="../" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="../work.html">Work</a></li>
+        <li><a href="../services.html">Services</a></li>
+        <li><a href="../library.html" aria-current="page">Library</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+        <li><a class="btn pri small" href="../contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-head" aria-labelledby="page-h">
+    <div class="wrap">
+      <a class="back" href="../library.html">← Back to Library</a>
+      <span class="label">Library</span>
+      <h1 id="page-h">West Africa Digital Currency Corridor.</h1>
+      <p>Case study on digital currency and stablecoin settlement across West Africa's emerging corridors: Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, and ECCU DCash. Architecture viability, settlement economics vs correspondent banking, FATF compliance overlay. For live corridor modelling, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener">AINumbers emerging-market-fx-corridor chain ↗</a>.</p>
+      <ul class="pills" aria-label="Topics">
+        <li>eNaira · cNGN · DCash</li>
+        <li>ECOWAS · WAEMU</li>
+        <li>FATF R.16</li>
+        <li>Client-side · Zero PII</li>
+        <li>CC BY 4.0</li>
+      </ul>
+      <div class="callout" role="note">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Case study: practitioner analysis by Post Oak Labs. To run live corridor inputs against the same analytical framework, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener">AINumbers emerging-market-fx-corridor chain ↗</a>.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec band" aria-labelledby="status-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="status-h">Digital Currency Status: West Africa &amp; ECCU</h2>
+        <p class="sub">Operational status of CBDC and stablecoin instruments in the four-zone ecosystem as of mid-2026.</p>
+      </div>
+      <div class="status">
+        <div class="tile">
+          <h3>Nigeria</h3>
+          <span class="cur">NGN · eNaira · cNGN</span>
+          <div class="badges">
+            <span class="badge pilot">eNaira: Pilot / low uptake</span>
+            <span class="badge live">cNGN: Live (private stablecoin)</span>
+          </div>
+          <p>eNaira is a Central Bank of Nigeria retail CBDC (launched Oct 2022) with limited adoption; CBN redesigning. cNGN is a consortium-backed NGN stablecoin (CBEX/Providus/UnionBank) live on-chain since 2024, suitable for settlement rail use.</p>
+        </div>
+        <div class="tile">
+          <h3>Ghana</h3>
+          <span class="cur">GHS · e-Cedi</span>
+          <div class="badges">
+            <span class="badge paused">e-Cedi: Pilot paused</span>
+          </div>
+          <p>Bank of Ghana ran an e-Cedi CBDC pilot in 2022–2023. As of mid-2026 the programme is under review pending CBDC interoperability framework from BIS/ECOWAS. No live retail CBDC for cross-border settlement. Correspondent rails (GCB Bank, Ecobank) remain primary.</p>
+        </div>
+        <div class="tile">
+          <h3>ECCU</h3>
+          <span class="cur">XCD · DCash</span>
+          <div class="badges">
+            <span class="badge live">DCash: Live (7 member states)</span>
+          </div>
+          <p>ECCB (Eastern Caribbean Central Bank) DCash is the most operationally mature CBDC in the Americas, live across Antigua, Dominica, Grenada, Montserrat, St Kitts, St Lucia, St Vincent since 2021. Supports offline transactions. XCD-USD peg (2.7:1 fixed) simplifies FX risk for corridor pricing.</p>
+        </div>
+        <div class="tile">
+          <h3>Senegal / WAEMU</h3>
+          <span class="cur">XOF · digital CFA</span>
+          <div class="badges">
+            <span class="badge research">Digital CFA: Research</span>
+          </div>
+          <p>BCEAO (Banque Centrale des États de l'Afrique de l'Ouest) is studying a digital XOF but no pilot as of mid-2026. XOF is pegged to EUR at a fixed rate; the CFA-EUR corridor is efficient via correspondent chains through Société Générale / BNP Paribas. Lowest digital upgrade urgency of the four zones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="arch-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="arch-h">Architecture Viability: Four Corridors</h2>
+        <p class="sub">Settlement architecture options scored across cost, finality, Herstatt risk, and regulatory readiness. Results are corridor-specific; the Nigeria → Ghana pair is used as the base case.</p>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr>
+              <th>Architecture</th>
+              <th>All-in cost</th>
+              <th>Settlement</th>
+              <th>Herstatt risk</th>
+              <th>Corridor fit (NG→GH)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="nm">Nostro correspondent</span><br><span class="small">Current state</span></td>
+              <td class="bad">7.5–9.8%</td>
+              <td class="warn">T+2 to T+3.5</td>
+              <td class="bad">48–72 h window</td>
+              <td class="bad">High cost, operational</td>
+            </tr>
+            <tr>
+              <td><span class="nm">cNGN stablecoin</span><br><span class="small">NGN-pegged, on-chain</span></td>
+              <td class="good">1.2–1.8%</td>
+              <td class="good">45–90 s</td>
+              <td class="good">Eliminated (PvP)</td>
+              <td class="good">Best near-term option</td>
+            </tr>
+            <tr>
+              <td><span class="nm">CBDC bridge</span><br><span class="small">BIS Agorá pattern</span></td>
+              <td class="good">0.6–1.0%</td>
+              <td class="good">8–15 s</td>
+              <td class="good">Eliminated (PvP)</td>
+              <td class="warn">e-Cedi paused, not viable</td>
+            </tr>
+            <tr>
+              <td><span class="nm">Hybrid rail</span><br><span class="small">cNGN + nostro fallback</span></td>
+              <td class="good">1.0–1.4%</td>
+              <td class="good">15–45 s</td>
+              <td class="good">Low</td>
+              <td class="good">Recommended: resilience</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec band" aria-labelledby="econ-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="econ-h">Settlement Economics: Key Corridor Pairs</h2>
+        <p class="sub">All-in cost and D+0 feasibility for four priority corridor pairs on digital currency vs correspondent rails.</p>
+      </div>
+      <dl class="kpis">
+        <div><dt>Nigeria → Ghana</dt><dd class="v good">8.2% → 1.4%</dd><dd class="note">cNGN rail · D+0 feasible · $1.8B annual flow</dd></div>
+        <div><dt>Nigeria → ECCU</dt><dd class="v good">9.8% → 1.1%</dd><dd class="note">DCash destination · 4-hop SWIFT eliminated</dd></div>
+        <div><dt>Nigeria → WAEMU</dt><dd class="v warn">8.5% → 2.1%</dd><dd class="note">No digital CFA · cNGN + nostro fallback</dd></div>
+        <div><dt>Ghana → ECCU</dt><dd class="v warn">9.2% → 2.4%</dd><dd class="note">e-Cedi paused · correspondent + DCash partial</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="fatf-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="fatf-h">FATF Compliance Overlay</h2>
+        <p class="sub">Travel Rule applicability, VASP registration requirements, and AML obligations by instrument type across the four zones.</p>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr>
+              <th>Instrument</th>
+              <th>FATF category</th>
+              <th>Travel Rule (≥$1K)</th>
+              <th>Originator / beneficiary data</th>
+              <th>AML obligation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="nm">eNaira / DCash</span><br><span class="small">Retail CBDC</span></td>
+              <td>Central bank liability</td>
+              <td class="warn">Exempt (central bank)</td>
+              <td>Collected via CBN/ECCB rails</td>
+              <td>National AML law applies</td>
+            </tr>
+            <tr>
+              <td><span class="nm">cNGN stablecoin</span><br><span class="small">Private stablecoin</span></td>
+              <td>VASP / VA</td>
+              <td class="bad">Applies: R.16 compliant needed</td>
+              <td>Originator name, account, address</td>
+              <td>VASP registration + KYC/AML</td>
+            </tr>
+            <tr>
+              <td><span class="nm">Nostro correspondent</span></td>
+              <td>Bank-to-bank</td>
+              <td>SWIFT MX / MT103 covers</td>
+              <td>Full SWIFT field set</td>
+              <td>De Larosière / Basel AML matrix</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tbl-note">Nigeria was removed from the FATF grey list in October 2023. Cross-border VASP transfers from Nigerian entities to ECCU (a non-FATF jurisdiction) require enhanced due diligence on the ECCU receiving side for transfers above $3K threshold. DCash, as a central-bank instrument, bypasses VASP Travel Rule but still requires originator data collection at the ECCB level under national AML law.</p>
+    </div>
+  </section>
+
+  <section class="sec band" aria-labelledby="live-h">
+    <div class="wrap two">
+      <div class="panel">
+        <span class="label">AINumbers.co · Live Modelling</span>
+        <h3 id="live-h">Run the live emerging-market FX corridor model</h3>
+        <p>The AINumbers emerging-market-fx-corridor chain sequences all eight tools referenced in this case study (T58, T75, T157, T217, T218, T220, T221, T325) and exports a composite Policy Mandate. Use it to run your own corridor inputs against the same analytical framework.</p>
+        <div><a class="btn pri small" href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener">Run corridor model on AINumbers ↗</a></div>
+      </div>
+      <div class="panel">
+        <span class="label">AINumbers tools</span>
+        <ul class="linklist">
+          <li><a href="https://ainumbers.co/tools/58-cbdc-interop-modeler.html" target="_blank" rel="noopener">T58 · CBDC Interop ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/75-stablecoin-reserve-peg-health-auditor.html" target="_blank" rel="noopener">T75 · Reserve &amp; Peg ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/157-settlement-orchestration-simulator.html" target="_blank" rel="noopener">T157 · Settlement Orchestration ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/217-em-fx-risk-classifier.html" target="_blank" rel="noopener">T217 · EM FX Risk ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/218-pvp-settlement-sync-model.html" target="_blank" rel="noopener">T218 · PvP Settlement ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/220-correspondent-derisking-modeler.html" target="_blank" rel="noopener">T220 · De-Risking ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/221-cross-border-finality-comparator.html" target="_blank" rel="noopener">T221 · D+0 Finality ↗</a></li>
+          <li><a href="https://ainumbers.co/tools/325-payment-cutoff-settlement-atlas.html" target="_blank" rel="noopener">T325 · Settlement Atlas ↗</a></li>
+        </ul>
+        <span class="label">Related</span>
+        <ul class="linklist">
+          <li><a href="/demos/timor-leste-bangladesh-stablecoin-settlement.html">Timor-Leste × Bangladesh corridor</a></li>
+          <li><a href="https://ainumbers.co/tools/65-settlement-finality-auditor.html">mBridge Multi-CBDC Modeler →</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band" aria-labelledby="cta-h">
+    <div class="wrap">
+      <div>
+        <span class="label">West Africa Digital Currency</span>
+        <h2 id="cta-h">We’ve advised on tokenised payment rail implementations across frontier corridors.</h2>
+        <p>West Africa’s digital payment landscape is rapidly evolving: eNaira, cNGN, and regional interoperability frameworks are advancing. If you’re a commercial bank, central bank, or fintech evaluating West Africa corridor strategy, let’s talk specifics.</p>
+        <p>Post Oak Labs · advisory on production tokenized payment deployments · ECOWAS / WAEMU corridor advisory</p>
+      </div>
+      <a class="btn pri" href="/contact.html">Talk to our team →</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="../" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
       </div>
       <div>
-        <div class="pol-logo-text">Post Oak Labs</div>
-        <div class="pol-logo-sub">Tokenised Payment Infrastructure</div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="../services.html">Services</a></li>
+          <li><a href="../library.html">Library</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="https://www.linkedin.com/in/timswanson">Tim Swanson on LinkedIn ↗</a></li>
+        </ul>
       </div>
-    </a>
-    <div class="pol-nav-links">
-      <a href="/a2a-guide.html">A2A Payments</a>
-      <a href="/services.html#blockchain">Advisory</a>
-      <a href="/library.html">Demos</a>
-      <a href="https://ainumbers.co" class="pol-nav-cta">AINumbers.co ↗</a>
-    </div>
-  </div>
-</nav>
-
-<!-- ══ TOOL STRIP ══ -->
-<div class="tool-strip">
-  <span class="tool-strip-label">AINumbers tools:</span>
-  <a href="https://ainumbers.co/tools/58-cbdc-interop-modeler.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T58 · CBDC Interop</a>
-  <a href="https://ainumbers.co/tools/75-stablecoin-reserve-peg-health-auditor.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T75 · Reserve &amp; Peg</a>
-  <a href="https://ainumbers.co/tools/157-settlement-orchestration-simulator.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T157 · Settlement Orchestration</a>
-  <a href="https://ainumbers.co/tools/217-em-fx-risk-classifier.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T217 · EM FX Risk</a>
-  <a href="https://ainumbers.co/tools/218-pvp-settlement-sync-model.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T218 · PvP Settlement</a>
-  <a href="https://ainumbers.co/tools/220-correspondent-derisking-modeler.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T220 · De-Risking</a>
-  <a href="https://ainumbers.co/tools/221-cross-border-finality-comparator.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T221 · D+0 Finality</a>
-  <a href="https://ainumbers.co/tools/325-payment-cutoff-settlement-atlas.html" target="_blank" rel="noopener" class="tool-chip"><span class="tool-chip-dot"></span>T325 · Settlement Atlas</a>
-</div>
-
-<!-- ══ HERO ══ -->
-<section class="pol-hero">
-  <div class="container">
-    <div class="hero-eyebrow">Case Study #37 · West Africa Digital Currency Corridor</div>
-    <h1>West Africa Digital Currency Corridor.</h1>
-    <p>Case study on digital currency and stablecoin settlement across West Africa's emerging corridors — Nigeria eNaira/cNGN, Ghana e-Cedi, Senegal/WAEMU, and ECCU DCash. Architecture viability, settlement economics vs correspondent banking, FATF compliance overlay. For live corridor modelling, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="color:var(--green-lt)">AINumbers emerging-market-fx-corridor chain ↗</a>.</p>
-    <div class="hero-badges">
-      <span class="hbadge hbadge-green">eNaira · cNGN · DCash</span>
-      <span class="hbadge hbadge-gold">ECOWAS · WAEMU</span>
-      <span class="hbadge hbadge-muted">FATF R.16</span>
-      <span class="hbadge hbadge-muted">Client-side · Zero PII</span>
-      <span class="hbadge hbadge-muted">CC BY 4.0</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CASE STUDY CONTENT ══ -->
-<div class="demo-canvas">
-  <div class="demo-canvas-inner">
-
-    <!-- Case study note -->
-    <div style="border:1px solid var(--canvas-3);border-left:3px solid var(--green);border-radius:6px;padding:1.1rem 1.4rem;margin-bottom:2.5rem;background:var(--canvas-2);display:flex;align-items:flex-start;gap:0.9rem;" role="note">
-      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;margin-top:1px" aria-hidden="true"><circle cx="10" cy="10" r="9" stroke="#16a34a" stroke-width="1.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span style="font-size:0.82rem;color:var(--ct-2);line-height:1.65;">Case study — practitioner analysis by Post Oak Labs. To run live corridor inputs against the same analytical framework, use the <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline;">AINumbers emerging-market-fx-corridor chain ↗</a>.</span>
-    </div>
-
-    <!-- Section 1: CBDC status -->
-    <div class="step-h">
-      <h2>Digital Currency Status — West Africa &amp; ECCU</h2>
-      <p>Operational status of CBDC and stablecoin instruments in the four-zone ecosystem as of mid-2026.</p>
-    </div>
-    <div class="status-grid">
-      <div class="status-card">
-        <div class="status-card-name">Nigeria</div>
-        <div class="status-card-currency">NGN · eNaira · cNGN</div>
-        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
-          <span class="badge badge-pilot">eNaira: Pilot / low uptake</span>
-          <span class="badge badge-live">cNGN: Live (private stablecoin)</span>
-        </div>
-        <div class="status-card-detail">eNaira is a Central Bank of Nigeria retail CBDC (launched Oct 2022) with limited adoption — CBN redesigning. cNGN is a consortium-backed NGN stablecoin (CBEX/Providus/UnionBank) live on-chain since 2024, suitable for settlement rail use.</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card-name">Ghana</div>
-        <div class="status-card-currency">GHS · e-Cedi</div>
-        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
-          <span class="badge badge-paused">e-Cedi: Pilot paused</span>
-        </div>
-        <div class="status-card-detail">Bank of Ghana ran an e-Cedi CBDC pilot in 2022–2023. As of mid-2026 the programme is under review pending CBDC interoperability framework from BIS/ECOWAS. No live retail CBDC for cross-border settlement. Correspondent rails (GCB Bank, Ecobank) remain primary.</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card-name">ECCU</div>
-        <div class="status-card-currency">XCD · DCash</div>
-        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
-          <span class="badge badge-live">DCash: Live (7 member states)</span>
-        </div>
-        <div class="status-card-detail">ECCB (Eastern Caribbean Central Bank) DCash is the most operationally mature CBDC in the Americas — live across Antigua, Dominica, Grenada, Montserrat, St Kitts, St Lucia, St Vincent since 2021. Supports offline transactions. XCD-USD peg (2.7:1 fixed) simplifies FX risk for corridor pricing.</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card-name">Senegal / WAEMU</div>
-        <div class="status-card-currency">XOF · digital CFA</div>
-        <div style="display:flex;flex-direction:column;gap:0.3rem;margin:0.3rem 0;">
-          <span class="badge badge-research">Digital CFA: Research</span>
-        </div>
-        <div class="status-card-detail">BCEAO (Banque Centrale des États de l'Afrique de l'Ouest) is studying a digital XOF but no pilot as of mid-2026. XOF is pegged to EUR at a fixed rate — the CFA-EUR corridor is efficient via correspondent chains through Société Générale / BNP Paribas. Lowest digital upgrade urgency of the four zones.</div>
-      </div>
-    </div>
-
-    <!-- Section 2: Architecture comparison -->
-    <div class="step-h" style="margin-top:1rem;">
-      <h2>Architecture Viability — Four Corridors</h2>
-      <p>Settlement architecture options scored across cost, finality, Herstatt risk, and regulatory readiness. Results are corridor-specific; the Nigeria → Ghana pair is used as the base case.</p>
-    </div>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Architecture</th>
-          <th>All-in cost</th>
-          <th>Settlement</th>
-          <th>Herstatt risk</th>
-          <th>Corridor fit (NG→GH)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Nostro correspondent</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">Current state</span></td>
-          <td class="val-bad">7.5–9.8%</td>
-          <td class="val-warn">T+2 to T+3.5</td>
-          <td class="val-bad">48–72 h window</td>
-          <td class="val-bad">High cost, operational</td>
-        </tr>
-        <tr>
-          <td><strong>cNGN stablecoin</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">NGN-pegged, on-chain</span></td>
-          <td class="val-good">1.2–1.8%</td>
-          <td class="val-good">45–90 s</td>
-          <td class="val-good">Eliminated (PvP)</td>
-          <td class="val-good">Best near-term option</td>
-        </tr>
-        <tr>
-          <td><strong>CBDC bridge</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">BIS Agorá pattern</span></td>
-          <td class="val-good">0.6–1.0%</td>
-          <td class="val-good">8–15 s</td>
-          <td class="val-good">Eliminated (PvP)</td>
-          <td class="val-warn">e-Cedi paused — not viable</td>
-        </tr>
-        <tr>
-          <td><strong>Hybrid rail</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">cNGN + nostro fallback</span></td>
-          <td class="val-good">1.0–1.4%</td>
-          <td class="val-good">15–45 s</td>
-          <td class="val-good">Low</td>
-          <td class="val-good">Recommended — resilience</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Section 3: Settlement economics by corridor pair -->
-    <div class="step-h" style="margin-top:1.5rem;">
-      <h2>Settlement Economics — Key Corridor Pairs</h2>
-      <p>All-in cost and D+0 feasibility for four priority corridor pairs on digital currency vs correspondent rails.</p>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-label">Nigeria → Ghana</div>
-        <div class="stat-val good">8.2% → 1.4%</div>
-        <div class="stat-sub">cNGN rail · D+0 feasible · $1.8B annual flow</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Nigeria → ECCU</div>
-        <div class="stat-val good">9.8% → 1.1%</div>
-        <div class="stat-sub">DCash destination · 4-hop SWIFT eliminated</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Nigeria → WAEMU</div>
-        <div class="stat-val warn">8.5% → 2.1%</div>
-        <div class="stat-sub">No digital CFA · cNGN + nostro fallback</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Ghana → ECCU</div>
-        <div class="stat-val warn">9.2% → 2.4%</div>
-        <div class="stat-sub">e-Cedi paused · correspondent + DCash partial</div>
-      </div>
-    </div>
-
-    <!-- Section 4: FATF compliance overlay -->
-    <div class="step-h" style="margin-top:1rem;">
-      <h2>FATF Compliance Overlay</h2>
-      <p>Travel Rule applicability, VASP registration requirements, and AML obligations by instrument type across the four zones.</p>
-    </div>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Instrument</th>
-          <th>FATF category</th>
-          <th>Travel Rule (≥$1K)</th>
-          <th>Originator / beneficiary data</th>
-          <th>AML obligation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>eNaira / DCash</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">Retail CBDC</span></td>
-          <td>Central bank liability</td>
-          <td class="val-warn">Exempt (central bank)</td>
-          <td>Collected via CBN/ECCB rails</td>
-          <td>National AML law applies</td>
-        </tr>
-        <tr>
-          <td><strong>cNGN stablecoin</strong><br><span style="font-size:0.78rem;color:var(--ct-3)">Private stablecoin</span></td>
-          <td>VASP / VA</td>
-          <td class="val-bad">Applies — R.16 compliant needed</td>
-          <td>Originator name, account, address</td>
-          <td>VASP registration + KYC/AML</td>
-        </tr>
-        <tr>
-          <td><strong>Nostro correspondent</strong></td>
-          <td>Bank-to-bank</td>
-          <td>SWIFT MX / MT103 covers</td>
-          <td>Full SWIFT field set</td>
-          <td>De Larosière / Basel AML matrix</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="font-size:0.8rem;color:var(--ct-3);margin-top:0.6rem;line-height:1.6;">Nigeria was removed from the FATF grey list in October 2023. Cross-border VASP transfers from Nigerian entities to ECCU (a non-FATF jurisdiction) require enhanced due diligence on the ECCU receiving side for transfers above $3K threshold. DCash, as a central-bank instrument, bypasses VASP Travel Rule but still requires originator data collection at the ECCB level under national AML law.</p>
-
-    <!-- AINumbers chain link -->
-    <div class="mandate-box" style="margin-top:2rem;">
-      <div class="mandate-title">AINumbers.co — Live Modelling</div>
-      <h3 style="font-family:'DM Serif Display',serif;color:var(--ct);font-size:1.1rem;margin-bottom:0.5rem;font-weight:400;">Run the live emerging-market FX corridor model</h3>
-      <p style="font-size:0.85rem;color:var(--ct-2);line-height:1.65;margin-bottom:1rem;">The AINumbers emerging-market-fx-corridor chain sequences all eight tools referenced in this case study — T58, T75, T157, T217, T218, T220, T221, T325 — and exports a composite Policy Mandate. Use it to run your own corridor inputs against the same analytical framework.</p>
-      <div class="export-row">
-        <a href="https://ainumbers.co/chaingraph/chains/emerging-market-fx-corridor.html" target="_blank" rel="noopener" class="btn btn-green">Run corridor model on AINumbers ↗</a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ══ CONVERT CTA ══ -->
-<section aria-label="Talk to Post Oak Labs" style="background:#0a1628;border-top:1px solid #1a2e4a;padding:3.25rem 1.5rem;">
-  <div style="max-width:780px;margin:0 auto;border:1px solid #1a2e4a;border-left:3px solid #16a34a;border-radius:8px;background:linear-gradient(180deg,rgba(20,37,64,0.5),rgba(10,22,40,0.5));padding:2rem 1.95rem;">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#16a34a;margin-bottom:0.7rem;font-weight:500;">West Africa Digital Currency</div>
-    <h2 style="font-family:'DM Serif Display',serif;font-size:1.5rem;line-height:1.3;color:#fff;margin:0 0 0.6rem;font-weight:400;">We’ve advised on tokenised payment rail implementations across frontier corridors.</h2>
-    <p style="font-family:'Sora',sans-serif;font-size:0.92rem;line-height:1.65;color:#9fb4cc;margin:0 0 1.5rem;max-width:640px;">West Africa’s digital payment landscape is rapidly evolving — eNaira, cNGN, and regional interoperability frameworks are advancing. If you’re a commercial bank, central bank, or fintech evaluating West Africa corridor strategy, let’s talk specifics.</p>
-    <a href="/contact.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;color:#fff;background:#16a34a;padding:0.85rem 1.4rem;border-radius:5px;text-decoration:none;">Talk to our team →</a>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:#5a7a95;margin-top:1.1rem;line-height:1.6;">Post Oak Labs · advisory on production tokenized payment deployments · ECOWAS / WAEMU corridor advisory</div>
-  </div>
-</section>
-
-<!-- ══ FOOTER ══ -->
-<footer style="background:#050c15;border-top:1px solid #1a2e4a;padding:2.25rem 2rem;">
-  <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;align-items:flex-start">
-    <div>
-      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:#fff;">Post Oak <span style="color:#D4A847">Labs</span></div>
-      <p style="font-size:.78rem;color:#7090b0;margin-top:.35rem">&copy; 2026 Post Oak Labs · <a href="https://creativecommons.org/licenses/by/4.0/" style="color:#7090b0" rel="noopener">CC BY 4.0</a></p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:.4rem;font-size:.84rem">
-      <a href="/library.html" style="color:#7090b0">← All demos</a>
-      <a href="/demos/timor-leste-bangladesh-stablecoin-settlement.html" style="color:#7090b0">Timor-Leste × Bangladesh corridor</a>
-      <a href="https://ainumbers.co/tools/65-settlement-finality-auditor.html" style="color:#7090b0">mBridge Multi-CBDC Modeler →</a>
-      <a href="https://ainumbers.co" style="color:#7090b0" target="_blank" rel="noopener">AINumbers.co ↗</a>
     </div>
   </div>
 </footer>
-
 </body>
 </html>

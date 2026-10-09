@@ -1,9 +1,4 @@
 {
-  "a2a-comparison.html": {
-    "emdash": 0,
-    "jargon": 0,
-    "bold": 27
-  },
   "autonity/autonity-page1-protocol.html": {
     "emdash": 27,
     "jargon": 0,
@@ -43,30 +38,5 @@
     "emdash": 24,
     "jargon": 0,
     "bold": 2
-  },
-  "demos/timor-leste-bangladesh-stablecoin-settlement.html": {
-    "emdash": 18,
-    "jargon": 0,
-    "bold": 0
-  },
-  "demos/west-africa-digital-currency-corridor.html": {
-    "emdash": 15,
-    "jargon": 0,
-    "bold": 7
-  },
-  "enterprise-blockchain.html": {
-    "emdash": 0,
-    "jargon": 0,
-    "bold": 37
-  },
-  "faq.html": {
-    "emdash": 0,
-    "jargon": 0,
-    "bold": 75
-  },
-  "glossary.html": {
-    "emdash": 0,
-    "jargon": 0,
-    "bold": 101
   }
 }
