@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cyber | Post Oak Labs</title>
+<meta name="description" content="The security controls behind the products Post Oak Labs runs, and the cyber services we offer in the areas we have worked in.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://postoaklabs.com/cyber.html">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#eef4f2">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cyber | Post Oak Labs">
+<meta property="og:description" content="The security controls behind the products Post Oak Labs runs, and the cyber services we offer in the areas we have worked in.">
+<meta property="og:url" content="https://postoaklabs.com/cyber.html">
+<meta property="og:image" content="https://postoaklabs.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Cyber | Post Oak Labs","url":"https://postoaklabs.com/cyber.html","about":{"@id":"https://postoaklabs.com/#organization"},"isPartOf":{"@id":"https://postoaklabs.com/#website"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Tokens copied from the live postoaklabs.com home page. */
+:root{
+  --bg:#eef4f2; --band:#e2ece9; --card:#f8fbfa; --ink:#102a27; --soft:#3f5652; --line:#cfdeda;
+  --teal:#0b7a70; --ring:#0e9c9c; --cyan:#0a6f86; --amber:#a8650f; --gold:#c9861f; --gold-ink:#1a1408;
+  --f-display:"Lexend",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,monospace;
+  --gutter:clamp(16px,4vw,44px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-display);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+.label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:500}
+
+/* nav */
+.site-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.site-nav .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:16px}
+.site-nav .brand,.site-foot .brand{display:block;line-height:0}
+.site-nav .brand svg{height:36px;width:183px}
+.site-foot .brand svg{height:28px;width:143px}
+.site-nav ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none;font-size:.92rem}
+.site-nav ul a{text-decoration:none;color:var(--soft)}
+.site-nav ul a:hover{color:var(--ink)}
+.site-nav ul a[aria-current="page"]{color:var(--ink);font-weight:600;border-bottom:2px solid var(--gold);padding-bottom:2px}
+.btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.92rem;text-decoration:none}
+.btn.pri,.site-nav ul a.btn.pri{background:var(--gold);color:var(--gold-ink)}
+.btn.sec{border:1.5px solid var(--ink);color:var(--ink)}
+.btn.small{padding:8px 16px;font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.btn{transition:filter .15s}.btn:hover{filter:brightness(1.08)}}
+
+/* hero */
+.hero .wrap{padding-block:clamp(48px,8vw,96px) clamp(40px,6vw,64px);display:grid;gap:22px}
+.hero h1{margin:0;max-width:30ch;font-weight:600;font-size:clamp(2.3rem,6vw,4rem);line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero h1 span{color:var(--teal)}
+/* rotating word, same treatment as the live home page */
+.rot{display:inline-block;position:relative;white-space:nowrap;transition:color .3s}
+.rot::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.09em;border-radius:2px;background:var(--gold);opacity:.8}
+@media (prefers-reduced-motion:no-preference){
+  .rot.out{animation:flickOut .32s steps(4,end) forwards}
+  .rot.in{animation:flickIn .42s steps(5,end)}
+}
+@keyframes flickOut{0%{opacity:1}25%{opacity:.2}50%{opacity:.8}75%{opacity:.1}100%{opacity:0}}
+@keyframes flickIn{0%{opacity:0}20%{opacity:.7}40%{opacity:.15}60%{opacity:.9}80%{opacity:.4}100%{opacity:1}}
+.hero p{margin:0;max-width:62ch;font-size:1.08rem;font-weight:300;color:var(--soft)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.82rem}
+.facts .n{font-family:var(--f-mono);font-weight:500;color:var(--teal)}
+
+/* sections */
+.band{background:var(--band);border-block:1px solid var(--line)}
+.sec .wrap{padding-block:clamp(40px,5vw,60px);display:grid;gap:22px}
+.sec h2.sh{margin:0;font-weight:600;font-size:1.6rem;letter-spacing:-.02em}
+.lede{margin:-10px 0 0;font-weight:300;color:var(--soft);max-width:62ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:10px;align-content:start;min-width:0}
+.card .label{font-size:.68rem}
+.card h3{margin:0;font-size:1.18rem;font-weight:600}
+.card p{margin:0;font-size:.92rem;font-weight:300;color:var(--soft)}
+.card ul{margin:0;padding-left:1.1em;font-size:.9rem;font-weight:300;color:var(--soft)}
+.card li{margin:3px 0}
+.card .mono{font-family:var(--f-mono);font-size:.82rem;font-weight:500;color:var(--teal)}
+.note{font-size:.8rem;color:var(--soft);font-family:var(--f-mono)}
+
+/* closing cta */
+.closing .wrap{padding-block:clamp(48px,6vw,80px);display:grid;gap:16px;justify-items:start}
+.closing h2{margin:0;max-width:24ch;font-weight:600;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+.closing p{margin:0;max-width:60ch;font-weight:300;color:var(--soft)}
+
+/* footer */
+.site-foot{border-top:1px solid var(--line)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:20px 40px;padding-block:32px 40px;font-size:.85rem;color:var(--soft)}
+.site-foot p{margin:10px 0 0}
+.site-foot ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.site-foot h2{margin:0 0 6px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--teal)}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{text-decoration:underline}
+.foot-cols{display:flex;flex-wrap:wrap;gap:20px 48px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="pol" viewBox="0 0 560 110">
+      <path d="M14 96V14h30a26 26 0 0 1 0 52H14" fill="none" stroke="#0b7a70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <g fill="none" stroke="#0e9c9c" stroke-width="4">
+        <circle cx="128" cy="55" r="42" stroke-width="7"/><circle cx="128" cy="55" r="33"/><circle cx="128" cy="55" r="25"/>
+        <circle cx="128" cy="55" r="17.5"/><circle cx="128" cy="55" r="10.5"/><circle cx="128" cy="55" r="4"/>
+      </g>
+      <path d="M196 14v82h46" fill="none" stroke="#c9861f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="268" y="62" font-family="Lexend,system-ui,sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#102a27">POST OAK LABS</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="library.html">Library</a></li>
+        <li><a href="cyber.html" aria-current="page">Cyber</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="btn pri small" href="contact.html">Talk to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap">
+      <span class="label">Cyber</span>
+      <h1 id="hero-h">Security you can <span class="rot" id="rot-word">verify</span> from the hash up.</h1>
+      <p>We run public finance tools and an MCP server, so we keep controls we can show you. This page lists what is in place today: proofs, receipts, logs, pinned builds and a way to report a problem.</p>
+      <ul class="facts">
+        <li><span class="n">2,575</span> pinned golden hashes in CI</li>
+        <li><span class="n">0</span> network calls from tool pages after load</li>
+        <li><span class="n">RFC 9116</span> <a href="https://ainumbers.co/.well-known/security.txt">security.txt</a> on AINumbers</li>
+      </ul>
+      <div class="cta"><a class="btn pri" href="#contact">Report a vulnerability</a><a class="btn sec" href="#controls">See the controls</a></div>
+    </div>
+  </section>
+
+  <section class="sec band" id="controls" aria-labelledby="c-h">
+    <div class="wrap">
+      <span class="label">Nine controls</span>
+      <h2 class="sh" id="c-h">What we do and how to check it</h2>
+      <div class="cards">
+
+        <article class="card">
+          <span class="label">01 · Proof</span>
+          <h3>Proven computation</h3>
+          <p>Calculation nodes in the AINumbers estate carry zero-knowledge receipts, produced with the RISC Zero zkVM and Groth16 over BN254. <span class="mono">667</span> nodes carry a proof.</p>
+          <ul>
+            <li>A public coverage gate fails the build if a node loses its proof.</li>
+            <li>Proving runs on our own GPUs.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">02 · Receipts</span>
+          <h3>Deterministic receipts</h3>
+          <p>Every result carries an execution hash: SHA-256 over RFC 8785 (JCS) canonical JSON of the policy parameters and the output.</p>
+          <ul>
+            <li>One shared module is used by both the website and the MCP server.</li>
+            <li>2,575 golden hashes are pinned and re-verified in CI.</li>
+            <li>Ad-hoc hashing is linted out.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">03 · Verification</span>
+          <h3>Formal methods and tests</h3>
+          <p>A machine-checked Dafny proof covers a Regulation Z APR kernel. A public proof count is coming.</p>
+          <ul>
+            <li>A small formal-verification pilot: its badges drop automatically when a kernel's digest changes.</li>
+            <li>A property-test floor on every kernel.</li>
+            <li>Nightly mutation testing.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">04 · Logs</span>
+          <h3>Transparency logs and timestamps</h3>
+          <p>Errata and lineage checkpoints are registered in a public Sigsum transparency log with witness cosignatures. Other transparency logs are not yet in use.</p>
+          <ul>
+            <li>anchor.ainumbers.co runs in the browser and timestamps a hash against RFC 3161 authorities and OpenTimestamps, using pinned roots.</li>
+            <li>It reaches them through a stateless relay.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">05 · Egress</span>
+          <h3>Pages that stay offline</h3>
+          <p>Tool pages are written to make no network calls after load, and a Content-Security-Policy with <span class="mono">connect-src 'none'</span> backs that up.</p>
+          <ul>
+            <li>The policy is delivered in a meta tag and still allows inline scripts, so it is a second line of defence, not the primary control.</li>
+            <li>No client storage and no personal data.</li>
+            <li>Egress is checked on both the source and the served site, on a schedule.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">06 · Supply chain</span>
+          <h3>Supply chain</h3>
+          <ul>
+            <li>All CI actions pinned to commit SHAs.</li>
+            <li>Workflow linting for injection and permissions.</li>
+            <li>A ruleset drift gate.</li>
+            <li>A merge queue with required checks.</li>
+            <li>Build provenance attestations.</li>
+            <li>SBOM and SLSA provenance on releases of one component.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">07 · MCP</span>
+          <h3>MCP server hardening</h3>
+          <ul>
+            <li>Unique tool names are enforced.</li>
+            <li>Typed JSON-RPC error envelopes carry request ids.</li>
+            <li>Malformed input fails fast and requests are rate limited.</li>
+            <li>A denial-of-service class in SSE id handling was found and fixed.</li>
+            <li>Negative-enforcement tests prove that a failing gate really stops a chain.</li>
+            <li>Adversarial testing is run against our own systems only.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">08 · Disclosure</span>
+          <h3>Disclosure</h3>
+          <ul>
+            <li>An RFC 9116 security.txt on the AINumbers site.</li>
+            <li>A published reporting policy.</li>
+            <li>A public postmortem log.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <span class="label">09 · Post-quantum</span>
+          <h3>Post-quantum readiness</h3>
+          <p>ML-DSA and SLH-DSA implementations are vendored and digest-pinned.</p>
+          <ul>
+            <li>A cryptography inventory tracks where classical signatures are still in use.</li>
+          </ul>
+        </article>
+
+      </div>    </div>
+  </section>
+
+  <section class="sec" id="services" aria-labelledby="sv-h">
+    <div class="wrap">
+      <span class="label">Cyber services</span>
+      <h2 class="sh" id="sv-h">Where we can help</h2>
+      <p class="lede">We offer cyber work in the areas we have already done ourselves. Adversarial testing is limited to systems you own and authorize us to test.</p>
+      <div class="cards">
+        <article class="card">
+          <span class="label">Defensive</span>
+          <h3>Find and validate weaknesses</h3>
+          <ul>
+            <li>Review of MCP servers and tool endpoints: input handling, error envelopes, rate limits, denial-of-service classes.</li>
+            <li>Validation of each finding before it is reported, so you get fewer false alarms.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="label">Defensive</span>
+          <h3>Receipts, hashing and signatures</h3>
+          <ul>
+            <li>Review of hashing and canonicalization schemes, and of how results are signed or timestamped.</li>
+            <li>Checks of transparency-log and timestamp setups, plus post-quantum signature inventories.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="label">Defensive</span>
+          <h3>Build pipelines and incidents</h3>
+          <ul>
+            <li>Hardening of CI: pinned actions, workflow linting, merge rules, build provenance.</li>
+            <li>Triage and written postmortems when something goes wrong.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="label">Defensive</span>
+          <h3>Malware and spam defense</h3>
+          <ul>
+            <li>Analysis of suspicious files and links, and the detection rules that come out of it.</li>
+            <li>Spam identification and prevention for forms, inboxes and public endpoints.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="label">Investigative</span>
+          <h3>Ransomware and on-chain forensics</h3>
+          <ul>
+            <li>Tracing payment flows on public blockchains and screening for sanctions exposure.</li>
+            <li>Our founder has written on how ransomware uses cryptocurrency and how compliance tooling can counter it, and has spoken on the topic at industry panels.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="label">Adversarial</span>
+          <h3>Authorized testing</h3>
+          <ul>
+            <li>Penetration testing of MCP servers and browser-based tools that you own and have authorized us to test.</li>
+            <li>Written scope and rules of engagement before any testing begins.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" id="contact" aria-labelledby="ct-h">
+    <div class="wrap">
+      <span class="label">Contact</span>
+      <h2 id="ct-h">Found a problem? Tell us.</h2>
+      <p>Send reports and questions to us directly. Our disclosure policy covers how reports are handled and credited.</p>
+      <div class="cta"><a class="btn pri" href="mailto:contact@postoaklabs.com">contact@postoaklabs.com</a><a class="btn sec" href="contact.html">Talk to us</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="./" aria-label="Post Oak Labs home"><svg role="img" aria-label="Post Oak Labs"><use href="#pol"/></svg></a>
+      <p>Content licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h2>Live products</h2>
+        <ul>
+          <li><a href="https://ainumbers.co/">AINumbers ↗</a></li>
+          <li><a href="https://apexlogics.org/">ApexLogics ↗</a></li>
+          <li><a href="https://omegacentauri.me/">Omega Centauri Society ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Post Oak Labs</h2>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="library.html">Library</a></li>
+          <li><a href="cyber.html">Cyber</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="sitemap.html">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+/* Rotating headline word. Static HTML ships "verify" for crawlers and no-JS readers. */
+(function () {
+  var WORDS = [['verify', '#0b7a70'], ['replay', '#a8650f'], ['inspect', '#0a6f86'], ['reproduce', '#0b7a70']];
+  var CADENCE = 4200, i = 0, el = document.getElementById('rot-word');
+  if (!el) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function paint() { el.textContent = WORDS[i][0]; el.style.color = WORDS[i][1]; }
+  setInterval(function () {
+    i = (i + 1) % WORDS.length;
+    if (reduce) { paint(); return; }
+    el.classList.remove('in'); el.classList.add('out');
+    setTimeout(function () { paint(); el.classList.remove('out'); el.classList.add('in'); }, 330);
+  }, CADENCE);
+})();
+</script>
+</body>
+</html>

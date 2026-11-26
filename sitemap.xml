@@ -25,6 +25,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://postoaklabs.com/cyber.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://postoaklabs.com/about.html</loc>
     <lastmod>2026-10-08</lastmod>
     <changefreq>monthly</changefreq>
